@@ -34,18 +34,18 @@
     <inceptionYear>2005</inceptionYear>
     <licenses>
         <license>
-            <name>Commercial License</name>
-            <distribution>manual</distribution>
             <comments>
                 Commercial licensing for use with closed source software is
                 available upon request.
                 Please contact sales AT schlichtherle DOT de .
             </comments>
+            <distribution>manual</distribution>
+            <name>Commercial License</name>
         </license>
         <license>
+            <distribution>repo</distribution>
             <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007</name>
             <url>http://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
-            <distribution>repo</distribution>
         </license>
     </licenses>
     <mailingLists>
