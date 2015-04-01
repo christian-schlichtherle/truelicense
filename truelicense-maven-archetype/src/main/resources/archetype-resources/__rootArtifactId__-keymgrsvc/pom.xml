@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+#set($dollar = '$')
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${dollar}{maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>$groupId</groupId>
+        <artifactId>$rootArtifactId</artifactId>
+        <version>$version</version>
+    </parent>
+
+    <artifactId>$artifactId</artifactId>
+
+#if($artifactName != '-')
+    <name>$artifactName Key Manager Service</name>
+#end
+    <description>The RESTful web service interface for the license consumer application.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${dollar}{project.groupId}</groupId>
+            <artifactId>${rootArtifactId}-keymgr</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.jersey-test-framework</groupId>
+            <artifactId>jersey-test-framework-http</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.java.truelicense</groupId>
+            <artifactId>truelicense-jax-rs</artifactId>
+        </dependency>
+    </dependencies>
+</project>

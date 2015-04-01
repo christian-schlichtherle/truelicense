@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>net.java.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
+        <version>2.4.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>truelicense-obfuscate</artifactId>
+
+    <name>TrueLicense @Obfuscate</name>
+    <description>
+        The TrueLicense @Obfuscate module provides core functionality for
+        obfuscating constant string values in Java source and class files.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

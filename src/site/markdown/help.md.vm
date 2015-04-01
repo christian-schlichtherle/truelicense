@@ -1,0 +1,53 @@
+##
+## Copyright (C) 2005-2015 Schlichtherle IT Services.
+## All rights reserved. Use is subject to license terms.
+##
+#parse("_stddef.md.vm")
+#title("Getting Help")
+
+$h3 Frequently Asked Questions
+
+Please check the [FAQ](faq.html) first.
+This is work in progress, so it's a good idea to check back whenever you need
+help.
+
+$h3 Web Site
+
+The documentation on this site is generally split across submodules, so please
+check the section _Submodules_ in the navigation bar.
+
+$h3 Javadoc
+
+If you need help with the APIs, please check the comprehensive
+[Javadoc](apidocs/overview-summary.html).
+This is updated for every release, so it may be worth to recheck if have you
+been missing something in the past.
+
+$h3 Mailing Lists
+
+If you just want to stay up-to-date with the latest releases, then please
+subscribe to the [Announce Mailing List](mail-lists.html).
+
+For any bug report, improvement request, feature request, task request, help
+request etc please subscribe to the [User Mailing List](mail-lists.html) and
+start the discussion there.
+If you have an account on [java.net](http://java.net), then your subscription
+gets immediately accepted, otherwise you'll have to wait until it gets manually
+accepted.
+The response time for approving subscription requests and answering posts is
+typically within a day - warranty excluded!
+
+$h3 Issue Tracker
+
+Once your question or issue has been regarded as a bug report, improvement
+request, feature request or task request it gets tracked in
+[JIRA](http://java.net/jira/browse/TRUELICENSE).
+You can use JIRA to monitor and discuss its progress, vote for it, add file
+attachments, download hotfixes etc.
+JIRA is also used to schedule new TrueLicense versions and prepare their
+Release Notes.
+
+$h3 Professional Services
+
+If you need help with integrating TrueLicense into your software product,
+please [contact](team-list.html) me for professional services.

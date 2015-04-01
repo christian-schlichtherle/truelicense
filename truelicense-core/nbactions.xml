@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<actions>
+    <action>
+        <actionName>CUSTOM-site:run</actionName>
+        <displayName>site:run</displayName>
+        <goals>
+            <goal>site:run</goal>
+        </goals>
+    </action>
+    <action>
+        <actionName>CUSTOM-help:effective-pom</actionName>
+        <displayName>help:effective-pom</displayName>
+        <goals>
+            <goal>help:effective-pom</goal>
+        </goals>
+    </action>
+</actions>

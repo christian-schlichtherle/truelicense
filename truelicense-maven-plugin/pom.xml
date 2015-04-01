@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>net.java.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
+        <version>2.4.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>truelicense-maven-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+
+    <name>TrueLicense Maven Plugin</name>
+    <description>
+        The TrueLicense Maven Plugin generates source files from Apache
+        Velocity template files or obfuscates constant string values in class
+        files.
+    </description>
+
+    <properties>
+        <!-- Dependencies with this scope should actually have the provided
+             scope.
+             However, the maven-shade-plugin:2.3 then excludes their transitive
+             dependencies in the generated dependency-reduced-pom.xml file.
+             This results in a compile time error when release:perform goal
+             invokes the maven-site-plugin, which in turn invokes the
+             maven-compile-plugin. -->
+        <virtuallyProvided>compile</virtuallyProvided>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-obfuscate</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <scope>${virtuallyProvided}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <scope>${virtuallyProvided}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <scope>${virtuallyProvided}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.schlichtherle.truezip</groupId>
+            <artifactId>truezip-driver-zip</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.schlichtherle.truezip</groupId>
+            <artifactId>truezip-file</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>help-goal</id>
+                        <goals>
+                            <goal>helpmojo</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Replace the regular JAR with an uber-JAR using the
+                 maven-shade-plugin as a workaround for a regression in
+                 Maven 3.3.1.
+                 See
+                 https://jira.codehaus.org/browse/MNG-5787 and
+                 https://java.net/jira/browse/TRUELICENSE-87 . -->
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>org.slf4j:slf4j-api</include>
+                        </includes>
+                    </artifactSet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <artifactId>maven-plugin-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>

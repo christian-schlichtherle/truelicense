@@ -1,0 +1,77 @@
+/*
+ * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * All rights reserved. Use is subject to license terms.
+ */
+#set($keygen = "${package}.keygen")
+#set($KeyGenMain = "${keygen}.Main")
+#set($keymgr = "${package}.keymgr")
+/* Generated from Velocity template at $date - DO NOT EDIT! */
+package ${keymgr};
+
+import net.java.truelicense.core.*;
+
+import java.io.*;
+import org.junit.*;
+import org.junit.rules.*;
+
+import static org.junit.Assert.*;
+import static ${keymgr}.LicensingSchema.*;
+
+/**
+ * @author Christian Schlichtherle
+ */
+public class LicensingSchemaIT {
+
+    @Rule
+    public final TemporaryFolder folder = new TemporaryFolder();
+
+    @Test
+    public void testAcceptValidLicenseKeyForEditionAndSuperSets() throws Exception {
+        forAllEditions(new ManagerTest() {
+            final LicenseManager managers[] = LicenseManager.values();
+
+            public void run(final LicenseManager manager) throws Exception {
+                for (int ordinal = manager.ordinal(); ordinal < managers.length; ordinal++) {
+                    managers[ordinal].verify();
+                }
+            }
+        });
+    }
+
+    @Test
+    public void testRejectValidLicenseKeyForFeatureSubSets() throws Exception {
+        forAllEditions(new ManagerTest() {
+            final LicenseManager managers[] = LicenseManager.values();
+
+            public void run(final LicenseManager manager) throws Exception {
+                for (int ordinal = manager.ordinal(); 0 <= --ordinal; ) {
+                    try {
+                        managers[ordinal].verify();
+                        fail();
+                    } catch (LicenseManagementException ignored) {
+                    }
+                }
+            }
+        });
+    }
+
+    private void forAllEditions(final ManagerTest test) throws Exception {
+        for (final LicenseManager manager : LicenseManager.values()) {
+            final String edition = manager.name();
+            if (!"ftp".equalsIgnoreCase(edition)) {
+                final File licenseKey = folder.newFile(edition + ".lic");
+                ${KeyGenMain}.process("create", "-edition", edition, licenseKey.getPath());
+                manager.install(manager.context().fileStore(licenseKey));
+                try {
+                    test.run(manager);
+                } finally {
+                    manager.uninstall();
+                }
+            }
+        }
+    }
+
+    private interface ManagerTest {
+        void run(LicenseManager manager) throws Exception;
+    }
+}

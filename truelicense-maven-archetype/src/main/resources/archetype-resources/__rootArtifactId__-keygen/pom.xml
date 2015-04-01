@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+#set($dollar = '$')
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${dollar}{maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>$groupId</groupId>
+        <artifactId>$rootArtifactId</artifactId>
+        <version>$version</version>
+    </parent>
+
+    <artifactId>$artifactId</artifactId>
+
+#if($artifactName != '-')
+    <name>$artifactName Key Generator</name>
+#end
+    <description>The license vendor application alias license key tool.</description>
+
+    <properties>
+        <mainClass>${package}.keygen.Main</mainClass>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.java.truelicense</groupId>
+            <artifactId>${dollar}{trueLicenseDependency}</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>generate-private-key-store</id>
+            <activation>
+                <file>
+                    <missing>src/main/resources/$privateKeyStoreFile</missing>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.soebes.maven.plugins</groupId>
+                        <artifactId>iterator-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>iterator</goal>
+                                </goals>
+                                <configuration>
+                                    <content>${dollar}{editions}</content>
+                                    <pluginExecutors>
+                                        <pluginExecutor>
+                                            <plugin>
+                                                <groupId>org.codehaus.mojo</groupId>
+                                                <artifactId>keytool-maven-plugin</artifactId>
+                                            </plugin>
+                                            <goal>generateKeyPair</goal>
+                                            <configuration>
+                                                <alias>${dollar}{@item@KeyEntryAlias}</alias>
+                                                <dname>${dollar}{distinguishedName}</dname>
+                                                <keyalg>${dollar}{keyPairAlgorithm}</keyalg>
+                                                <keypass>${dollar}{@item@KeyEntryPassword}</keypass>
+                                                <keystore>${dollar}{basedir}/src/main/resources/${dollar}{privateKeyStoreFile}</keystore>
+                                                <storepass>${dollar}{privateKeyStorePassword}</storepass>
+                                                <storetype>${dollar}{privateKeyStoreType}</storetype>
+                                            </configuration>
+                                        </pluginExecutor>
+                                    </pluginExecutors>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

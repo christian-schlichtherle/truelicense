@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+#if($ftpKeyStoreFile == "-")
+#set($ftpKeyStoreFile = $publicKeyStoreFile)
+#end
+#set($dollar = '$')
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${dollar}{maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>$groupId</groupId>
+        <artifactId>$rootArtifactId</artifactId>
+        <version>$version</version>
+    </parent>
+
+    <artifactId>$artifactId</artifactId>
+
+#if($artifactName != '-')
+    <name>$artifactName Key Manager</name>
+#end
+    <description>The license consumer application.</description>
+
+    <properties>
+        <mainClass>${package}.keymgr.Main</mainClass>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${dollar}{project.groupId}</groupId>
+            <artifactId>${rootArtifactId}-keygen</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.java.truelicense</groupId>
+            <artifactId>${dollar}{trueLicenseDependency}</artifactId>
+        </dependency>
+#if($disableLicenseWizard == false)
+        <!-- This dependency is only required for the "wizard" command of the
+             Main class. -->
+        <dependency>
+            <groupId>net.java.truelicense</groupId>
+            <artifactId>truelicense-swing</artifactId>
+            <optional>true</optional>
+        </dependency>
+#end
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <configuration>
+                    <options>
+                        <!-- The following options should apply to most
+                             standalone Java applications. -->
+                        <option>
+                            -keepclasseswithmembers public class * {
+                                public static void main(java.lang.String[]);
+                            }
+                        </option>
+
+                        <!-- The following options are specific to this sample
+                             project.
+                             You may need to edit them when customizing this
+                             sample project. -->
+                        <option>
+                            -optimizationpasses 3
+                            -overloadaggressively
+                            -repackageclasses
+                            -allowaccessmodification
+                        </option>
+                    </options>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jsse-lib-for-apple-jdk-1.6</id>
+            <activation>
+                <file>
+                    <exists>${dollar}{java.home}/../Classes/jsse.jar</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.wvengen</groupId>
+                            <artifactId>proguard-maven-plugin</artifactId>
+                            <configuration>
+                                <libs>
+                                    <lib>${dollar}{java.home}/../Classes/jsse.jar</lib>
+                                </libs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>jsse-lib-for-any-jdk-1.7</id>
+            <activation>
+                <file>
+                    <exists>${dollar}{java.home}/lib/jsse.jar</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.wvengen</groupId>
+                            <artifactId>proguard-maven-plugin</artifactId>
+                            <configuration>
+                                <libs>
+                                    <lib>${dollar}{java.home}/lib/jsse.jar</lib>
+                                </libs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>generate-public-key-store</id>
+            <activation>
+                <file>
+                    <missing>src/main/resources/$publicKeyStoreFile</missing>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.soebes.maven.plugins</groupId>
+                        <artifactId>iterator-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>iterator</goal>
+                                </goals>
+                                <configuration>
+                                    <content>${dollar}{editions}</content>
+                                    <pluginExecutors>
+                                        <pluginExecutor>
+                                            <plugin>
+                                                <groupId>org.codehaus.mojo</groupId>
+                                                <artifactId>keytool-maven-plugin</artifactId>
+                                            </plugin>
+                                            <goal>exportCertificate</goal>
+                                            <configuration>
+                                                <alias>${dollar}{@item@KeyEntryAlias}</alias>
+                                                <file>${dollar}{project.build.directory}/@item@.cert</file>
+                                                <keystore>${dollar}{basedir}/../${rootArtifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}</keystore>
+                                                <storepass>${dollar}{privateKeyStorePassword}</storepass>
+                                                <storetype>${dollar}{privateKeyStoreType}</storetype>
+                                            </configuration>
+                                        </pluginExecutor>
+                                        <pluginExecutor>
+                                            <plugin>
+                                                <groupId>org.codehaus.mojo</groupId>
+                                                <artifactId>keytool-maven-plugin</artifactId>
+                                            </plugin>
+                                            <goal>importCertificate</goal>
+                                            <configuration>
+                                                <alias>${dollar}{@item@KeyEntryAlias}</alias>
+                                                <file>${dollar}{project.build.directory}/@item@.cert</file>
+                                                <keystore>${dollar}{basedir}/src/main/resources/${dollar}{publicKeyStoreFile}</keystore>
+                                                <noprompt>true</noprompt>
+                                                <storepass>${dollar}{publicKeyStorePassword}</storepass>
+                                                <storetype>${dollar}{publicKeyStoreType}</storetype>
+                                            </configuration>
+                                        </pluginExecutor>
+                                    </pluginExecutors>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- This profile generates the keystore for use with auto-generated
+             free trial period (FTP) license keys.
+             You should remove this profile or skip the plugin if you are not
+             going to provide auto-generated FTP license keys. -->
+        <profile>
+            <id>generate-ftp-key-store</id>
+            <activation>
+                <file>
+                    <missing>src/main/resources/$ftpKeyStoreFile</missing>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>keytool-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>generateKeyPair</goal>
+                                </goals>
+                                <configuration>
+                                    <alias>${dollar}{ftpKeyEntryAlias}</alias>
+                                    <dname>${dollar}{distinguishedName}</dname>
+                                    <keyalg>${dollar}{keyPairAlgorithm}</keyalg>
+                                    <keypass>${dollar}{ftpKeyEntryPassword}</keypass>
+                                    <keystore>${dollar}{basedir}/src/main/resources/${dollar}{ftpKeyStoreFile}</keystore>
+#if($freeTrialPeriod == 0)
+                                    <skip>true</skip>
+#end
+                                    <storepass>${dollar}{ftpKeyStorePassword}</storepass>
+                                    <storetype>${dollar}{ftpKeyStoreType}</storetype>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

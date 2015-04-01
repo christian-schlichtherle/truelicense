@@ -1,0 +1,212 @@
+/*
+ * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * All rights reserved. Use is subject to license terms.
+ */
+#if($licenseKeyFormat == "V2/JSON")
+#set($licenseManagementContextPackage = "net.java.truelicense.json")
+#set($licenseManagementContextClass = "V2JsonLicenseManagementContext")
+#elseif($licenseKeyFormat == "V2/XML")
+#set($licenseManagementContextPackage = "net.java.truelicense.core")
+#set($licenseManagementContextClass = "V2XmlLicenseManagementContext")
+#elseif($licenseKeyFormat == "V1")
+#set($licenseManagementContextPackage = "net.java.truelicense.core")
+#set($licenseManagementContextClass = "V1LicenseManagementContext")
+#end
+#set($editions = $convert.toStrings($editions))
+#set($editionsSize = $editions.size())
+#set($hash = '#')
+#set($dollar = '$')
+#set($english = $field.get("java.util.Locale.ENGLISH"))
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "")#end
+/* Generated from Velocity template at $date - DO NOT EDIT! */
+package ${package}.keygen;
+
+import javax.annotation.concurrent.Immutable;
+import javax.security.auth.x500.X500Principal;
+import net.java.truelicense.core.*;
+import $licenseManagementContextPackage.$licenseManagementContextClass;
+import net.java.truelicense.core.io.Sink;
+import net.java.truelicense.obfuscate.*;
+
+/**
+ * The enumeration of the license vendor managers for $licensingSubject
+ * license keys.
+ * The managers are named like each configured edition and ordered from
+ * superset to subset.
+ * Each manager is configured with the algorithms and parameters for creating
+ * license keys for the respective edition.
+ *
+ * @author Christian Schlichtherle
+ */
+@Immutable
+public enum LicenseManager implements LicenseVendorManager {
+#foreach($edition in $editions)
+#set($editionKeyEntryAlias = $edition)
+#evaluate("${hash}set (${dollar}editionKeyEntryAlias = ${dollar}${edition}KeyEntryAlias)")
+#set($editionKeyEntryPassword = $privateKeyStorePassword)
+#evaluate("${hash}set (${dollar}editionKeyEntryPassword = ${dollar}${edition}KeyEntryPassword)")
+#set($editionPbePassword = $defaultPassword)
+#evaluate("${hash}set (${dollar}editionPbePassword = ${dollar}${edition}PbePassword)")
+
+    $edition {
+#if($editionKeyEntryAlias == $edition)
+#set($editionKeyEntryAlias = "name()")
+#else
+        @Obfuscate
+        private static final String KEY_ENTRY_ALIAS = "$editionKeyEntryAlias";
+
+#set($editionKeyEntryAlias = "KEY_ENTRY_ALIAS")
+#end
+        @Override
+        LicenseVendorManager newManager() {
+            return _context.manager()
+                    .keyStore()
+                        .alias($editionKeyEntryAlias)
+#if($editionKeyEntryPassword != $privateKeyStorePassword)
+                        .keyPassword(#obfuscate($editionKeyEntryPassword))
+#end
+                        .loadFromResource(KEY_STORE_FILE)
+                        .storePassword(#obfuscate($privateKeyStorePassword))
+#if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
+    $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
+                        .storeType(KEY_STORE_TYPE)
+#end
+                        .inject()
+                    .pbe()
+#if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
+    $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
+                        .algorithm(PBE_ALGORITHM)
+#end
+                        .password(#obfuscate($editionPbePassword))
+                        .inject()
+                    .build();
+        }
+    }#if($foreach.count == $editionsSize);#{else},#end
+
+#end
+
+    @Obfuscate
+    private static final String DISTINGUISHED_NAME = "$distinguishedName";
+
+    @Obfuscate
+    private static final String KEY_STORE_FILE = "$privateKeyStoreFile";
+#if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
+    $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
+
+    @Obfuscate
+    private static final String KEY_STORE_TYPE = "$privateKeyStoreType";
+#end
+#if($dynamicClassLoading == true && $keyGenLicenseValidationFunction != "basic")
+
+    @Obfuscate
+    private static final String LICENSE_VALIDATION_CLASS = "$keyGenLicenseValidationClass";
+#end
+
+    @Obfuscate
+    private static final String LICENSING_SUBJECT = "$licensingSubject";
+#if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
+    $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
+
+    @Obfuscate
+    private static final String PBE_ALGORITHM = "$pbeAlgorithm";
+#end
+
+    // Note that the class implementing the interface
+    // net.java.truelicense.core.LicenseManagementContext
+    // determines the format of the license keys:
+    // The implementation class
+    // $licenseManagementContextPackage.$licenseManagementContextClass
+    // uses the license key format $licenseKeyFormat.
+    private static final LicenseVendorContext _context =
+            new $licenseManagementContextClass(LICENSING_SUBJECT) {
+
+                @Override
+                public LicenseInitialization initialization() {
+                    final LicenseInitialization basic = super.initialization();
+                    return new LicenseInitialization() {
+                        @Override
+                        public void initialize(final License bean) {
+                            if (null == bean.getIssuer())
+                                bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
+                            basic.initialize(bean);
+                        }
+                    };
+                }
+#if($keyGenLicenseValidationFunction != "basic")
+
+                @Override
+                public LicenseValidation validation() {
+#if($keyGenLicenseValidationFunction == "both")
+                    final LicenseValidation basic = super.validation();
+#end
+                    return new LicenseValidation() {
+                        final LicenseValidation custom =
+#if($dynamicClassLoading == true)
+                                newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
+#else
+                                new $keyGenLicenseValidationClass();
+#end
+
+                        @Override
+                        public void validate(final License bean) throws LicenseValidationException {
+                            custom.validate(bean);
+#if($keyGenLicenseValidationFunction == "both")
+                            basic.validate(bean);
+#end
+                        }
+                    };
+                }
+#end
+            }.vendor();
+
+    private volatile LicenseVendorManager _manager;
+#if($dynamicClassLoading == true && $keyGenLicenseValidationFunction != "basic")
+
+    private static <T> T newInstance(Class<T> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (IllegalAccessException e) {
+            throw new IllegalArgumentException(e);
+        } catch (InstantiationException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private static Class<?> classForName(String className) {
+        try {
+            return Class.forName(className, false, LicensingSchema.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+#end
+
+    private LicenseVendorManager manager() {
+        // No need to synchronize because managers are virtually stateless.
+        final LicenseVendorManager m = _manager;
+        return null != m ? m : (_manager = newManager());
+    }
+
+    abstract LicenseVendorManager newManager();
+
+    @Override
+    public License create(License bean, Sink sink) throws LicenseManagementException {
+        return manager().create(bean, sink);
+    }
+
+    @Override
+    public LicenseVendorContext context() {
+        assert _context == manager().context();
+        return _context;
+    }
+
+    @Override
+    public String subject() {
+        return manager().subject();
+    }
+
+    @Override
+    public LicenseParameters parameters() {
+        return manager().parameters();
+    }
+}

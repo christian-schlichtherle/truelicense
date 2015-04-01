@@ -1,0 +1,387 @@
+##
+## Copyright (C) 2005-2015 Schlichtherle IT Services.
+## All rights reserved. Use is subject to license terms.
+##
+#parse("_stddef.md.vm")
+#title("Using the API")
+
+This page shows you how to use the Application Programming Interface of your 
+project, or more specifically, its Key Generator and Key Manager modules.
+For documentation for the TrueLicense API, please refer to the
+[TrueLicense Javadoc](../apidocs/index.html).
+Source code and Javadoc for the TrueLicense API are available on
+Maven Central for
+[download](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.java.truelicense%22%20AND%20v%3A%22${project.version}%22).
+
+$h3 Using the Key Generator API
+
+$h4 Warning
+
+The Key Generator module is used to create license keys for your software 
+product without requiring authorization.
+Therefore, **you should keep this module under lock and key!**
+In particular, do not distribute it to users or the public!
+The same concern applies to any derivative work which includes this module.
+This limits the set of valid use cases for using the Key Generator API.
+For example, you may want to develop a RESTful web service which creates
+license keys once users have paid for them.
+
+$h4 Setting Up the Class Path
+
+$h5 With Maven
+
+Using Maven is the recommended way to integrate the project into your software
+product.
+Add the following dependency to the POM for your software product:
+
+    <dependency>
+        <groupId>${dollar}{groupId}</groupId>
+        <artifactId>${dollar}{artifactId}-keygen</artifactId>
+        <version>${dollar}{version}</version>
+    </dependency>
+
+$h5 Without Maven
+
+Without Maven, you need to manually add the JARs of the project to the class
+path of your software product.
+
+You can add the standalone JAR
+`${dollar}{artifactId}-keygen/target/${dollar}{artifactId}-keygen-${dollar}{version}-standalone.JAR`
+to the class path.
+This is convenient because the standalone JAR contains all transitive
+dependencies, so you only need to add this JAR to the class path.
+
+If some of the dependencies bundled in the standalone JAR conflict with other
+dependencies of your software product however, then you may need to add only
+selected JARs to the class path.
+First, copy the runtime dependencies to the directory
+`${dollar}{artifactId}-keygen/target/dependency` using:
+
+    ${dollar} mvn package dependency:copy-dependencies -DincludeScope=runtime -pl *-keygen
+    [...]
+    ${dollar} ls *-keygen/target/dependency
+    annotations-3.0.0.jar                      jackson-module-jaxb-annotations-2.5.1.jar
+    commons-codec-1.10.jar                     truelicense-core-2.4-SNAPSHOT.jar
+    jackson-annotations-2.5.0.jar              truelicense-json-2.4-SNAPSHOT.jar
+    jackson-core-2.5.1.jar                     truelicense-obfuscate-2.4-SNAPSHOT.jar
+    jackson-databind-2.5.1.jar
+
+Now you can select each JAR you want to add to the class path from this
+directory.
+Don't forget to add the regular JAR
+`${dollar}{artifactId}-keygen/target/${dollar}{artifactId}-keygen-${dollar}{version}.jar`
+to the class path, too.
+
+$h4 Introduction to the API
+
+When [building your project], the following classes are generated from
+a set of [Apache Velocity] template files - listed in alphabetic order:
+
+`${dollar}{package}.keygen.LicenseManager`
+:   The enumeration of the [license vendor managers][license vendor manager] 
+    for your software product.
+    The managers are named like each configured edition and ordered from 
+    superset to subset.
+    Each manager is configured with the algorithms and parameters for creating
+    license keys for the respective edition.
+
+`${dollar}{package}.keygen.LicensingSchema`
+:   Deprecated - provided for compatibility only.
+
+`${dollar}{package}.keygen.Main`
+:   The [command line interface](using-cli.html) for vending license keys.
+
+The main entry point to the API is the enumeration class `LicenseManager`.
+For example, if the project defines the property `${dollar}{editions}` to be
+`enterprise, standard`, then this class is defined as follows:
+
+    package ${dollar}{package}.keygen;
+
+    public enum LicenseManager {
+        enterprise { [...] },
+        standard { [...] };
+        
+        [...]
+    }
+
+For the following examples, it's necessary to add the following imports:
+
+    import ${dollar}{package}.keygen.*;
+    import net.java.truelicense.core.*;
+
+$h4 Creating a License Key
+
+You can create a license key using:
+
+    LicenseVendorManager manager = LicenseManager.${dollar}{edition};
+    LicenseVendorContext context = manager.context();
+    License bean = context.license();
+    Sink sink = context.fileStore(new java.io.File("${dollar}{license-key-path}"));
+    manager.create(bean, sink);
+
+... where
+`${dollar}{edition}` references an edition of your software product,
+`${dollar}{license-key-path}` references the path of the license key file,
+`manager` is an instance of the class [`net.java.truelicense.core.LicenseVendorManager`],
+`context` is an instance of the class [`net.java.truelicense.core.LicenseVendorContext`],
+`bean` is an instance of the class [`net.java.truelicense.core.License`] and
+`sink` is an instance of the class [`net.java.truelicense.core.io.Sink`] and
+
+For a fully elaborated example, please have a look at the `Main` class.
+
+$h3 Using the Key Manager API
+
+$h4 Setting Up the Class Path
+
+$h5 With Maven
+
+Using Maven is the recommended way to integrate the project into your software
+product.
+Add the following dependency to the POM for your software product:
+
+    <dependency>
+        <groupId>${dollar}{groupId}</groupId>
+        <artifactId>${dollar}{artifactId}-keymgr</artifactId>
+        <version>${dollar}{version}</version>
+    </dependency>
+
+$h5 Without Maven
+
+Without Maven, you need to manually add the JARs of the project to the class
+path of your software product.
+
+You can add the standalone JAR
+`${dollar}{artifactId}-keymgr/target/${dollar}{artifactId}-keymgr-${dollar}{version}-standalone.JAR`
+to the class path.
+This is convenient because the standalone JAR contains all transitive
+dependencies, so you only need to add this JAR to the class path.
+
+If some of the dependencies bundled in the standalone JAR conflict with other
+dependencies of your software product however, then you may need to add only
+selected JARs to the class path.
+First, copy the runtime dependencies to the directory
+`${dollar}{artifactId}-keymgr/target/dependency` using:
+
+    ${dollar} mvn package dependency:copy-dependencies -DincludeScope=runtime -pl *-keymgr
+    [...]
+    ${dollar} ls *-keymgr/target/dependency
+    annotations-3.0.0.jar                      truelicense-core-2.4-SNAPSHOT.jar
+    commons-codec-1.10.jar                     truelicense-json-2.4-SNAPSHOT.jar
+    jackson-annotations-2.5.0.jar              truelicense-obfuscate-2.4-SNAPSHOT.jar
+    jackson-core-2.5.1.jar                     truelicense-swing-2.4-SNAPSHOT.jar
+    jackson-databind-2.5.1.jar                 truelicense-ui-2.4-SNAPSHOT.jar
+    jackson-module-jaxb-annotations-2.5.1.jar
+
+Now you can select each JAR you want to add to the class path from this
+directory.
+Don't forget to add the regular JAR `${dollar}{artifactId}-keymgr/target/${dollar}{artifactId}-keymgr-${dollar}{version}.jar` to
+the class path, too.
+
+$h4 Introduction to the API
+
+When [building your project], the following classes are generated from
+a set of [Apache Velocity] template files - listed in alphabetic order:
+
+`${dollar}{package}.keymgr.LicenseManager`
+:   The enumeration of the [license consumer managers][license consumer manager]
+    for your software product.
+    The managers are named like each configured edition and ordered from 
+    superset to subset, including an optional 
+    <abbr title="Free Trial Period">FTP</abbr>.
+    Each manager is configured with the algorithms and parameters for 
+    installing, viewing, verifying and uninstalling license keys for the respective edition.   
+
+`${dollar}{package}.keymgr.LicensingSchema`
+:   Deprecated - provided for compatibility only.
+
+`${dollar}{package}.keymgr.Main`
+:   The [command line interface](using-cli.html) for consuming license keys.
+
+The main entry point to the API is the enumeration class `LicenseManager`.
+For example, if the project defines the properties `${dollar}{editions}` to be
+`enterprise, standard` and `${dollar}{freeTrialPeriod}` to be `30`, then this
+class is defined as follows:
+
+    package ${dollar}{package}.keymgr;
+
+    public enum LicenseManager {
+        enterprise { [...] },
+        standard { [...] },
+        ftp { [...] };
+        
+        public static LicenseManager get() { return ftp; }
+
+        [...]
+    }
+
+License consumer managers are arranged in a
+[chain of responsibility](http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern),
+ordered from feature subset to feature superset (which is the reverse order
+of the items in the enumeration class `LicenseManager`).
+When
+[installing](../apidocs/net/java/truelicense/core/LicenseConsumerManager#install),
+[viewing](../apidocs/net/java/truelicense/core/LicenseConsumerManager#view),
+[verifying](../apidocs/net/java/truelicense/core/LicenseConsumerManager#verify) or
+[uninstalling](../apidocs/net/java/truelicense/core/LicenseConsumerManager#uninstall)
+a license key, each operation is tried using the parent manager first.
+If the operation succeeds using the parent manager then the processing stops,
+otherwise the operation is retried using the child manager.
+This repeats recursively until the operation either succeeds using some manager
+or no more managers are available, in which case a
+[`net.java.truelicense.core.LicenseManagementException`]
+is thrown.
+
+This design allows you to use the API for installing, viewing, verifying and
+uninstalling license keys without knowing for which edition a license key has
+been created.
+To facilitate this, the `LicenseManager` class provides the `get()` method
+which returns the first manager in the configured chain-of-responsibility.
+
+For the following examples, it's necessary to add the following imports:
+
+    import ${dollar}{package}.keymgr.*;
+    import net.java.truelicense.core.*;
+
+$h4 Installing a License Key
+
+You can install a license key using:
+
+    LicenseConsumerManager manager = LicenseManager.get();
+    LicenseConsumerContext context = manager.context();
+    Source source = context.fileStore(new java.io.File("${dollar}{license-key-path}"));
+    manager.install(source);
+
+... where `${dollar}{license-key-path}` references the path of the license key file,
+`manager` is an instance of the class [`net.java.truelicense.core.LicenseConsumerManager`],
+`context` is an instance of the class [`net.java.truelicense.core.LicenseConsumerContext`] and
+`source` is an instance of the class [`net.java.truelicense.core.io.Source`]
+
+According to the chain-of-responsibility pattern, `LicenseManager.install(Source)`
+recursively tries each license consumer manager until the given license key
+fits the respective lock and saves it.
+It's not necessary to know for which edition the license key has been created.
+
+If the given file does not hold a license key for the lock of any license
+consumer manager, then a
+[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+
+$h4 Viewing the License Key
+
+You can view the installed license key using:
+
+    License bean = LicenseManager.get().view();
+
+... where `bean` is an instance of the class
+[`net.java.truelicense.core.License`].
+
+According to the chain-of-responsibility pattern, `LicenseManager.view()`
+recursively tries each license consumer manager until an installed license key
+is found and returns a duplicate of its encoded license bean.
+It's not necessary to know for which edition the installed license key has been
+created.
+Note that this method does not validate the encoded license bean, so for
+example, it's term may have already expired.
+
+If no license key is installed, then a
+[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+
+$h4 Verifying the License Key
+
+You can verify the installed license key using:
+
+    LicenseManager.get().verify();
+
+According to the chain-of-responsibility pattern, `LicenseManager.verify()`
+recursively tries each license consumer manager until an installed license key
+is found which passes validation, too.
+
+If no license key is installed, then a
+[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+
+If a license key is installed, but the encoded license bean is invalid, then a
+[`net.java.truelicense.core.LicenseValidationException`] is thrown instead.
+
+You need to call this method in advance whenever you want to access a feature
+of your software product.
+Calling this method frequently ensures that your software product detects any
+license term expiration as soon as possible.
+
+You don't need to worry about performance:
+TrueLicense maintains a time sensitive cache in order to speed up subsequent
+processing.
+For example, on an Intel i7 at 2.2 GHz, once a valid V2/JSON license key is
+installed you can get about 9.5 million successful license key verifications in
+a single thread!
+Of course, this depends not only on the hardware, but also on the
+configuration of the licensing schema, so your mileage may vary.
+
+$h5 Supporting Multiple Editions
+
+The use case for verifying a license key is different from the use case for the
+other operations:
+When installing, viewing or uninstalling a license key, it's not relevant for
+which edition a license key has been created.
+The chain-of-responsibility pattern then ensures that these operations will
+succeed when calling them on `LicenseManager.get()`, which is the first manager 
+in the chain.
+
+However, when verifying access to a feature, then you want to make sure that
+access is granted if and only if a valid license key is installed for the
+respective edition or any of its supersets, but not its subsets.
+To do this, you need to directly use the instances of the enumeration class 
+`LicenseManager`. 
+
+For example, assuming the same definition of this class, the following code 
+accepts a valid license key for the enterprise edition _only_:
+
+    LicenseManager.enterprise.verify();
+
+Likewise, the following code accepts a valid license key for the enterprise
+edition _or_ the standard edition:
+
+    LicenseManager.standard.verify();
+
+Likewise, the following code accepts a valid license key for the enterprise 
+edition _or_ the standard edition _or_ the FTP edition:
+
+    LicenseManager.ftp.verify();
+
+Note that modelling the FTP as an edition allows you to limit access to some
+features to registered customers only.
+Employing this option is trivial:
+Just call the `verify()` method on any license manager _other_ than 
+`LicenseManager.ftp`.
+
+$h4 Uninstalling the License Key
+
+You can uninstall the license key using:
+
+    LicenseManager.get().uninstall();
+
+According to the chain-of-responsibility pattern,
+`LicenseManager.uninstall()` recursively tries each license consumer manager 
+until an installed license key is found and deletes it.
+It's not necessary to know for which edition the installed license key has been
+created.
+
+If no license key is installed or only an auto-generated FTP license
+key is installed, then a
+[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+
+[`net.java.truelicense.core.License`]: ../apidocs/net/java/truelicense/core/License.html
+[`net.java.truelicense.core.LicenseManagementException`]: ../apidocs/net/java/truelicense/core/LicenseManagementException.html
+[`net.java.truelicense.core.LicenseValidationException`]: ../apidocs/net/java/truelicense/core/LicenseValidationException.html
+[`net.java.truelicense.core.LicenseConsumerContext`]: ../apidocs/net/java/truelicense/core/LicenseConsumerContext.html
+[`net.java.truelicense.core.LicenseConsumerManager`]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
+[`net.java.truelicense.core.LicenseVendorContext`]: ../apidocs/net/java/truelicense/core/LicenseVendorContext.html
+[`net.java.truelicense.core.LicenseVendorManager`]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html
+[`net.java.truelicense.core.io.Sink`]: ../apidocs/net/java/truelicense/core/io/Sink.html
+[`net.java.truelicense.core.io.Source`]: ../apidocs/net/java/truelicense/core/io/Source.html
+
+[license consumer manager]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
+[license vendor manager]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html
+
+---
+
+#prev("Using the WSI" "using-wsi.html")
+#next("Certifying Your Project" "certifying.html")

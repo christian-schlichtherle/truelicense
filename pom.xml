@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>net.java.truecommons</groupId>
+        <artifactId>truecommons-parent</artifactId>
+        <version>101</version>
+    </parent>
+
+    <groupId>net.java.truelicense</groupId>
+    <artifactId>truelicense</artifactId>
+    <version>2.4.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>TrueLicense</name>
+    <description>
+        TrueLicense is a commercial open source engine for license management
+        on the Java Virtual Machine.
+        Due to its functional and modular design TrueLicense scales from simple
+        to complex licensing schemas.
+        TrueLicense features various interfaces for managing free trial periods,
+        subscriptions, multiple editions, internationalization, privacy
+        protection and more.
+    </description>
+    <url>https://truelicense.java.net</url>
+    <inceptionYear>2005</inceptionYear>
+    <licenses>
+        <license>
+            <name>Commercial License</name>
+            <distribution>manual</distribution>
+            <comments>
+                Commercial licensing for use with closed source software is
+                available upon request.
+                Please contact sales AT schlichtherle DOT de .
+            </comments>
+        </license>
+        <license>
+            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007</name>
+            <url>http://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <mailingLists>
+        <mailingList>
+            <name>Announce Mailing List</name>
+            <subscribe>mailto:sympa@truelicense.java.net?subject=subscribe%20announce</subscribe>
+            <unsubscribe>mailto:sympa@truelicense.java.net?subject=unsubscribe%20announce</unsubscribe>
+            <archive>http://java.net/projects/truelicense/lists/announce/archive</archive>
+        </mailingList>
+        <mailingList>
+            <name>Users Mailing List</name>
+            <subscribe>mailto:sympa@truelicense.java.net?subject=subscribe%20users</subscribe>
+            <unsubscribe>mailto:sympa@truelicense.java.net?subject=unsubscribe%20users</unsubscribe>
+            <post>users@truelicense.java.net</post>
+            <archive>http://java.net/projects/truelicense/lists/users/archive</archive>
+        </mailingList>
+    </mailingLists>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://java.net/jira/browse/TRUELICENSE</url>
+    </issueManagement>
+    <scm>
+        <connection>scm:hg:https://bitbucket.org/christian_schlichtherle/truelicense2</connection>
+        <developerConnection>scm:hg:ssh://hg@bitbucket.org/christian_schlichtherle/truelicense2</developerConnection>
+        <url>https://bitbucket.org/christian_schlichtherle/truelicense2</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>truelicense-website</id>
+            <name>TrueLicense Website</name>
+            <!-- DON'T use ${project.groupId}, ${project.artifactId} here.
+                 This would change in sub-modules! -->
+            <url>file://${user.home}/sites/net.java.truelicense/</url>
+        </site>
+    </distributionManagement>
+
+    <properties>
+        <maven.compiler.debug>false</maven.compiler.debug>
+        <maven.compiler.optimize>true</maven.compiler.optimize>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+        <maven.compiler.source>1.6</maven.compiler.source>
+
+        <!-- maven-javadoc-plugin -->
+        <googleAnalyticsAccountId>UA-28191662-1</googleAnalyticsAccountId>
+        <header>
+            <!-- Google Analytics -->
+            &lt;script type="text/javascript"&gt;
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', '${googleAnalyticsAccountId}']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+            &lt;/script&gt;
+            <!-- Header text -->
+            &lt;b&gt;${project.name} ${project.version}&lt;/b&gt;
+        </header>
+
+        <!-- clirr-maven-plugin -->
+        <comparisonVersion>2.0</comparisonVersion>
+
+        <!-- truelicense-maven-plugin -->
+        <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
+        <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
+
+        <!-- maven-surefire-plugin && maven-failsafe-plugin -->
+        <parallel>classesAndMethods</parallel>
+        <threadCount>1</threadCount>
+
+        <jackson.version>2.5.2</jackson.version>
+
+        <javaee.version>6.0</javaee.version>
+
+        <truezip.version>7.7.8</truezip.version>
+    </properties>
+
+    <modules>
+        <module>truelicense-core</module>
+        <module>truelicense-jax-rs</module>
+        <module>truelicense-jsf</module>
+        <module>truelicense-json</module>
+        <module>truelicense-maven-archetype</module>
+        <module>truelicense-maven-plugin</module>
+        <module>truelicense-obfuscate</module>
+        <module>truelicense-swing</module>
+        <module>truelicense-ui</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-core</artifactId>
+                <type>test-jar</type>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-jax-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-json</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-json</artifactId>
+                <type>test-jar</type>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-maven-plugin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-obfuscate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-swing</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-ui</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm-tree</artifactId>
+                <version>5.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>1.9.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.10</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-digester</groupId>
+                <artifactId>commons-digester</artifactId>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-jaxb-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-web-api</artifactId>
+                <version>${javaee.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey.jersey-test-framework</groupId>
+                <artifactId>jersey-test-framework-http</artifactId>
+                <version>1.19</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>jsr311-api</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-artifact</artifactId>
+                <version>${maven.enforcer.requireMavenVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${maven.enforcer.requireMavenVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>3.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${maven.enforcer.requireMavenVersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>3.0.21</version>
+            </dependency>
+            <dependency>
+                <groupId>de.schlichtherle.truezip</groupId>
+                <artifactId>truezip-driver-zip</artifactId>
+                <version>${truezip.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.bouncycastle</groupId>
+                        <artifactId>bcprov-jdk15on</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>de.schlichtherle.truezip</groupId>
+                <artifactId>truezip-file</artifactId>
+                <version>${truezip.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-tools</artifactId>
+                <version>2.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.archetype</groupId>
+                <artifactId>archetype-packaging</artifactId>
+                <version>2.3</version>
+            </extension>
+        </extensions>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>truelicense-maven-plugin</artifactId>
+                    <version>${project.version}</version>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>3.4</version>
+                </plugin>
+                <!-- Version 2.7 of the Maven Resources Plugin doesn't copy
+                     .gitignore files - see http://jira.codehaus.org/browse/MRESOURCES-190 .
+                     This regression affects the TrueLicense Maven Archetype. -->
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <configuration>
+                        <args>
+                            <arg>-deprecation</arg>
+                            <arg>-feature</arg>
+                        </args>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>clirr-maven-plugin</artifactId>
+                <version>2.6.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.2</version>
+                <configuration>
+                    <links>
+                        <link>http://commons.apache.org/codec/apidocs/</link>
+                        <link>http://findbugs.sourceforge.net/api/</link>
+                    </links>
+                </configuration>
+                <reportSets>
+                    <reportSet />
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.4</version>
+                <reportSets>
+                    <reportSet />
+                    <reportSet>
+                        <id>aggregate</id>
+                        <inherited>false</inherited>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.8</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>cim</report>
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>dependency-info</report>
+                            <report>dependency-management</report>
+                            <report>distribution-management</report>
+                            <report>issue-tracking</report>
+                            <report>mailing-list</report>
+                            <report>plugin-management</report>
+                            <report>license</report>
+                            <report>plugins</report>
+                            <report>modules</report>
+                            <report>summary</report>
+                            <report>project-team</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <profiles>
+        <profile>
+            <id>enable-main-sources-obfuscation</id>
+            <activation>
+                <file>
+                    <exists>src/main</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>truelicense-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>obfuscate-main-classes</id>
+                                    <goals>
+                                        <goal>obfuscate-main-classes</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>enable-test-sources-obfuscation</id>
+            <activation>
+                <file>
+                    <exists>src/test</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>truelicense-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>obfuscate-test-classes</id>
+                                    <goals>
+                                        <goal>obfuscate-test-classes</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,23 @@
+#
+# Copyright (C) 2005-2015 Schlichtherle IT Services.
+# All rights reserved. Use is subject to license terms.
+#
+# Eclipse artifacts:
+.metadata
+.project
+.classpath
+.settings/
+.cache
+
+# IntelliJ artifacts:
+/.idea/
+*.iml
+
+# Maven artifacts:
+target/
+
+# Mercurial artifacts:
+/.hg/
+/.hgignore
+
+# NetBeans artifacts (none):

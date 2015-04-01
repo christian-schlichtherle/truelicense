@@ -1,0 +1,49 @@
+##
+## Copyright (C) 2005-2015 Schlichtherle IT Services.
+## All rights reserved. Use is subject to license terms.
+##
+#set($h1 = '#')
+#set($h2 = '##')
+#set($h3 = '###')
+#set($h4 = '####')
+#set($h5 = '#####')
+#set($h6 = '######')
+#set($dollar = '$')
+#macro(title $title)
+<head>
+    <title>$title</title>
+</head>
+
+$h2 $title
+#end
+#macro(prev $text $href)
+<a href="$href" class="btn btn-primary pull-left">&laquo; $text</a>
+#end
+#macro(next $text $href)
+<a href="$href" class="btn btn-primary pull-right">$text &raquo;</a>
+#end
+
+## Internal links to documentation pages in alphabetic order:
+[Building Your Project]: building.html
+[Certifying Your Project]: certifying.html
+[Exploring Your Project]: exploring.html
+[Generating Your Project]: generating.html
+[Getting Started]: index.html
+[Prerequisites]: prerequisites.html
+[Updating Your Project]: updating.html
+[Using the API]: using-api.html
+[Using the CLI]: using-cli.html
+[Using the GUI]: using-gui.html
+[Using the WSI]: using-wsi.html
+
+## Internal links to other pages in alphabetic order:
+[TrueLicense Maven Plugin]: .truelicense-maven-plugin/index.html
+
+## External links in alphabetic order:
+[Apache Maven]: http://maven.apache.org/
+[Apache Tomcat]: http://tomcat.apache.org/
+[Apache Velocity]: http://velocity.apache.org/
+[Git]: http://git-scm.com
+[Mercurial]: http://mercurial.selenic.com
+[POM]: http://maven.apache.org/guides/introduction/introduction-to-the-pom.html
+[ProGuard]: http://proguard.sourceforge.net

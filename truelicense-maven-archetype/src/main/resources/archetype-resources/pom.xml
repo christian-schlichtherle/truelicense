@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+#if($ftpKeyStoreFile == "-")
+#set($ftpKeyStoreFile = $publicKeyStoreFile)
+#end
+#if($keyStoreType == "-")
+#if($licenseKeyFormat == "V1")
+#set($keyStoreType = "JKS")
+#else
+#set($keyStoreType = "JCEKS")
+#end
+#end
+#if($pbeAlgorithm == "-")
+#if($licenseKeyFormat == "V1")
+#set($pbeAlgorithm = "PBEWithMD5AndDES")
+#else
+#set($pbeAlgorithm = "PBEWithSHA1AndDESede")
+#end
+#end
+#if($trueLicenseDependency == "-")
+#if($licenseKeyFormat == "V2/JSON")
+#set($trueLicenseDependency = "truelicense-json")
+#else
+#set($trueLicenseDependency = "truelicense-core")
+#end
+#end
+#set($dollar = '$')
+#set($editionArray = $editions.split(","))
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${dollar}{maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <groupId>$groupId</groupId>
+    <artifactId>$artifactId</artifactId>
+    <version>$version</version>
+    <packaging>pom</packaging>
+
+#if($artifactName != '-')
+    <name>$artifactName</name>
+#end
+    <description>The parent POM for all license management modules.</description>
+    <url>http://www.todo.com/</url>
+    <licenses>
+        <!-- TODO: Fill in the gaps. -->
+    </licenses>
+    <organization>
+        <name>${dollar}{companyName}</name>
+        <!-- TODO: Fill in the gaps. -->
+    </organization>
+    <developers>
+        <!-- TODO: Fill in the gaps. -->
+        <developer>
+            <name>Christian Schlichtherle</name>
+            <email>christian AT schlichtherle DOT de</email>
+                <organization>Schlichtherle IT Services</organization>
+            <timezone>1</timezone>
+            <roles>
+                <role>template author</role>
+            </roles>
+            <properties>
+                <picUrl>http://www.gravatar.com/avatar/e2f69ddc944f8891566fc4b18518e4e6.png</picUrl>
+            </properties>
+        </developer>
+    </developers>
+    <issueManagement>
+        <!-- TODO: Fill in the gaps. -->
+    </issueManagement>
+    <scm>
+        <!-- TODO: Fill in the gaps. -->
+    </scm>
+
+    <properties>
+
+        <!--
+          - # Important Notes
+          -
+          - The following properties have been configured by the TrueLicense
+          - Maven Archetype.
+          -
+          - 1. **If you want to change the value of any of the following
+          -    properties then it's generally necessary to generate another
+          -    project from the TrueLicense Maven Archetype.**
+          - 2. **For any two generated projects, their license keys are not
+          -    compatible even if all property values are equal, unless both
+          -    projects also share a copy of the same key store files:**
+          -     * `${artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
+          -     * `${artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
+          -     * `${artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
+          -->
+
+        <!-- The display name of your company, e.g "Company Inc.". -->
+        <companyName>$companyName</companyName>
+
+        <!-- The default password for everything.
+             If you feel lazy, then the only password you need to edit is this
+             one before running the build for the first time.
+             As a general requirement, all passwords must be at least eight
+             characters long and contain letters and digits.
+             You should consider this to be the bare minimum.
+             Entering a longer password with additional punctation characters
+             improves the security level of your licensing schema. -->
+        <defaultPassword>$defaultPassword</defaultPassword>
+
+        <!-- Whether or not the Swing wizard dialog in the Key Manager module
+             should be disabled.
+             One of "false" or "true".
+             Selecting "true" cuts the dependency on the TrueLicense Swing
+             module and reduces the code size. -->
+        <disableLicenseWizard>$disableLicenseWizard</disableLicenseWizard>
+
+        <!-- The distinguished name to use when generating private key entries
+             in key stores and initializing the issuer in license beans. -->
+        <distinguishedName>CN=${dollar}{companyName}</distinguishedName>
+
+        <!-- Whether or not the classes referenced by the properties with the
+             name pattern "*Class" should get dynamically loaded at runtime.
+             One of "false" or "true".
+             Select "false" to statically "new" the classes in the generated
+             code.
+             The advantage is that the classes can be safely included in the
+             byte code obfuscation process.
+             However, the classes need to be present on the class path of the
+             respective module at compile time.
+             Select "true" to dynamically load the classes at runtime.
+             The advantage is that the classes only need to be present on the
+             class path of the respective module at runtime.
+             However, the classes need to be excluded from the byte code
+             obfuscation process, which is a security leak if any dynamic class
+             loading is done in the Key Manager module. -->
+        <dynamicClassLoading>$dynamicClassLoading</dynamicClassLoading>
+
+        <!-- A comma separated list of edition names, ordered from supersets to
+             subsets.
+             Each name must be a valid Java identifier and should be
+             camel-cased with with the initial character being lower-cased.
+             The names "edition" and "ftp" are reserved for internal use.
+             Example: "enterprise, standard". -->
+        <editions>$editions</editions>
+
+        <!-- The number of days for an auto-generated free trial period (FTP).
+             Needs to be a non-negative integer, e.g. "30".
+             Specify "0" to disable the auto-generation of an FTP license key. -->
+        <freeTrialPeriod>$freeTrialPeriod</freeTrialPeriod>
+
+        <!-- The alias of the entry with the private key for the edition
+             "ftp" in the FTP key store file ${dollar}{ftpKeyStoreFile} in the
+             Key Manager module.
+             The value of this property is ignored if the value of the property
+             "freeTrialPeriod" is "0".
+             Otherwise, if this property is not defined, then it defaults to
+             the feature set name. -->
+        <ftpKeyEntryAlias>ftp</ftpKeyEntryAlias>
+
+        <!-- The password for accessing the private key for the edition
+             "ftp" in the FTP key store file ${dollar}{ftpKeyStoreFile} in the
+             Key Manager module.
+             The value of this property is ignored if the value of the property
+             "freeTrialPeriod" is "0".
+             Otherwise, if this property is not defined, then it defaults to
+             the value of the ftpKeyStorePassword property. -->
+        <ftpKeyEntryPassword>${dollar}{ftpKeyStorePassword}</ftpKeyEntryPassword>
+
+        <!-- The path of the FTP key store file in the Key Manager module
+             relative to the base path
+             "${dollar}{artifactId}-keymgr/src/main/resources/".
+             The value of this property is ignored if the value of the property
+             "freeTrialPeriod" is "0". -->
+        <ftpKeyStoreFile>$ftpKeyStoreFile</ftpKeyStoreFile>
+
+        <!-- The password for verifying the integrity of the FTP key store file
+             ${dollar}{ftpKeyStoreFile} in the Key Manager module.
+             The value of this property is ignored if the value of the property
+             "freeTrialPeriod" is "0". -->
+        <ftpKeyStorePassword>${dollar}{defaultPassword}</ftpKeyStorePassword>
+
+        <!-- The type of the FTP key store file ${dollar}{ftpKeyStoreFile} in
+             the Key Manager module.
+             The value of this property is ignored if the value of the property
+             "freeTrialPeriod" is "0". -->
+        <ftpKeyStoreType>${dollar}{keyStoreType}</ftpKeyStoreType>
+
+        <!-- A fully qualified class name which defines the user or system
+             preferences node to use for storing an auto-generated FTP license
+             key.
+             The value of this property is ignored if the value of the property
+             "freeTrialPeriod" is "0".
+             Otherwise, the PACKAGE NAME of the referenced class needs to be
+             kept ABSOLUTELY SECRET because removing the FTP license key from
+             the preferences node triggers the auto-generation of another FTP
+             license key!
+             The named class gets dynamically loaded at run time, so it doesn't
+             have to be on the compile time class path of the Key Manager
+             module. -->
+        <ftpSecretMarkerClass>$ftpSecretMarkerClass</ftpSecretMarkerClass>
+
+        <!-- Whether or not the Swing wizard dialog in the Key Manager module
+             should hide the action for uninstalling the license key.
+             One of "false" or "true". -->
+        <hideUninstallAction>$hideUninstallAction</hideUninstallAction>
+
+        <!-- A fully qualified class name which implements the interface
+             net.java.truelicense.core.LicenseValidation for use in the Key
+             Generator module.
+             The value of this property is ignored if the value of the property
+             "keyGenLicenseValidationFunction" is "basic".  -->
+        <keyGenLicenseValidationClass>$keyGenLicenseValidationClass</keyGenLicenseValidationClass>
+
+        <!-- Selects the function for license validation in the Key Generator
+             module.
+             One of "basic", "custom" or "both".
+             Select "basic" to use only the basic license validation which is
+             implemented in the TrueLicense Core module.
+             Select "custom" to use only the custom license validation which
+             is implemented in the class referenced by the property
+             "keyGenLicenseValidationClass".
+             Select "both" to use both functions. -->
+        <keyGenLicenseValidationFunction>$keyGenLicenseValidationFunction</keyGenLicenseValidationFunction>
+
+        <!-- A fully qualified class name which implements the interface
+             net.java.truelicense.core.util.Clock for use in the Key Manager
+             module.
+             Select "-" to use the system clock. -->
+        <keyMgrClockClass>$keyMgrClockClass</keyMgrClockClass>
+
+        <!-- A fully qualified class name which implements the interface
+             net.java.truelicense.core.LicenseValidation for use in the Key
+             Manager module.
+             The value of this property is ignored if the value of the property
+             "keyMgrLicenseValidationFunction" is "basic". -->
+        <keyMgrLicenseValidationClass>$keyMgrLicenseValidationClass</keyMgrLicenseValidationClass>
+
+        <!-- Selects the function for license validation in the Key Manager
+             module.
+             One of "basic", "custom" or "both".
+             Select "basic" to use only the basic license validation which is
+             implemented in the TrueLicense Core module.
+             Select "custom" to use only the custom license validation which
+             is implemented in the class referenced by the property
+             "keyMgrLicenseValidationClass".
+             Select "both" to use both functions. -->
+        <keyMgrLicenseValidationFunction>$keyMgrLicenseValidationFunction</keyMgrLicenseValidationFunction>
+
+        <!-- The algorithm to use when generating key pairs in the key store
+             files at the first build.
+             This property is ignored if the key store files already exist.
+             Otherwise, the algorithm needs to be supported by one of the
+             security providers which are installed in the JRE/JDK.
+             At a minimum, "DSA" and "RSA" need to be available in any
+             compliant JRE/JDK. -->
+        <keyPairAlgorithm>$keyPairAlgorithm</keyPairAlgorithm>
+
+        <!-- The default key store type.
+             The type needs to be supported by one of the security
+             providers which are installed in the JRE.
+             If you require compatibility with license keys generated with
+             TrueLicense 1, then you need to select "JKS".
+             Otherwise, "JCEKS" is a good choice. -->
+        <keyStoreType>$keyStoreType</keyStoreType>
+
+        <!-- The format of the license keys.
+             One of "V1", "V2/JSON" or "V2/XML".
+             Select "V1" if you need to retain compatiblity with license
+             keys generated with TrueLicense 1.
+             Otherwise, select "V2/XML" if you want to exclude an additional
+             dependency on the Jackson JSON Processor.
+             Otherwise, select "V2/JSON" for the smallest license keys and the
+             fastest processing. -->
+        <licenseKeyFormat>$licenseKeyFormat</licenseKeyFormat>
+
+        <!-- The licensing subject.
+             The value of this property gets stored in the generated license
+             keys and is used for validation.
+             A "net.java.truelicense.core.LicenseValidationException" is thrown
+             if the validation fails.
+             It's best practice to include the name of your software product
+             and a version number range for which the license keys are valid,
+             e.g. "Product 1" or "Product 1.X".
+             The license validation step compares the entire string, so the
+             version number format doesn't matter.
+             If you want to obsolete existing license keys in a future release
+             then all you need to do is to change the value,
+             e.g. to "Product 2" or "Product 2.X". -->
+        <licensingSubject>$licensingSubject</licensingSubject>
+
+        <!-- The base package name of the generated project.
+             It's best practice to use the expression "${project.groupId}"
+             or "${project.groupId}.${project.artifactId}" as the package name
+             if this results in a valid package name -->
+        <package>$package</package>
+
+        <!-- The algorithm for the password based encryption.
+             The algorithm needs to be supported by one of the security
+             providers which are installed in the JRE.
+             If you require compatibility with license keys generated with
+             TrueLicense 1, then you need to select "PBEWithMD5AndDES".
+             Otherwise, "PBEWithSHA1AndDESede" is a good choice. -->
+        <pbeAlgorithm>$pbeAlgorithm</pbeAlgorithm>
+
+        <!-- The type of the preferences nodes where to install license keys.
+             One of "system" or "user".
+             Note that "system" generally requires the JVM to be run with
+             administrator privileges or otherwise a
+             java.util.prefs.BackingStoreException may get thrown by the
+             generated integration tests. -->
+        <preferencesNodeType>$preferencesNodeType</preferencesNodeType>
+
+        <!-- The path of the private key store file in the Key Generator module
+             relative to the base path
+             "${dollar}{artifactId}-keygen/src/main/resources/". -->
+        <privateKeyStoreFile>$privateKeyStoreFile</privateKeyStoreFile>
+
+        <!-- The password for verifying the integrity of the private key store
+             file ${dollar}{privateKeyStoreFile} in the Key Generator module. -->
+        <privateKeyStorePassword>${dollar}{defaultPassword}</privateKeyStorePassword>
+
+        <!-- The type of the private key store file
+             ${dollar}{privateKeyStoreFile} in the Key Generator module. -->
+        <privateKeyStoreType>${dollar}{keyStoreType}</privateKeyStoreType>
+
+        <!-- The path of the public key store file in the Key Manager module
+             relative to the base path
+             "${dollar}{artifactId}-keymgr/src/main/resources/". -->
+        <publicKeyStoreFile>$publicKeyStoreFile</publicKeyStoreFile>
+
+        <!-- The password for verifying the integrity of the public key store
+             file ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
+        <publicKeyStorePassword>${dollar}{defaultPassword}</publicKeyStorePassword>
+
+        <!-- The type of the public key store file
+             ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
+        <publicKeyStoreType>${dollar}{keyStoreType}</publicKeyStoreType>
+#foreach($edition in $editionArray)
+#set($edition = $edition.trim())
+
+        <!-- The password for encrypting and decrypting license keys for the
+             edition "$edition".
+             If this property is not defined, then it defaults to the value of
+             the defaultPassword property. -->
+        <${edition}PbePassword>${dollar}{defaultPassword}</${edition}PbePassword>
+
+        <!-- The alias of the entry with the private key for the edition
+             "$edition" in the private key store file ${dollar}{privateKeyStoreFile}
+             in the Key Generator module and the public key store file
+             ${dollar}{publicKeyStoreFile} in the Key Manager module.
+             If this property is not defined, then it defaults to the feature
+             set name. -->
+        <${edition}KeyEntryAlias>$edition</${edition}KeyEntryAlias>
+
+        <!-- The password for accessing the private key for the edition
+             "$edition" in the private key store file ${dollar}{privateKeyStoreFile} in
+             the Key Generator module.
+             If this property is not defined, then it defaults to the value of
+             the privateKeyStorePassword property. -->
+        <${edition}KeyEntryPassword>${dollar}{privateKeyStorePassword}</${edition}KeyEntryPassword>
+#end
+
+        <!-- The name of the module to depend upon for base functionality like
+             vending or consuming license keys.
+             One of "truelicense-core" or "truelicense-json".
+             If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
+             then this needs to be set to "truelicense-json", otherwise set it
+             to "truelicense-core". -->
+        <trueLicenseDependency>$trueLicenseDependency</trueLicenseDependency>
+
+        <!-- The TrueLicense version to depend upon. -->
+        <trueLicenseVersion>$trueLicenseVersion</trueLicenseVersion>
+
+        <!-- Whether or not the command line interface (CLI) should write
+             debugging information to the standard error stream by default.
+             One of "false" or "true". -->
+        <verboseCli>$verboseCli</verboseCli>
+
+        <!--
+          - The following properties control the behavior of some Maven plugins
+          - and are not intended to be used by the Velocity template files.
+          -->
+
+        <!-- maven-enforcer-plugin -->
+        <maven.enforcer.requireMavenVersion>3.0.5</maven.enforcer.requireMavenVersion> <!-- detected by mvn versions:display-plugin-updates -->
+        <maven.enforcer.requireJavaVersion>${dollar}{maven.compiler.source}</maven.enforcer.requireJavaVersion>
+
+        <netbeans.compile.on.save>none</netbeans.compile.on.save>
+        <netbeans.hint.jdkPlatform>JDK_1.6</netbeans.hint.jdkPlatform>
+
+        <!-- Reinforce defaults of maven-compiler-plugin for NetBeans. -->
+        <maven.compiler.debug>true</maven.compiler.debug>
+        <maven.compiler.optimize>false</maven.compiler.optimize>
+        <maven.compiler.showDeprecation>false</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>false</maven.compiler.showWarnings>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>${dollar}{maven.compiler.source}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- maven-failsafe-plugin -->
+        <project.reporting.outputEncoding>${dollar}{project.build.sourceEncoding}</project.reporting.outputEncoding>
+
+        <!-- maven-gpg-plugin -->
+        <gpg.useagent>true</gpg.useagent>
+
+        <!-- maven-javadoc-plugin -->
+        <!--detectLinks>true</detectLinks-->
+        <header>&lt;b&gt;${dollar}{project.name} ${dollar}{project.version}&lt;/b&gt;</header>
+        <nodeprecated>true</nodeprecated>
+        <notimestamp>true</notimestamp>
+        <quiet>true</quiet>
+        <splitindex>true</splitindex>
+        <javadoc.version>false</javadoc.version>
+
+        <!-- maven-release-plugin -->
+        <preparationGoals>clean install</preparationGoals>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${dollar}{project.groupId}</groupId>
+                <artifactId>${rootArtifactId}-keygen</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${dollar}{project.groupId}</groupId>
+                <artifactId>${rootArtifactId}-keymgr</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.java.truelicense</groupId>
+                <artifactId>truelicense</artifactId>
+                <version>${dollar}{trueLicenseVersion}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/filtered</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/filtered</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.soebes.maven.plugins</groupId>
+                    <artifactId>iterator-maven-plugin</artifactId>
+                    <version>0.3</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.6.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <!-- This is required for NetBeans.
+                             Use only properties which are defined in this POM! -->
+                        <debug>${dollar}{maven.compiler.debug}</debug>
+                        <encoding>${dollar}{project.build.sourceEncoding}</encoding>
+                        <optimize>${dollar}{maven.compiler.optimize}</optimize>
+                        <showDeprecation>${dollar}{maven.compiler.showDeprecation}</showDeprecation>
+                        <showWarnings>${dollar}{maven.compiler.showWarnings}</showWarnings>
+                        <source>${dollar}{maven.compiler.source}</source>
+                        <target>${dollar}{maven.compiler.target}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>keytool-maven-plugin</artifactId>
+                    <version>1.5</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <executions>
+                        <execution>
+                            <id>integration-test</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.2</version>
+                    <configuration>
+                        <version>${dollar}{javadoc.version}</version>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.8</version>
+                    <configuration>
+                        <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <filters combine.children="append">
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>META-INF/services/javax.annotation.processing.Processor</exclude>
+                                </excludes>
+                            </filter>
+                        </filters>
+                        <shadedArtifactAttached>true</shadedArtifactAttached>
+                        <shadedClassifierName>standalone</shadedClassifierName>
+                        <transformers combine.children="append">
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                                <addHeader>false</addHeader>
+                            </transformer>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>${mainClass}</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.wvengen</groupId>
+                    <artifactId>proguard-maven-plugin</artifactId>
+                    <version>2.0.8</version>
+                    <configuration>
+                        <injar>${dollar}{project.build.finalName}-standalone.jar</injar>
+                        <outjar>${dollar}{project.build.finalName}-guarded.jar</outjar>
+                        <!-- Not required with maven-shade-plugin. -->
+                        <includeDependency>false</includeDependency>
+                        <libs combine.children="append">
+                            <lib>${dollar}{java.home}/lib/jce.jar</lib>
+                        </libs>
+                        <!-- The following options are required for
+                             TrueLicense 2. -->
+                        <options combine.children="append">
+                            <option>
+                                -adaptresourcefilenames
+                                -keepnames class de.schlichtherle.license.LicenseContent
+                                -keepclassmembers class de.schlichtherle.license.LicenseContent {
+                                    public *** get*();
+                                    public void set*(***);
+                                }
+                                -keepnames class de.schlichtherle.xml.GenericCertificate
+                                -keepclassmembers class de.schlichtherle.xml.GenericCertificate {
+                                    public *** get*();
+                                    public void set*(***);
+                                }
+                                -keepclassmembers class net.java.truelicense.core.License {
+                                    public *** get*();
+                                    public void set*(***);
+                                }
+                                -keepclassmembers class net.java.truelicense.core.auth.BasicRepository {
+                                    public *** get*();
+                                    public void set*(***);
+                                }
+                                -keep,allowobfuscation class net.java.truelicense.core.codec.X500PrincipalXmlAdapter
+                                -keepclassmembers enum * {
+                                    public static **[] values();
+                                    public static ** valueOf(java.lang.String);
+                                }
+                                -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
+                            </option>
+                            <!-- This optimization triggers error messages when
+                                 using ProGuard 4.11, 5.0, 5.1, 5.2 and 5.2.1
+                                 and the generated byte code throws
+                                 VerifyErrors. -->
+                            <option>
+                                -optimizations !class/unboxing/enum
+                            </option>
+                            <!-- This option excludes the secret FTP marker
+                                 class from byte code obfuscation.
+                                 You should remove this option if you are not
+                                 going to provide auto-generated FTP license
+                                 keys. -->
+#if($dynamicClassLoading == true)
+                            <option>
+#else
+                            <!--option>
+#end
+#if($freeTrialPeriod != 0)
+                                -keep class $ftpSecretMarkerClass
+#end
+#if($keyMgrClockClass != "-")
+                                -keep class $keyMgrClockClass
+#end
+#if($keyMgrLicenseValidationFunction != "basic")
+                                -keep class $keyMgrLicenseValidationClass
+#end
+#if($dynamicClassLoading == false)
+                            <option-->
+#else
+                            </option>
+#end
+                            <!-- This option configures the obfuscation of the
+                                 Jackson JSON Processor, version 2.2.0.
+                                 You should remove this option if you are not
+                                 using the V2/JSON license key format. -->
+#if($licenseKeyFormat == "V2/JSON")
+                            <option>
+#else
+                            <!--option>
+#end
+                                -keep class * extends com.fasterxml.jackson.core.util.VersionUtil
+#if($licenseKeyFormat != "V2/JSON")
+                            </option-->
+#else
+                            </option>
+#end
+                        </options>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sf.proguard</groupId>
+                            <artifactId>proguard-base</artifactId>
+                            <version>5.2.1</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>proguard</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>net.java.truelicense</groupId>
+                    <artifactId>truelicense-maven-plugin</artifactId>
+                    <version>${dollar}{trueLicenseVersion}</version>
+                    <executions>
+                        <execution>
+                            <id>generate-main-sources</id>
+                            <goals>
+                                <goal>generate-main-sources</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>generate-test-sources</id>
+                            <goals>
+                                <goal>generate-test-sources</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>obfuscate-main-classes</id>
+                            <goals>
+                                <goal>obfuscate-main-classes</goal>
+                            </goals>
+                            <configuration>
+                                <intern>false</intern>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${dollar}{maven.enforcer.requireMavenVersion}</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${dollar}{maven.enforcer.requireJavaVersion}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>non-transitive-main-source-dependencies</id>
+            <activation>
+                <file>
+                    <exists>src/main</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>annotations</artifactId>
+                    <scope>compile</scope>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>non-transitive-test-source-dependencies</id>
+            <activation>
+                <file>
+                    <exists>src/test</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>annotations</artifactId>
+                    <scope>compile</scope>
+                    <optional>true</optional>
+                </dependency>
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>generate-main-sources</id>
+            <activation>
+                <file>
+                    <exists>src/main</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.java.truelicense</groupId>
+                        <artifactId>truelicense-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>generate-test-sources</id>
+            <activation>
+                <file>
+                    <exists>src/test</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.java.truelicense</groupId>
+                        <artifactId>truelicense-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>rt-jar-for-apple-jdk-1.6</id>
+            <activation>
+                <file>
+                    <exists>${dollar}{java.home}/../Classes/classes.jar</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.wvengen</groupId>
+                            <artifactId>proguard-maven-plugin</artifactId>
+                            <configuration>
+                                <libs>
+                                    <lib>${dollar}{java.home}/../Classes/classes.jar</lib>
+                                </libs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>rt-jar-for-any-jdk-1.7</id>
+            <activation>
+                <file>
+                    <exists>${dollar}{java.home}/lib/rt.jar</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.github.wvengen</groupId>
+                            <artifactId>proguard-maven-plugin</artifactId>
+                            <configuration>
+                                <libs>
+                                    <lib>${dollar}{java.home}/lib/rt.jar</lib>
+                                </libs>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:html="http://java.sun.com/jsf/html">
+    <composite:interface componentType="installBean" expert="true"
+                         shortDescription="Installs a license key.">
+        <composite:attribute name="manager" type="net.java.truelicense.core.LicenseConsumerManager" required="true"
+                             shortDescription="The license consumer manager."/>
+    </composite:interface>
+
+    <composite:implementation>
+        <html:panelGrid class="install" title="${cc.title}"
+                        columns="1" transient="true">
+            <html:outputText value="${cc.prompt}"/>
+            <html:inputFile id="file" value="#{cc.part}" required="true"/>
+            <html:commandButton id="submit"
+                                value="${cc.installValue}"
+                                action="#{cc.installAction}"
+                                disabled="${cc.installDisabled}"/>
+        </html:panelGrid>
+    </composite:implementation>
+</html>

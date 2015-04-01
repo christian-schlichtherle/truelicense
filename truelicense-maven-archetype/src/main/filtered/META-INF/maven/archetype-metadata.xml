@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<archetype-descriptor xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd">
+    <requiredProperties>
+        <requiredProperty key="artifactName">
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="companyName"/>
+        <requiredProperty key="defaultPassword"/>
+        <requiredProperty key="disableLicenseWizard">
+            <defaultValue>false</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="dynamicClassLoading">
+            <defaultValue>false</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="editions">
+            <defaultValue>standard</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="freeTrialPeriod">
+            <defaultValue>0</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="ftpKeyStoreFile">
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="ftpSecretMarkerClass">
+            <defaultValue>n/a</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="hideUninstallAction">
+            <defaultValue>false</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyPairAlgorithm">
+            <defaultValue>RSA</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyGenLicenseValidationClass">
+            <defaultValue>n/a</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyGenLicenseValidationFunction">
+            <defaultValue>basic</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyMgrClockClass">
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyMgrLicenseValidationClass">
+            <defaultValue>n/a</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyMgrLicenseValidationFunction">
+            <defaultValue>basic</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyStoreType">
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="licenseKeyFormat">
+            <defaultValue>V2/JSON</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="licensingSubject"/>
+        <requiredProperty key="pbeAlgorithm">
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="preferencesNodeType">
+            <defaultValue>user</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="privateKeyStoreFile">
+            <defaultValue>private.ks</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="publicKeyStoreFile">
+            <defaultValue>public.ks</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="trueLicenseDependency">
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="trueLicenseVersion">
+            <defaultValue>${project.version}</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="verboseCli">
+            <defaultValue>false</defaultValue>
+        </requiredProperty>
+    </requiredProperties>
+    <fileSets>
+        <fileSet>
+            <directory/>
+            <includes>
+                <include>.*ignore</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+    <modules>
+        <module id="${rootArtifactId}-keygen" dir="__rootArtifactId__-keygen" name="${rootArtifactId}-keygen">
+            <fileSets>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/main/java</directory>
+                    <excludes>
+                        <exclude>**/*.vtl</exclude>
+                    </excludes>
+                </fileSet>
+                <fileSet packaged="true">
+                    <directory>src/main/java</directory>
+                    <includes>
+                        <include>**/*.vtl</include>
+                    </includes>
+                </fileSet>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/main/filtered</directory>
+                </fileSet>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/test/java</directory>
+                    <excludes>
+                        <exclude>**/*.vtl</exclude>
+                    </excludes>
+                </fileSet>
+                <fileSet packaged="true">
+                    <directory>src/test/java</directory>
+                    <includes>
+                        <include>**/*.vtl</include>
+                    </includes>
+                </fileSet>
+            </fileSets>
+        </module>
+        <module id="${rootArtifactId}-keymgr" dir="__rootArtifactId__-keymgr" name="${rootArtifactId}-keymgr">
+            <fileSets>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/main/java</directory>
+                    <excludes>
+                        <exclude>**/*.vtl</exclude>
+                    </excludes>
+                </fileSet>
+                <fileSet packaged="true">
+                    <directory>src/main/java</directory>
+                    <includes>
+                        <include>**/*.vtl</include>
+                    </includes>
+                </fileSet>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/main/filtered</directory>
+                </fileSet>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/test/java</directory>
+                    <excludes>
+                        <exclude>**/*.vtl</exclude>
+                    </excludes>
+                </fileSet>
+                <fileSet packaged="true">
+                    <directory>src/test/java</directory>
+                    <includes>
+                        <include>**/*.vtl</include>
+                    </includes>
+                </fileSet>
+                <fileSet>
+                    <directory>src/test/resources</directory>
+                </fileSet>
+            </fileSets>
+        </module>
+        <module id="${rootArtifactId}-keymgrsvc" dir="__rootArtifactId__-keymgrsvc" name="${rootArtifactId}-keymgrsvc">
+            <fileSets>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/main/java</directory>
+                    <excludes>
+                        <exclude>**/*.vtl</exclude>
+                    </excludes>
+                </fileSet>
+                <fileSet packaged="true">
+                    <directory>src/main/java</directory>
+                    <includes>
+                        <include>**/*.vtl</include>
+                    </includes>
+                </fileSet>
+                <fileSet packaged="true" filtered="true">
+                    <directory>src/test/java</directory>
+                    <excludes>
+                        <exclude>**/*.vtl</exclude>
+                    </excludes>
+                </fileSet>
+                <fileSet packaged="true">
+                    <directory>src/test/java</directory>
+                    <includes>
+                        <include>**/*.vtl</include>
+                    </includes>
+                </fileSet>
+            </fileSets>
+        </module>
+    </modules>
+</archetype-descriptor>

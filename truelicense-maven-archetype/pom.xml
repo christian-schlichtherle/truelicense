@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <prerequisites>
+        <maven>${maven.enforcer.requireMavenVersion}</maven>
+    </prerequisites>
+
+    <parent>
+        <groupId>net.java.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
+        <version>2.4.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>truelicense-maven-archetype</artifactId>
+    <packaging>maven-archetype</packaging>
+
+    <name>TrueLicense Maven Archetype</name>
+    <description>
+        The TrueLicense Maven Archetype is a turn-key solution for designing
+        and implementing a custom licensing schema for your software product.
+        The archetype generates a project with tailor-made modules for vending
+        and consuming license keys.
+        The modules contain code templates which you can easily customize
+        without writing code by configuring a set of properties.
+    </description>
+
+    <properties>
+        <!-- For reference in the Maven site. -->
+        <maven-enforcer-requireJavaVersion>${maven.enforcer.requireJavaVersion}</maven-enforcer-requireJavaVersion>
+        <maven-enforcer-requireMavenVersion>${maven.enforcer.requireMavenVersion}</maven-enforcer-requireMavenVersion>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-jax-rs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-maven-plugin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-swing</artifactId>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <!-- The maven-archetype-plugin has its own
+                                 integration-test goal which is bound to the
+                                 integration-test phase by the maven-archetype
+                                 packaging, so skip this plugin altogether. -->
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

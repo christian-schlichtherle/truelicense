@@ -1,0 +1,39 @@
+/*
+ * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * All rights reserved. Use is subject to license terms.
+ */
+#set($editions = $convert.toStrings($editions))
+/* Generated from Velocity template at $date - DO NOT EDIT! */
+package ${package}.keymgr;
+
+import javax.annotation.concurrent.Immutable;
+import net.java.truelicense.core.LicenseConsumerManager;
+
+/**
+ * The licensing schema for consuming $licensingSubject license keys.
+ *
+ * @see LicenseManager
+ * @author Christian Schlichtherle
+ */
+@Immutable
+@Deprecated
+public final class LicensingSchema {
+
+#if($freeTrialPeriod != 0)
+#set($firstEdition = "ftp")
+#else
+#foreach($edition in $editions)
+#set($firstEdition = $edition)
+#end
+#end
+    /**
+     * Returns the first license consumer manager in the configured
+     * chain-of-responsibility, which is {@link LicenseManager#$firstEdition}.
+     *
+     * @deprecated Call {@link LicenseManager#get()} instead.
+     */
+    @Deprecated
+    public static LicenseConsumerManager manager() {
+        return LicenseManager.$firstEdition;
+    }
+}

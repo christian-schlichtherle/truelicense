@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+  - Copyright (C) 2005-2015 Schlichtherle IT Services.
+  - All rights reserved. Use is subject to license terms.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:html="http://java.sun.com/jsf/html"
+      xmlns:panel="http://java.sun.com/jsf/composite/truelicense/panel">
+    <composite:interface componentType="wizardBean"
+                         shortDescription="A wizard for license management in license consumer applications.">
+        <composite:attribute name="manager" type="net.java.truelicense.core.LicenseConsumerManager" required="true"
+                             shortDescription="The license consumer manager."/>
+        <composite:attribute name="uninstallable" type="java.lang.Boolean" default="false"
+                             shortDescription="Whether or not the license key shall be uninstallable. Defaults to false."/>
+    </composite:interface>
+
+    <composite:implementation>
+        <html:form id="form" enctype="multipart/form-data">
+            <html:panelGrid class="wizard" title="${cc.title}" columns="1">
+                <panel:welcome id="welcome"
+                               manager="${cc.attrs.manager}"
+                               uninstallable="${cc.attrs.uninstallable}"
+                               binding="#{cc.welcomeBean}"/>
+                <panel:install id="install"
+                               manager="${cc.attrs.manager}"
+                               binding="#{cc.installBean}"/>
+                <panel:display id="display"
+                               manager="${cc.attrs.manager}"
+                               binding="#{cc.displayBean}"/>
+                <panel:uninstall id="uninstall"
+                                 manager="${cc.attrs.manager}"
+                                 binding="#{cc.uninstallBean}"/>
+                <html:panelGrid class="control" columns="2" transient="true">
+                    <html:commandButton id="back" value="${cc.switchBackLabel}"
+                                        disabled="${cc.switchBackDisabled}"
+                                        action="#{cc.switchBackAction}"/>
+                    <html:commandButton id="next" value="${cc.switchNextLabel}"
+                                        disabled="${cc.switchNextDisabled}"
+                                        action="#{cc.switchNextAction}"/>
+                </html:panelGrid>
+            </html:panelGrid>
+        </html:form>
+    </composite:implementation>
+</html>
