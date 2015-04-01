@@ -68,9 +68,9 @@
         <url>https://java.net/jira/browse/TRUELICENSE</url>
     </issueManagement>
     <scm>
-        <connection>scm:hg:https://bitbucket.org/christian_schlichtherle/truelicense2</connection>
-        <developerConnection>scm:hg:ssh://hg@bitbucket.org/christian_schlichtherle/truelicense2</developerConnection>
-        <url>https://bitbucket.org/christian_schlichtherle/truelicense2</url>
+        <connection>scm:git:https://bitbucket.org/christian_schlichtherle/truelicense3.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:christian_schlichtherle/truelicense3.git</developerConnection>
+        <url>https://bitbucket.org/christian_schlichtherle/truelicense3</url>
         <tag>HEAD</tag>
     </scm>
 
