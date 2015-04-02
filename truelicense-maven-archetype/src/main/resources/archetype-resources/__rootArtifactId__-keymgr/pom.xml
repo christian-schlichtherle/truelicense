@@ -55,40 +55,72 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <configuration>
-                    <options>
-                        <!-- The following options should apply to most
-                             standalone Java applications. -->
-                        <option>
-                            -keepclasseswithmembers public class * {
-                                public static void main(java.lang.String[]);
-                            }
-                        </option>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.wvengen</groupId>
+                    <artifactId>proguard-maven-plugin</artifactId>
+                    <configuration>
+                        <options>
+                            <!-- The following options should apply to most
+                                 standalone Java applications. -->
+                            <option>
+                                -keepclasseswithmembers public class * {
+                                    public static void main(java.lang.String[]);
+                                }
+                            </option>
 
-                        <!-- The following options are specific to this sample
-                             project.
-                             You may need to edit them when customizing this
-                             sample project. -->
-                        <option>
-                            -optimizationpasses 3
-                            -overloadaggressively
-                            -repackageclasses
-                            -allowaccessmodification
-                        </option>
-                    </options>
-                </configuration>
-            </plugin>
-        </plugins>
+                            <!-- The following options are specific to this
+                                 sample project.
+                                 You may need to edit them when customizing
+                                 this sample project. -->
+                            <option>
+                                -optimizationpasses 3
+                                -overloadaggressively
+                                -repackageclasses
+                                -allowaccessmodification
+                            </option>
+                        </options>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
+        <profile>
+            <id>create-keymgr-standalone-jar</id>
+            <activation>
+                <property>
+                    <name>skipStandaloneJars</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-shade-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>create-keymgr-guarded-jar</id>
+            <activation>
+                <property>
+                    <name>skipStandaloneJars</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.wvengen</groupId>
+                        <artifactId>proguard-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>jsse-lib-for-apple-jdk-1.6</id>
             <activation>
@@ -113,7 +145,7 @@
             </build>
         </profile>
         <profile>
-            <id>jsse-lib-for-any-jdk-1.7</id>
+            <id>jsse-lib-for-any-jdk-1.7+</id>
             <activation>
                 <file>
                     <exists>${dollar}{java.home}/lib/jsse.jar</exists>
