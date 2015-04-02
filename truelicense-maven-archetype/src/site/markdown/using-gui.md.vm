@@ -7,15 +7,17 @@
 
 This page shows you how to use the internationalized Graphical User Interface 
 of your project, or more specifically, its Key Manager module.
-The GUI is provided by the main class of the module which is named
-`${dollar}{package}.keymgr.Main`.
+**However, if the value of the property `disableLicenseWizard` has been set to 
+`true` when [generating your project], then the GUI is not available and this 
+page does not apply to your project!**
 
 $h3 Starting the GUI
 
 The Swing wizard dialog integrates the `install`, `verify`, `view` and
-`uninstall` actions of the [command line interface](using-cli.html) in a
+`uninstall` actions of the 
+<abbr title="Command Line Interface">[CLI](using-cli.html)</abbr> in a 
 convenient GUI.
-You can start the dialog from the command line using:
+You can start the dialog using the CLI using:
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-guarded.jar wizard
 
@@ -25,12 +27,12 @@ When running the dialog for the first time, it may seem that there is already a
 valid license key installed.
 This is because an <abbr title="Free Trial Period">FTP</abbr> license key is 
 automatically generated and installed if the property `freeTrialPeriod` is not 
-set to zero when [generating your project]:
+set to zero when generating your project:
 
 <img src="img/welcome-panel.png" alt="Welcome Panel" width="636" height="554"/>
 
-The "Uninstall ..." action can be configured to be hidden by setting the 
-property `hideUninstallAction` to `true` when generating your project.
+If the property `hideUninstallAction` has been set to `true` when generating 
+your project, then the "Uninstall ..." action is not shown.
 
 $h3 Install Panel
 
