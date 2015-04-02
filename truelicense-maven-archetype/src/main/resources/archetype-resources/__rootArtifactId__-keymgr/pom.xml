@@ -61,14 +61,52 @@
                     <groupId>com.github.wvengen</groupId>
                     <artifactId>proguard-maven-plugin</artifactId>
                     <configuration>
+                        <!-- The following options should apply to most
+                             standalone Java applications. -->
                         <options>
-                            <!-- The following options should apply to most
-                                 standalone Java applications. -->
                             <option>
                                 -keepclasseswithmembers public class * {
                                     public static void main(java.lang.String[]);
                                 }
                             </option>
+
+                            <!-- This option excludes the secret FTP marker
+                                 class from byte code obfuscation.
+                                 You should remove this option if you do not
+                                 want to provide auto-generated FTP license
+                                 keys. -->
+#if($freeTrialPeriod != 0)
+                            <option>
+#else
+                            <!--option>
+#end
+                                -keep class $ftpSecretMarkerClass
+#if($freeTrialPeriod == 0)
+                            <option-->
+#else
+                            </option>
+#end
+
+                            <!-- This option excludes some dynamically loaded
+                                 classes from byte code obfuscation.
+                                 You should remove this option if you do not
+                                 want to use dynamic class loading. -->
+#if($dynamicClassLoading == true)
+                            <option>
+#else
+                            <!--option>
+#end
+#if($keyMgrClockClass != "-")
+                                -keep class $keyMgrClockClass
+#end
+#if($keyMgrLicenseValidationFunction != "basic")
+                                -keep class $keyMgrLicenseValidationClass
+#end
+#if($dynamicClassLoading == false)
+                            <option-->
+#else
+                            </option>
+#end
 
                             <!-- The following options are specific to this
                                  sample project.
@@ -227,8 +265,8 @@
         </profile>
         <!-- This profile generates the keystore for use with auto-generated
              free trial period (FTP) license keys.
-             You should remove this profile or skip the plugin if you are not
-             going to provide auto-generated FTP license keys. -->
+             You should remove this profile or skip the plugin if you do not
+             want to provide auto-generated FTP license keys. -->
         <profile>
             <id>generate-ftp-key-store</id>
             <activation>
