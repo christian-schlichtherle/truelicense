@@ -189,14 +189,18 @@ you need to define the values of the following properties as follows:
     <dd>Enter the value produced by the obfuscated string field 
         <code>PBE_PASSWORD</code> in the class 
         <code>**.keymgr.LicensingSchema${dollar}Lazy</code>.</dd>
-    <dt><code>editions</code></dt>
-    <dd>Do not change the default value.</dd>
     <dt><code>freeTrialPeriod</code></dt>
     <dd>Enter the value of the field <code>FTP_DAYS</code> in the same class.</dd>
+    <dt><code>ftpKeyStoreFile</code></dt>
+    <dd>Enter <code>ftp.ks</code>.</dd>
+    <dt><code>ftpSecretMarkerClass</code></dt>
+    <dd>Enter the parameter value of the last call to the method 
+        <code>.storeInUserNode([...])</code> in the same class, but without the 
+        <code>.class</code> suffix, e.g. <code>sun.security.provider.Sun</code>.</dd>
     <dt><code>licenseKeyFormat</code></dt>
     <dd>Search for the expression matching the pattern 
-        <code>new *ManagementContext(SUBJECT)</code> and select the value as 
-        follows:
+        <code>new *ManagementContext(SUBJECT)</code> in the same class and 
+        select the value as follows:
         <ul>
             <li>For <code>new V1LicenseManagementContext(SUBJECT)</code>, 
                 enter <code>V1</code>.</li>
@@ -220,10 +224,6 @@ you need to define the values of the following properties as follows:
             <li>For <code>storeInUserNode(LicensingSchema.class)</code>, 
                 enter <code>user</code>.</li>
         </ul></dd>
-    <dt><code>ftpSecretMarkerClass</code></dt>
-    <dd>Enter the parameter value of the last call to the method 
-        <code>.storeInUserNode([...])</code> in the same class, but without the 
-        <code>.class</code> suffix, e.g. <code>sun.security.provider.Sun</code>.</dd>
 </dl>
 
 All other properties may have different values.
@@ -237,11 +237,14 @@ equal:
 * `defaultPassword`
 * `editions`
 * `freeTrialPeriod`
+* `ftpKeyStoreFile`
+* `ftpSecretMarkerClass`
 * `licenseKeyFormat`
 * `licensingSubject`
 * `package`
 * `preferencesNodeType`
-* `ftpSecretMarkerClass`
+* `privateKeyStoreFile`
+* `publicKeyStoreFile`
 
 All other properties may have different values.
 
@@ -268,10 +271,10 @@ following name patterns:
 Please check the documentation comments for each of these properties and
 customize their values so that they match the configuration of the old project.
 
-If the old project was created using the $project.name before version 2.4, then
-its generally necessary to change the value of the properties named `*Alias`
-to `mykey`, which is the default alias name for any private key or trusted
-certificate entry created by the Java `keytool`.
+**If the old project was created using the $project.name before version 2.4, 
+then its generally necessary to change the value of the properties named 
+`*Alias` to `mykey`**, which is the default alias name for any private key or 
+trusted certificate entry created by the Java `keytool`.
 
 $h4 Building Your project
 
