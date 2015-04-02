@@ -33,9 +33,6 @@
         <requiredProperty key="hideUninstallAction">
             <defaultValue>false</defaultValue>
         </requiredProperty>
-        <requiredProperty key="keyPairAlgorithm">
-            <defaultValue>RSA</defaultValue>
-        </requiredProperty>
         <requiredProperty key="keyGenLicenseValidationClass">
             <defaultValue>n/a</defaultValue>
         </requiredProperty>
@@ -50,6 +47,9 @@
         </requiredProperty>
         <requiredProperty key="keyMgrLicenseValidationFunction">
             <defaultValue>basic</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyPairAlgorithm">
+            <defaultValue>RSA</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyStoreType">
             <defaultValue>-</defaultValue>
