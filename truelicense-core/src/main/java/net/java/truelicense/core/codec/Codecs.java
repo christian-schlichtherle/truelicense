@@ -4,12 +4,15 @@
  */
 package net.java.truelicense.core.codec;
 
-import java.nio.charset.*;
+import net.java.truelicense.obfuscate.Obfuscate;
+
+import javax.annotation.CheckForNull;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.CheckForNull;
-import net.java.truelicense.obfuscate.Obfuscate;
-import org.apache.commons.codec.Charsets;
 
 /**
  * Provides common {@link Codec} functions.
@@ -90,7 +93,7 @@ public class Codecs {
         if (    _7BIT.equalsIgnoreCase(cte) ||
                 QUOTED_PRINTABLE.equalsIgnoreCase(cte) ||
                 BASE64.equalsIgnoreCase(cte)) {
-            return Charsets.US_ASCII;
+            return StandardCharsets.US_ASCII;
         } else  if (_8BIT.equalsIgnoreCase(cte)) {
             final Matcher m = CHARSET_PATTERN.matcher(codec.contentType());
             if (m.find()) {
@@ -99,7 +102,7 @@ public class Codecs {
                 if (null == n) n = m.group(2);
                 return Charset.forName(n);
             } else {
-                return Charsets.UTF_8;
+                return StandardCharsets.UTF_8;
             }
         }
         throw new BinaryCodecException(
