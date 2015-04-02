@@ -9,7 +9,7 @@ This page shows you what you need to work with TrueLicense.
 
 $h3 Software
 
-For using TrueLicense, you just need to have a Java Development Kit,
+For using TrueLicense, you just need to have a Java Runtime Environment,
 version $maven-enforcer-requireJavaVersion or later installed.
 
 For generating and building a project from the $project.name, you also need to
