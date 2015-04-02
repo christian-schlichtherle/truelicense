@@ -406,7 +406,7 @@
 
         <!-- maven-javadoc-plugin -->
         <!--detectLinks>true</detectLinks-->
-        <header>&lt;b&gt;${dollar}{project.name} ${dollar}{project.version}&lt;/b&gt;</header>
+        <header><![CDATA[<b>${dollar}{project.name} ${dollar}{project.version}</b>]]></header>
         <nodeprecated>true</nodeprecated>
         <notimestamp>true</notimestamp>
         <quiet>true</quiet>
@@ -648,7 +648,7 @@
                             </option>
 
                             <!-- This option configures the obfuscation of the
-                                 Jackson JSON Processor, version 2.2.0.
+                                 Jackson JSON Processor, version 2.5.2.
                                  You should remove this option if you are not
                                  using the V2/JSON license key format. -->
 #if($licenseKeyFormat == "V2/JSON")
