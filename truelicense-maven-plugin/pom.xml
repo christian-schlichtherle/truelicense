@@ -87,14 +87,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>help-goal</id>
-                        <goals>
-                            <goal>helpmojo</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <!-- Replace the regular JAR with an uber-JAR using the
                  maven-shade-plugin as a workaround for a regression in
@@ -126,6 +118,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.4</version> <!-- required for Maven version < 3.1.1 -->
             </plugin>
         </plugins>
     </reporting>

@@ -326,6 +326,21 @@
                 <plugin>
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>3.4</version>
+                    <executions>
+                        <execution>
+                            <id>default-helpmojo</id>
+                            <goals>
+                                <goal>helpmojo</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-descriptor</id>
+                            <phase>process-classes</phase> <!-- required for Maven version < 3.2.2 -->
+                            <goals>
+                                <goal>descriptor</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <!-- Version 2.7 of the Maven Resources Plugin doesn't copy
                      .gitignore files - see http://jira.codehaus.org/browse/MRESOURCES-190 .
