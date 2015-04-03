@@ -442,7 +442,7 @@
 
     <profiles>
         <profile>
-            <id>enable-main-sources-obfuscation</id>
+            <id>enable-obfuscate-main-classes</id>
             <activation>
                 <file>
                     <exists>src/main</exists>
@@ -468,7 +468,7 @@
             </build>
         </profile>
         <profile>
-            <id>enable-test-sources-obfuscation</id>
+            <id>enable-obfuscate-test-classes</id>
             <activation>
                 <file>
                     <exists>src/test</exists>
