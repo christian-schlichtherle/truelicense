@@ -117,6 +117,9 @@
 <b>${project.name} ${project.version}</b>
         ]]></header>
 
+        <!-- maven-release-plugin -->
+        <preparationGoals>clean install</preparationGoals>
+
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
