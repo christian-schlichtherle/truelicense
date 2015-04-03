@@ -85,11 +85,19 @@
     </distributionManagement>
 
     <properties>
+        <!-- clirr-maven-plugin -->
+        <comparisonVersion>2.0</comparisonVersion>
+
+        <!-- maven-compiler-plugin -->
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.optimize>true</maven.compiler.optimize>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
         <maven.compiler.source>1.6</maven.compiler.source>
+
+        <!-- maven-failsafe-plugin && maven-surefire-plugin -->
+        <parallel>classesAndMethods</parallel>
+        <threadCount>1</threadCount>
 
         <!-- maven-javadoc-plugin -->
         <googleAnalyticsAccountId>UA-28191662-1</googleAnalyticsAccountId>
@@ -109,21 +117,13 @@
 <b>${project.name} ${project.version}</b>
         ]]></header>
 
-        <!-- clirr-maven-plugin -->
-        <comparisonVersion>2.0</comparisonVersion>
-
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
-        <!-- maven-surefire-plugin && maven-failsafe-plugin -->
-        <parallel>classesAndMethods</parallel>
-        <threadCount>1</threadCount>
-
+        <!-- dependencies -->
         <jackson.version>2.5.2</jackson.version>
-
         <javaee.version>6.0</javaee.version>
-
         <truezip.version>7.7.8</truezip.version>
     </properties>
 
