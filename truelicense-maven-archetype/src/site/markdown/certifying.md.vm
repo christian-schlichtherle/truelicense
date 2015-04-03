@@ -12,10 +12,11 @@ is printed at runtime**.
 $h3 Prerequisites
 
 You need to subscribe to the commercial licensing program for TrueLicense and
-order a TrueLicense certificate for each edition.
+buy a TrueLicense certificate for each edition of your software product.
 Processing the following certificate signing request and certificate response
 is part of this process.
-For ordering please contact `sales` AT `schlichtherle` DOT `de`.
+
+<a href="../pricing.html" class="btn btn-info">Check Price</a>
 
 $h3 Issuing the Certificate Signing Request
 
