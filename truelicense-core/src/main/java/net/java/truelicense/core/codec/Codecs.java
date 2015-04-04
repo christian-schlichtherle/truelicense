@@ -8,6 +8,9 @@ import java.nio.charset.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.CheckForNull;
+
+import net.java.truelicense.core.io.MemoryStore;
+import net.java.truelicense.core.io.Store;
 import net.java.truelicense.obfuscate.Obfuscate;
 import org.apache.commons.codec.Charsets;
 
@@ -104,6 +107,27 @@ public class Codecs {
         }
         throw new BinaryCodecException(
                 "The Content-Transfer-Encoding " + cte + " doesn't produce text.");
+    }
+
+    /**
+     * Returns a duplicate of the given object using a new
+     * {@link SerializationCodec}.
+     *
+     * @since TrueLicense 2.4.2
+     */
+    public static <T> T duplicate(T object) throws Exception {
+        return duplicate(object, new SerializationCodec());
+    }
+
+    /**
+     * Returns a duplicate of the given object using the given codec.
+     *
+     * @since TrueLicense 2.4.2
+     */
+    public static <T> T duplicate(final T object, final Codec codec) throws Exception {
+        final Store store = new MemoryStore();
+        codec.encode(store, object);
+        return codec.decode(store, object.getClass());
     }
 
     private Codecs() { }

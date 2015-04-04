@@ -11,6 +11,7 @@ import net.java.truelicense.core.auth.Authentication;
 import net.java.truelicense.core.auth.Repository;
 import net.java.truelicense.core.auth.RepositoryProvider;
 import net.java.truelicense.core.codec.Codec;
+import net.java.truelicense.core.codec.Codecs;
 import net.java.truelicense.core.crypto.Encryption;
 import net.java.truelicense.core.io.Copy;
 import net.java.truelicense.core.io.MemoryStore;
@@ -145,11 +146,8 @@ implements LicenseParametersProvider, StoreProvider {
         return duplicate;
     }
 
-    <V> V duplicate(final V object) throws Exception {
-        final Codec codec = codec();
-        final Store store = new MemoryStore();
-        codec.encode(store, object);
-        return codec.decode(store, object.getClass());
+    <V> V duplicate(V object) throws Exception {
+        return Codecs.duplicate(object, codec());
     }
 
     private interface LicenseAndRepositoryProvider

@@ -6,13 +6,14 @@ package net.java.truelicense.core
 
 import java.util.Locale
 
+import net.java.truelicense.core.codec.Codecs
 import net.java.truelicense.core.util.Message
 import org.scalatest.Matchers._
 
 /** @author Christian Schlichtherle */
 trait MessagesTestSupport {
   def testSerialization(message: Message) {
-    val message2 = Duplicate viaSerialization message
+    val message2 = Codecs duplicate message
     message2 toString () should be (message toString ())
     message2 toString Locale.ROOT should be (message toString Locale.ROOT)
   }
