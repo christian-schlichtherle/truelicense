@@ -48,15 +48,15 @@ extends WordSpec with ParallelTestExecution { this: TestContext =>
       }
 
       "have a non-empty artifact" in {
-        signed.getArtifact should not be ('isEmpty)
+        signed.getArtifact should not be 'isEmpty
       }
 
       "have a non-empty signature" in {
-        signed.getSignature should not be ('isEmpty)
+        signed.getSignature should not be 'isEmpty
       }
 
       "have a non-empty algorithm" in {
-        signed.getAlgorithm should not be ('isEmpty)
+        signed.getAlgorithm should not be 'isEmpty
       }
     }
   }

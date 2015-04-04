@@ -5,9 +5,9 @@
 package net.java.truelicense.core
 
 import org.junit.runner.RunWith
+import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.Matchers._
 
 /**
  * @author Christian Schlichtherle

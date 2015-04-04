@@ -132,6 +132,7 @@
 
     <modules>
         <module>truelicense-core</module>
+        <module>truelicense-integration-test</module>
         <module>truelicense-jax-rs</module>
         <module>truelicense-jsf</module>
         <module>truelicense-json</module>
@@ -151,13 +152,6 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-core</artifactId>
-                <type>test-jar</type>
-                <version>${project.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-jax-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -165,13 +159,6 @@
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-json</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-json</artifactId>
-                <type>test-jar</type>
-                <version>${project.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -248,7 +235,6 @@
                 <groupId>com.sun.jersey.jersey-test-framework</groupId>
                 <artifactId>jersey-test-framework-http</artifactId>
                 <version>1.19</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>javax.ws.rs</groupId>
@@ -459,32 +445,6 @@
                                     <id>obfuscate-main-classes</id>
                                     <goals>
                                         <goal>obfuscate-main-classes</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>enable-obfuscate-test-classes</id>
-            <activation>
-                <file>
-                    <exists>src/test</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>truelicense-maven-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>obfuscate-test-classes</id>
-                                    <goals>
-                                        <goal>obfuscate-test-classes</goal>
                                     </goals>
                                 </execution>
                             </executions>

@@ -4,13 +4,15 @@
  */
 package net.java.truelicense.core.x500
 
-import collection.JavaConverters._
+import javax.security.auth.x500.X500Principal
+
 import org.junit.runner.RunWith
+import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.Matchers._
 import org.scalatest.prop.PropertyChecks._
-import javax.security.auth.x500.X500Principal
+
+import scala.collection.JavaConverters._
 
 /**
  * @author Christian Schlichtherle

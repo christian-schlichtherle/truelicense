@@ -4,13 +4,13 @@
  */
 package net.java.truelicense.core
 
+import net.java.truelicense.core.TestContext.test1234
 import net.java.truelicense.core.crypto.PbeParameters
-import TestContext.test1234
 
 /** @author Christian Schlichtherle */
-trait V1EncryptionTestContext { this: TestContext =>
-  final override def transformation = new V1Encryption(new PbeParameters {
+trait V2EncryptionTestContext { this: TestContext =>
+  final override def transformation = new V2Encryption(new PbeParameters {
       def password = test1234.toCharArray
-      def algorithm = "PBEwithMD5andDES"
+      def algorithm = "PBEwithSHA1andDESede"
     })
 }

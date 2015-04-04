@@ -4,11 +4,12 @@
  */
 package net.java.truelicense.core.x500
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.WordSpec
-import org.scalatest.Matchers._
 import javax.security.auth.x500.X500Principal
+
+import org.junit.runner.RunWith
+import org.scalatest.Matchers._
+import org.scalatest.WordSpec
+import org.scalatest.junit.JUnitRunner
 
 /**
  * @author Christian Schlichtherle
