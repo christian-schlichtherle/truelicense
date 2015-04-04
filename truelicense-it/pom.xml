@@ -19,7 +19,10 @@
 
     <artifactId>truelicense-integration-test</artifactId>
 
-    <name>TrueLicense Integration Test</name>
+    <name>TrueLicense IT</name>
+    <description>
+        The TrueLicense IT module provides the integration tests.
+    </description>
 
     <dependencies>
         <dependency>

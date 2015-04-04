@@ -132,7 +132,7 @@
 
     <modules>
         <module>truelicense-core</module>
-        <module>truelicense-integration-test</module>
+        <module>truelicense-it</module>
         <module>truelicense-jax-rs</module>
         <module>truelicense-jsf</module>
         <module>truelicense-json</module>
