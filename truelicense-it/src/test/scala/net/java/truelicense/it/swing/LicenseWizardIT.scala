@@ -7,11 +7,11 @@ package net.java.truelicense.it.swing
 import java.awt.{Component, EventQueue}
 import java.util.Date
 import javax.swing._
-
-import net.java.truelicense.it.TestContext
+import net.java.truelicense.it.core.TestContext
 import TestContext.test1234
 import net.java.truelicense.core._
 import net.java.truelicense.core.io.MemoryStore
+import net.java.truelicense.it.core.TestContext
 import net.java.truelicense.swing._
 import LicenseWizardIT._
 import net.java.truelicense.ui.LicenseWizardMessage
@@ -191,7 +191,7 @@ object LicenseWizardIT {
   private def vendorManager = {
     val vc = managementContext.vendor
     import vc._
-    manager(keyStore(resourceInPackage(vc, "private.ks"), null, test1234, "mykey", test1234),
+    manager(keyStore(resource(prefix + "private.ks"), null, test1234, "mykey", test1234),
       pbe("PBEWithSHA1AndDESede", test1234)
     )
   }
@@ -199,12 +199,10 @@ object LicenseWizardIT {
   private def consumerManager = {
     val cc = managementContext.consumer
     import cc._
-    manager(keyStore(resourceInPackage(cc, "public.ks"), null, test1234, "mykey"),
+    manager(keyStore(resource(prefix + "public.ks"), null, test1234, "mykey"),
       pbe("PBEWithSHA1AndDESede", test1234),
       new MemoryStore)
   }
-
-  private def resourceInPackage(context: LicenseApplicationContext, name: String) = context resource (classOf[LicenseWizardIT].getPackage.getName.replace('.', '/') + "/" + name)
 
   private def newLicense = {
     // Don't subclass - wouldn't work with XML serialization
@@ -227,4 +225,6 @@ object LicenseWizardIT {
 
   private def waitTextComponent(cont: ContainerOperator, key: Enum[_]) =
     new JTextComponentOperator(cont, new NameComponentChooser(key.name))
+
+  private def prefix = classOf[LicenseWizardIT].getPackage.getName.replace('.', '/') + '/'
 }

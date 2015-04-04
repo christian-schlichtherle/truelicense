@@ -47,7 +47,7 @@ public final class LicenseConsumerService {
      * <pre>{@code
      * package ...;
      *
-     * import javax.ws.rs.ext.*;
+     * import javax.jax.rs.ext.*;
      * import net.java.truelicense.core.LicenseConsumerManager;
      *
      * &#64;Provider

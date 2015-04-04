@@ -4,7 +4,7 @@
  */
 package net.java.truelicense.core
 
-import net.java.truelicense.it.TestContext
+import net.java.truelicense.it.core.TestContext
 
 /** @author Christian Schlichtherle */
 trait V2CompressionTestContext { this: TestContext =>

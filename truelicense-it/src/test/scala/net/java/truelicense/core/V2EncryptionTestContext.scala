@@ -5,8 +5,9 @@
 package net.java.truelicense.core
 
 import net.java.truelicense.core.crypto.PbeParameters
-import net.java.truelicense.it.TestContext
-import net.java.truelicense.it.TestContext.test1234
+import net.java.truelicense.it.core.TestContext
+import TestContext.test1234
+import net.java.truelicense.it.core.TestContext
 
 /** @author Christian Schlichtherle */
 trait V2EncryptionTestContext { this: TestContext =>
