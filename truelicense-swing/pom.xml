@@ -23,25 +23,10 @@
         consuming license keys.
     </description>
 
-    <properties>
-        <!-- maven-surefire-plugin && maven-failsafe-plugin -->
-        <parallel>none</parallel>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-core</artifactId>
-            <type>test-jar</type>
-        </dependency>
-
-        <dependency>
-            <groupId>org.netbeans</groupId>
-            <artifactId>jemmy</artifactId>
         </dependency>
     </dependencies>
 

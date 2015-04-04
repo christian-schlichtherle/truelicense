@@ -4,11 +4,11 @@
  */
 package net.java.truelicense.core
 
+import net.java.truelicense.core.MessagesTestSupport._
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
-import net.java.truelicense.core.MessagesTestSupport._
 
 /**
  * @author Christian Schlichtherle

@@ -4,10 +4,11 @@
  */
 package net.java.truelicense.core
 
+import net.java.truelicense.core.codec.Codecs
 import org.junit.runner.RunWith
+import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.Matchers._
 
 /**
  * @author Christian Schlichtherle
@@ -29,7 +30,7 @@ class LicenseValidationExceptionTest extends WordSpec {
       }
 
       "be serializable" in {
-        val ex2 = Duplicate viaSerialization ex
+        val ex2 = Codecs duplicate ex
         ex2.getLocalizedMessage should be (message)
         ex2.getMessage should be (message)
       }

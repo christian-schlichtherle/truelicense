@@ -47,7 +47,7 @@ public final class LicenseConsumerService {
      * <pre>{@code
      * package ...;
      *
-     * import javax.ws.rs.ext.*;
+     * import javax.jax.rs.ext.*;
      * import net.java.truelicense.core.LicenseConsumerManager;
      *
      * &#64;Provider
@@ -88,8 +88,6 @@ public final class LicenseConsumerService {
         this.manager = Objects.requireNonNull(manager);
     }
 
-    LicenseConsumerManager manager() { return manager; }
-
     @GET
     @Path("subject")
     @Produces(APPLICATION_JSON)
@@ -105,7 +103,7 @@ public final class LicenseConsumerService {
     @GET
     @Path("subject")
     @Produces(TEXT_PLAIN)
-    public String subject() { return manager().subject(); }
+    public String subject() { return manager.subject(); }
 
     @POST
     public void install(final byte[] key)
@@ -113,7 +111,7 @@ public final class LicenseConsumerService {
         final MemoryStore store = new MemoryStore();
         store.data(key);
         try {
-            manager().install(store);
+            manager.install(store);
         } catch (LicenseManagementException ex) {
             throw new LicenseConsumerServiceException(BAD_REQUEST_STATUS_CODE, ex);
         }
@@ -125,13 +123,13 @@ public final class LicenseConsumerService {
     throws LicenseConsumerServiceException {
         final License license;
         try {
-            license = manager().view();
+            license = manager.view();
         } catch (LicenseManagementException ex) {
             throw new LicenseConsumerServiceException(NOT_FOUND_STATUS_CODE, ex);
         }
         if (verify) {
             try {
-                manager().verify();
+                manager.verify();
             } catch (LicenseManagementException ex) {
                 throw new LicenseConsumerServiceException(PAYMENT_REQUIRED_STATUS_CODE, ex);
             }
@@ -142,7 +140,7 @@ public final class LicenseConsumerService {
     @DELETE
     public void uninstall() throws LicenseConsumerServiceException {
         try {
-            manager().uninstall();
+            manager.uninstall();
         } catch (LicenseManagementException ex) {
             throw new LicenseConsumerServiceException(NOT_FOUND_STATUS_CODE, ex);
         }

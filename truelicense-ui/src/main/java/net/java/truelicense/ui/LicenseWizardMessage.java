@@ -7,6 +7,9 @@ package net.java.truelicense.ui;
 import net.java.truelicense.core.util.Formattable;
 import net.java.truelicense.core.util.Message;
 
+import javax.annotation.CheckForNull;
+import java.util.Date;
+
 /**
  * Enumerates the messages of a license management wizard for license consumer
  * applications.
@@ -43,7 +46,12 @@ public enum LicenseWizardMessage implements Formattable {
      *             returned by
      *             {@link net.java.truelicense.core.LicenseConsumerManager#subject()}.
      */
-    public Message format(Object... args) {
-        return Messages.message(this.name(), args);
+    @Override public Message format(Object... args) {
+        return Messages.message(name(), args);
+    }
+
+    public static String display_dateTimeFormat(String subject, @CheckForNull Date date) {
+        return null == date ? ""
+                : display_dateTimeFormat.format(subject, date).toString();
     }
 }

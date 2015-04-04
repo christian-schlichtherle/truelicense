@@ -4,12 +4,12 @@
  */
 package net.java.truelicense.ui.wizard
 
+import net.java.truelicense.ui.MessagesTestSupport._
 import net.java.truelicense.ui.wizard.WizardMessage._
 import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
-import net.java.truelicense.core.MessagesTestSupport._
 
 /**
   * @author Christian Schlichtherle
@@ -20,12 +20,12 @@ class MessagesTest extends WordSpec {
   "Messages" should {
     "be binary serializable" in {
       val table = Table(
-        ("key"),
-        (wizard_back),
-        (wizard_next),
-        (wizard_cancel),
-        (wizard_finish)
-        )
+        "key",
+        wizard_back,
+        wizard_next,
+        wizard_cancel,
+        wizard_finish
+      )
       forAll (table) { key => testSerialization(key format ()) }
     }
   }
