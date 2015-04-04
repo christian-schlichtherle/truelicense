@@ -17,7 +17,7 @@
         <version>2.4.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>truelicense-integration-test</artifactId>
+    <artifactId>truelicense-it</artifactId>
 
     <name>TrueLicense IT</name>
     <description>
