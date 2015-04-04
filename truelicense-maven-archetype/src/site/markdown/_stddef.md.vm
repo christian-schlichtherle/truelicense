@@ -26,6 +26,7 @@ $h2 $title
 ## Internal links to documentation pages in alphabetic order:
 [Building Your Project]: building.html
 [Certifying Your Project]: certifying.html
+[Example Configurations]: examples.html
 [Exploring Your Project]: exploring.html
 [Generating Your Project]: generating.html
 [Getting Started]: index.html

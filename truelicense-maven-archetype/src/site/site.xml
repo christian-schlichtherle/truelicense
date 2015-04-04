@@ -11,6 +11,7 @@
             <item name="Overview" href="index.html"/>
             <item name="Prerequisites" href="prerequisites.html"/>
             <item name="Generating Your Project" href="generating.html"/>
+            <item name="Example Configurations" href="examples.html"/>
             <item name="Exploring Your Project" href="exploring.html"/>
             <item name="Setting Up a VCS" href="setting-up-vcs.html"/>
             <item name="Building Your Project" href="building.html"/>

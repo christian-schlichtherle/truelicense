@@ -147,5 +147,5 @@ whereas `*` refers to any substring of any single path name element:
 
 ---
 
-#prev("Generating Your Project" "generating.html")
+#prev("Example Configurations" "examples.html")
 #next("Setting Up a VCS" "setting-up-vcs.html")

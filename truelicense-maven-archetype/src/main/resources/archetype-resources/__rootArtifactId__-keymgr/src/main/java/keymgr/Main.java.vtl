@@ -154,13 +154,13 @@ public enum Main {
                 .getBundle(Main.class.getName())
                 .getString(name() + "." + key);
     }
-#if($keyMgrLicenseValidationFunction != "basic" && $keyMgrLicenseValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation")
+#if($keyMgrLicenseValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation" || $keyMgrLicenseValidationClass == "${package}.keymgr.Main.NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {
         public void validate(License bean) { }
     }
 #end
-#if($keyMgrClockClass == "${package}.keymgr.Main${dollar}SystemClock")
+#if($keyMgrClockClass == "${package}.keymgr.Main${dollar}SystemClock" || $keyMgrClockClass == "${package}.keymgr.Main.SystemClock")
 
     public static final class SystemClock implements net.java.truelicense.core.util.Clock {
         public Date now() { return new Date(); }
