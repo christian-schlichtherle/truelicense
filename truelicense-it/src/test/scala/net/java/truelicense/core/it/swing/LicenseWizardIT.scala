@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-package net.java.truelicense.swing
+package net.java.truelicense.core.it.swing
 
 import java.awt.{Component, EventQueue}
 import java.util.Date
@@ -11,7 +11,8 @@ import javax.swing._
 import net.java.truelicense.core.TestContext.test1234
 import net.java.truelicense.core._
 import net.java.truelicense.core.io.MemoryStore
-import net.java.truelicense.swing.LicenseWizardIT._
+import net.java.truelicense.swing._
+import LicenseWizardIT._
 import net.java.truelicense.ui.LicenseWizardMessage
 import net.java.truelicense.ui.LicenseWizardMessage._
 import net.java.truelicense.ui.wizard.WizardMessage._
@@ -64,10 +65,10 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
     UIManager setLookAndFeel laf
   }
 
-  def welcomePanel = waitPanel(classOf[WelcomePanel].getSimpleName)
-  def installPanel = waitPanel(classOf[InstallPanel].getSimpleName)
-  def displayPanel = waitPanel(classOf[DisplayPanel].getSimpleName)
-  def uninstallPanel = waitPanel(classOf[UninstallPanel].getSimpleName)
+  def welcomePanel = waitPanel("WelcomePanel")
+  def installPanel = waitPanel("InstallPanel")
+  def displayPanel = waitPanel("DisplayPanel")
+  def uninstallPanel = waitPanel("UninstallPanel")
 
   def waitPanel(name: String) =
     new JComponentOperator(dialog, new ComponentChooser {
@@ -152,7 +153,8 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
           def waitText(key: LicenseWizardMessage) =
             waitTextComponent(displayPanel, key).getText
 
-          def format(date: Date) = DisplayPanel format (manager.subject, date)
+          def format(date: Date) =
+            display_dateTimeFormat(manager.subject, date)
 
           waitText(display_holder) should be (toString(license.getHolder))
           waitText(display_subject) should be (toString(license.getSubject))

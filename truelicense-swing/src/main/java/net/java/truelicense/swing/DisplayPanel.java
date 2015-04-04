@@ -33,7 +33,7 @@ final class DisplayPanel extends LicensePanel {
 
     private License license;
 
-    public DisplayPanel(final LicenseWizard wizard) {
+    DisplayPanel(final LicenseWizard wizard) {
         super(wizard);
         initComponents();
     }
@@ -77,12 +77,7 @@ final class DisplayPanel extends LicensePanel {
     }
 
     private String format(@CheckForNull Date date) {
-        return format(subject(), date);
-    }
-
-    static String format(String subject, @CheckForNull Date date) {
-        return null == date ? ""
-                : display_dateTimeFormat.format(subject, date).toString();
+        return display_dateTimeFormat(subject(), date);
     }
 
     /** This method is called from within the constructor to
