@@ -4,6 +4,8 @@
  */
 package net.java.truelicense.core
 
+import net.java.truelicense.it.TestContext
+
 /** @author Christian Schlichtherle */
 trait V1CompressionTestContext { this: TestContext =>
   final override def transformation = new V1Compression
