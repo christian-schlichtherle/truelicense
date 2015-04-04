@@ -17,6 +17,6 @@ public enum WizardMessage implements Formattable {
     wizard_back, wizard_next, wizard_cancel, wizard_finish;
 
     @Override public Message format(Object... args) {
-        return Messages.message(this.name(), args);
+        return Messages.message(name(), args);
     }
 }

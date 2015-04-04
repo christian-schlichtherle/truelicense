@@ -43,7 +43,7 @@ public enum LicenseWizardMessage implements Formattable {
      *             returned by
      *             {@link net.java.truelicense.core.LicenseConsumerManager#subject()}.
      */
-    public Message format(Object... args) {
-        return Messages.message(this.name(), args);
+    @Override public Message format(Object... args) {
+        return Messages.message(name(), args);
     }
 }
