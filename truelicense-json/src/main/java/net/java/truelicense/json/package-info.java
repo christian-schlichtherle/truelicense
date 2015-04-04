@@ -2,6 +2,7 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
 /**
  * Provides life cycle management for Version-2-with-JSON (V2/JSON) format
  * license keys.
