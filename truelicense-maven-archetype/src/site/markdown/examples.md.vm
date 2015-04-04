@@ -1,0 +1,176 @@
+##
+## Copyright (C) 2005-2015 Schlichtherle IT Services.
+## All rights reserved. Use is subject to license terms.
+##
+#parse("_stddef.md.vm")
+#title("Example Configurations")
+
+This page shows some example configurations which you can use when
+[generating your project]. 
+
+$h3 Basic Configuration
+
+This is a basic configuration example for a software product with only edition
+with the name "standard" and no free trial period.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DgroupId=com.company.product \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 Free Trial Period
+
+This example adds `freeTrialPeriod=30` and 
+`ftpSecretMarkerClass=sun.security.provider.Sun` to the basic configuration 
+example in order to configure a free trial period of thirty days.
+Please change the value of the property `ftpSecretMarkerClass` because it's 
+obviously not secret anymore.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DfreeTrialPeriod=30 \
+        -DftpSecretMarkerClass=sun.security.provider.Sun \
+        -DgroupId=com.company.product \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 Multiple Product Editions
+
+This example adds `editions=enterprise, standard` to the basic configuration
+example in order to manage separate license keys for a Standard Edition and an
+Enterprise Edition of the software product.
+Note that due to the ordering of the editions, the Enterprise Edition is a 
+superset of the Standard Edition.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -Deditions=enterprise, standard \
+        -DgroupId=com.company.product \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 Hide Uninstall Action
+
+This example adds `hideUninstallAction=true` to the basic configuration example
+in order to remove the "Uninstall ${dollar}{licensingSubject} license key" 
+action from the license wizard dialog.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DgroupId=com.company.product \
+        -DhideUninstallAction=true \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 Disable License Wizard
+
+This example adds `disableLicenseWizard=true` to the basic configuration
+example in order to completely remove the license wizard dialog from the 
+generated code.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DdisableLicenseWizard=true \
+        -DgroupId=com.company.product \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 Custom License Validation
+
+This example adds 
+`keyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation`,
+`keyGenLicenseValidationFunction=both`,
+`keyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation` and
+`keyMgrLicenseValidationFunction=both` to the basic configuration example in 
+order to decorate the basic license validation in the Key Generator and Key 
+Manager modules with custom functions.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DgroupId=com.company.product \
+        -DkeyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation \
+        -DkeyGenLicenseValidationFunction=both \
+        -DkeyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation \
+        -DkeyMgrLicenseValidationFunction=both \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 Custom Clock
+
+This example adds `keyMgrClockClass=com.company.product.keymgr.CustomClock` to 
+the basic configuration example in order to replace the system clock with a 
+custom implementation.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DgroupId=com.company.product \
+        -DkeyMgrClockClass=com.company.product.keymgr.CustomClock \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+$h3 V2/XML License Key Format
+
+This example adds `licenseKeyFormat=V2/XML` to the basic configuration example
+in order to use the V2/XML license key format and remove the dependency on the
+Jackson JSON Processor from the generated code.
+
+    ${dollar} mvn archetype:generate -B \
+        -DarchetypeArtifactId=$project.artifactId \
+        -DarchetypeGroupId=$project.groupId \
+        -DarchetypeVersion=$project.version \
+        -DartifactId=license \
+        -DcompanyName="Company Inc." \
+        -DdefaultPassword=test1234 \
+        -DgroupId=com.company.product \
+        -DlicenseKeyFormat=V2/XML \
+        -DlicensingSubject="Product 1" \
+        -Dversion=1.0-SNAPSHOT
+    [...]
+
+---
+
+#prev("Generating Your Project" "generating.html")
+#next("Exploring Your Project" "exploring.html")
