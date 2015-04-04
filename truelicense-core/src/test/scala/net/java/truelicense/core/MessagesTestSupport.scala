@@ -5,6 +5,7 @@
 package net.java.truelicense.core
 
 import java.util.Locale
+
 import net.java.truelicense.core.util.Message
 import org.scalatest.Matchers._
 

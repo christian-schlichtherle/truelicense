@@ -4,8 +4,8 @@
  */
 package net.java.truelicense.core
 
-import net.java.truelicense.core.io.MemoryStore
 import net.java.truelicense.core.codec.SerializationCodec
+import net.java.truelicense.core.io.MemoryStore
 
 object Duplicate {
 
