@@ -17,7 +17,7 @@
                         <div class="hero-unit">
                             <h1>Code Generator</h1>
                             <p>The TrueLicense Maven Archetype generates a custom licensing schema for your software product.</p>
-                            <p><a class="btn btn-large btn-success pull-right" href="truelicense-maven-archetype/index.html">Get started</a></p>
+                            <p><a class="btn btn-large btn-success pull-right" href="truelicense-maven-archetype/index.html">Start now</a></p>
                         </div>
                     </div>
                     <div class="item">
@@ -44,7 +44,7 @@
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Do You Need Help?</h1>
-                            <p>There is an FAQ, this web site, Javadoc, a mailing list, an issue tracker and professional services.</p>
+                            <p>You can check the web site, FAQ, Javadoc, mailing lists, issue tracker or ask for professional services.</p>
                             <p><a class="btn btn-large btn-info pull-right" href="help.html">Learn more</a></p>
                         </div>
                     </div>
