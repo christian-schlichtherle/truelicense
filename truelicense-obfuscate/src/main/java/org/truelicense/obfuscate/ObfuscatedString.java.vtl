@@ -3,6 +3,8 @@
  * All rights reserved. Use is subject to license terms.
  */
 
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "").replaceAll(" /\*.*\*/", ".toString()")#end
+#set($hash = '#')
 package org.truelicense.obfuscate;
 
 import java.nio.ByteBuffer;
@@ -38,17 +40,17 @@ import javax.annotation.concurrent.ThreadSafe;
  * other tools required to do this!
  * <p>
  * To obfuscate a constant string expression you need to pass it to the static
- * method {@link #obfuscate} at design time and replace it with the generated
+ * method {@link ${hash}obfuscate} at design time and replace it with the generated
  * Java source code expression.
  * At runtime, a duplicate of the original constant string expression will get
  * computed by the Java source code expression.
  * If you need to preserve the identity relation of constant string expressions,
- * then you need to add a call to {@link String#intern()} to the duplicated
+ * then you need to add a call to {@link String${hash}intern}()} to the duplicated
  * string.
  * <p>
  * A tool for Java byte code transformation (e.g. the TrueLicense Maven Plugin)
  * may automate some or all of these steps.
- * However, it needs to call {@link #array} instead of {@link #obfuscate} at
+ * However, it needs to call {@link ${hash}array} instead of {@link ${hash}obfuscate} at
  * build time.
  *
  * <h3>Security Considerations</h3>
@@ -88,7 +90,7 @@ public final class ObfuscatedString {
      * Returns a string containing an obfuscated Java source code expression
      * which computes a duplicate of the given string again.
      * This is equivalent to calling
-     * <code>{@link #java(long[])}({@link #array(String)}(s))</code>.
+     * <code>{@link ${hash}java}(long[])}({@link ${hash}array}(String)}(s))</code>.
      * <p>
      * As an example, calling this method with {@code "Hello world!"} as
      * its parameter may produce the result
@@ -119,11 +121,7 @@ public final class ObfuscatedString {
     public static String java(final long[] obfuscated) {
         // Create and initialize a string builder to hold the generated Java
         // source code.
-        final StringBuilder code = new StringBuilder(new ObfuscatedString(new long[] {
-                0x3b538a33717b18b3l, 0x8ae3b936b10951d4l, 0x85cfddfea813f6edl,
-                0x68afb497e1ccb1a1l, 0x7e1db30645eb65e7l, 0x5a1083ca6c5696a7l,
-                0x82c29477374881cdl, 0x607119968158dcb1l, 0x77da08afec88f473l
-        }).toString()); /* => "new org.truelicense.obfuscate.ObfuscatedString(new long[] { " */
+        final StringBuilder code = new StringBuilder(#obfuscate("new org.truelicense.obfuscate.ObfuscatedString(new long[] { "));
 
         // Append the seed as the first array element of the obfuscated string.
         // All values are represented in hexadecimal in order to keep the
@@ -133,29 +131,24 @@ public final class ObfuscatedString {
             appendHexLiteral(code.append(", "), obfuscated[i]);
 
         return code
-                .append(new ObfuscatedString(new long[] {
-                    0x2865f1c36fef6f93l, 0x13d569d6bbead465l,
-                    0xc65e3249366b27acl, 0xcab8a831482bf866l }).toString() /* => " }).toString() /* => " */)
-                .append(literal(new ObfuscatedString(obfuscated).toString()))
-                .append(new ObfuscatedString(new long[] {
-                    0x710108f883b53eebl, 0xa8f54750b6afe09cl }).toString() /* => " *\/" */)
+                .append(#obfuscate(" }).toString() /* => "))
+                .append(literal(new ObfuscatedString(obfuscated).toString()).replace("*/", "*\\/")) // escape */ in comment
+                .append(#obfuscate(" */"))
                 .toString();
     }
 
     /**
-     * Transforms the given string to form a valid string literal in Java
-     * source code.
+     * Encodes the given string to a valid string literal in Java source code.
      *
      * @param s the string to quote and escape.
      * @return The transformed string.
      */
     public static String literal(String s) {
-        return '\u0022' /* '"' */ +
-                s   .replace("\\", new ObfuscatedString(new long[] {
-                        0x225e94f9c1ade5cal, 0x36cae7e9d5b4e6c0l }).toString() /* => "\\\\" */)
-                    .replace("\"", new ObfuscatedString(new long[] {
-                        0x2505f23bd5972f5dl, 0xbf4132b556077393l }).toString() /* => "\\\"" */) +
-                '\u0022' /* '"' */;
+        return '"' +
+                s   .replace("\\", #obfuscate('\\'))
+                    .replace("\"", #obfuscate('\"')) +
+                '"';
+
     }
 
     /**
@@ -178,10 +171,7 @@ public final class ObfuscatedString {
      */
     public static long[] array(final String s) {
         if (-1 != s.indexOf(0)) {
-            throw new IllegalArgumentException(new ObfuscatedString(new long[] {
-                0x6f93c9212aa728c9l, 0xb5e8b43e1040ff96l, 0xb0cb4ce04595efdel,
-                0x97f77e55aa0ad9d4l, 0x1a9f2f43bbc9fd0dl
-            }).toString()); /* => "Null characters are not allowed!" */
+            throw new IllegalArgumentException(#obfuscate("Null characters are not allowed!"));
         }
 
         // Encode the string to a byte array using UTF-8.
@@ -220,7 +210,7 @@ public final class ObfuscatedString {
     /**
      * Decodes a long value from eight bytes in little endian order,
      * beginning at index {@code off}.
-     * This is the inverse of {@link #encode(long, byte[], int)}.
+     * This is the inverse of {@link ${hash}encode(long, byte[], int)}.
      * If less than eight bytes are remaining in the array,
      * only these low order bytes are processed and the complementary high
      * order bytes of the returned value are set to zero.
@@ -243,7 +233,7 @@ public final class ObfuscatedString {
     /**
      * Encodes a long value to eight bytes in little endian order,
      * beginning at index {@code off}.
-     * This is the inverse of {@link #decode(byte[], int)}.
+     * This is the inverse of {@link ${hash}decode}(byte[], int)}.
      * If less than eight bytes are remaining in the array,
      * only these low order bytes of the long value are processed and the
      * complementary high order bytes are ignored.
@@ -311,7 +301,7 @@ public final class ObfuscatedString {
 
     /**
      * Equivalent to
-     * <code>{@link #toString() toString()}.{@link String#intern() intern()}</code>.
+     * <code>{@link ${hash}toString}() toString()}.{@link String${hash}intern}() intern()}</code>.
      *
      * @return A canonical representation of the original string.
      */
