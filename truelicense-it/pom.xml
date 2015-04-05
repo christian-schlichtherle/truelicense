@@ -13,7 +13,7 @@
 
     <parent>
         <artifactId>truelicense</artifactId>
-        <groupId>net.java.truelicense</groupId>
+        <groupId>org.truelicense</groupId>
         <version>3.0-SNAPSHOT</version>
     </parent>
 

@@ -107,7 +107,7 @@ For example, if the project defines the property `${dollar}{editions}` to be
 For the following examples, it's necessary to add the following imports:
 
     import ${dollar}{package}.keygen.*;
-    import net.java.truelicense.core.*;
+    import org.truelicense.core.*;
 
 $h4 Creating a License Key
 
@@ -122,10 +122,10 @@ You can create a license key using:
 ... where
 `${dollar}{edition}` references an edition of your software product,
 `${dollar}{license-key-path}` references the path of the license key file,
-`manager` is an instance of the class [`net.java.truelicense.core.LicenseVendorManager`],
-`context` is an instance of the class [`net.java.truelicense.core.LicenseVendorContext`],
-`bean` is an instance of the class [`net.java.truelicense.core.License`] and
-`sink` is an instance of the class [`net.java.truelicense.core.io.Sink`] and
+`manager` is an instance of the class [`org.truelicense.core.LicenseVendorManager`],
+`context` is an instance of the class [`org.truelicense.core.LicenseVendorContext`],
+`bean` is an instance of the class [`org.truelicense.core.License`] and
+`sink` is an instance of the class [`org.truelicense.core.io.Sink`] and
 
 For a fully elaborated example, please have a look at the `Main` class.
 
@@ -228,7 +228,7 @@ If the operation succeeds using the parent manager then the processing stops,
 otherwise the operation is retried using the child manager.
 This repeats recursively until the operation either succeeds using some manager
 or no more managers are available, in which case a
-[`net.java.truelicense.core.LicenseManagementException`]
+[`org.truelicense.core.LicenseManagementException`]
 is thrown.
 
 This design allows you to use the API for installing, viewing, verifying and
@@ -240,7 +240,7 @@ which returns the first manager in the configured chain-of-responsibility.
 For the following examples, it's necessary to add the following imports:
 
     import ${dollar}{package}.keymgr.*;
-    import net.java.truelicense.core.*;
+    import org.truelicense.core.*;
 
 $h4 Installing a License Key
 
@@ -252,9 +252,9 @@ You can install a license key using:
     manager.install(source);
 
 ... where `${dollar}{license-key-path}` references the path of the license key file,
-`manager` is an instance of the class [`net.java.truelicense.core.LicenseConsumerManager`],
-`context` is an instance of the class [`net.java.truelicense.core.LicenseConsumerContext`] and
-`source` is an instance of the class [`net.java.truelicense.core.io.Source`]
+`manager` is an instance of the class [`org.truelicense.core.LicenseConsumerManager`],
+`context` is an instance of the class [`org.truelicense.core.LicenseConsumerContext`] and
+`source` is an instance of the class [`org.truelicense.core.io.Source`]
 
 According to the chain-of-responsibility pattern, `LicenseManager.install(Source)`
 recursively tries each license consumer manager until the given license key
@@ -263,7 +263,7 @@ It's not necessary to know for which edition the license key has been created.
 
 If the given file does not hold a license key for the lock of any license
 consumer manager, then a
-[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+[`org.truelicense.core.LicenseManagementException`] is thrown instead.
 
 $h4 Viewing the License Key
 
@@ -272,7 +272,7 @@ You can view the installed license key using:
     License bean = LicenseManager.get().view();
 
 ... where `bean` is an instance of the class
-[`net.java.truelicense.core.License`].
+[`org.truelicense.core.License`].
 
 According to the chain-of-responsibility pattern, `LicenseManager.view()`
 recursively tries each license consumer manager until an installed license key
@@ -283,7 +283,7 @@ Note that this method does not validate the encoded license bean, so for
 example, it's term may have already expired.
 
 If no license key is installed, then a
-[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+[`org.truelicense.core.LicenseManagementException`] is thrown instead.
 
 $h4 Verifying the License Key
 
@@ -296,10 +296,10 @@ recursively tries each license consumer manager until an installed license key
 is found which passes validation, too.
 
 If no license key is installed, then a
-[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+[`org.truelicense.core.LicenseManagementException`] is thrown instead.
 
 If a license key is installed, but the encoded license bean is invalid, then a
-[`net.java.truelicense.core.LicenseValidationException`] is thrown instead.
+[`org.truelicense.core.LicenseValidationException`] is thrown instead.
 
 You need to call this method in advance whenever you want to access a feature
 of your software product.
@@ -366,17 +366,17 @@ created.
 
 If no license key is installed or only an auto-generated FTP license
 key is installed, then a
-[`net.java.truelicense.core.LicenseManagementException`] is thrown instead.
+[`org.truelicense.core.LicenseManagementException`] is thrown instead.
 
-[`net.java.truelicense.core.License`]: ../apidocs/net/java/truelicense/core/License.html
-[`net.java.truelicense.core.LicenseManagementException`]: ../apidocs/net/java/truelicense/core/LicenseManagementException.html
-[`net.java.truelicense.core.LicenseValidationException`]: ../apidocs/net/java/truelicense/core/LicenseValidationException.html
-[`net.java.truelicense.core.LicenseConsumerContext`]: ../apidocs/net/java/truelicense/core/LicenseConsumerContext.html
-[`net.java.truelicense.core.LicenseConsumerManager`]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
-[`net.java.truelicense.core.LicenseVendorContext`]: ../apidocs/net/java/truelicense/core/LicenseVendorContext.html
-[`net.java.truelicense.core.LicenseVendorManager`]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html
-[`net.java.truelicense.core.io.Sink`]: ../apidocs/net/java/truelicense/core/io/Sink.html
-[`net.java.truelicense.core.io.Source`]: ../apidocs/net/java/truelicense/core/io/Source.html
+[`org.truelicense.core.License`]: ../apidocs/net/java/truelicense/core/License.html
+[`org.truelicense.core.LicenseManagementException`]: ../apidocs/net/java/truelicense/core/LicenseManagementException.html
+[`org.truelicense.core.LicenseValidationException`]: ../apidocs/net/java/truelicense/core/LicenseValidationException.html
+[`org.truelicense.core.LicenseConsumerContext`]: ../apidocs/net/java/truelicense/core/LicenseConsumerContext.html
+[`org.truelicense.core.LicenseConsumerManager`]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
+[`org.truelicense.core.LicenseVendorContext`]: ../apidocs/net/java/truelicense/core/LicenseVendorContext.html
+[`org.truelicense.core.LicenseVendorManager`]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html
+[`org.truelicense.core.io.Sink`]: ../apidocs/net/java/truelicense/core/io/Sink.html
+[`org.truelicense.core.io.Source`]: ../apidocs/net/java/truelicense/core/io/Source.html
 
 [license consumer manager]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
 [license vendor manager]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html

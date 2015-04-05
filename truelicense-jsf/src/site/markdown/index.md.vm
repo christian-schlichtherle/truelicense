@@ -53,7 +53,7 @@ uninstallation shall be supported by the wizard component.
 
 The EL expression for the `manager` attribute needs to resolve to a license
 consumer manager of the interface type
-`net.java.truelicense.core.LicenseConsumerManager`.
+`org.truelicense.core.LicenseConsumerManager`.
 If you have used the
 [TrueLicense Maven Archetype](../truelicense-maven-archetype/index.html)
 to generate a project, then you just need to annotate the `LicensingSchema`
@@ -62,7 +62,7 @@ class in the KeyMgr module like this:
     package ${package}.keymgr;
 
     import javax.inject.Named
-    import net.java.truelicense.core.LicenseConsumerManager;
+    import org.truelicense.core.LicenseConsumerManager;
     [...]
 
     @Named

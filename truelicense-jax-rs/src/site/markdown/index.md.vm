@@ -30,7 +30,7 @@ The service is implemented by the class
 and accompanied by the exception mapper class
 [`LicenseConsumerServiceExceptionMapper`](../apidocs/net/java/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
 With a typical container, you should just let it scan the package
-[`net.java.truelicense.ws.rs`](../apidocs/net/java/truelicense/ws/rs/package-summary.html)
+[`org.truelicense.ws.rs`](../apidocs/net/java/truelicense/ws/rs/package-summary.html)
 so that it can find these classes.
 
 The `LicenseConsumerService` needs a
@@ -42,7 +42,7 @@ dependency using:
     package [...];
 
     import javax.ws.rs.ext.*;
-    import net.java.truelicense.core.LicenseConsumerManager;
+    import org.truelicense.core.LicenseConsumerManager;
 
     @Provider
     public class LicenseConsumerManagerResolver
@@ -67,7 +67,7 @@ class in the KeyMgr module like this:
 
     import javax.enterprise.context.ApplicationScoped;
     import javax.enterprise.inject.Produces;
-    import net.java.truelicense.core.LicenseConsumerManager;
+    import org.truelicense.core.LicenseConsumerManager;
     [...]
 
     public class LicensingSchema {

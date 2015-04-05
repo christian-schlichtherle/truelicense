@@ -28,4 +28,4 @@ $h3 Usage
 For usage information, please have a look at the
 [TrueLicense Maven Archetype](../truelicense-maven-archetype/index.html).
 You can also check the Javadoc for the package
-[`net.java.truelicense.json`](../apidocs/net/java/truelicense/json/package-summary.html).
+[`org.truelicense.json`](../apidocs/net/java/truelicense/json/package-summary.html).

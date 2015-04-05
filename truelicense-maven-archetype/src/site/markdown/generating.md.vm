@@ -202,7 +202,7 @@ Note that property values are generally _case sensitive_.
             <td><code>keyGenLicenseValidationClass</code></td>
             <td>n/a</td>
             <td>A fully qualified class name which implements the interface
-                <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>net.java.truelicense.core.LicenseValidation</code></a> for use in the Key 
+                <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>org.truelicense.core.LicenseValidation</code></a> for use in the Key 
                 Generator module.
                 The value of this property is ignored if the value of the property
                 <code>keyGenLicenseValidationFunction</code> is <code>basic</code>.</td>
@@ -224,7 +224,7 @@ Note that property values are generally _case sensitive_.
             <td><code>keyMgrClockClass</code></td>
             <td><code>-</code></td>
             <td>A fully qualified class name which implements the interface
-                <a href="../apidocs/net/java/truelicense/core/util/Clock.html"><code>net.java.truelicense.core.util.Clock</code></a> for use in the Key Manager
+                <a href="../apidocs/net/java/truelicense/core/util/Clock.html"><code>org.truelicense.core.util.Clock</code></a> for use in the Key Manager
                 module.
                 Select <code>-</code> to use the system clock.</td>
         </tr>
@@ -232,7 +232,7 @@ Note that property values are generally _case sensitive_.
             <td><code>keyMgrLicenseValidationClass</code></td>
             <td>n/a</td>
             <td>A fully qualified class name which implements the interface
-                <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>net.java.truelicense.core.LicenseValidation</code></a> for use in the Key 
+                <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>org.truelicense.core.LicenseValidation</code></a> for use in the Key 
                 Manager module.
                 The value of this property is ignored if the value of the property
                 <code>keyMgrLicenseValidationFunction</code> is <code>basic</code>.</td>
@@ -292,7 +292,7 @@ Note that property values are generally _case sensitive_.
             <td>The licensing subject.
                 The value of this property gets stored in the generated license
                 keys and is used for validation.
-                A <a href="../apidocs/net/java/truelicense/core/LicenseValidationException.html"><code>net.java.truelicense.core.LicenseValidationException</code></a>
+                A <a href="../apidocs/net/java/truelicense/core/LicenseValidationException.html"><code>org.truelicense.core.LicenseValidationException</code></a>
                 is thrown if the validation fails.
                 It's best practice to include the name of your software product
                 and a version number range for which the license keys are valid,

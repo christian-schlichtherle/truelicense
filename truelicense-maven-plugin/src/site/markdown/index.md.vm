@@ -84,7 +84,7 @@ This function expects a string parameter.
 For example, if you define a property named `password` in your POM, then you
 can use the following template file for obfuscating it in the source code:
 
-    import net.java.truelicense.obfuscate.ObfuscatedString;
+    import org.truelicense.obfuscate.ObfuscatedString;
 
     class Test {
 
@@ -137,7 +137,7 @@ TrueLicense Maven Plugin to your POM like this:
     </project>
 
 The default configuration replaces each constant string value annotated by
-[`net.java.truelicense.obfuscate.Obfuscate`](../apidocs/net/java/truelicense/obfuscate/Obfuscate.html)
+[`org.truelicense.obfuscate.Obfuscate`](../apidocs/net/java/truelicense/obfuscate/Obfuscate.html)
 with a call to a synthetic method which evaluates an obfuscated Java byte code
 expression to compute the original constant string value again.
 Please refer to the documentation of the respective goal for configuration
@@ -148,7 +148,7 @@ $h4 Using The `@Obfuscate` Annotation
 When using the default scope, you need to annotate fields with constant string
 values with `@Obfuscate` like this:
 
-    import net.java.truelicense.obfuscate.Obfuscate;
+    import org.truelicense.obfuscate.Obfuscate;
 
     class Test {
 

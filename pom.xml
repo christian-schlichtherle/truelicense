@@ -15,7 +15,7 @@
         <version>102</version>
     </parent>
 
-    <groupId>net.java.truelicense</groupId>
+    <groupId>org.truelicense</groupId>
     <artifactId>truelicense</artifactId>
     <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -80,7 +80,7 @@
             <name>TrueLicense Website</name>
             <!-- DON'T use ${project.groupId}, ${project.artifactId} here.
                  This would change in sub-modules! -->
-            <url>file://${user.home}/sites/net.java.truelicense/</url>
+            <url>file://${user.home}/sites/org.truelicense/</url>
         </site>
     </distributionManagement>
 

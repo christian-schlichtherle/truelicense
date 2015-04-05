@@ -47,7 +47,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.java.truelicense</groupId>
+            <groupId>org.truelicense</groupId>
             <artifactId>truelicense-jax-rs</artifactId>
         </dependency>
     </dependencies>

@@ -3,13 +3,13 @@
  * All rights reserved. Use is subject to license terms.
  */
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseManagementContextPackage = "net.java.truelicense.json")
+#set($licenseManagementContextPackage = "org.truelicense.json")
 #set($licenseManagementContextClass = "V2JsonLicenseManagementContext")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseManagementContextPackage = "net.java.truelicense.core")
+#set($licenseManagementContextPackage = "org.truelicense.core")
 #set($licenseManagementContextClass = "V2XmlLicenseManagementContext")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseManagementContextPackage = "net.java.truelicense.core")
+#set($licenseManagementContextPackage = "org.truelicense.core")
 #set($licenseManagementContextClass = "V1LicenseManagementContext")
 #end
 #set($editions = $convert.toStrings($editions))
@@ -17,16 +17,16 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "")#end
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
 import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
-import net.java.truelicense.core.*;
+import org.truelicense.core.*;
 import $licenseManagementContextPackage.$licenseManagementContextClass;
-import net.java.truelicense.core.io.Sink;
-import net.java.truelicense.obfuscate.*;
+import org.truelicense.core.io.Sink;
+import org.truelicense.obfuscate.*;
 
 /**
  * The enumeration of the license vendor managers for $licensingSubject
@@ -112,7 +112,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
 
     // Note that the class implementing the interface
-    // net.java.truelicense.core.LicenseManagementContext
+    // org.truelicense.core.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass

@@ -6,7 +6,7 @@ package ${package}.keymgrsvc;
 
 import ${package}.keymgr.LicenseManager;
 import javax.ws.rs.ext.*;
-import net.java.truelicense.core.LicenseConsumerManager;
+import org.truelicense.core.LicenseConsumerManager;
 
 /**
  * @author Christian Schlichtherle

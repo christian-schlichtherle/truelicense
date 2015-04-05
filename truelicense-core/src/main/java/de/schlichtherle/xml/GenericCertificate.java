@@ -5,12 +5,12 @@
 
 package de.schlichtherle.xml;
 
-import net.java.truelicense.core.auth.Artifactory;
-import net.java.truelicense.core.auth.BasicRepository;
-import net.java.truelicense.core.auth.Repository;
-import net.java.truelicense.core.auth.RepositoryModel;
-import net.java.truelicense.core.codec.Codec;
-import net.java.truelicense.obfuscate.Obfuscate;
+import org.truelicense.core.auth.Artifactory;
+import org.truelicense.core.auth.BasicRepository;
+import org.truelicense.core.auth.Repository;
+import org.truelicense.core.auth.RepositoryModel;
+import org.truelicense.core.codec.Codec;
+import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;

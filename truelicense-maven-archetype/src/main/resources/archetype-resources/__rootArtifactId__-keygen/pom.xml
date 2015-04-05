@@ -31,7 +31,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.java.truelicense</groupId>
+            <groupId>org.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseDependency}</artifactId>
         </dependency>
     </dependencies>

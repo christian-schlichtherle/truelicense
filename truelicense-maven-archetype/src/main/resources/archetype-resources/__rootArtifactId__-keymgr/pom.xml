@@ -40,14 +40,14 @@
         </dependency>
 
         <dependency>
-            <groupId>net.java.truelicense</groupId>
+            <groupId>org.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseDependency}</artifactId>
         </dependency>
 #if($disableLicenseWizard == false)
         <!-- This dependency is only required for the "wizard" command of the
              Main class. -->
         <dependency>
-            <groupId>net.java.truelicense</groupId>
+            <groupId>org.truelicense</groupId>
             <artifactId>truelicense-swing</artifactId>
             <optional>true</optional>
         </dependency>
