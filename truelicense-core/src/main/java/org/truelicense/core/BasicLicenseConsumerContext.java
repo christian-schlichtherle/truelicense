@@ -155,7 +155,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
     }
 
     @SuppressWarnings("PackageVisibleField")
-    @Override public ManagerBuilder manager() {
+    @Override public ManagerBuilder managerBuilder() {
         @NotThreadSafe
         class MB implements ManagerBuilder {
             final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
@@ -186,7 +186,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             }
 
             @Override
-            public ManagerBuilder parent() {
+            public ManagerBuilder parentBuilder() {
                 final MB target = this;
                 return new MB() {
                     @Override public ManagerBuilder inject() {

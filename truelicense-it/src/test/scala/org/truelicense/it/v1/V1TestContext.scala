@@ -41,7 +41,7 @@ trait V1TestContext extends TestContext {
     }
 
   override final def vendorManager = {
-    val vm = vendorContext.manager
+    val vm = vendorContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.jks")
@@ -56,7 +56,7 @@ trait V1TestContext extends TestContext {
   }
 
   override final def chainedVendorManager = {
-    val vm = vendorContext.manager
+    val vm = vendorContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jks")
@@ -65,13 +65,13 @@ trait V1TestContext extends TestContext {
       .pbe
         .password(test1234)
         .inject
-    .build
+      .build
     require(vm.context eq vendorContext)
     vm
   }
 
   override final def consumerManager(store: Store) = {
-    val cm = consumerContext.manager
+    val cm = consumerContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.jks")
@@ -87,7 +87,7 @@ trait V1TestContext extends TestContext {
   }
 
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = consumerContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jks")
@@ -101,7 +101,7 @@ trait V1TestContext extends TestContext {
   }
 
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = consumerContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jks")

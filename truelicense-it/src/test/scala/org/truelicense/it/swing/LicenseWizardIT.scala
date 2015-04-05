@@ -190,7 +190,7 @@ object LicenseWizardIT {
   private def managementContext = new V2XmlLicenseManagementContext("subject")
 
   private def vendorManager =
-    managementContext.vendor.manager
+    managementContext.vendor.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.ks")
@@ -202,7 +202,7 @@ object LicenseWizardIT {
       .build
 
   private def consumerManager =
-    managementContext.consumer.manager
+    managementContext.consumer.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.ks")

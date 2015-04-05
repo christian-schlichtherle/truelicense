@@ -39,7 +39,7 @@ extends LicenseApplicationContext {
      * Call its {@link ManagerBuilder#build} method to obtain a configured
      * license consumer manager.
      */
-    ManagerBuilder manager();
+    ManagerBuilder managerBuilder();
 
     /**
      * A builder for
@@ -77,7 +77,7 @@ extends LicenseApplicationContext {
          *
          * @see #parent(LicenseConsumerManager)
          */
-        ManagerBuilder parent();
+        ManagerBuilder parentBuilder();
 
         /**
          * Sets the free trial period (FTP) in days (the 24 hour equivalent).

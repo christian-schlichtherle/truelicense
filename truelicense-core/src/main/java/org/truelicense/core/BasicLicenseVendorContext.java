@@ -85,7 +85,7 @@ implements LicenseVendorContext {
     }
 
     @SuppressWarnings("PackageVisibleField")
-    @Override public ManagerBuilder manager() {
+    @Override public ManagerBuilder managerBuilder() {
         return new ManagerBuilder() {
             final BasicLicenseVendorContext vc = BasicLicenseVendorContext.this;
 

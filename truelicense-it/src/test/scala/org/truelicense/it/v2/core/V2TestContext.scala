@@ -15,7 +15,7 @@ import org.truelicense.it.v2.core.V2TestContext.prefix
 trait V2TestContext extends TestContext {
 
   override final def vendorManager = {
-    val vm = vendorContext.manager
+    val vm = vendorContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.jceks")
@@ -30,7 +30,7 @@ trait V2TestContext extends TestContext {
   }
 
   override final def chainedVendorManager = {
-    val vm = vendorContext.manager
+    val vm = vendorContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jceks")
@@ -45,7 +45,7 @@ trait V2TestContext extends TestContext {
   }
 
   override final def consumerManager(store: Store) = {
-    val cm = consumerContext.manager
+    val cm = consumerContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.jceks")
@@ -61,7 +61,7 @@ trait V2TestContext extends TestContext {
   }
 
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = consumerContext.managerBuilder
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jceks")
@@ -75,7 +75,7 @@ trait V2TestContext extends TestContext {
   }
 
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = consumerContext.managerBuilder
       .ftpDays(1)
       .keyStore
         .alias("mykey")

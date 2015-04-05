@@ -59,7 +59,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
         @Override
         LicenseVendorManager newManager() {
-            return _context.manager()
+            return _context.managerBuilder()
                     .keyStore()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
