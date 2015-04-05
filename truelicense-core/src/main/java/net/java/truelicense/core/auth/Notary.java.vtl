@@ -1,15 +1,16 @@
-#macro (obfuscate $string)$java.obfuscatedString($string).replaceAll(" /\\*.*\\*/", ".toString()")#end
 /*
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "").replaceAll(" /\*.*\*/", ".toString()")#end
 package net.java.truelicense.core.auth;
 
 import net.java.truelicense.core.codec.Codec;
 import net.java.truelicense.core.io.Source;
 import net.java.truelicense.core.util.Message;
 import net.java.truelicense.core.util.Objects;
-import net.java.truelicense.obfuscate.Obfuscate;
+import net.java.truelicense.obfuscate.*;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -219,5 +220,5 @@ public final class Notary implements Authentication {
             final char[] pwd = parameters().keyPassword();
             return 0 != pwd.length ? pwd : storePassword();
         }
-    } // Cache
+    }
 }
