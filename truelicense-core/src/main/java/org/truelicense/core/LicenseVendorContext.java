@@ -33,56 +33,6 @@ public interface LicenseVendorContext
 extends CodecProvider, LicenseApplicationContext, LicenseProvider {
 
     /**
-     * Configures a license vendor manager.
-     *
-     * @param  authentication the authentication.
-     * @param  encryption the encryption.
-     * @return A license vendor manager.
-     */
-    LicenseVendorManager manager(Authentication authentication, Encryption encryption);
-
-    /**
-     * Configures a key store based authentication.
-     * <p>
-     * The provided strings should be computed on demand from an obfuscated
-     * form, e.g. by annotating a constant string value with the
-     * &#64;{@link Obfuscate} annotation and processing it with the TrueLicense
-     * Maven Plugin.
-     *
-     * @param source the nullable source for the key store.
-     *               May be {@code null} if and only if the key store type
-     *               does not require loading from an input stream.
-     * @param storeType the nullable type of the key store,
-     *                  e.g. {@code "JCEKS"} or {@code "JKS"}.
-     *                  If this is {@code null}, then the value computed by the
-     *                  expression
-     *                  <code>{@link #context()}.{@link LicenseManagementContext#storeType() storeType()}</code>
-     *                  is used instead.
-     *                  Otherwise, you need to make sure that the store type is
-     *                  supported by a security provider on all platforms - see
-     *                  <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/SunProviders.html">Java Cryptography Architeture Sun Providers Documentation</a>.
-     * @param storePassword the password for verifying the integrity of the
-     *                      key store.
-     * @param alias the alias of the private key entry in the key store.
-     * @param keyPassword the nullable password for accessing the private key
-     *                    in the key entry.
-     *                    If this is {@code null} or empty, then the
-     *                    {@code storePassword} is used instead.
-     * @return A key store based authentication.
-     * @throws IllegalArgumentException if a password is considered to be too
-     *         weak.
-     */
-    Authentication keyStore(@CheckForNull Source source, @CheckForNull String storeType, ObfuscatedString storePassword, String alias, @CheckForNull ObfuscatedString keyPassword);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException if the password is considered to be too
-     *         weak.
-     */
-    @Override Encryption pbe(String algorithm, ObfuscatedString password);
-
-    /**
      * Returns a builder for
      * {@linkplain LicenseVendorManager license vendor managers}.
      * Call its {@link ManagerBuilder#build} method to obtain a configured

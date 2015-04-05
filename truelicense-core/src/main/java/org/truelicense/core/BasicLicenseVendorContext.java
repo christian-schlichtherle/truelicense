@@ -39,7 +39,7 @@ implements LicenseVendorContext {
 
     @Override public final Codec codec() { return context().codec(); }
 
-    @Override public Authentication keyStore(
+    Authentication keyStore(
             @CheckForNull Source source,
             @CheckForNull String storeType,
             ObfuscatedString storePassword,
@@ -55,7 +55,7 @@ implements LicenseVendorContext {
         return context().encryption(pbeChecked(algorithm, password));
     }
 
-    @Override public LicenseVendorManager manager(
+    LicenseVendorManager manager(
             Authentication authentication,
             Encryption encryption) {
         return manager(parameters(authentication, encryption));
@@ -87,7 +87,7 @@ implements LicenseVendorContext {
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder manager() {
         return new ManagerBuilder() {
-            final LicenseVendorContext vc = BasicLicenseVendorContext.this;
+            final BasicLicenseVendorContext vc = BasicLicenseVendorContext.this;
 
             @Nullable Authentication authentication;
             @Nullable Encryption encryption;

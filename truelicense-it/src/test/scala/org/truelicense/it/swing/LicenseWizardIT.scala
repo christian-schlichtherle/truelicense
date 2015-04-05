@@ -189,21 +189,30 @@ object LicenseWizardIT {
 
   private def managementContext = new V2XmlLicenseManagementContext("subject")
 
-  private def vendorManager = {
-    val vc = managementContext.vendor
-    import vc._
-    manager(keyStore(resource(prefix + "private.ks"), null, test1234, "mykey", test1234),
-      pbe("PBEWithSHA1AndDESede", test1234)
-    )
-  }
+  private def vendorManager =
+    managementContext.vendor.manager
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "private.ks")
+        .storePassword(test1234)
+        .inject
+      .pbe
+        .password(test1234)
+        .inject
+      .build
 
-  private def consumerManager = {
-    val cc = managementContext.consumer
-    import cc._
-    manager(keyStore(resource(prefix + "public.ks"), null, test1234, "mykey"),
-      pbe("PBEWithSHA1AndDESede", test1234),
-      new MemoryStore)
-  }
+  private def consumerManager =
+    managementContext.consumer.manager
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "public.ks")
+        .storePassword(test1234)
+        .inject
+      .pbe
+        .password(test1234)
+        .inject
+      .storeIn(new MemoryStore)
+      .build()
 
   private def newLicense = {
     // Don't subclass - wouldn't work with XML serialization

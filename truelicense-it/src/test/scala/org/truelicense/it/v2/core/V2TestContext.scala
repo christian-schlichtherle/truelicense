@@ -15,52 +15,76 @@ import org.truelicense.it.v2.core.V2TestContext.prefix
 trait V2TestContext extends TestContext {
 
   override final def vendorManager = {
-    import vendorContext._
-    val vm = manager(keyStore(resource(prefix + "private.jceks"),
-                              null, test1234, "mykey", test1234),
-            pbe(null, test1234))
+    val vm = vendorContext.manager
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "private.jceks")
+        .storePassword(test1234)
+        .inject
+      .pbe
+        .password(test1234)
+        .inject
+      .build
     require(vm.context eq vendorContext)
     vm
   }
 
   override final def chainedVendorManager = {
-    import vendorContext._
-    val vm = manager(keyStore(resource(prefix + "chained-private.jceks"),
-                              null, test1234, "mykey", test1234),
-            pbe(null, test1234))
+    val vm = vendorContext.manager
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "chained-private.jceks")
+        .storePassword(test1234)
+        .inject
+      .pbe
+        .password(test1234)
+        .inject
+      .build
     require(vm.context eq vendorContext)
     vm
   }
 
   override final def consumerManager(store: Store) = {
-    import consumerContext._
-    val cm = manager(keyStore(resource(prefix + "public.jceks"),
-                              null, test1234, "mykey"),
-            pbe(null, test1234),
-            store)
+    val cm = consumerContext.manager
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "public.jceks")
+        .storePassword(test1234)
+        .inject
+      .pbe
+        .password(test1234)
+        .inject
+      .storeIn(store)
+      .build
     require(cm.context eq consumerContext)
     cm
   }
 
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    import consumerContext._
-    val cm = chainedManager(parent,
-                   keyStore(resource(prefix + "chained-public.jceks"),
-                            null, test1234, "mykey"),
-                   null,
-                   store)
+    val cm = consumerContext.manager
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "chained-public.jceks")
+        .storePassword(test1234)
+        .inject
+      .parent(parent)
+      .storeIn(store)
+      .build
     require(cm.context eq consumerContext)
     cm
   }
 
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    import consumerContext._
-    val cm = ftpManager(parent,
-               ftpKeyStore(resource(prefix + "ftp.jceks"),
-                           null, test1234, "mykey", test1234),
-               null,
-               store,
-               1)
+    val cm = consumerContext.manager
+      .ftpDays(1)
+      .keyStore
+        .alias("mykey")
+        .loadFromResource(prefix + "ftp.jceks")
+        .storePassword(test1234)
+        .inject
+      .parent(parent)
+      .storeIn(store)
+      .build
     require(cm.context eq consumerContext)
     cm
   }

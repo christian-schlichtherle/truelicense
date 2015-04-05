@@ -45,7 +45,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
 
     @Override public License license() { return context().license(); }
 
-    @Override public Authentication keyStore(
+    Authentication keyStore(
             @CheckForNull Source source,
             @CheckForNull String storeType,
             ObfuscatedString storePassword,
@@ -54,7 +54,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                 source, storeType, storePassword, alias, null));
     }
 
-    @Override public Authentication ftpKeyStore(
+    Authentication ftpKeyStore(
             @CheckForNull Source source,
             @CheckForNull String storeType,
             ObfuscatedString storePassword,
@@ -70,7 +70,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
         return context().encryption(pbeUnchecked(algorithm, password));
     }
 
-    @Override public LicenseConsumerManager manager(
+    LicenseConsumerManager manager(
             Authentication authentication,
             Encryption encryption,
             Store store) {
@@ -102,7 +102,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
         @Override public long cachePeriodMillis() { return cachePeriodMillis; }
     }
 
-    @Override public LicenseConsumerManager ftpManager(
+    LicenseConsumerManager ftpManager(
             LicenseConsumerManager parent,
             Authentication authentication,
             @CheckForNull Encryption encryption,
@@ -114,7 +114,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                 secret);
     }
 
-    @Override public LicenseConsumerManager chainedManager(
+    LicenseConsumerManager chainedManager(
             LicenseConsumerManager parent,
             Authentication authentication,
             @CheckForNull Encryption encryption,
@@ -158,7 +158,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
     @Override public ManagerBuilder manager() {
         @NotThreadSafe
         class MB implements ManagerBuilder {
-            final LicenseConsumerContext cc = BasicLicenseConsumerContext.this;
+            final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
 
             @Nullable LicenseConsumerManager parent;
             int ftpDays;
