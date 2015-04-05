@@ -43,10 +43,9 @@ trait V1TestContext extends TestContext {
   override final def vendorManager = {
     val vm = vendorContext.manager
       .keyStore
+        .alias("mykey")
         .loadFromResource(prefix + "private.jks")
         .storePassword(test1234)
-        .alias("mykey")
-        .keyPassword(test1234)
         .inject
       .pbe
         .password(test1234)
@@ -59,10 +58,9 @@ trait V1TestContext extends TestContext {
   override final def chainedVendorManager = {
     val vm = vendorContext.manager
       .keyStore
+        .alias("mykey")
         .loadFromResource(prefix + "chained-private.jks")
         .storePassword(test1234)
-        .alias("mykey")
-        .keyPassword(test1234)
         .inject
       .pbe
         .password(test1234)
@@ -75,9 +73,9 @@ trait V1TestContext extends TestContext {
   override final def consumerManager(store: Store) = {
     val cm = consumerContext.manager
       .keyStore
+        .alias("mykey")
         .loadFromResource(prefix + "public.jks")
         .storePassword(test1234)
-        .alias("mykey")
         .inject
       .pbe
         .password(test1234)
@@ -90,12 +88,12 @@ trait V1TestContext extends TestContext {
 
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
     val cm = consumerContext.manager
-      .parent(parent)
       .keyStore
+        .alias("mykey")
         .loadFromResource(prefix + "chained-public.jks")
         .storePassword(test1234)
-        .alias("mykey")
         .inject
+      .parent(parent)
       .storeIn(store)
       .build
     require(cm.context eq consumerContext)
@@ -104,13 +102,12 @@ trait V1TestContext extends TestContext {
 
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
     val cm = consumerContext.manager
-      .parent(parent)
       .keyStore
+        .alias("mykey")
         .loadFromResource(prefix + "ftp.jks")
         .storePassword(test1234)
-        .alias("mykey")
-        .keyPassword(test1234)
         .inject
+      .parent(parent)
       .storeIn(store)
       .ftpDays(1)
       .build
