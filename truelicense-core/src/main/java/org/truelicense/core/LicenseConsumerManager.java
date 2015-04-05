@@ -33,8 +33,8 @@ extends ContextProvider<LicenseConsumerContext>,
         LicenseSubjectProvider {
 
     /**
-     * Installs the license key from the given source and returns an
-     * unvalidated duplicate of its encoded license bean.
+     * Verifies the digital signature of the license key and copies it to the
+     * configured store.
      * Unlike {@link #verify}, this operation does not validate the license
      * bean.
      * This enables the caller to obtain a duplicate of the license bean even
@@ -46,10 +46,8 @@ extends ContextProvider<LicenseConsumerContext>,
      * {@linkplain LicenseAuthorization#clearInstall authorization check}.
      *
      * @param  source the source for loading the license key.
-     * @return An unvalidated duplicate of the license bean which is encoded in
-     *         the license key.
      */
-    License install(Source source) throws LicenseManagementException;
+    void install(Source source) throws LicenseManagementException;
 
     /**
      * Returns an unvalidated duplicate of the license bean which is encoded in

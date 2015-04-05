@@ -37,8 +37,8 @@ implements LicenseConsumerManager {
     }
 
     @Override
-    public License install(Source source) throws LicenseManagementException {
-        return manager.install(source);
+    public void install(Source source) throws LicenseManagementException {
+        manager.install(source);
     }
 
     @Override public License view() throws LicenseManagementException {

@@ -55,20 +55,12 @@ extends WordSpec { this: TestContext =>
       intercept[LicenseManagementException] { cm view () }
       intercept[LicenseManagementException] { cm verify () }
       intercept[LicenseManagementException] { cm uninstall () }
-      val installed = cm install vs
-      installed should equal (created)
-      installed should not be theSameInstanceAs (created)
-      ;{
-        val reinstalled = cm install vs
-        reinstalled should equal (installed)
-        reinstalled should not be theSameInstanceAs (installed)
-      }
+      cm install vs
+      cm install vs // reinstall
       cm verify ()
       val viewed = cm view ()
       viewed should equal (created)
       viewed should not be theSameInstanceAs (created)
-      viewed should equal (installed)
-      viewed should not be theSameInstanceAs (installed)
       cm uninstall ()
       intercept[LicenseManagementException] { cm view () }
       intercept[LicenseManagementException] { cm verify () }
@@ -122,9 +114,7 @@ extends WordSpec { this: TestContext =>
           created
         }
 
-        val installed = ccm install vs // delegates to cm!
-        installed should equal (created)
-        installed should not be theSameInstanceAs (created)
+        ccm install vs // delegates to cm!
         cs exists () should equal (true)
         ccs exists () should equal (false)
         ccm verify ()
@@ -145,9 +135,7 @@ extends WordSpec { this: TestContext =>
           created
         }
 
-        val installed = ccm install vs // installs in ccm!
-        installed should equal (created)
-        installed should not be theSameInstanceAs (created)
+        ccm install vs // installs in ccm!
         cs exists () should equal (false)
         ccs exists () should equal (true)
         ccm verify ()

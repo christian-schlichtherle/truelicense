@@ -34,11 +34,12 @@ extends UpdatingLicenseConsumerManager {
     }
 
     @Override
-    public License install(final Source source)
+    public void install(final Source source)
     throws LicenseManagementException {
-        return run(new Action<License>() {
-            @Override public License call() throws LicenseManagementException {
-                return manager.install(source);
+        run(new Action<Void>() {
+            @Override public Void call() throws LicenseManagementException {
+                manager.install(source);
+                return null;
             }
         });
     }

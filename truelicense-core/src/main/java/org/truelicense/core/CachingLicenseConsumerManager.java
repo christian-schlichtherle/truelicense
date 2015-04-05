@@ -32,11 +32,11 @@ extends BasicLicenseManager implements CachePeriodProvider {
             cachedLicense = new CachedLicense();
 
     @Override
-    public License install(final Source source)
+    public void install(final Source source)
     throws LicenseManagementException {
         final Store store = store();
         synchronized (store) {
-            final License license = super.install(source);
+            super.install(source);
 
             // As a side effect of the license key installation, the cached
             // artifactory and license get associated to the source unless this
@@ -55,7 +55,6 @@ extends BasicLicenseManager implements CachePeriodProvider {
             // the caller.
             this.cachedArtifactory = cachedArtifactory.source(store);
             this.cachedLicense = new CachedLicense();
-            return license;
         }
     }
 

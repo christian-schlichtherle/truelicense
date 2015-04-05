@@ -33,10 +33,9 @@ extends UpdatingLicenseConsumerManager {
     }
 
     @Override
-    public License install(final Source source) throws LicenseManagementException {
-        final License license = manager.install(source);
+    public void install(final Source source) throws LicenseManagementException {
+        manager.install(source);
         enable();
-        return license;
     }
 
     @Override

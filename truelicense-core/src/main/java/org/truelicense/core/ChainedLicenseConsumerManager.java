@@ -41,12 +41,12 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
     }
 
     @Override
-    public License install(Source source) throws LicenseManagementException {
+    public void install(Source source) throws LicenseManagementException {
         try {
-            return parent().install(source);
+            parent().install(source);
         } catch (final LicenseManagementException primary) {
             if (canCreateLicenseKeys()) throw primary;
-            return super.install(source);
+            super.install(source);
         }
     }
 

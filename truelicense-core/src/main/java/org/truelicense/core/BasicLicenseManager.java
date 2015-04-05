@@ -46,14 +46,14 @@ implements LicenseParametersProvider, StoreProvider {
         });
     }
 
-    public License install(final Source source)
+    public void install(final Source source)
     throws LicenseManagementException {
-        return wrap(new Callable<License>() {
-            @Override public License call() throws Exception {
+        wrap(new Callable<Void>() {
+            @Override public Void call() throws Exception {
                 authorization().clearInstall(parameters());
-                final License license = decodeLicense(source);
+                decodeLicense(source); // checks digital signature
                 Copy.copy(source, store());
-                return license;
+                return null;
             }
         });
     }
