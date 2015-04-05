@@ -64,7 +64,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                 source, storeType, storePassword, alias, keyPassword));
     }
 
-    @Override public Encryption pbe(
+    Encryption pbe(
             @CheckForNull String algorithm,
             ObfuscatedString password) {
         return context().encryption(pbeUnchecked(algorithm, password));

@@ -30,33 +30,6 @@ public interface LicenseApplicationContext
 extends ContextProvider<LicenseManagementContext> {
 
     /**
-     * Configures a Password Based Encryption (PBE).
-     * <p>
-     * If the given {@code algorithm} name is {@code null}, then it defaults to
-     * the value computed by the expression
-     * <code>{@link #context()}.{@link LicenseManagementContext#pbeAlgorithm() pbeAlgorithm()}</code>.
-     * Otherwise, you need to make sure that the named algorithm is supported
-     * by a security provider on all platforms - see
-     * <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/SunProviders.html">Java Cryptography Architeture Sun Providers Documentation</a>.
-     * <p>
-     * Note that the configured license key format may define additional
-     * constraints.
-     * For example, applications which require compatibility with V1 format
-     * license keys must use the {@code PBEWithMD5AndDES} algorithm, so they
-     * should provide {@code null}.
-     * <p>
-     * If an algorithm name is specified, the string should be computed on
-     * demand from an obfuscated form, e.g. by annotating a constant string
-     * value with the &#64;{@link Obfuscate} annotation and processing it with
-     * the TrueLicense Maven Plugin.
-     *
-     * @param  algorithm the nullable PBE algorithm name.
-     * @param  password the password.
-     * @return A Password Based Encryption (PBE).
-     */
-    Encryption pbe(@CheckForNull String algorithm, ObfuscatedString password);
-
-    /**
      * Returns a source which loads the resource with the given {@code name}.
      * The provided string should be computed on demand from an obfuscated form,
      * e.g. by annotating a constant string value with the &#64;{@link Obfuscate}
@@ -116,9 +89,6 @@ extends ContextProvider<LicenseManagementContext> {
          * for example {@code "JCEKS"} or {@code "JKS"}.
          *
          * @return {@code this}
-         * @see    LicenseConsumerContext#keyStore
-         * @see    LicenseConsumerContext#ftpKeyStore
-         * @see    LicenseVendorContext#keyStore
          */
         KsbaInjection<Target> storeType(@CheckForNull String storeType);
 
@@ -162,7 +132,6 @@ extends ContextProvider<LicenseManagementContext> {
          * Sets the algorithm name.
          *
          * @return {@code this}
-         * @see LicenseApplicationContext#pbe
          */
         PbeInjection<Target> algorithm(@CheckForNull String algorithm);
 
@@ -171,7 +140,6 @@ extends ContextProvider<LicenseManagementContext> {
          * encryption/decryption.
          *
          * @return {@code this}
-         * @see    LicenseApplicationContext#pbe
          */
         PbeInjection<Target> password(ObfuscatedString password);
     }
