@@ -3,6 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "").replace("new long[] { ", "Array[Long](").replaceAll(" }\) /\*.*\*/", ")).toString")#end
 package net.java.truelicense.obfuscate
 
 import java.util.regex.Pattern
@@ -20,13 +21,7 @@ class ObfuscatedStringTest extends WordSpec {
 
   "An ObfuscatedString" should {
     "always reproduce the original string literal" in {
-      // This string has been obfuscated with Oracle's JDK 1.7.0_05 on the
-      // Windows platform.
-      // It must produce the same string across all Java implementations
-      // and platforms.
-      new ObfuscatedString(
-        Array[Long](0x41e62204839b3a26l, 0x72fabb78cac1945al, 0x2e0928a3b6bcb12cl)
-      ).toString should equal ("Hello world!")
+      #obfuscate("Hello world!") should equal ("Hello world!")
     }
 
     "support round trip conversion" in {
