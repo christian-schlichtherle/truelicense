@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "").replaceAll(" /\\*.*\\*/", ".toString()")#end
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "").replaceAll(" /\*.*\*/", ".toString()")#end
 #set($hash = '#')
 package net.java.truelicense.obfuscate;
 
