@@ -127,12 +127,19 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
         ManagerBuilder encryption(Encryption encryption);
 
         /**
-         * Returns an injection for a password based encryption (PBE).
+         * Returns an injection for a password based encryption.
          * Call its {@link Injection#inject} method to build and inject the
          * configured encryption into this builder and return it.
          *
+         * @since TrueLicense 2.5
          * @see #encryption(Encryption)
          */
+        PbeInjection<ManagerBuilder> encryption();
+
+        /**
+         * @deprecated since TrueLicense 2.5. Use {@link #encryption()} instead.
+         */
+        @Deprecated
         PbeInjection<ManagerBuilder> pbe();
     }
 }

@@ -279,8 +279,15 @@ extends LicenseApplicationContext {
          * Otherwise, the PBE parameters get inherited from the parent license
          * consumer manager.
          *
+         * @since TrueLicense 2.5
          * @see #encryption(Encryption)
          */
+        PbeInjection<ManagerBuilder> encryption();
+
+        /**
+         * @deprecated since TrueLicense 2.5. Use {@link #encryption()} instead.
+         */
+        @Deprecated
         PbeInjection<ManagerBuilder> pbe();
 
         /**

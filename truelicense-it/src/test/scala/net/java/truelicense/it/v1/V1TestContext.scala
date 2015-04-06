@@ -47,7 +47,7 @@ trait V1TestContext extends TestContext {
         .loadFromResource(prefix + "private.jks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .build
@@ -62,7 +62,7 @@ trait V1TestContext extends TestContext {
         .loadFromResource(prefix + "chained-private.jks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
     .build
@@ -77,7 +77,7 @@ trait V1TestContext extends TestContext {
         .loadFromResource(prefix + "public.jks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .storeIn(store)

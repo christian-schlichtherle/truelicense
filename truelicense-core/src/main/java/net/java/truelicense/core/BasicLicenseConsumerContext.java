@@ -266,7 +266,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             }
 
             @Override
-            public PbeInjection<ManagerBuilder> pbe() {
+            public PbeInjection<ManagerBuilder> encryption() {
                 return new PbeInjection<ManagerBuilder>() {
                     @Nullable String algorithm;
                     @Nullable ObfuscatedString password;
@@ -289,6 +289,11 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                         return this;
                     }
                 };
+            }
+
+            @Override
+            public PbeInjection<ManagerBuilder> pbe() {
+                return encryption();
             }
 
             @Override

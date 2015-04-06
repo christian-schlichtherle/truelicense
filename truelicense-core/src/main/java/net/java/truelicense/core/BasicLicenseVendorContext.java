@@ -161,7 +161,7 @@ implements LicenseVendorContext {
             }
 
             @Override
-            public PbeInjection<ManagerBuilder> pbe() {
+            public PbeInjection<ManagerBuilder> encryption() {
                 return new PbeInjection<ManagerBuilder>() {
                     @Nullable String algorithm;
                     @Nullable ObfuscatedString password;
@@ -184,6 +184,11 @@ implements LicenseVendorContext {
                         return this;
                     }
                 };
+            }
+
+            @Override
+            public PbeInjection<ManagerBuilder> pbe() {
+                return encryption();
             }
         };
     }
