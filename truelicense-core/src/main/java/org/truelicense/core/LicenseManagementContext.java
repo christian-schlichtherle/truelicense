@@ -47,9 +47,6 @@ extends CachePeriodProvider,
      * authentication with the license vendor context or the license consumer
      * context.
      *
-     * @see   LicenseVendorContext#keyStore
-     * @see   LicenseConsumerContext#keyStore
-     * @see   LicenseConsumerContext#ftpKeyStore
      * @see   LicenseApplicationContext.KsbaInjection#storeType
      * @since TrueLicense 2.1
      */
@@ -68,8 +65,6 @@ extends CachePeriodProvider,
      * You can override this default value when configuring the PBE with the
      * license vendor context or the license consumer context.
      *
-     * @see   LicenseConsumerContext#pbe
-     * @see   LicenseVendorContext#pbe
      * @see   LicenseApplicationContext.PbeInjection#algorithm
      * @since TrueLicense 2.1
      */
