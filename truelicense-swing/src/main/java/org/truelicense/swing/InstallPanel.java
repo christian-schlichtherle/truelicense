@@ -8,7 +8,6 @@ package org.truelicense.swing;
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.misc.Message;
-import org.truelicense.core.io.PathStore;
 import org.truelicense.swing.util.ComponentEnabler;
 import org.truelicense.swing.util.Enabler;
 import org.truelicense.ui.LicenseWizardState;
@@ -222,10 +221,8 @@ final class InstallPanel extends LicenseWorkerPanel {
 
     private void installActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
-            final Source source = new PathStore(Paths.get(fileField.getText()));
-
             @Override protected Void doInBackground() throws Exception {
-                manager().install(source);
+                manager().install(manager().context().pathStore(Paths.get(fileField.getText())));
                 return null;
             }
 

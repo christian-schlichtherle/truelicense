@@ -7,13 +7,11 @@ package org.truelicense.it.core
 
 import java.nio.file.Files
 
-import org.truelicense.core.io.PathStore
-
 /** @author Christian Schlichtherle */
 trait PathStoreITContext { this: TestContext =>
   override final def store = {
     val path = Files.createTempFile("truelicense", ".tmp")
     Files delete path
-    new PathStore(path)
+    vendorContext.pathStore(path)
   }
 }
