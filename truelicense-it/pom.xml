@@ -10,8 +10,8 @@
     </prerequisites>
 
     <parent>
-        <artifactId>truelicense</artifactId>
         <groupId>net.java.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
         <version>2.5-SNAPSHOT</version>
     </parent>
 
