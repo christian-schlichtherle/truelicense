@@ -45,7 +45,7 @@ implements LicenseVendorContext {
             ObfuscatedString storePassword,
             String alias,
             @CheckForNull ObfuscatedString keyPassword) {
-        return context().authentication(kspChecked(
+        return context().authentication(apChecked(
                 source, storeType, storePassword, alias, keyPassword));
     }
 

@@ -6,7 +6,7 @@
 package org.truelicense.core;
 
 import org.truelicense.core.auth.Authentication;
-import org.truelicense.core.auth.KeyStoreParameters;
+import org.truelicense.core.auth.AuthenticationParameters;
 import org.truelicense.core.auth.RepositoryProvider;
 import org.truelicense.core.codec.CodecProvider;
 import org.truelicense.core.comp.CompressionProvider;
@@ -56,11 +56,11 @@ extends CachePeriodProvider,
     String storeType();
 
     /**
-     * Returns an authentication for the given key store parameters.
+     * Returns an authentication for the given parameters.
      *
-     * @param ksp the key store parameters.
+     * @param parameters the authentication parameters.
      */
-    Authentication authentication(KeyStoreParameters ksp);
+    Authentication authentication(AuthenticationParameters parameters);
 
     /**
      * Returns the name of the default Password Based Encryption (PBE)

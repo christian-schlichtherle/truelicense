@@ -56,10 +56,10 @@ public final class Notary implements Authentication {
 
     private static volatile boolean logged;
 
-    private final KeyStoreParameters ksp;
+    private final AuthenticationParameters parameters;
 
-    public Notary(final KeyStoreParameters ksp) {
-        this.ksp = Objects.requireNonNull(ksp);
+    public Notary(final AuthenticationParameters parameters) {
+        this.parameters = Objects.requireNonNull(parameters);
     }
 
     @Override
@@ -72,7 +72,9 @@ public final class Notary implements Authentication {
         return new Cache().verify(codec, repository);
     }
 
-    @Override public KeyStoreParameters parameters() { return ksp; }
+    @Override public AuthenticationParameters parameters() {
+        return parameters;
+    }
 
     @NotThreadSafe
     private final class Cache {

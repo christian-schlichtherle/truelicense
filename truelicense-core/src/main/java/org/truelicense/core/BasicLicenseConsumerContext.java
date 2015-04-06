@@ -50,7 +50,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             @CheckForNull String storeType,
             ObfuscatedString storePassword,
             String alias) {
-        return context().authentication(kspUnchecked(
+        return context().authentication(apUnchecked(
                 source, storeType, storePassword, alias, null));
     }
 
@@ -60,7 +60,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             ObfuscatedString storePassword,
             String alias,
             @CheckForNull ObfuscatedString keyPassword) {
-        return context().authentication(kspChecked(
+        return context().authentication(apChecked(
                 source, storeType, storePassword, alias, keyPassword));
     }
 

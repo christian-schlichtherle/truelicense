@@ -6,7 +6,7 @@
 package org.truelicense.core;
 
 import org.truelicense.core.auth.Authentication;
-import org.truelicense.core.auth.KeyStoreParameters;
+import org.truelicense.core.auth.AuthenticationParameters;
 import org.truelicense.core.auth.Repository;
 import org.truelicense.core.auth.RepositoryProvider;
 import org.truelicense.core.codec.Codec;
@@ -161,21 +161,20 @@ implements ClassLoaderProvider,
         };
     }
 
-    final KeyStoreParameters kspChecked(
+    final AuthenticationParameters apChecked(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
             final ObfuscatedString storePassword,
             final String alias,
             final @CheckForNull ObfuscatedString keyPassword) {
-        final KeyStoreParameters ksp = kspUnchecked(source, storeType,
+        final AuthenticationParameters ap = apUnchecked(source, storeType,
                 storePassword, alias, keyPassword);
-        check(ksp.storePassword());
-        check(ksp.keyPassword());
-        return ksp;
+        check(ap.storePassword());
+        check(ap.keyPassword());
+        return ap;
     }
 
-    @SuppressWarnings("deprecation")
-    final KeyStoreParameters kspUnchecked(
+    final AuthenticationParameters apUnchecked(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
             final ObfuscatedString storePassword,
@@ -183,7 +182,7 @@ implements ClassLoaderProvider,
             final @CheckForNull ObfuscatedString keyPassword) {
         requireNonNull(storePassword);
         requireNonNull(alias);
-        return new KeyStoreParameters() {
+        return new AuthenticationParameters() {
 
             @Override public @CheckForNull Source source() { return source; }
 

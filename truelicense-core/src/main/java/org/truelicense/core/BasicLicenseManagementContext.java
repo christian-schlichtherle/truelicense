@@ -106,10 +106,10 @@ implements LicenseManagementContext {
      * The implementation in the class {@link BasicLicenseManagementContext}
      * returns a new {@link Notary} for the given parameters.
      *
-     * @param ksp the key store parameters.
+     * @param parameters the authentication parameters.
      */
-    @Override public Authentication authentication(KeyStoreParameters ksp) {
-        return new Notary(ksp);
+    @Override public Authentication authentication(AuthenticationParameters parameters) {
+        return new Notary(parameters);
     }
 
     /**
