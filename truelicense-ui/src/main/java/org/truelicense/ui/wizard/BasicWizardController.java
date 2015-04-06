@@ -75,11 +75,7 @@ implements WizardController {
      *
      * @see #currentView
      */
-    protected void onBeforeStateSwitch() { beforeStateSwitch(); }
-
-    /** @deprecated Override {@link #onBeforeStateSwitch} instead. */
-    @Deprecated
-    protected void beforeStateSwitch() { }
+    protected void onBeforeStateSwitch() { }
 
     /**
      * Calls this controller's {@link #onAfterStateSwitch} hook and then
@@ -100,11 +96,7 @@ implements WizardController {
      *
      * @see #currentView
      */
-    protected void onAfterStateSwitch() { afterStateSwitch(); }
-
-    /** @deprecated Override {@link #onAfterStateSwitch} instead. */
-    @Deprecated
-    protected void afterStateSwitch() { }
+    protected void onAfterStateSwitch() { }
 
     /** Returns the view of the current state. */
     protected final V currentView() { return view(currentState()); }

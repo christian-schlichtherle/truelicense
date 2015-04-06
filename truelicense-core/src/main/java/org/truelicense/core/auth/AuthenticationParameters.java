@@ -11,13 +11,4 @@ package org.truelicense.core.auth;
  *
  * @author Christian Schlichtherle
  */
-public interface AuthenticationParameters {
-
-    /**
-     * Returns {@code true} if and only if these parameters can get used to
-     * sign a {@link RepositoryModel}.
-     *
-     * @deprecated Since TrueLicense 2.4, this method is not used anymore.
-     */
-    boolean forSigning();
-}
+public interface AuthenticationParameters { }

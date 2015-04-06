@@ -204,10 +204,6 @@ implements ClassLoaderProvider,
                 return 0 != pwd.length ? pwd : storePassword();
             }
 
-            @Override public boolean forSigning() {
-                return 0 != keyPassword0().length;
-            }
-
             char[] keyPassword0() {
                 return null != keyPassword
                         ? keyPassword.toCharArray()

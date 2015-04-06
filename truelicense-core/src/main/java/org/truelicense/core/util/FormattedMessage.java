@@ -38,18 +38,6 @@ public class FormattedMessage extends BaseMessage {
         this(clazz.getName(), key, args);
     }
 
-    /**
-     * Constructs a formatted message.
-     *
-     * @param key the key to lookup in the resource bundle.
-     * @param args the arguments for formatting the looked up message.
-     * @deprecated you must override {@link #baseName()} in the subclass.
-     */
-    @Deprecated
-    protected FormattedMessage(String key, Object... args) {
-        this((String) null, key, args);
-    }
-
     private FormattedMessage(
             final @CheckForNull String baseName,
             final String key,
