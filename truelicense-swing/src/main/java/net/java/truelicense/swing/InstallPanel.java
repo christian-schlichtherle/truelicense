@@ -5,28 +5,20 @@
 
 package net.java.truelicense.swing;
 
-import java.io.File;
-import java.util.Locale;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.filechooser.FileFilter;
 import net.java.truelicense.core.LicenseConsumerManager;
-import net.java.truelicense.core.io.FileStore;
-import net.java.truelicense.core.io.Source;
 import net.java.truelicense.core.util.Message;
 import net.java.truelicense.swing.util.ComponentEnabler;
 import net.java.truelicense.swing.util.Enabler;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_failure;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_fileExtension;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_fileFilter;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_install;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_prompt;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_select;
-import static net.java.truelicense.ui.LicenseWizardMessage.install_success;
 import net.java.truelicense.ui.LicenseWizardState;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
+import java.util.Locale;
+
+import static net.java.truelicense.ui.LicenseWizardMessage.*;
 
 /**
  * @author Christian Schlichtherle
@@ -227,10 +219,8 @@ final class InstallPanel extends LicenseWorkerPanel {
 
     private void installActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
-            final Source source = new FileStore(new File(fileField.getText()));
-
             @Override protected Void doInBackground() throws Exception {
-                manager().install(source);
+                manager().install(manager().context().fileStore(new File(fileField.getText())));
                 return null;
             }
 
