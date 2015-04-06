@@ -8,7 +8,7 @@ package net.java.truelicense.core.io;
 import java.io.IOException;
 
 /**
- * An abstraction for reading, writing and deleting binary data.
+ * An abstraction for reading, writing and binary data.
  *
  * @author Christian Schlichtherle
  */
@@ -17,10 +17,9 @@ public interface Store extends Source, Sink {
     /** A reasonable buffer size, which is {@value}. */
     int BUFSIZE = 8 * 1024;
 
-    /** Deletes the binary data. */
+    /** Deletes the data. */
     void delete() throws IOException;
 
-    // TODO: add throws IOException
-    /** Returns {@code true} if and only if the binary data exists. */
+    /** Returns {@code true} if and only if the data exists. */
     boolean exists();
 }
