@@ -15,7 +15,6 @@ import net.java.truelicense.core.codec.Codec;
 import net.java.truelicense.core.codec.Codecs;
 import net.java.truelicense.core.crypto.Encryption;
 import net.java.truelicense.core.io.Copy;
-import net.java.truelicense.core.io.MemoryStore;
 import net.java.truelicense.core.io.Sink;
 import net.java.truelicense.core.io.Source;
 import net.java.truelicense.core.io.Store;
@@ -148,7 +147,7 @@ implements LicenseParametersProvider, StoreProvider {
     }
 
     <V> V duplicate(V object) throws Exception {
-        return Codecs.duplicate(object, codec());
+        return Codecs.clone(object, codec());
     }
 
     private interface LicenseAndRepositoryProvider

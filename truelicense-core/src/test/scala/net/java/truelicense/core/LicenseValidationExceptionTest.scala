@@ -31,7 +31,7 @@ class LicenseValidationExceptionTest extends WordSpec {
       }
 
       "be serializable" in {
-        val ex2 = Codecs duplicate ex
+        val ex2 = Codecs clone ex
         ex2.getLocalizedMessage should be (message)
         ex2.getMessage should be (message)
       }

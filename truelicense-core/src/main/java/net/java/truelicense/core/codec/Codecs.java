@@ -111,21 +111,21 @@ public class Codecs {
     }
 
     /**
-     * Returns a duplicate of the given object using a new
+     * Returns a clone of the given object using a new
      * {@link SerializationCodec}.
      *
      * @since TrueLicense 2.5
      */
-    public static <T> T duplicate(T object) throws Exception {
-        return duplicate(object, new SerializationCodec());
+    public static <T> T clone(T object) throws Exception {
+        return clone(object, new SerializationCodec());
     }
 
     /**
-     * Returns a duplicate of the given object using the given codec.
+     * Returns a clone of the given object using the given codec.
      *
      * @since TrueLicense 2.5
      */
-    public static <T> T duplicate(final T object, final Codec codec) throws Exception {
+    public static <T> T clone(final T object, final Codec codec) throws Exception {
         final Store store = new MemoryStore();
         codec.encode(store, object);
         return codec.decode(store, object.getClass());
