@@ -5,8 +5,6 @@
 
 package org.truelicense.core;
 
-import java.util.concurrent.Callable;
-import javax.annotation.concurrent.Immutable;
 import org.truelicense.core.auth.Artifactory;
 import org.truelicense.core.auth.Authentication;
 import org.truelicense.core.auth.Repository;
@@ -14,12 +12,10 @@ import org.truelicense.core.auth.RepositoryProvider;
 import org.truelicense.core.codec.Codec;
 import org.truelicense.core.codec.Codecs;
 import org.truelicense.core.crypto.Encryption;
-import org.truelicense.core.io.Copy;
-import org.truelicense.core.io.Sink;
-import org.truelicense.core.io.Source;
-import org.truelicense.core.io.Store;
-import org.truelicense.core.io.StoreProvider;
-import org.truelicense.core.io.Transformation;
+import org.truelicense.core.io.*;
+
+import javax.annotation.concurrent.Immutable;
+import java.util.concurrent.Callable;
 
 /**
  * A basic license manager.
@@ -147,7 +143,7 @@ implements LicenseParametersProvider, StoreProvider {
     }
 
     <V> V duplicate(V object) throws Exception {
-        return Codecs.duplicate(object, codec());
+        return Codecs.clone(object, codec());
     }
 
     private interface LicenseAndRepositoryProvider

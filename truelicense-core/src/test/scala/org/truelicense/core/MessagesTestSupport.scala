@@ -14,7 +14,7 @@ import org.scalatest.Matchers._
 /** @author Christian Schlichtherle */
 trait MessagesTestSupport {
   def testSerialization(message: Message) {
-    val message2 = Codecs duplicate message
+    val message2 = Codecs clone message
     message2 toString () should be (message toString ())
     message2 toString Locale.ROOT should be (message toString Locale.ROOT)
   }
