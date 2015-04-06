@@ -5,7 +5,8 @@
 
 package org.truelicense.it.core.io
 
-import org.truelicense.core.io.{Sink, Source, Transformation}
+import org.truelicense.api._
+import org.truelicense.api.io.{Source, Transformation, Sink}
 
 /** @author Christian Schlichtherle */
 object IdentityTransformation extends Transformation {

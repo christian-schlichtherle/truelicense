@@ -5,8 +5,8 @@
 
 package org.truelicense.it.jax.rs
 
+import org.truelicense.api._
 import org.truelicense.core.io.MemoryStore
-import org.truelicense.core.{License, LicenseVendorManager}
 
 /**
  * A simple bean which holds a license key and its encoded license bean.

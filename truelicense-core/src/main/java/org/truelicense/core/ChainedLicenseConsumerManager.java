@@ -6,6 +6,10 @@
 package org.truelicense.core;
 
 import javax.annotation.concurrent.ThreadSafe;
+
+import org.truelicense.api.*;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
 import org.truelicense.core.io.*;
 
 /**

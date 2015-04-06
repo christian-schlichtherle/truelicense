@@ -7,12 +7,13 @@ package org.truelicense.it.v2.xml
 
 import javax.xml.bind._
 
+import org.slf4j.LoggerFactory
+import org.truelicense.api._
 import org.truelicense.core._
 import org.truelicense.core.auth.BasicRepository
 import org.truelicense.it.core.ExtraData
 import org.truelicense.it.v2.core.V2TestContext
 import org.truelicense.it.v2.xml.V2XmlTestContext.logger
-import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
 trait V2XmlTestContext extends V2TestContext {

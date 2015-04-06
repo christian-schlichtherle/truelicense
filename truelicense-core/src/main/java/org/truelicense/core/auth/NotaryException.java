@@ -5,10 +5,13 @@
 
 package org.truelicense.core.auth;
 
+import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.misc.Message;
+
 import java.security.GeneralSecurityException;
 import java.util.Locale;
-import org.truelicense.core.util.Message;
-import static org.truelicense.core.util.Objects.*;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Indicates that a notary could not access the private or public key in a

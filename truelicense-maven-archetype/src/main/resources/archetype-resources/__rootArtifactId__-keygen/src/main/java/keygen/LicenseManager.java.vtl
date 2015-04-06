@@ -23,9 +23,9 @@ package ${package}.keygen;
 
 import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
-import org.truelicense.core.*;
+import org.truelicense.api.*;
+import org.truelicense.api.io.Sink;
 import $licenseManagementContextPackage.$licenseManagementContextClass;
-import org.truelicense.core.io.Sink;
 import org.truelicense.obfuscate.*;
 
 /**
@@ -112,7 +112,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
 
     // Note that the class implementing the interface
-    // org.truelicense.core.LicenseManagementContext
+    // org.truelicense.api.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass

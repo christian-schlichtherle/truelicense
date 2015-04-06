@@ -5,19 +5,24 @@
 
 package org.truelicense.core;
 
-import org.truelicense.core.auth.Authentication;
-import org.truelicense.core.auth.AuthenticationParameters;
-import org.truelicense.core.auth.Repository;
-import org.truelicense.core.auth.RepositoryProvider;
-import org.truelicense.core.codec.Codec;
-import org.truelicense.core.crypto.Encryption;
-import org.truelicense.core.crypto.PbeParameters;
+import org.truelicense.api.*;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryProvider;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
+import org.truelicense.api.policy.PasswordPolicy;
+import org.truelicense.api.policy.PasswordPolicyProvider;
+import org.truelicense.api.policy.WeakPasswordException;
+import org.truelicense.api.misc.ClassLoaderProvider;
+import org.truelicense.api.misc.Clock;
 import org.truelicense.core.io.*;
-import org.truelicense.core.policy.PasswordPolicy;
-import org.truelicense.core.policy.PasswordPolicyProvider;
-import org.truelicense.core.policy.WeakPasswordException;
-import org.truelicense.core.util.ClassLoaderProvider;
-import org.truelicense.core.util.Clock;
 import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
@@ -30,7 +35,7 @@ import java.util.prefs.Preferences;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
-import static org.truelicense.core.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A basic context for license applications.
@@ -58,19 +63,20 @@ implements ClassLoaderProvider,
         this.context = context;
     }
 
-    @Override public final String subject() { return context().subject(); }
+    @Override
+    public final String subject() { return context().subject(); }
 
-    @Override public final LicenseManagementContext context() {
-        return context;
-    }
+    @Override
+    public final LicenseManagementContext context() { return context; }
 
-    @Override public final PasswordPolicy policy() {
-        return context().policy();
-    }
+    @Override
+    public final PasswordPolicy policy() { return context().policy(); }
 
-    @Override public final Date now() { return context().now(); }
+    @Override
+    public final Date now() { return context().now(); }
 
-    @Override public final @CheckForNull ClassLoader classLoader() {
+    @Override
+    public final @CheckForNull ClassLoader classLoader() {
         return context().classLoader();
     }
 
@@ -184,21 +190,26 @@ implements ClassLoaderProvider,
         requireNonNull(alias);
         return new AuthenticationParameters() {
 
-            @Override public @CheckForNull Source source() { return source; }
+            @Override
+            public @CheckForNull Source source() { return source; }
 
-            @Override public String storeType() {
+            @Override
+            public String storeType() {
                 return null != storeType
                         ? storeType
                         : context().storeType();
             }
 
-            @Override public char[] storePassword() {
+            @Override
+            public char[] storePassword() {
                 return storePassword.toCharArray();
             }
 
-            @Override public String alias() { return alias; }
+            @Override
+            public String alias() { return alias; }
 
-            @Override public char[] keyPassword() {
+            @Override
+            public char[] keyPassword() {
                 final char[] pwd = keyPassword0();
                 return 0 != pwd.length ? pwd : storePassword();
             }
@@ -224,10 +235,13 @@ implements ClassLoaderProvider,
             final ObfuscatedString password) {
         requireNonNull(password);
         return new PbeParameters() {
+
             final String resolvedAlgorithm = resolvePbeAlgorithm(algorithm);
 
-            @Override public String algorithm() { return resolvedAlgorithm; }
-            @Override public char[] password() { return password.toCharArray(); }
+            @Override
+            public String algorithm() { return resolvedAlgorithm; }
+            @Override
+            public char[] password() { return password.toCharArray(); }
         };
     }
 
@@ -245,19 +259,32 @@ implements ClassLoaderProvider,
         }
     }
 
-    @Override public Source resource(String name) {
+    @Override
+    public Source resource(String name) {
         return Sources.forResource(name, classLoader());
     }
 
-    @Override public Store systemNodeStore(Class<?> classInPackage) {
+    @Override
+    public Store systemNodeStore(Class<?> classInPackage) {
         return new PreferencesStore(
                 Preferences.systemNodeForPackage(classInPackage), subject());
     }
 
-    @Override public Store userNodeStore(Class<?> classInPackage) {
+    @Override
+    public Store userNodeStore(Class<?> classInPackage) {
         return new PreferencesStore(
                 Preferences.userNodeForPackage(classInPackage), subject());
     }
 
-    @Override public Store fileStore(File file) { return new FileStore(file); }
+    @Override
+    public Store fileStore(File file) { return new FileStore(file); }
+
+    @Override
+    public Store memoryStore() { return new MemoryStore(); }
+
+    @Override
+    public Source input() { return Sources.input(); }
+
+    @Override
+    public Sink output() { return Sinks.output(); }
 }

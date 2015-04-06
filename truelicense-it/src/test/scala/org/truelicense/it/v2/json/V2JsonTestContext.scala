@@ -5,11 +5,11 @@
 
 package org.truelicense.it.v2.json
 
-import org.truelicense.core._
+import org.slf4j.LoggerFactory
+import org.truelicense.api._
 import org.truelicense.it.v2.core.V2TestContext
 import org.truelicense.it.v2.json.V2JsonTestContext.logger
 import org.truelicense.json.V2JsonLicenseManagementContext
-import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
 trait V2JsonTestContext extends V2TestContext {

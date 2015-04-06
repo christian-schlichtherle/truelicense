@@ -5,6 +5,8 @@
 
 package org.truelicense.core.codec;
 
+import org.truelicense.api.codec.Codec;
+
 import javax.annotation.CheckForNull;
 
 /**

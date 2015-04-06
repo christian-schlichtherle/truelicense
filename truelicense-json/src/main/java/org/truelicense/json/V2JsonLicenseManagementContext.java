@@ -10,6 +10,10 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import javax.annotation.concurrent.Immutable;
+
+import org.truelicense.api.LicenseConsumerContext;
+import org.truelicense.api.LicenseVendorContext;
+import org.truelicense.api.auth.Repository;
 import org.truelicense.core.*;
 import org.truelicense.core.auth.*;
 import org.truelicense.json.codec.JsonCodec;

@@ -23,12 +23,12 @@
 package ${package}.keymgr;
 
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.*;
+import org.truelicense.api.*;
+import org.truelicense.api.io.Source;
 import $licenseManagementContextPackage.$licenseManagementContextClass;
-import org.truelicense.core.io.Source;
 import org.truelicense.obfuscate.*;
 #if($keyMgrClockClass != "-")
-import org.truelicense.core.util.Clock;
+import org.truelicense.api.misc.Clock;
 import java.util.Date;
 #end
 
@@ -176,7 +176,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
 
     // Note that the class implementing the interface
-    // org.truelicense.core.LicenseManagementContext
+    // org.truelicense.api.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass

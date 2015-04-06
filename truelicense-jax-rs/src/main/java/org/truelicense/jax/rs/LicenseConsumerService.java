@@ -5,18 +5,23 @@
 
 package org.truelicense.jax.rs;
 
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.LicenseManagementException;
+import org.truelicense.core.io.MemoryStore;
+import org.truelicense.obfuscate.Obfuscate;
+
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import static javax.ws.rs.core.MediaType.*;
-import javax.ws.rs.ext.*;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Providers;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
-import org.truelicense.core.*;
-import org.truelicense.core.io.*;
-import org.truelicense.core.util.Objects;
-import org.truelicense.obfuscate.Obfuscate;
+import java.util.Objects;
+
+import static javax.ws.rs.core.MediaType.*;
 
 /**
  * A RESTful web service for license management in consumer applications.
@@ -49,7 +54,7 @@ public final class LicenseConsumerService {
      * package ...;
      *
      * import javax.jax.rs.ext.*;
-     * import org.truelicense.core.LicenseConsumerManager;
+     * import org.truelicense.api.LicenseConsumerManager;
      *
      * &#64;Provider
      * public class LicenseConsumerManagerResolver

@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.*;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
-import org.truelicense.core.util.Objects;
+import java.util.Objects;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**

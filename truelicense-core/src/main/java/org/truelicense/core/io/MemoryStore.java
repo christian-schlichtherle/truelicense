@@ -5,6 +5,8 @@
 
 package org.truelicense.core.io;
 
+import org.truelicense.api.io.Store;
+
 import java.io.*;
 import javax.annotation.*;
 

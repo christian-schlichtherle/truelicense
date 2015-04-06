@@ -5,13 +5,16 @@
 
 package org.truelicense.core.crypto;
 
-import java.io.IOException;
-import java.util.concurrent.Callable;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.crypto.PbeParameters;
+
 import javax.annotation.concurrent.Immutable;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import org.truelicense.core.util.Objects;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 /**
  * A basic Password Based Encryption (PBE).

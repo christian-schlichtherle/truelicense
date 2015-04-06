@@ -8,9 +8,12 @@ package org.truelicense.core;
 import de.schlichtherle.license.LicenseContent;
 import de.schlichtherle.xml.*;
 import javax.annotation.concurrent.Immutable;
+
+import org.truelicense.api.*;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.core.codec.X500PrincipalXmlCodec;
-import org.truelicense.core.crypto.*;
-import org.truelicense.core.io.Transformation;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**

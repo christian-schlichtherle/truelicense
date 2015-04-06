@@ -5,18 +5,16 @@
 
 package org.truelicense.core.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
+import org.truelicense.api.io.Store;
+import org.truelicense.obfuscate.Obfuscate;
+
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import static org.truelicense.core.util.Objects.*;
-import org.truelicense.obfuscate.Obfuscate;
+import java.io.*;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * A preferences (node) store.

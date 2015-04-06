@@ -5,6 +5,9 @@
 
 package org.truelicense.core;
 
+import org.truelicense.api.LicenseAuthorization;
+import org.truelicense.api.LicenseParameters;
+
 import javax.annotation.concurrent.Immutable;
 
 /**

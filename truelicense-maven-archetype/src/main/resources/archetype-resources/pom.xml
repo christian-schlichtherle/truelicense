@@ -206,7 +206,7 @@
         <hideUninstallAction>$hideUninstallAction</hideUninstallAction>
 
         <!-- A fully qualified class name which implements the interface
-             org.truelicense.core.LicenseValidation for use in the Key
+             org.truelicense.api.LicenseValidation for use in the Key
              Generator module.
              The value of this property is ignored if the value of the property
              "keyGenLicenseValidationFunction" is "basic".  -->
@@ -224,13 +224,13 @@
         <keyGenLicenseValidationFunction>$keyGenLicenseValidationFunction</keyGenLicenseValidationFunction>
 
         <!-- A fully qualified class name which implements the interface
-             org.truelicense.core.util.Clock for use in the Key Manager
+             org.truelicense.api.misc.Clock for use in the Key Manager
              module.
              Select "-" to use the system clock. -->
         <keyMgrClockClass>$keyMgrClockClass</keyMgrClockClass>
 
         <!-- A fully qualified class name which implements the interface
-             org.truelicense.core.LicenseValidation for use in the Key
+             org.truelicense.api.LicenseValidation for use in the Key
              Manager module.
              The value of this property is ignored if the value of the property
              "keyMgrLicenseValidationFunction" is "basic". -->
@@ -277,7 +277,7 @@
         <!-- The licensing subject.
              The value of this property gets stored in the generated license
              keys and is used for validation.
-             A "org.truelicense.core.LicenseValidationException" is thrown
+             A "org.truelicense.api.LicenseValidationException" is thrown
              if the validation fails.
              It's best practice to include the name of your software product
              and a version number range for which the license keys are valid,
@@ -628,7 +628,7 @@
                                 public void set*(***);
                                 }
                                 -keepclassmembers class
-                                org.truelicense.core.License {
+                                org.truelicense.api.License {
                                 public *** get*();
                                 public void set*(***);
                                 }

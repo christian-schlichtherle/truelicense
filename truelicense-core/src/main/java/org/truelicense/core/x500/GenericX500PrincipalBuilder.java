@@ -5,7 +5,7 @@
 
 package org.truelicense.core.x500;
 
-import org.truelicense.core.util.Builder;
+import org.truelicense.api.misc.Builder;
 
 import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static org.truelicense.core.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNull;
 import static org.truelicense.core.x500.X500AttributeTypeKeyword.*;
 
 /**

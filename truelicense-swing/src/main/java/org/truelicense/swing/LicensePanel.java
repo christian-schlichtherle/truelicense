@@ -5,14 +5,14 @@
 
 package org.truelicense.swing;
 
-import org.truelicense.core.LicenseConsumerManager;
-import org.truelicense.core.LicenseManagementException;
-import org.truelicense.core.util.Objects;
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.LicenseManagementException;
 import org.truelicense.ui.LicenseWizardMessage;
 import org.truelicense.ui.LicenseWizardState;
 import org.truelicense.ui.wizard.WizardView;
 
 import javax.swing.*;
+import java.util.Objects;
 
 /**
  * Defines common properties of license panels.

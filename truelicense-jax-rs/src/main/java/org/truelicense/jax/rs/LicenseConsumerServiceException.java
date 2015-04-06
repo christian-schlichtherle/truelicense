@@ -9,7 +9,7 @@ import java.security.GeneralSecurityException;
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
 
-import org.truelicense.core.LicenseManagementException;
+import org.truelicense.api.LicenseManagementException;
 
 /**
  * Wraps a {@link LicenseManagementException} in order to decorate it with

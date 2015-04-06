@@ -42,7 +42,7 @@ dependency using:
     package [...];
 
     import javax.ws.rs.ext.*;
-    import org.truelicense.core.LicenseConsumerManager;
+    import org.truelicense.api.LicenseConsumerManager;
 
     @Provider
     public class LicenseConsumerManagerResolver
@@ -67,7 +67,7 @@ class in the KeyMgr module like this:
 
     import javax.enterprise.context.ApplicationScoped;
     import javax.enterprise.inject.Produces;
-    import org.truelicense.core.LicenseConsumerManager;
+    import org.truelicense.api.LicenseConsumerManager;
     [...]
 
     public class LicensingSchema {

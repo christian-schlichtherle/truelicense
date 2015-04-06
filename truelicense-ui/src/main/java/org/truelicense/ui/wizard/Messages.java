@@ -6,7 +6,9 @@
 package org.truelicense.ui.wizard;
 
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.util.*;
+
+import org.truelicense.api.misc.Message;
+import org.truelicense.core.misc.*;
 
 /**
  * Defines message keys in the resource bundle for this package.

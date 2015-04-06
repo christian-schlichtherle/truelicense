@@ -11,7 +11,7 @@
       xmlns:panel="http://java.sun.com/jsf/composite/truelicense/panel">
     <composite:interface componentType="wizardBean"
                          shortDescription="A wizard for license management in license consumer applications.">
-        <composite:attribute name="manager" type="org.truelicense.core.LicenseConsumerManager" required="true"
+        <composite:attribute name="manager" type="org.truelicense.api.LicenseConsumerManager" required="true"
                              shortDescription="The license consumer manager."/>
         <composite:attribute name="uninstallable" type="java.lang.Boolean" default="false"
                              shortDescription="Whether or not the license key shall be uninstallable. Defaults to false."/>

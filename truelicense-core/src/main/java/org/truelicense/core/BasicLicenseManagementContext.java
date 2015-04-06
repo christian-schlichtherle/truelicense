@@ -5,13 +5,20 @@
 
 package org.truelicense.core;
 
-import java.util.Date;
+import org.truelicense.api.*;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.auth.Repository;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.policy.PasswordPolicy;
+import org.truelicense.core.auth.Notary;
+import org.truelicense.core.policy.BasicPasswordPolicy;
+
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.auth.*;
-import org.truelicense.core.crypto.*;
-import org.truelicense.core.policy.*;
-import org.truelicense.core.util.*;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * A basic license management context.
@@ -34,21 +41,25 @@ implements LicenseManagementContext {
         this.subject = Objects.requireNonNull(subject);
     }
 
-    @Override public final LicenseVendorContext vendor() {
+    @Override
+    public final LicenseVendorContext vendor() {
         return new BasicLicenseVendorContext(this);
     }
 
-    @Override public final LicenseConsumerContext consumer() {
+    @Override
+    public final LicenseConsumerContext consumer() {
         return new BasicLicenseConsumerContext(this);
     }
 
     /** Returns a <em>new</em> license. */
-    @Override public abstract License license();
+    @Override
+    public abstract License license();
 
     /**
      * Returns the licensing subject.
      */
-    @Override public final String subject() { return subject; }
+    @Override
+    public final String subject() { return subject; }
 
     /**
      * {@inheritDoc}
@@ -56,7 +67,8 @@ implements LicenseManagementContext {
      * The implementation in the class {@link BasicLicenseManagementContext}
      * returns an authorization which clears all operation requests.
      */
-    @Override public LicenseAuthorization authorization() {
+    @Override
+    public LicenseAuthorization authorization() {
         return new BasicLicenseAuthorization();
     }
 
@@ -72,7 +84,8 @@ implements LicenseManagementContext {
      * {@linkplain License#getSubject subject}
      * unless these properties are already set respectively.
      */
-    @Override public LicenseInitialization initialization() {
+    @Override
+    public LicenseInitialization initialization() {
         return new BasicLicenseInitialization(this);
     }
 
@@ -90,7 +103,8 @@ implements LicenseManagementContext {
      * {@linkplain License#getNotAfter not after date/time} (if set) and
      * {@linkplain License#getNotBefore not before date/time} (if set).
      */
-    @Override public LicenseValidation validation() {
+    @Override
+    public LicenseValidation validation() {
         return new BasicLicenseValidation(this);
     }
 
@@ -98,7 +112,8 @@ implements LicenseManagementContext {
      * Returns a <em>new</em> repository to use for
      * {@linkplain #license licenses}.
      */
-    @Override public abstract Repository repository();
+    @Override
+    public abstract Repository repository();
 
     /**
      * Returns an authentication for the given key store parameters.
@@ -108,7 +123,8 @@ implements LicenseManagementContext {
      *
      * @param parameters the authentication parameters.
      */
-    @Override public Authentication authentication(AuthenticationParameters parameters) {
+    @Override
+    public Authentication authentication(AuthenticationParameters parameters) {
         return new Notary(parameters);
     }
 
@@ -117,15 +133,17 @@ implements LicenseManagementContext {
      *
      * @param pbe the PBE parameters.
      */
-    @Override public abstract Encryption encryption(PbeParameters pbe);
+    @Override
+    public abstract Encryption encryption(PbeParameters pbe);
 
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns a new {@link PasswordPolicy}.
+     * returns a new {@link BasicPasswordPolicy}.
      */
-    @Override public PasswordPolicy policy() { return new PasswordPolicy(); }
+    @Override
+    public PasswordPolicy policy() { return new BasicPasswordPolicy(); }
 
     /**
      * {@inheritDoc}
@@ -133,7 +151,8 @@ implements LicenseManagementContext {
      * The implementation in the class {@link BasicLicenseManagementContext}
      * returns a new {@link Date}.
      */
-    @Override public Date now() { return new Date(); }
+    @Override
+    public Date now() { return new Date(); }
 
     /**
      * {@inheritDoc}
@@ -141,7 +160,8 @@ implements LicenseManagementContext {
      * The implementation in the class {@link BasicLicenseManagementContext}
      * returns the current thread's context class loader.
      */
-    @Override public @CheckForNull ClassLoader classLoader() {
+    @Override
+    public @CheckForNull ClassLoader classLoader() {
         return Thread.currentThread().getContextClassLoader();
     }
 
@@ -152,5 +172,6 @@ implements LicenseManagementContext {
      * returns half an hour (in milliseconds) to account for external changes
      * to the configured store for the license key.
      */
-    @Override public long cachePeriodMillis() { return 30 * 60 * 1000; }
+    @Override
+    public long cachePeriodMillis() { return 30 * 60 * 1000; }
 }

@@ -5,6 +5,8 @@
 
 package org.truelicense.core.io;
 
+import org.truelicense.api.io.Store;
+
 /**
  * Provides a store.
  *

@@ -5,11 +5,12 @@
 
 package org.truelicense.core;
 
-import org.truelicense.core.auth.Authentication;
-import org.truelicense.core.crypto.Encryption;
-import org.truelicense.core.io.Source;
-import org.truelicense.core.io.Store;
-import org.truelicense.core.util.CachePeriodProvider;
+import org.truelicense.api.*;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
@@ -18,7 +19,7 @@ import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.io.File;
 
-import static org.truelicense.core.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A basic context for license consumer applications.

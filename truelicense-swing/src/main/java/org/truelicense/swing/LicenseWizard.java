@@ -7,7 +7,7 @@ package org.truelicense.swing;
 
 import java.awt.*;
 import javax.annotation.CheckForNull;
-import org.truelicense.core.LicenseConsumerManager;
+import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.swing.util.*;
 import org.truelicense.swing.wizard.SwingWizardController;
 import org.truelicense.ui.*;

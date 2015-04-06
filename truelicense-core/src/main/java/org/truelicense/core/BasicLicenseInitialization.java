@@ -9,7 +9,10 @@ import java.util.Date;
 import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
 import static org.truelicense.core.Messages.*;
-import org.truelicense.core.util.*;
+
+import org.truelicense.api.*;
+import org.truelicense.api.misc.Clock;
+import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**
@@ -25,10 +28,10 @@ import org.truelicense.obfuscate.Obfuscate;
  */
 @Immutable
 final class BasicLicenseInitialization
-implements  ContextProvider<LicenseManagementContext>,
-            Clock,
-            LicenseInitialization,
-            LicenseSubjectProvider {
+implements ContextProvider<LicenseManagementContext>,
+        Clock,
+        LicenseInitialization,
+        LicenseSubjectProvider {
 
     @Obfuscate private static final String DEFAULT_CONSUMER_TYPE = "User";
 

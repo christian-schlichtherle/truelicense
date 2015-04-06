@@ -9,9 +9,9 @@ import java.io.*;
 import javax.faces.component.FacesComponent;
 import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
-import org.truelicense.core.LicenseManagementException;
-import org.truelicense.core.io.Source;
-import org.truelicense.core.util.Objects;
+import org.truelicense.api.LicenseManagementException;
+import org.truelicense.api.io.Source;
+import java.util.Objects;
 import static org.truelicense.ui.LicenseWizardMessage.*;
 
 /**

@@ -7,6 +7,10 @@ package org.truelicense.core;
 
 import javax.annotation.concurrent.Immutable;
 import javax.xml.bind.*;
+
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseConsumerContext;
+import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.core.codec.JaxbCodec;
 import org.truelicense.obfuscate.Obfuscate;

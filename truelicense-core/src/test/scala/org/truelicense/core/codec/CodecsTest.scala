@@ -10,6 +10,8 @@ import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.Matchers._
 import org.scalatest.prop.PropertyChecks._
+import org.truelicense.api.codec.Codec
+import org.truelicense.api.io.{Sink, Source}
 import org.truelicense.core.io._
 import java.lang.reflect.Type
 import java.nio.charset.Charset

@@ -9,8 +9,10 @@ import java.util.Calendar._
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
+import org.truelicense.api._
+import org.truelicense.api.io.{Transformation, Store}
+import org.truelicense.core.BasicLicenseManagementContext
 import org.truelicense.core.io._
-import org.truelicense.core.{BasicLicenseManagementContext, LicenseConsumerManager, LicenseVendorManager}
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
 

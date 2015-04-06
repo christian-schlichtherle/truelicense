@@ -12,8 +12,11 @@ import javax.annotation.concurrent.Immutable;
 import javax.crypto.*;
 import static javax.crypto.Cipher.*;
 import javax.crypto.spec.*;
+
+import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
 import org.truelicense.core.crypto.*;
-import org.truelicense.core.io.*;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**

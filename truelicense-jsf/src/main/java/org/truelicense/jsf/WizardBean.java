@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.faces.component.FacesComponent;
 import javax.faces.context.FacesContext;
 import javax.validation.constraints.NotNull;
-import org.truelicense.core.util.Objects;
+import java.util.Objects;
 import static org.truelicense.ui.LicenseWizardMessage.*;
 import org.truelicense.ui.LicenseWizardState;
 import org.truelicense.ui.wizard.BasicWizardController;

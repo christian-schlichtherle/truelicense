@@ -5,13 +5,18 @@
 
 package org.truelicense.core;
 
-import org.truelicense.core.auth.Artifactory;
-import org.truelicense.core.auth.Authentication;
-import org.truelicense.core.auth.Repository;
-import org.truelicense.core.auth.RepositoryProvider;
-import org.truelicense.core.codec.Codec;
+import org.truelicense.api.*;
+import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryProvider;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.core.codec.Codecs;
-import org.truelicense.core.crypto.Encryption;
+import org.truelicense.api.crypto.Encryption;
 import org.truelicense.core.io.*;
 
 import javax.annotation.concurrent.Immutable;

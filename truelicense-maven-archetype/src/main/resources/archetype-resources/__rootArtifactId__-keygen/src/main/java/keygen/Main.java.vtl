@@ -10,9 +10,9 @@ import java.io.*;
 import static java.lang.System.*;
 import java.util.*;
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.*;
-import org.truelicense.core.codec.*;
-import org.truelicense.core.io.*;
+import org.truelicense.api.*;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.io.*;
 
 /**
  * The command line interface (CLI) for vending $licensingSubject license keys.
@@ -71,7 +71,7 @@ public enum Main {
                     return null == path
                             ? context().license()
                             : (License) codec().decode("-".equals(path)
-                                    ? Sources.input()
+                                    ? input()
                                     : fileStore(path),
                             License.class);
                 }
@@ -80,7 +80,7 @@ public enum Main {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path)
                         codec().encode("-".equals(path)
-                                        ? Sinks.output()
+                                        ? output()
                                         : fileStore(path),
                                 license);
                 }
@@ -90,11 +90,19 @@ public enum Main {
                     return null != c ? c : (codec = manager().parameters().codec());
                 }
 
+                Source input() { return context().input(); }
+
+                Sink output() { return context().output(); }
+
                 Store store() {
                     final String path = options.get(CreateOption.KEY);
                     return null == path
-                            ? new MemoryStore() // -> /dev/null
+                            ? memoryStore() // -> /dev/null
                             : fileStore(path);
+                }
+
+                Store memoryStore() {
+                    return context().memoryStore();
                 }
 
                 Store fileStore(String path) {

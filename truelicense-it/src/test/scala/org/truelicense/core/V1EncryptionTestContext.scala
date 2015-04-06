@@ -5,7 +5,7 @@
 
 package org.truelicense.core
 
-import org.truelicense.core.crypto.PbeParameters
+import org.truelicense.api.crypto.PbeParameters
 import org.truelicense.it.core.TestContext
 import TestContext.test1234
 import org.truelicense.it.core.TestContext

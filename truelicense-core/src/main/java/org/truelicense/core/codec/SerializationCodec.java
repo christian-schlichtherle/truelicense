@@ -9,7 +9,10 @@ import java.io.*;
 import java.lang.reflect.Type;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.io.*;
+
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**

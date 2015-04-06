@@ -7,12 +7,12 @@ package org.truelicense.it.core
 
 import java.util.Date
 
-import org.truelicense.core._
-import org.truelicense.core.io._
-import org.truelicense.it.core.LicenseKeyLifeCycleTestSuite.logger
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
+import org.truelicense.api._
+import org.truelicense.core.io._
+import org.truelicense.it.core.LicenseKeyLifeCycleTestSuite.logger
 
 /** @author Christian Schlichtherle */
 abstract class LicenseKeyLifeCycleTestSuite

@@ -7,9 +7,11 @@ package org.truelicense.core.auth;
 
 import java.lang.reflect.Type;
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.codec.Codec;
+
+import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.codec.Codec;
 import org.truelicense.core.io.MemoryStore;
-import org.truelicense.core.io.Source;
+import org.truelicense.api.io.Source;
 
 /**
  * Uses a {@link Codec} to decode an artifact.

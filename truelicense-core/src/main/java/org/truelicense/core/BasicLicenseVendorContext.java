@@ -5,11 +5,15 @@
 
 package org.truelicense.core;
 
-import org.truelicense.core.auth.Authentication;
-import org.truelicense.core.codec.Codec;
-import org.truelicense.core.crypto.Encryption;
-import org.truelicense.core.io.Source;
-import org.truelicense.core.io.Store;
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseParameters;
+import org.truelicense.api.LicenseVendorContext;
+import org.truelicense.api.LicenseVendorManager;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
 import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;

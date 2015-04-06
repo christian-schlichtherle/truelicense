@@ -5,12 +5,13 @@
 
 package org.truelicense.core.auth;
 
-import org.truelicense.core.util.Objects;
-import org.truelicense.core.util.Strings;
+import org.truelicense.api.auth.Repository;
+import org.truelicense.core.misc.Strings;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Objects;
 
 import static java.util.Locale.ROOT;
 

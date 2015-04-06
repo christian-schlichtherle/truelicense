@@ -5,11 +5,11 @@
 
 package de.schlichtherle.xml;
 
-import org.truelicense.core.auth.Artifactory;
+import org.truelicense.api.auth.Artifactory;
 import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.core.auth.Repository;
+import org.truelicense.api.auth.Repository;
 import org.truelicense.core.auth.RepositoryModel;
-import org.truelicense.core.codec.Codec;
+import org.truelicense.api.codec.Codec;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.Nullable;
@@ -34,8 +34,6 @@ public final class GenericCertificate implements Repository {
     private final BasicRepository repository = new BasicRepository();
 
     private String signatureEncoding;
-
-    @Override public RepositoryModel model() { return repository; }
 
     public String getEncoded()   {
         return repository.getArtifact();

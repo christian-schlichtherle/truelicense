@@ -5,12 +5,13 @@
 
 package org.truelicense.it.v1
 
+import org.slf4j.LoggerFactory
+import org.truelicense.api._
+import org.truelicense.api.io.Store
 import org.truelicense.core._
-import org.truelicense.core.io.Store
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v1.V1TestContext._
-import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext {

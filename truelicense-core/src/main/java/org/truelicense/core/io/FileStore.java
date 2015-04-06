@@ -5,8 +5,11 @@
 
 package org.truelicense.core.io;
 
+import org.truelicense.api.io.Store;
+
 import java.io.*;
-import static org.truelicense.core.util.Objects.*;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * A file store.

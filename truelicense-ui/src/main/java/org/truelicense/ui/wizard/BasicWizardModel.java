@@ -5,8 +5,9 @@
 
 package org.truelicense.ui.wizard;
 
-import java.util.*;
-import org.truelicense.core.util.Objects;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A basic implementation of a wizard model.

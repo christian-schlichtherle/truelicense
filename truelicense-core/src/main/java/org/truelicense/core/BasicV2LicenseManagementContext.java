@@ -6,9 +6,12 @@
 package org.truelicense.core;
 
 import javax.annotation.concurrent.Immutable;
+
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.License;
+import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.core.crypto.*;
-import org.truelicense.core.io.Transformation;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**

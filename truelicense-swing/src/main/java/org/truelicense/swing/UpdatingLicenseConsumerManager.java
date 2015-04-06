@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import javax.annotation.concurrent.Immutable;
 import javax.swing.*;
-import org.truelicense.core.LicenseConsumerManager;
+import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.swing.util.Enabler;
 
 /**

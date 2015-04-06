@@ -6,7 +6,7 @@
 package org.truelicense.jsf;
 
 import javax.faces.component.FacesComponent;
-import org.truelicense.core.LicenseManagementException;
+import org.truelicense.api.LicenseManagementException;
 import static org.truelicense.ui.LicenseWizardMessage.*;
 import org.truelicense.ui.LicenseWizardState;
 

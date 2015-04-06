@@ -7,9 +7,13 @@ package org.truelicense.core;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.*;
-import org.truelicense.core.auth.Artifactory;
-import org.truelicense.core.io.*;
-import org.truelicense.core.util.*;
+
+import org.truelicense.api.*;
+import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.misc.CachePeriodProvider;
+import org.truelicense.core.misc.*;
 
 /**
  * A basic license consumer manager which caches some computed objects to speed

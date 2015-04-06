@@ -13,8 +13,11 @@ import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
 import javax.crypto.*;
 import static javax.crypto.Cipher.*;
+
+import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
 import org.truelicense.core.crypto.*;
-import org.truelicense.core.io.*;
 
 /**
  * The encryption for V2 format license keys.

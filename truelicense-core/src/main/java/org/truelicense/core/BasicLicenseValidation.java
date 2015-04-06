@@ -8,7 +8,10 @@ package org.truelicense.core;
 import java.util.Date;
 import javax.annotation.concurrent.Immutable;
 import static org.truelicense.core.Messages.*;
-import org.truelicense.core.util.*;
+
+import org.truelicense.api.*;
+import org.truelicense.api.misc.Clock;
+import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.obfuscate.Obfuscate;
 
 /**
@@ -24,10 +27,10 @@ import org.truelicense.obfuscate.Obfuscate;
  */
 @Immutable
 final class BasicLicenseValidation
-implements  ContextProvider<LicenseManagementContext>,
-            Clock,
-            LicenseSubjectProvider,
-            LicenseValidation {
+implements ContextProvider<LicenseManagementContext>,
+        Clock,
+        LicenseSubjectProvider,
+        LicenseValidation {
 
     @Obfuscate
     static final String INVALID_SUBJECT = "invalidSubject";

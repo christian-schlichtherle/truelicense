@@ -6,10 +6,10 @@
 package org.truelicense.swing;
 
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.License;
-import org.truelicense.core.LicenseConsumerManager;
-import org.truelicense.core.LicenseManagementException;
-import org.truelicense.core.io.Source;
+
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.LicenseManagementException;
+import org.truelicense.api.io.Source;
 import org.truelicense.swing.util.Enabler;
 
 /**

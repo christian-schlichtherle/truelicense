@@ -5,6 +5,8 @@
 
 package org.truelicense.core.io;
 
+import org.truelicense.api.io.Source;
+
 import java.io.FileNotFoundException;
 import java.io.FilterInputStream;
 import java.io.IOException;

@@ -5,7 +5,9 @@
 
 package org.truelicense.core.auth;
 
-import org.truelicense.core.codec.Codec;
+import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.auth.Repository;
 import org.truelicense.core.io.MemoryStore;
 import org.apache.commons.codec.binary.Base64;
 
@@ -37,8 +39,6 @@ public final class BasicRepository
 extends RepositoryModel implements Repository {
 
     private static final Base64 base64 = new Base64();
-
-    @Override public final RepositoryModel model() { return this; }
 
     private @Nullable byte[] data(
             final Codec codec,
@@ -82,10 +82,9 @@ extends RepositoryModel implements Repository {
         final String signatureAlgorithm = engine.getAlgorithm();
         final Artifactory artifactory = new EncodedArtifact(codec, store);
 
-        final RepositoryModel model = model();
-        model.setArtifact(encodedArtifact);
-        model.setSignature(encodedSignature);
-        model.setAlgorithm(signatureAlgorithm);
+        setArtifact(encodedArtifact);
+        setSignature(encodedSignature);
+        setAlgorithm(signatureAlgorithm);
 
         return artifactory;
     }
@@ -95,13 +94,12 @@ extends RepositoryModel implements Repository {
             final Signature engine,
             final PublicKey key)
     throws Exception {
-        final RepositoryModel model = model();
-        if (!engine.getAlgorithm().equalsIgnoreCase(model.getAlgorithm()))
+        if (!engine.getAlgorithm().equalsIgnoreCase(getAlgorithm()))
             throw new IllegalArgumentException();
         engine.initVerify(key);
-        final byte[] artifactData = data(codec, model.getArtifact());
+        final byte[] artifactData = data(codec, getArtifact());
         engine.update(artifactData);
-        if (!engine.verify(decode(model.getSignature())))
+        if (!engine.verify(decode(getSignature())))
             throw new RepositoryIntegrityException();
         return new EncodedArtifact(codec, artifactData);
     }

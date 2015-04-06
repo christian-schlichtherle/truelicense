@@ -6,8 +6,8 @@
 package org.truelicense.core.auth;
 
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.util.FormattedMessage;
-import org.truelicense.core.util.Message;
+import org.truelicense.core.misc.FormattedMessage;
+import org.truelicense.api.misc.Message;
 
 /**
  * Defines message keys in the resource bundle for this package.

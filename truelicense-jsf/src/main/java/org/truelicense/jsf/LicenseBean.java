@@ -12,8 +12,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.*;
 import javax.faces.context.*;
-import org.truelicense.core.*;
-import org.truelicense.core.util.Formattable;
+
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.LicenseManagementException;
+import org.truelicense.core.misc.Formattable;
 import org.truelicense.ui.LicenseWizardState;
 import org.truelicense.ui.util.MnemonicText;
 import org.truelicense.ui.wizard.WizardView;

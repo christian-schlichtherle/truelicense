@@ -7,8 +7,8 @@ package org.truelicense.swing;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
-import org.truelicense.core.LicenseConsumerManager;
-import org.truelicense.core.util.Message;
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.misc.Message;
 import org.truelicense.swing.util.ComponentEnabler;
 import org.truelicense.swing.util.Enabler;
 import static org.truelicense.ui.LicenseWizardMessage.uninstall_failure;

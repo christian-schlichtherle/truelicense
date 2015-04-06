@@ -10,9 +10,9 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.JOptionPane;
 import static javax.swing.SwingUtilities.isEventDispatchThread;
 import javax.swing.SwingWorker;
-import org.truelicense.core.LicenseManagementException;
-import org.truelicense.core.util.BaseMessage;
-import org.truelicense.core.util.Message;
+import org.truelicense.api.LicenseManagementException;
+import org.truelicense.core.misc.BasicMessage;
+import org.truelicense.api.misc.Message;
 import org.truelicense.ui.LicenseWizardMessage;
 
 /**
@@ -22,7 +22,7 @@ import org.truelicense.ui.LicenseWizardMessage;
  */
 abstract class LicenseWorkerPanel extends LicensePanel {
 
-    static final Message EMPTY_MESSAGE = new BaseMessage() {
+    static final Message EMPTY_MESSAGE = new BasicMessage() {
         static final long serialVersionUID = 0L;
 
         @Override public String toString(Locale locale) { return ""; }

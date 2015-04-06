@@ -5,12 +5,19 @@
 
 package org.truelicense.core.codec;
 
-import java.io.*;
-import java.lang.reflect.Type;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
+
 import javax.annotation.concurrent.Immutable;
-import javax.xml.bind.*;
-import org.truelicense.core.io.*;
-import org.truelicense.core.util.Objects;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.util.Objects;
 
 /**
  * A codec which encodes/decodes objects to/from XML with a

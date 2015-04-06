@@ -5,8 +5,9 @@
 
 package org.truelicense.core.codec;
 
+import org.truelicense.api.codec.Codec;
 import org.truelicense.core.io.MemoryStore;
-import org.truelicense.core.io.Store;
+import org.truelicense.api.io.Store;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.CheckForNull;

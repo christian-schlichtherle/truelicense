@@ -5,14 +5,22 @@
 
 package org.truelicense.swing.wizard;
 
-import java.awt.*;
-import java.awt.event.*;
+import org.truelicense.swing.util.ComponentEnabler;
+import org.truelicense.swing.util.EnhancedButton;
+import org.truelicense.swing.util.EnhancedDialog;
+import org.truelicense.ui.wizard.BasicWizardController;
+import org.truelicense.ui.wizard.WizardMessage;
+import org.truelicense.ui.wizard.WizardView;
+
 import javax.annotation.CheckForNull;
 import javax.swing.*;
-import javax.swing.border.*;
-import org.truelicense.core.util.Objects;
-import org.truelicense.swing.util.*;
-import org.truelicense.ui.wizard.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Objects;
+
 import static org.truelicense.ui.wizard.WizardMessage.*;
 
 /**

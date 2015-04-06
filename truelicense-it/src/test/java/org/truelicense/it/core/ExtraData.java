@@ -5,7 +5,7 @@
 
 package org.truelicense.it.core;
 
-import org.truelicense.core.util.Objects;
+import java.util.Objects;
 
 public class ExtraData {
 

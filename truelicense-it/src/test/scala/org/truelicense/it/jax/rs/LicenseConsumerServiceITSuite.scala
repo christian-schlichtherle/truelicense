@@ -13,11 +13,11 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.sun.jersey.api.client.UniformInterfaceException
 import com.sun.jersey.api.core._
 import com.sun.jersey.test.framework._
-import org.truelicense.core._
-import org.truelicense.it.core.TestContext
-import org.truelicense.jax.rs._
 import org.junit.Test
 import org.scalatest.Matchers._
+import org.truelicense.api.LicenseConsumerManager
+import org.truelicense.it.core.TestContext
+import org.truelicense.jax.rs._
 
 /** @author Christian Schlichtherle */
 class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>

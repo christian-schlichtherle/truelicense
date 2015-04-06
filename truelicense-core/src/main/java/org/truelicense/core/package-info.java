@@ -7,36 +7,28 @@
  * Provides life cycle management for license keys.
  * License keys are small binary objects which can be stored in a file, a
  * preferences node, the heap or any custom implementation of the
- * {@link org.truelicense.core.io.Store} interface.
- * License keys pass the following life cycle phases:
+ * {@link org.truelicense.api.io.Store} interface.
+ * License keys pass the following life cycle phases, as defined by the
+ * interfaces
+ * {@link org.truelicense.api.LicenseVendorManager} and
+ * {@link org.truelicense.api.LicenseConsumerManager}:
  * <ol>
- * <li>{@linkplain org.truelicense.core.LicenseVendorManager#create Creation},
- * <li>{@linkplain org.truelicense.core.LicenseConsumerManager#install installation},
- * <li>{@linkplain org.truelicense.core.LicenseConsumerManager#view viewing},
- * <li>{@linkplain org.truelicense.core.LicenseConsumerManager#verify verification} and
- * <li>{@linkplain org.truelicense.core.LicenseConsumerManager#uninstall uninstallation}
+ * <li>{@linkplain org.truelicense.api.LicenseVendorManager#create Creation},
+ * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#install installation},
+ * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#view viewing},
+ * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#verify verification} and
+ * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#uninstall uninstallation}
  * </ol>
  * <p>
- * These operations are defined in the
- * {@link org.truelicense.core.LicenseVendorManager} and the
- * {@link org.truelicense.core.LicenseConsumerManager} interfaces.
- * A Free Trial Period (FTP) is
- * {@linkplain org.truelicense.core.LicenseConsumerContext#ftpManager configurable}
- * with a license consumer manager in order to ease the conversion of prospects
- * to customers.
- * License consumer managers can also get
- * {@linkplain org.truelicense.core.LicenseConsumerContext#chainedManager chained}
- * in order to unlock application features based on the purchased license keys.
- * <p>
  * A license bean is an instance of the
- * {@link org.truelicense.core.License} class.
+ * {@link org.truelicense.api.License} class.
  * This class follows the Java Bean pattern and defines common properties for
  * the licensing subject, issue date, issuer, holder, consumer type/amount,
  * validity period and custom data.
  * These properties get
- * {@linkplain org.truelicense.core.LicenseInitialization#initialize initialized}
+ * {@linkplain org.truelicense.api.LicenseInitialization#initialize initialized}
  * and
- * {@linkplain org.truelicense.core.LicenseValidation#validate validated}
+ * {@linkplain org.truelicense.api.LicenseValidation#validate validated}
  * whenever a license key gets created.
  * They also get validated whenever a license key gets installed or verified.
  * <p>

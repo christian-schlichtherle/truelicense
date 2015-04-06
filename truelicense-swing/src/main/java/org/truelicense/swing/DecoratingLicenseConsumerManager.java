@@ -5,9 +5,10 @@
 
 package org.truelicense.swing;
 
-import org.truelicense.core.*;
-import org.truelicense.core.io.Source;
-import org.truelicense.core.util.Objects;
+import org.truelicense.api.*;
+import org.truelicense.api.io.Source;
+
+import java.util.Objects;
 
 /**
  * A decorator for a license consumer manager.

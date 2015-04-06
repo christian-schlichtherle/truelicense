@@ -5,8 +5,8 @@
 
 package org.truelicense.it.v2.core
 
-import org.truelicense.core._
-import org.truelicense.core.io.Store
+import org.truelicense.api._
+import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v2.core.V2TestContext.prefix

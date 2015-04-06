@@ -8,7 +8,11 @@ package org.truelicense.core;
 import java.io.*;
 import java.util.zip.*;
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.io.*;
+
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
 
 /**
  * The compression for V1 format license keys.

@@ -10,7 +10,7 @@ import java.io.File;
 import static java.lang.System.*;
 import java.util.*;
 import javax.annotation.concurrent.Immutable;
-import org.truelicense.core.*;
+import org.truelicense.api.*;
 #if($disableLicenseWizard == false)
 import org.truelicense.swing.LicenseWizard;
 import javax.swing.*;
@@ -162,7 +162,7 @@ public enum Main {
 #end
 #if($keyMgrClockClass == "${package}.keymgr.Main${dollar}SystemClock" || $keyMgrClockClass == "${package}.keymgr.Main.SystemClock")
 
-    public static final class SystemClock implements org.truelicense.core.util.Clock {
+    public static final class SystemClock implements org.truelicense.api.misc.Clock {
         public Date now() { return new Date(); }
     }
 #end
