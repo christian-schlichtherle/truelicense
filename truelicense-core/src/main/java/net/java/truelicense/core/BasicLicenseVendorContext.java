@@ -187,9 +187,7 @@ implements LicenseVendorContext {
             }
 
             @Override
-            public PbeInjection<ManagerBuilder> pbe() {
-                return encryption();
-            }
+            public PbeInjection<ManagerBuilder> pbe() { return encryption(); }
         };
     }
 }

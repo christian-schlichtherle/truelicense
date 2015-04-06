@@ -292,9 +292,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             }
 
             @Override
-            public PbeInjection<ManagerBuilder> pbe() {
-                return encryption();
-            }
+            public PbeInjection<ManagerBuilder> pbe() { return encryption(); }
 
             @Override
             public ManagerBuilder storeIn(final Store store) {
