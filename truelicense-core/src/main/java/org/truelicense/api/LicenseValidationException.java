@@ -19,7 +19,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class LicenseValidationException extends LicenseManagementException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 0L;
 
     private final Message msg;
 

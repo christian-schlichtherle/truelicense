@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class NotaryException extends GeneralSecurityException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 0L;
 
     private final Message msg;
 

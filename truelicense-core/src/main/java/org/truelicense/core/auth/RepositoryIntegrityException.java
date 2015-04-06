@@ -15,5 +15,5 @@ import java.security.GeneralSecurityException;
  * @author Christian Schlichtherle
  */
 public class RepositoryIntegrityException extends GeneralSecurityException {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 0L;
 }

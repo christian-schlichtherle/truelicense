@@ -19,7 +19,7 @@ import java.security.GeneralSecurityException;
  */
 public class LicenseManagementException extends GeneralSecurityException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 0L;
 
     public LicenseManagementException() { }
 

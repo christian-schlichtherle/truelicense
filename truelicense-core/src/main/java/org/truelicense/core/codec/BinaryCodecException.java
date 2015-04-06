@@ -17,7 +17,7 @@ import javax.annotation.CheckForNull;
  */
 public class BinaryCodecException extends IllegalArgumentException {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 0L;
 
     public BinaryCodecException() { }
 
