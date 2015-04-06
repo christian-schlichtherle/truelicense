@@ -12,6 +12,7 @@ import org.truelicense.api.misc.Builder;
 import org.truelicense.api.misc.Injection;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * A derived context for license consumer applications.
@@ -143,14 +144,14 @@ extends LicenseApplicationContext {
         ManagerBuilder storeIn(Store store);
 
         /**
-         * Stores the license key in the given file.
+         * Stores the license key in the given path.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
          * license keys and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeInFile(File file);
+        ManagerBuilder storeInPath(Path path);
 
         /**
          * Stores the license key in the system preferences node for the

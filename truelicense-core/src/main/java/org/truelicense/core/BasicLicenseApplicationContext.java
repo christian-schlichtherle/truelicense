@@ -27,7 +27,7 @@ import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -277,7 +277,7 @@ implements ClassLoaderProvider,
     }
 
     @Override
-    public Store fileStore(File file) { return new FileStore(file); }
+    public Store pathStore(Path path) { return new PathStore(path); }
 
     @Override
     public Store memoryStore() { return new MemoryStore(); }

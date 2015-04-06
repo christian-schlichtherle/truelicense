@@ -17,7 +17,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
-import java.io.File;
+import java.nio.file.Path;
 
 import static java.util.Objects.requireNonNull;
 
@@ -308,8 +308,8 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             }
 
             @Override
-            public ManagerBuilder storeInFile(final File file) {
-                this.store = cc.fileStore(file);
+            public ManagerBuilder storeInPath(final Path path) {
+                this.store = cc.pathStore(path);
                 return this;
             }
         }

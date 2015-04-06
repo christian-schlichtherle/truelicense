@@ -10,7 +10,7 @@ package ${keymgr};
 
 import org.truelicense.api.*;
 
-import java.io.*;
+import java.nio.file.Path;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -56,9 +56,9 @@ public class LicenseManagerIT {
         for (final LicenseManager manager : LicenseManager.values()) {
             final String edition = manager.name();
             if (!"ftp".equalsIgnoreCase(edition)) {
-                final File licenseKey = folder.newFile(edition + ".lic");
-                ${KeyGenMain}.process("create", "-edition", edition, licenseKey.getPath());
-                manager.install(manager.context().fileStore(licenseKey));
+                final Path licenseKey = folder.newFile(edition + ".lic").toPath();
+                ${KeyGenMain}.process("create", "-edition", edition, licenseKey.toString());
+                manager.install(manager.context().pathStore(licenseKey));
                 try {
                     test.run(manager);
                 } finally {

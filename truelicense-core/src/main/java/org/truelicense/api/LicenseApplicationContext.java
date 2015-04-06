@@ -16,7 +16,7 @@ import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * A context which has been derived from a
@@ -54,8 +54,8 @@ extends ContextProvider<LicenseManagementContext> {
      */
     Sink output();
 
-    /** Returns a store for the given {@code file}. */
-    Store fileStore(File file);
+    /** Returns a store for the given path. */
+    Store pathStore(Path path);
 
     /** Returns a new memory store. */
     Store memoryStore();

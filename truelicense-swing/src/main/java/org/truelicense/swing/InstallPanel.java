@@ -5,28 +5,23 @@
 
 package org.truelicense.swing;
 
-import java.io.File;
-import java.util.Locale;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.misc.Message;
+import org.truelicense.core.io.PathStore;
+import org.truelicense.swing.util.ComponentEnabler;
+import org.truelicense.swing.util.Enabler;
+import org.truelicense.ui.LicenseWizardState;
+
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
-import org.truelicense.api.LicenseConsumerManager;
-import org.truelicense.core.io.FileStore;
-import org.truelicense.api.io.Source;
-import org.truelicense.api.misc.Message;
-import org.truelicense.swing.util.ComponentEnabler;
-import org.truelicense.swing.util.Enabler;
-import static org.truelicense.ui.LicenseWizardMessage.install_failure;
-import static org.truelicense.ui.LicenseWizardMessage.install_fileExtension;
-import static org.truelicense.ui.LicenseWizardMessage.install_fileFilter;
-import static org.truelicense.ui.LicenseWizardMessage.install_install;
-import static org.truelicense.ui.LicenseWizardMessage.install_prompt;
-import static org.truelicense.ui.LicenseWizardMessage.install_select;
-import static org.truelicense.ui.LicenseWizardMessage.install_success;
-import org.truelicense.ui.LicenseWizardState;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Locale;
+
+import static org.truelicense.ui.LicenseWizardMessage.*;
 
 /**
  * @author Christian Schlichtherle
@@ -227,7 +222,7 @@ final class InstallPanel extends LicenseWorkerPanel {
 
     private void installActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
-            final Source source = new FileStore(new File(fileField.getText()));
+            final Source source = new PathStore(Paths.get(fileField.getText()));
 
             @Override protected Void doInBackground() throws Exception {
                 manager().install(source);

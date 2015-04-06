@@ -6,8 +6,8 @@
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
-import java.io.*;
 import static java.lang.System.*;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
@@ -72,7 +72,7 @@ public enum Main {
                             ? context().license()
                             : (License) codec().decode("-".equals(path)
                                     ? input()
-                                    : fileStore(path),
+                                    : pathStore(path),
                             License.class);
                 }
 
@@ -81,7 +81,7 @@ public enum Main {
                     if (null != path)
                         codec().encode("-".equals(path)
                                         ? output()
-                                        : fileStore(path),
+                                        : pathStore(path),
                                 license);
                 }
 
@@ -98,15 +98,15 @@ public enum Main {
                     final String path = options.get(CreateOption.KEY);
                     return null == path
                             ? memoryStore() // -> /dev/null
-                            : fileStore(path);
+                            : pathStore(path);
                 }
 
                 Store memoryStore() {
                     return context().memoryStore();
                 }
 
-                Store fileStore(String path) {
-                    return context().fileStore(new File(path));
+                Store pathStore(String path) {
+                    return context().pathStore(Paths.get(path));
                 }
 
                 LicenseVendorContext context() { return manager().context(); }

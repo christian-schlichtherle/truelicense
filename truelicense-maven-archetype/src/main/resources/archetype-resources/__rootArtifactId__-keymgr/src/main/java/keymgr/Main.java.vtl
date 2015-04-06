@@ -6,8 +6,8 @@
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
-import java.io.File;
 import static java.lang.System.*;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
@@ -44,7 +44,7 @@ public enum Main {
 
     INSTALL {
         @Override void run(Deque<String> params) throws Exception {
-            manager().install(context().fileStore(new File(params.pop())));
+            manager().install(context().pathStore(Paths.get(params.pop())));
         }
     },
 
