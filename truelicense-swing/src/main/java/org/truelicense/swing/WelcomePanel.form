@@ -35,7 +35,7 @@
         </Property>
         <Property name="lineWrap" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="welcome_prompt" replaceFormat="format({key})">
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="welcome_prompt" replaceFormat="format({key})">
             <Argument index="0" javacode="manager.subject()"/>
           </ResourceString>
         </Property>
@@ -65,7 +65,7 @@
         </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="welcome_install" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="welcome_install" replaceFormat="format({key})"/>
         </Property>
         <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="LicenseWizardState.install.name()" type="code"/>
@@ -86,7 +86,7 @@
           <ComponentRef name="buttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="welcome_display" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="welcome_display" replaceFormat="format({key})"/>
         </Property>
         <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="LicenseWizardState.display.name()" type="code"/>
@@ -107,7 +107,7 @@
           <ComponentRef name="buttonGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="welcome_uninstall" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="welcome_uninstall" replaceFormat="format({key})"/>
         </Property>
         <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="LicenseWizardState.uninstall.name()" type="code"/>

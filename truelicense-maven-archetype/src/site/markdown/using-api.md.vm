@@ -219,10 +219,10 @@ License consumer managers are arranged in a
 ordered from feature subset to feature superset (which is the reverse order
 of the items in the enumeration class `LicenseManager`).
 When
-[installing](../apidocs/net/java/truelicense/core/LicenseConsumerManager#install),
-[viewing](../apidocs/net/java/truelicense/core/LicenseConsumerManager#view),
-[verifying](../apidocs/net/java/truelicense/core/LicenseConsumerManager#verify) or
-[uninstalling](../apidocs/net/java/truelicense/core/LicenseConsumerManager#uninstall)
+[installing](../apidocs/org/truelicense/core/LicenseConsumerManager#install),
+[viewing](../apidocs/org/truelicense/core/LicenseConsumerManager#view),
+[verifying](../apidocs/org/truelicense/core/LicenseConsumerManager#verify) or
+[uninstalling](../apidocs/org/truelicense/core/LicenseConsumerManager#uninstall)
 a license key, each operation is tried using the parent manager first.
 If the operation succeeds using the parent manager then the processing stops,
 otherwise the operation is retried using the child manager.
@@ -368,18 +368,18 @@ If no license key is installed or only an auto-generated FTP license
 key is installed, then a
 [`org.truelicense.core.LicenseManagementException`] is thrown instead.
 
-[`org.truelicense.core.License`]: ../apidocs/net/java/truelicense/core/License.html
-[`org.truelicense.core.LicenseManagementException`]: ../apidocs/net/java/truelicense/core/LicenseManagementException.html
-[`org.truelicense.core.LicenseValidationException`]: ../apidocs/net/java/truelicense/core/LicenseValidationException.html
-[`org.truelicense.core.LicenseConsumerContext`]: ../apidocs/net/java/truelicense/core/LicenseConsumerContext.html
-[`org.truelicense.core.LicenseConsumerManager`]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
-[`org.truelicense.core.LicenseVendorContext`]: ../apidocs/net/java/truelicense/core/LicenseVendorContext.html
-[`org.truelicense.core.LicenseVendorManager`]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html
-[`org.truelicense.core.io.Sink`]: ../apidocs/net/java/truelicense/core/io/Sink.html
-[`org.truelicense.core.io.Source`]: ../apidocs/net/java/truelicense/core/io/Source.html
+[`org.truelicense.core.License`]: ../apidocs/org/truelicense/core/License.html
+[`org.truelicense.core.LicenseManagementException`]: ../apidocs/org/truelicense/core/LicenseManagementException.html
+[`org.truelicense.core.LicenseValidationException`]: ../apidocs/org/truelicense/core/LicenseValidationException.html
+[`org.truelicense.core.LicenseConsumerContext`]: ../apidocs/org/truelicense/core/LicenseConsumerContext.html
+[`org.truelicense.core.LicenseConsumerManager`]: ../apidocs/org/truelicense/core/LicenseConsumerManager.html
+[`org.truelicense.core.LicenseVendorContext`]: ../apidocs/org/truelicense/core/LicenseVendorContext.html
+[`org.truelicense.core.LicenseVendorManager`]: ../apidocs/org/truelicense/core/LicenseVendorManager.html
+[`org.truelicense.core.io.Sink`]: ../apidocs/org/truelicense/core/io/Sink.html
+[`org.truelicense.core.io.Source`]: ../apidocs/org/truelicense/core/io/Source.html
 
-[license consumer manager]: ../apidocs/net/java/truelicense/core/LicenseConsumerManager.html
-[license vendor manager]: ../apidocs/net/java/truelicense/core/LicenseVendorManager.html
+[license consumer manager]: ../apidocs/org/truelicense/core/LicenseConsumerManager.html
+[license vendor manager]: ../apidocs/org/truelicense/core/LicenseVendorManager.html
 
 ---
 

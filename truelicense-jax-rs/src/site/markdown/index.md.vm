@@ -26,15 +26,15 @@ Using the $project.name you can...
 $h3 Usage
 
 The service is implemented by the class
-[`LicenseConsumerService`](../apidocs/net/java/truelicense/ws/rs/LicenseConsumerService.html)
+[`LicenseConsumerService`](../apidocs/org/truelicense/ws/rs/LicenseConsumerService.html)
 and accompanied by the exception mapper class
-[`LicenseConsumerServiceExceptionMapper`](../apidocs/net/java/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
+[`LicenseConsumerServiceExceptionMapper`](../apidocs/org/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
 With a typical container, you should just let it scan the package
-[`org.truelicense.jax.rs`](../apidocs/net/java/truelicense/jax/rs/package-summary.html)
+[`org.truelicense.jax.rs`](../apidocs/org/truelicense/jax/rs/package-summary.html)
 so that it can find these classes.
 
 The `LicenseConsumerService` needs a
-[`LicenseConsumerManager`](../apidocs/net/java/truelicense/core/LicenseConsumerManager.html)
+[`LicenseConsumerManager`](../apidocs/org/truelicense/core/LicenseConsumerManager.html)
 as its dependency.
 If no dependency injection framework is available, you can satisfy this
 dependency using:

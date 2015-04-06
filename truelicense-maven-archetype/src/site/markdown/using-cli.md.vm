@@ -111,7 +111,7 @@ stream in JSON format and create a V2/JSON license key from it like this:
     org.truelicense.core.License@e195716b[subject="Product 1", holder="CN=Christian Schlichtherle", issuer="CN=Company Inc.", issued=Thu Mar 28 15:11:12 CET 2013, notBefore=Thu Mar 28 15:11:12 CET 2013, notAfter=Fri Mar 28 15:11:12 CET 2014, consumerType="User", consumerAmount=1, info=null]
 
 Please refer to the Javadoc for the class
-[`org.truelicense.core.License`](../apidocs/net/java/truelicense/core/License.html)
+[`org.truelicense.core.License`](../apidocs/org/truelicense/core/License.html)
 for a list of all predefined properties.
 
 $h5 Property Output
@@ -220,7 +220,7 @@ A brief representation of the encoded license bean is written to the standard
 output stream.
 
 If no license key is installed, then a
-[`org.truelicense.core.LicenseManagementException`](../apidocs/net/java/truelicense/core/LicenseManagementException.html)
+[`org.truelicense.core.LicenseManagementException`](../apidocs/org/truelicense/core/LicenseManagementException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar view
@@ -259,7 +259,7 @@ You can verify the installed license key using:
 Note that no output is produced.
 
 If no license key is installed, then a
-[`org.truelicense.core.LicenseManagementException`](../apidocs/net/java/truelicense/core/LicenseManagementException.html)
+[`org.truelicense.core.LicenseManagementException`](../apidocs/org/truelicense/core/LicenseManagementException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar verify
@@ -291,7 +291,7 @@ is thrown instead (using the standalone JAR for a readable stack trace):
         ... 5 more
 
 If a license key is installed, but the encoded license bean is invalid, then a
-[`org.truelicense.core.LicenseValidationException`](../apidocs/net/java/truelicense/core/LicenseValidationException.html)
+[`org.truelicense.core.LicenseValidationException`](../apidocs/org/truelicense/core/LicenseValidationException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar verify
@@ -317,7 +317,7 @@ Note that no output is produced.
 
 If no license key is installed or only an auto-generated 
 <abbr title="Free Trial Period">FTP</abbr> license key is installed, then a
-[`org.truelicense.core.LicenseManagementException`](../apidocs/net/java/truelicense/core/LicenseManagementException.html)
+[`org.truelicense.core.LicenseManagementException`](../apidocs/org/truelicense/core/LicenseManagementException.html)
 is thrown instead:
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar uninstall

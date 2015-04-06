@@ -7,7 +7,7 @@
         <CompoundBorder>
           <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="License Properties">
-              <ResourceString PropertyName="titleX" bundle="net/java/truelicense/ui/Messages.properties" key="display_title" replaceFormat="format({key})"/>
+              <ResourceString PropertyName="titleX" bundle="org/truelicense/ui/Messages.properties" key="display_title" replaceFormat="format({key})"/>
             </TitledBorder>
           </Border>
           <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -41,7 +41,7 @@
           <ComponentRef name="subjectComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_subject" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_subject" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -81,7 +81,7 @@
           <ComponentRef name="holderComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_holder" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_holder" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -142,7 +142,7 @@
           <ComponentRef name="issuerComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_issuer" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_issuer" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -203,7 +203,7 @@
           <ComponentRef name="issuedComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_issued" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_issued" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -243,7 +243,7 @@
           <ComponentRef name="notBeforeComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_notBefore" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_notBefore" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -283,7 +283,7 @@
           <ComponentRef name="notAfterComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_notAfter" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_notAfter" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -323,7 +323,7 @@
           <ComponentRef name="consumerComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_consumer" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_consumer" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -363,7 +363,7 @@
           <ComponentRef name="infoComponent"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-          <ResourceString bundle="net/java/truelicense/ui/Messages.properties" key="display_info" replaceFormat="format({key})"/>
+          <ResourceString bundle="org/truelicense/ui/Messages.properties" key="display_info" replaceFormat="format({key})"/>
         </Property>
       </Properties>
       <AuxValues>
