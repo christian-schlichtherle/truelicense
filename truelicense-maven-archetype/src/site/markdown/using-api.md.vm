@@ -116,7 +116,7 @@ You can create a license key using:
     LicenseVendorManager manager = LicenseManager.${dollar}{edition};
     LicenseVendorContext context = manager.context();
     License bean = context.license();
-    Sink sink = context.fileStore(new java.io.File("${dollar}{license-key-path}"));
+    Sink sink = context.pathStore(java.nio.file.Paths.get("${dollar}{license-key-path}"));
     manager.create(bean, sink);
 
 ... where
@@ -248,7 +248,7 @@ You can install a license key using:
 
     LicenseConsumerManager manager = LicenseManager.get();
     LicenseConsumerContext context = manager.context();
-    Source source = context.fileStore(new java.io.File("${dollar}{license-key-path}"));
+    Source source = context.pathStore(java.nio.file.Paths.get("${dollar}{license-key-path}"));
     manager.install(source);
 
 ... where `${dollar}{license-key-path}` references the path of the license key file,
