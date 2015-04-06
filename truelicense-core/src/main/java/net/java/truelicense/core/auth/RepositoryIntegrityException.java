@@ -8,7 +8,7 @@ package net.java.truelicense.core.auth;
 import java.security.GeneralSecurityException;
 
 /**
- * Indicates that the integrity of a {@link RepositoryModel} with its encoded
+ * Indicates that the integrity of a {@link Repository} with its encoded
  * artifact has probably been compromised because the public key did not match
  * the private key when verifying the data.
  *

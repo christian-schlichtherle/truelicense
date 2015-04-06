@@ -7,7 +7,7 @@ package net.java.truelicense.core.auth;
 
 /**
  * Defines authentication parameters for signing or verifying a
- * {@link RepositoryModel} by an {@link Authentication}.
+ * {@link Repository} by an {@link Authentication}.
  *
  * @author Christian Schlichtherle
  */
@@ -15,7 +15,7 @@ public interface AuthenticationParameters {
 
     /**
      * Returns {@code true} if and only if these parameters can get used to
-     * sign a {@link RepositoryModel}.
+     * sign a {@link Repository}.
      *
      * @deprecated Since TrueLicense 2.4, this method is not used anymore.
      */

@@ -5,10 +5,13 @@
 
 package net.java.truelicense.core.auth;
 
-import java.security.*;
-import javax.annotation.*;
+import net.java.truelicense.core.codec.Codec;
+
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
-import net.java.truelicense.core.codec.*;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
 
 /**
  * A controller for storing authenticated objects (artifacts).
@@ -27,8 +30,8 @@ public interface Repository {
     /**
      * Encodes and signs the given {@code artifact}
      * and returns an artifactory for decoding it.
-     * As a side effect, the state of the {@linkplain #model model} is modified
-     * so that a subsequent {@linkplain #verify verification} can succeed.
+     * As a side effect, the state of this repository is modified so that a
+     * subsequent {@linkplain #verify verification} can succeed.
      *
      * @param  codec the codec for encoding the artifact.
      *         It is an implementation detail whether or not encoding
@@ -49,8 +52,7 @@ public interface Repository {
     /**
      * Verifies the signature of the encoded artifact
      * and returns an artifactory for decoding it.
-     * The state of the {@linkplain #model model} is not modified by this
-     * method.
+     * The state of this repository is not modified by this method.
      *
      * @param  codec the codec for decoding the artifact.
      *         It is an implementation detail whether or not decoding
@@ -59,8 +61,6 @@ public interface Repository {
      * @param  key the public key.
      * @throws IllegalStateException if the state of the model doesn't
      *         match the configuration of the codec or the signature engine.
-     * @throws RepositoryIntegrityException if the integrity of the model
-     *         has been compromised.
      */
     Artifactory verify(
             Codec codec,

@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  * Defines parameters for accessing a {@link java.security.KeyStore} which
- * holds the public or private keys to sign or verify a {@link RepositoryModel}
+ * holds the public or private keys to sign or verify a {@link Repository}
  * by an {@link Authentication}.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
