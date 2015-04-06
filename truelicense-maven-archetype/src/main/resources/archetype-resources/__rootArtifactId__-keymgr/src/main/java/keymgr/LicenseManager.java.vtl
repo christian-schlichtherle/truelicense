@@ -237,7 +237,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 
     private static Class<?> classForName(final String className) {
         try {
-            return Class.forName(className, false, LicensingSchema.class.getClassLoader());
+            return Class.forName(className, false, LicenseManager.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
