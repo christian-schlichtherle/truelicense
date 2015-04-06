@@ -38,7 +38,7 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
      * Call its {@link ManagerBuilder#build} method to obtain a configured
      * license vendor manager.
      */
-    ManagerBuilder managerBuilder();
+    ManagerBuilder manager();
 
     /**
      * A builder for

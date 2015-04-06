@@ -61,7 +61,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
         @Override
         LicenseConsumerManager newManager() {
-            return _context.managerBuilder()
+            return _context.manager()
                     .keyStore()
                         .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
@@ -122,7 +122,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
         @Override
         LicenseConsumerManager newManager() {
-            return _context.managerBuilder()
+            return _context.manager()
                     .ftpDays($freeTrialPeriod)
                     .keyStore()
                         .alias($ftpKeyEntryAlias)
