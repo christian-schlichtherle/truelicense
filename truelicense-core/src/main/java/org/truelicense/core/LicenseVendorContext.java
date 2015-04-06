@@ -8,13 +8,8 @@ package org.truelicense.core;
 import org.truelicense.core.auth.Authentication;
 import org.truelicense.core.codec.CodecProvider;
 import org.truelicense.core.crypto.Encryption;
-import org.truelicense.core.io.Source;
 import org.truelicense.core.util.Builder;
 import org.truelicense.core.util.Injection;
-import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.obfuscate.ObfuscatedString;
-
-import javax.annotation.CheckForNull;
 
 /**
  * A derived context for license vendor applications alias license key tools.
@@ -77,12 +72,12 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
         ManagerBuilder encryption(Encryption encryption);
 
         /**
-         * Returns an injection for a password based encryption (PBE).
+         * Returns an injection for a password based encryption.
          * Call its {@link Injection#inject} method to build and inject the
          * configured encryption into this builder and return it.
          *
          * @see #encryption(Encryption)
          */
-        PbeInjection<ManagerBuilder> pbe();
+        PbeInjection<ManagerBuilder> encryption();
     }
 }

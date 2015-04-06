@@ -72,7 +72,7 @@ public enum LicenseManager implements LicenseVendorManager {
                         .storeType(KEY_STORE_TYPE)
 #end
                         .inject()
-                    .pbe()
+                    .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)

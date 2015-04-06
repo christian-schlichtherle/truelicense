@@ -75,7 +75,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                     .parent(LicenseManager.$parentEdition)
 #end
 #if($editionPbePassword != $parentEditionPbePassword)
-                    .pbe()
+                    .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)

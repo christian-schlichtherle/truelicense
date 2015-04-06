@@ -7,14 +7,10 @@ package org.truelicense.core;
 
 import org.truelicense.core.auth.Authentication;
 import org.truelicense.core.crypto.Encryption;
-import org.truelicense.core.io.Source;
 import org.truelicense.core.io.Store;
 import org.truelicense.core.util.Builder;
 import org.truelicense.core.util.Injection;
-import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.obfuscate.ObfuscatedString;
 
-import javax.annotation.CheckForNull;
 import java.io.File;
 
 /**
@@ -134,7 +130,7 @@ extends LicenseApplicationContext {
          *
          * @see #encryption(Encryption)
          */
-        PbeInjection<ManagerBuilder> pbe();
+        PbeInjection<ManagerBuilder> encryption();
 
         /**
          * Stores the license key in the given store.

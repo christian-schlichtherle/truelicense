@@ -21,7 +21,7 @@ trait V2TestContext extends TestContext {
         .loadFromResource(prefix + "private.jceks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .build
@@ -36,7 +36,7 @@ trait V2TestContext extends TestContext {
         .loadFromResource(prefix + "chained-private.jceks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .build
@@ -51,7 +51,7 @@ trait V2TestContext extends TestContext {
         .loadFromResource(prefix + "public.jceks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .storeIn(store)

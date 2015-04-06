@@ -196,7 +196,7 @@ object LicenseWizardIT {
         .loadFromResource(prefix + "private.ks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .build
@@ -208,7 +208,7 @@ object LicenseWizardIT {
         .loadFromResource(prefix + "public.ks")
         .storePassword(test1234)
         .inject
-      .pbe
+      .encryption
         .password(test1234)
         .inject
       .storeIn(new MemoryStore)
