@@ -114,7 +114,7 @@ public class Codecs {
      * Returns a duplicate of the given object using a new
      * {@link SerializationCodec}.
      *
-     * @since TrueLicense 2.4.2
+     * @since TrueLicense 2.5
      */
     public static <T> T duplicate(T object) throws Exception {
         return duplicate(object, new SerializationCodec());
@@ -123,7 +123,7 @@ public class Codecs {
     /**
      * Returns a duplicate of the given object using the given codec.
      *
-     * @since TrueLicense 2.4.2
+     * @since TrueLicense 2.5
      */
     public static <T> T duplicate(final T object, final Codec codec) throws Exception {
         final Store store = new MemoryStore();
