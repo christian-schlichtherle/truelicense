@@ -3,13 +3,13 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.it.v2.core
+package org.truelicense.it.v2.base
 
 import org.truelicense.api._
 import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
-import org.truelicense.it.v2.core.V2TestContext.prefix
+import org.truelicense.it.v2.base.V2TestContext.prefix
 
 /** @author Christian Schlichtherle */
 trait V2TestContext extends TestContext {

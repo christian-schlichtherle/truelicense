@@ -12,7 +12,7 @@ import org.truelicense.api._
 import org.truelicense.core._
 import org.truelicense.core.auth.BasicRepository
 import org.truelicense.it.core.ExtraData
-import org.truelicense.it.v2.core.V2TestContext
+import org.truelicense.it.v2.base.V2TestContext
 import org.truelicense.it.v2.xml.V2XmlTestContext.logger
 
 /** @author Christian Schlichtherle */
