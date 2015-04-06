@@ -174,7 +174,7 @@ public enum LicenseManager implements LicenseVendorManager {
 
     private static Class<?> classForName(String className) {
         try {
-            return Class.forName(className, false, LicensingSchema.class.getClassLoader());
+            return Class.forName(className, false, LicenseManager.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
