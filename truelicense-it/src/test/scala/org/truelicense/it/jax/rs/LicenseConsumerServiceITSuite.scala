@@ -15,7 +15,7 @@ import com.sun.jersey.api.core._
 import com.sun.jersey.test.framework._
 import org.truelicense.core._
 import org.truelicense.it.core.TestContext
-import org.truelicense.ws.rs._
+import org.truelicense.jax.rs._
 import org.junit.Test
 import org.scalatest.Matchers._
 

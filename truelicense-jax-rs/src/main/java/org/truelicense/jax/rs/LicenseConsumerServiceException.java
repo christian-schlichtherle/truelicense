@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.ws.rs;
+package org.truelicense.jax.rs;
 
 import java.security.GeneralSecurityException;
 import javax.annotation.CheckForNull;

@@ -10,7 +10,7 @@ import com.sun.jersey.api.core.*;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import static java.lang.System.*;
-import org.truelicense.ws.rs.*;
+import org.truelicense.jax.rs.*;
 
 /**
  * @author Christian Schlichtherle

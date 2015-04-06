@@ -6,7 +6,7 @@
 package org.truelicense.it.jax.rs
 
 import org.truelicense.it.core.TestContext
-import org.truelicense.ws.rs.{LicenseConsumerService, LicenseConsumerServiceException}
+import org.truelicense.jax.rs.{LicenseConsumerService, LicenseConsumerServiceException}
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 

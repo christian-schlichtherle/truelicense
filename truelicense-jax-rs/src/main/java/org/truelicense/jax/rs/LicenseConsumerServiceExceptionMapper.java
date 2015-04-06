@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.ws.rs;
+package org.truelicense.jax.rs;
 
 import javax.annotation.concurrent.Immutable;
 import javax.ws.rs.Produces;

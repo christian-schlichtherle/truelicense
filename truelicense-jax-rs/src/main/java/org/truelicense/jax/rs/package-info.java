@@ -11,4 +11,4 @@
  * @author Christian Schlichtherle
  */
 @javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
-package org.truelicense.ws.rs;
+package org.truelicense.jax.rs;
