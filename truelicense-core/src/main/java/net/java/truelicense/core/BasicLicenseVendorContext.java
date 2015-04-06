@@ -63,25 +63,21 @@ implements LicenseVendorContext {
 
     private LicenseVendorManager manager(final LicenseParameters lp) {
         assert null != lp;
-        return new Manager() {
+        class Manager extends BasicLicenseManager implements LicenseVendorManager {
+
+            final BasicLicenseVendorContext vc = BasicLicenseVendorContext.this;
+            final String subject = vc.subject();
+
+            @Override public String subject() { return subject; }
+
+            @Override public LicenseVendorContext context() { return vc; }
+
+            @Override public Store store() {
+                throw new UnsupportedOperationException();
+            }
             @Override public LicenseParameters parameters() { return lp; }
-        };
-    }
-
-    private abstract class Manager extends BasicLicenseManager
-    implements LicenseVendorManager {
-
-        final String subject = BasicLicenseVendorContext.this.subject();
-
-        @Override public String subject() { return subject; }
-
-        @Override public LicenseVendorContext context() {
-            return BasicLicenseVendorContext.this;
         }
-
-        @Override public Store store() {
-            throw new UnsupportedOperationException();
-        }
+        return new Manager();
     }
 
     @SuppressWarnings("PackageVisibleField")

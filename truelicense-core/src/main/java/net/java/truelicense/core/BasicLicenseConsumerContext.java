@@ -132,26 +132,23 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
         assert null != lp;
         requireNonNull(parent);
         requireNonNull(store);
-        return new ChainedManager() {
+        class Manager extends ChainedLicenseConsumerManager implements LicenseConsumerManager {
+
+            final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
+            final String subject = cc.subject();
+            final long cachePeriodMillis = cc.cachePeriodMillis();
+
+            { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
+
+            @Override public String subject() { return subject; }
+            @Override public LicenseConsumerContext context() { return cc; }
+            @Override public long cachePeriodMillis() { return cachePeriodMillis; }
+            @Override public License license() { return cc.license(); }
             @Override public LicenseParameters parameters() { return lp; }
             @Override public Store store() { return store; }
             @Override LicenseConsumerManager parent() { return parent; }
-        };
-    }
-
-    private abstract class ChainedManager extends ChainedLicenseConsumerManager
-    implements LicenseConsumerManager {
-
-        final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
-        final String subject = cc.subject();
-        final long cachePeriodMillis = cc.cachePeriodMillis();
-
-        { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
-
-        @Override public String subject() { return subject; }
-        @Override public LicenseConsumerContext context() { return cc; }
-        @Override public long cachePeriodMillis() { return cachePeriodMillis; }
-        @Override public License license() { return cc.license(); }
+        }
+        return new Manager();
     }
 
     @SuppressWarnings("PackageVisibleField")
