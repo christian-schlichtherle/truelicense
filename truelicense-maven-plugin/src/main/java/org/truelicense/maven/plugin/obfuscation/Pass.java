@@ -66,17 +66,17 @@ abstract class Pass implements Runnable {
             code = new byte[(int) l];
         }
         {
-            final InputStream in = new TFileInputStream(file);
-            try { new DataInputStream(in).readFully(code); }
-            finally { in.close(); }
+            try (InputStream in = new TFileInputStream(file)) {
+                new DataInputStream(in).readFully(code);
+            }
         }
         return code;
     }
 
     @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
     final void write(final Node node, final byte[] code) throws IOException {
-        final OutputStream out = new TFileOutputStream(node.file());
-        try { out.write(code); }
-        finally { out.close(); }
+        try (OutputStream out = new TFileOutputStream(node.file())) {
+            out.write(code);
+        }
     }
 }

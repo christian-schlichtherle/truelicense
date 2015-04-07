@@ -53,12 +53,9 @@ public class XmlCodec implements Codec {
     @Override public void encode(final Sink sink, final @Nullable Object obj)
     throws Exception {
         final ZeroToleranceListener ztl = new ZeroToleranceListener();
-        final XMLEncoder enc = encoder(sink.output());
-        try {
+        try (XMLEncoder enc = encoder(sink.output())) {
             enc.setExceptionListener(ztl);
             enc.writeObject(obj);
-        } finally {
-            enc.close(); // may pass exception to ztl!
         }
         ztl.check();
     }
@@ -74,12 +71,9 @@ public class XmlCodec implements Codec {
     throws Exception {
         final Object obj;
         final ZeroToleranceListener ztl = new ZeroToleranceListener();
-        final XMLDecoder dec = decoder(source.input());
-        try {
+        try (XMLDecoder dec = decoder(source.input())) {
             dec.setExceptionListener(ztl);
             obj = dec.readObject();
-        } finally {
-            dec.close(); // may pass exception to ztl!
         }
         ztl.check();
         return (T) obj;

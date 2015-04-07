@@ -47,9 +47,9 @@ public class MainIT {
 
     private static byte[] read(final File file) throws IOException {
         final byte[] data = new byte[(int) file.length()];
-        final InputStream in = new FileInputStream(file);
-        try { new DataInputStream(in).readFully(data); }
-        finally { in.close(); }
+        try (InputStream in = new FileInputStream(file)) {
+            new DataInputStream(in).readFully(data);
+        }
         return data;
     }
 }

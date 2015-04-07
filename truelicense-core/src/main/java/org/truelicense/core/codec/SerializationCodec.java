@@ -54,16 +54,9 @@ public class SerializationCodec implements Codec {
 
     @Override
     public void encode(final Sink sink, final @Nullable Object obj) throws Exception {
-        final OutputStream out = sink.output();
-        try {
-            final ObjectOutputStream oos = new ObjectOutputStream(out);
-            try {
-                oos.writeObject(obj);
-            } finally {
-                oos.close();
-            }
-        } finally {
-            out.close();
+        try (OutputStream out = sink.output();
+             ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(obj);
         }
     }
 
@@ -71,13 +64,9 @@ public class SerializationCodec implements Codec {
     @SuppressWarnings("unchecked")
     public @Nullable <T> T decode(final Source source, final Type expected)
     throws Exception {
-        final InputStream in = source.input();
-        try {
-            final ObjectInputStream oin = new ObjectInputStream(in);
-            try { return (T) oin.readObject(); }
-            finally { oin.close(); }
-        } finally {
-            in.close();
+        try (InputStream in = source.input();
+             ObjectInputStream oin = new ObjectInputStream(in)) {
+            return (T) oin.readObject();
         }
     }
 }

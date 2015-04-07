@@ -44,9 +44,10 @@ public final class V2Encryption extends BasicPbeEncryption {
                         try {
                             new DataOutputStream(out).writeShort(encoded.length);
                             out.write(encoded);
-                        } catch (final Exception ex) { // TODO: make this a Throwable for Java 7
+                        } catch (final Throwable t) {
                             try { out.close(); }
-                            finally { throw ex; }
+                            catch (Throwable t2) { t.addSuppressed(t2); }
+                            throw t;
                         }
                         return new CipherOutputStream(out, cipher);
                     }
@@ -68,9 +69,10 @@ public final class V2Encryption extends BasicPbeEncryption {
                             final byte[] encoded = new byte[din.readShort() & 0xffff];
                             din.readFully(encoded);
                             cipher = cipher(false, param(encoded));
-                        } catch (final Exception ex) { // TODO: make this a Throwable for Java 7
+                        } catch (final Throwable t) {
                             try { in.close(); }
-                            finally { throw ex; }
+                            catch (Throwable t2) { t.addSuppressed(t2); }
+                            throw t;
                         }
                         return new CipherInputStream(in, cipher);
                     }

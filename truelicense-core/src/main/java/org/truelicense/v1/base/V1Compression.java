@@ -28,9 +28,10 @@ public final class V1Compression implements Transformation {
                 final OutputStream out = sink.output();
                 try {
                     return new GZIPOutputStream(out, Store.BUFSIZE);
-                } catch (final IOException ex) { // TODO: make this a Throwable for Java 7
+                } catch (final Throwable t) {
                     try { out.close(); }
-                    finally { throw ex; }
+                    catch (Throwable t2) { t.addSuppressed(t2); }
+                    throw t;
                 }
             }
         };
@@ -42,9 +43,10 @@ public final class V1Compression implements Transformation {
                 final InputStream in = source.input();
                 try {
                     return new GZIPInputStream(in, Store.BUFSIZE);
-                } catch (final IOException ex) { // TODO: make this a Throwable for Java 7
+                } catch (final Throwable t) {
                     try { in.close(); }
-                    finally { throw ex; }
+                    catch (Throwable t2) { t.addSuppressed(t2); }
+                    throw t;
                 }
             }
         };

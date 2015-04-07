@@ -140,12 +140,10 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
                 getLog().debug("Merge file: " + mergeFile);
             }
             mkdirs(mergeFile.getParentFile());
-            final Writer writer = new OutputStreamWriter(new FileOutputStream(mergeFile), encoding);
-            try {
+            try (OutputStream out = new FileOutputStream(mergeFile);
+                 Writer writer = new OutputStreamWriter(out, encoding)) {
                 engine().getTemplate(expandedTemplatePath, encoding)
                         .merge(context(), writer);
-            } finally {
-                writer.close();
             }
         }
 

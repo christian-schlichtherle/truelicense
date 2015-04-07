@@ -193,11 +193,8 @@ public final class Notary implements Authentication {
             if (null == pwd) throw new NotaryException(message(NO_STORE_PASSWORD));
             try {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
-                final InputStream in = inputStream();
-                try {
+                try (InputStream in = inputStream()) {
                     keyStore.load(in, pwd);
-                } finally {
-                    if (null != in) in.close();
                 }
                 return keyStore;
             } finally {

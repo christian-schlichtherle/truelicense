@@ -68,16 +68,16 @@ public class JsonCodec implements Codec {
     @Override
     public void encode(final Sink sink, final @Nullable Object obj)
     throws Exception {
-        final OutputStream out = sink.output();
-        try { mapper.writeValue(out, obj); }
-        finally { out.close(); }
+        try (OutputStream out = sink.output()) {
+            mapper.writeValue(out, obj);
+        }
     }
 
     @Override
     public @Nullable <T> T decode(final Source source, final Type expected)
     throws Exception {
-        final InputStream in = source.input();
-        try { return mapper.readValue(in, mapper.constructType(expected)); }
-        finally { in.close(); }
+        try (InputStream in = source.input()) {
+            return mapper.readValue(in, mapper.constructType(expected));
+        }
     }
 }

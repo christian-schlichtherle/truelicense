@@ -32,19 +32,12 @@ public final class Copy {
      */
     public static void copy(final Source source, final Sink sink)
     throws IOException {
-        final InputStream in = source.input();
-        try {
-            final OutputStream out = sink.output();
-            try {
-                final byte[] buffer = new byte[Store.BUFSIZE];
-                int read;
-                while (0 <= (read = in.read(buffer)))
-                    out.write(buffer, 0, read);
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
+        try (InputStream in = source.input();
+             OutputStream out = sink.output()) {
+            final byte[] buffer = new byte[Store.BUFSIZE];
+            int read;
+            while (0 <= (read = in.read(buffer)))
+                out.write(buffer, 0, read);
         }
     }
 }
