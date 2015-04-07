@@ -3,11 +3,12 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core
+package org.truelicense.it.v2.base
 
 import org.truelicense.it.core.TestContext
+import org.truelicense.v2.base.V2Compression
 
 /** @author Christian Schlichtherle */
-trait V1CompressionTestContext { this: TestContext =>
-  final override def transformation = new V1Compression
+trait V2CompressionTestContext { this: TestContext =>
+  final override def transformation = new V2Compression
 }

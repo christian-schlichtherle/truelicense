@@ -64,7 +64,7 @@
  * schema-less, yet resilient long term archival.
  * <p>
  * Applications use the
- * {@link org.truelicense.json.V2JsonLicenseManagementContext} class as
+ * {@link org.truelicense.v2.json.V2JsonLicenseManagementContext} class as
  * their starting point for configuring a license vendor or consumer manager.
  * This class can get subclassed to customize special aspects, such as
  * performing additional license validation steps, providing an authoritative
@@ -91,4 +91,4 @@
  * @author Christian Schlichtherle
  */
 @javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
-package org.truelicense.json;
+package org.truelicense.v2.json;

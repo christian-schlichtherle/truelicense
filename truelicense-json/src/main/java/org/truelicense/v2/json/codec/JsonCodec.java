@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.json.codec;
+package org.truelicense.v2.json.codec;
 
 import com.fasterxml.jackson.databind.*;
 import java.io.*;

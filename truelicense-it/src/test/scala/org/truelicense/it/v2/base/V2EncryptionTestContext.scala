@@ -3,12 +3,12 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core
+package org.truelicense.it.v2.base
 
 import org.truelicense.api.crypto.PbeParameters
 import org.truelicense.it.core.TestContext
-import TestContext.test1234
-import org.truelicense.it.core.TestContext
+import org.truelicense.it.core.TestContext.test1234
+import org.truelicense.v2.base.V2Encryption
 
 /** @author Christian Schlichtherle */
 trait V2EncryptionTestContext { this: TestContext =>

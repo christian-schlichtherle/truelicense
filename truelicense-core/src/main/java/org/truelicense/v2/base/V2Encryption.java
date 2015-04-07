@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core;
+package org.truelicense.v2.base;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.*;
@@ -25,9 +25,9 @@ import org.truelicense.core.crypto.*;
  * @author Christian Schlichtherle
  */
 @Immutable
-final class V2Encryption extends BasicPbeEncryption {
+public final class V2Encryption extends BasicPbeEncryption {
 
-    V2Encryption(PbeParameters pbe) { super(pbe); }
+    public V2Encryption(PbeParameters pbe) { super(pbe); }
 
     @Override public Sink apply(final Sink sink) {
         return new Sink() {

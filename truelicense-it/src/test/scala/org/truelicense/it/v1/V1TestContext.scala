@@ -12,6 +12,7 @@ import org.truelicense.core._
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v1.V1TestContext._
+import org.truelicense.v1.V1LicenseManagementContext
 
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext {

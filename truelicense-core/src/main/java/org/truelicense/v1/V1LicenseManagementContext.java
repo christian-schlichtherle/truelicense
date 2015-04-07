@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core;
+package org.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
 import de.schlichtherle.xml.*;
@@ -13,8 +13,11 @@ import org.truelicense.api.*;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
+import org.truelicense.core.BasicLicenseManagementContext;
 import org.truelicense.core.codec.X500PrincipalXmlCodec;
 import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.v1.base.V1Compression;
+import org.truelicense.v1.base.V1Encryption;
 
 /**
  * The root context for the management of Version 1 (V1) format license keys.

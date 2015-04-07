@@ -4,9 +4,7 @@
  */
 
 /**
- * Provides object graph encoding/decoding services using JSON.
- *
  * @author Christian Schlichtherle
  */
 @javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
-package org.truelicense.json.codec;
+package org.truelicense.v1;

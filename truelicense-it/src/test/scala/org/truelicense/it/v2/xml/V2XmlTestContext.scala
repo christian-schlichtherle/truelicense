@@ -6,7 +6,7 @@
 package org.truelicense.it.v2.xml
 
 import javax.xml.bind._
-
+import _root_.org.truelicense.v2.xml.V2XmlLicenseManagementContext
 import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.core._

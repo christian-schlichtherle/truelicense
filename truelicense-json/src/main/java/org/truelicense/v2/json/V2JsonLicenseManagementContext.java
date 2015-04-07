@@ -3,20 +3,23 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core;
+package org.truelicense.v2.json;
 
-import javax.annotation.concurrent.Immutable;
-import javax.xml.bind.*;
-
-import org.truelicense.api.License;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
+import org.truelicense.api.auth.Repository;
 import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.core.codec.JaxbCodec;
-import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.v2.base.BasicV2LicenseManagementContext;
+import org.truelicense.v2.json.codec.JsonCodec;
+
+import javax.annotation.concurrent.Immutable;
 
 /**
- * The root context for the management of Version-2-with-XML (V2/XML) format
+ * The root context for the management of Version-2-with-JSON (V2/JSON) format
  * license keys.
  * Note that there is no compatibility between different format license keys.
  * <p>
@@ -25,7 +28,7 @@ import org.truelicense.obfuscate.Obfuscate;
  * Here's an example for verifying the installed license key in a consumer
  * application:
  * <pre><code>
- * LicenseConsumerManager manager = new V2XmlLicenseManagementContext("MyApp 1")
+ * LicenseConsumerManager manager = new V2JsonLicenseManagementContext("MyApp 1")
  *         .consumer()
  *         .manager()
  *         ...
@@ -51,59 +54,61 @@ import org.truelicense.obfuscate.Obfuscate;
  * @author Christian Schlichtherle
  */
 @Immutable
-public class V2XmlLicenseManagementContext
+public class V2JsonLicenseManagementContext
 extends BasicV2LicenseManagementContext {
 
-    private volatile JAXBContext context;
+    private volatile ObjectMapper mapper;
 
     /**
-     * Constructs a V2/XML license management context.
+     * Constructs a V2/JSON license management context.
      * The provided string should get computed on demand from an obfuscated
      * form, e.g. by annotating a constant string value with the
-     * {@literal @}{@link Obfuscate} annotation and processing it with the
-     * TrueLicense Maven Plugin.
+     * {@literal @}{@link org.truelicense.obfuscate.Obfuscate} annotation
+     * and processing it with the TrueLicense Maven Plugin.
      *
      * @param subject the licensing subject, i.e. a product name with an
      *        optional version range, e.g. {@code MyApp 1}.
      */
-    public V2XmlLicenseManagementContext(String subject) { super(subject); }
+    public V2JsonLicenseManagementContext(String subject) { super(subject); }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link V2XmlLicenseManagementContext}
-     * returns a {@link JaxbCodec}.
+     * The implementation in the class {@link V2JsonLicenseManagementContext}
+     * returns a new {@link JsonCodec}.
      */
-    @Override public JaxbCodec codec() { return new JaxbCodec(context()); }
-
-    /**
-     * Returns the JAXB context to use for {@link #codec}.
-     * <p>
-     * The implementation in the class {@link V2XmlLicenseManagementContext}
-     * lazily resolves this property by calling {@link #newContext}.
-     */
-    public JAXBContext context() {
-        final JAXBContext c = context;
-        return null != c ? c : (context = newContext());
+    @Override public JsonCodec codec() {
+        return new JsonCodec(mapper());
     }
 
     /**
-     * Returns a new JAXB context for use with {@linkplain #license licenses}
+     * Returns the object mapper to use for {@link #codec}.
+     * <p>
+     * The implementation in the class {@link V2JsonLicenseManagementContext}
+     * lazily resolves this property by calling {@link #newMapper}.
+     */
+    public ObjectMapper mapper() {
+        final ObjectMapper m = mapper;
+        return null != m ? m : (mapper = newMapper());
+    }
+
+    /**
+     * Returns a new object mapper for use with {@linkplain #license licenses}
      * and {@linkplain #repository repositories}.
      * This method is normally only called once.
      * In a multi-threaded environment, it may get called more than once, but
      * then each invocation must return an object which behaves equivalent to
      * any previously returned object.
-     * <p>
-     * The implementation in the class {@link V2XmlLicenseManagementContext}
-     * constructs a new {@code JAXBContext} for the root element classes
-     * {@link License} and {@link BasicRepository}.
      */
-    protected JAXBContext newContext() {
-        try {
-            return JAXBContext.newInstance(License.class, BasicRepository.class);
-        } catch (final JAXBException ex) {
-            throw new AssertionError(ex);
-        }
+    protected ObjectMapper newMapper() {
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        mapper.registerModule(new JaxbAnnotationModule());
+        final SimpleModule module = new SimpleModule();
+        // Note that this doesn't work with a JaxbAnnotationModule as of
+        // jackson-module-jaxb-annotations 2.1.3.
+        module.addAbstractTypeMapping(Repository.class, BasicRepository.class);
+        mapper.registerModule(module);
+        return mapper;
     }
 }

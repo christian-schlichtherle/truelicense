@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core;
+package org.truelicense.v1.base;
 
 import java.io.*;
 import java.security.spec.AlgorithmParameterSpec;
@@ -25,7 +25,7 @@ import org.truelicense.obfuscate.Obfuscate;
  * @author Christian Schlichtherle
  */
 @Immutable
-final class V1Encryption extends BasicPbeEncryption {
+public final class V1Encryption extends BasicPbeEncryption {
 
     @Obfuscate private static final String PBE_ALGORITHM = "PBEWithMD5andDES";
 
@@ -33,7 +33,7 @@ final class V1Encryption extends BasicPbeEncryption {
     private static final String
             ILLEGAL_PBE_ALGORITHM = "V1 format license keys require the " + PBE_ALGORITHM + " algorithm.";
 
-    V1Encryption(final PbeParameters pbe) {
+    public V1Encryption(final PbeParameters pbe) {
         super(pbe);
         if (!PBE_ALGORITHM.equalsIgnoreCase(pbe.algorithm()))
             throw new IllegalArgumentException(ILLEGAL_PBE_ALGORITHM);

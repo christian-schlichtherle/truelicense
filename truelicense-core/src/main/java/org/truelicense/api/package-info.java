@@ -58,8 +58,8 @@
  * license keys plus defines a new V2 format for enhanced encryption and
  * compression.
  * Applications select the class
- * {@link org.truelicense.core.V1LicenseManagementContext} or
- * {@link org.truelicense.core.V2XmlLicenseManagementContext} as
+ * {@link org.truelicense.v1.V1LicenseManagementContext} or
+ * {@link org.truelicense.v2.xml.V2XmlLicenseManagementContext} as
  * their starting point for configuring a license vendor or consumer manager.
  * These classes can get subclassed to customize special aspects, such as
  * performing additional license validation steps, providing an authoritative

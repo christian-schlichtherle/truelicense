@@ -8,7 +8,7 @@ package org.truelicense.it.swing
 import java.awt.{Component, EventQueue}
 import java.util.Date
 import javax.swing._
-
+import _root_.org.truelicense.v2.xml.V2XmlLicenseManagementContext
 import org.junit.runner._
 import org.netbeans.jemmy._
 import org.netbeans.jemmy.operators._

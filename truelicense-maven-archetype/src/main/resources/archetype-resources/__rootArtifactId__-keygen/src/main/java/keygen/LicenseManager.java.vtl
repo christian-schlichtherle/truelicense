@@ -2,14 +2,15 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseManagementContextPackage = "org.truelicense.json")
+#set($licenseManagementContextPackage = "org.truelicense.v2.json")
 #set($licenseManagementContextClass = "V2JsonLicenseManagementContext")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseManagementContextPackage = "org.truelicense.core")
+#set($licenseManagementContextPackage = "org.truelicense.v2.xml")
 #set($licenseManagementContextClass = "V2XmlLicenseManagementContext")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseManagementContextPackage = "org.truelicense.core")
+#set($licenseManagementContextPackage = "org.truelicense.v1")
 #set($licenseManagementContextClass = "V1LicenseManagementContext")
 #end
 #set($editions = $convert.toStrings($editions))

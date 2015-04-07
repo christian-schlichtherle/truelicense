@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core;
+package org.truelicense.v2.base;
 
 import java.io.*;
 import java.util.zip.*;
@@ -20,7 +20,7 @@ import org.truelicense.api.io.Transformation;
  * @author Christian Schlichtherle
  */
 @Immutable
-final class V2Compression implements Transformation {
+public final class V2Compression implements Transformation {
 
     @Override public Sink apply(final Sink sink) {
         return new Sink() {

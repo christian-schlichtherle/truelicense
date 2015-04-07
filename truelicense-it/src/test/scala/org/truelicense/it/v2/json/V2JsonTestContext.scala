@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.it.v2.base.V2TestContext
 import org.truelicense.it.v2.json.V2JsonTestContext.logger
-import org.truelicense.json.V2JsonLicenseManagementContext
+import org.truelicense.v2.json.V2JsonLicenseManagementContext
 
 /** @author Christian Schlichtherle */
 trait V2JsonTestContext extends V2TestContext {

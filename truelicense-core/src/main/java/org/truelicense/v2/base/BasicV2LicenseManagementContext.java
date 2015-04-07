@@ -3,16 +3,17 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core;
+package org.truelicense.v2.base;
+
+import org.truelicense.api.License;
+import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.Transformation;
+import org.truelicense.core.BasicLicenseManagementContext;
+import org.truelicense.core.auth.BasicRepository;
+import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.concurrent.Immutable;
-
-import org.truelicense.api.crypto.Encryption;
-import org.truelicense.api.License;
-import org.truelicense.api.crypto.PbeParameters;
-import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.api.io.Transformation;
-import org.truelicense.obfuscate.Obfuscate;
 
 /**
  * The root context for the management of V2 format license keys.

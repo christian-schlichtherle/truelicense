@@ -5,10 +5,10 @@
 
 package org.truelicense.it.v1
 
-import org.truelicense.core.V1EncryptionTestContext
 import org.truelicense.it.core.CodecTestSuite
 import org.junit.runner._
 import org.scalatest.junit._
+import org.truelicense.it.v1.V1EncryptionTestContext
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
