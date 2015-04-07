@@ -24,13 +24,14 @@ import java.util.concurrent.Callable;
 @Immutable
 public abstract class BasicPbeEncryption implements Encryption {
 
-    private final PbeParameters pbe;
+    private final PbeParameters parameters;
 
-    protected BasicPbeEncryption(final PbeParameters pbe) {
-        this.pbe = Objects.requireNonNull(pbe);
+    protected BasicPbeEncryption(final PbeParameters parameters) {
+        this.parameters = Objects.requireNonNull(parameters);
     }
 
-    @Override public final PbeParameters parameters() { return pbe; }
+    @Override
+    public final PbeParameters parameters() { return parameters; }
 
     protected final char[] password() { return parameters().password(); }
 
@@ -55,8 +56,7 @@ public abstract class BasicPbeEncryption implements Encryption {
      */
     protected static <V> V wrap(final Callable<V> task) throws IOException {
         try { return task.call(); }
-        catch (final RuntimeException ex) { throw ex; }
-        catch (final IOException ex) { throw ex; }
-        catch (final Exception ex) { throw new IOException(ex); } // TODO: Make this a Throwable with Java 7
+        catch (RuntimeException | IOException ex) { throw ex; }
+        catch (Throwable ex) { throw new IOException(ex); }
     }
 }
