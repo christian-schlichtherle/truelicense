@@ -387,14 +387,14 @@
         <maven.enforcer.requireJavaVersion>${dollar}{maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
-        <netbeans.hint.jdkPlatform>JDK_1.6</netbeans.hint.jdkPlatform>
+        <netbeans.hint.jdkPlatform>JDK_1.7</netbeans.hint.jdkPlatform>
 
         <!-- Reinforce defaults of maven-compiler-plugin for NetBeans. -->
         <maven.compiler.debug>true</maven.compiler.debug>
         <maven.compiler.optimize>false</maven.compiler.optimize>
         <maven.compiler.showDeprecation>false</maven.compiler.showDeprecation>
         <maven.compiler.showWarnings>false</maven.compiler.showWarnings>
-        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>${dollar}{maven.compiler.source}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
