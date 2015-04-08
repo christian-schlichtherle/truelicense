@@ -33,56 +33,29 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
     /**
      * Whether or not the class files shall get backed up to a JAR file before
      * processing them.
-     * <p>
-     * If you set this property to {@code true} then you also need to add the
-     * following dependencies to the truelicense-maven-plugin:
-     * <pre><code><![CDATA[
-     *     <dependencies>
-     *         <dependency>
-     *             <groupId>de.schlichtherle.truezip</groupId>
-     *             <artifactId>truezip-driver-${backupExtension.replace('.', '-')}</artifactId>
-     *             <version>${truezip.version}</version>
-     *         </dependency>
-     *         <dependency>
-     *             <groupId>de.schlichtherle.truezip</groupId>
-     *             <artifactId>truezip-file</artifactId>
-     *             <version>${truezip.version}</version>
-     *         </dependency>
-     *     </dependencies>
-     * ]]></code></pre>
-     * <p>
-     * ... where the property references have been replaced with appropriate
-     * values, e.g.:
-     * <pre><code><![CDATA[
-     *     <dependencies>
-     *         <dependency>
-     *             <groupId>de.schlichtherle.truezip</groupId>
-     *             <artifactId>truezip-driver-zip</artifactId>
-     *             <version>7.7.8</version>
-     *         </dependency>
-     *         <dependency>
-     *             <groupId>de.schlichtherle.truezip</groupId>
-     *             <artifactId>truezip-file</artifactId>
-     *             <version>7.7.8</version>
-     *         </dependency>
-     *     </dependencies>
-     * ]]></code></pre>
      *
-     * @see #backupExtension
+     * @deprecated This (non-)feature will be removed in TrueLicense 3.0.
      */
+    @Deprecated
     @Parameter(property = "truelicense.obfuscate.backup", defaultValue = "false")
     private boolean backup;
 
     /**
      * The prefix of the backup JAR file with the original class files.
+     *
+     * @deprecated This (non-)feature will be removed in TrueLicense 3.0.
      */
+    @Deprecated
     @Parameter(property = "truelicense.obfuscate.backupPrefix", defaultValue = "classes")
     private String backupPrefix;
 
     /**
      * The extension of the backup directory with the original class files:
      * Use <code>"zip"</code> to create a ZIP file as the backup directory.
+     *
+     * @deprecated This (non-)feature will be removed in TrueLicense 3.0.
      */
+    @Deprecated
     @Parameter(property = "truelicense.obfuscate.backupExtension", defaultValue = "zip")
     private String backupExtension;
 
@@ -146,6 +119,7 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
         }
     }
 
+    @Deprecated
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void backup() throws IOException {
         if (!backup) return;
