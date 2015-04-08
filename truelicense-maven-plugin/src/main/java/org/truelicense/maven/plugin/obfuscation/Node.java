@@ -5,7 +5,6 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import de.schlichtherle.truezip.file.TFile;
 import java.io.File;
 
 /**
@@ -23,7 +22,7 @@ final class Node {
 
     Node(Node node, String member) {
         path = resolve(node.path(), member);
-        file = new TFile(node.file(), member);
+        file = new File(node.file(), member);
     }
 
     private static String resolve(String path, String member) {

@@ -5,7 +5,6 @@
 
 package org.truelicense.maven.plugin;
 
-import de.schlichtherle.truezip.file.TFile;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -27,5 +26,5 @@ public class ObfuscateMainClassesMojo extends ObfuscateClassesMojo {
     private File outputDirectory;
 
     @Override
-    protected TFile outputDirectory() { return new TFile(outputDirectory); }
+    protected File outputDirectory() { return outputDirectory; }
 }

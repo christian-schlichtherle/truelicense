@@ -5,11 +5,10 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import de.schlichtherle.truezip.file.TFile;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.truelicense.obfuscate.Obfuscate;
 import org.objectweb.asm.ClassVisitor;
 import org.slf4j.Logger;
+import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -56,7 +55,7 @@ public final class Processor implements Runnable {
     private final Set<String> constantStrings = new HashSet<String>();
 
     private final Logger logger;
-    private final TFile directory;
+    private final File directory;
     private final int maxBytes;
     private final boolean obfuscateAll;
     private final String methodNameFormat;
@@ -67,9 +66,7 @@ public final class Processor implements Runnable {
 
     Processor(final Builder b) {
         this.logger = requireNonNull(b.logger);
-        this.directory = b.directory instanceof TFile
-                ? (TFile) b.directory
-                : new TFile(b.directory);
+        this.directory = requireNonNull(b.directory);
         if (0 >= (this.maxBytes = nonNullOr(b.maxBytes, DEFAULT_MAX_BYTES)))
             throw new IllegalArgumentException();
         this.obfuscateAll = nonNullOr(b.obfuscateAll, DEFAULT_OBFUSCATE_ALL);

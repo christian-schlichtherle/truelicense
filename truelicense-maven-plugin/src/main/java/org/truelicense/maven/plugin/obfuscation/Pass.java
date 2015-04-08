@@ -5,13 +5,11 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import de.schlichtherle.truezip.file.TFileInputStream;
-import de.schlichtherle.truezip.file.TFileOutputStream;
-import java.io.*;
-import javax.annotation.concurrent.NotThreadSafe;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
+
+import javax.annotation.concurrent.NotThreadSafe;
+import java.io.*;
 
 /**
  * @author Christian Schlichtherle
@@ -66,7 +64,7 @@ abstract class Pass implements Runnable {
             code = new byte[(int) l];
         }
         {
-            try (InputStream in = new TFileInputStream(file)) {
+            try (InputStream in = new FileInputStream(file)) {
                 new DataInputStream(in).readFully(code);
             }
         }
@@ -75,7 +73,7 @@ abstract class Pass implements Runnable {
 
     @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
     final void write(final Node node, final byte[] code) throws IOException {
-        try (OutputStream out = new TFileOutputStream(node.file())) {
+        try (OutputStream out = new FileOutputStream(node.file())) {
             out.write(code);
         }
     }

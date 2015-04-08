@@ -5,17 +5,12 @@
 
 package org.truelicense.maven.plugin;
 
-import de.schlichtherle.truezip.file.TFile;
-import de.schlichtherle.truezip.file.TVFS;
-import org.truelicense.maven.plugin.obfuscation.Processor;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.truelicense.maven.plugin.obfuscation.Processor;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Formatter;
-
-import static java.io.File.createTempFile;
 
 /**
  * A basic MOJO for the obfuscation of constant string values in Java class
@@ -29,35 +24,6 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
 
     @Parameter(defaultValue = "${project.build.directory}", readonly = true)
     private File buildDirectory;
-
-    /**
-     * Whether or not the class files shall get backed up to a JAR file before
-     * processing them.
-     *
-     * @deprecated This (non-)feature will be removed in TrueLicense 3.0.
-     */
-    @Deprecated
-    @Parameter(property = "truelicense.obfuscate.backup", defaultValue = "false")
-    private boolean backup;
-
-    /**
-     * The prefix of the backup JAR file with the original class files.
-     *
-     * @deprecated This (non-)feature will be removed in TrueLicense 3.0.
-     */
-    @Deprecated
-    @Parameter(property = "truelicense.obfuscate.backupPrefix", defaultValue = "classes")
-    private String backupPrefix;
-
-    /**
-     * The extension of the backup directory with the original class files:
-     * Use <code>"zip"</code> to create a ZIP file as the backup directory.
-     *
-     * @deprecated This (non-)feature will be removed in TrueLicense 3.0.
-     */
-    @Deprecated
-    @Parameter(property = "truelicense.obfuscate.backupExtension", defaultValue = "zip")
-    private String backupExtension;
 
     /** The maximum allowed size of a class file in bytes. */
     @Parameter(property = "truelicense.obfuscate.maxBytes", defaultValue = "" + Processor.DEFAULT_MAX_BYTES)
@@ -95,7 +61,7 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
     @Parameter(property = "truelicense.obfuscate.intern", defaultValue = "" + Processor.DEFAULT_INTERN_STRINGS)
     private boolean intern;
 
-    protected abstract TFile outputDirectory();
+    protected abstract File outputDirectory();
 
     @Override
     protected final void doExecute() throws MojoFailureException {
@@ -107,28 +73,11 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
                         "Obfuscating %s constant string values in %s.",
                         scope,
                         outputDirectory()));
-                try {
-                    backup();
-                    obfuscate();
-                } finally {
-                    TVFS.umount();
-                }
+                obfuscate();
             }
         } catch (Exception e) {
             throw new MojoFailureException(e.toString(), e);
         }
-    }
-
-    @Deprecated
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void backup() throws IOException {
-        if (!backup) return;
-        final TFile backupDir = new TFile(createTempFile(
-                backupPrefix + '.',
-                '.' + backupExtension,
-                buildDirectory));
-        getLog().info(backupDir + ": Creating class file backup directory.");
-        outputDirectory().cp_rp(backupDir.rm_r());
     }
 
     private void obfuscate() {

@@ -5,12 +5,11 @@
 
 package org.truelicense.maven.plugin;
 
-import de.schlichtherle.truezip.file.TFile;
-import java.io.*;
-
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+
+import java.io.File;
 
 /**
  * Transforms the byte code of the test class files in order to obfuscate all
@@ -27,5 +26,5 @@ public class ObfuscateTestClassesMojo extends ObfuscateClassesMojo {
     private File testOutputDirectory;
 
     @Override
-    protected TFile outputDirectory() { return new TFile(testOutputDirectory); }
+    protected File outputDirectory() { return testOutputDirectory; }
 }
