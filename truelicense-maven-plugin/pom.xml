@@ -68,10 +68,12 @@
         <dependency>
             <groupId>de.schlichtherle.truezip</groupId>
             <artifactId>truezip-driver-zip</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>de.schlichtherle.truezip</groupId>
             <artifactId>truezip-file</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
