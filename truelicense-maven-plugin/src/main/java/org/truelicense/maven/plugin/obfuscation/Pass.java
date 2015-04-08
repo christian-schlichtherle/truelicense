@@ -37,7 +37,7 @@ abstract class Pass {
 
     /** Executes this pass. */
     public void execute() throws IOException {
-        scan(new Node("", ctx.directory()));
+        scan(new Node(ctx.directory()));
     }
 
     private void scan(final Node node) throws IOException {
@@ -45,9 +45,9 @@ abstract class Pass {
         if (Files.isDirectory(file)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(file)) {
                 for (Path member : stream)
-                    scan(new Node(node, member.getFileName().toString()));
+                    scan(node.updateFile(member));
             }
-        } else if (Files.isRegularFile(file) && file.getFileName().endsWith(".class")) {
+        } else if (Files.isRegularFile(file) && file.toString().endsWith(".class")) {
             process(node);
         } else {
             logger(node).trace("Skipping resource file.");

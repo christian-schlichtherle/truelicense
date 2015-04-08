@@ -12,24 +12,23 @@ import java.nio.file.Path;
  */
 final class Node {
 
-    private final String path;
-    private final Path file;
+    private final Path base, file;
 
-    Node(final String path, final Path file) {
-        this.path = path;
-        this.file = file;
+    Node(final Path base) {
+        this.base = this.file = base;
     }
 
-    Node(Node node, String member) {
-        path = resolve(node.path(), member, node.file().getFileSystem().getSeparator());
-        file = node.file().resolve(member);
+    private Node(final Path base, final Path resolvedMember) {
+        this.base = base;
+        this.file = resolvedMember;
     }
 
-    private static String resolve(String path, String member, String separator) {
-        return path.isEmpty() ? member : path + separator + member;
+    Node updateFile(final Path resolvedFile) {
+        assert base.toString().isEmpty() && !resolvedFile.isAbsolute() || resolvedFile.startsWith(base);
+        return new Node(base, resolvedFile);
     }
-
-    String path() { return path; }
 
     Path file() { return file; }
+
+    String path() { return base.relativize(file).toString(); }
 }
