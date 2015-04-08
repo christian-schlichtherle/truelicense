@@ -183,6 +183,7 @@ implements LicenseVendorContext {
             }
 
             @Override
+            @Deprecated
             public PbeInjection<ManagerBuilder> pbe() { return encryption(); }
         };
     }

@@ -289,6 +289,7 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             }
 
             @Override
+            @Deprecated
             public PbeInjection<ManagerBuilder> pbe() { return encryption(); }
 
             @Override
