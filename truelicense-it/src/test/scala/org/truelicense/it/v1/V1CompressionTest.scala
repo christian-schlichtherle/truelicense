@@ -5,10 +5,9 @@
 
 package org.truelicense.it.v1
 
-import org.truelicense.it.core.CodecTestSuite
 import org.junit.runner._
 import org.scalatest.junit._
-import org.truelicense.it.v1.V1CompressionTestContext
+import org.truelicense.it.core.CodecTestSuite
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
