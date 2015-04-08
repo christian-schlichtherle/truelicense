@@ -33,6 +33,42 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
     /**
      * Whether or not the class files shall get backed up to a JAR file before
      * processing them.
+     * <p>
+     * If you set this property to {@code true} then you also need to add the
+     * following dependencies to the truelicense-maven-plugin:
+     * <pre><code><![CDATA[
+     *     <dependencies>
+     *         <dependency>
+     *             <groupId>de.schlichtherle.truezip</groupId>
+     *             <artifactId>truezip-driver-${backupExtension.replace('.', '-')}</artifactId>
+     *             <version>${truezip.version}</version>
+     *         </dependency>
+     *         <dependency>
+     *             <groupId>de.schlichtherle.truezip</groupId>
+     *             <artifactId>truezip-file</artifactId>
+     *             <version>${truezip.version}</version>
+     *         </dependency>
+     *     </dependencies>
+     * ]]></code></pre>
+     * <p>
+     * ... where the property references have been replaced with appropriate
+     * values, e.g.:
+     * <pre><code><![CDATA[
+     *     <dependencies>
+     *         <dependency>
+     *             <groupId>de.schlichtherle.truezip</groupId>
+     *             <artifactId>truezip-driver-zip</artifactId>
+     *             <version>7.7.8</version>
+     *         </dependency>
+     *         <dependency>
+     *             <groupId>de.schlichtherle.truezip</groupId>
+     *             <artifactId>truezip-file</artifactId>
+     *             <version>7.7.8</version>
+     *         </dependency>
+     *     </dependencies>
+     * ]]></code></pre>
+     *
+     * @see #backupExtension
      */
     @Parameter(property = "truelicense.obfuscate.backup", defaultValue = "false")
     private boolean backup;
@@ -56,13 +92,11 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
 
     /**
      * The scope of constant string value obfuscation:
-     * One of <code>"none"</code>, <code>"annotated"</code> or
-     * <code>"all"</code>.
      * <ul>
-     * <li>Use <code>"none"</code> to skip obfuscation.
-     * <li>Use <code>"annotated"</code> to obfuscate only constant string
+     * <li>Use <code>none</code> to skip obfuscation.
+     * <li>Use <code>annotated</code> to obfuscate only constant string
      *     values of fields which have been annotated with @Obfuscate.
-     * <li>Use <code>"all"</code> to obfuscate all constant string values.
+     * <li>Use <code>all</code> to obfuscate all constant string values.
      *     This may result in quite some code size and runtime overhead,
      *     so you should <em>not</em> use this in general.
      * </ul>
@@ -116,8 +150,8 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
     private void backup() throws IOException {
         if (!backup) return;
         final TFile backupDir = new TFile(createTempFile(
-                backupPrefix + ".",
-                "." + backupExtension,
+                backupPrefix + '.',
+                '.' + backupExtension,
                 buildDirectory));
         getLog().info(backupDir + ": Creating class file backup directory.");
         outputDirectory().cp_rp(backupDir.rm_r());
