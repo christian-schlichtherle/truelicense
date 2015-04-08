@@ -144,7 +144,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #if($dynamicClassLoading == true)
                                 newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
 #else
-                                new $keyGenLicenseValidationClass();
+                                new ${keyGenLicenseValidationClass.replace('$', '.')}();
 #end
 
                         @Override

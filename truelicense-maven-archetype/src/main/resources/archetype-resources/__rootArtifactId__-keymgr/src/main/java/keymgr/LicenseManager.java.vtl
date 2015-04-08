@@ -140,7 +140,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if($dynamicClassLoading == true)
                     .storeIn${preferencesNodeType}Node(classForName(SECRET_MARKER_CLASS))
 #else
-                    .storeIn${preferencesNodeType}Node(${ftpSecretMarkerClass}.class)
+                    .storeIn${preferencesNodeType}Node(${ftpSecretMarkerClass.replace('$', '.')}.class)
 #end
                     .build();
         }
@@ -189,7 +189,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if($dynamicClassLoading == true)
                         newInstance((Class<Clock>) classForName(CLOCK_CLASS));
 #else
-                        new $keyMgrClockClass();
+                        new ${keyMgrClockClass.replace('$', '.')}();
 #end
 
                 @Override public Date now() { return clock.now(); }
@@ -205,7 +205,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if($dynamicClassLoading == true)
                                 newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
 #else
-                                new $keyMgrLicenseValidationClass();
+                                new ${keyMgrLicenseValidationClass.replace('$', '.')}();
 #end
 
                         public void validate(final License bean) throws LicenseValidationException {
