@@ -186,9 +186,9 @@
              "freeTrialPeriod" is "0". -->
         <ftpKeyStoreType>${dollar}{keyStoreType}</ftpKeyStoreType>
 
-        <!-- A fully qualified class name which defines the user or system
-             preferences node to use for storing an auto-generated FTP license
-             key.
+        <!-- A fully qualified binary class name which defines the user or
+             system preferences node to use for storing an auto-generated FTP
+             license key.
              The value of this property is ignored if the value of the property
              "freeTrialPeriod" is "0".
              Otherwise, the PACKAGE NAME of the referenced class needs to be
@@ -205,7 +205,7 @@
              One of "false" or "true". -->
         <hideUninstallAction>$hideUninstallAction</hideUninstallAction>
 
-        <!-- A fully qualified class name which implements the interface
+        <!-- A fully qualified binary class name which implements the interface
              org.truelicense.api.LicenseValidation for use in the Key
              Generator module.
              The value of this property is ignored if the value of the property
@@ -223,13 +223,13 @@
              Select "both" to use both functions. -->
         <keyGenLicenseValidationFunction>$keyGenLicenseValidationFunction</keyGenLicenseValidationFunction>
 
-        <!-- A fully qualified class name which implements the interface
+        <!-- A fully qualified binary class name which implements the interface
              org.truelicense.api.misc.Clock for use in the Key Manager
              module.
              Select "-" to use the system clock. -->
         <keyMgrClockClass>$keyMgrClockClass</keyMgrClockClass>
 
-        <!-- A fully qualified class name which implements the interface
+        <!-- A fully qualified binary class name which implements the interface
              org.truelicense.api.LicenseValidation for use in the Key
              Manager module.
              The value of this property is ignored if the value of the property

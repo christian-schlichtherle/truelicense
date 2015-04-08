@@ -170,9 +170,9 @@ Note that property values are generally _case sensitive_.
         <tr>
             <td><code>ftpSecretMarkerClass</code></td>
             <td>n/a</td>
-            <td>A fully qualified class name which defines the user or system
-                preferences node to use for storing the auto-generated FTP license 
-                key.
+            <td>A fully qualified binary class name which defines the user or 
+                system preferences node to use for storing the auto-generated FTP 
+                license key.
                 The value of this property is ignored if the value of the property 
                 <code>freeTrialPeriod</code> is <code>0</code>.
                 Otherwise, the <strong>package name</strong> of the referenced class needs to be
@@ -201,7 +201,7 @@ Note that property values are generally _case sensitive_.
         <tr>
             <td><code>keyGenLicenseValidationClass</code></td>
             <td>n/a</td>
-            <td>A fully qualified class name which implements the interface
+            <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/org/truelicense/api/LicenseValidation.html"><code>org.truelicense.api.LicenseValidation</code></a> for use in the Key 
                 Generator module.
                 The value of this property is ignored if the value of the property
@@ -223,7 +223,7 @@ Note that property values are generally _case sensitive_.
         <tr>
             <td><code>keyMgrClockClass</code></td>
             <td><code>-</code></td>
-            <td>A fully qualified class name which implements the interface
+            <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/org/truelicense/api/misc/Clock.html"><code>org.truelicense.api.misc.Clock</code></a> for use in the Key Manager
                 module.
                 Select <code>-</code> to use the system clock.</td>
@@ -231,7 +231,7 @@ Note that property values are generally _case sensitive_.
         <tr>
             <td><code>keyMgrLicenseValidationClass</code></td>
             <td>n/a</td>
-            <td>A fully qualified class name which implements the interface
+            <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/org/truelicense/api/LicenseValidation.html"><code>org.truelicense.api.LicenseValidation</code></a> for use in the Key 
                 Manager module.
                 The value of this property is ignored if the value of the property
