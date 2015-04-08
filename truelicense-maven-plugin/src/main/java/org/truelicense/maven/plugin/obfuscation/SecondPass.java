@@ -5,10 +5,12 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import java.io.IOException;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import static org.objectweb.asm.ClassWriter.*;
+
+import java.io.IOException;
+
+import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
 
 /**
  * @author Christian Schlichtherle
@@ -24,21 +26,17 @@ final class SecondPass extends Pass {
     SecondPass(Processor ctx) { super(ctx); }
 
     @Override
-    public void run() {
+    public void execute() throws IOException {
         logger().debug("Running second pass.");
-        super.run();
+        super.execute();
     }
 
     @Override
-    void process(final Node node) {
+    void process(final Node node) throws IOException {
         logger(node).trace("Transforming class file.");
-        try {
-            final ClassReader cr = new ClassReader(read(node));
-            final ClassWriter cw = new ClassWriter(COMPUTE_MAXS);
-            cr.accept(ctx.obfuscator(ctx.merger(cw, prefix)), 0);
-            write(node, cw.toByteArray());
-        } catch (IOException ex) {
-            logger().error(ex.toString(), ex);
-        }
+        final ClassReader cr = new ClassReader(read(node));
+        final ClassWriter cw = new ClassWriter(COMPUTE_MAXS);
+        cr.accept(ctx.obfuscator(ctx.merger(cw, prefix)), 0);
+        write(node, cw.toByteArray());
     }
 }

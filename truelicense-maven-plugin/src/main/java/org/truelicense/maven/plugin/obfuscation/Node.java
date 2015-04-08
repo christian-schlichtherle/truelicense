@@ -5,7 +5,7 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Christian Schlichtherle
@@ -13,23 +13,23 @@ import java.io.File;
 final class Node {
 
     private final String path;
-    private final File file;
+    private final Path file;
 
-    Node(final String path, final File file) {
+    Node(final String path, final Path file) {
         this.path = path;
         this.file = file;
     }
 
     Node(Node node, String member) {
-        path = resolve(node.path(), member);
-        file = new File(node.file(), member);
+        path = resolve(node.path(), member, node.file().getFileSystem().getSeparator());
+        file = node.file().resolve(member);
     }
 
-    private static String resolve(String path, String member) {
-        return path.isEmpty() ? member : path + File.separatorChar + member;
+    private static String resolve(String path, String member, String separator) {
+        return path.isEmpty() ? member : path + separator + member;
     }
 
     String path() { return path; }
 
-    File file() { return file; }
+    Path file() { return file; }
 }

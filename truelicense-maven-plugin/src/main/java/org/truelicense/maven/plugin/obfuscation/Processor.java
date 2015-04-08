@@ -11,7 +11,8 @@ import org.slf4j.Logger;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.Nullable;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
  *
  * @author Christian Schlichtherle
  */
-public final class Processor implements Runnable {
+public final class Processor {
 
     /**
      * The default value of the {@code maxBytes} property, which is {@value}.
@@ -55,7 +56,7 @@ public final class Processor implements Runnable {
     private final Set<String> constantStrings = new HashSet<String>();
 
     private final Logger logger;
-    private final File directory;
+    private final Path directory;
     private final int maxBytes;
     private final boolean obfuscateAll;
     private final String methodNameFormat;
@@ -92,7 +93,7 @@ public final class Processor implements Runnable {
     public Logger logger() { return logger; }
 
     /** Returns the directory to scan for class files to process. */
-    public File directory() { return directory; }
+    public Path directory() { return directory; }
 
     /** Returns the maximum allowed size of a class file in bytes. */
     public int maxBytes() { return maxBytes;  }
@@ -141,14 +142,14 @@ public final class Processor implements Runnable {
         return new Formatter().format(methodNameFormat(), stage, index).toString();
     }
 
-    /** Runs the obfuscation processor. */
-    @Override public void run() {
-        firstPass().run();
-        secondPass().run();
+    /** Executes this obfuscation processor. */
+    public void execute() throws IOException {
+        firstPass().execute();
+        secondPass().execute();
     }
 
-    Runnable firstPass() { return new FirstPass(this); }
-    Runnable secondPass() { return new SecondPass(this); }
+    Pass firstPass() { return new FirstPass(this); }
+    Pass secondPass() { return new SecondPass(this); }
 
     ClassVisitor collector() { return new Collector(this); }
 
@@ -163,7 +164,7 @@ public final class Processor implements Runnable {
     public static final class Builder {
 
         @Nullable Logger logger;
-        @Nullable File directory;
+        @Nullable Path directory;
         @Nullable Integer maxBytes;
         @Nullable Boolean obfuscateAll;
         @Nullable String methodNameFormat;
@@ -176,7 +177,7 @@ public final class Processor implements Runnable {
             return this;
         }
 
-        public Builder directory(final File directory) {
+        public Builder directory(final Path directory) {
             this.directory = directory;
             return this;
         }

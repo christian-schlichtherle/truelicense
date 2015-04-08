@@ -10,6 +10,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.truelicense.maven.plugin.obfuscation.Processor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Formatter;
 
 /**
@@ -75,20 +76,20 @@ public abstract class ObfuscateClassesMojo extends MojoAdapter {
                         outputDirectory()));
                 obfuscate();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new MojoFailureException(e.toString(), e);
         }
     }
 
-    private void obfuscate() {
+    private void obfuscate() throws IOException {
         Processor.builder()
                 .logger(new LoggerAdapter(getLog()))
-                .directory(outputDirectory())
+                .directory(outputDirectory().toPath())
                 .maxBytes(maxBytes)
                 .obfuscateAll(scope == Scope.all)
                 .methodNameFormat(methodNameFormat)
                 .internStrings(intern)
                 .build()
-                .run();
+                .execute();
     }
 }

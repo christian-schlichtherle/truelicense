@@ -21,24 +21,19 @@ final class FirstPass extends Pass {
     FirstPass(Processor ctx) { super(ctx); }
 
     @Override
-    public void run() {
+    public void execute() throws IOException {
         final Logger logger = logger();
         if (obfuscateAll()) {
             logger.debug("Skipping first pass because all constant string values should get obfuscated.");
         } else {
             logger.debug("Running first pass.");
-            super.run();
+            super.execute();
         }
     }
 
     @Override
-    void process(final Node node) {
+    void process(final Node node) throws IOException {
         logger(node).trace("Analyzing class file.");
-        try {
-            new ClassReader(read(node)).accept(ctx.collector(),
-                    CLASS_READER_FLAGS);
-        } catch (IOException ex) {
-            logger().error(ex.toString(), ex);
-        }
+        new ClassReader(read(node)).accept(ctx.collector(), CLASS_READER_FLAGS);
     }
 }

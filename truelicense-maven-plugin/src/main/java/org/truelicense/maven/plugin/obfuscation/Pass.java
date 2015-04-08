@@ -9,13 +9,19 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 
 import javax.annotation.concurrent.NotThreadSafe;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * @author Christian Schlichtherle
  */
 @NotThreadSafe
-abstract class Pass implements Runnable {
+abstract class Pass {
 
     final Processor ctx;
 
@@ -29,34 +35,33 @@ abstract class Pass implements Runnable {
 
     final boolean obfuscateAll() { return ctx.obfuscateAll(); }
 
-    @Override
-    public void run() { scan(new Node("", ctx.directory())); }
+    /** Executes this pass. */
+    public void execute() throws IOException {
+        scan(new Node("", ctx.directory()));
+    }
 
-    private void scan(final Node node) {
-        final File file = node.file();
-        if (file.isDirectory()) {
-            final String[] members = file.list();
-            if (null != members) {
-                for (String member : members)
-                    scan(new Node(node, member));
-            } else {
-                logger(node).error("Cannot list directory.");
+    private void scan(final Node node) throws IOException {
+        final Path file = node.file();
+        if (Files.isDirectory(file)) {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(file)) {
+                for (Path member : stream)
+                    scan(new Node(node, member.getFileName().toString()));
             }
-        } else if (file.isFile() && file.getName().endsWith(".class")) {
+        } else if (Files.isRegularFile(file) && file.getFileName().endsWith(".class")) {
             process(node);
         } else {
             logger(node).trace("Skipping resource file.");
         }
     }
 
-    abstract void process(final Node node);
+    abstract void process(final Node node) throws IOException;
 
     @SuppressFBWarnings("OS_OPEN_STREAM")
     final byte[] read(final Node node) throws IOException {
-        final File file = node.file();
+        final Path file = node.file();
         final byte[] code;
         {
-            final long l = file.length();
+            final long l = Files.size(file);
             final int mb = ctx.maxBytes();
             if (l > mb)
                 throw new IOException(
@@ -64,7 +69,7 @@ abstract class Pass implements Runnable {
             code = new byte[(int) l];
         }
         {
-            try (InputStream in = new FileInputStream(file)) {
+            try (InputStream in = Files.newInputStream(file)) {
                 new DataInputStream(in).readFully(code);
             }
         }
@@ -73,7 +78,7 @@ abstract class Pass implements Runnable {
 
     @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
     final void write(final Node node, final byte[] code) throws IOException {
-        try (OutputStream out = new FileOutputStream(node.file())) {
+        try (OutputStream out = Files.newOutputStream(node.file())) {
             out.write(code);
         }
     }
