@@ -1,23 +1,23 @@
-#
+sdfsdsfd
+:q:q#
 # Copyright (C) 2005-2015 Schlichtherle IT Services.
 # All rights reserved. Use is subject to license terms.
 #
 # Eclipse artifacts:
-.metadata
-.project
-.classpath
-.settings/
-.cache
+^(.*/)?\.metadata$
+^(.*/)?\.project$
+^(.*/)?\.classpath$
+^(.*/)?\.settings/
+^(.*/)?\.cache$
+
+# Git artifacts:
+^\.git/
 
 # IntelliJ artifacts:
-/.idea/
-*.iml
+^\.idea/
+\.iml$
 
 # Maven artifacts:
-dependency-reduced-pom.xml
-target/
-
-# Mercurial artifacts:
-/.hg/
+^(.*/)?target/
 
 # NetBeans artifacts (none):
