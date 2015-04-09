@@ -52,7 +52,6 @@ class ObfuscatedStringTest extends WordSpec {
         }
         val os = new ObfuscatedString(el)
         val d = os.toString
-        d should not be theSameInstanceAs (s)
         d should equal (s)
         os.toCharArray should equal (d.toCharArray)
       }
