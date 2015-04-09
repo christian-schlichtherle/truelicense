@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Christian Schlichtherle
  */
 // The following is required to support TrueLicense JAX-RS:
-// #TRUELICENSE-50: The XML element name MUST be explicitly defined!
+// #TRUELICENSE-50: The XML root element name MUST be explicitly defined!
 // Otherwise, it would get derived from the class name, but this would break
 // if the class name gets obfuscated, e.g. when using the ProGuard
 // configuration from the TrueLicense Maven Archetype.
