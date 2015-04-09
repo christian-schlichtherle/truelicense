@@ -12,7 +12,7 @@ import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
-import org.truelicense.api.policy.PasswordPolicyProvider;
+import org.truelicense.api.passwd.PasswordPolicyProvider;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;

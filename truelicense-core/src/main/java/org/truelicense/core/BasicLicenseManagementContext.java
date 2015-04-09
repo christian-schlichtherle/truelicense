@@ -11,9 +11,9 @@ import org.truelicense.api.auth.AuthenticationParameters;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
-import org.truelicense.api.policy.PasswordPolicy;
+import org.truelicense.api.passwd.PasswordPolicy;
 import org.truelicense.core.auth.Notary;
-import org.truelicense.core.policy.BasicPasswordPolicy;
+import org.truelicense.core.passwd.BasicPasswordPolicy;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;

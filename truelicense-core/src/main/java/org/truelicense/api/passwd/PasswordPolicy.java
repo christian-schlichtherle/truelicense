@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.api.policy;
+package org.truelicense.api.passwd;
 
 /**
  * Checks passwords for compliance.

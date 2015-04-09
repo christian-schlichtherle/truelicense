@@ -3,10 +3,10 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.policy;
+package org.truelicense.core.passwd;
 
-import org.truelicense.api.policy.PasswordPolicy;
-import org.truelicense.api.policy.WeakPasswordException;
+import org.truelicense.api.passwd.PasswordPolicy;
+import org.truelicense.api.passwd.WeakPasswordException;
 
 import javax.annotation.concurrent.Immutable;
 

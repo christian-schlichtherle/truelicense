@@ -4,9 +4,9 @@
  */
 
 /**
- * Provides a password policy.
+ * Provides password management.
  *
  * @author Christian Schlichtherle
  */
 @javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
-package org.truelicense.api.policy;
+package org.truelicense.api.passwd;
