@@ -16,6 +16,7 @@ import org.apache.velocity.tools.ToolManager;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -42,8 +43,8 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
     private MavenProject project;
 
     /**
-     * The set of properties to put into the Velocity context so that they can
-     * be referenced in template files.
+     * A set of properties to put into the Velocity context so that they can
+     * get referenced in template files.
      */
     @Parameter
     private Properties properties = new Properties();
@@ -51,7 +52,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
     /**
      * The suffix to strip from the names of the output files.
      */
-    @Parameter(defaultValue = ".vtl")
+    @Parameter(property = "truelicense.generate.stripSuffix", defaultValue = ".vtl")
     private String stripSuffix;
 
     private final ToolManager manager = new ToolManager();
@@ -59,11 +60,23 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
 
     protected void doExecute() throws MojoFailureException {
         try {
-            for (FileSet templateSet : templateSets())
-                new TemplateSet(templateSet).processDirectory();
+            for (FileSet fileSet : fileSets())
+                new TemplateSet(fileSet).processDirectory();
         } catch (Exception e) {
             throw new MojoFailureException(e.toString(), e);
         }
+    }
+
+    private List<FileSet> fileSets() {
+        List<FileSet> templateSets = templateSets();
+        if (null == templateSets) {
+            templateSets = new LinkedList<FileSet>();
+            final FileSet templateSet = new FileSet();
+            templateSet.setDirectory(stripPrefix() + "java");
+            templateSet.addInclude("**/*" + stripSuffix());
+            templateSets.add(templateSet);
+        }
+        return templateSets;
     }
 
     VelocityEngine engine() {
@@ -103,6 +116,8 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
     protected abstract File outputDirectory();
 
     protected abstract String stripPrefix();
+
+    protected String stripSuffix() { return stripSuffix; }
 
     final class TemplateSet {
 

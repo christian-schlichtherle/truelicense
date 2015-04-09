@@ -22,7 +22,7 @@ import java.io.File;
 @Mojo(name = "obfuscate-test-classes", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES)
 public class ObfuscateTestClassesMojo extends ObfuscateClassesMojo {
 
-    @Parameter(defaultValue = "${project.build.testOutputDirectory}", readonly = true)
+    @Parameter(property = "truelicense.obfuscate.test.outputDirectory", defaultValue = "${project.build.testOutputDirectory}", readonly = true)
     private File testOutputDirectory;
 
     @Override

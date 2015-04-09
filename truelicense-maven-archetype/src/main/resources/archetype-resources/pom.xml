@@ -613,38 +613,30 @@
                         <options combine.children="append">
                             <option>
                                 -adaptresourcefilenames
-                                -keepnames class
-                                de.schlichtherle.license.LicenseContent
-                                -keepclassmembers class
-                                de.schlichtherle.license.LicenseContent {
-                                public *** get*();
-                                public void set*(***);
+                                -keepnames class de.schlichtherle.license.LicenseContent
+                                -keepclassmembers class de.schlichtherle.license.LicenseContent {
+                                    public *** get*();
+                                    public void set*(***);
                                 }
-                                -keepnames class
-                                de.schlichtherle.xml.GenericCertificate
-                                -keepclassmembers class
-                                de.schlichtherle.xml.GenericCertificate {
-                                public *** get*();
-                                public void set*(***);
+                                -keepnames class de.schlichtherle.xml.GenericCertificate
+                                -keepclassmembers class de.schlichtherle.xml.GenericCertificate {
+                                    public *** get*();
+                                    public void set*(***);
                                 }
-                                -keepclassmembers class
-                                org.truelicense.api.License {
-                                public *** get*();
-                                public void set*(***);
+                                -keepclassmembers class org.truelicense.api.License {
+                                    public *** get*();
+                                    public void set*(***);
                                 }
-                                -keepclassmembers class
-                                org.truelicense.core.auth.BasicRepository {
-                                public *** get*();
-                                public void set*(***);
+                                -keepclassmembers class org.truelicense.core.auth.BasicRepository {
+                                    public *** get*();
+                                    public void set*(***);
                                 }
-                                -keep,allowobfuscation class
-                                org.truelicense.core.codec.X500PrincipalXmlAdapter
+                                -keep,allowobfuscation class org.truelicense.core.codec.X500PrincipalXmlAdapter
                                 -keepclassmembers enum * {
-                                public static **[] values();
-                                public static ** valueOf(java.lang.String);
+                                    public static **[] values();
+                                    public static ** valueOf(java.lang.String);
                                 }
-                                -keepattributes
-                                *Annotation*,EnclosingMethod,InnerClasses,Signature
+                                -keepattributes *Annotation*,EnclosingMethod,InnerClasses,Signature
                             </option>
 
                             <!-- This optimization triggers error messages when
