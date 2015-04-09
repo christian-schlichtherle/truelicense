@@ -5,7 +5,7 @@
 
 package org.truelicense.api.crypto;
 
-import org.truelicense.api.crypto.EncryptionParameters;
+import org.truelicense.obfuscate.ObfuscatedString;
 
 import java.util.Arrays;
 
