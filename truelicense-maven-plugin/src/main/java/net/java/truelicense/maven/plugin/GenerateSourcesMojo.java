@@ -30,6 +30,7 @@ import java.util.Properties;
 public abstract class GenerateSourcesMojo extends MojoAdapter {
 
     private final JavaTool javaTool = new JavaTool();
+    private final ScalaTool scalaTool = new ScalaTool();
     private final VersionTool versiontool = new VersionTool();
 
     /**
@@ -168,6 +169,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
             final Context c = manager.createContext();
             c.put("java", javaTool);
             c.put("project", project);
+            c.put("scala", scalaTool);
             c.put("version", versiontool);
             for (final Properties p : new Properties[] {
                     project.getProperties(),

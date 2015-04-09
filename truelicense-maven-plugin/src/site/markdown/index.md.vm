@@ -26,6 +26,8 @@ Using the $project.name you can...
   obfuscation:
     * Use the `java.obfuscatedString()` function in template files when
       generating Java source files.
+    * Use the `scala.obfuscatedString()` function in template files when
+      generating Scala source files.
     * Use the `@Obfuscate` annotation in source files when transforming the
       byte code of class files.
 
@@ -76,13 +78,13 @@ resulting file to `target/generated-sources/java` without the extension.
 Please refer to the documentation of the respective goal for configuration
 options.
 
-$h4 Using The `java.obfuscatedString()` Function
+$h4 Using The `*.obfuscatedString()` Functions
 
-When generating source files, you can use the function `java.obfuscatedString()`
-in template files.
-This function expects a string parameter.
+When generating source files, you can use the functions
+`java.obfuscatedString()` and `scala.obfuscatedString()` in template files.
+These functions expect a string parameter.
 For example, if you define a property named `password` in your POM, then you
-can use the following template file for obfuscating it in the source code:
+can use the following template file for obfuscating it in the Java source code:
 
     import net.java.truelicense.obfuscate.ObfuscatedString;
 
