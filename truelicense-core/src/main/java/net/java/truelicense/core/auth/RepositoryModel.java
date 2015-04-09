@@ -70,18 +70,18 @@ public class RepositoryModel {
         if (this == obj) return true;
         if (!(obj instanceof RepositoryModel)) return false;
         final RepositoryModel that = (RepositoryModel) obj;
-        return  Objects.equals(this.artifact, that.artifact) &&
-                Objects.equals(this.signature, that.signature) &&
-                Strings.equalsIgnoreCase(this.algorithm, that.algorithm);
+        return  Objects.equals(this.getArtifact(), that.getArtifact()) &&
+                Objects.equals(this.getSignature(), that.getSignature()) &&
+                Strings.equalsIgnoreCase(this.getAlgorithm(), that.getAlgorithm());
     }
 
     /** Returns a hash code which is consistent with {@link #equals}. */
     @Override
     public int hashCode() {
         int c = 17;
-        c = 31 * c + Objects.hashCode(artifact);
-        c = 31 * c + Objects.hashCode(signature);
-        c = 31 * c + Objects.hashCode(Strings.toLowerCase(algorithm, ROOT));
+        c = 31 * c + Objects.hashCode(getArtifact());
+        c = 31 * c + Objects.hashCode(getSignature());
+        c = 31 * c + Objects.hashCode(Strings.toLowerCase(getAlgorithm(), ROOT));
         return c;
     }
 }

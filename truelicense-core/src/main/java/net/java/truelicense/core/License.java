@@ -290,32 +290,32 @@ public class License {
         if (this == obj) return true;
         if (!(obj instanceof License)) return false;
         final License that = (License) obj;
-        return  this.consumerAmount == that.consumerAmount
-                && Objects.equals(this.consumerType, that.consumerType)
-                && Objects.equals(this.extra, that.extra)
-                && Objects.equals(this.holder, that.holder)
-                && Objects.equals(this.info, that.info)
-                && Objects.equals(this.issued, that.issued)
-                && Objects.equals(this.issuer, that.issuer)
-                && Objects.equals(this.notAfter, that.notAfter)
-                && Objects.equals(this.notBefore, that.notBefore)
-                && Objects.equals(this.subject, that.subject);
+        return  this.getConsumerAmount() == that.getConsumerAmount()
+                && Objects.equals(this.getConsumerType(), that.getConsumerType())
+                && Objects.equals(this.getExtra(), that.getExtra())
+                && Objects.equals(this.getHolder(), that.getHolder())
+                && Objects.equals(this.getInfo(), that.getInfo())
+                && Objects.equals(this.getIssued(), that.getIssued())
+                && Objects.equals(this.getIssuer(), that.getIssuer())
+                && Objects.equals(this.getNotAfter(), that.getNotAfter())
+                && Objects.equals(this.getNotBefore(), that.getNotBefore())
+                && Objects.equals(this.getSubject(), that.getSubject());
     }
 
     /** Returns a hash code which is consistent with {@link #equals(Object)}. */
     @Override
     public int hashCode() {
         int c = 17;
-        c = 31 * c + consumerAmount;
-        c = 31 * c + Objects.hashCode(consumerType);
-        c = 31 * c + Objects.hashCode(extra);
-        c = 31 * c + Objects.hashCode(holder);
-        c = 31 * c + Objects.hashCode(info);
-        c = 31 * c + Objects.hashCode(issued);
-        c = 31 * c + Objects.hashCode(issuer);
-        c = 31 * c + Objects.hashCode(notAfter);
-        c = 31 * c + Objects.hashCode(notBefore);
-        c = 31 * c + Objects.hashCode(subject);
+        c = 31 * c + getConsumerAmount();
+        c = 31 * c + Objects.hashCode(getConsumerType());
+        c = 31 * c + Objects.hashCode(getExtra());
+        c = 31 * c + Objects.hashCode(getHolder());
+        c = 31 * c + Objects.hashCode(getInfo());
+        c = 31 * c + Objects.hashCode(getIssued());
+        c = 31 * c + Objects.hashCode(getIssuer());
+        c = 31 * c + Objects.hashCode(getNotAfter());
+        c = 31 * c + Objects.hashCode(getNotBefore());
+        c = 31 * c + Objects.hashCode(getSubject());
         return c;
     }
 
