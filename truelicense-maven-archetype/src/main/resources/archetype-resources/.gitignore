@@ -14,10 +14,10 @@
 *.iml
 
 # Maven artifacts:
+dependency-reduced-pom.xml
 target/
 
 # Mercurial artifacts:
 /.hg/
-/.hgignore
 
 # NetBeans artifacts (none):
