@@ -6,6 +6,7 @@
 package net.java.truelicense.core.crypto;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import javax.annotation.concurrent.Immutable;
 import javax.crypto.SecretKey;
@@ -35,9 +36,17 @@ public abstract class BasicPbeEncryption implements Encryption {
 
     protected final SecretKey secretKey() throws Exception {
         final SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithm());
-        final PBEKeySpec ks = new PBEKeySpec(password());
-        try { return skf.generateSecret(ks); }
-        finally { ks.clearPassword(); }
+        final char[] p = password();
+        try {
+            final PBEKeySpec ks = new PBEKeySpec(password());
+            try {
+                return skf.generateSecret(ks);
+            } finally {
+                ks.clearPassword();
+            }
+        } finally {
+            Arrays.fill(p, (char) 0);
+        }
     }
 
     /**
