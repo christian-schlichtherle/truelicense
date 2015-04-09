@@ -11,6 +11,7 @@ package org.truelicense.api.auth;
  * @author Christian Schlichtherle
  */
 public interface AuthenticationParametersProvider {
+
     /** Returns the authentication parameters. */
     AuthenticationParameters parameters();
 }
