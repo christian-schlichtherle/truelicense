@@ -28,6 +28,7 @@ class ObfuscatedStringTest extends WordSpec {
       forAll(
         Table(
           "string literal",
+          "/* comment */",
           "Hello world!",
           "\"",
           "\\",
@@ -63,7 +64,7 @@ class ObfuscatedStringTest extends WordSpec {
 object ObfuscatedStringTest {
 
   private def escape(s: String) =
-    s.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"")
+    s.replace("\\", "\\\\").replace("\"", "\\\"").replace("*/", "*\\/")
 
   /**
    * `java.lang.Long.parseLong` doesn't work if the highest bit is set in the
