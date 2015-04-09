@@ -27,21 +27,22 @@ public final class GenerateMainSourcesMojo extends GenerateSourcesMojo {
 
     /**
      * The list of {@link FileSet}s with template files to process.
-     * Defaults to all files in {@code src/main/java} with a {@code vtl}
-     * extension.
+     * Defaults to all files in the directory <code>${stripPrefix}java}</code>
+     * with the suffix <code>${stripSuffix}}</code>, e.g. all files in the
+     * directory {@code src/main/java} with the suffix {@code .vtl}.
      */
     @Parameter
     private List<FileSet> templateSets;
 
     /** The directory path where the generated source files will be stored. */
-    @Parameter(defaultValue = "${project.build.directory}/generated-sources")
+    @Parameter(property = "truelicense.generate.main.outputDirectory", defaultValue = "${project.build.directory}/generated-sources")
     private File outputDirectory;
 
     /**
      * The prefix to strip from the directory path of each file set before
      * appending it to the output directory path.
      */
-    @Parameter(defaultValue = "src/main/")
+    @Parameter(property = "truelicense.generate.main.stripPrefix", defaultValue = "src/main/")
     private String stripPrefix;
 
     @Override
@@ -50,16 +51,7 @@ public final class GenerateMainSourcesMojo extends GenerateSourcesMojo {
     }
 
     @Override
-    protected List<FileSet> templateSets() {
-        if (null == templateSets) {
-            final FileSet templateSet = new FileSet();
-            templateSet.setDirectory("src/main/java");
-            templateSet.addInclude("**/*.vtl");
-            templateSets = new LinkedList<FileSet>();
-            templateSets.add(templateSet);
-        }
-        return templateSets;
-    }
+    protected List<FileSet> templateSets() { return templateSets; }
 
     @Override
     protected File outputDirectory() { return outputDirectory; }
