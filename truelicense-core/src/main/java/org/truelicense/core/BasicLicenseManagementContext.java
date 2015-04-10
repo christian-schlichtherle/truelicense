@@ -35,7 +35,7 @@ import java.util.Objects;
  */
 @Immutable
 public abstract class BasicLicenseManagementContext
-implements LicenseManagementContext {
+implements LicenseManagementContext<ObfuscatedString> {
 
     private final String subject;
 
@@ -44,12 +44,12 @@ implements LicenseManagementContext {
     }
 
     @Override
-    public final LicenseVendorContext vendor() {
+    public final LicenseVendorContext<ObfuscatedString> vendor() {
         return new BasicLicenseVendorContext(this);
     }
 
     @Override
-    public final LicenseConsumerContext consumer() {
+    public final LicenseConsumerContext<ObfuscatedString> consumer() {
         return new BasicLicenseConsumerContext(this);
     }
 
@@ -138,8 +138,9 @@ implements LicenseManagementContext {
     @Override
     public abstract Encryption encryption(PbeParameters pbe);
 
-    /** Returns a new password protection for the given obfuscated string. */
-    public PasswordProtection protect(ObfuscatedString os) {
+    /** Returns a password protection for the given obfuscated string. */
+    @Override
+    public PasswordProtection protection(ObfuscatedString os) {
         return Passwords.newPasswordProtection(os);
     }
 

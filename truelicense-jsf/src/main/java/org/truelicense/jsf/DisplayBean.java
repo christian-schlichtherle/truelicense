@@ -68,11 +68,11 @@ public final class DisplayBean extends LicenseBean {
 
     private License emptyLicense() { return managementContext().license(); }
 
-    private LicenseManagementContext managementContext() {
+    private LicenseManagementContext<?> managementContext() {
         return consumerContext().context();
     }
 
-    private LicenseConsumerContext consumerContext() {
+    private LicenseConsumerContext<?> consumerContext() {
         return manager().context();
     }
 }

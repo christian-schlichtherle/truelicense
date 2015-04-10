@@ -19,7 +19,7 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesNodeType = $display.capitalize($preferencesNodeType.toLowerCase($english)))
-#macro(protection $string)_context.protect($java.obfuscatedString($string).replace("org.truelicense.obfuscate.", ""))#end
+#macro(password $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
@@ -62,11 +62,11 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
         @Override
         LicenseConsumerManager newManager() {
-            return _consumerContext.manager()
+            return _context.manager()
                     .keyStore()
                         .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
-                        .storeProtection(#protection($publicKeyStorePassword))
+                        .storePassword(#password($publicKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $publicKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $publicKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -81,7 +81,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .protection(#protection($editionPbePassword))
+                        .password(#password($editionPbePassword))
                         .inject()
 #end
                     .storeIn${preferencesNodeType}Node(Main.class) // must be a non-obfuscated class!
@@ -123,15 +123,15 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
         @Override
         LicenseConsumerManager newManager() {
-            return _consumerContext.manager()
+            return _context.manager()
                     .ftpDays($freeTrialPeriod)
                     .keyStore()
                         .alias($ftpKeyEntryAlias)
 #if($ftpKeyEntryPassword && $ftpKeyEntryPassword != $ftpKeyStorePassword)
-                        .keyProtection(#protection($ftpKeyEntryPassword))
+                        .keyProtection(#password($ftpKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storeProtection(#protection($ftpKeyStorePassword))
+                        .storePassword(#password($ftpKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $ftpKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $ftpKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -182,7 +182,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final $licenseManagementContextClass _context =
+    private static final LicenseConsumerContext<ObfuscatedString> _context =
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyMgrClockClass != "-")
 
@@ -218,9 +218,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                     };
                 }
 #end
-            };
-
-    private static final LicenseConsumerContext _consumerContext = _context.consumer();
+            }.consumer();
 
     private volatile LicenseConsumerManager _manager;
 #if($dynamicClassLoading == true)
@@ -294,9 +292,9 @@ public enum LicenseManager implements LicenseConsumerManager {
     }
 
     @Override
-    public LicenseConsumerContext context() {
-        assert _consumerContext == manager().context();
-        return _consumerContext;
+    public LicenseConsumerContext<?> context() {
+        assert _context == manager().context();
+        return _context;
     }
 
     @Override

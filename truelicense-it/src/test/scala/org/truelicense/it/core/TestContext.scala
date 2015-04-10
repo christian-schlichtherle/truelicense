@@ -13,7 +13,6 @@ import org.truelicense.api._
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.core.BasicLicenseManagementContext
 import org.truelicense.core.io._
-import org.truelicense.core.passwd.Passwords
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
 
@@ -78,9 +77,10 @@ trait TestContext {
   def store: Store = new MemoryStore
   def codec = vendorManager.parameters.codec
   def transformation: Transformation = IdentityTransformation
+  def protection(password: ObfuscatedString) = vendorContext protection password
 }
 
 /** @author Christian Schlichtherle */
 object TestContext {
-  def test1234 = Passwords newPasswordProtection new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
+  def test1234 = new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
 }

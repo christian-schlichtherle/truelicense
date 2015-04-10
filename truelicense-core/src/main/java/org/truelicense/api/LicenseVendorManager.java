@@ -15,7 +15,7 @@ import org.truelicense.api.misc.ContextProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseVendorManager
-extends ContextProvider<LicenseVendorContext>,
+extends ContextProvider<LicenseVendorContext<?>>,
         LicenseSubjectProvider,
         LicenseParametersProvider {
 

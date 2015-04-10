@@ -11,7 +11,6 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.Builder;
 import org.truelicense.api.misc.Injection;
 
-import java.io.File;
 import java.nio.file.Path;
 
 /**
@@ -25,18 +24,19 @@ import java.nio.file.Path;
  * Applications have no need to implement this interface and should not do so
  * because it may be subject to expansion in future versions.
  *
+ * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseConsumerContext
-extends LicenseApplicationContext {
+public interface LicenseConsumerContext<PasswordSpecification>
+extends LicenseApplicationContext<PasswordSpecification> {
 
     /**
-     * Returns a builder for
-     * {@linkplain LicenseConsumerManager license consumer managers}.
+     * Returns a builder for a
+     * {@linkplain LicenseConsumerManager license consumer manager}.
      * Call its {@link ManagerBuilder#build} method to obtain a configured
      * license consumer manager.
      */
-    ManagerBuilder manager();
+    ManagerBuilder<PasswordSpecification> manager();
 
     /**
      * A builder for
@@ -45,8 +45,8 @@ extends LicenseApplicationContext {
      *
      * @author Christian Schlichtherle
      */
-    interface ManagerBuilder
-    extends Builder<LicenseConsumerManager>, Injection<ManagerBuilder> {
+    interface ManagerBuilder<PasswordSpecification>
+    extends Builder<LicenseConsumerManager>, Injection<ManagerBuilder<PasswordSpecification>> {
 
         /**
          * Sets the parent license consumer manager.
@@ -58,7 +58,7 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder parent(LicenseConsumerManager parent);
+        ManagerBuilder<PasswordSpecification> parent(LicenseConsumerManager parent);
 
         /**
          * Returns a builder for the parent license consumer manager.
@@ -74,7 +74,7 @@ extends LicenseApplicationContext {
          *
          * @see #parent(LicenseConsumerManager)
          */
-        ManagerBuilder parent();
+        ManagerBuilder<PasswordSpecification> parent();
 
         /**
          * Sets the free trial period (FTP) in days (the 24 hour equivalent).
@@ -86,14 +86,14 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder ftpDays(int ftpDays);
+        ManagerBuilder<PasswordSpecification> ftpDays(int ftpDays);
 
         /**
          * Sets the authentication.
          *
          * @return {@code this}.
          */
-        ManagerBuilder authentication(Authentication authentication);
+        ManagerBuilder<PasswordSpecification> authentication(Authentication authentication);
 
         /**
          * Returns an injection for a key store based authentication.
@@ -106,7 +106,7 @@ extends LicenseApplicationContext {
          *
          * @see #authentication(Authentication)
          */
-        KsbaInjection<ManagerBuilder> keyStore();
+        KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
 
         /**
          * Sets the encryption.
@@ -117,7 +117,7 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder encryption(Encryption encryption);
+        ManagerBuilder<PasswordSpecification> encryption(Encryption encryption);
 
         /**
          * Returns an injection for a password based encryption (PBE).
@@ -131,7 +131,7 @@ extends LicenseApplicationContext {
          *
          * @see #encryption(Encryption)
          */
-        PbeInjection<ManagerBuilder> encryption();
+        PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
 
         /**
          * Stores the license key in the given store.
@@ -141,7 +141,7 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeIn(Store store);
+        ManagerBuilder<PasswordSpecification> storeIn(Store store);
 
         /**
          * Stores the license key in the given path.
@@ -151,7 +151,7 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeInPath(Path path);
+        ManagerBuilder<PasswordSpecification> storeInPath(Path path);
 
         /**
          * Stores the license key in the system preferences node for the
@@ -162,7 +162,7 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeInSystemNode(Class<?> classInPackage);
+        ManagerBuilder<PasswordSpecification> storeInSystemNode(Class<?> classInPackage);
 
         /**
          * Stores the license keys in the user preferences node for the
@@ -173,6 +173,6 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeInUserNode(Class<?> classInPackage);
+        ManagerBuilder<PasswordSpecification> storeInUserNode(Class<?> classInPackage);
     }
 }

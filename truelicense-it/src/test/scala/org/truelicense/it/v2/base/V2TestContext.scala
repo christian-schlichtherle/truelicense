@@ -19,10 +19,10 @@ trait V2TestContext extends TestContext {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.jceks")
-        .storeProtection(test1234)
+        .storePassword(test1234)
         .inject
       .encryption
-        .protection(test1234)
+        .password(test1234)
         .inject
       .build
     require(vm.context eq vendorContext)
@@ -34,10 +34,10 @@ trait V2TestContext extends TestContext {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jceks")
-        .storeProtection(test1234)
+        .storePassword(test1234)
         .inject
       .encryption
-        .protection(test1234)
+        .password(test1234)
         .inject
       .build
     require(vm.context eq vendorContext)
@@ -49,10 +49,10 @@ trait V2TestContext extends TestContext {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.jceks")
-        .storeProtection(test1234)
+        .storePassword(test1234)
         .inject
       .encryption
-        .protection(test1234)
+        .password(test1234)
         .inject
       .storeIn(store)
       .build
@@ -65,7 +65,7 @@ trait V2TestContext extends TestContext {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jceks")
-        .storeProtection(test1234)
+        .storePassword(test1234)
         .inject
       .parent(parent)
       .storeIn(store)
@@ -80,7 +80,7 @@ trait V2TestContext extends TestContext {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jceks")
-        .storeProtection(test1234)
+        .storePassword(test1234)
         .inject
       .parent(parent)
       .storeIn(store)

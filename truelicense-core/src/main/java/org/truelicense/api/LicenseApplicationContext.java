@@ -12,7 +12,7 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.misc.Injection;
-import org.truelicense.api.passwd.PasswordProtection;
+import org.truelicense.api.passwd.PasswordProtectionProvider;
 
 import javax.annotation.CheckForNull;
 import java.nio.file.Path;
@@ -24,10 +24,12 @@ import java.nio.file.Path;
  * Applications have no need to implement this interface and should not do so
  * because it may be subject to expansion in future versions.
  *
+ * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseApplicationContext
-extends ContextProvider<LicenseManagementContext> {
+public interface LicenseApplicationContext<PasswordSpecification>
+extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
+        PasswordProtectionProvider<PasswordSpecification> {
 
     /**
      * Returns a source which loads the resource with the given {@code name}.
@@ -79,21 +81,21 @@ extends ContextProvider<LicenseManagementContext> {
     /**
      * Injects a Key Store Based {@link Authentication} (KSBA) into some target.
      */
-    interface KsbaInjection<Target> extends Injection<Target> {
+    interface KsbaInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
          * Sets the source for the key store.
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> loadFrom(Source source);
+        KsbaInjection<Target, PasswordSpecification> loadFrom(Source source);
 
         /**
          * Sets the resource name of the key store.
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> loadFromResource(String name);
+        KsbaInjection<Target, PasswordSpecification> loadFromResource(String name);
 
         /**
          * Sets the type of the key store,
@@ -101,7 +103,7 @@ extends ContextProvider<LicenseManagementContext> {
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> storeType(@CheckForNull String storeType);
+        KsbaInjection<Target, PasswordSpecification> storeType(@CheckForNull String storeType);
 
         /**
          * Sets the password protection for verifying the integrity of the key
@@ -109,14 +111,14 @@ extends ContextProvider<LicenseManagementContext> {
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> storeProtection(PasswordProtection storeProtection);
+        KsbaInjection<Target, PasswordSpecification> storePassword(PasswordSpecification storePassword);
 
         /**
          * Sets the alias name of the key entry.
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> alias(String alias);
+        KsbaInjection<Target, PasswordSpecification> alias(String alias);
 
         /**
          * Sets the password protection for accessing the private key in the
@@ -127,32 +129,32 @@ extends ContextProvider<LicenseManagementContext> {
          * {@linkplain LicenseConsumerManager license consumer manager}
          * for a free trial period.
          * If this method is not called then the
-         * {@linkplain #storeProtection(PasswordProtection) key store
+         * {@linkplain #storePassword(PasswordSpecification) key store
          * password} is used instead.
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> keyProtection(PasswordProtection keyProtection);
+        KsbaInjection<Target, PasswordSpecification> keyPassword(PasswordSpecification keyPassword);
     }
 
     /**
      * Injects a Password Based {@link Encryption} (PBE) into some target.
      */
-    interface PbeInjection<Target> extends Injection<Target> {
+    interface PbeInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
          * Sets the algorithm name.
          *
          * @return {@code this}
          */
-        PbeInjection<Target> algorithm(@CheckForNull String algorithm);
+        PbeInjection<Target, PasswordSpecification> algorithm(@CheckForNull String algorithm);
 
         /**
-         * Sets the password protection for generating a secret key for
+         * Sets the password for generating a secret key for
          * encryption/decryption.
          *
          * @return {@code this}
          */
-        PbeInjection<Target> protection(PasswordProtection protection);
+        PbeInjection<Target, PasswordSpecification> password(PasswordSpecification password);
     }
 }

@@ -22,18 +22,21 @@ import org.truelicense.api.misc.Injection;
  * Applications have no need to implement this interface and should not do so
  * because it may be subject to expansion in future versions.
  *
+ * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseVendorContext
-extends CodecProvider, LicenseApplicationContext, LicenseProvider {
+public interface LicenseVendorContext<PasswordSpecification>
+extends CodecProvider,
+        LicenseApplicationContext<PasswordSpecification>,
+        LicenseProvider {
 
     /**
-     * Returns a builder for
-     * {@linkplain LicenseVendorManager license vendor managers}.
+     * Returns a builder for a
+     * {@linkplain LicenseVendorManager license vendor manager}.
      * Call its {@link ManagerBuilder#build} method to obtain a configured
      * license vendor manager.
      */
-    ManagerBuilder manager();
+    ManagerBuilder<PasswordSpecification> manager();
 
     /**
      * A builder for
@@ -43,14 +46,14 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
      *
      * @author Christian Schlichtherle
      */
-    interface ManagerBuilder extends Builder<LicenseVendorManager> {
+    interface ManagerBuilder<PasswordSpecification> extends Builder<LicenseVendorManager> {
 
         /**
          * Sets the authentication.
          *
          * @return {@code this}.
          */
-        ManagerBuilder authentication(Authentication authentication);
+        ManagerBuilder<PasswordSpecification> authentication(Authentication authentication);
 
         /**
          * Returns an injection for a key store based authentication.
@@ -62,14 +65,14 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
          *
          * @see #authentication(Authentication)
          */
-        KsbaInjection<ManagerBuilder> keyStore();
+        KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
 
         /**
          * Sets the encryption.
          *
          * @return {@code this}.
          */
-        ManagerBuilder encryption(Encryption encryption);
+        ManagerBuilder<PasswordSpecification> encryption(Encryption encryption);
 
         /**
          * Returns an injection for a password based encryption.
@@ -78,6 +81,6 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
          *
          * @see #encryption(Encryption)
          */
-        PbeInjection<ManagerBuilder> encryption();
+        PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
     }
 }

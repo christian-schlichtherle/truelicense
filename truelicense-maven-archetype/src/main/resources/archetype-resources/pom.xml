@@ -392,8 +392,8 @@
         <!-- Reinforce defaults of maven-compiler-plugin for NetBeans. -->
         <maven.compiler.debug>true</maven.compiler.debug>
         <maven.compiler.optimize>false</maven.compiler.optimize>
-        <maven.compiler.showDeprecation>false</maven.compiler.showDeprecation>
-        <maven.compiler.showWarnings>false</maven.compiler.showWarnings>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>${dollar}{maven.compiler.source}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

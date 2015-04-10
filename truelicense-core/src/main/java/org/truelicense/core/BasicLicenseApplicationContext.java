@@ -21,6 +21,7 @@ import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.*;
 import org.truelicense.core.io.*;
+import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -48,13 +49,13 @@ import static java.util.Objects.requireNonNull;
 abstract class BasicLicenseApplicationContext
 implements ClassLoaderProvider,
            Clock,
-           LicenseApplicationContext,
+           LicenseApplicationContext<ObfuscatedString>,
            LicenseSubjectProvider,
            PasswordPolicyProvider {
 
-    private final LicenseManagementContext context;
+    private final LicenseManagementContext<ObfuscatedString> context;
 
-    BasicLicenseApplicationContext(final LicenseManagementContext context) {
+    BasicLicenseApplicationContext(final LicenseManagementContext<ObfuscatedString> context) {
         assert null != context;
         this.context = context;
     }
@@ -63,10 +64,15 @@ implements ClassLoaderProvider,
     public final String subject() { return context().subject(); }
 
     @Override
-    public final LicenseManagementContext context() { return context; }
+    public final LicenseManagementContext<ObfuscatedString> context() { return context; }
 
     @Override
     public final PasswordPolicy policy() { return context().policy(); }
+
+    @Override
+    public PasswordProtection protection(ObfuscatedString specification) {
+        return context().protection(specification);
+    }
 
     @Override
     public final Date now() { return context().now(); }
@@ -178,19 +184,29 @@ implements ClassLoaderProvider,
         };
     }
 
+    final Authentication keyStore(
+            @CheckForNull Source source,
+            @CheckForNull String storeType,
+            ObfuscatedString storePassword,
+            String alias,
+            @CheckForNull ObfuscatedString keyPassword) {
+        return context().authentication(keyStoreParameters(
+                source, storeType, storePassword, alias, keyPassword));
+    }
+
     final AuthenticationParameters keyStoreParameters(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
-            final PasswordProtection storeProtection,
+            final ObfuscatedString storePassword,
             final String alias,
-            final @CheckForNull PasswordProtection keyProtection) {
-        requireNonNull(storeProtection);
+            final @CheckForNull ObfuscatedString keyPassword) {
+        requireNonNull(storePassword);
         requireNonNull(alias);
         return new AuthenticationParameters() {
 
-            final PasswordProtection checkedStoreProtection = checkedProtection(storeProtection);
-            final PasswordProtection checkedKeyProtection = null != keyProtection
-                    ? checkedProtection(keyProtection)
+            final PasswordProtection checkedStoreProtection = checkedProtection(storePassword);
+            final PasswordProtection checkedKeyProtection = null != keyPassword
+                    ? checkedProtection(keyPassword)
                     : checkedStoreProtection;
 
             @Override
@@ -216,13 +232,19 @@ implements ClassLoaderProvider,
         };
     }
 
+    final Encryption pbe(
+            @CheckForNull String algorithm,
+            ObfuscatedString password) {
+        return context().encryption(pbeParameters(algorithm, password));
+    }
+
     final PbeParameters pbeParameters(
             final @CheckForNull String algorithm,
-            final PasswordProtection protection) {
+            final ObfuscatedString password) {
         return new PbeParameters() {
 
             final String pbeAlgorithm = pbeAlgorithm(algorithm);
-            final PasswordProtection checkedProtection = checkedProtection(protection);
+            final PasswordProtection checkedProtection = checkedProtection(password);
 
             @Override
             public String algorithm() { return pbeAlgorithm; }
@@ -236,10 +258,13 @@ implements ClassLoaderProvider,
         return null != algorithm ? algorithm : context().pbeAlgorithm();
     }
 
-    private PasswordProtection checkedProtection(final PasswordProtection protection) {
-        requireNonNull(protection);
+    private PasswordProtection checkedProtection(final ObfuscatedString password) {
         return new PasswordProtection() {
-            @Override public Password password(final PasswordUsage usage) throws Exception {
+
+            final PasswordProtection protection = protection(password);
+
+            @Override
+            public Password password(final PasswordUsage usage) throws Exception {
                 if (usage.equals(PasswordUsage.WRITE)) // check null
                     policy().check(protection);
                 return protection.password(usage);

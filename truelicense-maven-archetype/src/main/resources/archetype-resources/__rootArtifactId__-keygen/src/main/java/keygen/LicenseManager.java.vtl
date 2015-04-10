@@ -18,7 +18,7 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(protection $string)_context.protect($java.obfuscatedString($string).replace("org.truelicense.obfuscate.", ""))#end
+#macro(password $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
@@ -60,14 +60,14 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
         @Override
         LicenseVendorManager newManager() {
-            return _vendorContext.manager()
+            return _context.manager()
                     .keyStore()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
-                        .keyProtection(#protection($editionKeyEntryPassword))
+                        .keyPassword(#password($editionKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storeProtection(#protection($privateKeyStorePassword))
+                        .storePassword(#password($privateKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -78,7 +78,7 @@ public enum LicenseManager implements LicenseVendorManager {
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .protection(#protection($editionPbePassword))
+                        .password(#password($editionPbePassword))
                         .inject()
                     .build();
         }
@@ -118,7 +118,7 @@ public enum LicenseManager implements LicenseVendorManager {
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final $licenseManagementContextClass _context =
+    private static final LicenseVendorContext<ObfuscatedString> _context =
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 
                 @Override
@@ -158,9 +158,7 @@ public enum LicenseManager implements LicenseVendorManager {
                     };
                 }
 #end
-            };
-
-    private static final LicenseVendorContext _vendorContext = _context.vendor();
+            }.vendor();
 
     private volatile LicenseVendorManager _manager;
 #if($dynamicClassLoading == true && $keyGenLicenseValidationFunction != "basic")
@@ -198,9 +196,9 @@ public enum LicenseManager implements LicenseVendorManager {
     }
 
     @Override
-    public LicenseVendorContext context() {
-        assert _vendorContext == manager().context();
-        return _vendorContext;
+    public LicenseVendorContext<?> context() {
+        assert _context == manager().context();
+        return _context;
     }
 
     @Override

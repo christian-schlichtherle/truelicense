@@ -11,9 +11,9 @@ import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.v2.base.V2Encryption
 
 /** @author Christian Schlichtherle */
-trait V2EncryptionTestContext { this: TestContext =>
+trait V2EncryptionTestContext { context: TestContext =>
   final override def transformation = new V2Encryption(new PbeParameters {
       def algorithm = "PBEwithSHA1andDESede"
-      def protection = test1234
+      def protection = context.protection(test1234)
   })
 }
