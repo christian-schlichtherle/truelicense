@@ -476,15 +476,9 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.3</version>
                     <configuration>
-                        <!-- This is required for NetBeans.
-                             Use only properties which are defined in this POM! -->
-                        <debug>${dollar}{maven.compiler.debug}</debug>
-                        <encoding>${dollar}{project.build.sourceEncoding}</encoding>
-                        <optimize>${dollar}{maven.compiler.optimize}</optimize>
-                        <showDeprecation>${dollar}{maven.compiler.showDeprecation}</showDeprecation>
-                        <showWarnings>${dollar}{maven.compiler.showWarnings}</showWarnings>
-                        <source>${dollar}{maven.compiler.source}</source>
-                        <target>${dollar}{maven.compiler.target}</target>
+                        <compilerArgs>
+                            <arg>-Xlint:unchecked</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>
