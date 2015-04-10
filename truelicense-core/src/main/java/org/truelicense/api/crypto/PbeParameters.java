@@ -25,7 +25,7 @@ public interface PbeParameters extends EncryptionParameters {
     String algorithm();
 
     /**
-     * Returns the password protection for generating a secret key for
+     * Returns a password protection for generating the secret key for
      * encryption/decryption.
      */
     PasswordProtection protection() throws Exception;

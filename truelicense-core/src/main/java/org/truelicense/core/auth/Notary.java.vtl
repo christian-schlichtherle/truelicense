@@ -13,8 +13,11 @@ import org.truelicense.api.auth.Repository;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.misc.Message;
-import org.truelicense.api.passwd.*;
-import org.truelicense.obfuscate.*;
+import org.truelicense.api.passwd.Password;
+import org.truelicense.api.passwd.PasswordProtection;
+import org.truelicense.api.passwd.PasswordUsage;
+import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -29,7 +32,6 @@ import java.security.KeyStore.TrustedCertificateEntry;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,7 +106,7 @@ public final class Notary implements Authentication {
         }
 
         PrivateKey privateKey() throws Exception {
-            final Entry entry = entry();
+            final Entry entry = entry(PasswordUsage.WRITE);
             if (entry instanceof PrivateKeyEntry) {
                 return ((PrivateKeyEntry) entry).getPrivateKey();
             } else {
@@ -137,7 +139,7 @@ public final class Notary implements Authentication {
         }
 
         Certificate certificate() throws Exception {
-            final Entry entry = entry();
+            final Entry entry = entry(PasswordUsage.READ);
             if (entry instanceof PrivateKeyEntry) {
                 return ((PrivateKeyEntry) entry).getCertificate();
             } else if (entry instanceof TrustedCertificateEntry) {
@@ -147,13 +149,16 @@ public final class Notary implements Authentication {
             }
         }
 
-        Entry entry() throws Exception {
+        Entry entry(final PasswordUsage usage) throws Exception {
             if (isKeyEntry()) {
-                try (Password password = keyProtection().password()) {
+                try (Password password = keyProtection().password(usage)) {
                     final KeyStore.PasswordProtection protection =
                             new KeyStore.PasswordProtection(password.characters());
-                    try { return getEntry(protection); }
-                    finally { protection.destroy(); }
+                    try {
+                        return getEntry(protection);
+                    } finally {
+                        protection.destroy();
+                    }
                 }
             } else if (isCertificateEntry()) {
                 return getEntry(null);
@@ -181,7 +186,7 @@ public final class Notary implements Authentication {
         }
 
         KeyStore keyStore0() throws Exception {
-            try (Password password = storeProtection().password();
+            try (Password password = storeProtection().password(PasswordUsage.READ);
                  InputStream in = inputStream()) {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
                 keyStore.load(in, password.characters());

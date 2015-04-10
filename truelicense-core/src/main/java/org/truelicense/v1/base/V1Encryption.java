@@ -5,19 +5,25 @@
 
 package org.truelicense.v1.base;
 
-import java.io.*;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.concurrent.Callable;
-import javax.annotation.concurrent.Immutable;
-import javax.crypto.*;
-import static javax.crypto.Cipher.*;
-import javax.crypto.spec.*;
-
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
-import org.truelicense.core.crypto.*;
+import org.truelicense.api.passwd.PasswordUsage;
+import org.truelicense.core.crypto.BasicPbeEncryption;
 import org.truelicense.obfuscate.Obfuscate;
+
+import javax.annotation.concurrent.Immutable;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.spec.PBEParameterSpec;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.concurrent.Callable;
+
+import static javax.crypto.Cipher.*;
 
 /**
  * The encryption for V1 format license keys.
@@ -44,7 +50,7 @@ public final class V1Encryption extends BasicPbeEncryption {
             @Override public OutputStream output() throws IOException {
                 return wrap(new Callable<OutputStream>() {
                     @Override public OutputStream call() throws Exception {
-                        final Cipher cipher = cipher(true);
+                        final Cipher cipher = cipher(PasswordUsage.WRITE);
                         return new CipherOutputStream(sink.output(), cipher);
                     }
                 });
@@ -57,7 +63,7 @@ public final class V1Encryption extends BasicPbeEncryption {
             @Override public InputStream input() throws IOException {
                 return wrap(new Callable<InputStream>() {
                     @Override public InputStream call() throws Exception {
-                        final Cipher cipher = cipher(false);
+                        final Cipher cipher = cipher(PasswordUsage.READ);
                         return new CipherInputStream(source.input(), cipher);
                     }
                 });
@@ -65,7 +71,7 @@ public final class V1Encryption extends BasicPbeEncryption {
         };
     }
 
-    private Cipher cipher(final boolean encrypt) throws Exception {
+    private Cipher cipher(final PasswordUsage usage) throws Exception {
         // Hard coded in TrueLicense V1.
         final AlgorithmParameterSpec spec = new PBEParameterSpec(
                 new byte[] {
@@ -74,7 +80,9 @@ public final class V1Encryption extends BasicPbeEncryption {
                 },
                 2005);
         final Cipher cipher = getInstance(algorithm());
-        cipher.init(encrypt ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(), spec);
+        cipher.init(
+                PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE,
+                secretKey(usage), spec);
         return cipher;
     }
 }

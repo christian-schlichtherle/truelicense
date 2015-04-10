@@ -19,10 +19,7 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
-import org.truelicense.api.passwd.Password;
-import org.truelicense.api.passwd.PasswordPolicy;
-import org.truelicense.api.passwd.PasswordPolicyProvider;
-import org.truelicense.api.passwd.PasswordProtection;
+import org.truelicense.api.passwd.*;
 import org.truelicense.core.io.*;
 
 import javax.annotation.CheckForNull;
@@ -181,43 +178,7 @@ implements ClassLoaderProvider,
         };
     }
 
-    final AuthenticationParameters apChecked(
-            final @CheckForNull Source source,
-            final @CheckForNull String storeType,
-            final PasswordProtection storeProtection,
-            final String alias,
-            final @CheckForNull PasswordProtection keyProtection) {
-        final AuthenticationParameters unchecked =
-                apUnchecked(source, storeType, storeProtection, alias, keyProtection);
-        return new AuthenticationParameters() {
-            @Override
-            public Source source() {
-                return unchecked.source();
-            }
-
-            @Override
-            public String storeType() {
-                return unchecked.storeType();
-            }
-
-            @Override
-            public PasswordProtection storeProtection() {
-                return checkedProtection(unchecked.storeProtection());
-            }
-
-            @Override
-            public String alias() {
-                return unchecked.alias();
-            }
-
-            @Override
-            public PasswordProtection keyProtection() {
-                return checkedProtection(unchecked.keyProtection());
-            }
-        };
-    }
-
-    final AuthenticationParameters apUnchecked(
+    final AuthenticationParameters keyStoreParameters(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
             final PasswordProtection storeProtection,
@@ -226,6 +187,11 @@ implements ClassLoaderProvider,
         requireNonNull(storeProtection);
         requireNonNull(alias);
         return new AuthenticationParameters() {
+
+            final PasswordProtection checkedStoreProtection = checkedProtection(storeProtection);
+            final PasswordProtection checkedKeyProtection = null != keyProtection
+                    ? checkedProtection(keyProtection)
+                    : checkedStoreProtection;
 
             @Override
             public @CheckForNull Source source() { return source; }
@@ -237,7 +203,7 @@ implements ClassLoaderProvider,
 
             @Override
             public PasswordProtection storeProtection() {
-                return storeProtection;
+                return checkedStoreProtection;
             }
 
             @Override
@@ -245,51 +211,38 @@ implements ClassLoaderProvider,
 
             @Override
             public PasswordProtection keyProtection() {
-                return null != keyProtection ? keyProtection : storeProtection();
+                return checkedKeyProtection;
             }
         };
     }
 
-    final PbeParameters pbeChecked(
+    final PbeParameters pbeParameters(
             final @CheckForNull String algorithm,
             final PasswordProtection protection) {
         return new PbeParameters() {
-            final PbeParameters unchecked = pbeUnchecked(algorithm, protection);
+
+            final String pbeAlgorithm = pbeAlgorithm(algorithm);
+            final PasswordProtection checkedProtection = checkedProtection(protection);
 
             @Override
-            public String algorithm() { return unchecked.algorithm(); }
+            public String algorithm() { return pbeAlgorithm; }
 
             @Override
-            public PasswordProtection protection() throws Exception {
-                return checkedProtection(unchecked.protection());
-            }
+            public PasswordProtection protection() { return checkedProtection; }
         };
     }
 
-    final PbeParameters pbeUnchecked(
-            final @CheckForNull String algorithm,
-            final PasswordProtection protection) {
-        requireNonNull(protection);
-        return new PbeParameters() {
-            final String resolvedAlgorithm = resolvePbeAlgorithm(algorithm);
-
-            @Override
-            public String algorithm() { return resolvedAlgorithm; }
-
-            @Override
-            public PasswordProtection protection() { return protection; }
-        };
-    }
-
-    private String resolvePbeAlgorithm(@CheckForNull String algorithm) {
+    private String pbeAlgorithm(@CheckForNull String algorithm) {
         return null != algorithm ? algorithm : context().pbeAlgorithm();
     }
 
     private PasswordProtection checkedProtection(final PasswordProtection protection) {
+        requireNonNull(protection);
         return new PasswordProtection() {
-            @Override public Password password() throws Exception {
-                policy().check(protection);
-                return protection.password();
+            @Override public Password password(final PasswordUsage usage) throws Exception {
+                if (usage.equals(PasswordUsage.WRITE)) // check null
+                    policy().check(protection);
+                return protection.password(usage);
             }
         };
     }

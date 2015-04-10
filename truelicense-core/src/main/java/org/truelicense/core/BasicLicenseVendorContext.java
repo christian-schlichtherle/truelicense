@@ -49,14 +49,14 @@ implements LicenseVendorContext {
             PasswordProtection storeProtection,
             String alias,
             @CheckForNull PasswordProtection keyProtection) {
-        return context().authentication(apChecked(
+        return context().authentication(keyStoreParameters(
                 source, storeType, storeProtection, alias, keyProtection));
     }
 
     Encryption pbe(
             @CheckForNull String algorithm,
             PasswordProtection protection) {
-        return context().encryption(pbeChecked(algorithm, protection));
+        return context().encryption(pbeParameters(algorithm, protection));
     }
 
     LicenseVendorManager manager(

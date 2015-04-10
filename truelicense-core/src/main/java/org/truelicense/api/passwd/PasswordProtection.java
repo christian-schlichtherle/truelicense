@@ -20,5 +20,5 @@ public interface PasswordProtection {
      *
      * @throws Exception if providing access to the password is not possible.
      */
-    Password password() throws Exception;
+    Password password(PasswordUsage usage) throws Exception;
 }

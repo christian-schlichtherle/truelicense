@@ -6,18 +6,22 @@
 package org.truelicense.v2.base;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import java.io.*;
-import java.security.AlgorithmParameters;
-import java.util.concurrent.Callable;
-import javax.annotation.CheckForNull;
-import javax.annotation.concurrent.Immutable;
-import javax.crypto.*;
-import static javax.crypto.Cipher.*;
-
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
-import org.truelicense.core.crypto.*;
+import org.truelicense.api.passwd.PasswordUsage;
+import org.truelicense.core.crypto.BasicPbeEncryption;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.concurrent.Immutable;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import java.io.*;
+import java.security.AlgorithmParameters;
+import java.util.concurrent.Callable;
+
+import static javax.crypto.Cipher.*;
 
 /**
  * The encryption for V2 format license keys.
@@ -35,7 +39,7 @@ public final class V2Encryption extends BasicPbeEncryption {
                 return wrap(new Callable<OutputStream>() {
                     @SuppressFBWarnings("OS_OPEN_STREAM")
                     @Override public OutputStream call() throws Exception {
-                        final Cipher cipher = cipher(true, null);
+                        final Cipher cipher = cipher(PasswordUsage.WRITE, null);
                         final AlgorithmParameters
                                 param = cipher.getParameters();
                         final byte[] encoded = param.getEncoded();
@@ -68,7 +72,7 @@ public final class V2Encryption extends BasicPbeEncryption {
                             final DataInputStream din = new DataInputStream(in);
                             final byte[] encoded = new byte[din.readShort() & 0xffff];
                             din.readFully(encoded);
-                            cipher = cipher(false, param(encoded));
+                            cipher = cipher(PasswordUsage.READ, param(encoded));
                         } catch (final Throwable t) {
                             try { in.close(); }
                             catch (Throwable t2) { t.addSuppressed(t2); }
@@ -89,11 +93,13 @@ public final class V2Encryption extends BasicPbeEncryption {
     }
 
     private Cipher cipher(
-            final boolean encrypt,
+            final PasswordUsage usage,
             final @CheckForNull AlgorithmParameters param)
     throws Exception {
         final Cipher cipher = getInstance(algorithm());
-        cipher.init(encrypt ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(), param);
+        cipher.init(
+                PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE,
+                secretKey(usage), param);
         return cipher;
     }
 }

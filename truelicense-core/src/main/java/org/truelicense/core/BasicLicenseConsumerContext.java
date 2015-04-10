@@ -50,25 +50,16 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             @CheckForNull Source source,
             @CheckForNull String storeType,
             PasswordProtection storeProtection,
-            String alias) {
-        return context().authentication(apUnchecked(
-                source, storeType, storeProtection, alias, null));
-    }
-
-    Authentication ftpKeyStore(
-            @CheckForNull Source source,
-            @CheckForNull String storeType,
-            PasswordProtection storeProtection,
             String alias,
             @CheckForNull PasswordProtection keyProtection) {
-        return context().authentication(apChecked(
+        return context().authentication(keyStoreParameters(
                 source, storeType, storeProtection, alias, keyProtection));
     }
 
     Encryption pbe(
             @CheckForNull String algorithm,
             PasswordProtection protection) {
-        return context().encryption(pbeUnchecked(algorithm, protection));
+        return context().encryption(pbeParameters(algorithm, protection));
     }
 
     LicenseConsumerManager manager(
@@ -214,9 +205,8 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
 
                     @Override
                     public ManagerBuilder inject() {
-                        return authentication(null != keyProtection
-                                ? cc.ftpKeyStore(source, storeType, storeProtection, alias, keyProtection)
-                                : cc.keyStore(source, storeType, storeProtection, alias));
+                        return authentication(
+                                cc.keyStore(source, storeType, storeProtection, alias, keyProtection));
                     }
 
                     @Override

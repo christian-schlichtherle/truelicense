@@ -42,7 +42,7 @@ public interface AuthenticationParameters {
     String storeType();
 
     /**
-     * Returns the password protection for verifying the integrity of the key
+     * Returns a password protection for verifying the integrity of the key
      * store.
      */
     PasswordProtection storeProtection();
@@ -55,7 +55,7 @@ public interface AuthenticationParameters {
     String alias();
 
     /**
-     * Returns the password protection for accessing the private key in the key
+     * Returns a password protection for accessing the private key in the key
      * entry.
      */
     PasswordProtection keyProtection();
