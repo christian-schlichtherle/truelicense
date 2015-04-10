@@ -195,10 +195,10 @@ object LicenseWizardIT {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.ks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .encryption
-        .password(test1234)
+        .protection(test1234)
         .inject
       .build
 
@@ -207,10 +207,10 @@ object LicenseWizardIT {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.ks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .encryption
-        .password(test1234)
+        .protection(test1234)
         .inject
       .storeIn(new MemoryStore)
       .build()

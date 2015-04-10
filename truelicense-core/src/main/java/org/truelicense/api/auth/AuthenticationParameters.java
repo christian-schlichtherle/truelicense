@@ -6,11 +6,9 @@
 package org.truelicense.api.auth;
 
 import org.truelicense.api.io.Source;
-import org.truelicense.core.auth.RepositoryModel;
-import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.api.passwd.PasswordProtection;
 
 import javax.annotation.CheckForNull;
-import java.util.Arrays;
 
 /**
  * Defines parameters for accessing a {@link java.security.KeyStore} which
@@ -29,48 +27,36 @@ public interface AuthenticationParameters {
 
     /**
      * Returns the nullable input source for the key store.
-     *
-     * @return the nullable input source for the key store.
-     *         May be {@code null} if and only if the key store type does not
-     *         require loading from an input stream.
+     * May be {@code null} if and only if the key store type does not require
+     * loading from an input stream.
      */
     @CheckForNull
     Source source();
 
     /**
-     * Returns the type of the key store,
-     * for example {@code "JCEKS"} or {@code "JKS"}.
+     * Returns the type of the key store, for example {@code "JCEKS"} or
+     * {@code "JKS"}.
      * The returned string should be computed on demand from an obfuscated form,
-     * e.g. by annotating a constant string value with the \@{@link Obfuscate}
-     * annotation and processing it with the TrueLicense Maven Plugin.
+     * e.g. by processing it with the TrueLicense Maven Plugin.
      */
     String storeType();
 
     /**
-     * Returns a new char array with the password for verifying the integrity
-     * of the key store.
-     * <p>
-     * It is the caller's responsibility to wipe the contents of the char array
-     * after use, e.g. by a call to {@link Arrays#fill(char[], char)}.
-     *
-     * @return A new char array with the password for verifying the key store.
+     * Returns the password protection for verifying the integrity of the key
+     * store.
      */
-    char[] storePassword();
+    PasswordProtection storeProtection();
 
-    /** Returns the alias of the entry in the key store. */
+    /**
+     * Returns the alias of the entry in the key store.
+     * The returned string should be computed on demand from an obfuscated form,
+     * e.g. by processing it with the TrueLicense Maven Plugin.
+     */
     String alias();
 
     /**
-     * Returns a new char array with the password for accessing the private key
-     * in the key entry.
-     * If the returned array is empty, then the
-     * {@linkplain #storePassword() key store password} should get used instead.
-     * <p>
-     * It is the caller's responsibility to wipe the contents of the char array
-     * after use, e.g. by a call to {@link Arrays#fill(char[], char)}.
-     *
-     * @return A new char array with the password for accessing the private key
-     *         in the key entry.
+     * Returns the password protection for accessing the private key in the key
+     * entry.
      */
-    char[] keyPassword();
+    PasswordProtection keyProtection();
 }

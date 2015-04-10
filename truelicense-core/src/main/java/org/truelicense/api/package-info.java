@@ -68,7 +68,7 @@
  * need to subclass or implement any class or interface of its API.
  * <p>
  * For security, passwords are represented as an instance of the
- * {@link org.truelicense.obfuscate.ObfuscatedString} class.
+ * {@link org.truelicense.api.passwd.PasswordProtection} interface.
  * Other security critical string (algorithms, paths, etc.) are annotatable
  * with {@literal @}{@link org.truelicense.obfuscate.Obfuscate} and
  * processible with the TrueLicense Maven Plugin for simple, reliable

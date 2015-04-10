@@ -6,17 +6,18 @@
 package org.truelicense.api.passwd;
 
 /**
- * Checks passwords for compliance.
+ * Checks password providers for compliance.
  *
  * @author Christian Schlichtherle
  */
 public interface PasswordPolicy {
 
     /**
-     * Checks the given password for compliance to this policy.
+     * Checks the password provided by the given protection for compliance to
+     * this policy.
      *
-     * @throws WeakPasswordException If the given password does not comply
-     *         to this policy.
+     * @throws WeakPasswordException If the password provided by the given
+     *         protection does not comply to this policy.
      */
-    void check(char[] passwd) throws WeakPasswordException;
+    void check(PasswordProtection protection) throws Exception;
 }

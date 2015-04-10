@@ -5,9 +5,8 @@
 
 package org.truelicense.api.crypto;
 
-import org.truelicense.obfuscate.ObfuscatedString;
-
-import java.util.Arrays;
+import org.truelicense.api.passwd.Password;
+import org.truelicense.api.passwd.PasswordProtection;
 
 /**
  * Defines parameters for Password Based Encryption (PBE).
@@ -26,14 +25,8 @@ public interface PbeParameters extends EncryptionParameters {
     String algorithm();
 
     /**
-     * Returns a new char array with the password used to generate a secret key
-     * for encryption/decryption.
-     * <p>
-     * It is the caller's responsibility to wipe the contents of the char array
-     * after use, e.g. by a call to {@link Arrays#fill(char[], char)}.
-     *
-     * @return A new char array with the password used to generate a secret key
-     *         for encryption/decryption.
+     * Returns the password protection for generating a secret key for
+     * encryption/decryption.
      */
-    char[] password();
+    PasswordProtection protection() throws Exception;
 }

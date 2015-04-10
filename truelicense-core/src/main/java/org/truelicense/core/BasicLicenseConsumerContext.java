@@ -11,7 +11,7 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
-import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.api.passwd.PasswordProtection;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -49,26 +49,26 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
     Authentication keyStore(
             @CheckForNull Source source,
             @CheckForNull String storeType,
-            ObfuscatedString storePassword,
+            PasswordProtection storeProtection,
             String alias) {
         return context().authentication(apUnchecked(
-                source, storeType, storePassword, alias, null));
+                source, storeType, storeProtection, alias, null));
     }
 
     Authentication ftpKeyStore(
             @CheckForNull Source source,
             @CheckForNull String storeType,
-            ObfuscatedString storePassword,
+            PasswordProtection storeProtection,
             String alias,
-            @CheckForNull ObfuscatedString keyPassword) {
+            @CheckForNull PasswordProtection keyProtection) {
         return context().authentication(apChecked(
-                source, storeType, storePassword, alias, keyPassword));
+                source, storeType, storeProtection, alias, keyProtection));
     }
 
     Encryption pbe(
             @CheckForNull String algorithm,
-            ObfuscatedString password) {
-        return context().encryption(pbeUnchecked(algorithm, password));
+            PasswordProtection protection) {
+        return context().encryption(pbeUnchecked(algorithm, protection));
     }
 
     LicenseConsumerManager manager(
@@ -210,13 +210,13 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                 return new KsbaInjection<ManagerBuilder>() {
                     @Nullable String storeType, alias;
                     @Nullable Source source;
-                    @Nullable ObfuscatedString storePassword, keyPassword;
+                    @Nullable PasswordProtection storeProtection, keyProtection;
 
                     @Override
                     public ManagerBuilder inject() {
-                        return authentication(null != keyPassword
-                                ? cc.ftpKeyStore(source, storeType, storePassword, alias, keyPassword)
-                                : cc.keyStore(source, storeType, storePassword, alias));
+                        return authentication(null != keyProtection
+                                ? cc.ftpKeyStore(source, storeType, storeProtection, alias, keyProtection)
+                                : cc.keyStore(source, storeType, storeProtection, alias));
                     }
 
                     @Override
@@ -238,8 +238,8 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder> storePassword(final ObfuscatedString storePassword) {
-                        this.storePassword = storePassword;
+                    public KsbaInjection<ManagerBuilder> storeProtection(final PasswordProtection storeProtection) {
+                        this.storeProtection = storeProtection;
                         return this;
                     }
 
@@ -250,8 +250,8 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder> keyPassword(final ObfuscatedString keyPassword) {
-                        this.keyPassword = keyPassword;
+                    public KsbaInjection<ManagerBuilder> keyProtection(final PasswordProtection keyProtection) {
+                        this.keyProtection = keyProtection;
                         return this;
                     }
                 };
@@ -267,11 +267,11 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             public PbeInjection<ManagerBuilder> encryption() {
                 return new PbeInjection<ManagerBuilder>() {
                     @Nullable String algorithm;
-                    @Nullable ObfuscatedString password;
+                    @Nullable PasswordProtection protection;
 
                     @Override
                     public ManagerBuilder inject() {
-                        return encryption(cc.pbe(algorithm, password));
+                        return encryption(cc.pbe(algorithm, protection));
                     }
 
                     @Override
@@ -282,8 +282,8 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
                     }
 
                     @Override
-                    public PbeInjection<ManagerBuilder> password(final ObfuscatedString password) {
-                        this.password = password;
+                    public PbeInjection<ManagerBuilder> protection(final PasswordProtection protection) {
+                        this.protection = protection;
                         return this;
                     }
                 };

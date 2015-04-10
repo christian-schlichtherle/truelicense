@@ -22,7 +22,6 @@ class MessagesTest extends WordSpec {
       import Notary._
       val table = Table(
         ("key"),
-        (NO_STORE_PASSWORD),
         (NO_PRIVATE_KEY),
         (NO_CERTIFICATE),
         (NO_SUCH_ENTRY),

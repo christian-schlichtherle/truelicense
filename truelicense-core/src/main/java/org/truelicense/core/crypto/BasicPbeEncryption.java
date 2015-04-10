@@ -7,6 +7,8 @@ package org.truelicense.core.crypto;
 
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.passwd.Password;
+import org.truelicense.api.passwd.PasswordProtection;
 
 import javax.annotation.concurrent.Immutable;
 import javax.crypto.SecretKey;
@@ -33,15 +35,19 @@ public abstract class BasicPbeEncryption implements Encryption {
     @Override
     public final PbeParameters parameters() { return parameters; }
 
-    protected final char[] password() { return parameters().password(); }
+    protected final PasswordProtection protection() throws Exception {
+        return parameters().protection();
+    }
 
     protected final String algorithm() { return parameters().algorithm(); }
 
     protected final SecretKey secretKey() throws Exception {
         final SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithm());
-        final PBEKeySpec ks = new PBEKeySpec(password());
-        try { return skf.generateSecret(ks); }
-        finally { ks.clearPassword(); }
+        try (Password password = protection().password()) {
+            final PBEKeySpec ks = new PBEKeySpec(password.characters());
+            try { return skf.generateSecret(ks); }
+            finally { ks.clearPassword(); }
+        }
     }
 
     /**

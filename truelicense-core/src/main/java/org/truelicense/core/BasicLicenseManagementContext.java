@@ -12,8 +12,10 @@ import org.truelicense.api.auth.Repository;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.passwd.PasswordPolicy;
+import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.core.auth.Notary;
-import org.truelicense.core.passwd.BasicPasswordPolicy;
+import org.truelicense.core.passwd.Passwords;
+import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -136,14 +138,19 @@ implements LicenseManagementContext {
     @Override
     public abstract Encryption encryption(PbeParameters pbe);
 
+    /** Returns a new password protection for the given obfuscated string. */
+    public PasswordProtection protect(ObfuscatedString os) {
+        return Passwords.newPasswordProtection(os);
+    }
+
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns a new {@link BasicPasswordPolicy}.
+     * returns {@link Passwords#newPasswordPolicy()}.
      */
     @Override
-    public PasswordPolicy policy() { return new BasicPasswordPolicy(); }
+    public PasswordPolicy policy() { return Passwords.newPasswordPolicy(); }
 
     /**
      * {@inheritDoc}

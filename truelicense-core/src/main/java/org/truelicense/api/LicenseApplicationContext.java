@@ -12,8 +12,7 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.misc.Injection;
-import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.api.passwd.PasswordProtection;
 
 import javax.annotation.CheckForNull;
 import java.nio.file.Path;
@@ -33,8 +32,7 @@ extends ContextProvider<LicenseManagementContext> {
     /**
      * Returns a source which loads the resource with the given {@code name}.
      * The provided string should be computed on demand from an obfuscated form,
-     * e.g. by annotating a constant string value with the &#64;{@link Obfuscate}
-     * annotation and processing it with the TrueLicense Maven Plugin.
+     * e.g. by processing it with the TrueLicense Maven Plugin.
      * <p>
      * The resource will get loaded using the class loader as defined by the
      * root license management context.
@@ -79,8 +77,7 @@ extends ContextProvider<LicenseManagementContext> {
     Store userNodeStore(Class<?> classInPackage);
 
     /**
-     * Injects a Key Store Based {@link Authentication} (KSBA)
-     * into some target.
+     * Injects a Key Store Based {@link Authentication} (KSBA) into some target.
      */
     interface KsbaInjection<Target> extends Injection<Target> {
 
@@ -107,11 +104,12 @@ extends ContextProvider<LicenseManagementContext> {
         KsbaInjection<Target> storeType(@CheckForNull String storeType);
 
         /**
-         * Sets the password for verifying the integrity of the key store.
+         * Sets the password protection for verifying the integrity of the key
+         * store.
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> storePassword(ObfuscatedString storePassword);
+        KsbaInjection<Target> storeProtection(PasswordProtection storeProtection);
 
         /**
          * Sets the alias name of the key entry.
@@ -121,24 +119,24 @@ extends ContextProvider<LicenseManagementContext> {
         KsbaInjection<Target> alias(String alias);
 
         /**
-         * Sets the password for accessing the private key in the key entry.
+         * Sets the password protection for accessing the private key in the
+         * key entry.
          * A private key entry is only required to create license keys, that is
          * for any {@linkplain LicenseVendorManager license vendor manager}
          * and for any
          * {@linkplain LicenseConsumerManager license consumer manager}
          * for a free trial period.
-         * If this method is not called or if an empty password is passed, then
-         * the {@linkplain #storePassword(ObfuscatedString) key store password}
-         * is used instead.
+         * If this method is not called then the
+         * {@linkplain #storeProtection(PasswordProtection) key store
+         * password} is used instead.
          *
          * @return {@code this}
          */
-        KsbaInjection<Target> keyPassword(ObfuscatedString keyPassword);
+        KsbaInjection<Target> keyProtection(PasswordProtection keyProtection);
     }
 
     /**
-     * Injects a Password Based {@link Encryption} (PBE)
-     * into some target.
+     * Injects a Password Based {@link Encryption} (PBE) into some target.
      */
     interface PbeInjection<Target> extends Injection<Target> {
 
@@ -150,11 +148,11 @@ extends ContextProvider<LicenseManagementContext> {
         PbeInjection<Target> algorithm(@CheckForNull String algorithm);
 
         /**
-         * Sets the password used to generate a secret key for
+         * Sets the password protection for generating a secret key for
          * encryption/decryption.
          *
          * @return {@code this}
          */
-        PbeInjection<Target> password(ObfuscatedString password);
+        PbeInjection<Target> protection(PasswordProtection protection);
     }
 }

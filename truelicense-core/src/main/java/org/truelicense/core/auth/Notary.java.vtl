@@ -13,6 +13,7 @@ import org.truelicense.api.auth.Repository;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.misc.Message;
+import org.truelicense.api.passwd.*;
 import org.truelicense.obfuscate.*;
 
 import javax.annotation.CheckForNull;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.KeyStore.Entry;
-import java.security.KeyStore.PasswordProtection;
 import java.security.KeyStore.PrivateKeyEntry;
 import java.security.KeyStore.TrustedCertificateEntry;
 import java.security.cert.Certificate;
@@ -45,9 +45,6 @@ public final class Notary implements Authentication {
 
     @Obfuscate
     private static final String DEFAULT_ALGORITHM = "SHA1withDSA";
-
-    @Obfuscate
-    static final String NO_STORE_PASSWORD = "noStorePassword";
 
     @Obfuscate
     static final String NO_PRIVATE_KEY = "noPrivateKey";
@@ -152,16 +149,11 @@ public final class Notary implements Authentication {
 
         Entry entry() throws Exception {
             if (isKeyEntry()) {
-                final char[] pwd = keyPassword();
-                try {
-                    final PasswordProtection pp = new PasswordProtection(pwd);
-                    try {
-                        return getEntry(pp);
-                    } finally {
-                        pp.destroy();
-                    }
-                } finally {
-                    Arrays.fill(pwd, (char) 0);
+                try (Password password = keyProtection().password()) {
+                    final KeyStore.PasswordProtection protection =
+                            new KeyStore.PasswordProtection(password.characters());
+                    try { return getEntry(protection); }
+                    finally { protection.destroy(); }
                 }
             } else if (isCertificateEntry()) {
                 return getEntry(null);
@@ -179,8 +171,8 @@ public final class Notary implements Authentication {
             return keyStore().isCertificateEntry(alias());
         }
 
-        @CheckForNull Entry getEntry(@Nullable PasswordProtection pp) throws Exception {
-            return keyStore().getEntry(alias(), pp);
+        @CheckForNull Entry getEntry(@Nullable KeyStore.PasswordProtection protection) throws Exception {
+            return keyStore().getEntry(alias(), protection);
         }
 
         KeyStore keyStore() throws Exception {
@@ -189,16 +181,11 @@ public final class Notary implements Authentication {
         }
 
         KeyStore keyStore0() throws Exception {
-            final char[] pwd = storePassword();
-            if (null == pwd) throw new NotaryException(message(NO_STORE_PASSWORD));
-            try {
+            try (Password password = storeProtection().password();
+                 InputStream in = inputStream()) {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
-                try (InputStream in = inputStream()) {
-                    keyStore.load(in, pwd);
-                }
+                keyStore.load(in, password.characters());
                 return keyStore;
-            } finally {
-                Arrays.fill(pwd, (char) 0);
             }
         }
 
@@ -216,13 +203,14 @@ public final class Notary implements Authentication {
 
         String storeType() { return parameters().storeType(); }
 
-        char[] storePassword() { return parameters().storePassword(); }
+        PasswordProtection storeProtection() {
+            return parameters().storeProtection();
+        }
 
         String alias() { return parameters().alias(); }
 
-        char[] keyPassword() {
-            final char[] pwd = parameters().keyPassword();
-            return 0 != pwd.length ? pwd : storePassword();
+        PasswordProtection keyProtection() {
+            return parameters().keyProtection();
         }
     }
 }

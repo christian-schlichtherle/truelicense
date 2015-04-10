@@ -17,18 +17,17 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.api.passwd.PasswordPolicy;
-import org.truelicense.api.passwd.PasswordPolicyProvider;
-import org.truelicense.api.passwd.WeakPasswordException;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
+import org.truelicense.api.passwd.Password;
+import org.truelicense.api.passwd.PasswordPolicy;
+import org.truelicense.api.passwd.PasswordPolicyProvider;
+import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.core.io.*;
-import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.prefs.Preferences;
@@ -156,37 +155,75 @@ implements ClassLoaderProvider,
         requireNonNull(compression);
         requireNonNull(encryption);
         return new LicenseParameters() {
-            @Override public LicenseAuthorization authorization() { return authorization; }
-            @Override public LicenseInitialization initialization() { return initialization; }
-            @Override public LicenseValidation validation() { return validation; }
-            @Override public Repository repository() { return rp.repository(); }
-            @Override public Authentication authentication() { return authentication; }
-            @Override public Codec codec() { return codec; }
-            @Override public Transformation compression() { return compression; }
-            @Override public Encryption encryption() { return encryption; }
+            @Override
+            public LicenseAuthorization authorization() { return authorization; }
+
+            @Override
+            public LicenseInitialization initialization() { return initialization; }
+
+            @Override
+            public LicenseValidation validation() { return validation; }
+
+            @Override
+            public Repository repository() { return rp.repository(); }
+
+            @Override
+            public Authentication authentication() { return authentication; }
+
+            @Override
+            public Codec codec() { return codec; }
+
+            @Override
+            public Transformation compression() { return compression; }
+
+            @Override
+            public Encryption encryption() { return encryption; }
         };
     }
 
     final AuthenticationParameters apChecked(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
-            final ObfuscatedString storePassword,
+            final PasswordProtection storeProtection,
             final String alias,
-            final @CheckForNull ObfuscatedString keyPassword) {
-        final AuthenticationParameters ap = apUnchecked(source, storeType,
-                storePassword, alias, keyPassword);
-        check(ap.storePassword());
-        check(ap.keyPassword());
-        return ap;
+            final @CheckForNull PasswordProtection keyProtection) {
+        final AuthenticationParameters unchecked =
+                apUnchecked(source, storeType, storeProtection, alias, keyProtection);
+        return new AuthenticationParameters() {
+            @Override
+            public Source source() {
+                return unchecked.source();
+            }
+
+            @Override
+            public String storeType() {
+                return unchecked.storeType();
+            }
+
+            @Override
+            public PasswordProtection storeProtection() {
+                return checkedProtection(unchecked.storeProtection());
+            }
+
+            @Override
+            public String alias() {
+                return unchecked.alias();
+            }
+
+            @Override
+            public PasswordProtection keyProtection() {
+                return checkedProtection(unchecked.keyProtection());
+            }
+        };
     }
 
     final AuthenticationParameters apUnchecked(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
-            final ObfuscatedString storePassword,
+            final PasswordProtection storeProtection,
             final String alias,
-            final @CheckForNull ObfuscatedString keyPassword) {
-        requireNonNull(storePassword);
+            final @CheckForNull PasswordProtection keyProtection) {
+        requireNonNull(storeProtection);
         requireNonNull(alias);
         return new AuthenticationParameters() {
 
@@ -195,53 +232,52 @@ implements ClassLoaderProvider,
 
             @Override
             public String storeType() {
-                return null != storeType
-                        ? storeType
-                        : context().storeType();
+                return null != storeType ? storeType : context().storeType();
             }
 
             @Override
-            public char[] storePassword() {
-                return storePassword.toCharArray();
+            public PasswordProtection storeProtection() {
+                return storeProtection;
             }
 
             @Override
             public String alias() { return alias; }
 
             @Override
-            public char[] keyPassword() {
-                final char[] pwd = keyPassword0();
-                return 0 != pwd.length ? pwd : storePassword();
-            }
-
-            char[] keyPassword0() {
-                return null != keyPassword
-                        ? keyPassword.toCharArray()
-                        : new char[0];
+            public PasswordProtection keyProtection() {
+                return null != keyProtection ? keyProtection : storeProtection();
             }
         };
     }
 
     final PbeParameters pbeChecked(
             final @CheckForNull String algorithm,
-            final ObfuscatedString password) {
-        final PbeParameters pp = pbeUnchecked(algorithm, password);
-        check(pp.password());
-        return pp;
+            final PasswordProtection protection) {
+        return new PbeParameters() {
+            final PbeParameters unchecked = pbeUnchecked(algorithm, protection);
+
+            @Override
+            public String algorithm() { return unchecked.algorithm(); }
+
+            @Override
+            public PasswordProtection protection() throws Exception {
+                return checkedProtection(unchecked.protection());
+            }
+        };
     }
 
     final PbeParameters pbeUnchecked(
             final @CheckForNull String algorithm,
-            final ObfuscatedString password) {
-        requireNonNull(password);
+            final PasswordProtection protection) {
+        requireNonNull(protection);
         return new PbeParameters() {
-
             final String resolvedAlgorithm = resolvePbeAlgorithm(algorithm);
 
             @Override
             public String algorithm() { return resolvedAlgorithm; }
+
             @Override
-            public char[] password() { return password.toCharArray(); }
+            public PasswordProtection protection() { return protection; }
         };
     }
 
@@ -249,14 +285,13 @@ implements ClassLoaderProvider,
         return null != algorithm ? algorithm : context().pbeAlgorithm();
     }
 
-    private void check(final char[] password) {
-        try {
-            policy().check(password);
-        } catch (final WeakPasswordException ex) {
-            throw new IllegalArgumentException(ex);
-        } finally {
-            Arrays.fill(password, (char) 0);
-        }
+    private PasswordProtection checkedProtection(final PasswordProtection protection) {
+        return new PasswordProtection() {
+            @Override public Password password() throws Exception {
+                policy().check(protection);
+                return protection.password();
+            }
+        };
     }
 
     @Override
