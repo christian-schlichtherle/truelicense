@@ -392,8 +392,8 @@
         <!-- Reinforce defaults of maven-compiler-plugin for NetBeans. -->
         <maven.compiler.debug>true</maven.compiler.debug>
         <maven.compiler.optimize>false</maven.compiler.optimize>
-        <maven.compiler.showDeprecation>false</maven.compiler.showDeprecation>
-        <maven.compiler.showWarnings>false</maven.compiler.showWarnings>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>${dollar}{maven.compiler.source}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -476,15 +476,9 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.3</version>
                     <configuration>
-                        <!-- This is required for NetBeans.
-                             Use only properties which are defined in this POM! -->
-                        <debug>${dollar}{maven.compiler.debug}</debug>
-                        <encoding>${dollar}{project.build.sourceEncoding}</encoding>
-                        <optimize>${dollar}{maven.compiler.optimize}</optimize>
-                        <showDeprecation>${dollar}{maven.compiler.showDeprecation}</showDeprecation>
-                        <showWarnings>${dollar}{maven.compiler.showWarnings}</showWarnings>
-                        <source>${dollar}{maven.compiler.source}</source>
-                        <target>${dollar}{maven.compiler.target}</target>
+                        <compilerArgs>
+                            <arg>-Xlint:unchecked</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
                 <plugin>

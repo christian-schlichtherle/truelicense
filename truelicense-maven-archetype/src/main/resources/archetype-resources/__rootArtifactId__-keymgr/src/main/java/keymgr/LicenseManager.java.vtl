@@ -185,6 +185,7 @@ public enum LicenseManager implements LicenseConsumerManager {
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyMgrClockClass != "-")
 
+                @SuppressWarnings("unchecked")
                 final Clock clock =
 #if($dynamicClassLoading == true)
                         newInstance((Class<Clock>) classForName(CLOCK_CLASS));
@@ -201,6 +202,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
+                        @SuppressWarnings("unchecked")
                         final LicenseValidation custom =
 #if($dynamicClassLoading == true)
                                 newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));

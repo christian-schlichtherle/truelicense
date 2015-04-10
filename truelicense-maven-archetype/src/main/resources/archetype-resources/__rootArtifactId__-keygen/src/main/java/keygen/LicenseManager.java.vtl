@@ -140,6 +140,7 @@ public enum LicenseManager implements LicenseVendorManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
+                        @SuppressWarnings("unchecked")
                         final LicenseValidation custom =
 #if($dynamicClassLoading == true)
                                 newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
