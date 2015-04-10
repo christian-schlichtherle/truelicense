@@ -42,11 +42,15 @@ public abstract class BasicPbeEncryption implements Encryption {
     protected final String algorithm() { return parameters().algorithm(); }
 
     protected final SecretKey secretKey() throws Exception {
-        final SecretKeyFactory skf = SecretKeyFactory.getInstance(algorithm());
         try (Password password = protection().password()) {
             final PBEKeySpec ks = new PBEKeySpec(password.characters());
-            try { return skf.generateSecret(ks); }
-            finally { ks.clearPassword(); }
+            try {
+                return SecretKeyFactory
+                        .getInstance(algorithm())
+                        .generateSecret(ks);
+            } finally {
+                ks.clearPassword();
+            }
         }
     }
 
