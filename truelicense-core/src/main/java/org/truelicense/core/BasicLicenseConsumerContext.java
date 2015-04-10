@@ -166,7 +166,7 @@ implements CachePeriodProvider,
             public ManagerBuilder<ObfuscatedString> parent() {
                 final MB target = this;
                 return new MB() {
-                    @Override public ManagerBuilder inject() {
+                    @Override public ManagerBuilder<ObfuscatedString> inject() {
                         return target.parent(build());
                     }
                 };
