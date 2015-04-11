@@ -5,11 +5,12 @@
 
 package org.truelicense.core.auth;
 
-import org.truelicense.api.auth.Artifactory;
-import org.truelicense.api.codec.Codec;
-import org.truelicense.api.auth.Repository;
-import org.truelicense.core.io.MemoryStore;
 import org.apache.commons.codec.binary.Base64;
+import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryIntegrityException;
+import org.truelicense.api.codec.Codec;
+import org.truelicense.core.io.MemoryStore;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;

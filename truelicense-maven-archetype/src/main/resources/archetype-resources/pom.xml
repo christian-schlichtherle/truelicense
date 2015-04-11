@@ -625,7 +625,7 @@
                                     public *** get*();
                                     public void set*(***);
                                 }
-                                -keep,allowobfuscation class org.truelicense.core.codec.X500PrincipalXmlAdapter
+                                -keep,allowobfuscation class org.truelicense.api.codec.X500PrincipalXmlAdapter
                                 -keepclassmembers enum * {
                                     public static **[] values();
                                     public static ** valueOf(java.lang.String);

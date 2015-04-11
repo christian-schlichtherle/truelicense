@@ -131,6 +131,7 @@
     </properties>
 
     <modules>
+        <module>truelicense-api</module>
         <module>truelicense-core</module>
         <module>truelicense-it</module>
         <module>truelicense-jax-rs</module>
@@ -145,6 +146,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>

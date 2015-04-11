@@ -15,7 +15,7 @@ import javax.faces.context.*;
 
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
-import org.truelicense.core.misc.Formattable;
+import org.truelicense.core.i18n.Formattable;
 import org.truelicense.ui.LicenseWizardState;
 import org.truelicense.ui.util.MnemonicText;
 import org.truelicense.ui.wizard.WizardView;

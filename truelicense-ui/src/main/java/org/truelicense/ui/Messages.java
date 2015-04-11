@@ -7,8 +7,8 @@ package org.truelicense.ui;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.truelicense.api.misc.Message;
-import org.truelicense.core.misc.*;
+import org.truelicense.core.i18n.FormattedMessage;
+import org.truelicense.api.i18n.Message;
 
 /**
  * Defines message keys in the resource bundle for this package.

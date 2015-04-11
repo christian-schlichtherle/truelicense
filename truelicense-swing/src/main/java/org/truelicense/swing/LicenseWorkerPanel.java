@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 import static javax.swing.SwingUtilities.isEventDispatchThread;
 import javax.swing.SwingWorker;
 import org.truelicense.api.LicenseManagementException;
-import org.truelicense.core.misc.BasicMessage;
-import org.truelicense.api.misc.Message;
+import org.truelicense.core.i18n.BasicMessage;
+import org.truelicense.api.i18n.Message;
 import org.truelicense.ui.LicenseWizardMessage;
 
 /**
@@ -37,7 +37,7 @@ abstract class LicenseWorkerPanel extends LicensePanel {
 
     static boolean isConsideredConfidential(Throwable ex) {
         return ex instanceof LicenseManagementException &&
-                ((LicenseManagementException) ex).isConsideredConfidential();
+                ((LicenseManagementException) ex).isConfidential();
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")

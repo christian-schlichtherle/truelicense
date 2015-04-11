@@ -5,8 +5,8 @@
 
 package org.truelicense.ui.wizard;
 
-import org.truelicense.api.misc.Message;
-import org.truelicense.core.misc.*;
+import org.truelicense.core.i18n.Formattable;
+import org.truelicense.api.i18n.Message;
 
 /**
  * Enumerates the standard messages of any wizard dialog.

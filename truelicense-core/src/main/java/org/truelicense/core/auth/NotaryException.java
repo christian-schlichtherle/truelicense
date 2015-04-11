@@ -6,7 +6,7 @@
 package org.truelicense.core.auth;
 
 import org.truelicense.api.auth.AuthenticationParameters;
-import org.truelicense.api.misc.Message;
+import org.truelicense.api.i18n.Message;
 
 import java.security.GeneralSecurityException;
 import java.util.Locale;

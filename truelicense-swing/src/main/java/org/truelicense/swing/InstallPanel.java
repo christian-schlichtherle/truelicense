@@ -6,8 +6,7 @@
 package org.truelicense.swing;
 
 import org.truelicense.api.LicenseConsumerManager;
-import org.truelicense.api.io.Source;
-import org.truelicense.api.misc.Message;
+import org.truelicense.api.i18n.Message;
 import org.truelicense.swing.util.ComponentEnabler;
 import org.truelicense.swing.util.Enabler;
 import org.truelicense.ui.LicenseWizardState;

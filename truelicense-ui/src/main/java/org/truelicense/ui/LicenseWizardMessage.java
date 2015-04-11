@@ -6,8 +6,8 @@
 package org.truelicense.ui;
 
 import org.truelicense.api.LicenseConsumerManager;
-import org.truelicense.core.misc.Formattable;
-import org.truelicense.api.misc.Message;
+import org.truelicense.core.i18n.Formattable;
+import org.truelicense.api.i18n.Message;
 
 import javax.annotation.CheckForNull;
 import java.util.Date;
