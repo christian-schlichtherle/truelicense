@@ -46,7 +46,7 @@ import org.truelicense.obfuscate.ObfuscatedString;
  *
  * @author Christian Schlichtherle
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
+@SupportedSourceVersion(SourceVersion.RELEASE_7)
 @SupportedAnnotationTypes("org.truelicense.obfuscate.Obfuscate")
 @SupportedOptions({
     "org.truelicense.obfuscate.verbose",
