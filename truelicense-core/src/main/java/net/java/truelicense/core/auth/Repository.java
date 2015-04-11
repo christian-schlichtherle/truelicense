@@ -59,8 +59,8 @@ public interface Repository {
      *         {@code null} is supported or not.
      * @param  engine the signature engine.
      * @param  key the public key.
-     * @throws IllegalStateException if the state of the model doesn't
-     *         match the configuration of the codec or the signature engine.
+     * @throws RepositoryIntegrityException if the integrity of the repository
+     *         with its encoded artifact has been compromised.
      */
     Artifactory verify(
             Codec codec,
