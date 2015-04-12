@@ -35,7 +35,7 @@ import java.util.concurrent.Callable;
  */
 @Immutable
 abstract class BasicLicenseManager
-implements LicenseParametersProvider, StoreProvider {
+implements LicenseParametersProvider {
 
     public License create(final License bean, final Sink sink)
     throws LicenseManagementException {
@@ -213,5 +213,5 @@ implements LicenseParametersProvider, StoreProvider {
      * @throws UnsupportedOperationException If this method is called on a
      *         {@link LicenseVendorManager}.
      */
-    @Override public abstract Store store();
+    public abstract Store store();
 }
