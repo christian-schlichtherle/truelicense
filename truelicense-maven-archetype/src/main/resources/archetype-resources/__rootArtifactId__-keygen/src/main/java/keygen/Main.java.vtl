@@ -72,7 +72,7 @@ public enum Main {
                     return null == path
                             ? context().license()
                             : (License) codec().decode("-".equals(path)
-                                    ? input()
+                                    ? stdin()
                                     : pathStore(path),
                             License.class);
                 }
@@ -81,7 +81,7 @@ public enum Main {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path)
                         codec().encode("-".equals(path)
-                                        ? output()
+                                        ? stdout()
                                         : pathStore(path),
                                 license);
                 }
@@ -91,9 +91,9 @@ public enum Main {
                     return null != c ? c : (codec = manager().parameters().codec());
                 }
 
-                Source input() { return context().input(); }
+                Source stdin() { return context().stdin(); }
 
-                Sink output() { return context().output(); }
+                Sink stdout() { return context().stdout(); }
 
                 Store store() {
                     final String path = options.get(CreateOption.KEY);

@@ -93,17 +93,17 @@ public final class IO {
     /**
      * Returns a source which reads from standard input without ever closing it.
      */
-    public static Source input() { return uncloseable(System.in); }
+    public static Source stdin() { return uncloseable(System.in); }
 
     /**
      * Returns a sink which writes to standard output without ever closing it.
      */
-    public static Sink output() { return uncloseable(System.out); }
+    public static Sink stdout() { return uncloseable(System.out); }
 
     /**
      * Returns a sink which writes to standard error without ever closing it.
      */
-    public static Sink error() { return uncloseable(System.err); }
+    public static Sink stderr() { return uncloseable(System.err); }
 
     private static Source uncloseable(final InputStream in) {
         return new Source() {

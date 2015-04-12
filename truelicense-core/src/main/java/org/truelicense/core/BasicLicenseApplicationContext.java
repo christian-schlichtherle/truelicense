@@ -299,8 +299,8 @@ implements ClassLoaderProvider,
     public Store memoryStore() { return new MemoryStore(); }
 
     @Override
-    public Source input() { return IO.input(); }
+    public Source stdin() { return IO.stdin(); }
 
     @Override
-    public Sink output() { return IO.output(); }
+    public Sink stdout() { return IO.stdout(); }
 }

@@ -47,12 +47,12 @@ extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
     /**
      * Returns a source which reads from standard input without ever closing it.
      */
-    Source input();
+    Source stdin();
 
     /**
      * Returns a sink which writes to standard output without ever closing it.
      */
-    Sink output();
+    Sink stdout();
 
     /** Returns a store for the given path. */
     Store pathStore(Path path);
