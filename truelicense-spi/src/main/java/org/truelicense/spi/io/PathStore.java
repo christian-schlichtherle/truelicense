@@ -2,7 +2,7 @@
  * Copyright (C) 2014 Schlichtherle IT Services & CirrusPoint Solutions, Inc.
  * All rights reserved. Use is subject to license terms.
  */
-package org.truelicense.core.io;
+package org.truelicense.spi.io;
 
 import org.truelicense.api.io.Store;
 

@@ -232,8 +232,8 @@ is thrown instead (using the standalone JAR for a readable stack trace):
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
         at com.company.product.keymgr.Main.main(Main.java:90)
     Caused by: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at org.truelicense.core.io.PreferencesStore.checkedData(PreferencesStore.java:48)
-        at org.truelicense.core.io.PreferencesStore.input(PreferencesStore.java:64)
+        at org.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
+        at org.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
         at org.truelicense.core.crypto.BasicPbeEncryption.wrap(BasicPbeEncryption.java:53)
@@ -271,8 +271,8 @@ is thrown instead (using the standalone JAR for a readable stack trace):
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
         at com.company.product.keymgr.Main.main(Main.java:90)
     Caused by: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at org.truelicense.core.io.PreferencesStore.checkedData(PreferencesStore.java:48)
-        at org.truelicense.core.io.PreferencesStore.input(PreferencesStore.java:64)
+        at org.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
+        at org.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
         at org.truelicense.core.crypto.BasicPbeEncryption.wrap(BasicPbeEncryption.java:53)
@@ -330,8 +330,8 @@ is thrown instead:
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
         at com.company.product.keymgr.Main.main(Main.java:90)
     Caused by: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at org.truelicense.core.io.PreferencesStore.checkedData(PreferencesStore.java:48)
-        at org.truelicense.core.io.PreferencesStore.input(PreferencesStore.java:64)
+        at org.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
+        at org.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
         at org.truelicense.core.crypto.BasicPbeEncryption.wrap(BasicPbeEncryption.java:53)

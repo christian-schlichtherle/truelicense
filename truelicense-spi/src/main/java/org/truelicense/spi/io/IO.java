@@ -3,42 +3,41 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.io;
+package org.truelicense.spi.io;
 
+import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
 
-import java.io.FileNotFoundException;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import javax.annotation.CheckForNull;
+import javax.annotation.concurrent.Immutable;
+import java.io.*;
 
 /**
- * Provides common {@link Source}s.
+ * Provides common I/O functions.
  *
  * @author Christian Schlichtherle
  */
-public class Sources {
+@Immutable
+public final class IO {
 
-    /**
-     * Returns a source which reads from standard input without ever closing it.
-     */
-    public static Source input() { return uncloseable(System.in); }
-
-    /**
-     * Returns a source which reads from the given input stream and ignores any
-     * call to the {@link InputStream#close} method of the input stream.
+    /*
+     * Copies the data from the given source to the given sink.
+     * The implementation in this method is suitable for only small amounts of
+     * data, say a few kilobytes.
      *
-     * @param in the input stream to use.
+     * @param source the input source.
+     * @param sink the output sink.
      */
-    public static Source uncloseable(final InputStream in) {
-        return new Source() {
-            @Override public InputStream input() {
-                return new FilterInputStream(in) {
-                    @Override public void close() throws IOException { }
-                };
-            }
-        };
+    public static void copy(final Source source, final Sink sink)
+    throws IOException {
+        try (InputStream in = source.input();
+             OutputStream out = sink.output()) {
+            final byte[] buffer = new byte[Store.BUFSIZE];
+            int read;
+            while (0 <= (read = in.read(buffer)))
+                out.write(buffer, 0, read);
+        }
     }
 
     /**
@@ -85,11 +84,48 @@ public class Sources {
         };
     }
 
-    static InputStream check(final @CheckForNull InputStream in, final String name)
-    throws FileNotFoundException {
+    private static InputStream check(final @CheckForNull InputStream in, final String name)
+            throws FileNotFoundException {
         if (null == in) throw new FileNotFoundException(name);
         return in;
     }
 
-    private Sources() { }
+    /**
+     * Returns a source which reads from standard input without ever closing it.
+     */
+    public static Source input() { return uncloseable(System.in); }
+
+    /**
+     * Returns a sink which writes to standard output without ever closing it.
+     */
+    public static Sink output() { return uncloseable(System.out); }
+
+    /**
+     * Returns a sink which writes to standard error without ever closing it.
+     */
+    public static Sink error() { return uncloseable(System.err); }
+
+    private static Source uncloseable(final InputStream in) {
+        return new Source() {
+            @Override public InputStream input() {
+                return new FilterInputStream(in) {
+                    @Override public void close() { }
+                };
+            }
+        };
+    }
+
+    private static Sink uncloseable(final OutputStream out) {
+        return new Sink() {
+            @Override public OutputStream output() {
+                return new FilterOutputStream(out) {
+                    @Override public void close() throws IOException {
+                        out.flush();
+                    }
+                };
+            }
+        };
+    }
+
+    private IO() { }
 }

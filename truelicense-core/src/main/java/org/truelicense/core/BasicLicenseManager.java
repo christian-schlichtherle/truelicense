@@ -17,7 +17,7 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.spi.codec.Codecs;
 import org.truelicense.api.crypto.Encryption;
-import org.truelicense.core.io.*;
+import org.truelicense.spi.io.IO;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.concurrent.Callable;
@@ -53,7 +53,7 @@ implements LicenseParametersProvider {
             @Override public Void call() throws Exception {
                 authorization().clearInstall(parameters());
                 decodeLicense(source); // checks digital signature
-                Copy.copy(source, store());
+                IO.copy(source, store());
                 return null;
             }
         });

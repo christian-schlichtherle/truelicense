@@ -7,13 +7,11 @@ package org.truelicense.it.core
 
 import java.io.IOException
 
-import org.truelicense.core.codec._
-import org.truelicense.core.io._
-import org.truelicense.it.core.CodecTestSuite._
-import org.truelicense.it.core.io.IdentityTransformation
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
+import org.truelicense.it.core.CodecTestSuite._
+import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.spi.codec.Codecs
 import org.truelicense.spi.io.MemoryStore
 

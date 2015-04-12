@@ -7,7 +7,7 @@ package org.truelicense.it.core
 
 import java.util.prefs.Preferences
 
-import org.truelicense.core.io.PreferencesStore
+import org.truelicense.spi.io.PreferencesStore
 
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext =>

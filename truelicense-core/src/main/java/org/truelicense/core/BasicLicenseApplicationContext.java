@@ -20,9 +20,11 @@ import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.*;
-import org.truelicense.core.io.*;
 import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.spi.io.IO;
 import org.truelicense.spi.io.MemoryStore;
+import org.truelicense.spi.io.PathStore;
+import org.truelicense.spi.io.PreferencesStore;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -275,7 +277,7 @@ implements ClassLoaderProvider,
 
     @Override
     public Source resource(String name) {
-        return Sources.forResource(name, classLoader());
+        return IO.forResource(name, classLoader());
     }
 
     @Override
@@ -297,8 +299,8 @@ implements ClassLoaderProvider,
     public Store memoryStore() { return new MemoryStore(); }
 
     @Override
-    public Source input() { return Sources.input(); }
+    public Source input() { return IO.input(); }
 
     @Override
-    public Sink output() { return Sinks.output(); }
+    public Sink output() { return IO.output(); }
 }
