@@ -277,7 +277,7 @@ implements ClassLoaderProvider,
 
     @Override
     public Source resource(String name) {
-        return IO.forResource(name, classLoader());
+        return IO.resource(name, classLoader());
     }
 
     @Override

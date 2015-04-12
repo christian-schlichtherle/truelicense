@@ -50,7 +50,7 @@ public final class IO {
      * @param  clazz the class to use for loading the resource.
      * @return A source which loads the resource with the given {@code name}.
      */
-    public static Source forResource(final String name, final Class<?> clazz) {
+    public static Source resource(final String name, final Class<?> clazz) {
         return new Source() {
             @Override public InputStream input() throws IOException {
                 return check(clazz.getResourceAsStream(name), name);
@@ -72,7 +72,7 @@ public final class IO {
      *         used.
      * @return A source which loads the resource with the given {@code name}.
      */
-    public static Source forResource(
+    public static Source resource(
             final String name,
             final @CheckForNull ClassLoader loader) {
         return new Source() {
