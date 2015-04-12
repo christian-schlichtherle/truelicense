@@ -137,7 +137,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
                     list2csv(templates.getExcludes()),
                     false);
             if (paths.isEmpty()) {
-                getLog().warn("Skipping empty " + templates + ".");
+                getLog().warn(templates + " is empty.");
             } else {
                 getLog().info("Template directory: " + templateDirectory);
                 getLog().info("Merge directory: " + mergeDirectory());
