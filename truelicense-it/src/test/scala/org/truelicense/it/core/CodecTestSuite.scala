@@ -14,6 +14,8 @@ import org.truelicense.it.core.io.IdentityTransformation
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
+import org.truelicense.spi.codec.Codecs
+import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
 abstract class CodecTestSuite extends WordSpec { this: TestContext =>

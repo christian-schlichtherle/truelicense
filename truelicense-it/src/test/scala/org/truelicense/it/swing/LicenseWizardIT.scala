@@ -18,7 +18,7 @@ import org.scalatest._
 import org.scalatest.junit._
 import org.truelicense.api._
 import org.truelicense.core._
-import org.truelicense.core.io.MemoryStore
+import org.truelicense.spi.io.MemoryStore
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.swing.LicenseWizardIT._

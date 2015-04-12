@@ -140,6 +140,7 @@
         <module>truelicense-maven-archetype</module>
         <module>truelicense-maven-plugin</module>
         <module>truelicense-obfuscate</module>
+        <module>truelicense-spi</module>
         <module>truelicense-swing</module>
         <module>truelicense-ui</module>
     </modules>
@@ -174,6 +175,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-obfuscate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

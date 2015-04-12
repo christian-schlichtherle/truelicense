@@ -8,7 +8,7 @@ package org.truelicense.core
 import java.util.Locale
 
 import _root_.org.truelicense.api.i18n.Message
-import _root_.org.truelicense.core.codec.Codecs
+import _root_.org.truelicense.spi.codec.Codecs
 import org.scalatest.Matchers._
 
 /** @author Christian Schlichtherle */

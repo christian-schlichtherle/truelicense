@@ -10,7 +10,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
-import org.truelicense.core.io.*;
+import org.truelicense.spi.io.MemoryStore;
 
 /**
  * A caching license consumer manager which establishes a Chain Of

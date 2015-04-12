@@ -4,9 +4,9 @@
  */
 
 /**
- * Provides components for API internationalization (I18N).
+ * Provides I/O services.
  *
  * @author Christian Schlichtherle
  */
 @javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
-package org.truelicense.core.i18n;
+package org.truelicense.spi.io;

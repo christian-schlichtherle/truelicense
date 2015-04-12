@@ -15,23 +15,22 @@
         <version>3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>truelicense-core</artifactId>
+    <artifactId>truelicense-spi</artifactId>
 
-    <name>TrueLicense Core</name>
+    <name>TrueLicense SPI</name>
     <description>
-        The TrueLicense Core module provides essential functionality for
-        license management.
+        The TrueLicense SPI module provides a Service Provider
+        Interface for license management on the Java Virtual Machine.
     </description>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-spi</artifactId>
+            <artifactId>truelicense-api</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-obfuscate</artifactId>
         </dependency>
     </dependencies>
 
@@ -40,14 +39,6 @@
             <plugin>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-main-sources</id>
-                        <goals>
-                            <goal>generate-main-sources</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

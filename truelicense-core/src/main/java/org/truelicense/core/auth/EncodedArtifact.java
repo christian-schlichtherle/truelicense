@@ -10,7 +10,7 @@ import javax.annotation.concurrent.Immutable;
 
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.core.io.MemoryStore;
+import org.truelicense.spi.io.MemoryStore;
 import org.truelicense.api.io.Source;
 
 /**

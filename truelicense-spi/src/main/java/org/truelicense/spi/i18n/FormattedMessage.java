@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.i18n;
+package org.truelicense.spi.i18n;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;

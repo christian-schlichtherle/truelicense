@@ -27,10 +27,6 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-jax-rs</artifactId>
         </dependency>
         <dependency>

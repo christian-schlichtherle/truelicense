@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.codec;
+package org.truelicense.spi.codec;
 
 import org.truelicense.api.codec.Codec;
 

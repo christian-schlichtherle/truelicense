@@ -22,6 +22,7 @@ import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.*;
 import org.truelicense.core.io.*;
 import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.spi.io.MemoryStore;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;

@@ -7,8 +7,8 @@ package org.truelicense.ui
 
 import java.util.Locale
 import org.truelicense.api.i18n.Message
-import org.truelicense.core.codec.Codecs
 import org.scalatest.Matchers._
+import org.truelicense.spi.codec.Codecs
 
 /** @author Christian Schlichtherle */
 trait MessagesTestSupport {

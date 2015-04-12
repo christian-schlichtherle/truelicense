@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.core.io._
 import org.truelicense.it.core.LicenseKeyLifeCycleTestSuite.logger
+import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
 abstract class LicenseKeyLifeCycleTestSuite

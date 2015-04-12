@@ -15,6 +15,7 @@ import org.truelicense.core.BasicLicenseManagementContext
 import org.truelicense.core.io._
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
+import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
 trait TestContext {

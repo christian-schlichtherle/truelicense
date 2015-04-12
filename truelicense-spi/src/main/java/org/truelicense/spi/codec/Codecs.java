@@ -3,10 +3,10 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.codec;
+package org.truelicense.spi.codec;
 
 import org.truelicense.api.codec.Codec;
-import org.truelicense.core.io.MemoryStore;
+import org.truelicense.spi.io.MemoryStore;
 import org.truelicense.api.io.Store;
 import org.truelicense.obfuscate.Obfuscate;
 
@@ -25,12 +25,10 @@ import java.util.regex.Pattern;
  */
 public class Codecs {
 
-    @Obfuscate static final String APPLICATION_XML_WITH_UTF_8 = "application/xml; charset=utf-8";
-
-    @Obfuscate static final String _7BIT = "7bit";
-    @Obfuscate static final String _8BIT = "8bit";
-    @Obfuscate static final String QUOTED_PRINTABLE = "quoted-printable";
-    @Obfuscate static final String BASE64 = "base64";
+    @Obfuscate private static final String SEVEN_BIT = "7bit";
+    @Obfuscate private static final String EIGHT_BIT = "8bit";
+    @Obfuscate private static final String QUOTED_PRINTABLE = "quoted-printable";
+    @Obfuscate private static final String BASE64 = "base64";
 
     /** Not perfect, but should work for all valid input. */
     @Obfuscate private static final String CHARSET_REGEXP =
@@ -93,24 +91,24 @@ public class Codecs {
      * @since TrueLicense 2.2.1
      */
     public static @CheckForNull Charset contentTransferCharset(final Codec codec) {
-        final String cte = codec.contentTransferEncoding();
-        if (    _7BIT.equalsIgnoreCase(cte) ||
-                QUOTED_PRINTABLE.equalsIgnoreCase(cte) ||
-                BASE64.equalsIgnoreCase(cte)) {
+        final String encoding = codec.contentTransferEncoding();
+        if (    SEVEN_BIT.equalsIgnoreCase(encoding) ||
+                QUOTED_PRINTABLE.equalsIgnoreCase(encoding) ||
+                BASE64.equalsIgnoreCase(encoding)) {
             return StandardCharsets.US_ASCII;
-        } else  if (_8BIT.equalsIgnoreCase(cte)) {
-            final Matcher m = CHARSET_PATTERN.matcher(codec.contentType());
-            if (m.find()) {
-                assert 2 == m.groupCount();
-                String n = m.group(1);
-                if (null == n) n = m.group(2);
-                return Charset.forName(n);
+        } else  if (EIGHT_BIT.equalsIgnoreCase(encoding)) {
+            final Matcher matcher = CHARSET_PATTERN.matcher(codec.contentType());
+            if (matcher.find()) {
+                assert 2 == matcher.groupCount();
+                String charset = matcher.group(1);
+                if (null == charset) charset = matcher.group(2);
+                return Charset.forName(charset);
             } else {
                 return StandardCharsets.UTF_8;
             }
         }
         throw new BinaryCodecException(
-                "The Content-Transfer-Encoding " + cte + " doesn't produce text.");
+                "The Content-Transfer-Encoding " + encoding + " doesn't produce text.");
     }
 
     /**

@@ -5,6 +5,8 @@
 
 package org.truelicense.core.codec;
 
+import org.truelicense.v1.codec.XmlCodec;
+
 import java.beans.*;
 import java.io.OutputStream;
 import javax.annotation.concurrent.Immutable;

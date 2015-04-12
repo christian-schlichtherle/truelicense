@@ -15,7 +15,7 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.core.codec.Codecs;
+import org.truelicense.spi.codec.Codecs;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.core.io.*;
 

@@ -12,7 +12,7 @@ import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.core.codec.JaxbCodec;
+import org.truelicense.v2.xml.codec.JaxbCodec;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.base.BasicV2LicenseManagementContext;
 

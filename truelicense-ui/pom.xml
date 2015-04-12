@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-core</artifactId>
+            <artifactId>truelicense-spi</artifactId>
         </dependency>
     </dependencies>
 

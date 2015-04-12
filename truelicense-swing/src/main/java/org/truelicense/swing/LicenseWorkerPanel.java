@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import static javax.swing.SwingUtilities.isEventDispatchThread;
 import javax.swing.SwingWorker;
 import org.truelicense.api.LicenseManagementException;
-import org.truelicense.core.i18n.BasicMessage;
+import org.truelicense.spi.i18n.BasicMessage;
 import org.truelicense.api.i18n.Message;
 import org.truelicense.ui.LicenseWizardMessage;
 

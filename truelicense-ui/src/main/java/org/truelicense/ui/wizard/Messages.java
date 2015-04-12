@@ -7,7 +7,7 @@ package org.truelicense.ui.wizard;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.truelicense.core.i18n.FormattedMessage;
+import org.truelicense.spi.i18n.FormattedMessage;
 import org.truelicense.api.i18n.Message;
 
 /**

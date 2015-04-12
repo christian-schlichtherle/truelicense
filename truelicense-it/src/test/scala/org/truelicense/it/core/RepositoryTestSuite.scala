@@ -10,6 +10,7 @@ import java.util.Locale.ROOT
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.truelicense.core.codec._
+import org.truelicense.spi.codec.SerializationCodec
 
 /**
  * @author Christian Schlichtherle

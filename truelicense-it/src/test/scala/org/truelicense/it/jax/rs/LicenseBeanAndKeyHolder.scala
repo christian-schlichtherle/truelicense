@@ -6,7 +6,7 @@
 package org.truelicense.it.jax.rs
 
 import org.truelicense.api._
-import org.truelicense.core.io.MemoryStore
+import org.truelicense.spi.io.MemoryStore
 
 /**
  * A simple bean which holds a license key and its encoded license bean.

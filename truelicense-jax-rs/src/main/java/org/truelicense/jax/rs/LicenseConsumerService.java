@@ -8,7 +8,7 @@ package org.truelicense.jax.rs;
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
-import org.truelicense.core.io.MemoryStore;
+import org.truelicense.spi.io.MemoryStore;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.concurrent.Immutable;

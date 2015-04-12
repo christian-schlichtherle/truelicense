@@ -3,11 +3,12 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.codec;
+package org.truelicense.v2.xml.codec;
 
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
+import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.concurrent.Immutable;
 import javax.xml.bind.JAXBContext;
@@ -32,6 +33,12 @@ import java.util.Objects;
 @Immutable
 public class JaxbCodec implements Codec {
 
+    @Obfuscate
+    private static final String APPLICATION_XML_WITH_UTF_8 = "application/xml; charset=utf-8";
+
+    @Obfuscate
+    private static final String EIGHT_BIT = "8bit";
+
     /** The JAXB context provided to the constructor. */
     protected final JAXBContext context;
 
@@ -48,7 +55,7 @@ public class JaxbCodec implements Codec {
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
     @Override public String contentType() {
-        return Codecs.APPLICATION_XML_WITH_UTF_8;
+        return APPLICATION_XML_WITH_UTF_8;
     }
 
     /**
@@ -60,7 +67,7 @@ public class JaxbCodec implements Codec {
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
     @Override public String contentTransferEncoding() {
-        return Codecs._8BIT;
+        return EIGHT_BIT;
     }
 
     @Override public void encode(final Sink sink, final Object obj)

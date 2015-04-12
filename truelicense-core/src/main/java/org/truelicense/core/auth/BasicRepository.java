@@ -10,7 +10,7 @@ import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.core.io.MemoryStore;
+import org.truelicense.spi.io.MemoryStore;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -20,7 +20,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
-import static org.truelicense.core.codec.Codecs.contentTransferCharset;
+import static org.truelicense.spi.codec.Codecs.contentTransferCharset;
 
 /**
  * A basic repository for storing authenticated objects (artifacts).
