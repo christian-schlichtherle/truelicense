@@ -11,7 +11,6 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
-import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -30,16 +29,17 @@ import static java.util.Objects.requireNonNull;
  * {@linkplain Object#equals(Object) equal} or at least behaves identical to
  * any previously returned object.
  *
+ * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
 @Immutable
-final class BasicLicenseConsumerContext
-extends BasicLicenseApplicationContext
+final class BasicLicenseConsumerContext<PasswordSpecification>
+extends BasicLicenseApplicationContext<PasswordSpecification>
 implements CachePeriodProvider,
-        LicenseConsumerContext<ObfuscatedString>,
+        LicenseConsumerContext<PasswordSpecification>,
         LicenseProvider {
 
-    BasicLicenseConsumerContext(BasicLicenseManagementContext context) {
+    BasicLicenseConsumerContext(BasicLicenseManagementContext<PasswordSpecification> context) {
         super(context);
     }
 
@@ -131,11 +131,11 @@ implements CachePeriodProvider,
     }
 
     @SuppressWarnings("PackageVisibleField")
-    @Override public ManagerBuilder<ObfuscatedString> manager() {
+    @Override public ManagerBuilder<PasswordSpecification> manager() {
         @NotThreadSafe
-        class MB implements ManagerBuilder<ObfuscatedString> {
+        class MB implements ManagerBuilder<PasswordSpecification> {
 
-            final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
+            final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
 
             @Nullable LicenseConsumerManager parent;
             int ftpDays;
@@ -152,83 +152,83 @@ implements CachePeriodProvider,
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> inject() {
+            public ManagerBuilder<PasswordSpecification> inject() {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> parent(final LicenseConsumerManager parent) {
+            public ManagerBuilder<PasswordSpecification> parent(final LicenseConsumerManager parent) {
                 this.parent = parent;
                 return this;
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> parent() {
+            public ManagerBuilder<PasswordSpecification> parent() {
                 final MB target = this;
                 return new MB() {
-                    @Override public ManagerBuilder<ObfuscatedString> inject() {
+                    @Override public ManagerBuilder<PasswordSpecification> inject() {
                         return target.parent(build());
                     }
                 };
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> ftpDays(final int ftpDays) {
+            public ManagerBuilder<PasswordSpecification> ftpDays(final int ftpDays) {
                 this.ftpDays = ftpDays;
                 return this;
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> authentication(final Authentication authentication) {
+            public ManagerBuilder<PasswordSpecification> authentication(final Authentication authentication) {
                 this.authentication = authentication;
                 return this;
             }
 
             @Override
-            public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> keyStore() {
-                return new KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString>() {
+            public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
+                return new KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification>() {
                     @Nullable String storeType, alias;
                     @Nullable Source source;
-                    @Nullable ObfuscatedString storeProtection, keyProtection;
+                    @Nullable PasswordSpecification storeProtection, keyProtection;
 
                     @Override
-                    public ManagerBuilder<ObfuscatedString> inject() {
+                    public ManagerBuilder<PasswordSpecification> inject() {
                         return authentication(
                                 cc.keyStore(source, storeType, storeProtection, alias, keyProtection));
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> storeType(
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(
                             final @CheckForNull String storeType) {
                         this.storeType = storeType;
                         return this;
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> loadFrom(final Source source) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFrom(final Source source) {
                         this.source = source;
                         return this;
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> loadFromResource(String name) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFromResource(String name) {
                         return loadFrom(cc.resource(name));
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> storePassword(final ObfuscatedString storePassword) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storePassword(final PasswordSpecification storePassword) {
                         this.storeProtection = storePassword;
                         return this;
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> alias(final String alias) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> alias(final String alias) {
                         this.alias = alias;
                         return this;
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> keyPassword(final ObfuscatedString keyPassword) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyPassword(final PasswordSpecification keyPassword) {
                         this.keyProtection = keyPassword;
                         return this;
                     }
@@ -236,31 +236,31 @@ implements CachePeriodProvider,
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> encryption(final Encryption encryption) {
+            public ManagerBuilder<PasswordSpecification> encryption(final Encryption encryption) {
                 this.encryption = encryption;
                 return this;
             }
 
             @Override
-            public PbeInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> encryption() {
-                return new PbeInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString>() {
+            public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
+                return new PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification>() {
                     @Nullable String algorithm;
-                    @Nullable ObfuscatedString password;
+                    @Nullable PasswordSpecification password;
 
                     @Override
-                    public ManagerBuilder<ObfuscatedString> inject() {
+                    public ManagerBuilder<PasswordSpecification> inject() {
                         return encryption(cc.pbe(algorithm, password));
                     }
 
                     @Override
-                    public PbeInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> algorithm(
+                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(
                             final @CheckForNull String algorithm) {
                         this.algorithm = algorithm;
                         return this;
                     }
 
                     @Override
-                    public PbeInjection<ManagerBuilder<ObfuscatedString>, ObfuscatedString> password(final ObfuscatedString password) {
+                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> password(final PasswordSpecification password) {
                         this.password = password;
                         return this;
                     }
@@ -268,25 +268,25 @@ implements CachePeriodProvider,
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> storeIn(final Store store) {
+            public ManagerBuilder<PasswordSpecification> storeIn(final Store store) {
                 this.store = store;
                 return this;
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> storeInSystemNode(final Class<?> classInPackage) {
+            public ManagerBuilder<PasswordSpecification> storeInSystemNode(final Class<?> classInPackage) {
                 this.store = cc.systemNodeStore(classInPackage);
                 return this;
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> storeInUserNode(final Class<?> classInPackage) {
+            public ManagerBuilder<PasswordSpecification> storeInUserNode(final Class<?> classInPackage) {
                 this.store = cc.userNodeStore(classInPackage);
                 return this;
             }
 
             @Override
-            public ManagerBuilder<ObfuscatedString> storeInPath(final Path path) {
+            public ManagerBuilder<PasswordSpecification> storeInPath(final Path path) {
                 this.store = cc.pathStore(path);
                 return this;
             }

@@ -19,7 +19,7 @@ import org.truelicense.spi.io.MemoryStore
 /** @author Christian Schlichtherle */
 trait TestContext {
 
-  val managementContext: BasicLicenseManagementContext
+  val managementContext: LicenseManagementContext[ObfuscatedString]
 
   final lazy val vendorContext = {
     val vc = managementContext.vendor

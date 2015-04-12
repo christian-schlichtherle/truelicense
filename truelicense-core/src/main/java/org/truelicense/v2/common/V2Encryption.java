@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.v2.base;
+package org.truelicense.v2.common;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.truelicense.api.crypto.PbeParameters;

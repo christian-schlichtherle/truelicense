@@ -9,7 +9,7 @@ import org.truelicense.api.crypto.PbeParameters
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.obfuscate.ObfuscatedString
-import org.truelicense.v1.base.V1Encryption
+import org.truelicense.v1.common.V1Encryption
 
 /** @author Christian Schlichtherle */
 trait V1EncryptionTestContext { context: TestContext =>

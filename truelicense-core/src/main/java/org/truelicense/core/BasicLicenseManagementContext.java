@@ -11,11 +11,7 @@ import org.truelicense.api.auth.AuthenticationParameters;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
-import org.truelicense.api.passwd.PasswordPolicy;
-import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.core.auth.Notary;
-import org.truelicense.core.passwd.Passwords;
-import org.truelicense.obfuscate.ObfuscatedString;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -31,11 +27,12 @@ import java.util.Objects;
  * {@linkplain Object#equals(Object) equal} or at least behaves identical to
  * any previously returned object.
  *
+ * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
 @Immutable
-public abstract class BasicLicenseManagementContext
-implements LicenseManagementContext<ObfuscatedString> {
+public abstract class BasicLicenseManagementContext<PasswordSpecification>
+implements LicenseManagementContext<PasswordSpecification> {
 
     private final String subject;
 
@@ -44,13 +41,13 @@ implements LicenseManagementContext<ObfuscatedString> {
     }
 
     @Override
-    public final LicenseVendorContext<ObfuscatedString> vendor() {
-        return new BasicLicenseVendorContext(this);
+    public final LicenseVendorContext<PasswordSpecification> vendor() {
+        return new BasicLicenseVendorContext<>(this);
     }
 
     @Override
-    public final LicenseConsumerContext<ObfuscatedString> consumer() {
-        return new BasicLicenseConsumerContext(this);
+    public final LicenseConsumerContext<PasswordSpecification> consumer() {
+        return new BasicLicenseConsumerContext<>(this);
     }
 
     /** Returns a <em>new</em> license. */
@@ -137,21 +134,6 @@ implements LicenseManagementContext<ObfuscatedString> {
      */
     @Override
     public abstract Encryption encryption(PbeParameters pbe);
-
-    /** Returns a password protection for the given obfuscated string. */
-    @Override
-    public PasswordProtection protection(ObfuscatedString os) {
-        return Passwords.newPasswordProtection(os);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns {@link Passwords#newPasswordPolicy()}.
-     */
-    @Override
-    public PasswordPolicy policy() { return Passwords.newPasswordPolicy(); }
 
     /**
      * {@inheritDoc}

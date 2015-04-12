@@ -6,18 +6,19 @@
 package org.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
-import de.schlichtherle.xml.*;
-import javax.annotation.concurrent.Immutable;
-
-import org.truelicense.api.*;
+import de.schlichtherle.xml.GenericCertificate;
+import org.truelicense.api.LicenseConsumerContext;
+import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.core.BasicLicenseManagementContext;
+import org.truelicense.core.CommonLicenseManagementContext;
 import org.truelicense.core.codec.X500PrincipalXmlCodec;
 import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.v1.base.V1Compression;
-import org.truelicense.v1.base.V1Encryption;
+import org.truelicense.v1.common.V1Compression;
+import org.truelicense.v1.common.V1Encryption;
+
+import javax.annotation.concurrent.Immutable;
 
 /**
  * The root context for the management of Version 1 (V1) format license keys.
@@ -58,8 +59,7 @@ import org.truelicense.v1.base.V1Encryption;
  * @author Christian Schlichtherle
  */
 @Immutable
-public class V1LicenseManagementContext
-extends BasicLicenseManagementContext {
+public class V1LicenseManagementContext extends CommonLicenseManagementContext {
 
     @Obfuscate
     private static final String STORE_TYPE = "JKS";

@@ -8,7 +8,7 @@ package org.truelicense.it.v2.base
 import org.truelicense.api.crypto.PbeParameters
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
-import org.truelicense.v2.base.V2Encryption
+import org.truelicense.v2.common.V2Encryption
 
 /** @author Christian Schlichtherle */
 trait V2EncryptionTestContext { context: TestContext =>

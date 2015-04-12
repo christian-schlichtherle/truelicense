@@ -20,7 +20,6 @@ import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.*;
-import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.io.IO;
 import org.truelicense.spi.io.MemoryStore;
 import org.truelicense.spi.io.PathStore;
@@ -46,19 +45,20 @@ import static java.util.Objects.requireNonNull;
  * {@linkplain Object#equals(Object) equal} or at least behaves identical to
  * any previously returned object.
  *
+ * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
 @Immutable
-abstract class BasicLicenseApplicationContext
+abstract class BasicLicenseApplicationContext<PasswordSpecification>
 implements ClassLoaderProvider,
            Clock,
-           LicenseApplicationContext<ObfuscatedString>,
+           LicenseApplicationContext<PasswordSpecification>,
            LicenseSubjectProvider,
            PasswordPolicyProvider {
 
-    private final LicenseManagementContext<ObfuscatedString> context;
+    private final LicenseManagementContext<PasswordSpecification> context;
 
-    BasicLicenseApplicationContext(final LicenseManagementContext<ObfuscatedString> context) {
+    BasicLicenseApplicationContext(final LicenseManagementContext<PasswordSpecification> context) {
         assert null != context;
         this.context = context;
     }
@@ -67,13 +67,13 @@ implements ClassLoaderProvider,
     public final String subject() { return context().subject(); }
 
     @Override
-    public final LicenseManagementContext<ObfuscatedString> context() { return context; }
+    public final LicenseManagementContext<PasswordSpecification> context() { return context; }
 
     @Override
     public final PasswordPolicy policy() { return context().policy(); }
 
     @Override
-    public PasswordProtection protection(ObfuscatedString specification) {
+    public PasswordProtection protection(PasswordSpecification specification) {
         return context().protection(specification);
     }
 
@@ -190,9 +190,9 @@ implements ClassLoaderProvider,
     final Authentication keyStore(
             @CheckForNull Source source,
             @CheckForNull String storeType,
-            ObfuscatedString storePassword,
+            PasswordSpecification storePassword,
             String alias,
-            @CheckForNull ObfuscatedString keyPassword) {
+            @CheckForNull PasswordSpecification keyPassword) {
         return context().authentication(keyStoreParameters(
                 source, storeType, storePassword, alias, keyPassword));
     }
@@ -200,9 +200,9 @@ implements ClassLoaderProvider,
     final AuthenticationParameters keyStoreParameters(
             final @CheckForNull Source source,
             final @CheckForNull String storeType,
-            final ObfuscatedString storePassword,
+            final PasswordSpecification storePassword,
             final String alias,
-            final @CheckForNull ObfuscatedString keyPassword) {
+            final @CheckForNull PasswordSpecification keyPassword) {
         requireNonNull(storePassword);
         requireNonNull(alias);
         return new AuthenticationParameters() {
@@ -237,13 +237,13 @@ implements ClassLoaderProvider,
 
     final Encryption pbe(
             @CheckForNull String algorithm,
-            ObfuscatedString password) {
+            PasswordSpecification password) {
         return context().encryption(pbeParameters(algorithm, password));
     }
 
     final PbeParameters pbeParameters(
             final @CheckForNull String algorithm,
-            final ObfuscatedString password) {
+            final PasswordSpecification password) {
         return new PbeParameters() {
 
             final String pbeAlgorithm = pbeAlgorithm(algorithm);
@@ -261,7 +261,7 @@ implements ClassLoaderProvider,
         return null != algorithm ? algorithm : context().pbeAlgorithm();
     }
 
-    private PasswordProtection checkedProtection(final ObfuscatedString password) {
+    private PasswordProtection checkedProtection(final PasswordSpecification password) {
         return new PasswordProtection() {
 
             final PasswordProtection protection = protection(password);

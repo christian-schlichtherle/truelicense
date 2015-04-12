@@ -6,7 +6,7 @@
 package org.truelicense.it.v1
 
 import org.truelicense.it.core.TestContext
-import org.truelicense.v1.base.V1Compression
+import org.truelicense.v1.common.V1Compression
 
 /** @author Christian Schlichtherle */
 trait V1CompressionTestContext { this: TestContext =>

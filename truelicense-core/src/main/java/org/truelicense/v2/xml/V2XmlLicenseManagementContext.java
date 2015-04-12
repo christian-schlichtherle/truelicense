@@ -14,7 +14,7 @@ import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.v2.xml.codec.JaxbCodec;
 import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.v2.base.BasicV2LicenseManagementContext;
+import org.truelicense.v2.common.CommonV2LicenseManagementContext;
 
 /**
  * The root context for the management of Version-2-with-XML (V2/XML) format
@@ -53,7 +53,7 @@ import org.truelicense.v2.base.BasicV2LicenseManagementContext;
  */
 @Immutable
 public class V2XmlLicenseManagementContext
-extends BasicV2LicenseManagementContext {
+extends CommonV2LicenseManagementContext {
 
     private volatile JAXBContext context;
 
