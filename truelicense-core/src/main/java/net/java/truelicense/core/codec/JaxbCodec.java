@@ -53,7 +53,7 @@ public class JaxbCodec implements Codec {
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
     @Override public String contentTransferEncoding() {
-        return Codecs._8BIT;
+        return Codecs.EIGHT_BIT;
     }
 
     @Override public void encode(final Sink sink, final Object obj)
