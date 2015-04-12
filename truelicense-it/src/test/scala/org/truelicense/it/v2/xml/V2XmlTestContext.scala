@@ -6,14 +6,14 @@
 package org.truelicense.it.v2.xml
 
 import javax.xml.bind._
-import _root_.org.truelicense.v2.xml.V2XmlLicenseManagementContext
+
 import org.slf4j.LoggerFactory
 import org.truelicense.api._
-import org.truelicense.core._
 import org.truelicense.core.auth.BasicRepository
 import org.truelicense.it.core.ExtraData
-import org.truelicense.it.v2.base.V2TestContext
+import org.truelicense.it.v2.common.V2TestContext
 import org.truelicense.it.v2.xml.V2XmlTestContext.logger
+import org.truelicense.v2.xml.V2XmlLicenseManagementContext
 
 /** @author Christian Schlichtherle */
 trait V2XmlTestContext extends V2TestContext {
@@ -60,7 +60,6 @@ trait V2XmlTestContext extends V2TestContext {
   }
 }
 
-/** @author Christian Schlichtherle */
-private object V2XmlTestContext {
+object V2XmlTestContext {
   private val logger = LoggerFactory getLogger classOf[V2XmlTestContext]
 }

@@ -21,7 +21,7 @@ import javax.annotation.concurrent.Immutable;
  * @author Christian Schlichtherle
  */
 @Immutable
-public abstract class CommonV2LicenseManagementContext
+public abstract class V2LicenseManagementContext
 extends CommonLicenseManagementContext {
 
     @Obfuscate
@@ -30,7 +30,7 @@ extends CommonLicenseManagementContext {
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithSHA1AndDESede";
 
-    protected CommonV2LicenseManagementContext(String subject) {
+    protected V2LicenseManagementContext(String subject) {
         super(subject);
     }
 
@@ -39,7 +39,7 @@ extends CommonLicenseManagementContext {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonV2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseManagementContext}
      * returns {@code "JCEKS"}.
      */
     @Override public final String storeType() { return STORE_TYPE; }
@@ -47,7 +47,7 @@ extends CommonLicenseManagementContext {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonV2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseManagementContext}
      * returns a new {@link BasicRepository}.
      */
     @Override public final BasicRepository repository() {
@@ -57,7 +57,7 @@ extends CommonLicenseManagementContext {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonV2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseManagementContext}
      * returns a compression for V2 format license keys.
      */
     @Override public final Transformation compression() {
@@ -67,7 +67,7 @@ extends CommonLicenseManagementContext {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonV2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseManagementContext}
      * returns {@code "PBEWithSHA1AndDESede"}.
      */
     @Override public final String pbeAlgorithm() { return PBE_ALGORITHM; }
@@ -75,7 +75,7 @@ extends CommonLicenseManagementContext {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonV2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseManagementContext}
      * returns an encryption for V2 format license keys with the given
      * parameters.
      */

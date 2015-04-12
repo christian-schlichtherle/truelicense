@@ -13,7 +13,7 @@ import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.v2.common.CommonV2LicenseManagementContext;
+import org.truelicense.v2.common.V2LicenseManagementContext;
 import org.truelicense.v2.json.codec.JsonCodec;
 
 import javax.annotation.concurrent.Immutable;
@@ -55,7 +55,7 @@ import javax.annotation.concurrent.Immutable;
  */
 @Immutable
 public class V2JsonLicenseManagementContext
-extends CommonV2LicenseManagementContext {
+extends V2LicenseManagementContext {
 
     private volatile ObjectMapper mapper;
 

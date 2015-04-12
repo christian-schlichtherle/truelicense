@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.it.v2.base
+package org.truelicense.it.v2.common
 
 import org.truelicense.it.core.TestContext
 import org.truelicense.v2.common.V2Compression
