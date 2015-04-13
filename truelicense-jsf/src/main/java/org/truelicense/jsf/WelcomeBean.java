@@ -15,7 +15,7 @@ import org.truelicense.ui.LicenseWizardState;
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@FacesComponent("")
+@FacesComponent
 public final class WelcomeBean extends LicenseBean {
 
     private LicenseWizardState nextState;

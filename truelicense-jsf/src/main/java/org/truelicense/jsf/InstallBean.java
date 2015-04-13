@@ -20,7 +20,7 @@ import static org.truelicense.ui.LicenseWizardMessage.*;
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@FacesComponent("")
+@FacesComponent
 public final class InstallBean extends LicenseBean {
 
     public String getTitle() { return message(install_title); }

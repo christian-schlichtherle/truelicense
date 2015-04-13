@@ -25,7 +25,7 @@ import org.truelicense.ui.wizard.WizardModel;
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@FacesComponent("")
+@FacesComponent
 public final class WizardBean
 extends LicenseBean
 implements WizardModel<LicenseWizardState, LicenseBean> {
