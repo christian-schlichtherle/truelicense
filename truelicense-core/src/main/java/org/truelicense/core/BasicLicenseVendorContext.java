@@ -15,8 +15,8 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
 
 /**
@@ -71,7 +71,8 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
-        return new ManagerBuilder<PasswordSpecification>() {
+        @ParametersAreNullableByDefault
+        class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
 
@@ -91,7 +92,8 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             @Override
             public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
-                return new KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification>() {
+                @ParametersAreNullableByDefault
+                class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String storeType, alias;
                     @Nullable Source source;
                     @Nullable PasswordSpecification storePassword, keyPassword;
@@ -103,8 +105,7 @@ implements LicenseVendorContext<PasswordSpecification> {
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(
-                            final @CheckForNull String storeType) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
                         this.storeType = storeType;
                         return this;
                     }
@@ -137,7 +138,8 @@ implements LicenseVendorContext<PasswordSpecification> {
                         this.keyPassword = keyPassword;
                         return this;
                     }
-                };
+                }
+                return new KeyStoreConfiguration();
             }
 
             @Override
@@ -148,7 +150,8 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             @Override
             public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
-                return new PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification>() {
+                @ParametersAreNullableByDefault
+                class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String algorithm;
                     @Nullable PasswordSpecification password;
 
@@ -158,8 +161,7 @@ implements LicenseVendorContext<PasswordSpecification> {
                     }
 
                     @Override
-                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(
-                            final @CheckForNull String algorithm) {
+                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
                         this.algorithm = algorithm;
                         return this;
                     }
@@ -169,8 +171,10 @@ implements LicenseVendorContext<PasswordSpecification> {
                         this.password = password;
                         return this;
                     }
-                };
+                }
+                return new EncryptionConfiguration();
             }
-        };
+        }
+        return new ManagerConfiguration();
     }
 }

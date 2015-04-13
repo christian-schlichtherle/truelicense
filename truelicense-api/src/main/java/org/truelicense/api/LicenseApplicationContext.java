@@ -14,7 +14,7 @@ import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.misc.Injection;
 import org.truelicense.api.passwd.PasswordProtectionProvider;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.ParametersAreNullableByDefault;
 import java.nio.file.Path;
 
 /**
@@ -81,6 +81,7 @@ extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
     /**
      * Injects a Key Store Based {@link Authentication} (KSBA) into some target.
      */
+    @ParametersAreNullableByDefault
     interface KsbaInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
@@ -103,7 +104,7 @@ extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
          *
          * @return {@code this}
          */
-        KsbaInjection<Target, PasswordSpecification> storeType(@CheckForNull String storeType);
+        KsbaInjection<Target, PasswordSpecification> storeType(String storeType);
 
         /**
          * Sets the password protection for verifying the integrity of the key
@@ -140,6 +141,7 @@ extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
     /**
      * Injects a Password Based {@link Encryption} (PBE) into some target.
      */
+    @ParametersAreNullableByDefault
     interface PbeInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
@@ -147,7 +149,7 @@ extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
          *
          * @return {@code this}
          */
-        PbeInjection<Target, PasswordSpecification> algorithm(@CheckForNull String algorithm);
+        PbeInjection<Target, PasswordSpecification> algorithm(String algorithm);
 
         /**
          * Sets the password for generating a secret key for

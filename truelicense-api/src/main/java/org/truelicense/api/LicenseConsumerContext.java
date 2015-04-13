@@ -11,6 +11,7 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.Builder;
 import org.truelicense.api.misc.Injection;
 
+import javax.annotation.ParametersAreNullableByDefault;
 import java.nio.file.Path;
 
 /**
@@ -45,6 +46,7 @@ extends LicenseApplicationContext<PasswordSpecification> {
      *
      * @author Christian Schlichtherle
      */
+    @ParametersAreNullableByDefault
     interface ManagerBuilder<PasswordSpecification>
     extends Builder<LicenseConsumerManager>, Injection<ManagerBuilder<PasswordSpecification>> {
 

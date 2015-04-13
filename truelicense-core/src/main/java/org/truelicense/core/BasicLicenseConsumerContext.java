@@ -14,6 +14,7 @@ import org.truelicense.api.misc.CachePeriodProvider;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.nio.file.Path;
@@ -133,7 +134,8 @@ implements CachePeriodProvider,
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
         @NotThreadSafe
-        class MB implements ManagerBuilder<PasswordSpecification> {
+        @ParametersAreNullableByDefault
+        class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
 
@@ -145,7 +147,8 @@ implements CachePeriodProvider,
 
             @Override
             public LicenseConsumerManager build() {
-                if (null == parent) return cc.manager(authentication, encryption, store);
+                if (null == parent)
+                    return cc.manager(authentication, encryption, store);
                 return 0 != ftpDays
                         ? cc.ftpManager(parent, authentication, encryption, store, ftpDays)
                         : cc.chainedManager(parent, authentication, encryption, store);
@@ -164,12 +167,12 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> parent() {
-                final MB target = this;
-                return new MB() {
+                class ParentManagerConfiguration extends ChildManagerConfiguration {
                     @Override public ManagerBuilder<PasswordSpecification> inject() {
-                        return target.parent(build());
+                        return ChildManagerConfiguration.this.parent(build());
                     }
-                };
+                }
+                return new ParentManagerConfiguration();
             }
 
             @Override
@@ -186,7 +189,8 @@ implements CachePeriodProvider,
 
             @Override
             public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
-                return new KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification>() {
+                @ParametersAreNullableByDefault
+                class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String storeType, alias;
                     @Nullable Source source;
                     @Nullable PasswordSpecification storeProtection, keyProtection;
@@ -198,8 +202,7 @@ implements CachePeriodProvider,
                     }
 
                     @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(
-                            final @CheckForNull String storeType) {
+                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
                         this.storeType = storeType;
                         return this;
                     }
@@ -232,7 +235,8 @@ implements CachePeriodProvider,
                         this.keyProtection = keyPassword;
                         return this;
                     }
-                };
+                }
+                return new KeyStoreConfiguration();
             }
 
             @Override
@@ -243,7 +247,8 @@ implements CachePeriodProvider,
 
             @Override
             public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
-                return new PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification>() {
+                @ParametersAreNullableByDefault
+                class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String algorithm;
                     @Nullable PasswordSpecification password;
 
@@ -253,8 +258,7 @@ implements CachePeriodProvider,
                     }
 
                     @Override
-                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(
-                            final @CheckForNull String algorithm) {
+                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
                         this.algorithm = algorithm;
                         return this;
                     }
@@ -264,7 +268,8 @@ implements CachePeriodProvider,
                         this.password = password;
                         return this;
                     }
-                };
+                }
+                return new EncryptionConfiguration();
             }
 
             @Override
@@ -291,6 +296,6 @@ implements CachePeriodProvider,
                 return this;
             }
         }
-        return new MB();
+        return new ChildManagerConfiguration();
     }
 }
