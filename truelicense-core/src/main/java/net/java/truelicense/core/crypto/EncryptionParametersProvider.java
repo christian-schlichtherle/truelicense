@@ -11,6 +11,7 @@ package net.java.truelicense.core.crypto;
  * @author Christian Schlichtherle
  */
 public interface EncryptionParametersProvider {
+
     /** Returns the encryption parameters. */
     EncryptionParameters parameters();
 }
