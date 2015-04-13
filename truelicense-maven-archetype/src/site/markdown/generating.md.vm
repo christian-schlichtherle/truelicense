@@ -353,12 +353,12 @@ Note that property values are generally _case sensitive_.
             <td><code>-</code></td>
             <td>The name of the module to depend upon for base functionality 
                 like vending or consuming license keys.
-                One of <code>-</code>, <code>truelicense-core</code> or <code>truelicense-json</code>.
+                One of <code>-</code>, <code>truelicense-core</code> or <code>truelicense-v2-json</code>.
                 If the value is set to <code>-</code>, then it gets overridden 
                 as follows:
                 If the value of the <code>licenseKeyFormat</code> property is 
                 set to <code>V2/JSON</code>, then this gets set to
-                <code>truelicense-json</code>, otherwise it gets set to 
+                <code>truelicense-v2-json</code>, otherwise it gets set to 
                 <code>truelicense-core</code>.</td>
         </tr>
         <tr>

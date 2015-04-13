@@ -136,7 +136,7 @@
         <module>truelicense-it</module>
         <module>truelicense-jax-rs</module>
         <module>truelicense-jsf</module>
-        <module>truelicense-json</module>
+        <module>truelicense-v2-json</module>
         <module>truelicense-maven-archetype</module>
         <module>truelicense-maven-plugin</module>
         <module>truelicense-obfuscate</module>
@@ -164,11 +164,6 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-json</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -190,6 +185,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-ui</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-v2-json</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

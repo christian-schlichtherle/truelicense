@@ -15,9 +15,9 @@
         <version>3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>truelicense-json</artifactId>
+    <artifactId>truelicense-v2-json</artifactId>
 
-    <name>TrueLicense JSON</name>
+    <name>TrueLicense V2/XML</name>
     <description>
         The TrueLicense JSON module extends the TrueLicense Core module in
         order to add support for the V2/JSON license key format.

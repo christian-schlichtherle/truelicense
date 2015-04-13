@@ -22,7 +22,7 @@
 #end
 #if($trueLicenseDependency == "-")
 #if($licenseKeyFormat == "V2/JSON")
-#set($trueLicenseDependency = "truelicense-json")
+#set($trueLicenseDependency = "truelicense-v2-json")
 #else
 #set($trueLicenseDependency = "truelicense-core")
 #end
@@ -363,9 +363,9 @@
 
         <!-- The name of the module to depend upon for base functionality like
              vending or consuming license keys.
-             One of "truelicense-core" or "truelicense-json".
+             One of "truelicense-core" or "truelicense-v2-json".
              If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
-             then this needs to be set to "truelicense-json", otherwise set it
+             then this needs to be set to "truelicense-v2-json", otherwise set it
              to "truelicense-core". -->
         <trueLicenseDependency>$trueLicenseDependency</trueLicenseDependency>
 

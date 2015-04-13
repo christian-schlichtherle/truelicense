@@ -62,7 +62,7 @@ First, copy the runtime dependencies to the directory
     ${dollar} ls *-keygen/target/dependency
     annotations-3.0.0.jar                      jackson-module-jaxb-annotations-2.5.1.jar
     commons-codec-1.10.jar                     truelicense-core-2.4-SNAPSHOT.jar
-    jackson-annotations-2.5.0.jar              truelicense-json-2.4-SNAPSHOT.jar
+    jackson-annotations-2.5.0.jar              truelicense-v2-json-2.4-SNAPSHOT.jar
     jackson-core-2.5.1.jar                     truelicense-obfuscate-2.4-SNAPSHOT.jar
     jackson-databind-2.5.1.jar
 
@@ -166,7 +166,7 @@ First, copy the runtime dependencies to the directory
     [...]
     ${dollar} ls *-keymgr/target/dependency
     annotations-3.0.0.jar                      truelicense-core-2.4-SNAPSHOT.jar
-    commons-codec-1.10.jar                     truelicense-json-2.4-SNAPSHOT.jar
+    commons-codec-1.10.jar                     truelicense-v2-json-2.4-SNAPSHOT.jar
     jackson-annotations-2.5.0.jar              truelicense-obfuscate-2.4-SNAPSHOT.jar
     jackson-core-2.5.1.jar                     truelicense-swing-2.4-SNAPSHOT.jar
     jackson-databind-2.5.1.jar                 truelicense-ui-2.4-SNAPSHOT.jar
