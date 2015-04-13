@@ -9,7 +9,7 @@ import edu.umd.cs.findbugs.annotations.CreatesObligation;
 import java.io.*;
 
 /**
- * An abstraction for writing binary data.
+ * A factory for {@link OutputStream}s.
  *
  * @see    Source
  * @author Christian Schlichtherle
