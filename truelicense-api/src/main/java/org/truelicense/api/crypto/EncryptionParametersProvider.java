@@ -11,6 +11,7 @@ package org.truelicense.api.crypto;
  * @author Christian Schlichtherle
  */
 public interface EncryptionParametersProvider {
+
     /** Returns the encryption parameters. */
     EncryptionParameters parameters();
 }

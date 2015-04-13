@@ -6,11 +6,12 @@
 package org.truelicense.api.crypto;
 
 /**
- * Provides an encryption transformation.
+ * Provides an encryption.
  *
  * @author Christian Schlichtherle
  */
 public interface EncryptionProvider {
-    /** Returns the encryption transformation. */
+
+    /** Returns the encryption. */
     Encryption encryption();
 }

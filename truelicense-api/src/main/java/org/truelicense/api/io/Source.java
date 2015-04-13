@@ -9,7 +9,7 @@ import edu.umd.cs.findbugs.annotations.CreatesObligation;
 import java.io.*;
 
 /**
- * An abstraction for reading binary data.
+ * A factory for {@link InputStream}s.
  *
  * @see    Sink
  * @author Christian Schlichtherle

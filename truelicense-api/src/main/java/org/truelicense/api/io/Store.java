@@ -8,7 +8,7 @@ package org.truelicense.api.io;
 import java.io.IOException;
 
 /**
- * An abstraction for reading, writing and binary data.
+ * An abstraction for storing data.
  *
  * @author Christian Schlichtherle
  */
