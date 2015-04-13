@@ -16,12 +16,7 @@ import java.nio.file.Path;
  */
 public interface BIOS {
 
-    /**
-     * Copies the data from the given source to the given sink.
-     *
-     * @param source the input source.
-     * @param sink the output sink.
-     */
+    /** Copies the data from the given source to the given sink. */
     void copy(Source source, Sink sink) throws IOException;
 
     /** Returns a new memory store. */
