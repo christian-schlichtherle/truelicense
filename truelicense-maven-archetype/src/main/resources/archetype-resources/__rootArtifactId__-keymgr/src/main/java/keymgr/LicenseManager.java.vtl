@@ -186,11 +186,12 @@ public enum LicenseManager implements LicenseConsumerManager {
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyMgrClockClass != "-")
 
+#if($dynamicClassLoading == true)
                 @SuppressWarnings("unchecked")
                 final Clock clock =
-#if($dynamicClassLoading == true)
                         newInstance((Class<Clock>) classForName(CLOCK_CLASS));
 #else
+                final Clock clock =
                         new ${keyMgrClockClass.replace('$', '.')}();
 #end
 
@@ -203,11 +204,12 @@ public enum LicenseManager implements LicenseConsumerManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
+#if($dynamicClassLoading == true)
                         @SuppressWarnings("unchecked")
                         final LicenseValidation custom =
-#if($dynamicClassLoading == true)
                                 newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
 #else
+                        final LicenseValidation custom =
                                 new ${keyMgrLicenseValidationClass.replace('$', '.')}();
 #end
 
