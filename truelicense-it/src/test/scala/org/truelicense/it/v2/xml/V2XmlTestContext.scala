@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.core.auth.BasicRepository
 import org.truelicense.it.core.ExtraData
-import org.truelicense.it.v2.common.V2TestContext
+import org.truelicense.it.v2.commons.V2TestContext
 import org.truelicense.it.v2.xml.V2XmlTestContext.logger
 import org.truelicense.v2.xml.V2XmlLicenseManagementContext
 

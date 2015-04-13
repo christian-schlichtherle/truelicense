@@ -8,7 +8,7 @@ package org.truelicense.it.swing
 import java.awt.{Component, EventQueue}
 import java.util.Date
 import javax.swing._
-import _root_.org.truelicense.v2.xml.V2XmlLicenseManagementContext
+
 import org.junit.runner._
 import org.netbeans.jemmy._
 import org.netbeans.jemmy.operators._
@@ -17,15 +17,14 @@ import org.scalatest.Matchers._
 import org.scalatest._
 import org.scalatest.junit._
 import org.truelicense.api._
-import org.truelicense.core._
-import org.truelicense.spi.io.MemoryStore
-import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.swing.LicenseWizardIT._
+import org.truelicense.spi.io.MemoryStore
 import org.truelicense.swing._
 import org.truelicense.ui.LicenseWizardMessage
 import org.truelicense.ui.LicenseWizardMessage._
 import org.truelicense.ui.wizard.WizardMessage._
+import org.truelicense.v2.xml.V2XmlLicenseManagementContext
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])

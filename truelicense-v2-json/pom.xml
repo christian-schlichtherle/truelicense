@@ -17,16 +17,16 @@
 
     <artifactId>truelicense-v2-json</artifactId>
 
-    <name>TrueLicense V2/XML</name>
+    <name>TrueLicense V2/JSON</name>
     <description>
-        The TrueLicense JSON module extends the TrueLicense Core module in
+        The TrueLicense V2/JSON module extends the TrueLicense Core module in
         order to add support for the V2/JSON license key format.
     </description>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-core</artifactId>
+            <artifactId>truelicense-v2-commons</artifactId>
         </dependency>
 
         <dependency>

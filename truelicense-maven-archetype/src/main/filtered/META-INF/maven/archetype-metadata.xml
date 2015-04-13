@@ -70,8 +70,11 @@
         <requiredProperty key="publicKeyStoreFile">
             <defaultValue>public.ks</defaultValue>
         </requiredProperty>
-        <requiredProperty key="trueLicenseDependency">
+        <requiredProperty key="trueLicenseArtifactId">
             <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="trueLicenseGroupId">
+            <defaultValue>org.truelicense</defaultValue>
         </requiredProperty>
         <requiredProperty key="trueLicenseVersion">
             <defaultValue>${project.version}</defaultValue>

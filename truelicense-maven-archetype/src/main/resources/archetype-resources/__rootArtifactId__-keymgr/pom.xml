@@ -40,8 +40,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.truelicense</groupId>
-            <artifactId>${dollar}{trueLicenseDependency}</artifactId>
+            <groupId>${dollar}{trueLicenseGroupId}</groupId>
+            <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
+            <version>${dollar}{trueLicenseVersion}</version>
         </dependency>
 #if($disableLicenseWizard == false)
         <!-- This dependency is only required for the "wizard" command of the

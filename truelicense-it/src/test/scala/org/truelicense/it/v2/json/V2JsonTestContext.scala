@@ -7,7 +7,7 @@ package org.truelicense.it.v2.json
 
 import org.slf4j.LoggerFactory
 import org.truelicense.api._
-import org.truelicense.it.v2.common.V2TestContext
+import org.truelicense.it.v2.commons.V2TestContext
 import org.truelicense.it.v2.json.V2JsonTestContext.logger
 import org.truelicense.v2.json.V2JsonLicenseManagementContext
 

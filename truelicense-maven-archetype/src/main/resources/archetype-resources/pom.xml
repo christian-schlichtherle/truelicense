@@ -20,11 +20,13 @@
 #set($pbeAlgorithm = "PBEWithSHA1AndDESede")
 #end
 #end
-#if($trueLicenseDependency == "-")
-#if($licenseKeyFormat == "V2/JSON")
-#set($trueLicenseDependency = "truelicense-v2-json")
+#if($trueLicenseArtifactId == "-")
+#if($licenseKeyFormat == "V1")
+#set($trueLicenseArtifactId = "truelicense-v1")
+#elseif($licenseKeyFormat == "V2/JSON")
+#set($trueLicenseArtifactId = "truelicense-v2-json")
 #else
-#set($trueLicenseDependency = "truelicense-core")
+#set($trueLicenseArtifactId = "truelicense-v2-xml")
 #end
 #end
 #set($dollar = '$')
@@ -361,15 +363,16 @@
         <${edition}KeyEntryPassword>${dollar}{privateKeyStorePassword}</${edition}KeyEntryPassword>
 #end
 
-        <!-- The name of the module to depend upon for base functionality like
-             vending or consuming license keys.
-             One of "truelicense-core" or "truelicense-v2-json".
-             If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
-             then this needs to be set to "truelicense-v2-json", otherwise set it
-             to "truelicense-core". -->
-        <trueLicenseDependency>$trueLicenseDependency</trueLicenseDependency>
+        <!-- The artifact ID of the module which implements the license key format.
+             This generally needs to match the property
+             ${dollar}{licenseKeyFormat} and should be one of "truelicense-v1",
+             "truelicense-v2-json" or "truelicense-v2-xml". -->
+        <trueLicenseArtifactId>$trueLicenseArtifactId</trueLicenseArtifactId>
 
-        <!-- The TrueLicense version to depend upon. -->
+        <!-- The group ID of the module which implements the license key format. -->
+        <trueLicenseGroupId>$trueLicenseGroupId</trueLicenseGroupId>
+
+        <!-- The version of the module which implements the license key format. -->
         <trueLicenseVersion>$trueLicenseVersion</trueLicenseVersion>
 
         <!-- Whether or not the command line interface (CLI) should write
@@ -605,8 +608,11 @@
                         <!-- The following options are required for
                              TrueLicense 2. -->
                         <options combine.children="append">
+#if($licenseKeyFormat == "V1")
                             <option>
-                                -adaptresourcefilenames
+#else
+                            <!--option>
+#end
                                 -keepnames class de.schlichtherle.license.LicenseContent
                                 -keepclassmembers class de.schlichtherle.license.LicenseContent {
                                     public *** get*();
@@ -617,6 +623,14 @@
                                     public *** get*();
                                     public void set*(***);
                                 }
+#if($licenseKeyFormat != "V1")
+                            </option-->
+#else
+                            </option>
+#end
+
+                            <option>
+                                -adaptresourcefilenames
                                 -keepclassmembers class org.truelicense.api.License {
                                     public *** get*();
                                     public void set*(***);

@@ -22,6 +22,7 @@ Using the $project.name you can...
   Processor.
 * Take advantage of smaller license keys and faster processing by using the
   version-2-with-JSON (V2/JSON) license key format.
+* Retain compatibility with existing license keys using this license key format.
 
 $h3 Usage
 
