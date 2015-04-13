@@ -31,7 +31,7 @@ public interface AuthenticationParameters {
      * loading from an input stream.
      */
     @CheckForNull
-    Source source();
+    Source source(); // TODO: Return List<Source> instead.
 
     /**
      * Returns the type of the key store, for example {@code "JCEKS"} or
