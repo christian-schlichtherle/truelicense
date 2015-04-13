@@ -8,6 +8,7 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
@@ -62,24 +63,22 @@ implements CachePeriodProvider,
             final Store store) {
         assert null != lp;
         requireNonNull(store);
-        return new CachingManager() {
+
+        class Manager extends CachingLicenseConsumerManager implements LicenseConsumerManager {
+
+            final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
+            final long cachePeriodMillis = cc.cachePeriodMillis();
+
+            { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
+
+            @Override public BIOS bios() { return cc.bios(); }
+            @Override public long cachePeriodMillis() { return cachePeriodMillis; }
+            @Override public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
             @Override public LicenseParameters parameters() { return lp; }
             @Override public Store store() { return store; }
-        };
-    }
-
-    private abstract class CachingManager extends CachingLicenseConsumerManager
-    implements LicenseConsumerManager {
-
-        final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
-        final String subject = cc.subject();
-        final long cachePeriodMillis = cc.cachePeriodMillis();
-
-        { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
-
-        @Override public String subject() { return subject; }
-        @Override public LicenseConsumerContext context() { return cc; }
-        @Override public long cachePeriodMillis() { return cachePeriodMillis; }
+            @Override public String subject() { return cc.subject(); }
+        }
+        return new Manager();
     }
 
     LicenseConsumerManager ftpManager(
@@ -112,27 +111,29 @@ implements CachePeriodProvider,
         assert null != lp;
         requireNonNull(parent);
         requireNonNull(store);
+
         class Manager extends ChainedLicenseConsumerManager implements LicenseConsumerManager {
 
-            final BasicLicenseConsumerContext cc = BasicLicenseConsumerContext.this;
-            final String subject = cc.subject();
+            final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
 
-            @Override public String subject() { return subject; }
-            @Override public LicenseConsumerContext context() { return cc; }
+            @Override public BIOS bios() { return cc.bios(); }
             @Override public long cachePeriodMillis() { return cachePeriodMillis; }
+            @Override public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
             @Override public License license() { return cc.license(); }
             @Override public LicenseParameters parameters() { return lp; }
-            @Override public Store store() { return store; }
             @Override LicenseConsumerManager parent() { return parent; }
+            @Override public Store store() { return store; }
+            @Override public String subject() { return cc.subject(); }
         }
         return new Manager();
     }
 
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
+
         @NotThreadSafe
         @ParametersAreNullableByDefault
         class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
@@ -167,6 +168,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> parent() {
+
                 class ParentManagerConfiguration extends ChildManagerConfiguration {
                     @Override public ManagerBuilder<PasswordSpecification> inject() {
                         return ChildManagerConfiguration.this.parent(build());
@@ -189,6 +191,7 @@ implements CachePeriodProvider,
 
             @Override
             public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
+
                 @ParametersAreNullableByDefault
                 class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String storeType, alias;
@@ -215,7 +218,7 @@ implements CachePeriodProvider,
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFromResource(String name) {
-                        return loadFrom(cc.resource(name));
+                        return loadFrom(cc.bios().resource(name, classLoader()));
                     }
 
                     @Override
@@ -247,6 +250,7 @@ implements CachePeriodProvider,
 
             @Override
             public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
+
                 @ParametersAreNullableByDefault
                 class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String algorithm;

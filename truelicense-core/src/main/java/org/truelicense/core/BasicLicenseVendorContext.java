@@ -12,6 +12,7 @@ import org.truelicense.api.LicenseVendorManager;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 
@@ -52,25 +53,23 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     private LicenseVendorManager manager(final LicenseParameters lp) {
         assert null != lp;
+
         class Manager extends BasicLicenseManager implements LicenseVendorManager {
 
-            final BasicLicenseVendorContext vc = BasicLicenseVendorContext.this;
-            final String subject = vc.subject();
+            final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
 
-            @Override public String subject() { return subject; }
-
-            @Override public LicenseVendorContext context() { return vc; }
-
-            @Override public Store store() {
-                throw new UnsupportedOperationException();
-            }
+            @Override public BIOS bios() { return vc.bios(); }
+            @Override public LicenseVendorContext<PasswordSpecification> context() { return vc; }
             @Override public LicenseParameters parameters() { return lp; }
+            @Override public Store store() { throw new UnsupportedOperationException(); }
+            @Override public String subject() { return vc.subject(); }
         }
         return new Manager();
     }
 
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
+
         @ParametersAreNullableByDefault
         class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
@@ -92,6 +91,7 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             @Override
             public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
+
                 @ParametersAreNullableByDefault
                 class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String storeType, alias;
@@ -150,6 +150,7 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             @Override
             public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
+
                 @ParametersAreNullableByDefault
                 class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     @Nullable String algorithm;

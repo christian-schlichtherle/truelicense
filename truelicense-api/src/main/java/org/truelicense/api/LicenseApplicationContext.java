@@ -10,9 +10,7 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
-import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.misc.Injection;
-import org.truelicense.api.passwd.PasswordProtectionProvider;
 
 import javax.annotation.ParametersAreNullableByDefault;
 import java.nio.file.Path;
@@ -24,12 +22,15 @@ import java.nio.file.Path;
  * Applications have no need to implement this interface and should not do so
  * because it may be subject to expansion in future versions.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseApplicationContext<PasswordSpecification>
-extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
-        PasswordProtectionProvider<PasswordSpecification> {
+public interface LicenseApplicationContext {
+
+    /** Returns a new memory store. */
+    Store memoryStore();
+
+    /** Returns a store for the given path. */
+    Store pathStore(Path path);
 
     /**
      * Returns a source which loads the resource with the given {@code name}.
@@ -53,12 +54,6 @@ extends ContextProvider<LicenseManagementContext<PasswordSpecification>>,
      * Returns a sink which writes to standard output without ever closing it.
      */
     Sink stdout();
-
-    /** Returns a store for the given path. */
-    Store pathStore(Path path);
-
-    /** Returns a new memory store. */
-    Store memoryStore();
 
     /**
      * Returns a store for the system preferences node for the package of the

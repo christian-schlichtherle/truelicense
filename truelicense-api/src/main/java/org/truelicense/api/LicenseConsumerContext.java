@@ -29,7 +29,7 @@ import java.nio.file.Path;
  * @author Christian Schlichtherle
  */
 public interface LicenseConsumerContext<PasswordSpecification>
-extends LicenseApplicationContext<PasswordSpecification> {
+extends LicenseApplicationContext {
 
     /**
      * Returns a builder for a

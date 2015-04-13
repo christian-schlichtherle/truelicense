@@ -11,7 +11,9 @@ import org.truelicense.api.auth.AuthenticationParameters;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.BIOS;
 import org.truelicense.core.auth.Notary;
+import org.truelicense.spi.io.DefaultBIOS;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -54,9 +56,7 @@ implements LicenseManagementContext<PasswordSpecification> {
     @Override
     public abstract License license();
 
-    /**
-     * Returns the licensing subject.
-     */
+    /** Returns the licensing subject. */
     @Override
     public final String subject() { return subject; }
 
@@ -164,4 +164,13 @@ implements LicenseManagementContext<PasswordSpecification> {
      */
     @Override
     public long cachePeriodMillis() { return 30 * 60 * 1000; }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicLicenseManagementContext}
+     * returns a {@link DefaultBIOS}.
+     */
+    @Override
+    public BIOS bios() { return new DefaultBIOS(); } // TODO: Consider caching this object.
 }

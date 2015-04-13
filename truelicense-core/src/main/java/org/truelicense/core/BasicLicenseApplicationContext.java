@@ -13,24 +13,18 @@ import org.truelicense.api.auth.RepositoryProvider;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
-import org.truelicense.api.io.Sink;
-import org.truelicense.api.io.Source;
-import org.truelicense.api.io.Store;
-import org.truelicense.api.io.Transformation;
+import org.truelicense.api.io.*;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
+import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
-import org.truelicense.spi.io.IO;
-import org.truelicense.spi.io.MemoryStore;
-import org.truelicense.spi.io.PathStore;
-import org.truelicense.spi.io.PreferencesStore;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.prefs.Preferences;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
@@ -52,9 +46,12 @@ import static java.util.Objects.requireNonNull;
 abstract class BasicLicenseApplicationContext<PasswordSpecification>
 implements ClassLoaderProvider,
            Clock,
-           LicenseApplicationContext<PasswordSpecification>,
+           ContextProvider<LicenseManagementContext<PasswordSpecification>>,
+        BiosProvider,
+           LicenseApplicationContext,
            LicenseSubjectProvider,
-           PasswordPolicyProvider {
+           PasswordPolicyProvider,
+           PasswordProtectionProvider<PasswordSpecification> {
 
     private final LicenseManagementContext<PasswordSpecification> context;
 
@@ -73,7 +70,7 @@ implements ClassLoaderProvider,
     public final PasswordPolicy policy() { return context().policy(); }
 
     @Override
-    public PasswordProtection protection(PasswordSpecification specification) {
+    public final PasswordProtection protection(PasswordSpecification specification) {
         return context().protection(specification);
     }
 
@@ -275,32 +272,41 @@ implements ClassLoaderProvider,
         };
     }
 
-    @Override
-    public Source resource(String name) {
-        return IO.resource(name, classLoader());
+    final void copy(Source source, Sink sink) throws IOException {
+        bios().copy(source, sink);
     }
 
     @Override
-    public Store systemNodeStore(Class<?> classInPackage) {
-        return new PreferencesStore(
-                Preferences.systemNodeForPackage(classInPackage), subject());
+    public final Store memoryStore() { return bios().memoryStore(); }
+
+    @Override
+    public final Store pathStore(Path path) { return bios().pathStore(path); }
+
+    @Override
+    public final Source resource(String name) {
+        return bios().resource(name, classLoader());
     }
 
     @Override
-    public Store userNodeStore(Class<?> classInPackage) {
-        return new PreferencesStore(
-                Preferences.userNodeForPackage(classInPackage), subject());
+    public final Source stdin() {
+        return bios().stdin();
     }
 
     @Override
-    public Store pathStore(Path path) { return new PathStore(path); }
+    public final Sink stdout() {
+        return bios().stdout();
+    }
 
     @Override
-    public Store memoryStore() { return new MemoryStore(); }
+    public final Store systemNodeStore(Class<?> classInPackage) {
+        return bios().systemNodeStore(classInPackage, subject());
+    }
 
     @Override
-    public Source stdin() { return IO.stdin(); }
+    public final Store userNodeStore(Class<?> classInPackage) {
+        return bios().userNodeStore(classInPackage, subject());
+    }
 
     @Override
-    public Sink stdout() { return IO.stdout(); }
+    public final BIOS bios() { return context().bios(); }
 }

@@ -29,7 +29,7 @@ import javax.annotation.ParametersAreNullableByDefault;
  */
 public interface LicenseVendorContext<PasswordSpecification>
 extends CodecProvider,
-        LicenseApplicationContext<PasswordSpecification>,
+        LicenseApplicationContext,
         LicenseProvider {
 
     /**

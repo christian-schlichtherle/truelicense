@@ -12,7 +12,6 @@ import javax.security.auth.x500.X500Principal;
 
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
-import org.truelicense.api.LicenseManagementContext;
 import org.truelicense.api.LicenseManagementException;
 
 import static org.truelicense.ui.LicenseWizardMessage.*;
@@ -58,18 +57,12 @@ public final class DisplayBean extends LicenseBean {
         try {
             return installedLicense();
         } catch (LicenseManagementException ex) {
-            return emptyLicense();
+            return new License(); // TODO: Can we do without this?
         }
     }
 
     private License installedLicense() throws LicenseManagementException {
         return manager().view();
-    }
-
-    private License emptyLicense() { return managementContext().license(); }
-
-    private LicenseManagementContext<?> managementContext() {
-        return consumerContext().context();
     }
 
     private LicenseConsumerContext<?> consumerContext() {

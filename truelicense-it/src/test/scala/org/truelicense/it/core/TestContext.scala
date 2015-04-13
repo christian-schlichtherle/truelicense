@@ -21,20 +21,12 @@ trait TestContext {
 
   val managementContext: LicenseManagementContext[ObfuscatedString]
 
-  final lazy val vendorContext = {
-    val vc = managementContext.vendor
-    require(vc.context eq managementContext)
-    vc
-  }
+  final lazy val vendorContext = managementContext.vendor
 
   def vendorManager: LicenseVendorManager
   def chainedVendorManager: LicenseVendorManager
 
-  final lazy val consumerContext = {
-    val cc = managementContext.consumer
-    require(cc.context eq managementContext)
-    cc
-  }
+  final lazy val consumerContext = managementContext.consumer
 
   final def consumerManager(): LicenseConsumerManager = consumerManager(store)
   def consumerManager(store: Store): LicenseConsumerManager
@@ -74,10 +66,10 @@ trait TestContext {
     getTime
   }
 
-  def store: Store = new MemoryStore
+  def store: Store = vendorContext.memoryStore
   def codec = vendorManager.parameters.codec
   def transformation: Transformation = IdentityTransformation
-  def protection(password: ObfuscatedString) = vendorContext protection password
+  def protection(password: ObfuscatedString) = managementContext protection password
 }
 
 /** @author Christian Schlichtherle */

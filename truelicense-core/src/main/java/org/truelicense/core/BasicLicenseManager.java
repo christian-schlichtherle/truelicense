@@ -11,13 +11,9 @@ import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.auth.RepositoryProvider;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.io.Sink;
-import org.truelicense.api.io.Source;
-import org.truelicense.api.io.Store;
-import org.truelicense.api.io.Transformation;
-import org.truelicense.spi.codec.Codecs;
 import org.truelicense.api.crypto.Encryption;
-import org.truelicense.spi.io.IO;
+import org.truelicense.api.io.*;
+import org.truelicense.spi.codec.Codecs;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.concurrent.Callable;
@@ -35,7 +31,7 @@ import java.util.concurrent.Callable;
  */
 @Immutable
 abstract class BasicLicenseManager
-implements LicenseParametersProvider {
+implements BiosProvider, LicenseParametersProvider {
 
     public License create(final License bean, final Sink sink)
     throws LicenseManagementException {
@@ -53,7 +49,7 @@ implements LicenseParametersProvider {
             @Override public Void call() throws Exception {
                 authorization().clearInstall(parameters());
                 decodeLicense(source); // checks digital signature
-                IO.copy(source, store());
+                bios().copy(source, store());
                 return null;
             }
         });

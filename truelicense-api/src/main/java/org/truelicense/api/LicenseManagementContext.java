@@ -12,11 +12,11 @@ import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.BiosProvider;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.PasswordPolicyProvider;
-import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.api.passwd.PasswordProtectionProvider;
 
 /**
@@ -29,7 +29,8 @@ import org.truelicense.api.passwd.PasswordProtectionProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementContext<PasswordSpecification>
-extends CachePeriodProvider,
+extends BiosProvider,
+        CachePeriodProvider,
         ClassLoaderProvider,
         Clock,
         CodecProvider,
