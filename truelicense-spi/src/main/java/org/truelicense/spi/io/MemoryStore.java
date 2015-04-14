@@ -8,7 +8,6 @@ package org.truelicense.spi.io;
 import org.truelicense.api.io.Store;
 
 import java.io.*;
-import javax.annotation.*;
 
 /**
  * A (heap) memory store.
@@ -39,20 +38,10 @@ public final class MemoryStore implements Store {
         if (0 > (this.bufsize = bufsize)) throw new IllegalArgumentException();
     }
 
-    private static byte[] clone(@CheckForNull byte[] buffer) {
-        return null == buffer ? null : buffer.clone();
-    }
+    public byte[] data() { return buffer.clone(); }
 
-    @SuppressWarnings("ReturnOfCollectionOrArrayField")
-    private byte[] checkedData() throws FileNotFoundException {
-        if (null == buffer) throw new FileNotFoundException();
-        return buffer;
-    }
-
-    public @Nullable byte[] data() { return clone(buffer); }
-
-    public void data(@CheckForNull byte[] buffer) {
-        this.buffer = clone(buffer);
+    public void data(byte[] buffer) {
+        this.buffer = buffer.clone();
     }
 
     @Override public InputStream input() throws IOException {
@@ -70,6 +59,12 @@ public final class MemoryStore implements Store {
     @Override public void delete() throws IOException {
         checkedData();
         buffer = null;
+    }
+
+    @SuppressWarnings("ReturnOfCollectionOrArrayField")
+    private byte[] checkedData() throws FileNotFoundException {
+        if (null == buffer) throw new FileNotFoundException();
+        return buffer;
     }
 
     @Override public boolean exists() { return null != buffer; }
