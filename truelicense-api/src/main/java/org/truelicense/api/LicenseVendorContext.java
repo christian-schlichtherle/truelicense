@@ -11,8 +11,6 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.misc.Builder;
 import org.truelicense.api.misc.Injection;
 
-import javax.annotation.ParametersAreNullableByDefault;
-
 /**
  * A derived context for license vendor applications alias license key tools.
  * Use this context to configure a {@link LicenseVendorManager} with the
@@ -48,7 +46,6 @@ extends CodecProvider,
      *
      * @author Christian Schlichtherle
      */
-    @ParametersAreNullableByDefault
     interface ManagerBuilder<PasswordSpecification> extends Builder<LicenseVendorManager> {
 
         /**

@@ -12,7 +12,6 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.Injection;
 
-import javax.annotation.ParametersAreNullableByDefault;
 import java.nio.file.Path;
 
 /**
@@ -76,7 +75,6 @@ public interface LicenseApplicationContext {
     /**
      * Injects a Key Store Based {@link Authentication} (KSBA) into some target.
      */
-    @ParametersAreNullableByDefault
     interface KsbaInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
@@ -136,7 +134,6 @@ public interface LicenseApplicationContext {
     /**
      * Injects a Password Based {@link Encryption} (PBE) into some target.
      */
-    @ParametersAreNullableByDefault
     interface PbeInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**

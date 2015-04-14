@@ -277,21 +277,18 @@ implements CachePeriodProvider,
             }
 
             @Override
-            public ManagerBuilder<PasswordSpecification> storeInSystemNode(final Class<?> classInPackage) {
-                this.optionalStore = Option.of(cc.systemPreferencesStore(classInPackage));
-                return this;
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> storeInUserNode(final Class<?> classInPackage) {
-                this.optionalStore = Option.of(cc.userPreferencesStore(classInPackage));
-                return this;
-            }
-
-            @Override
             public ManagerBuilder<PasswordSpecification> storeInPath(final Path path) {
-                this.optionalStore = Option.of(cc.pathStore(path));
-                return this;
+                return storeIn(cc.pathStore(path));
+            }
+
+            @Override
+            public ManagerBuilder<PasswordSpecification> storeInSystemPreferences(final Class<?> classInPackage) {
+                return storeIn(cc.systemPreferencesStore(classInPackage));
+            }
+
+            @Override
+            public ManagerBuilder<PasswordSpecification> storeInUserPreferences(final Class<?> classInPackage) {
+                return storeIn(cc.userPreferencesStore(classInPackage));
             }
         }
         return new ChildManagerConfiguration();

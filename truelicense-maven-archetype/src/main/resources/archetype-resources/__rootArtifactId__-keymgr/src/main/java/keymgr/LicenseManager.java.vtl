@@ -84,7 +84,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                         .password(#password($editionPbePassword))
                         .inject()
 #end
-                    .storeIn${preferencesNodeType}Node(Main.class) // must be a non-obfuscated class!
+                    .storeIn${preferencesNodeType}Preferences(Main.class) // must be a non-obfuscated class!
                     .build();
         }
     }#if($foreach.count == $editionsSize && $freeTrialPeriod == 0);#{else},#end
@@ -139,9 +139,9 @@ public enum LicenseManager implements LicenseConsumerManager {
                         .inject()
                     .parent(LicenseManager.$parentEdition)
 #if($dynamicClassLoading == true)
-                    .storeIn${preferencesNodeType}Node(classForName(SECRET_MARKER_CLASS))
+                    .storeIn${preferencesNodeType}Preferences(classForName(SECRET_MARKER_CLASS))
 #else
-                    .storeIn${preferencesNodeType}Node(${ftpSecretMarkerClass.replace('$', '.')}.class)
+                    .storeIn${preferencesNodeType}Preferences(${ftpSecretMarkerClass.replace('$', '.')}.class)
 #end
                     .build();
         }

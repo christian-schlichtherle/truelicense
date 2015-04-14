@@ -11,7 +11,6 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.Builder;
 import org.truelicense.api.misc.Injection;
 
-import javax.annotation.ParametersAreNullableByDefault;
 import java.nio.file.Path;
 
 /**
@@ -46,7 +45,6 @@ extends LicenseApplicationContext {
      *
      * @author Christian Schlichtherle
      */
-    @ParametersAreNullableByDefault
     interface ManagerBuilder<PasswordSpecification>
     extends Builder<LicenseConsumerManager>, Injection<ManagerBuilder<PasswordSpecification>> {
 
@@ -139,7 +137,7 @@ extends LicenseApplicationContext {
          * Stores the license key in the given store.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
@@ -149,7 +147,7 @@ extends LicenseApplicationContext {
          * Stores the license key in the given path.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
@@ -160,21 +158,21 @@ extends LicenseApplicationContext {
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
-        ManagerBuilder<PasswordSpecification> storeInSystemNode(Class<?> classInPackage);
+        ManagerBuilder<PasswordSpecification> storeInSystemPreferences(Class<?> classInPackage);
 
         /**
-         * Stores the license keys in the user preferences node for the
+         * Stores the license key in the user preferences node for the
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
-        ManagerBuilder<PasswordSpecification> storeInUserNode(Class<?> classInPackage);
+        ManagerBuilder<PasswordSpecification> storeInUserPreferences(Class<?> classInPackage);
     }
 }
