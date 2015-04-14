@@ -153,7 +153,7 @@ implements LicenseManagementContext<PasswordSpecification> {
      */
     @Override
     public List<ClassLoader> optionalClassLoader() {
-        return Option.create(Thread.currentThread().getContextClassLoader());
+        return Option.of(Thread.currentThread().getContextClassLoader());
     }
 
     /**

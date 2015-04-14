@@ -12,15 +12,13 @@ import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.nio.file.Path;
-
-import static java.util.Objects.requireNonNull;
+import java.util.List;
 
 /**
  * A basic context for license consumer applications.
@@ -61,8 +59,6 @@ implements CachePeriodProvider,
     private LicenseConsumerManager manager(
             final LicenseParameters lp,
             final Store store) {
-        assert null != lp;
-        requireNonNull(store);
 
         class Manager extends CachingLicenseConsumerManager implements LicenseConsumerManager {
 
@@ -84,23 +80,23 @@ implements CachePeriodProvider,
     LicenseConsumerManager ftpManager(
             LicenseConsumerManager parent,
             Authentication authentication,
-            @CheckForNull Encryption encryption,
+            List<Encryption> optionalEncryption,
             Store secret,
             int days) {
         return chainedManager(
                 parent,
-                ftpParameters(parent, authentication, encryption, days),
+                ftpParameters(parent, authentication, optionalEncryption, days),
                 secret);
     }
 
     LicenseConsumerManager chainedManager(
             LicenseConsumerManager parent,
             Authentication authentication,
-            @CheckForNull Encryption encryption,
+            List<Encryption> optionalEncryption,
             Store store) {
         return chainedManager(
                 parent,
-                chainedParameters(parent, authentication, encryption),
+                chainedParameters(parent, authentication, optionalEncryption),
                 store);
     }
 
@@ -108,9 +104,6 @@ implements CachePeriodProvider,
             final LicenseConsumerManager parent,
             final LicenseParameters lp,
             final Store store) {
-        assert null != lp;
-        requireNonNull(parent);
-        requireNonNull(store);
 
         class Manager extends ChainedLicenseConsumerManager implements LicenseConsumerManager {
 
@@ -140,19 +133,19 @@ implements CachePeriodProvider,
 
             final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
 
-            @Nullable LicenseConsumerManager parent;
+            List<LicenseConsumerManager> optionalParent = Option.none();
             int ftpDays;
-            @Nullable Authentication authentication;
-            @Nullable Encryption encryption;
-            @Nullable Store store;
+            List<Authentication> optionalAuthentication = Option.none();
+            List<Encryption> optionalEncryption = Option.none();
+            List<Store> optionalStore = Option.none();
 
             @Override
             public LicenseConsumerManager build() {
-                if (null == parent)
-                    return cc.manager(authentication, encryption, store);
-                return 0 != ftpDays
-                        ? cc.ftpManager(parent, authentication, encryption, store, ftpDays)
-                        : cc.chainedManager(parent, authentication, encryption, store);
+                for (LicenseConsumerManager parent : optionalParent)
+                    return 0 != ftpDays
+                            ? cc.ftpManager(parent, optionalAuthentication.get(0), optionalEncryption, optionalStore.get(0), ftpDays)
+                            : cc.chainedManager(parent, optionalAuthentication.get(0), optionalEncryption, optionalStore.get(0));
+                return cc.manager(optionalAuthentication.get(0), optionalEncryption.get(0), optionalStore.get(0));
             }
 
             @Override
@@ -162,7 +155,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> parent(final LicenseConsumerManager parent) {
-                this.parent = parent;
+                this.optionalParent = Option.of(parent);
                 return this;
             }
 
@@ -185,7 +178,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> authentication(final Authentication authentication) {
-                this.authentication = authentication;
+                this.optionalAuthentication = Option.of(authentication);
                 return this;
             }
 
@@ -194,25 +187,25 @@ implements CachePeriodProvider,
 
                 @ParametersAreNullableByDefault
                 class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-                    @Nullable String storeType, alias;
-                    @Nullable Source source;
-                    @Nullable PasswordSpecification storeProtection, keyProtection;
+                    List<String> optionalStoreType = Option.none(), optionalAlias = Option.none();
+                    List<Source> optionalSource = Option.none();
+                    List<PasswordSpecification> optionalStorePassword = Option.none(), optionalKeyPassword = Option.none();
 
                     @Override
                     public ManagerBuilder<PasswordSpecification> inject() {
                         return authentication(
-                                cc.keyStore(source, storeType, storeProtection, alias, keyProtection));
+                                cc.keyStore(optionalSource, optionalStoreType, optionalStorePassword.get(0), optionalAlias.get(0), optionalKeyPassword));
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
-                        this.storeType = storeType;
+                        this.optionalStoreType = Option.of(storeType);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFrom(final Source source) {
-                        this.source = source;
+                        this.optionalSource = Option.of(source);
                         return this;
                     }
 
@@ -223,19 +216,19 @@ implements CachePeriodProvider,
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storePassword(final PasswordSpecification storePassword) {
-                        this.storeProtection = storePassword;
+                        this.optionalStorePassword = Option.of(storePassword);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> alias(final String alias) {
-                        this.alias = alias;
+                        this.optionalAlias = Option.of(alias);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyPassword(final PasswordSpecification keyPassword) {
-                        this.keyProtection = keyPassword;
+                        this.optionalKeyPassword = Option.of(keyPassword);
                         return this;
                     }
                 }
@@ -244,7 +237,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> encryption(final Encryption encryption) {
-                this.encryption = encryption;
+                this.optionalEncryption = Option.of(encryption);
                 return this;
             }
 
@@ -253,23 +246,23 @@ implements CachePeriodProvider,
 
                 @ParametersAreNullableByDefault
                 class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-                    @Nullable String algorithm;
-                    @Nullable PasswordSpecification password;
+                    List<String> optionalAlgorithm = Option.none();
+                    List<PasswordSpecification> optionalPassword = Option.none();
 
                     @Override
                     public ManagerBuilder<PasswordSpecification> inject() {
-                        return encryption(cc.pbe(algorithm, password));
+                        return encryption(cc.pbe(optionalAlgorithm, optionalPassword.get(0)));
                     }
 
                     @Override
                     public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.algorithm = algorithm;
+                        this.optionalAlgorithm = Option.of(algorithm);
                         return this;
                     }
 
                     @Override
                     public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> password(final PasswordSpecification password) {
-                        this.password = password;
+                        this.optionalPassword = Option.of(password);
                         return this;
                     }
                 }
@@ -278,25 +271,25 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeIn(final Store store) {
-                this.store = store;
+                this.optionalStore = Option.of(store);
                 return this;
             }
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeInSystemNode(final Class<?> classInPackage) {
-                this.store = cc.systemPreferencesStore(classInPackage);
+                this.optionalStore = Option.of(cc.systemPreferencesStore(classInPackage));
                 return this;
             }
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeInUserNode(final Class<?> classInPackage) {
-                this.store = cc.userPreferencesStore(classInPackage);
+                this.optionalStore = Option.of(cc.userPreferencesStore(classInPackage));
                 return this;
             }
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeInPath(final Path path) {
-                this.store = cc.pathStore(path);
+                this.optionalStore = Option.of(cc.pathStore(path));
                 return this;
             }
         }

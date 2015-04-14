@@ -5,7 +5,6 @@
 
 package org.truelicense.api.misc;
 
-import javax.annotation.CheckForNull;
 import java.util.List;
 
 /**
