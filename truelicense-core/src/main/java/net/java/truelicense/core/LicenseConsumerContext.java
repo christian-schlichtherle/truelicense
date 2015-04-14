@@ -294,7 +294,7 @@ extends LicenseApplicationContext {
          * Stores the license key in the given store.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
@@ -304,7 +304,7 @@ extends LicenseApplicationContext {
          * Stores the license key in the given file.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
@@ -315,18 +315,18 @@ extends LicenseApplicationContext {
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
         ManagerBuilder storeInSystemNode(Class<?> classInPackage);
 
         /**
-         * Stores the license keys in the user preferences node for the
+         * Stores the license key in the user preferences node for the
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
-         * license keys and MUST BE KEPT SECRET!
+         * license key and MUST BE KEPT SECRET!
          *
          * @return {@code this}.
          */
