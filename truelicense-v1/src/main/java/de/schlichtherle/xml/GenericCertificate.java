@@ -6,13 +6,13 @@
 package de.schlichtherle.xml;
 
 import org.truelicense.api.auth.Artifactory;
-import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.api.auth.Repository;
-import org.truelicense.core.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
+import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.ParametersAreNullableByDefault;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -21,7 +21,7 @@ import java.security.Signature;
 /**
  * Provides compatibility with version 1 (V1) format license keys as used
  * by TrueLicense 1.X applications.
- * This type of repositoryProvider is used in V1 format license keys.
+ * This type of repository is used in V1 format license keys.
  *
  * @author Christian Schlichtherle
  */
@@ -39,7 +39,7 @@ public final class GenericCertificate implements Repository {
         return repository.getArtifact();
     }
 
-    public void setEncoded(final String encoded) {
+    public void setEncoded(String encoded) {
         repository.setArtifact(encoded);
     }
 
@@ -47,7 +47,7 @@ public final class GenericCertificate implements Repository {
         return repository.getAlgorithm();
     }
 
-    public void setSignatureAlgorithm(final String algorithm) {
+    public void setSignatureAlgorithm(String algorithm) {
         repository.setAlgorithm(algorithm);
     }
 
@@ -61,28 +61,21 @@ public final class GenericCertificate implements Repository {
         return repository.getSignature();
     }
 
-    public void setSignature(final String signature) {
+    public void setSignature(String signature) {
         repository.setSignature(signature);
     }
 
     @Override
-    public Artifactory sign(
-            final Codec codec,
-            final Signature engine,
-            final PrivateKey key,
-            final @Nullable Object artifact)
-    throws Exception {
+    @ParametersAreNonnullByDefault
+    public Artifactory sign(final Codec codec, final Signature engine, final PrivateKey key, final Object artifact) throws Exception {
         final Artifactory a = repository.sign(codec, engine, key, artifact);
         setSignatureEncoding(SIGNATURE_ENCODING);
         return a;
     }
 
     @Override
-    public Artifactory verify(
-            Codec codec,
-            Signature engine,
-            PublicKey key)
-    throws Exception {
+    @ParametersAreNonnullByDefault
+    public Artifactory verify(Codec codec, Signature engine, PublicKey key) throws Exception {
         return repository.verify(codec, engine, key);
     }
 

@@ -12,8 +12,6 @@ import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.spi.io.MemoryStore;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.security.PrivateKey;
@@ -24,6 +22,7 @@ import static org.truelicense.spi.codec.Codecs.contentTransferCharset;
 
 /**
  * A basic repository for storing authenticated objects (artifacts).
+ * This type of repository is used in V2 format license keys.
  *
  * @author Christian Schlichtherle
  */
@@ -41,36 +40,26 @@ extends RepositoryModel implements Repository {
 
     private static final Base64 base64 = new Base64();
 
-    private @Nullable byte[] data(
-            final Codec codec,
-            final @CheckForNull String body) {
-        if (null == body) return null;
+    private byte[] data(final Codec codec, final String body) {
         try { return body.getBytes(contentTransferCharset(codec)); }
         catch (IllegalArgumentException ex) { return decode(body); }
     }
 
-    private static @Nullable byte[] decode(@CheckForNull String body) {
+    private static byte[] decode(String body) {
         return base64.decode(body);
     }
 
-    private @Nullable String body(
-            final Codec codec,
-            final @CheckForNull byte[] artifact) {
-        if (null == artifact) return null;
+    private String body(final Codec codec, final byte[] artifact) {
         try { return new String(artifact, contentTransferCharset(codec)); }
         catch (IllegalArgumentException ex) { return encode(artifact); }
     }
 
-    private static @Nullable String encode(@CheckForNull byte[] data) {
+    private static String encode(byte[] data) {
         return base64.encodeToString(data);
     }
 
-    @Override public final Artifactory sign(
-            final Codec codec,
-            final Signature engine,
-            final PrivateKey key,
-            final @Nullable Object artifact)
-    throws Exception {
+    @Override
+    public final Artifactory sign(final Codec codec, final Signature engine, final PrivateKey key, final Object artifact) throws Exception {
         final MemoryStore store = new MemoryStore();
         codec.encode(store, artifact);
         final byte[] artifactData = store.data();
@@ -90,11 +79,8 @@ extends RepositoryModel implements Repository {
         return artifactory;
     }
 
-    @Override public final Artifactory verify(
-            final Codec codec,
-            final Signature engine,
-            final PublicKey key)
-    throws Exception {
+    @Override
+    public final Artifactory verify(final Codec codec, final Signature engine, final PublicKey key) throws Exception {
         if (!engine.getAlgorithm().equalsIgnoreCase(getAlgorithm()))
             throw new IllegalArgumentException();
         engine.initVerify(key);

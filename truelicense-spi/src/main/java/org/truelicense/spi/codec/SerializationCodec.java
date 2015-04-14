@@ -5,15 +5,17 @@
 
 package org.truelicense.spi.codec;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
+
+import javax.annotation.concurrent.Immutable;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * A codec which encodes/decodes an object with an
@@ -53,7 +55,7 @@ public class SerializationCodec implements Codec {
     }
 
     @Override
-    public void encode(final Sink sink, final @Nullable Object obj) throws Exception {
+    public void encode(final Sink sink, final Object obj) throws Exception {
         try (OutputStream out = sink.output();
              ObjectOutputStream oos = new ObjectOutputStream(out)) {
             oos.writeObject(obj);
@@ -62,8 +64,7 @@ public class SerializationCodec implements Codec {
 
     @Override
     @SuppressWarnings("unchecked")
-    public @Nullable <T> T decode(final Source source, final Type expected)
-    throws Exception {
+    public <T> T decode(final Source source, final Type expected) throws Exception {
         try (InputStream in = source.input();
              ObjectInputStream oin = new ObjectInputStream(in)) {
             return (T) oin.readObject();

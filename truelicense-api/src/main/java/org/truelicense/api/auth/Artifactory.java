@@ -5,7 +5,6 @@
 
 package org.truelicense.api.auth;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 
 /**
@@ -24,8 +23,6 @@ public interface Artifactory {
      *         This is just a hint and the implementation may ignore it.
      * @return A duplicate of the original artifact.
      *         Its actual type may differ from the expected generic type.
-     *         This may be {@code null} if and only if the original artifact
-     *         was {@code null}.
      */
-    @Nullable <T> T decode(Type expected) throws Exception;
+    <T> T decode(Type expected) throws Exception;
 }

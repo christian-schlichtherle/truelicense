@@ -7,7 +7,6 @@ package org.truelicense.api.auth;
 
 import org.truelicense.api.codec.Codec;
 
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,20 +29,20 @@ public interface Repository {
      * As a side effect, the state of this repository is modified so that a
      * subsequent {@linkplain #verify verification} can succeed.
      *
-     * @param  codec the codec for encoding the artifact.
-     *         It is an implementation detail whether or not encoding
-     *         {@code null} is supported or not.
-     * @param  engine the signature engine.
-     * @param  key the private key.
-     * @param  artifact the nullable artifact to sign.
-     *         This may be {@code null} if and only if the {@code codec}
-     *         supports encoding it.
+     * @param  codec
+     *         the codec for encoding the artifact.
+     * @param  engine
+     *         the signature engine.
+     * @param  key
+     *         the private key.
+     * @param  artifact
+     *         the artifact to sign.
      */
     Artifactory sign(
             Codec codec,
             Signature engine,
             PrivateKey key,
-            @Nullable Object artifact)
+            Object artifact)
     throws Exception;
 
     /**
@@ -51,11 +50,12 @@ public interface Repository {
      * and returns an artifactory for decoding it.
      * The state of this repository is not modified by this method.
      *
-     * @param  codec the codec for decoding the artifact.
-     *         It is an implementation detail whether or not decoding
-     *         {@code null} is supported or not.
-     * @param  engine the signature engine.
-     * @param  key the public key.
+     * @param  codec
+     *         the codec for decoding the artifact.
+     * @param  engine
+     *         the signature engine.
+     * @param  key
+     *         the public key.
      * @throws RepositoryIntegrityException if the integrity of the repository
      *         with its encoded artifact has been compromised.
      */

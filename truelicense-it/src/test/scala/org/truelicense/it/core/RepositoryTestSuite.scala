@@ -5,7 +5,7 @@
 
 package org.truelicense.it.core
 
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 import org.scalatest.Matchers._
 import org.scalatest._
@@ -18,8 +18,8 @@ class RepositoryTestSuite
 extends WordSpec with ParallelTestExecution { this: TestContext =>
 
   private val _codec = new SerializationCodec {
-    override def contentType = super.contentType.toUpperCase(ROOT)
-    override def contentTransferEncoding = super.contentTransferEncoding.toUpperCase(ROOT)
+    override def contentType = super.contentType.toUpperCase(ENGLISH)
+    override def contentTransferEncoding = super.contentTransferEncoding.toUpperCase(ENGLISH)
   }
 
   private def repo = managementContext.repository()

@@ -23,10 +23,7 @@ import java.util.Objects;
 /**
  * A codec which encodes/decodes objects to/from XML with a
  * {@link Marshaller}/{@link Unmarshaller} derived from a {@link JAXBContext}.
- * <p>
  * This type of codec is used for V1/XML format license keys.
- * This type of codec does <em>not</em> support encoding or decoding
- * {@code null}.
  *
  * @author Christian Schlichtherle
  */
@@ -70,8 +67,8 @@ public class JaxbCodec implements Codec {
         return EIGHT_BIT;
     }
 
-    @Override public void encode(final Sink sink, final Object obj)
-    throws Exception {
+    @Override
+    public void encode(final Sink sink, final Object obj) throws Exception {
         try (OutputStream out = sink.output()) {
             marshaller().marshal(obj, out);
         }
@@ -84,8 +81,7 @@ public class JaxbCodec implements Codec {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T decode(final Source source, final Type expected)
-    throws Exception {
+    public <T> T decode(final Source source, final Type expected) throws Exception {
         try (InputStream in = source.input()) {
             return (T) unmarshaller().unmarshal(in);
         }

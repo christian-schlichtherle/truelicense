@@ -30,9 +30,7 @@ final class EncodedArtifact implements Artifactory {
      * @param codec the codec for decoding the artifact.
      * @param encodedArtifact the encoded representation of the artifact.
      */
-    EncodedArtifact(
-            final Codec codec,
-            final byte[] encodedArtifact) {
+    EncodedArtifact(Codec codec, byte[] encodedArtifact) {
         this(codec, source(encodedArtifact));
     }
 
@@ -44,9 +42,7 @@ final class EncodedArtifact implements Artifactory {
      *        from.
      */
     EncodedArtifact(final Codec codec, final Source source) {
-        assert null != codec;
         this.codec = codec;
-        assert null != source;
         this.source = source;
     }
 

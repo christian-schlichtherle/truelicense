@@ -67,7 +67,7 @@ public final class Notary implements Authentication {
     }
 
     @Override
-    public Artifactory sign(Codec codec, Repository repository, @Nullable Object artifact) throws Exception {
+    public Artifactory sign(Codec codec, Repository repository, Object artifact) throws Exception {
         return new Cache().sign(codec, repository, artifact);
     }
 
@@ -85,7 +85,7 @@ public final class Notary implements Authentication {
 
         KeyStore keyStore;
 
-        Artifactory sign(Codec codec, Repository repository, @Nullable Object artifact) throws Exception {
+        Artifactory sign(Codec codec, Repository repository, Object artifact) throws Exception {
             return repository.sign(codec, engine(), privateKey(), artifact);
         }
 

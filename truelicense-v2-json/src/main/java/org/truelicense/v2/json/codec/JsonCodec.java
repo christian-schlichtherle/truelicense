@@ -5,21 +5,22 @@
 
 package org.truelicense.v2.json.codec;
 
-import com.fasterxml.jackson.databind.*;
-import java.io.*;
-import java.lang.reflect.Type;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
-import org.truelicense.api.codec.Codec;
-import java.util.Objects;
 import org.truelicense.obfuscate.Obfuscate;
+
+import javax.annotation.concurrent.Immutable;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.util.Objects;
 
 /**
  * A codec which encodes/decodes objects to/from JSON with an
  * {@link ObjectMapper}.
+ * This type of coded is used for V2/JSON format license keys.
  *
  * @author Christian Schlichtherle
  */
@@ -66,16 +67,14 @@ public class JsonCodec implements Codec {
     }
 
     @Override
-    public void encode(final Sink sink, final @Nullable Object obj)
-    throws Exception {
+    public void encode(final Sink sink, final Object obj) throws Exception {
         try (OutputStream out = sink.output()) {
             mapper.writeValue(out, obj);
         }
     }
 
     @Override
-    public @Nullable <T> T decode(final Source source, final Type expected)
-    throws Exception {
+    public <T> T decode(final Source source, final Type expected) throws Exception {
         try (InputStream in = source.input()) {
             return mapper.readValue(in, mapper.constructType(expected));
         }

@@ -7,8 +7,6 @@ package org.truelicense.api.auth;
 
 import org.truelicense.api.codec.Codec;
 
-import javax.annotation.Nullable;
-
 /**
  * Defines authentication services.
  *
@@ -23,16 +21,12 @@ public interface Authentication extends AuthenticationParametersProvider {
      * future decoding and verification.
      *
      * @param  codec the codec for encoding the artifact.
-     *         It is an implementation detail whether or not encoding
-     *         {@code null} is supported or not.
      * @param  repository the repository for encoding the artifact to.
-     * @param  artifact the nullable artifact to sign.
-     *         This may be {@code null} if and only if the {@code codec}
-     *         supports encoding it.
+     * @param  artifact the artifact to sign.
      * @return An Artifactory for decoding the signed artifact in the
      *         repository.
      */
-    Artifactory sign(Codec codec, Repository repository, @Nullable Object artifact) throws Exception;
+    Artifactory sign(Codec codec, Repository repository, Object artifact) throws Exception;
 
     /**
      * Verifies the signature of the encoded artifact in the provided
@@ -43,8 +37,6 @@ public interface Authentication extends AuthenticationParametersProvider {
      * typically done by decoding the repository itself.
      *
      * @param  codec the codec for decoding the artifact.
-     *         It is an implementation detail whether or not decoding
-     *         {@code null} is supported or not.
      * @param  repository the repository for decoding the artifact from.
      * @return An Artifactory for decoding the verified artifact in the
      *         repository.

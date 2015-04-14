@@ -5,11 +5,10 @@
 
 package org.truelicense.api.codec;
 
-import java.lang.reflect.Type;
-import javax.annotation.Nullable;
-
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
+
+import java.lang.reflect.Type;
 
 /**
  * Defines an object graph encoding/decoding (alias serialization).
@@ -48,29 +47,28 @@ public interface Codec {
     String contentTransferEncoding();
 
     /**
-     * Encodes a nullable object graph to the given sink.
+     * Encodes an object graph to the given sink.
      *
-     * @param sink the sink to write the encoded object graph to.
-     * @param obj the nullable object graph.
-     *        Implementations should support encoding {@code null}.
-     *        If they do not support this, then this should be documented in
-     *        the Javadoc.
+     * @param sink
+     *        the sink to write the encoded object graph to.
+     * @param obj
+     *        the object graph.
      */
-    void encode(Sink sink, @Nullable Object obj) throws Exception;
+    void encode(Sink sink, Object obj) throws Exception;
 
     /**
-     * Decodes a nullable object graph from the given source.
+     * Decodes an object graph from the given source.
      *
-     * @param  <T> the expected generic type of the decoded object.
-     * @param  source the source from where to read the encoded object graph
-     *         from.
-     * @param  expected the expected generic type of the decoded object graph,
-     *         e.g. {@code String.class}.
+     * @param  <T>
+     *         the expected generic type of the decoded object.
+     * @param  source
+     *         the source from where to read the encoded object graph from.
+     * @param  expected
+     *         the expected generic type of the decoded object graph, e.g.
+     *         {@code String.class}.
      *         This is just a hint and the implementation may ignore it.
      * @return A duplicate of the original object graph.
      *         Its actual type may differ from the expected generic type.
-     *         It may be {@code null} if and only if the original object graph
-     *         was {@code null}.
      */
-    @Nullable <T> T decode(Source source, Type expected) throws Exception;
+    <T> T decode(Source source, Type expected) throws Exception;
 }

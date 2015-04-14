@@ -19,7 +19,6 @@ import org.truelicense.obfuscate.Obfuscate;
 /**
  * A codec which encodes/decodes objects to/from XML with an
  * {@link XMLEncoder}/{@link XMLDecoder}.
- * <p>
  * This type of codec is used for V1 format license keys.
  *
  * @author Christian Schlichtherle
@@ -57,8 +56,8 @@ public class XmlCodec implements Codec {
         return EIGHT_BIT;
     }
 
-    @Override public void encode(final Sink sink, final @Nullable Object obj)
-    throws Exception {
+    @Override
+    public void encode(final Sink sink, final Object obj) throws Exception {
         final ZeroToleranceListener ztl = new ZeroToleranceListener();
         try (XMLEncoder enc = encoder(sink.output())) {
             enc.setExceptionListener(ztl);
@@ -74,8 +73,7 @@ public class XmlCodec implements Codec {
 
     @Override
     @SuppressWarnings("unchecked")
-    public @Nullable <T> T decode(final Source source, final Type expected)
-    throws Exception {
+    public <T> T decode(final Source source, final Type expected) throws Exception {
         final Object obj;
         final ZeroToleranceListener ztl = new ZeroToleranceListener();
         try (XMLDecoder dec = decoder(source.input())) {
@@ -93,11 +91,11 @@ public class XmlCodec implements Codec {
 
     @NotThreadSafe
     private static class ZeroToleranceListener implements ExceptionListener {
+
         Exception ex;
 
         @Override
         public void exceptionThrown(final Exception ex) {
-            assert null != ex;
             if (null == this.ex) this.ex = ex; // don't overwrite prior exception
         }
 
