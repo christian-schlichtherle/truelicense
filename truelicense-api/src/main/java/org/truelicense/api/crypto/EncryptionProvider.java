@@ -12,6 +12,6 @@ package org.truelicense.api.crypto;
  */
 public interface EncryptionProvider {
 
-    /** Returns the encryption. */
+    /** Returns an encryption. */
     Encryption encryption();
 }

@@ -8,11 +8,12 @@ package org.truelicense.api.comp;
 import org.truelicense.api.io.Transformation;
 
 /**
- * Provides a compression transformation.
+ * Provides a compression.
  *
  * @author Christian Schlichtherle
  */
 public interface CompressionProvider {
-    /** Returns the compression transformation. */
+
+    /** Returns a compression. */
     Transformation compression();
 }
