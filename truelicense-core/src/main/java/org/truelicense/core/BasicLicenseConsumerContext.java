@@ -154,7 +154,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> parent(final LicenseConsumerManager parent) {
-                this.optionalParent = Option.of(parent);
+                this.optionalParent = Option.wrap(parent);
                 return this;
             }
 
@@ -177,7 +177,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> authentication(final Authentication authentication) {
-                this.optionalAuthentication = Option.of(authentication);
+                this.optionalAuthentication = Option.wrap(authentication);
                 return this;
             }
 
@@ -197,13 +197,13 @@ implements CachePeriodProvider,
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
-                        this.optionalStoreType = Option.of(storeType);
+                        this.optionalStoreType = Option.wrap(storeType);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFrom(final Source source) {
-                        this.optionalSource = Option.of(source);
+                        this.optionalSource = Option.wrap(source);
                         return this;
                     }
 
@@ -214,19 +214,19 @@ implements CachePeriodProvider,
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storePassword(final PasswordSpecification storePassword) {
-                        this.optionalStorePassword = Option.of(storePassword);
+                        this.optionalStorePassword = Option.wrap(storePassword);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> alias(final String alias) {
-                        this.optionalAlias = Option.of(alias);
+                        this.optionalAlias = Option.wrap(alias);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyPassword(final PasswordSpecification keyPassword) {
-                        this.optionalKeyPassword = Option.of(keyPassword);
+                        this.optionalKeyPassword = Option.wrap(keyPassword);
                         return this;
                     }
                 }
@@ -235,7 +235,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> encryption(final Encryption encryption) {
-                this.optionalEncryption = Option.of(encryption);
+                this.optionalEncryption = Option.wrap(encryption);
                 return this;
             }
 
@@ -253,13 +253,13 @@ implements CachePeriodProvider,
 
                     @Override
                     public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.optionalAlgorithm = Option.of(algorithm);
+                        this.optionalAlgorithm = Option.wrap(algorithm);
                         return this;
                     }
 
                     @Override
                     public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> password(final PasswordSpecification password) {
-                        this.optionalPassword = Option.of(password);
+                        this.optionalPassword = Option.wrap(password);
                         return this;
                     }
                 }
@@ -268,7 +268,7 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeIn(final Store store) {
-                this.optionalStore = Option.of(store);
+                this.optionalStore = Option.wrap(store);
                 return this;
             }
 

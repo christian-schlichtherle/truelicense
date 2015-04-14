@@ -6,7 +6,6 @@
 #macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "").replaceAll(" /\*.*\*/", ".toString()")#end
 package org.truelicense.core.auth;
 
-import edu.umd.cs.findbugs.annotations.CreatesObligation;
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.AuthenticationParameters;
@@ -19,11 +18,10 @@ import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.api.passwd.PasswordUsage;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.KeyStore.Entry;
@@ -156,13 +154,13 @@ public final class Notary implements Authentication {
                     final KeyStore.PasswordProtection protection =
                             new KeyStore.PasswordProtection(password.characters());
                     try {
-                        return getEntry(protection);
+                        return entry(Option.wrap(protection));
                     } finally {
                         protection.destroy();
                     }
                 }
             } else if (isCertificateEntry()) {
-                return getEntry(null);
+                return entry(Option.<KeyStore.PasswordProtection>none());
             } else {
                 assert !keyStore().containsAlias(alias());
                 throw new NotaryException(message(NO_SUCH_ENTRY));
@@ -177,37 +175,32 @@ public final class Notary implements Authentication {
             return keyStore().isCertificateEntry(alias());
         }
 
-        @Nullable
-        Entry getEntry(@Nullable KeyStore.PasswordProtection protection) throws Exception {
-            return keyStore().getEntry(alias(), protection);
+        Entry entry(List<KeyStore.PasswordProtection> optionalProtection) throws Exception {
+            return keyStore().getEntry(alias(), Option.unwrap(optionalProtection));
         }
 
         KeyStore keyStore() throws Exception {
             final KeyStore ks = keyStore;
-            return null != ks ? ks : (keyStore = keyStore0());
+            return null != ks ? ks : (keyStore = newKeyStore());
         }
 
-        KeyStore keyStore0() throws Exception {
-            try (Password password = storeProtection().password(PasswordUsage.READ);
-                 InputStream in = inputStream()) {
+        @SuppressWarnings("LoopStatementThatDoesntLoop")
+        KeyStore newKeyStore() throws Exception {
+            try (Password password = storeProtection().password(PasswordUsage.READ)) {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
-                keyStore.load(in, password.characters());
+                final char[] pc = password.characters();
+                for (final Source source : optionalSource()) {
+                    try (InputStream in = source.input()) {
+                        keyStore.load(in, pc);
+                        return keyStore;
+                    }
+                }
+                keyStore.load(null, pc);
                 return keyStore;
             }
         }
 
-        Message message(String key) {
-            return Messages.message(key, alias());
-        }
-
-        @CreatesObligation
-        @SuppressWarnings("LoopStatementThatDoesntLoop")
-        @Nullable
-        InputStream inputStream() throws IOException {
-            for (Source source : optionalSource())
-                return source.input();
-            return null;
-        }
+        Message message(String key) { return Messages.message(key, alias()); }
 
         List<Source> optionalSource() { return parameters().optionalSource(); }
 

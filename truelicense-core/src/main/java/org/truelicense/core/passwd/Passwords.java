@@ -7,10 +7,12 @@ package org.truelicense.core.passwd;
 
 import org.truelicense.api.passwd.*;
 import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.spi.misc.Option;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Arrays;
-import static java.util.Objects.requireNonNull;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A static factory for password management objects.
@@ -21,12 +23,11 @@ import static java.util.Objects.requireNonNull;
 public final class Passwords {
 
     /** Returns a new password protection for the given obfuscated string. */
-    public static PasswordProtection newPasswordProtection(final ObfuscatedString os) {
-        return newPasswordProvider0(requireNonNull(os));
+    public static PasswordProtection newPasswordProtection(ObfuscatedString os) {
+        return newPasswordProvider0(Objects.requireNonNull(os));
     }
 
     private static PasswordProtection newPasswordProvider0(final ObfuscatedString os) {
-        requireNonNull(os);
         return new PasswordProtection() {
             @Override public Password password(PasswordUsage usage) {
                 return newPassword0(os);
@@ -36,15 +37,17 @@ public final class Passwords {
 
     private static Password newPassword0(final ObfuscatedString os) {
         return new Password() {
-            char[] password;
+            List<char[]> password = Option.none();
 
             @Override public char[] characters() {
-                if (null == password) password = os.toCharArray();
-                return password;
+                if (password.isEmpty())
+                    password = Option.wrap(os.toCharArray());
+                return password.get(0);
             }
 
             @Override public void close() {
-                if (null != password) Arrays.fill(password, (char) 0);
+                if (!password.isEmpty())
+                    Arrays.fill(password.get(0), (char) 0);
             }
         };
     }

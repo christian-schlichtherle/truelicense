@@ -11,8 +11,10 @@ import org.truelicense.api.LicenseManagementException;
 import org.truelicense.api.LicenseProvider;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
+import org.truelicense.spi.misc.Option;
 
 import javax.annotation.concurrent.ThreadSafe;
+import java.util.List;
 
 /**
  * A caching license consumer manager which establishes a Chain Of
@@ -25,25 +27,25 @@ import javax.annotation.concurrent.ThreadSafe;
 abstract class ChainedLicenseConsumerManager
 extends CachingLicenseConsumerManager implements LicenseProvider {
 
-    private volatile Boolean canCreateLicenseKeys;
+    private volatile List<Boolean> canCreateLicenseKeys = Option.none();
 
     /** The parent license consumer manager. */
     abstract LicenseConsumerManager parent();
 
     private boolean canCreateLicenseKeys() {
-        if (null == canCreateLicenseKeys) {
+        if (canCreateLicenseKeys.isEmpty()) {
             synchronized (this) {
-                if (null == canCreateLicenseKeys) {
+                if (canCreateLicenseKeys.isEmpty()) {
                     try {
                         super.create(license(), bios().memoryStore()); // -> /dev/null
-                        canCreateLicenseKeys = true;
+                        canCreateLicenseKeys = Option.wrap(Boolean.TRUE);
                     } catch (LicenseManagementException ignored) {
-                        canCreateLicenseKeys = false;
+                        canCreateLicenseKeys = Option.wrap(Boolean.FALSE);
                     }
                 }
             }
         }
-        return canCreateLicenseKeys;
+        return canCreateLicenseKeys.get(0);
     }
 
     @Override

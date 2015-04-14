@@ -59,7 +59,6 @@ implements ContextProvider<LicenseManagementContext>,
     private final LicenseManagementContext context;
 
     BasicLicenseValidation(final LicenseManagementContext context) {
-        assert null != context;
         this.context = context;
     }
 

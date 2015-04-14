@@ -66,8 +66,8 @@ public class StandardBIOS implements BIOS {
 
             List<InputStream> optionalInputStream() {
                 for (ClassLoader loader : optionalLoader)
-                    return Option.of(loader.getResourceAsStream(name));
-                return Option.of(ClassLoader.getSystemResourceAsStream(name));
+                    return Option.wrap(loader.getResourceAsStream(name));
+                return Option.wrap(ClassLoader.getSystemResourceAsStream(name));
             }
         };
     }
