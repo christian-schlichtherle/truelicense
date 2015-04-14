@@ -284,13 +284,13 @@ implements CachePeriodProvider,
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeInSystemNode(final Class<?> classInPackage) {
-                this.store = cc.systemNodeStore(classInPackage);
+                this.store = cc.systemPreferencesStore(classInPackage);
                 return this;
             }
 
             @Override
             public ManagerBuilder<PasswordSpecification> storeInUserNode(final Class<?> classInPackage) {
-                this.store = cc.userNodeStore(classInPackage);
+                this.store = cc.userPreferencesStore(classInPackage);
                 return this;
             }
 

@@ -5,12 +5,14 @@
 
 package org.truelicense.core;
 
-import javax.annotation.concurrent.ThreadSafe;
-
-import org.truelicense.api.*;
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.LicenseManagementException;
+import org.truelicense.api.LicenseProvider;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
-import org.truelicense.spi.io.MemoryStore;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * A caching license consumer manager which establishes a Chain Of
@@ -33,7 +35,7 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
             synchronized (this) {
                 if (null == canCreateLicenseKeys) {
                     try {
-                        super.create(license(), new MemoryStore()); // -> /dev/null
+                        super.create(license(), bios().memoryStore()); // -> /dev/null
                         canCreateLicenseKeys = true;
                     } catch (LicenseManagementException ignored) {
                         canCreateLicenseKeys = false;

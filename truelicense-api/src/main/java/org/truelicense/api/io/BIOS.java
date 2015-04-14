@@ -53,11 +53,11 @@ public interface BIOS {
      * Returns a store for the system preferences node for the package of the
      * given class and the given key.
      */
-    Store systemNodeStore(Class<?> classInPackage, String key);
+    Store systemPreferencesStore(Class<?> classInPackage, String key);
 
     /**
      * Returns a store for the user preferences node for the package of the
      * given class and the given key.
      */
-    Store userNodeStore(Class<?> classInPackage, String key);
+    Store userPreferencesStore(Class<?> classInPackage, String key);
 }

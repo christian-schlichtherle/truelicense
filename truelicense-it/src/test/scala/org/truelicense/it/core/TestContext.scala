@@ -11,10 +11,8 @@ import javax.security.auth.x500.X500Principal
 
 import org.truelicense.api._
 import org.truelicense.api.io.{Store, Transformation}
-import org.truelicense.core.BasicLicenseManagementContext
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
-import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
 trait TestContext {

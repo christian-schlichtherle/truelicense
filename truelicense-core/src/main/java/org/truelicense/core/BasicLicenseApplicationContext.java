@@ -298,13 +298,13 @@ implements ClassLoaderProvider,
     }
 
     @Override
-    public final Store systemNodeStore(Class<?> classInPackage) {
-        return bios().systemNodeStore(classInPackage, subject());
+    public final Store systemPreferencesStore(Class<?> classInPackage) {
+        return bios().systemPreferencesStore(classInPackage, subject());
     }
 
     @Override
-    public final Store userNodeStore(Class<?> classInPackage) {
-        return bios().userNodeStore(classInPackage, subject());
+    public final Store userPreferencesStore(Class<?> classInPackage) {
+        return bios().userPreferencesStore(classInPackage, subject());
     }
 
     @Override

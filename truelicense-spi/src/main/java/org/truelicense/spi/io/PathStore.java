@@ -19,11 +19,11 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Christian Schlichtherle
  */
-public final class PathStore implements Store {
+final class PathStore implements Store {
 
     private final Path path;
 
-    public PathStore(final Path path) { this.path = requireNonNull(path); }
+    PathStore(final Path path) { this.path = requireNonNull(path); }
 
     @Override
     public InputStream input() throws IOException {

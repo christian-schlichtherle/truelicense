@@ -6,7 +6,6 @@
 package org.truelicense.spi.io;
 
 import org.truelicense.api.io.Store;
-import org.truelicense.obfuscate.Obfuscate;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -21,20 +20,12 @@ import static java.util.Objects.requireNonNull;
  *
  * @author Christian Schlichtherle
  */
-public final class PreferencesStore implements Store {
-
-    /** The name of the key for the preferences node where the data is stored. */
-    @Obfuscate
-    private static final String PREFERENCES_KEY = "key";
+final class PreferencesStore implements Store {
 
     private final Preferences prefs;
     private final String key;
 
-    public PreferencesStore(Preferences preferences) {
-        this(preferences, PREFERENCES_KEY);
-    }
-
-    public PreferencesStore(final Preferences prefs, final String key) {
+    PreferencesStore(final Preferences prefs, final String key) {
         this.prefs = requireNonNull(prefs);
         this.key = requireNonNull(key);
     }

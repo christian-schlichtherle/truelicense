@@ -5,14 +5,7 @@
 
 package org.truelicense.it.core
 
-import java.util.prefs.Preferences
-
-import org.truelicense.spi.io.PreferencesStore
-
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext =>
-  override final def store = {
-    val prefs = Preferences userNodeForPackage getClass
-    new PreferencesStore(prefs)
-  }
+  override final def store = vendorContext userPreferencesStore getClass
 }

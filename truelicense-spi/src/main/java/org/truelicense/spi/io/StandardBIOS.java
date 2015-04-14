@@ -17,12 +17,12 @@ import java.nio.file.Path;
 import java.util.prefs.Preferences;
 
 /**
- * The default BIOS implementation.
+ * The standard BIOS implementation.
  *
  * @author Christian Schlichtherle
  */
 @Immutable
-public class DefaultBIOS implements BIOS {
+public class StandardBIOS implements BIOS {
 
     /**
      * {@inheritDoc}
@@ -95,13 +95,13 @@ public class DefaultBIOS implements BIOS {
     }
 
     @Override
-    public Store systemNodeStore(Class<?> classInPackage, String key) {
+    public Store systemPreferencesStore(Class<?> classInPackage, String key) {
         return new PreferencesStore(
                 Preferences.systemNodeForPackage(classInPackage), key);
     }
 
     @Override
-    public Store userNodeStore(Class<?> classInPackage, String key) {
+    public Store userPreferencesStore(Class<?> classInPackage, String key) {
         return new PreferencesStore(
                 Preferences.userNodeForPackage(classInPackage), key);
     }

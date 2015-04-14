@@ -62,7 +62,7 @@ public interface LicenseApplicationContext {
      * otherwise you might use an unintended store location and risk a
      * collision with third party software.
      */
-    Store systemNodeStore(Class<?> classInPackage);
+    Store systemPreferencesStore(Class<?> classInPackage);
 
     /**
      * Returns a store for the user preferences node for the package of the
@@ -71,7 +71,7 @@ public interface LicenseApplicationContext {
      * otherwise you might use an unintended store location and risk a
      * collision with third party software.
      */
-    Store userNodeStore(Class<?> classInPackage);
+    Store userPreferencesStore(Class<?> classInPackage);
 
     /**
      * Injects a Key Store Based {@link Authentication} (KSBA) into some target.
