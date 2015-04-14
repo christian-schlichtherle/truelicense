@@ -5,7 +5,7 @@
 
 package org.truelicense.core.misc;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +34,7 @@ public class CacheEntry<K, V> extends SimpleEntry<K, V> {
      * @param key the key.
      * @param value the value.
      */
-    public CacheEntry(@CheckForNull K key, @CheckForNull V value) {
+    public CacheEntry(@Nullable K key, @Nullable V value) {
         this(key, value, Long.MAX_VALUE);
     }
 
@@ -46,8 +46,8 @@ public class CacheEntry<K, V> extends SimpleEntry<K, V> {
      * @param cachePeriodMillis the cache period of this entry in milliseconds.
      */
     public CacheEntry(
-            final @CheckForNull K key,
-            final @CheckForNull V value,
+            final @Nullable K key,
+            final @Nullable V value,
             final long cachePeriodMillis) {
         super(key, value);
         if (0 > (this.cachePeriodMillis = cachePeriodMillis))
@@ -69,7 +69,7 @@ public class CacheEntry<K, V> extends SimpleEntry<K, V> {
      * Maps the given key to the value of this cache entry if it
      * {@linkplain #matches matches} or otherwise returns {@code null}.
      */
-    public @CheckForNull V map(@CheckForNull K key) {
+    public @Nullable V map(@Nullable K key) {
         return matches(key) ? getValue() : null;
     }
 
@@ -80,7 +80,7 @@ public class CacheEntry<K, V> extends SimpleEntry<K, V> {
      *
      * @param key the key to test.
      */
-    public boolean matches(@CheckForNull K key) {
+    public boolean matches(@Nullable K key) {
         return Objects.equals(key, getKey()) && !isObsolete();
     }
 

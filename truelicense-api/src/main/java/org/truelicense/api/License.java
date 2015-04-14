@@ -8,7 +8,6 @@ package org.truelicense.api;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.codec.X500PrincipalXmlAdapter;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 import javax.security.auth.x500.X500Principal;
@@ -274,7 +273,7 @@ public class License {
         this.subject = subject;
     }
 
-    private static Date clone(Date date) {
+    private static Date clone(@Nullable Date date) {
         return null == date ? null : (Date) date.clone();
     }
 
@@ -339,7 +338,7 @@ public class License {
                 literal(getInfo()));
     }
 
-    private static @Nullable String literal(final @CheckForNull Object obj) {
+    private static @Nullable String literal(final @Nullable Object obj) {
         if (null == obj) return null;
         final String s = obj.toString();
         return '"' +

@@ -6,7 +6,7 @@
 package org.truelicense.core.misc;
 
 import java.util.Locale;
-import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 /**
@@ -17,15 +17,15 @@ import javax.annotation.concurrent.Immutable;
 @Immutable
 public class Strings {
 
-    public static boolean equalsIgnoreCase(@CheckForNull String a, @CheckForNull String b) {
+    public static boolean equalsIgnoreCase(@Nullable String a, @Nullable String b) {
         return null == a ? null == b : a.equalsIgnoreCase(b);
     }
 
-    public static String toLowerCase(@CheckForNull String s, Locale l) {
+    public static String toLowerCase(@Nullable String s, Locale l) {
         return null == s ? null : s.toLowerCase(l);
     }
 
-    public static String toUpperCase(@CheckForNull String s, Locale l) {
+    public static String toUpperCase(@Nullable String s, Locale l) {
         return null == s ? null : s.toUpperCase(l);
     }
 

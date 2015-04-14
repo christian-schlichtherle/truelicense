@@ -5,7 +5,7 @@
 
 package org.truelicense.core;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.*;
 
 import org.truelicense.api.*;
@@ -103,13 +103,13 @@ extends BasicLicenseManager implements CachePeriodProvider {
         CachedArtifactory() { this(null, null, 0); } // => isObsolete() == true
 
         CachedArtifactory(
-                @CheckForNull Source source,
-                @CheckForNull Artifactory artifactory,
+                @Nullable Source source,
+                @Nullable Artifactory artifactory,
                 long timeoutPeriodMillis) {
             super(source, artifactory, timeoutPeriodMillis);
         }
 
-        CachedArtifactory source(@CheckForNull Source param) {
+        CachedArtifactory source(@Nullable Source param) {
             return new CachedArtifactory(param, getValue(), getCachePeriodMillis());
         }
     } // CachedArtifactory
@@ -123,13 +123,13 @@ extends BasicLicenseManager implements CachePeriodProvider {
         CachedLicense() { this(null, null, 0); } // => isObsolete() == true
 
         CachedLicense(
-                @CheckForNull Source source,
-                @CheckForNull License license,
+                @Nullable Source source,
+                @Nullable License license,
                 long timeoutPeriodMillis) {
             super(source, license, timeoutPeriodMillis);
         }
 
-        CachedLicense source(@CheckForNull Source param) {
+        CachedLicense source(@Nullable Source param) {
             return new CachedLicense(param, getValue(), getCachePeriodMillis());
         }
     } // CachedLicense
