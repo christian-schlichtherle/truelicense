@@ -13,11 +13,12 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.core.auth.Notary;
+import org.truelicense.spi.misc.Option;
 import org.truelicense.spi.io.StandardBIOS;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -148,11 +149,11 @@ implements LicenseManagementContext<PasswordSpecification> {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns the current thread's context class loader.
+     * lists the current thread's context class loader, if not {@code null}.
      */
     @Override
-    public @CheckForNull ClassLoader classLoader() {
-        return Thread.currentThread().getContextClassLoader();
+    public List<ClassLoader> optionalClassLoader() {
+        return Option.create(Thread.currentThread().getContextClassLoader());
     }
 
     /**

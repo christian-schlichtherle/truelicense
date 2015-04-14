@@ -5,9 +5,9 @@
 
 package org.truelicense.api.io;
 
-import javax.annotation.CheckForNull;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * A Basic Input/Output System (BIOS).
@@ -27,17 +27,21 @@ public interface BIOS {
 
     /**
      * Returns a source which loads the resource with the given {@code name}.
-     * If the given class loader is not {@code null}, then the resource gets
-     * loaded as described in {@link ClassLoader#getResourceAsStream(String)}.
+     * If the given class loader list is empty, then the resource gets loaded
+     * as described in {@link ClassLoader#getResourceAsStream(String)}.
      * Otherwise, the resource gets loaded as described in
-     * {@link ClassLoader#getSystemResourceAsStream(String)}.
+     * {@link ClassLoader#getSystemResourceAsStream(String)} using the first
+     * class loader in the list.
      *
      * @param  name the name of the resource to load.
-     * @param  loader the nullable class loader to use for loading the resource.
-     *         If this is {@code null}, then the system class loader gets used.
+     * @param  optionalLoader
+     *         The optional class loader to use for loading the resource.
+     *         This is a list of at most one non-null item.
+     *         The list may be empty to indicate that the system class loader
+     *         shall get used.
      * @return A source which loads the resource with the given {@code name}.
      */
-    Source resource(String name, @CheckForNull ClassLoader loader);
+    Source resource(String name, List<ClassLoader> optionalLoader);
 
     /**
      * Returns a source which reads from standard input without ever closing it.

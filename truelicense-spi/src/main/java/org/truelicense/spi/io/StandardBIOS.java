@@ -9,11 +9,12 @@ import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
 import java.io.*;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 /**
@@ -52,16 +53,21 @@ public class StandardBIOS implements BIOS {
     }
 
     @Override
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     public Source resource(
             final String name,
-            final @CheckForNull ClassLoader loader) {
+            final List<ClassLoader> optionalLoader) {
         return new Source() {
             @Override public InputStream input() throws IOException {
-                final InputStream in = null != loader
-                        ? loader.getResourceAsStream(name)
-                        : ClassLoader.getSystemResourceAsStream(name);
-                if (null == in) throw new FileNotFoundException(name);
-                return in;
+                for (InputStream in : optionalInputStream())
+                    return in;
+                throw new FileNotFoundException(name);
+            }
+
+            List<InputStream> optionalInputStream() {
+                for (ClassLoader loader : optionalLoader)
+                    return Option.create(loader.getResourceAsStream(name));
+                return Option.create(ClassLoader.getSystemResourceAsStream(name));
             }
         };
     }

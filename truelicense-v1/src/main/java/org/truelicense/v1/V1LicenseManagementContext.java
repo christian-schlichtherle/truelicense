@@ -47,7 +47,7 @@ import javax.annotation.concurrent.Immutable;
  * <p>
  * Where required, you should subclass this class to customize its properties,
  * e.g. its {@linkplain #codec encoding}, {@linkplain #now clock},
- * {@linkplain #classLoader class loader} etc.
+ * {@linkplain #optionalClassLoader optional class loader} etc.
  * <p>
  * Note that this class is immutable.
  * Unless stated otherwise, all no-argument methods need to return consistent

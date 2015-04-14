@@ -218,7 +218,7 @@ implements CachePeriodProvider,
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFromResource(String name) {
-                        return loadFrom(cc.bios().resource(name, classLoader()));
+                        return loadFrom(cc.bios().resource(name, optionalClassLoader()));
                     }
 
                     @Override

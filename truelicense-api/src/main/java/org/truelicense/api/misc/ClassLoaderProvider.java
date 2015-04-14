@@ -6,17 +6,20 @@
 package org.truelicense.api.misc;
 
 import javax.annotation.CheckForNull;
+import java.util.List;
 
 /**
- * Provides a class loader.
+ * Provides an optional class loader.
  *
  * @author Christian Schlichtherle
  */
 public interface ClassLoaderProvider {
 
     /**
-     * Returns a class loader or {@code null} if the system class loader
-     * shall get used to load classes and resources.
+     * Returns an optional class loader.
+     * This is a list of at most one non-null item.
+     * The list may be empty to indicate that the system class loader shall get
+     * used to load classes and resources.
      */
-    @CheckForNull ClassLoader classLoader();
+    List<ClassLoader> optionalClassLoader();
 }

@@ -3,9 +3,9 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.misc;
+package org.truelicense.spi.misc;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class Option {
      * Maps the given nullable item to an immutable list of at most one
      * non-null item.
      */
-    public static <T> List<T> create(@CheckForNull T item) {
+    public static <T> List<T> create(@Nullable T item) {
         return null != item
                 ? Collections.singletonList(item)
                 : Collections.<T>emptyList();

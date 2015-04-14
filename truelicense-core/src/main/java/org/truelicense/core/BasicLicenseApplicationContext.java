@@ -18,7 +18,7 @@ import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
-import org.truelicense.core.misc.Option;
+import org.truelicense.spi.misc.Option;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -80,8 +80,8 @@ implements ClassLoaderProvider,
     public final Date now() { return context().now(); }
 
     @Override
-    public final @CheckForNull ClassLoader classLoader() {
-        return context().classLoader();
+    public final List<ClassLoader> optionalClassLoader() {
+        return context().optionalClassLoader();
     }
 
     final LicenseParameters parameters(
@@ -286,7 +286,7 @@ implements ClassLoaderProvider,
 
     @Override
     public final Source resource(String name) {
-        return bios().resource(name, classLoader());
+        return bios().resource(name, optionalClassLoader());
     }
 
     @Override
