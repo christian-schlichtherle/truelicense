@@ -13,7 +13,7 @@ import javax.annotation.ParametersAreNullableByDefault;
 import javax.xml.bind.annotation.XmlElement;
 import java.util.Objects;
 
-import static java.util.Locale.ROOT;
+import static java.util.Locale.ENGLISH;
 
 /**
  * A model for storing authenticated objects (artifacts) as encoded strings.
@@ -82,7 +82,7 @@ public class RepositoryModel {
         int c = 17;
         c = 31 * c + Objects.hashCode(getArtifact());
         c = 31 * c + Objects.hashCode(getSignature());
-        c = 31 * c + Objects.hashCode(Strings.toLowerCase(getAlgorithm(), ROOT));
+        c = 31 * c + Objects.hashCode(Strings.toLowerCase(getAlgorithm(), ENGLISH));
         return c;
     }
 }
