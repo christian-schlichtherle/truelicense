@@ -42,7 +42,7 @@ extends BasicLicenseManager implements CachePeriodProvider {
             // artifactory and license get associated to the source unless this
             // is a re-installation from an equal source or the cached objects
             // have already been obsoleted by a time-out, that is, if the cache
-            // period is close to zero.
+            // period is equal or close to zero.
             assert cachedArtifactory.matches(source) ||
                     cachedArtifactory.matches(store) ||
                     cachedArtifactory.isObsolete();
@@ -50,11 +50,10 @@ extends BasicLicenseManager implements CachePeriodProvider {
                     cachedLicense.matches(store) ||
                     cachedLicense.isObsolete();
 
-            // Update the association of the cached artifactory to the store
-            // and invalidate the cached license because it gets shared with
-            // the caller.
-            this.cachedArtifactory = cachedArtifactory.source(store);
-            this.cachedLicense = new CachedLicense();
+            // Update the association of the cached artifactory and license to
+            // the store.
+            cachedArtifactory = cachedArtifactory.source(store);
+            cachedLicense = cachedLicense.source(store);
             return license;
         }
     }
@@ -71,14 +70,13 @@ extends BasicLicenseManager implements CachePeriodProvider {
     }
 
     @Override
-    License validate(final Source source) throws Exception {
+    void validate(final Source source) throws Exception {
         License license = cachedLicense.map(source);
         if (null == license)
             this.cachedLicense = new CachedLicense(source,
                     license = decodeLicense(source),
                     cachePeriodMillis());
         validation().validate(license);
-        return license;
     }
 
     @Override
@@ -106,8 +104,8 @@ extends BasicLicenseManager implements CachePeriodProvider {
             super(source, artifactory, timeoutPeriodMillis);
         }
 
-        CachedArtifactory source(@CheckForNull Source param) {
-            return new CachedArtifactory(param, getValue(), getCachePeriodMillis());
+        CachedArtifactory source(Source source) {
+            return source.equals(getKey()) ? this : new CachedArtifactory(source, getValue(), getCachePeriodMillis());
         }
     } // CachedArtifactory
 
@@ -126,8 +124,8 @@ extends BasicLicenseManager implements CachePeriodProvider {
             super(source, license, timeoutPeriodMillis);
         }
 
-        CachedLicense source(@CheckForNull Source param) {
-            return new CachedLicense(param, getValue(), getCachePeriodMillis());
+        CachedLicense source(Source source) {
+            return source.equals(getKey()) ? this : new CachedLicense(source, getValue(), getCachePeriodMillis());
         }
     } // CachedLicense
 }

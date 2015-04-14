@@ -157,10 +157,8 @@ implements LicenseParametersProvider, StoreProvider {
     // License consumer functions:
     //
 
-    License validate(final Source source) throws Exception {
-        final License license = decodeLicense(source);
-        validation().validate(license);
-        return license;
+    void validate(Source source) throws Exception {
+        validation().validate(decodeLicense(source));
     }
 
     License decodeLicense(Source source) throws Exception {
