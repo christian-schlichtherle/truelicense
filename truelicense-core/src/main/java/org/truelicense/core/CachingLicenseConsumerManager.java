@@ -81,10 +81,10 @@ extends BasicLicenseManager implements CachePeriodProvider {
     void validate(final Source source) throws Exception {
         final List<Source> optSource = Option.wrap(source);
         List<License> optLicense = cachedLicense.map(optSource);
-        if (optLicense.isEmpty())
-            cachedLicense = new Cache<>(optSource,
-                    optLicense = Option.wrap(decodeLicense(source)),
-                    cachePeriodMillis());
+        if (optLicense.isEmpty()) {
+            optLicense = Option.wrap(decodeLicense(source));
+            cachedLicense = new Cache<>(optSource, optLicense, cachePeriodMillis());
+        }
         validation().validate(optLicense.get(0));
     }
 
@@ -92,10 +92,10 @@ extends BasicLicenseManager implements CachePeriodProvider {
     Artifactory authenticate(final Source source) throws Exception {
         final List<Source> optSource = Option.wrap(source);
         List<Artifactory> optArtifactory = cachedArtifactory.map(optSource);
-        if (optArtifactory.isEmpty())
-            cachedArtifactory = new Cache<>(optSource,
-                    optArtifactory = Option.wrap(super.authenticate(source)),
-                    cachePeriodMillis());
+        if (optArtifactory.isEmpty()) {
+            optArtifactory = Option.wrap(super.authenticate(source));
+            cachedArtifactory = new Cache<>(optSource, optArtifactory, cachePeriodMillis());
+        }
         return optArtifactory.get(0);
     }
 }
