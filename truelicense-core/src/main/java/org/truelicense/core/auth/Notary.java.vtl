@@ -20,7 +20,6 @@ import org.truelicense.api.passwd.PasswordUsage;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.obfuscate.ObfuscatedString;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
@@ -178,7 +177,8 @@ public final class Notary implements Authentication {
             return keyStore().isCertificateEntry(alias());
         }
 
-        @CheckForNull Entry getEntry(@Nullable KeyStore.PasswordProtection protection) throws Exception {
+        @Nullable
+        Entry getEntry(@Nullable KeyStore.PasswordProtection protection) throws Exception {
             return keyStore().getEntry(alias(), protection);
         }
 
@@ -201,7 +201,9 @@ public final class Notary implements Authentication {
         }
 
         @CreatesObligation
-        @CheckForNull InputStream inputStream() throws IOException {
+        @SuppressWarnings("LoopStatementThatDoesntLoop")
+        @Nullable
+        InputStream inputStream() throws IOException {
             for (Source source : optionalSource())
                 return source.input();
             return null;
