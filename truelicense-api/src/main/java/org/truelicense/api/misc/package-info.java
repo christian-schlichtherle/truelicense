@@ -4,7 +4,7 @@
  */
 
 /**
- * Provides utilities.
+ * Miscellaneous.
  *
  * @author Christian Schlichtherle
  */
