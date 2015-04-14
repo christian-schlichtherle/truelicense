@@ -18,6 +18,7 @@ import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
+import org.truelicense.core.misc.Option;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
@@ -210,7 +212,7 @@ implements ClassLoaderProvider,
                     : checkedStoreProtection;
 
             @Override
-            public @CheckForNull Source source() { return source; }
+            public List<Source> optionalSource() { return Option.create(source); }
 
             @Override
             public String storeType() {

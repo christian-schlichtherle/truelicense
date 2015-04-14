@@ -8,7 +8,7 @@ package org.truelicense.api.auth;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordProtection;
 
-import javax.annotation.CheckForNull;
+import java.util.List;
 
 /**
  * Defines parameters for accessing a {@link java.security.KeyStore} which
@@ -26,12 +26,12 @@ import javax.annotation.CheckForNull;
 public interface AuthenticationParameters {
 
     /**
-     * Returns the nullable input source for the key store.
-     * May be {@code null} if and only if the key store type does not require
-     * loading from an input stream.
+     * Returns the optional input source for the key store.
+     * This is a list of at most one non-null item.
+     * The list may be empty to indicate that the key store type does not
+     * require loading from an input source / stream.
      */
-    @CheckForNull
-    Source source(); // TODO: Return List<Source> instead.
+    List<Source> optionalSource();
 
     /**
      * Returns the type of the key store, for example {@code "JCEKS"} or
