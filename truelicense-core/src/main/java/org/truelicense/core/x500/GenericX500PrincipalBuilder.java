@@ -59,46 +59,6 @@ implements Builder<X500Principal> {
 
     /**
      * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#CN CN}, value)</code>.
-     */
-    public This addCN(@Nullable String value) {
-        return addAttribute(CN, value);
-    }
-
-    /**
-     * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#L L}, value)</code>.
-     */
-    public This addL(@Nullable String value) {
-        return addAttribute(L, value);
-    }
-
-    /**
-     * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#ST ST}, value)</code>.
-     */
-    public This addST(@Nullable String value) {
-        return addAttribute(ST, value);
-    }
-
-    /**
-     * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#O O}, value)</code>.
-     */
-    public This addO(@Nullable String value) {
-        return addAttribute(O, value);
-    }
-
-    /**
-     * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#OU OU}, value)</code>.
-     */
-    public This addOU(@Nullable String value) {
-        return addAttribute(OU, value);
-    }
-
-    /**
-     * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#C C}, value)</code>.
      */
     public This addC(@Nullable String value) {
@@ -107,10 +67,10 @@ implements Builder<X500Principal> {
 
     /**
      * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#STREET STREET}, value)</code>.
+     * <code>addAttribute({@link X500AttributeTypeKeyword#CN CN}, value)</code>.
      */
-    public This addSTREET(@Nullable String value) {
-        return addAttribute(STREET, value);
+    public This addCN(@Nullable String value) {
+        return addAttribute(CN, value);
     }
 
     /**
@@ -119,22 +79,6 @@ implements Builder<X500Principal> {
      */
     public This addDC(@Nullable String value) {
         return addAttribute(DC, value);
-    }
-
-    /**
-     * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#UID UID}, value)</code>.
-     */
-    public This addUID(@Nullable String value) {
-        return addAttribute(UID, value);
-    }
-
-    /**
-     * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#T T}, value)</code>.
-     */
-    public This addT(@Nullable String value) {
-        return addAttribute(T, value);
     }
 
     /**
@@ -155,10 +99,18 @@ implements Builder<X500Principal> {
 
     /**
      * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#SURNAME SURNAME}, value)</code>.
+     * <code>addAttribute({@link X500AttributeTypeKeyword#EMAILADDRESS EMAILADDRESS}, value)</code>.
      */
-    public This addSURNAME(@Nullable String value) {
-        return addAttribute(SURNAME, value);
+    public This addEMAILADDRESS(@Nullable String value) {
+        return addAttribute(EMAILADDRESS, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#GENERATION GENERATION}, value)</code>.
+     */
+    public This addGENERATION(@Nullable String value) {
+        return addAttribute(GENERATION, value);
     }
 
     /**
@@ -179,18 +131,26 @@ implements Builder<X500Principal> {
 
     /**
      * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#GENERATION GENERATION}, value)</code>.
+     * <code>addAttribute({@link X500AttributeTypeKeyword#L L}, value)</code>.
      */
-    public This addGENERATION(@Nullable String value) {
-        return addAttribute(GENERATION, value);
+    public This addL(@Nullable String value) {
+        return addAttribute(L, value);
     }
 
     /**
      * Equivalent to
-     * <code>addAttribute({@link X500AttributeTypeKeyword#EMAILADDRESS EMAILADDRESS}, value)</code>.
+     * <code>addAttribute({@link X500AttributeTypeKeyword#O O}, value)</code>.
      */
-    public This addEMAILADDRESS(@Nullable String value) {
-        return addAttribute(EMAILADDRESS, value);
+    public This addO(@Nullable String value) {
+        return addAttribute(O, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#OU OU}, value)</code>.
+     */
+    public This addOU(@Nullable String value) {
+        return addAttribute(OU, value);
     }
 
     /**
@@ -199,6 +159,46 @@ implements Builder<X500Principal> {
      */
     public This addSERIALNUMBER(@Nullable String value) {
         return addAttribute(SERIALNUMBER, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#ST ST}, value)</code>.
+     */
+    public This addST(@Nullable String value) {
+        return addAttribute(ST, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#STREET STREET}, value)</code>.
+     */
+    public This addSTREET(@Nullable String value) {
+        return addAttribute(STREET, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#SURNAME SURNAME}, value)</code>.
+     */
+    public This addSURNAME(@Nullable String value) {
+        return addAttribute(SURNAME, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#T T}, value)</code>.
+     */
+    public This addT(@Nullable String value) {
+        return addAttribute(T, value);
+    }
+
+    /**
+     * Equivalent to
+     * <code>addAttribute({@link X500AttributeTypeKeyword#UID UID}, value)</code>.
+     */
+    public This addUID(@Nullable String value) {
+        return addAttribute(UID, value);
     }
 
     /**
