@@ -5,15 +5,19 @@
 
 package org.truelicense.core;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.*;
-
-import org.truelicense.api.*;
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseManagementException;
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
-import org.truelicense.core.misc.*;
+import org.truelicense.spi.misc.Option;
+
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
+import java.util.List;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * A basic license consumer manager which caches some computed objects to speed
@@ -30,10 +34,8 @@ extends BasicLicenseManager implements CachePeriodProvider {
     // So some concurrent threads may safely interleave when initializing these
     // fields without creating a racing condition and thus it's not generally
     // required to synchronize access to them.
-    private volatile CachedArtifactory
-            cachedArtifactory = new CachedArtifactory();
-    private volatile CachedLicense
-            cachedLicense = new CachedLicense();
+    private volatile CachedArtifactory cachedArtifactory = new CachedArtifactory();
+    private volatile CachedLicense cachedLicense = new CachedLicense();
 
     @Override
     public void install(final Source source)
@@ -42,23 +44,25 @@ extends BasicLicenseManager implements CachePeriodProvider {
         synchronized (store) {
             super.install(source);
 
+            final List<Source> optSource = Option.wrap(source);
+            final List<Source> optStore = Option.<Source>wrap(store);
+
             // As a side effect of the license key installation, the cached
             // artifactory and license get associated to the source unless this
             // is a re-installation from an equal source or the cached objects
             // have already been obsoleted by a time-out, that is, if the cache
             // period is close to zero.
-            assert cachedArtifactory.matches(source) ||
-                    cachedArtifactory.matches(store) ||
-                    cachedArtifactory.isObsolete();
-            assert cachedLicense.matches(source) ||
-                    cachedLicense.matches(store) ||
-                    cachedLicense.isObsolete();
+            assert cachedArtifactory.matches(optSource) ||
+                    cachedArtifactory.matches(optStore) ||
+                    cachedArtifactory.obsolete();
+            assert cachedLicense.matches(optSource) ||
+                    cachedLicense.matches(optStore) ||
+                    cachedLicense.obsolete();
 
-            // Update the association of the cached artifactory to the store
-            // and invalidate the cached license because it gets shared with
-            // the caller.
-            this.cachedArtifactory = cachedArtifactory.source(store);
-            this.cachedLicense = new CachedLicense();
+            // Update the association of the cached artifactory and license to
+            // the store.
+            this.cachedArtifactory = cachedArtifactory.optSource(optStore);
+            this.cachedLicense = cachedLicense.optSource(optStore);
         }
     }
 
@@ -75,62 +79,87 @@ extends BasicLicenseManager implements CachePeriodProvider {
 
     @Override
     License validate(final Source source) throws Exception {
-        License license = cachedLicense.map(source);
-        if (null == license)
-            this.cachedLicense = new CachedLicense(source,
-                    license = decodeLicense(source),
+        final List<Source> optSource = Option.wrap(source);
+        List<License> optLicense = cachedLicense.map(optSource);
+        if (optLicense.isEmpty())
+            this.cachedLicense = new CachedLicense(optSource,
+                    optLicense = Option.wrap(decodeLicense(source)),
                     cachePeriodMillis());
-        validation().validate(license);
-        return license;
+        final License bean = optLicense.get(0);
+        validation().validate(bean);
+        return bean;
     }
 
     @Override
     Artifactory authenticate(final Source source) throws Exception {
-        Artifactory artifactory = cachedArtifactory.map(source);
-        if (null == artifactory)
-            this.cachedArtifactory = new CachedArtifactory(source,
-                    artifactory = super.authenticate(source),
+        final List<Source> optSource = Option.wrap(source);
+        List<Artifactory> optArtifactory = cachedArtifactory.map(optSource);
+        if (optArtifactory.isEmpty())
+            this.cachedArtifactory = new CachedArtifactory(optSource,
+                    optArtifactory = Option.wrap(super.authenticate(source)),
                     cachePeriodMillis());
-        return artifactory;
+        return optArtifactory.get(0);
+    }
+}
+
+@Immutable
+final class CachedArtifactory extends CacheEntry<Source, Artifactory> {
+
+    CachedArtifactory() { this(Option.<Source>none(), Option.<Artifactory>none(), 0); } // => obsolete() == true
+
+    CachedArtifactory(
+            List<Source> optSource,
+            List<Artifactory> optArtifactory,
+            long timeoutPeriodMillis) {
+        super(optSource, optArtifactory, timeoutPeriodMillis);
     }
 
-    @Immutable
-    private static class CachedArtifactory
-    extends CacheEntry<Source, Artifactory> {
+    CachedArtifactory optSource(List<Source> optSource) {
+        return new CachedArtifactory(optSource, optValue, cachePeriodMillis);
+    }
+}
 
-        private static final long serialVersionUID = 1L;
+@Immutable
+final class CachedLicense extends CacheEntry<Source, License> {
 
-        CachedArtifactory() { this(null, null, 0); } // => isObsolete() == true
+    CachedLicense() { this(Option.<Source>none(), Option.<License>none(), 0); } // => obsolete() == true
 
-        CachedArtifactory(
-                @Nullable Source source,
-                @Nullable Artifactory artifactory,
-                long timeoutPeriodMillis) {
-            super(source, artifactory, timeoutPeriodMillis);
-        }
+    CachedLicense(
+            List<Source> optSource,
+            List<License> optLicense,
+            long timeoutPeriodMillis) {
+        super(optSource, optLicense, timeoutPeriodMillis);
+    }
 
-        CachedArtifactory source(@Nullable Source param) {
-            return new CachedArtifactory(param, getValue(), getCachePeriodMillis());
-        }
-    } // CachedArtifactory
+    CachedLicense optSource(List<Source> optSource) {
+        return new CachedLicense(optSource, optValue, cachePeriodMillis);
+    }
+}
 
-    @Immutable
-    private static class CachedLicense
-    extends CacheEntry<Source, License> {
+@Immutable
+class CacheEntry<K, V> {
 
-        private static final long serialVersionUID = 1L;
+    final List<K> optKey;
+    final List<V> optValue;
+    final long cachePeriodMillis;
+    final long startTimeMillis = currentTimeMillis();
 
-        CachedLicense() { this(null, null, 0); } // => isObsolete() == true
+    CacheEntry(final List<K> optKey, final List<V> optValue, final long cachePeriodMillis) {
+        this.optKey = optKey;
+        this.optValue = optValue;
+        if (0 > (this.cachePeriodMillis = cachePeriodMillis))
+            throw new IllegalArgumentException();
+    }
 
-        CachedLicense(
-                @Nullable Source source,
-                @Nullable License license,
-                long timeoutPeriodMillis) {
-            super(source, license, timeoutPeriodMillis);
-        }
+    List<V> map(List<K> optKey) {
+        return matches(optKey) ? optValue : Option.<V>none();
+    }
 
-        CachedLicense source(@Nullable Source param) {
-            return new CachedLicense(param, getValue(), getCachePeriodMillis());
-        }
-    } // CachedLicense
+    boolean matches(List<K> optKey) {
+        return optKey.equals(this.optKey) && !obsolete();
+    }
+
+    boolean obsolete() {
+        return currentTimeMillis() - startTimeMillis >= cachePeriodMillis;
+    }
 }
