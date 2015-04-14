@@ -34,8 +34,8 @@ extends BasicLicenseManager implements CachePeriodProvider {
     // So some concurrent threads may safely interleave when initializing these
     // fields without creating a racing condition and thus it's not generally
     // required to synchronize access to them.
-    private volatile CachedArtifactory cachedArtifactory = new CachedArtifactory();
-    private volatile CachedLicense cachedLicense = new CachedLicense();
+    private volatile Cache<Source, Artifactory> cachedArtifactory = new Cache<>();
+    private volatile Cache<Source, License> cachedLicense = new Cache<>();
 
     @Override
     public void install(final Source source)
@@ -51,25 +51,25 @@ extends BasicLicenseManager implements CachePeriodProvider {
             // artifactory and license get associated to the source unless this
             // is a re-installation from an equal source or the cached objects
             // have already been obsoleted by a time-out, that is, if the cache
-            // period is close to zero.
-            assert cachedArtifactory.matches(optSource) ||
-                    cachedArtifactory.matches(optStore) ||
+            // period is equal or close to zero.
+            assert cachedArtifactory.hasKey(optSource) ||
+                    cachedArtifactory.hasKey(optStore) ||
                     cachedArtifactory.obsolete();
-            assert cachedLicense.matches(optSource) ||
-                    cachedLicense.matches(optStore) ||
+            assert cachedLicense.hasKey(optSource) ||
+                    cachedLicense.hasKey(optStore) ||
                     cachedLicense.obsolete();
 
             // Update the association of the cached artifactory and license to
             // the store.
-            this.cachedArtifactory = cachedArtifactory.optSource(optStore);
-            this.cachedLicense = cachedLicense.optSource(optStore);
+            cachedArtifactory = cachedArtifactory.key(optStore);
+            cachedLicense = cachedLicense.key(optStore);
         }
     }
 
     @Override
     public void uninstall() throws LicenseManagementException {
-        final CachedArtifactory cachedArtifactory = new CachedArtifactory();
-        final CachedLicense cachedLicense = new CachedLicense();
+        final Cache<Source, Artifactory> cachedArtifactory = new Cache<>();
+        final Cache<Source, License> cachedLicense = new Cache<>();
         synchronized (store()) {
             super.uninstall();
             this.cachedArtifactory = cachedArtifactory;
@@ -78,16 +78,14 @@ extends BasicLicenseManager implements CachePeriodProvider {
     }
 
     @Override
-    License validate(final Source source) throws Exception {
+    void validate(final Source source) throws Exception {
         final List<Source> optSource = Option.wrap(source);
         List<License> optLicense = cachedLicense.map(optSource);
         if (optLicense.isEmpty())
-            this.cachedLicense = new CachedLicense(optSource,
+            cachedLicense = new Cache<>(optSource,
                     optLicense = Option.wrap(decodeLicense(source)),
                     cachePeriodMillis());
-        final License bean = optLicense.get(0);
-        validation().validate(bean);
-        return bean;
+        validation().validate(optLicense.get(0));
     }
 
     @Override
@@ -95,7 +93,7 @@ extends BasicLicenseManager implements CachePeriodProvider {
         final List<Source> optSource = Option.wrap(source);
         List<Artifactory> optArtifactory = cachedArtifactory.map(optSource);
         if (optArtifactory.isEmpty())
-            this.cachedArtifactory = new CachedArtifactory(optSource,
+            cachedArtifactory = new Cache<>(optSource,
                     optArtifactory = Option.wrap(super.authenticate(source)),
                     cachePeriodMillis());
         return optArtifactory.get(0);
@@ -103,60 +101,32 @@ extends BasicLicenseManager implements CachePeriodProvider {
 }
 
 @Immutable
-final class CachedArtifactory extends CacheEntry<Source, Artifactory> {
+final class Cache<K, V> {
 
-    CachedArtifactory() { this(Option.<Source>none(), Option.<Artifactory>none(), 0); } // => obsolete() == true
+    private final List<K> optKey;
+    private final List<V> optValue;
+    private final long cachePeriodMillis;
+    private final long startTimeMillis = currentTimeMillis();
 
-    CachedArtifactory(
-            List<Source> optSource,
-            List<Artifactory> optArtifactory,
-            long timeoutPeriodMillis) {
-        super(optSource, optArtifactory, timeoutPeriodMillis);
-    }
+    Cache() { this(Option.<K>none(), Option.<V>none(), 0); } // => obsolete() == true
 
-    CachedArtifactory optSource(List<Source> optSource) {
-        return new CachedArtifactory(optSource, optValue, cachePeriodMillis);
-    }
-}
-
-@Immutable
-final class CachedLicense extends CacheEntry<Source, License> {
-
-    CachedLicense() { this(Option.<Source>none(), Option.<License>none(), 0); } // => obsolete() == true
-
-    CachedLicense(
-            List<Source> optSource,
-            List<License> optLicense,
-            long timeoutPeriodMillis) {
-        super(optSource, optLicense, timeoutPeriodMillis);
-    }
-
-    CachedLicense optSource(List<Source> optSource) {
-        return new CachedLicense(optSource, optValue, cachePeriodMillis);
-    }
-}
-
-@Immutable
-class CacheEntry<K, V> {
-
-    final List<K> optKey;
-    final List<V> optValue;
-    final long cachePeriodMillis;
-    final long startTimeMillis = currentTimeMillis();
-
-    CacheEntry(final List<K> optKey, final List<V> optValue, final long cachePeriodMillis) {
+    Cache(final List<K> optKey, final List<V> optValue, final long cachePeriodMillis) {
         this.optKey = optKey;
         this.optValue = optValue;
         if (0 > (this.cachePeriodMillis = cachePeriodMillis))
             throw new IllegalArgumentException();
     }
 
-    List<V> map(List<K> optKey) {
-        return matches(optKey) ? optValue : Option.<V>none();
+    Cache<K, V> key(List<K> optKey) {
+        return hasKey(optKey) ? this : new Cache<>(optKey, optValue, cachePeriodMillis);
     }
 
-    boolean matches(List<K> optKey) {
-        return optKey.equals(this.optKey) && !obsolete();
+    List<V> map(List<K> optKey) {
+        return hasKey(optKey) && !obsolete() ? optValue : Option.<V>none();
+    }
+
+    boolean hasKey(List<K> optKey) {
+        return optKey.equals(this.optKey);
     }
 
     boolean obsolete() {
