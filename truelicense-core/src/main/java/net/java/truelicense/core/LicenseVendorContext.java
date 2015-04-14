@@ -83,8 +83,8 @@ extends CodecProvider, LicenseApplicationContext, LicenseProvider {
     @Override Encryption pbe(String algorithm, ObfuscatedString password);
 
     /**
-     * Returns a builder for
-     * {@linkplain LicenseVendorManager license vendor managers}.
+     * Returns a builder for a
+     * {@linkplain LicenseVendorManager license vendor manager}.
      * Call its {@link ManagerBuilder#build} method to obtain a configured
      * license vendor manager.
      */

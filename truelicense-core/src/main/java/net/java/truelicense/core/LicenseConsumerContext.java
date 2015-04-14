@@ -181,8 +181,8 @@ extends LicenseApplicationContext {
     Authentication ftpKeyStore(@CheckForNull Source source, @CheckForNull String storeType, ObfuscatedString storePassword, String alias, @CheckForNull ObfuscatedString keyPassword);
 
     /**
-     * Returns a builder for
-     * {@linkplain LicenseConsumerManager license consumer managers}.
+     * Returns a builder for a
+     * {@linkplain LicenseConsumerManager license consumer manager}.
      * Call its {@link ManagerBuilder#build} method to obtain a configured
      * license consumer manager.
      */
