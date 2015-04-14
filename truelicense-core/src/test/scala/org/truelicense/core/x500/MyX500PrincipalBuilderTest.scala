@@ -21,32 +21,32 @@ class MyX500PrincipalBuilderTest extends WordSpec {
   private val expected = {
     import collection.JavaConverters._
     new X500Principal(
-      "CN=CN,L=L,ST=ST,O=O,OU=OU,C=C,STREET=STREET,DC=DC,UID=UID,T=T,DNQ=DNQ,DNQUALIFIER=DNQUALIFIER,SURNAME=SURNAME,GIVENNAME=GIVENNAME,INITIALS=INITIALS,GENERATION=GENERATION,EMAILADDRESS=EMAILADDRESS,SERIALNUMBER=SERIALNUMBER,FOO=FOO",
+      "C=C,CN=CN,DC=DC,DNQ=DNQ,DNQUALIFIER=DNQUALIFIER,EMAILADDRESS=EMAILADDRESS,FOO=FOO,GENERATION=GENERATION,GIVENNAME=GIVENNAME,INITIALS=INITIALS,L=L,O=O,OU=OU,SERIALNUMBER=SERIALNUMBER,ST=ST,STREET=STREET,SURNAME=SURNAME,T=T,UID=UID",
       Map("FOO" -> "1.2.3.4.5.6.7.8.9").asJava)
   }
 
   "Using my X.500 principal builder class" should {
     "be compilable without adding type casts" in {
       new MyX500PrincipalBuilder()
-        .addCN("CN")
-        .addL("L")
-        .addST("ST")
-        .addO("O")
-        .addOU("OU")
         .addC("C")
-        .addSTREET("STREET")
+        .addCN("CN")
         .addDC("DC")
-        .addUID("UID")
-        .addT("T")
         .addDNQ("DNQ")
         .addDNQUALIFIER("DNQUALIFIER")
-        .addSURNAME("SURNAME")
+        .addEMAILADDRESS("EMAILADDRESS")
+        .addFOO("FOO")
+        .addGENERATION("GENERATION")
         .addGIVENNAME("GIVENNAME")
         .addINITIALS("INITIALS")
-        .addGENERATION("GENERATION")
-        .addEMAILADDRESS("EMAILADDRESS")
+        .addL("L")
+        .addO("O")
+        .addOU("OU")
         .addSERIALNUMBER("SERIALNUMBER")
-        .addFOO("FOO")
+        .addST("ST")
+        .addSTREET("STREET")
+        .addSURNAME("SURNAME")
+        .addT("T")
+        .addUID("UID")
         .build should equal (expected)
     }
   }
