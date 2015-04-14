@@ -15,10 +15,12 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.NotThreadSafe;
+import java.util.List;
 
 /**
  * A basic context for license vendor applications alias license key tools.
@@ -52,7 +54,6 @@ implements LicenseVendorContext<PasswordSpecification> {
     }
 
     private LicenseVendorManager manager(final LicenseParameters lp) {
-        assert null != lp;
 
         class Manager extends BasicLicenseManager implements LicenseVendorManager {
 
@@ -70,22 +71,23 @@ implements LicenseVendorContext<PasswordSpecification> {
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
 
+        @NotThreadSafe
         @ParametersAreNullableByDefault
         class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
 
-            @Nullable Authentication authentication;
-            @Nullable Encryption encryption;
+            List<Authentication> optionalAuthentication = Option.none();
+            List<Encryption> optionalEncryption = Option.none();
 
             @Override
             public LicenseVendorManager build() {
-                return vc.manager(authentication, encryption);
+                return vc.manager(optionalAuthentication.get(0), optionalEncryption.get(0));
             }
 
             @Override
             public ManagerBuilder<PasswordSpecification> authentication(final Authentication authentication) {
-                this.authentication = authentication;
+                this.optionalAuthentication = Option.of(authentication);
                 return this;
             }
 
@@ -94,25 +96,25 @@ implements LicenseVendorContext<PasswordSpecification> {
 
                 @ParametersAreNullableByDefault
                 class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-                    @Nullable String storeType, alias;
-                    @Nullable Source source;
-                    @Nullable PasswordSpecification storePassword, keyPassword;
+                    List<String> optionalStoreType = Option.none(), optionalAlias = Option.none();
+                    List<Source> optionalSource = Option.none();
+                    List<PasswordSpecification> optionalStorePassword = Option.none(), optionalKeyPassword = Option.none();
 
                     @Override
                     public ManagerBuilder<PasswordSpecification> inject() {
                         return authentication(
-                                vc.keyStore(source, storeType, storePassword, alias, keyPassword));
+                                vc.keyStore(optionalSource, optionalStoreType, optionalStorePassword.get(0), optionalAlias.get(0), optionalKeyPassword));
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
-                        this.storeType = storeType;
+                        this.optionalStoreType = Option.of(storeType);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFrom(final Source source) {
-                        this.source = source;
+                        this.optionalSource = Option.of(source);
                         return this;
                     }
 
@@ -123,19 +125,19 @@ implements LicenseVendorContext<PasswordSpecification> {
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storePassword(final PasswordSpecification storePassword) {
-                        this.storePassword = storePassword;
+                        this.optionalStorePassword = Option.of(storePassword);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> alias(final String alias) {
-                        this.alias = alias;
+                        this.optionalAlias = Option.of(alias);
                         return this;
                     }
 
                     @Override
                     public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyPassword(final PasswordSpecification keyPassword) {
-                        this.keyPassword = keyPassword;
+                        this.optionalKeyPassword = Option.of(keyPassword);
                         return this;
                     }
                 }
@@ -144,7 +146,7 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             @Override
             public ManagerBuilder<PasswordSpecification> encryption(final Encryption encryption) {
-                this.encryption = encryption;
+                this.optionalEncryption = Option.of(encryption);
                 return this;
             }
 
@@ -153,23 +155,23 @@ implements LicenseVendorContext<PasswordSpecification> {
 
                 @ParametersAreNullableByDefault
                 class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-                    @Nullable String algorithm;
-                    @Nullable PasswordSpecification password;
+                    List<String> optionalAlgorithm = Option.none();
+                    List<PasswordSpecification> optionalPassword = Option.none();
 
                     @Override
                     public ManagerBuilder<PasswordSpecification> inject() {
-                        return encryption(vc.pbe(algorithm, password));
+                        return encryption(vc.pbe(optionalAlgorithm, optionalPassword.get(0)));
                     }
 
                     @Override
                     public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.algorithm = algorithm;
+                        this.optionalAlgorithm = Option.of(algorithm);
                         return this;
                     }
 
                     @Override
                     public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> password(final PasswordSpecification password) {
-                        this.password = password;
+                        this.optionalPassword = Option.of(password);
                         return this;
                     }
                 }

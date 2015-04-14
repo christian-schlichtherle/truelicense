@@ -22,9 +22,12 @@ public final class Option {
      * Maps the given nullable item to an immutable list of at most one
      * non-null item.
      */
-    public static <T> List<T> create(@Nullable T item) {
+    public static <T> List<T> of(@Nullable T item) {
         return null != item
                 ? Collections.singletonList(item)
                 : Collections.<T>emptyList();
     }
+
+    /** Returns an empty list. */
+    public static <T> List<T> none() { return Collections.emptyList(); }
 }

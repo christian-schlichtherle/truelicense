@@ -18,11 +18,8 @@ import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
-import org.truelicense.spi.misc.Option;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,7 +27,6 @@ import java.util.List;
 
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
-import static java.util.Objects.requireNonNull;
 
 /**
  * A basic context for license applications.
@@ -45,6 +41,7 @@ import static java.util.Objects.requireNonNull;
  * @author Christian Schlichtherle
  */
 @Immutable
+@SuppressWarnings("LoopStatementThatDoesntLoop")
 abstract class BasicLicenseApplicationContext<PasswordSpecification>
 implements ClassLoaderProvider,
            Clock,
@@ -58,7 +55,6 @@ implements ClassLoaderProvider,
     private final LicenseManagementContext<PasswordSpecification> context;
 
     BasicLicenseApplicationContext(final LicenseManagementContext<PasswordSpecification> context) {
-        assert null != context;
         this.context = context;
     }
 
@@ -93,7 +89,7 @@ implements ClassLoaderProvider,
     final LicenseParameters ftpParameters(
             final LicenseConsumerManager parent,
             final Authentication authentication,
-            final @CheckForNull Encryption encryption,
+            final List<Encryption> optionalEncryption,
             final int days) {
         if (0 >= days) throw new IllegalArgumentException();
         final LicenseInitialization initialization = new LicenseInitialization() {
@@ -108,30 +104,32 @@ implements ClassLoaderProvider,
                 bean.setNotAfter(cal.getTime());
             }
         };
-        return chainedParameters(parent, initialization, authentication, encryption);
+        return chainedParameters(parent, initialization, authentication, optionalEncryption);
     }
 
     final LicenseParameters chainedParameters(
             final LicenseConsumerManager parent,
             final Authentication authentication,
-            final @CheckForNull Encryption encryption) {
+            final List<Encryption> optionalEncryption) {
         return chainedParameters(parent, context().initialization(),
-                authentication, encryption);
+                authentication, optionalEncryption);
     }
 
     private LicenseParameters chainedParameters(
             LicenseConsumerManager parent,
             LicenseInitialization initialization,
             Authentication authentication,
-            @CheckForNull Encryption encryption) {
+            List<Encryption> optionalEncryption) {
         return parameters(initialization, authentication,
-                resolveEncryption(parent, encryption));
+                resolveEncryption(parent, optionalEncryption));
     }
 
     private static Encryption resolveEncryption(
             LicenseConsumerManager parent,
-            @CheckForNull Encryption encryption) {
-        return null != encryption ? encryption : parent.parameters().encryption();
+            List<Encryption> optionalEncryption) {
+        for (Encryption encryption : optionalEncryption)
+            return encryption;
+        return parent.parameters().encryption();
     }
 
     private LicenseParameters parameters(
@@ -152,13 +150,6 @@ implements ClassLoaderProvider,
             final Codec codec,
             final Transformation compression,
             final Encryption encryption) {
-        requireNonNull(authorization);
-        requireNonNull(initialization);
-        requireNonNull(validation);
-        requireNonNull(authentication);
-        requireNonNull(codec);
-        requireNonNull(compression);
-        requireNonNull(encryption);
         return new LicenseParameters() {
             @Override
             public LicenseAuthorization authorization() { return authorization; }
@@ -187,36 +178,43 @@ implements ClassLoaderProvider,
     }
 
     final Authentication keyStore(
-            @CheckForNull Source source,
-            @CheckForNull String storeType,
+            List<Source> optionalSource,
+            List<String> optionalStoreType,
             PasswordSpecification storePassword,
             String alias,
-            @CheckForNull PasswordSpecification keyPassword) {
+            List<PasswordSpecification> optionalKeyPassword) {
         return context().authentication(keyStoreParameters(
-                source, storeType, storePassword, alias, keyPassword));
+                optionalSource, optionalStoreType, storePassword, alias, optionalKeyPassword));
     }
 
     final AuthenticationParameters keyStoreParameters(
-            final @CheckForNull Source source,
-            final @CheckForNull String storeType,
+            final List<Source> optionalSource,
+            final List<String> optionalStoreType,
             final PasswordSpecification storePassword,
             final String alias,
-            final @CheckForNull PasswordSpecification keyPassword) {
-        requireNonNull(storePassword);
-        requireNonNull(alias);
+            final List<PasswordSpecification> optionalKeyPassword) {
         return new AuthenticationParameters() {
 
             final PasswordProtection checkedStoreProtection = checkedProtection(storePassword);
-            final PasswordProtection checkedKeyProtection = null != keyPassword
-                    ? checkedProtection(keyPassword)
-                    : checkedStoreProtection;
+            final PasswordProtection checkedKeyProtection;
+
+            {
+                PasswordProtection pp = checkedStoreProtection;
+                for (PasswordSpecification ps : optionalKeyPassword) {
+                    pp = checkedProtection(ps);
+                    break;
+                }
+                checkedKeyProtection = pp;
+            }
 
             @Override
-            public List<Source> optionalSource() { return Option.create(source); }
+            public List<Source> optionalSource() { return optionalSource; }
 
             @Override
             public String storeType() {
-                return null != storeType ? storeType : context().storeType();
+                for (String storeType : optionalStoreType)
+                    return storeType;
+                return context().storeType();
             }
 
             @Override
@@ -235,17 +233,17 @@ implements ClassLoaderProvider,
     }
 
     final Encryption pbe(
-            @CheckForNull String algorithm,
+            List<String> optionalAlgorithm,
             PasswordSpecification password) {
-        return context().encryption(pbeParameters(algorithm, password));
+        return context().encryption(pbeParameters(optionalAlgorithm, password));
     }
 
     final PbeParameters pbeParameters(
-            final @CheckForNull String algorithm,
+            final List<String> optionalAlgorithm,
             final PasswordSpecification password) {
         return new PbeParameters() {
 
-            final String pbeAlgorithm = pbeAlgorithm(algorithm);
+            final String pbeAlgorithm = pbeAlgorithm(optionalAlgorithm);
             final PasswordProtection checkedProtection = checkedProtection(password);
 
             @Override
@@ -256,8 +254,10 @@ implements ClassLoaderProvider,
         };
     }
 
-    private String pbeAlgorithm(@CheckForNull String algorithm) {
-        return null != algorithm ? algorithm : context().pbeAlgorithm();
+    private String pbeAlgorithm(List<String> optionalAlgorithm) {
+        for (String algorithm : optionalAlgorithm)
+            return algorithm;
+        return context().pbeAlgorithm();
     }
 
     private PasswordProtection checkedProtection(final PasswordSpecification password) {
@@ -272,10 +272,6 @@ implements ClassLoaderProvider,
                 return protection.password(usage);
             }
         };
-    }
-
-    final void copy(Source source, Sink sink) throws IOException {
-        bios().copy(source, sink);
     }
 
     @Override
