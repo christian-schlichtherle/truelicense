@@ -10,4 +10,4 @@
  * @since TrueLicense 2.3
  */
 @javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
-package org.truelicense.core.x500;
+package org.truelicense.api.x500;

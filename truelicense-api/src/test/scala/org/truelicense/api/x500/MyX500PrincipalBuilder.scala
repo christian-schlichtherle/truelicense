@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.x500
+package org.truelicense.api.x500
 
 /** @author Christian Schlichtherle */
 class MyX500PrincipalBuilder extends GenericX500PrincipalBuilder[MyX500PrincipalBuilder] {

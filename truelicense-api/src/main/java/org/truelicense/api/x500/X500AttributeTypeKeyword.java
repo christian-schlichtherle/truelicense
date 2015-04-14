@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.x500;
+package org.truelicense.api.x500;
 
 /**
  * The predefined X.500 attribute type keywords for the classes

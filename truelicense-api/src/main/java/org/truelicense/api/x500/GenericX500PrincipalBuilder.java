@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.x500;
+package org.truelicense.api.x500;
 
 import org.truelicense.api.misc.Builder;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
-import static org.truelicense.core.x500.X500AttributeTypeKeyword.*;
+import static org.truelicense.api.x500.X500AttributeTypeKeyword.*;
 
 /**
  * A generic builder for an {@link X500Principal}.

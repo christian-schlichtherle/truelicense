@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.x500
+package org.truelicense.api.x500
 
 import javax.security.auth.x500.X500Principal
 
