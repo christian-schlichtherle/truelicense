@@ -17,7 +17,6 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.util.List;
@@ -72,7 +71,6 @@ implements LicenseVendorContext<PasswordSpecification> {
     @Override public ManagerBuilder<PasswordSpecification> manager() {
 
         @NotThreadSafe
-        @ParametersAreNullableByDefault
         class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
@@ -94,7 +92,6 @@ implements LicenseVendorContext<PasswordSpecification> {
             @Override
             public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
 
-                @ParametersAreNullableByDefault
                 class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     List<String> optionalStoreType = Option.none(), optionalAlias = Option.none();
                     List<Source> optionalSource = Option.none();
@@ -153,7 +150,6 @@ implements LicenseVendorContext<PasswordSpecification> {
             @Override
             public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
 
-                @ParametersAreNullableByDefault
                 class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     List<String> optionalAlgorithm = Option.none();
                     List<PasswordSpecification> optionalPassword = Option.none();

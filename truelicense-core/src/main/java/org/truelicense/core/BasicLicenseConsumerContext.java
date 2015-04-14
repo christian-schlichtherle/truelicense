@@ -14,7 +14,6 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.ParametersAreNullableByDefault;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.NotThreadSafe;
 import java.nio.file.Path;
@@ -128,7 +127,6 @@ implements CachePeriodProvider,
     @Override public ManagerBuilder<PasswordSpecification> manager() {
 
         @NotThreadSafe
-        @ParametersAreNullableByDefault
         class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
@@ -186,7 +184,6 @@ implements CachePeriodProvider,
             @Override
             public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
 
-                @ParametersAreNullableByDefault
                 class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     List<String> optionalStoreType = Option.none(), optionalAlias = Option.none();
                     List<Source> optionalSource = Option.none();
@@ -245,7 +242,6 @@ implements CachePeriodProvider,
             @Override
             public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
 
-                @ParametersAreNullableByDefault
                 class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
                     List<String> optionalAlgorithm = Option.none();
                     List<PasswordSpecification> optionalPassword = Option.none();
@@ -277,17 +273,17 @@ implements CachePeriodProvider,
             }
 
             @Override
-            public ManagerBuilder<PasswordSpecification> storeInPath(final Path path) {
+            public ManagerBuilder<PasswordSpecification> storeInPath(Path path) {
                 return storeIn(cc.pathStore(path));
             }
 
             @Override
-            public ManagerBuilder<PasswordSpecification> storeInSystemPreferences(final Class<?> classInPackage) {
+            public ManagerBuilder<PasswordSpecification> storeInSystemPreferences(Class<?> classInPackage) {
                 return storeIn(cc.systemPreferencesStore(classInPackage));
             }
 
             @Override
-            public ManagerBuilder<PasswordSpecification> storeInUserPreferences(final Class<?> classInPackage) {
+            public ManagerBuilder<PasswordSpecification> storeInUserPreferences(Class<?> classInPackage) {
                 return storeIn(cc.userPreferencesStore(classInPackage));
             }
         }
