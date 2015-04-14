@@ -8,11 +8,12 @@ package net.java.truelicense.core.comp;
 import net.java.truelicense.core.io.Transformation;
 
 /**
- * Provides a compression transformation.
+ * Provides a compression.
  *
  * @author Christian Schlichtherle
  */
 public interface CompressionProvider {
-    /** Returns the compression transformation. */
+
+    /** Returns a compression. */
     Transformation compression();
 }

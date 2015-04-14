@@ -12,6 +12,6 @@ package net.java.truelicense.core.crypto;
  */
 public interface EncryptionProvider {
 
-    /** Returns the encryption. */
+    /** Returns an encryption. */
     Encryption encryption();
 }
