@@ -6,15 +6,17 @@
 package org.truelicense.spi.codec;
 
 import org.truelicense.api.codec.Codec;
-import org.truelicense.spi.io.MemoryStore;
 import org.truelicense.api.io.Store;
 import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.spi.io.MemoryStore;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.CheckForNull;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,17 +42,16 @@ public class Codecs {
     /**
      * Figures the content transfer charset which is used by the given codec.
      * This method passes the call to {@link #contentTransferCharset}.
-     * If an {@link IllegalArgumentException} is thrown, then it returns
-     * {@code null}.
      *
      * @param  codec the codec to test.
-     * @return The content transfer charset which is used by the given codec or
-     *         {@code null} if the codec doesn't produce text or specifies an
-     *         invalid charset name or an unknown charset.
+     * @return A list which either contains the single content transfer charset
+     *         which is used by the given codec or is empty if the codec
+     *         doesn't produce text or specifies an invalid charset name or an
+     *         unknown charset.
      */
-    public static @CheckForNull Charset charset(final Codec codec) {
-        try { return contentTransferCharset(codec); }
-        catch (IllegalArgumentException ex) { return null; }
+    public static List<Charset> charset(final Codec codec) {
+        try { return Collections.singletonList(contentTransferCharset(codec)); }
+        catch (IllegalArgumentException ex) { return Collections.emptyList(); }
     }
 
     /**
@@ -90,6 +91,7 @@ public class Codecs {
      * @throws BinaryCodecException if the codec doesn't produce text.
      * @since TrueLicense 2.2.1
      */
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     public static Charset contentTransferCharset(final Codec codec) {
         final String encoding = codec.contentTransferEncoding();
         if (    SEVEN_BIT.equalsIgnoreCase(encoding) ||
@@ -100,9 +102,9 @@ public class Codecs {
             final Matcher matcher = CHARSET_PATTERN.matcher(codec.contentType());
             if (matcher.find()) {
                 assert 2 == matcher.groupCount();
-                String charset = matcher.group(1);
-                if (null == charset) charset = matcher.group(2);
-                return Charset.forName(charset);
+                for (String charset : Option.wrap(matcher.group(1)))
+                    return Charset.forName(charset);
+                return Charset.forName(matcher.group(2));
             } else {
                 return StandardCharsets.UTF_8;
             }

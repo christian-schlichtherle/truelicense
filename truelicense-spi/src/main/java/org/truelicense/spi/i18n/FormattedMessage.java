@@ -5,7 +5,6 @@
 
 package org.truelicense.spi.i18n;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.concurrent.Immutable;
 import java.util.Locale;
 
@@ -32,18 +31,8 @@ public class FormattedMessage extends BasicMessage {
      * @param key the key to lookup in the resource bundle.
      * @param args the arguments for formatting the looked up message.
      */
-    public FormattedMessage(
-            Class<?> clazz,
-            String key,
-            Object... args) {
-        this(clazz.getName(), key, args);
-    }
-
-    private FormattedMessage(
-            final @CheckForNull String baseName,
-            final String key,
-            final Object... args) {
-        this.baseName = baseName;
+    public FormattedMessage(final Class<?> clazz, final String key, final Object... args) {
+        this.baseName = clazz.getName();
         this.key = requireNonNull(key);
         this.args = args.clone();
     }

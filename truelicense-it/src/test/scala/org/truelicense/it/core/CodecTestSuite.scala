@@ -6,6 +6,7 @@
 package org.truelicense.it.core
 
 import java.io.IOException
+import java.nio.charset.Charset
 
 import org.scalatest.Matchers._
 import org.scalatest._
@@ -34,8 +35,9 @@ abstract class CodecTestSuite extends WordSpec { this: TestContext =>
                                            orig.getClass)
           store match {
             case ms: MemoryStore =>
-              Option(Codecs charset codec) match {
-                case Some(charset) if IdentityTransformation == transformation =>
+              import collection.JavaConverters._
+              (Codecs charset codec).asScala match {
+                case Seq(charset) if IdentityTransformation == transformation =>
                   logger debug ("\n{}", new String(ms.data, charset))
                 case _ =>
                   logger debug ("Created BLOB with {} bytes size.", ms.data.length)

@@ -6,10 +6,10 @@
 package org.truelicense.spi.io;
 
 import org.truelicense.api.io.Store;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import java.io.*;
+import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -30,50 +30,53 @@ final class PreferencesStore implements Store {
         this.key = requireNonNull(key);
     }
 
-    public boolean isUserNode() { return prefs.isUserNode(); }
-
-    private byte[] checkedData() throws FileNotFoundException {
-        final byte[] data = data();
-        if (null == data)
-            throw new FileNotFoundException(
-                    "Cannot locate the key \"" + key + "\" in the " +
-                    (isUserNode() ? "user" : "system") +
-                    " preferences node for the absolute path \"" +
-                    prefs.absolutePath() + "\".");
-        return data;
+    @Override
+    public InputStream input() throws IOException {
+        return new ByteArrayInputStream(data());
     }
 
-    public @Nullable byte[] data() { return prefs.getByteArray(key, null); }
-
-    public void data(@CheckForNull byte[] data) {
-        if (null != data) prefs.putByteArray(key, data);
-        else prefs.remove(key);
-    }
-
-    @Override public InputStream input() throws IOException {
-        return new ByteArrayInputStream(checkedData());
-    }
-
-    @Override public OutputStream output() throws IOException {
+    @Override
+    public OutputStream output() throws IOException {
         return new ByteArrayOutputStream(BUFSIZE) {
             @Override
             public void close() throws IOException {
                 data(toByteArray());
-                sync();
             }
         };
     }
 
-    @Override public void delete() throws IOException {
-        checkedData();
-        data(null);
+    @Override
+    public void delete() throws IOException {
+        data();
+        prefs.remove(key);
         sync();
+    }
+
+    @Override
+    public boolean exists() { return !optData().isEmpty(); }
+
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
+    private byte[] data() throws IOException {
+        for (byte[] data : optData())
+            return data;
+        throw new FileNotFoundException(
+                "Cannot locate the key \"" + key + "\" in the " +
+                        (prefs.isUserNode() ? "user" : "system") +
+                        " preferences node for the absolute path \"" +
+                        prefs.absolutePath() + "\".");
+    }
+
+    private void data(byte[] data) throws IOException {
+        prefs.putByteArray(key, data);
+        sync();
+    }
+
+    private List<byte[]> optData() {
+        return Option.wrap(prefs.getByteArray(key, null));
     }
 
     private void sync() throws IOException {
         try { prefs.flush(); }
-        catch (final BackingStoreException ex) { throw new IOException(ex); }
+        catch (final BackingStoreException e) { throw new IOException(e); }
     }
-
-    @Override public boolean exists() { return null != data(); }
 }

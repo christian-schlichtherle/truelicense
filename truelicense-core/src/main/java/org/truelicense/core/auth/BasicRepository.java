@@ -12,8 +12,6 @@ import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.spi.io.MemoryStore;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.nio.charset.Charset;
@@ -43,16 +41,20 @@ extends RepositoryModel implements Repository {
 
     private final Base64 base64 = new Base64();
     
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     private byte[] data(final Codec codec, final String body) {
-        final @CheckForNull Charset cs = charset(codec);
-        return null != cs ? body.getBytes(cs) : decode(body);
+        for (Charset cs : charset(codec))
+            return body.getBytes(cs);
+        return decode(body);
     }
 
     private byte[] decode(String body) { return base64.decode(body); }
 
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     private String body(final Codec codec, final byte[] artifact) {
-        final @CheckForNull Charset cs = charset(codec);
-        return null != cs ? new String(artifact, cs) : encode(artifact);
+        for (Charset cs : charset(codec))
+            return new String(artifact, cs);
+        return encode(artifact);
     }
 
     private String encode(byte[] data) { return base64.encodeToString(data); }

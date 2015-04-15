@@ -6,8 +6,10 @@
 package org.truelicense.spi.io;
 
 import org.truelicense.api.io.Store;
+import org.truelicense.spi.misc.Option;
 
 import java.io.*;
+import java.util.List;
 
 /**
  * A (heap) memory store.
@@ -18,7 +20,7 @@ public final class MemoryStore implements Store {
 
     private final int bufsize;
 
-    private byte[] buffer;
+    private List<byte[]> optBuffer = Option.none();
 
     /**
      * Equivalent to <code>new {@link #MemoryStore(int)
@@ -38,34 +40,42 @@ public final class MemoryStore implements Store {
         if (0 > (this.bufsize = bufsize)) throw new IllegalArgumentException();
     }
 
-    public byte[] data() { return buffer.clone(); }
-
-    public void data(byte[] buffer) {
-        this.buffer = buffer.clone();
-    }
-
-    @Override public InputStream input() throws IOException {
+    @Override
+    public InputStream input() throws IOException {
         return new ByteArrayInputStream(checkedData());
     }
 
-    @Override public OutputStream output() throws IOException {
+    @Override
+    public OutputStream output() throws IOException {
         return new ByteArrayOutputStream(bufsize) {
             @Override public void close() throws IOException {
-                buffer = toByteArray();
+                data(toByteArray());
             }
         };
     }
 
-    @Override public void delete() throws IOException {
+    @Override
+    public void delete() throws IOException {
         checkedData();
-        buffer = null;
+        optBuffer = Option.none();
     }
 
-    @SuppressWarnings("ReturnOfCollectionOrArrayField")
+    @Override
+    public boolean exists() { return !optBuffer.isEmpty(); }
+
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
     private byte[] checkedData() throws FileNotFoundException {
-        if (null == buffer) throw new FileNotFoundException();
-        return buffer;
+        for (byte[] buffer : optBuffer)
+            return buffer;
+        throw new FileNotFoundException();
     }
 
-    @Override public boolean exists() { return null != buffer; }
+    @SuppressWarnings("LoopStatementThatDoesntLoop")
+    public byte[] data() {
+        for (byte[] buffer : optBuffer)
+            return buffer.clone();
+        throw new IllegalStateException();
+    }
+
+    public void data(byte[] buffer) { optBuffer = Option.wrap(buffer.clone()); }
 }

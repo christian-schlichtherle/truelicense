@@ -53,7 +53,6 @@ public final class FormattedResourceBundle {
     private final ResourceBundle bundle;
 
     private FormattedResourceBundle(final ResourceBundle bundle) {
-        assert null != bundle;
         this.bundle = bundle;
     }
 
