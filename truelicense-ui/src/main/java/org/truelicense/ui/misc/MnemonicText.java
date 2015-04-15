@@ -38,7 +38,7 @@ public final class MnemonicText implements Serializable {
     public MnemonicText(final String text) {
         int mnemonicIndex = -1;
         char mnemonic = 0;
-        final StringBuffer buf = new StringBuffer(text.length());
+        final StringBuilder buf = new StringBuilder(text.length());
         int l = text.length();
         for (int i = 0; i < l; i++) {
             char c = text.charAt(i);

@@ -22,10 +22,9 @@ import static java.util.Calendar.getInstance;
 
 /**
  * A Java Bean which defines and provides the common properties of any license.
- * In general, all properties may be {@code null} to indicate that this
- * property is not set.
+ * All properties are set to {@code null} by default.
  * However, {@linkplain LicenseValidation#validate license validation} may fail
- * if some properties are not set when
+ * if some properties are {@code null} when
  * {@linkplain LicenseVendorManager#create creating},
  * {@linkplain LicenseConsumerManager#install installing} or
  * {@linkplain LicenseConsumerManager#verify verifying}
