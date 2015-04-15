@@ -1,1 +1,1 @@
-clean verify -Pintegration-test
+verify -Pintegration-test

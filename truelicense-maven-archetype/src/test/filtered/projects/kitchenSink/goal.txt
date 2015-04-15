@@ -1,1 +1,1 @@
-clean verify -DskipStandaloneJars=true -Pintegration-test
+verify -Pintegration-test
