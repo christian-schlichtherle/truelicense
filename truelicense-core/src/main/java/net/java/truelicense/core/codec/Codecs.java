@@ -89,7 +89,7 @@ public class Codecs {
      * @throws BinaryCodecException if the codec doesn't produce text.
      * @since TrueLicense 2.2.1
      */
-    public static @CheckForNull Charset contentTransferCharset(final Codec codec) {
+    public static Charset contentTransferCharset(final Codec codec) {
         final String encoding = codec.contentTransferEncoding();
         if (    SEVEN_BIT.equalsIgnoreCase(encoding) ||
                 QUOTED_PRINTABLE.equalsIgnoreCase(encoding) ||
