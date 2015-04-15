@@ -13,11 +13,12 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
-import static net.java.truelicense.core.codec.Codecs.contentTransferCharset;
+import static net.java.truelicense.core.codec.Codecs.charset;
 
 /**
  * A basic repository for storing authenticated objects (artifacts).
@@ -36,7 +37,7 @@ import static net.java.truelicense.core.codec.Codecs.contentTransferCharset;
 public final class BasicRepository
 extends RepositoryModel implements Repository {
 
-    private static final Base64 base64 = new Base64();
+    private final Base64 base64 = new Base64();
 
     @Override public final RepositoryModel model() { return this; }
 
@@ -44,11 +45,11 @@ extends RepositoryModel implements Repository {
             final Codec codec,
             final @CheckForNull String body) {
         if (null == body) return null;
-        try { return body.getBytes(contentTransferCharset(codec)); }
-        catch (IllegalArgumentException ex) { return decode(body); }
+        final @CheckForNull Charset cs = charset(codec);
+        return null != cs ? body.getBytes(cs) : decode(body);
     }
 
-    private static @Nullable byte[] decode(@CheckForNull String body) {
+    private @Nullable byte[] decode(@CheckForNull String body) {
         return base64.decode(body);
     }
 
@@ -56,11 +57,11 @@ extends RepositoryModel implements Repository {
             final Codec codec,
             final @CheckForNull byte[] artifact) {
         if (null == artifact) return null;
-        try { return new String(artifact, contentTransferCharset(codec)); }
-        catch (IllegalArgumentException ex) { return encode(artifact); }
+        final @CheckForNull Charset cs = charset(codec);
+        return null != cs ? new String(artifact, cs) : encode(artifact);
     }
 
-    private static @Nullable String encode(@CheckForNull byte[] data) {
+    private @Nullable String encode(@CheckForNull byte[] data) {
         return base64.encodeToString(data);
     }
 
