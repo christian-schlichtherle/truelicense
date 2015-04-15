@@ -5,7 +5,6 @@
 
 package org.truelicense.spi.misc;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import java.util.List;
  * An option is an immutable list of at most one non-null item.
  * Using the static constructors of this class you can avoid programming with
  * {@code null}able references.
+ * This class is trivially immutable.
  *
  * @author Christian Schlichtherle
  */
@@ -27,7 +27,7 @@ public final class Option {
      * If the item is {@code null}, then the returned list is empty.
      * Otherwise, the returned list contains only the item.
      */
-    public static <T> List<T> wrap(@Nullable T item) {
+    public static <T> List<T> wrap(T item) {
         return null == item
                 ? Collections.<T>emptyList()
                 : Collections.singletonList(item);
@@ -39,7 +39,7 @@ public final class Option {
      * Otherwise, the first item in the list gets returned.
      */
     @SuppressWarnings("LoopStatementThatDoesntLoop")
-    public static @Nullable <T> T unwrap(final List<T> option) {
+    public static <T> T unwrap(final List<T> option) {
         for (T item : option)
             return item;
         return null;

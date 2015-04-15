@@ -5,14 +5,13 @@
 
 package org.truelicense.jsf;
 
-import java.util.Date;
-import javax.annotation.Nullable;
-import javax.faces.component.FacesComponent;
-import javax.security.auth.x500.X500Principal;
-
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseManagementException;
+
+import javax.faces.component.FacesComponent;
+import javax.security.auth.x500.X500Principal;
+import java.util.Date;
 
 import static org.truelicense.ui.LicenseWizardMessage.*;
 
@@ -25,7 +24,7 @@ import static org.truelicense.ui.LicenseWizardMessage.*;
 @FacesComponent
 public final class DisplayBean extends LicenseBean {
 
-    private @Nullable License license;
+    private License license;
 
     public String getTitle() { return message(display_title); }
     public String getSubjectLabel() { return message(display_subject); }
@@ -49,8 +48,8 @@ public final class DisplayBean extends LicenseBean {
     public String getInfoValue() { return license().getInfo(); }
 
     private License license() {
-        final License license = this.license;
-        return null != license ? license : (this.license = defaultLicense());
+        final License l = license;
+        return null != l ? l : (license = defaultLicense());
     }
 
     private License defaultLicense() {

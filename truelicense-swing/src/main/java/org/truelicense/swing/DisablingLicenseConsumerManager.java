@@ -5,8 +5,6 @@
 
 package org.truelicense.swing;
 
-import javax.annotation.concurrent.Immutable;
-
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.api.io.Source;
@@ -18,10 +16,10 @@ import org.truelicense.swing.util.Enabler;
  * manager.
  * If the operation succeeds, the component remains disabled.
  * Otherwise, the component state gets recovered.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 final class DisablingLicenseConsumerManager
 extends UpdatingLicenseConsumerManager {
 
@@ -60,15 +58,9 @@ extends UpdatingLicenseConsumerManager {
         disable();
         try {
             return action.call();
-        } catch (final LicenseManagementException ex) {
+        } catch (LicenseManagementException | RuntimeException | Error e) {
             enabled(enabled);
-            throw ex;
-        } catch (final RuntimeException ex) {
-            enabled(enabled);
-            throw ex;
-        } catch (final Error ex) {
-            enabled(enabled);
-            throw ex;
+            throw e;
         }
     }
 

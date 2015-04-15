@@ -13,8 +13,6 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.List;
 
 import static java.lang.System.currentTimeMillis;
@@ -22,10 +20,10 @@ import static java.lang.System.currentTimeMillis;
 /**
  * A basic license consumer manager which caches some computed objects to speed
  * up subsequent requests.
+ * This class is thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@ThreadSafe
 abstract class CachingLicenseConsumerManager
 extends BasicLicenseManager implements CachePeriodProvider {
 
@@ -100,7 +98,12 @@ extends BasicLicenseManager implements CachePeriodProvider {
     }
 }
 
-@Immutable
+/**
+ * A simple cache with just one association.
+ * This class is immutable.
+ *
+ * @author Christian Schlichtherle
+ */
 final class Cache<K, V> {
 
     private final List<K> optKey;

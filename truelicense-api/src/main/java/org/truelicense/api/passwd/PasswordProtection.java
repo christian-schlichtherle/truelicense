@@ -5,14 +5,11 @@
 
 package org.truelicense.api.passwd;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
  * An immutable factory for consistent {@link Password}s.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public interface PasswordProtection {
 
     /**

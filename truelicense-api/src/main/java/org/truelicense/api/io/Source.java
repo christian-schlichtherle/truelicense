@@ -5,7 +5,6 @@
 
 package org.truelicense.api.io;
 
-import edu.umd.cs.findbugs.annotations.CreatesObligation;
 import java.io.*;
 
 /**
@@ -19,5 +18,5 @@ public interface Source {
     /**
      * Returns a new input stream for reading the binary data from this source.
      */
-    @CreatesObligation InputStream input() throws IOException;
+    InputStream input() throws IOException;
 }

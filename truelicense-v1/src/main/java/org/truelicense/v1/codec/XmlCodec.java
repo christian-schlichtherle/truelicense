@@ -5,25 +5,26 @@
 
 package org.truelicense.v1.codec;
 
-import java.beans.*;
-import java.io.*;
-import java.lang.reflect.Type;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.*;
-
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
 
+import java.beans.ExceptionListener;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+
 /**
  * A codec which encodes/decodes objects to/from XML with an
  * {@link XMLEncoder}/{@link XMLDecoder}.
  * This type of codec is used for V1 format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class XmlCodec implements Codec {
 
     @Obfuscate
@@ -89,7 +90,6 @@ public class XmlCodec implements Codec {
         return new XMLDecoder(in);
     }
 
-    @NotThreadSafe
     private static class ZeroToleranceListener implements ExceptionListener {
 
         Exception ex;

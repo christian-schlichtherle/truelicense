@@ -11,5 +11,4 @@
  *
  * @author Christian Schlichtherle
  */
-@javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
 package org.truelicense.maven.plugin.obfuscation;

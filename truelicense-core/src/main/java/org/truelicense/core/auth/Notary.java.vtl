@@ -20,8 +20,6 @@ import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.InputStream;
 import java.security.*;
 import java.security.KeyStore.Entry;
@@ -38,10 +36,10 @@ import java.util.logging.Logger;
 /**
  * Signs or verifies {@linkplain Repository repositories} with an entry in a
  * key store.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class Notary implements Authentication {
 
     @Obfuscate
@@ -78,7 +76,6 @@ public final class Notary implements Authentication {
         return parameters;
     }
 
-    @NotThreadSafe
     private final class Cache {
 
         KeyStore keyStore;

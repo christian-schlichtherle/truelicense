@@ -11,5 +11,4 @@
  * new applications.
  * Note that there is no compatibility between V1 and V2 format license keys.
  */
-@javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
 package de.schlichtherle.xml;

@@ -19,7 +19,6 @@ import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
 
-import javax.annotation.concurrent.Immutable;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +29,7 @@ import static java.util.Calendar.getInstance;
 
 /**
  * A basic context for license applications.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -40,7 +40,6 @@ import static java.util.Calendar.getInstance;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-@Immutable
 @SuppressWarnings("LoopStatementThatDoesntLoop")
 abstract class BasicLicenseApplicationContext<PasswordSpecification>
 implements ClassLoaderProvider,

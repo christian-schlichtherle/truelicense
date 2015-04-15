@@ -5,21 +5,23 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import java.util.Set;
-import javax.annotation.*;
-import javax.annotation.concurrent.NotThreadSafe;
-import org.truelicense.obfuscate.Obfuscate;
-import org.objectweb.asm.*;
-import static org.objectweb.asm.Opcodes.*;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.FieldNode;
 import org.slf4j.Logger;
+import org.truelicense.obfuscate.Obfuscate;
+
+import java.util.Set;
+
+import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
+import static org.objectweb.asm.Opcodes.ASM4;
 
 /**
  * Obfuscates constant string values in byte code.
  *
  * @author Christian Schlichtherle
  */
-@NotThreadSafe
 abstract class Visitor extends ClassVisitor {
 
     private static final String
@@ -31,13 +33,13 @@ abstract class Visitor extends ClassVisitor {
     private int caf;
 
     /** Cached internal class name. */
-    private @Nullable String icn;
+    private String icn;
 
     /** Cached binary class name. */
-    private @Nullable String bcn;
+    private String bcn;
 
-    Visitor(final Processor ctx, final @CheckForNull ClassVisitor cv) {
-        super(ASM4, cv);
+    Visitor(final Processor ctx, final ClassVisitor nullableClassVisitor) {
+        super(ASM4, nullableClassVisitor);
         this.ctx = ctx;
     }
 
@@ -60,11 +62,11 @@ abstract class Visitor extends ClassVisitor {
             final int version,
             final int access,
             final String name,
-            final @CheckForNull String signature,
-            final @CheckForNull String superName,
-            final @CheckForNull String[] interfaces) {
+            final String nullableSignature,
+            final String nullableSuperName,
+            final String[] nullableInterfaces) {
         bcn = Type.getObjectType(icn = name).getClassName();
-        super.visit(version, caf = access, name, signature, superName, interfaces);
+        super.visit(version, caf = access, name, nullableSignature, nullableSuperName, nullableInterfaces);
     }
 
     final boolean isInterface() {
@@ -90,17 +92,17 @@ abstract class Visitor extends ClassVisitor {
     class O9nFieldNode extends FieldNode {
 
         boolean needsObfuscation;
-        @CheckForNull String stringValue;
+        String stringValue;
 
         O9nFieldNode(
                 final int access,
                 final String name,
                 final String desc,
-                final @CheckForNull String signature,
-                final @CheckForNull Object value) {
-            super(ASM4, access, name, desc, signature, value);
-            if (value instanceof String) {
-                final String svalue = (String) value;
+                final String nullableSignature,
+                final Object nullableValue) {
+            super(ASM4, access, name, desc, nullableSignature, nullableValue);
+            if (nullableValue instanceof String) {
+                final String svalue = (String) nullableValue;
                 this.stringValue = svalue;
                 if (constantStrings().contains(svalue)) {
                     needsObfuscation = true;

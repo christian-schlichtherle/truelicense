@@ -5,17 +5,13 @@
 
 package org.truelicense.swing.util;
 
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.GraphicsConfiguration;
-import java.awt.HeadlessException;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
-import javax.annotation.CheckForNull;
-import javax.swing.*;
 
 /**
  * A dialog which performs the default closing operation when the escape key
@@ -31,68 +27,44 @@ public class EnhancedDialog extends JDialog {
         super();
     }
 
-    public EnhancedDialog(@CheckForNull Frame owner)
-    throws HeadlessException {
-        super(owner);
+    public EnhancedDialog(Frame nullableOwner) throws HeadlessException {
+        super(nullableOwner);
     }
 
-    public EnhancedDialog(@CheckForNull Frame owner, boolean modal)
-    throws HeadlessException {
-        super(owner, modal);
+    public EnhancedDialog(Frame nullableOwner, boolean modal) throws HeadlessException {
+        super(nullableOwner, modal);
     }
 
-    public EnhancedDialog(@CheckForNull Frame owner, String title)
-    throws HeadlessException {
-        super(owner, title);
+    public EnhancedDialog(Frame nullableOwner, String title) throws HeadlessException {
+        super(nullableOwner, title);
     }
 
-    public EnhancedDialog(
-            @CheckForNull Frame owner,
-            String title,
-            boolean modal)
-    throws HeadlessException {
-        super(owner, title, modal);
+    public EnhancedDialog(Frame nullableOwner, String title, boolean modal) throws HeadlessException {
+        super(nullableOwner, title, modal);
     }
 
-    public EnhancedDialog(
-            @CheckForNull Frame owner,
-            String title,
-            boolean modal,
-            GraphicsConfiguration gc)
-    throws HeadlessException {
-        super(owner, title, modal, gc);
+    public EnhancedDialog(Frame nullableOwner, String title, boolean modal, GraphicsConfiguration gc) throws HeadlessException {
+        super(nullableOwner, title, modal, gc);
     }
 
-    public EnhancedDialog(@CheckForNull Dialog owner)
-            throws HeadlessException {
-        super(owner);
+    public EnhancedDialog(Dialog nullableOwner) throws HeadlessException {
+        super(nullableOwner);
     }
 
-    public EnhancedDialog(@CheckForNull Dialog owner, boolean modal)
-            throws HeadlessException {
-        super(owner, modal);
+    public EnhancedDialog(Dialog nullableOwner, boolean modal) throws HeadlessException {
+        super(nullableOwner, modal);
     }
 
-    public EnhancedDialog(@CheckForNull Dialog owner, String title)
-            throws HeadlessException {
-        super(owner, title);
+    public EnhancedDialog(Dialog nullableOwner, String title) throws HeadlessException {
+        super(nullableOwner, title);
     }
 
-    public EnhancedDialog(
-            @CheckForNull Dialog owner,
-            String title,
-            boolean modal)
-            throws HeadlessException {
-        super(owner, title, modal);
+    public EnhancedDialog(Dialog nullableOwner, String title, boolean modal) throws HeadlessException {
+        super(nullableOwner, title, modal);
     }
 
-    public EnhancedDialog(
-            @CheckForNull Dialog owner,
-            String title,
-            boolean modal,
-            GraphicsConfiguration gc)
-            throws HeadlessException {
-        super(owner, title, modal, gc);
+    public EnhancedDialog(Dialog nullableOwner, String title, boolean modal, GraphicsConfiguration gc) throws HeadlessException {
+        super(nullableOwner, title, modal, gc);
     }
 
     @Override protected JRootPane createRootPane() {

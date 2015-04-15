@@ -7,7 +7,6 @@
 #set($hash = '#')
 package org.truelicense.obfuscate;
 
-import javax.annotation.concurrent.ThreadSafe;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
- * Represents an obfuscated string.
+ * A thread-safe representation of an obfuscated string.
  *
  * <h3>Motivation</h3>
  * <p>
@@ -79,7 +78,6 @@ import java.util.concurrent.Callable;
 // this would result in a stack overflow, as an array of Unicode characters.
 // This should help to prevent location of this class in obfuscated Java byte
 // code.
-@ThreadSafe
 public final class ObfuscatedString {
 
     /** The UTF-8 character set. */

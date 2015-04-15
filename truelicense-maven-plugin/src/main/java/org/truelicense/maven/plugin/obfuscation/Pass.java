@@ -5,10 +5,8 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +18,6 @@ import java.nio.file.Path;
 /**
  * @author Christian Schlichtherle
  */
-@NotThreadSafe
 abstract class Pass {
 
     final Processor ctx;
@@ -56,7 +53,6 @@ abstract class Pass {
 
     abstract void process(final Node node) throws IOException;
 
-    @SuppressFBWarnings("OS_OPEN_STREAM")
     final byte[] read(final Node node) throws IOException {
         final Path file = node.file();
         final byte[] code;
@@ -76,7 +72,6 @@ abstract class Pass {
         return code;
     }
 
-    @SuppressFBWarnings("OBL_UNSATISFIED_OBLIGATION")
     final void write(final Node node, final byte[] code) throws IOException {
         try (OutputStream out = Files.newOutputStream(node.file())) {
             out.write(code);

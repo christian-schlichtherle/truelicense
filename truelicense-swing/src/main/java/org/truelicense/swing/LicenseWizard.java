@@ -5,15 +5,18 @@
 
 package org.truelicense.swing;
 
-import java.awt.*;
-import javax.annotation.CheckForNull;
 import org.truelicense.api.LicenseConsumerManager;
-import org.truelicense.swing.util.*;
+import org.truelicense.swing.util.ComponentEnabler;
+import org.truelicense.swing.util.EnhancedDialog;
 import org.truelicense.swing.wizard.SwingWizardController;
-import org.truelicense.ui.*;
-import static org.truelicense.ui.LicenseWizardState.*;
+import org.truelicense.ui.LicenseWizardMessage;
+import org.truelicense.ui.LicenseWizardState;
 import org.truelicense.ui.wizard.BasicWizardModel;
 import org.truelicense.ui.wizard.WizardModel;
+
+import java.awt.*;
+
+import static org.truelicense.ui.LicenseWizardState.*;
 
 /**
  * An internationalized wizard dialog for license management in consumer
@@ -51,7 +54,7 @@ public final class LicenseWizard {
      */
     public LicenseWizard(
             LicenseConsumerManager manager,
-            @CheckForNull Dialog owner) {
+            Dialog owner) {
         this(new EnhancedDialog(owner), manager);
     }
 
@@ -63,7 +66,7 @@ public final class LicenseWizard {
      */
     public LicenseWizard(
             LicenseConsumerManager manager,
-            @CheckForNull Frame owner) {
+            Frame owner) {
         this(new EnhancedDialog(owner), manager);
     }
 

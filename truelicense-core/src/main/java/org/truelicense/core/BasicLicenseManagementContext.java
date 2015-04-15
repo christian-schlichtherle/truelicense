@@ -13,16 +13,16 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.core.auth.Notary;
-import org.truelicense.spi.misc.Option;
 import org.truelicense.spi.io.StandardBIOS;
+import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * A basic license management context.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -33,7 +33,6 @@ import java.util.Objects;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-@Immutable
 public abstract class BasicLicenseManagementContext<PasswordSpecification>
 implements LicenseManagementContext<PasswordSpecification> {
 

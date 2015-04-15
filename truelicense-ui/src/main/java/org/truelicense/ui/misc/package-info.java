@@ -4,8 +4,8 @@
  */
 
 /**
- * Provides object graph encoding/decoding services using XML.
+ * Miscellaneous.
  *
  * @author Christian Schlichtherle
  */
-package org.truelicense.v2.xml.codec;
+package org.truelicense.ui.misc;

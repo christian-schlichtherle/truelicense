@@ -10,7 +10,6 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -20,10 +19,10 @@ import java.lang.reflect.Type;
 /**
  * A codec which encodes/decodes an object with an
  * {@link ObjectOutputStream}/{@link ObjectInputStream}.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class SerializationCodec implements Codec {
 
     @Obfuscate

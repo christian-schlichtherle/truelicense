@@ -8,12 +8,11 @@ package org.truelicense.maven.plugin;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
+ * An immutable Velocity tool which provides access to Maven artifact meta data.
+ *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class VersionTool {
 
     public ArtifactVersion parse(String version) {

@@ -6,26 +6,24 @@
 package org.truelicense.core.misc;
 
 import java.util.Locale;
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
 
 /**
  * Provides static functions for nullable strings.
+ * This class is trivially immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class Strings {
 
-    public static boolean equalsIgnoreCase(@Nullable String a, @Nullable String b) {
+    public static boolean equalsIgnoreCase(String a, String b) {
         return null == a ? null == b : a.equalsIgnoreCase(b);
     }
 
-    public static String toLowerCase(@Nullable String s, Locale l) {
+    public static String toLowerCase(String s, Locale l) {
         return null == s ? null : s.toLowerCase(l);
     }
 
-    public static String toUpperCase(@Nullable String s, Locale l) {
+    public static String toUpperCase(String s, Locale l) {
         return null == s ? null : s.toUpperCase(l);
     }
 

@@ -5,17 +5,15 @@
 
 package org.truelicense.ui.wizard;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
  * A basic implementation of a wizard controller.
+ * This class is immutable.
  *
  * @param  <S> the type of the wizard's states.
  * @param  <V> the type of the wizard's views.
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@Immutable
 public abstract class BasicWizardController<S, V extends WizardView<S>>
 implements WizardController {
 

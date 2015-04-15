@@ -5,20 +5,18 @@
 
 package org.truelicense.jax.rs;
 
-import java.security.GeneralSecurityException;
-import javax.annotation.CheckForNull;
-import javax.annotation.concurrent.Immutable;
-
 import org.truelicense.api.LicenseManagementException;
+
+import java.security.GeneralSecurityException;
 
 /**
  * Wraps a {@link LicenseManagementException} in order to decorate it with
  * additional meta data for generating an HTTP response.
+ * This class is immutable.
  *
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class LicenseConsumerServiceException
 extends GeneralSecurityException {
 
@@ -31,13 +29,13 @@ extends GeneralSecurityException {
      * status code and its causing license management exception.
      *
      * @param status the HTTP status code.
-     * @param cause the causing license management exception.
+     * @param nullableCause the nullable causing license management exception.
      * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a>
      */
     LicenseConsumerServiceException(
             final int status,
-            final @CheckForNull LicenseManagementException cause) {
-        super(null == cause ? null : cause.getMessage(), cause);
+            final LicenseManagementException nullableCause) {
+        super(null == nullableCause ? null : nullableCause.getMessage(), nullableCause);
         this.status = status;
     }
 

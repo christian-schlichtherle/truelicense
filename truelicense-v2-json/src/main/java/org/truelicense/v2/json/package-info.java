@@ -90,5 +90,4 @@
  *
  * @author Christian Schlichtherle
  */
-@javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
 package org.truelicense.v2.json;

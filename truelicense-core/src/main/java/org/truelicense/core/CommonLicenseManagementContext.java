@@ -14,6 +14,7 @@ import org.truelicense.obfuscate.ObfuscatedString;
  * A common license management context.
  * This class uses the class {@link ObfuscatedString} class as the password
  * specification type.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */

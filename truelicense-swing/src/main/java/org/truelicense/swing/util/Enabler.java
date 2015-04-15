@@ -12,6 +12,8 @@ package org.truelicense.swing.util;
  * @author Christian Schlichtherle
  */
 public interface Enabler {
+
     boolean enabled();
+
     void enabled(boolean value);
 }

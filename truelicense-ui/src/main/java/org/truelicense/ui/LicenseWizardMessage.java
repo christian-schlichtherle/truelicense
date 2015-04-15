@@ -6,10 +6,9 @@
 package org.truelicense.ui;
 
 import org.truelicense.api.LicenseConsumerManager;
-import org.truelicense.spi.i18n.Formattable;
 import org.truelicense.api.i18n.Message;
+import org.truelicense.spi.i18n.Formattable;
 
-import javax.annotation.CheckForNull;
 import java.util.Date;
 
 /**
@@ -52,8 +51,8 @@ public enum LicenseWizardMessage implements Formattable {
         return Messages.message(name(), args);
     }
 
-    public static String display_dateTimeFormat(String subject, @CheckForNull Date date) {
-        return null == date ? ""
-                : display_dateTimeFormat.format(subject, date).toString();
+    public static String display_dateTimeFormat(String subject, Date nullableDate) {
+        return null == nullableDate ? ""
+                : display_dateTimeFormat.format(subject, nullableDate).toString();
     }
 }

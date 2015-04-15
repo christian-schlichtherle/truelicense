@@ -5,15 +5,12 @@
 
 package org.truelicense.v2.commons;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordUsage;
 import org.truelicense.core.crypto.BasicPbeEncryption;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.concurrent.Immutable;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
@@ -25,19 +22,19 @@ import static javax.crypto.Cipher.*;
 
 /**
  * The encryption for V2 format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class V2Encryption extends BasicPbeEncryption {
 
     public V2Encryption(PbeParameters pbe) { super(pbe); }
 
-    @Override public Sink apply(final Sink sink) {
+    @Override
+    public Sink apply(final Sink sink) {
         return new Sink() {
             @Override public OutputStream output() throws IOException {
                 return wrap(new Callable<OutputStream>() {
-                    @SuppressFBWarnings("OS_OPEN_STREAM")
                     @Override public OutputStream call() throws Exception {
                         final Cipher cipher = cipher(PasswordUsage.WRITE, null);
                         final AlgorithmParameters
@@ -60,11 +57,11 @@ public final class V2Encryption extends BasicPbeEncryption {
         };
     }
 
-    @Override public Source unapply(final Source source) {
+    @Override
+    public Source unapply(final Source source) {
         return new Source() {
             @Override public InputStream input() throws IOException {
                 return wrap(new Callable<InputStream>() {
-                    @SuppressFBWarnings("OS_OPEN_STREAM")
                     @Override public InputStream call() throws Exception {
                         final Cipher cipher;
                         final InputStream in = source.input();
@@ -92,10 +89,7 @@ public final class V2Encryption extends BasicPbeEncryption {
         return param;
     }
 
-    private Cipher cipher(
-            final PasswordUsage usage,
-            final @CheckForNull AlgorithmParameters param)
-    throws Exception {
+    private Cipher cipher(final PasswordUsage usage, final AlgorithmParameters param) throws Exception {
         final Cipher cipher = getInstance(algorithm());
         cipher.init(
                 PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE,

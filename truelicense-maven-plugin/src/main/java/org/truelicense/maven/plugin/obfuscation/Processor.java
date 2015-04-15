@@ -5,17 +5,17 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.objectweb.asm.ClassVisitor;
 import org.slf4j.Logger;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Formatter;
 import java.util.HashSet;
 import java.util.Set;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Runs the obfuscation based on the configuration parameters provided to its
@@ -75,13 +75,7 @@ public final class Processor {
         this.internStrings = nonNullOr(b.internStrings, DEFAULT_INTERN_STRINGS);
     }
 
-    @SuppressFBWarnings("NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE")
-    private static <T> T requireNonNull(@Nullable T t) {
-        if (null == t) throw new NullPointerException();
-        return t;
-    }
-
-    private static <T> T nonNullOr(@Nullable T value, T def) {
+    private static <T> T nonNullOr(T value, T def) {
         return null != value ? value : def;
     }
 
@@ -163,12 +157,12 @@ public final class Processor {
 
     public static final class Builder {
 
-        @Nullable Logger logger;
-        @Nullable Path directory;
-        @Nullable Integer maxBytes;
-        @Nullable Boolean obfuscateAll;
-        @Nullable String methodNameFormat;
-        @Nullable Boolean internStrings;
+        Logger logger;
+        Path directory;
+        Integer maxBytes;
+        Boolean obfuscateAll;
+        String methodNameFormat;
+        Boolean internStrings;
 
         Builder() { }
 

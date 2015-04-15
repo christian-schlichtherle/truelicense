@@ -5,7 +5,6 @@
 
 package org.truelicense.spi.i18n;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Locale;
 
 import static java.util.Objects.requireNonNull;
@@ -13,10 +12,10 @@ import static java.util.Objects.requireNonNull;
 /**
  * A formatted internationalized message based on
  * {@link FormattedResourceBundle}.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class FormattedMessage extends BasicMessage {
 
     private static final long serialVersionUID = 0L;

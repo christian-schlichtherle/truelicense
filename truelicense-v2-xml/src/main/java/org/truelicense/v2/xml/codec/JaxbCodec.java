@@ -10,7 +10,6 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.concurrent.Immutable;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -24,10 +23,10 @@ import java.util.Objects;
  * A codec which encodes/decodes objects to/from XML with a
  * {@link Marshaller}/{@link Unmarshaller} derived from a {@link JAXBContext}.
  * This type of codec is used for V1/XML format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class JaxbCodec implements Codec {
 
     @Obfuscate

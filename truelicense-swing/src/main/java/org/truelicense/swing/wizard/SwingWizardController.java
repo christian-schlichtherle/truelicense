@@ -12,7 +12,6 @@ import org.truelicense.ui.wizard.BasicWizardController;
 import org.truelicense.ui.wizard.WizardMessage;
 import org.truelicense.ui.wizard.WizardView;
 
-import javax.annotation.CheckForNull;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -50,19 +49,19 @@ extends BasicWizardController<S, V> {
     /**
      * Constructs a wizard controller for the given owner dialog.
      *
-     * @param owner the owner dialog.
+     * @param nullableOwner the nullable owner dialog.
      */
-    protected SwingWizardController(@CheckForNull Dialog owner) {
-        this(new EnhancedDialog(owner));
+    protected SwingWizardController(Dialog nullableOwner) {
+        this(new EnhancedDialog(nullableOwner));
     }
 
     /**
      * Constructs a wizard controller for the given owner frame.
      *
-     * @param owner the owner frame.
+     * @param nullableOwner the nullable owner frame.
      */
-    protected SwingWizardController(@CheckForNull Frame owner) {
-        this(new EnhancedDialog(owner));
+    protected SwingWizardController(Frame nullableOwner) {
+        this(new EnhancedDialog(nullableOwner));
     }
 
     /**

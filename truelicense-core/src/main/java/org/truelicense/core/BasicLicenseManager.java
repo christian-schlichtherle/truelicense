@@ -15,11 +15,11 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.*;
 import org.truelicense.spi.codec.Codecs;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.concurrent.Callable;
 
 /**
  * A basic license manager.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -29,7 +29,6 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 abstract class BasicLicenseManager
 implements BiosProvider, LicenseParametersProvider {
 

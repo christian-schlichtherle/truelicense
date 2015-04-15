@@ -16,12 +16,11 @@ import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.v2.commons.V2LicenseManagementContext;
 import org.truelicense.v2.json.codec.JsonCodec;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
  * The root context for the management of Version-2-with-JSON (V2/JSON) format
  * license keys.
  * Note that there is no compatibility between different format license keys.
+ * This class is immutable.
  * <p>
  * Use this context to create a {@link LicenseVendorContext} or a
  * {@link LicenseConsumerContext}.
@@ -53,7 +52,6 @@ import javax.annotation.concurrent.Immutable;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class V2JsonLicenseManagementContext
 extends V2LicenseManagementContext {
 

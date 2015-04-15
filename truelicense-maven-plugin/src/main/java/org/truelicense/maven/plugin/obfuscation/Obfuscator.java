@@ -5,14 +5,19 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import java.util.*;
-import java.util.Map.Entry;
-import javax.annotation.CheckForNull;
-import javax.annotation.concurrent.Immutable;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 import org.truelicense.obfuscate.ObfuscatedString;
-import static org.truelicense.obfuscate.ObfuscatedString.*;
-import org.objectweb.asm.*;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import static org.objectweb.asm.Opcodes.*;
+import static org.truelicense.obfuscate.ObfuscatedString.array;
+import static org.truelicense.obfuscate.ObfuscatedString.literal;
 
 /**
  * @author Christian Schlichtherle
@@ -33,22 +38,22 @@ final class Obfuscator extends Visitor {
         cmn = super.internStrings() ? "toStringIntern" : "toString";
     }
 
-    @Override public @CheckForNull FieldVisitor visitField(
+    @Override public FieldVisitor visitField(
             int access,
             String name,
             String desc,
-            @CheckForNull String signature,
-            @CheckForNull Object value) {
-        return new O9n2ndFieldNode(access, name, desc, signature, value);
+            String nullableSignature,
+            Object nullableValue) {
+        return new O9n2ndFieldNode(access, name, desc, nullableSignature, nullableValue);
     }
 
-    @Override public @CheckForNull MethodVisitor visitMethod(
+    @Override public MethodVisitor visitMethod(
             final int access,
             final String name,
             final String desc,
-            final @CheckForNull String signature,
-            final @CheckForNull String[] exceptions) {
-        final MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
+            final String nullableSignature,
+            final String[] nullableExceptions) {
+        final MethodVisitor mv = cv.visitMethod(access, name, desc, nullableSignature, nullableExceptions);
         return null == mv
                 ? null
                 : "<init>".equals(name)
@@ -126,7 +131,6 @@ final class Obfuscator extends Visitor {
         return csr;
     }
 
-    @Immutable
     private static final class ConstantStringReference {
         final int access;
         final String name, value;
@@ -161,9 +165,9 @@ final class Obfuscator extends Visitor {
                 int access,
                 String name,
                 String desc,
-                @CheckForNull String signature,
-                @CheckForNull Object value) {
-            super(access, name, desc, signature, value);
+                String nullableSignature,
+                Object nullableValue) {
+            super(access, name, desc, nullableSignature, nullableValue);
         }
 
         @Override public void visitEnd() {

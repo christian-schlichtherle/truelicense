@@ -8,8 +8,6 @@ package org.truelicense.api;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.codec.X500PrincipalXmlAdapter;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNullableByDefault;
 import javax.security.auth.x500.X500Principal;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -66,8 +64,6 @@ import static java.util.Calendar.getInstance;
 // to participate in larger object graphs which the application wants to
 // encode/decode to/from XML.
 @XmlType(name = "license")
-@ParametersAreNullableByDefault
-@Nullable
 public class License {
 
     private int consumerAmount = 1;
@@ -273,7 +269,7 @@ public class License {
         this.subject = subject;
     }
 
-    private static Date clone(@Nullable Date date) {
+    private static Date clone(Date date) {
         return null == date ? null : (Date) date.clone();
     }
 
@@ -338,7 +334,7 @@ public class License {
                 literal(getInfo()));
     }
 
-    private static @Nullable String literal(final @Nullable Object obj) {
+    private static String literal(final Object obj) {
         if (null == obj) return null;
         final String s = obj.toString();
         return '"' +

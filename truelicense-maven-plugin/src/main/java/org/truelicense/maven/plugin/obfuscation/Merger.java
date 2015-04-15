@@ -5,9 +5,9 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import javax.annotation.CheckForNull;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+
 import static org.objectweb.asm.Opcodes.*;
 
 /**
@@ -20,7 +20,7 @@ import static org.objectweb.asm.Opcodes.*;
 final class Merger extends Visitor {
 
     private final String prefix;
-    private @CheckForNull O9nInitMethodVisitor imv;
+    private O9nInitMethodVisitor imv;
     private int counter;
 
     Merger(final Processor ctx, final String prefix, final ClassVisitor cv) {
@@ -28,34 +28,34 @@ final class Merger extends Visitor {
         this.prefix = prefix;
     }
 
-    @Override public @CheckForNull MethodVisitor visitMethod(
+    @Override public MethodVisitor visitMethod(
             final int access,
             final String name,
             final String desc,
-            final @CheckForNull String signature,
-            final @CheckForNull String[] exceptions) {
+            final String nullableSignature,
+            final String[] nullableExceptions) {
         MethodVisitor mv;
         if ("<clinit>".equals(name)) {
             if (isInterface()) {
                 mv = imv;
                 if (null == mv) {
-                    mv = cv.visitMethod(access, name, desc, signature, exceptions);
+                    mv = cv.visitMethod(access, name, desc, nullableSignature, nullableExceptions);
                     if (null != mv)
                         mv = imv = new O9nInterfaceInitMethodVisitor(mv);
                 }
             } else {
                 final String n = methodName(prefix, counter++);
-                mv = cv.visitMethod(ACC_PRIVATE | ACC_STATIC | ACC_SYNTHETIC, n, desc, signature, exceptions);
+                mv = cv.visitMethod(ACC_PRIVATE | ACC_STATIC | ACC_SYNTHETIC, n, desc, nullableSignature, nullableExceptions);
                 O9nInitMethodVisitor imv = this.imv;
                 if (null == imv) {
                     imv = this.imv = new O9nInitMethodVisitor(
-                            cv.visitMethod(access, name, desc, signature, exceptions));
+                            cv.visitMethod(access, name, desc, nullableSignature, nullableExceptions));
                     imv.visitCode();
                 }
                 imv.visitMethodInsn(INVOKESTATIC, internalClassName(), n, desc, false);
             }
         } else {
-            mv = cv.visitMethod(access, name, desc, signature, exceptions);
+            mv = cv.visitMethod(access, name, desc, nullableSignature, nullableExceptions);
         }
         return mv;
     }

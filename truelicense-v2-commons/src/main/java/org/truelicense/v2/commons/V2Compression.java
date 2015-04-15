@@ -5,24 +5,29 @@
 
 package org.truelicense.v2.commons;
 
-import java.io.*;
-import java.util.zip.*;
-import javax.annotation.concurrent.Immutable;
-
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
+
 /**
  * The compression for V2 format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class V2Compression implements Transformation {
 
-    @Override public Sink apply(final Sink sink) {
+    @Override
+    public Sink apply(final Sink sink) {
         return new Sink() {
             @Override public OutputStream output() throws IOException {
                 return new DeflaterOutputStream(sink.output(),
@@ -46,7 +51,8 @@ public final class V2Compression implements Transformation {
         };
     }
 
-    @Override public Source unapply(final Source source) {
+    @Override
+    public Source unapply(final Source source) {
         return new Source() {
             @Override public InputStream input() throws IOException {
                 return new InflaterInputStream(source.input(),

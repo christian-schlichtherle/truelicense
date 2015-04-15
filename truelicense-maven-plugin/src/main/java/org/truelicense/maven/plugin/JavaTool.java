@@ -7,12 +7,11 @@ package org.truelicense.maven.plugin;
 
 import org.truelicense.obfuscate.ObfuscatedString;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
+ * An immutable Velocity tool for use with Java template files.
+ *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class JavaTool {
 
     public String obfuscatedString(String s) {

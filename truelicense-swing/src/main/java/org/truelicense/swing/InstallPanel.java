@@ -218,7 +218,7 @@ final class InstallPanel extends LicenseWorkerPanel {
         add(status, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void installActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_installActionPerformed
+    private void installActionPerformed(java.awt.event.ActionEvent ignored) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
             @Override protected Void doInBackground() throws Exception {
                 manager().install(manager().context().pathStore(Paths.get(fileField.getText())));
@@ -232,7 +232,7 @@ final class InstallPanel extends LicenseWorkerPanel {
         }.execute();
     }//GEN-LAST:event_installActionPerformed
 
-    private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
+    private void fileButtonActionPerformed(java.awt.event.ActionEvent ignored) {//GEN-FIRST:event_fileButtonActionPerformed
         if (filechooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
             fileField.setText(filechooser.getSelectedFile().getPath());
     }//GEN-LAST:event_fileButtonActionPerformed

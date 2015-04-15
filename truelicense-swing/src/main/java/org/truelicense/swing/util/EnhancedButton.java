@@ -5,7 +5,7 @@
 
 package org.truelicense.swing.util;
 
-import org.truelicense.ui.util.MnemonicText;
+import org.truelicense.ui.misc.MnemonicText;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;

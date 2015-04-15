@@ -11,7 +11,6 @@ import org.truelicense.api.passwd.Password;
 import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.api.passwd.PasswordUsage;
 
-import javax.annotation.concurrent.Immutable;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -21,10 +20,10 @@ import java.util.concurrent.Callable;
 
 /**
  * A basic Password Based Encryption (PBE).
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public abstract class BasicPbeEncryption implements Encryption {
 
     private final PbeParameters parameters;

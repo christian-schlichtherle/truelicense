@@ -6,8 +6,6 @@
 /**
  * Provides a generic interface for wizard dialogs.
  *
- * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@javax.annotation.ParametersAreNonnullByDefault @javax.annotation.Nonnull
 package org.truelicense.ui.wizard;

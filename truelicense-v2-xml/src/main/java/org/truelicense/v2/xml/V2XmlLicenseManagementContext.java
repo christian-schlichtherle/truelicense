@@ -5,21 +5,22 @@
 
 package org.truelicense.v2.xml;
 
-import javax.annotation.concurrent.Immutable;
-import javax.xml.bind.*;
-
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.v2.xml.codec.JaxbCodec;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.V2LicenseManagementContext;
+import org.truelicense.v2.xml.codec.JaxbCodec;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 /**
  * The root context for the management of Version-2-with-XML (V2/XML) format
  * license keys.
  * Note that there is no compatibility between different format license keys.
+ * This class is immutable.
  * <p>
  * Use this context to create a {@link LicenseVendorContext} or a
  * {@link LicenseConsumerContext}.
@@ -51,7 +52,6 @@ import org.truelicense.v2.commons.V2LicenseManagementContext;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class V2XmlLicenseManagementContext
 extends V2LicenseManagementContext {
 

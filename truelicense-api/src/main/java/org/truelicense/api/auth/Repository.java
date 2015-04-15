@@ -7,7 +7,6 @@ package org.truelicense.api.auth;
 
 import org.truelicense.api.codec.Codec;
 
-import javax.annotation.concurrent.Immutable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -20,7 +19,6 @@ import java.security.Signature;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public interface Repository {
 
     /**

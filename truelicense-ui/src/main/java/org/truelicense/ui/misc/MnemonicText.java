@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.ui.util;
+package org.truelicense.ui.misc;
 
 import java.io.Serializable;
 

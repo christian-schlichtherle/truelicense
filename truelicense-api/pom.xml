@@ -22,11 +22,4 @@
         The TrueLicense API module provides an Application Programming
         Interface for license management on the Java Virtual Machine.
     </description>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>annotations</artifactId>
-        </dependency>
-    </dependencies>
 </project>

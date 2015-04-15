@@ -12,6 +12,7 @@ import java.util.Objects;
 
 /**
  * A decorator for a license consumer manager.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
@@ -19,9 +20,7 @@ abstract class DecoratingLicenseConsumerManager
 implements LicenseConsumerManager {
 
     @SuppressWarnings({"PackageVisibleField"})
-    protected LicenseConsumerManager manager;
-
-    protected DecoratingLicenseConsumerManager() { }
+    protected final LicenseConsumerManager manager;
 
     protected DecoratingLicenseConsumerManager(final LicenseConsumerManager manager) {
         this.manager = Objects.requireNonNull(manager);

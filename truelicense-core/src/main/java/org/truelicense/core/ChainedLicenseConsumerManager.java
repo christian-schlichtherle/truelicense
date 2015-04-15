@@ -13,17 +13,16 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.ThreadSafe;
 import java.util.List;
 
 /**
  * A caching license consumer manager which establishes a Chain Of
  * Responsibility with its parent license consumer manager.
  * On each operation, the parent license consumer manager is tried first.
+ * This class is thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@ThreadSafe
 abstract class ChainedLicenseConsumerManager
 extends CachingLicenseConsumerManager implements LicenseProvider {
 

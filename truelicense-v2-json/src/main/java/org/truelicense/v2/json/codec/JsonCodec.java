@@ -11,7 +11,6 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
@@ -20,11 +19,11 @@ import java.util.Objects;
 /**
  * A codec which encodes/decodes objects to/from JSON with an
  * {@link ObjectMapper}.
- * This type of coded is used for V2/JSON format license keys.
+ * This type of codec is used for V2/JSON format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class JsonCodec implements Codec {
 
     @Obfuscate

@@ -17,12 +17,11 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.util.List;
 
 /**
  * A basic context for license vendor applications alias license key tools.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -33,7 +32,6 @@ import java.util.List;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-@Immutable
 final class BasicLicenseVendorContext<PasswordSpecification>
 extends BasicLicenseApplicationContext<PasswordSpecification>
 implements LicenseVendorContext<PasswordSpecification> {
@@ -70,7 +68,6 @@ implements LicenseVendorContext<PasswordSpecification> {
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
 
-        @NotThreadSafe
         class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;

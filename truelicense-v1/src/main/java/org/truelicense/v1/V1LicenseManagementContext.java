@@ -13,12 +13,10 @@ import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
-import org.truelicense.v1.codec.X500PrincipalXmlCodec;
 import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.v1.codec.X500PrincipalXmlCodec;
 import org.truelicense.v1.commons.V1Compression;
 import org.truelicense.v1.commons.V1Encryption;
-
-import javax.annotation.concurrent.Immutable;
 
 /**
  * The root context for the management of Version 1 (V1) format license keys.
@@ -27,6 +25,7 @@ import javax.annotation.concurrent.Immutable;
  * Since TrueLicense 2.0, this format is obsolete and should not be used in
  * new applications!
  * Note that there is no compatibility between different format license keys.
+ * This class is immutable.
  * <p>
  * Use this context to create a {@link LicenseVendorContext} or a
  * {@link LicenseConsumerContext}.
@@ -58,7 +57,6 @@ import javax.annotation.concurrent.Immutable;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class V1LicenseManagementContext extends CommonLicenseManagementContext {
 
     @Obfuscate

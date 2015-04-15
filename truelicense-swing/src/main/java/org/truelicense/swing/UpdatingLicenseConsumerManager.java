@@ -5,19 +5,19 @@
 
 package org.truelicense.swing;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import javax.annotation.concurrent.Immutable;
-import javax.swing.*;
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.swing.util.Enabler;
 
+import javax.swing.*;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * A decorating license consumer manager which hosts an {@link Enabler}.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 abstract class UpdatingLicenseConsumerManager
 extends DecoratingLicenseConsumerManager
 implements Serializable {

@@ -5,7 +5,6 @@
 
 package org.truelicense.v1.codec;
 
-import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.PersistenceDelegate;
@@ -15,12 +14,11 @@ import java.io.OutputStream;
 /**
  * A custom XML codec which adds a custom persistence delegate to each new
  * {@link XMLEncoder} for use with {@link X500Principal}s in the object graph.
- * <p>
  * This type of codec is used for V1 format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class X500PrincipalXmlCodec extends XmlCodec {
 
     private static final PersistenceDelegate pd4xp =

@@ -5,8 +5,8 @@
 
 package org.truelicense.api.io;
 
-import edu.umd.cs.findbugs.annotations.CreatesObligation;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * A factory for {@link OutputStream}s.
@@ -17,5 +17,5 @@ import java.io.*;
 public interface Sink {
 
     /** Returns a new output stream for writing the binary data to this sink. */
-    @CreatesObligation OutputStream output() throws IOException;
+    OutputStream output() throws IOException;
 }

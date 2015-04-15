@@ -31,7 +31,7 @@ public class BasicWizardModel<S, V> implements WizardModel<S, V> {
      */
     public static <S extends Enum<S>, V> WizardModel<S, V> create(
             final Class<S> clazz) {
-        return new BasicWizardModel<S, V>(new EnumMap<S, V>(clazz),
+        return new BasicWizardModel<>(new EnumMap<S, V>(clazz),
                 clazz.getEnumConstants()[0]);
     }
 

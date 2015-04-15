@@ -13,14 +13,12 @@ import org.truelicense.core.CommonLicenseManagementContext;
 import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
  * The root context for the management of V2 format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public abstract class V2LicenseManagementContext
 extends CommonLicenseManagementContext {
 

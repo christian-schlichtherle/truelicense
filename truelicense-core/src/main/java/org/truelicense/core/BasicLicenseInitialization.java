@@ -5,18 +5,22 @@
 
 package org.truelicense.core;
 
-import java.util.Date;
-import javax.annotation.concurrent.Immutable;
-import javax.security.auth.x500.X500Principal;
-import static org.truelicense.core.Messages.*;
-
-import org.truelicense.api.*;
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseInitialization;
+import org.truelicense.api.LicenseManagementContext;
+import org.truelicense.api.LicenseSubjectProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.obfuscate.Obfuscate;
 
+import javax.security.auth.x500.X500Principal;
+import java.util.Date;
+
+import static org.truelicense.core.Messages.message;
+
 /**
  * A basic license initialization.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -26,7 +30,6 @@ import org.truelicense.obfuscate.Obfuscate;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 final class BasicLicenseInitialization
 implements ContextProvider<LicenseManagementContext>,
         Clock,

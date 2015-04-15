@@ -9,5 +9,4 @@
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-@javax.annotation.Nonnull @javax.annotation.ParametersAreNonnullByDefault
 package org.truelicense.swing.wizard;

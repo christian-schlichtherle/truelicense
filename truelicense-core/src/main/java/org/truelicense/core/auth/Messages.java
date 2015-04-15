@@ -5,16 +5,15 @@
 
 package org.truelicense.core.auth;
 
-import javax.annotation.concurrent.Immutable;
-import org.truelicense.spi.i18n.FormattedMessage;
 import org.truelicense.api.i18n.Message;
+import org.truelicense.spi.i18n.FormattedMessage;
 
 /**
  * Defines message keys in the resource bundle for this package.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 final class Messages {
 
     private static final Class<?> BASE_CLASS = Messages.class;

@@ -14,13 +14,12 @@ import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.nio.file.Path;
 import java.util.List;
 
 /**
  * A basic context for license consumer applications.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -31,7 +30,6 @@ import java.util.List;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-@Immutable
 final class BasicLicenseConsumerContext<PasswordSpecification>
 extends BasicLicenseApplicationContext<PasswordSpecification>
 implements CachePeriodProvider,
@@ -126,7 +124,6 @@ implements CachePeriodProvider,
     @SuppressWarnings("PackageVisibleField")
     @Override public ManagerBuilder<PasswordSpecification> manager() {
 
-        @NotThreadSafe
         class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
 
             final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;

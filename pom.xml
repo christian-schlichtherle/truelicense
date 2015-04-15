@@ -408,7 +408,6 @@
                 <configuration>
                     <links>
                         <link>http://commons.apache.org/codec/apidocs/</link>
-                        <link>http://findbugs.sourceforge.net/api/</link>
                     </links>
                 </configuration>
                 <reportSets>

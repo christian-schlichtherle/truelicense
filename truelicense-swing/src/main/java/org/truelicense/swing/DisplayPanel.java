@@ -5,25 +5,13 @@
 
 package org.truelicense.swing;
 
-import java.util.Date;
-import javax.annotation.CheckForNull;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseValidationException;
-import static org.truelicense.ui.LicenseWizardMessage.display_consumer;
-import static org.truelicense.ui.LicenseWizardMessage.display_consumerFormat;
-import static org.truelicense.ui.LicenseWizardMessage.display_dateTimeFormat;
-import static org.truelicense.ui.LicenseWizardMessage.display_failure;
-import static org.truelicense.ui.LicenseWizardMessage.display_holder;
-import static org.truelicense.ui.LicenseWizardMessage.display_info;
-import static org.truelicense.ui.LicenseWizardMessage.display_issued;
-import static org.truelicense.ui.LicenseWizardMessage.display_issuer;
-import static org.truelicense.ui.LicenseWizardMessage.display_notAfter;
-import static org.truelicense.ui.LicenseWizardMessage.display_notBefore;
-import static org.truelicense.ui.LicenseWizardMessage.display_subject;
-import static org.truelicense.ui.LicenseWizardMessage.display_title;
-import static org.truelicense.ui.LicenseWizardMessage.failure_title;
+
+import javax.swing.*;
+import java.util.Date;
+
+import static org.truelicense.ui.LicenseWizardMessage.*;
 
 /**
  * @author Christian Schlichtherle
@@ -73,11 +61,11 @@ final class DisplayPanel extends LicensePanel {
         infoComponent.setText(nonNullOrEmptyString(license.getInfo()));
     }
 
-    private static String nonNullOrEmptyString(@CheckForNull Object obj) {
+    private static String nonNullOrEmptyString(Object obj) {
         return null != obj ? obj.toString() : "";
     }
 
-    private String format(@CheckForNull Date date) {
+    private String format(Date date) {
         return display_dateTimeFormat(subject(), date);
     }
 

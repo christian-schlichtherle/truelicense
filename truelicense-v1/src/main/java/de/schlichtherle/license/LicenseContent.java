@@ -11,8 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Provides compatibility with version 1 (V1) format license keys
- * as used by TrueLicense 1.X applications.
+ * Provides compatibility with V1 format license keys.
  *
  * @author Christian Schlichtherle
  */

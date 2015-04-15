@@ -7,5 +7,4 @@
  * Provides an internationalized, Swing based wizard dialog
  * for license management in consumer applications.
  */
-@javax.annotation.Nonnull @javax.annotation.ParametersAreNonnullByDefault
 package org.truelicense.swing;

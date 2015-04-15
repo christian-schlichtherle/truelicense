@@ -36,10 +36,7 @@ public abstract class MojoAdapter extends AbstractMojo {
             throws MojoExecutionException, MojoFailureException {
         try {
             doExecute();
-        } catch (final MojoExecutionException e) {
-            getLog().error(e.toString(), e);
-            throw e;
-        } catch (final MojoFailureException e) {
+        } catch (MojoExecutionException | MojoFailureException e) {
             getLog().error(e.toString(), e);
             throw e;
         }

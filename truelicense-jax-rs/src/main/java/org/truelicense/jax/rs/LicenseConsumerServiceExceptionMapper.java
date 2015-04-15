@@ -5,26 +5,31 @@
 
 package org.truelicense.jax.rs;
 
-import javax.annotation.concurrent.Immutable;
+import org.truelicense.obfuscate.Obfuscate;
+
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.*;
-import static javax.ws.rs.core.MediaType.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.ext.*;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 import java.util.Objects;
-import org.truelicense.obfuscate.Obfuscate;
+
+import static javax.ws.rs.core.MediaType.*;
 
 /**
  * Maps a license consumer service exception to an HTTP response.
+ * This class is immutable.
  *
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
 @Provider
 @Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML, TEXT_PLAIN })
-@Immutable
 public final class LicenseConsumerServiceExceptionMapper
 implements ExceptionMapper<LicenseConsumerServiceException> {
 

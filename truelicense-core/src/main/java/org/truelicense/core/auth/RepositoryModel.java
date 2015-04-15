@@ -8,8 +8,6 @@ package org.truelicense.core.auth;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.core.misc.Strings;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNullableByDefault;
 import javax.xml.bind.annotation.XmlElement;
 import java.util.Objects;
 
@@ -17,6 +15,7 @@ import static java.util.Locale.ENGLISH;
 
 /**
  * A model for storing authenticated objects (artifacts) as encoded strings.
+ * All properties are set to {@code null} by default.
  * The content type and the content transfer encoding of the encoded artifact
  * and encoded signature are defined externally.
  * <p>
@@ -26,8 +25,6 @@ import static java.util.Locale.ENGLISH;
  *
  * @author Christian Schlichtherle
  */
-@ParametersAreNullableByDefault
-@Nullable
 public class RepositoryModel {
 
     private String artifact, signature, algorithm;

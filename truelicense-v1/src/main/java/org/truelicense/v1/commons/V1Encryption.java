@@ -12,7 +12,6 @@ import org.truelicense.api.passwd.PasswordUsage;
 import org.truelicense.core.crypto.BasicPbeEncryption;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.concurrent.Immutable;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
@@ -27,10 +26,10 @@ import static javax.crypto.Cipher.*;
 
 /**
  * The encryption for V1 format license keys.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class V1Encryption extends BasicPbeEncryption {
 
     @Obfuscate private static final String PBE_ALGORITHM = "PBEWithMD5andDES";
@@ -45,7 +44,8 @@ public final class V1Encryption extends BasicPbeEncryption {
             throw new IllegalArgumentException(ILLEGAL_PBE_ALGORITHM);
     }
 
-    @Override public Sink apply(final Sink sink) {
+    @Override
+    public Sink apply(final Sink sink) {
         return new Sink() {
             @Override public OutputStream output() throws IOException {
                 return wrap(new Callable<OutputStream>() {
@@ -58,7 +58,8 @@ public final class V1Encryption extends BasicPbeEncryption {
         };
     }
 
-    @Override public Source unapply(final Source source) {
+    @Override
+    public Source unapply(final Source source) {
         return new Source() {
             @Override public InputStream input() throws IOException {
                 return wrap(new Callable<InputStream>() {

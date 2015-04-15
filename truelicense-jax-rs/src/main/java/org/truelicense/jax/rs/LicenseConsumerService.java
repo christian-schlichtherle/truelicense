@@ -8,10 +8,9 @@ package org.truelicense.jax.rs;
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
-import org.truelicense.spi.io.MemoryStore;
 import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.spi.io.MemoryStore;
 
-import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -25,13 +24,13 @@ import static javax.ws.rs.core.MediaType.*;
 
 /**
  * A RESTful web service for license management in consumer applications.
+ * This class is immutable.
  *
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
 @Path("license")
 @Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
-@Immutable
 public final class LicenseConsumerService {
 
     private static final int BAD_REQUEST_STATUS_CODE = 400;

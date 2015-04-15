@@ -7,7 +7,6 @@ package org.truelicense.api.x500;
 
 import org.truelicense.api.misc.Builder;
 
-import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -54,46 +53,38 @@ public abstract class GenericX500PrincipalBuilder<This extends GenericX500Princi
 implements Builder<X500Principal> {
 
     private final Map<String, String>
-            attributes = new LinkedHashMap<String, String>(),
-            keywords = new HashMap<String, String>();
+            attributes = new LinkedHashMap<>(),
+            keywords = new HashMap<>();
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#C C}, value)</code>.
      */
-    public This addC(@Nullable String value) {
-        return addAttribute(C, value);
-    }
+    public This addC(String value) { return addAttribute(C, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#CN CN}, value)</code>.
      */
-    public This addCN(@Nullable String value) {
-        return addAttribute(CN, value);
-    }
+    public This addCN(String value) { return addAttribute(CN, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#DC DC}, value)</code>.
      */
-    public This addDC(@Nullable String value) {
-        return addAttribute(DC, value);
-    }
+    public This addDC(String value) { return addAttribute(DC, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#DNQ DNQ}, value)</code>.
      */
-    public This addDNQ(@Nullable String value) {
-        return addAttribute(DNQ, value);
-    }
+    public This addDNQ(String value) { return addAttribute(DNQ, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#DNQUALIFIER DNQUALIFIER}, value)</code>.
      */
-    public This addDNQUALIFIER(@Nullable String value) {
+    public This addDNQUALIFIER(String value) {
         return addAttribute(DNQUALIFIER, value);
     }
 
@@ -101,7 +92,7 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#EMAILADDRESS EMAILADDRESS}, value)</code>.
      */
-    public This addEMAILADDRESS(@Nullable String value) {
+    public This addEMAILADDRESS(String value) {
         return addAttribute(EMAILADDRESS, value);
     }
 
@@ -109,7 +100,7 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#GENERATION GENERATION}, value)</code>.
      */
-    public This addGENERATION(@Nullable String value) {
+    public This addGENERATION(String value) {
         return addAttribute(GENERATION, value);
     }
 
@@ -117,7 +108,7 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#GIVENNAME GIVENNAME}, value)</code>.
      */
-    public This addGIVENNAME(@Nullable String value) {
+    public This addGIVENNAME(String value) {
         return addAttribute(GIVENNAME, value);
     }
 
@@ -125,7 +116,7 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#INITIALS INITIALS}, value)</code>.
      */
-    public This addINITIALS(@Nullable String value) {
+    public This addINITIALS(String value) {
         return addAttribute(INITIALS, value);
     }
 
@@ -133,31 +124,25 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#L L}, value)</code>.
      */
-    public This addL(@Nullable String value) {
-        return addAttribute(L, value);
-    }
+    public This addL(String value) { return addAttribute(L, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#O O}, value)</code>.
      */
-    public This addO(@Nullable String value) {
-        return addAttribute(O, value);
-    }
+    public This addO(String value) { return addAttribute(O, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#OU OU}, value)</code>.
      */
-    public This addOU(@Nullable String value) {
-        return addAttribute(OU, value);
-    }
+    public This addOU(String value) { return addAttribute(OU, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#SERIALNUMBER SERIALNUMBER}, value)</code>.
      */
-    public This addSERIALNUMBER(@Nullable String value) {
+    public This addSERIALNUMBER(String value) {
         return addAttribute(SERIALNUMBER, value);
     }
 
@@ -165,23 +150,19 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#ST ST}, value)</code>.
      */
-    public This addST(@Nullable String value) {
-        return addAttribute(ST, value);
-    }
+    public This addST(String value) { return addAttribute(ST, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#STREET STREET}, value)</code>.
      */
-    public This addSTREET(@Nullable String value) {
-        return addAttribute(STREET, value);
-    }
+    public This addSTREET(String value) { return addAttribute(STREET, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#SURNAME SURNAME}, value)</code>.
      */
-    public This addSURNAME(@Nullable String value) {
+    public This addSURNAME(String value) {
         return addAttribute(SURNAME, value);
     }
 
@@ -189,17 +170,13 @@ implements Builder<X500Principal> {
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#T T}, value)</code>.
      */
-    public This addT(@Nullable String value) {
-        return addAttribute(T, value);
-    }
+    public This addT(String value) { return addAttribute(T, value); }
 
     /**
      * Equivalent to
      * <code>addAttribute({@link X500AttributeTypeKeyword#UID UID}, value)</code>.
      */
-    public This addUID(@Nullable String value) {
-        return addAttribute(UID, value);
-    }
+    public This addUID(String value) { return addAttribute(UID, value); }
 
     /**
      * Adds an X.500 attribute to the distinguished name.
@@ -208,9 +185,7 @@ implements Builder<X500Principal> {
      * @param value the nullable, unquoted and unescaped attribute value.
      * @return {@code this}
      */
-    public This addAttribute(
-            X500AttributeTypeKeyword keyword,
-            @Nullable String value) {
+    public This addAttribute(X500AttributeTypeKeyword keyword, String value) {
         return addAttribute(keyword.name(), value);
     }
 
@@ -224,9 +199,7 @@ implements Builder<X500Principal> {
      * @see #addKeyword
      */
     @SuppressWarnings("unchecked")
-    public This addAttribute(
-            final String type,
-            final @Nullable String value) {
+    public This addAttribute(final String type, final String value) {
         requireNonNull(type);
         if (null != value)
             attributes.put(type, value);
@@ -243,12 +216,12 @@ implements Builder<X500Principal> {
      * @return {@code this}
      */
     @SuppressWarnings("unchecked")
-    public This addKeyword(
-            final String keyword,
-            final @Nullable String oid) {
+    public This addKeyword(final String keyword, final String oid) {
         requireNonNull(keyword);
-        if (null != oid) keywords.put(keyword, oid);
-        else keywords.remove(keyword);
+        if (null != oid)
+            keywords.put(keyword, oid);
+        else
+            keywords.remove(keyword);
         return (This) this;
     }
 

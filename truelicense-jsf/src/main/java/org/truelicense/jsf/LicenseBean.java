@@ -5,20 +5,21 @@
 
 package org.truelicense.jsf;
 
-import java.text.MessageFormat;
-import java.util.Locale;
-import javax.annotation.Nullable;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.component.*;
-import javax.faces.context.*;
-
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.spi.i18n.Formattable;
 import org.truelicense.ui.LicenseWizardState;
-import org.truelicense.ui.util.MnemonicText;
+import org.truelicense.ui.misc.MnemonicText;
 import org.truelicense.ui.wizard.WizardView;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.text.MessageFormat;
+import java.util.Locale;
 
 /**
  * A base class for backing beans for license consumer management.
@@ -30,13 +31,13 @@ public abstract class LicenseBean
 extends UINamingContainer
 implements WizardView<LicenseWizardState> {
 
-    private @Nullable LicenseConsumerManager manager;
+    private LicenseConsumerManager manager;
 
     LicenseBean() { }
 
     final LicenseConsumerManager manager() {
-        final LicenseConsumerManager manager = this.manager;
-        return null != manager ? manager : (this.manager = resolveManager());
+        final LicenseConsumerManager m = manager;
+        return null != m ? m : (manager = resolveManager());
     }
 
     private LicenseConsumerManager resolveManager() {

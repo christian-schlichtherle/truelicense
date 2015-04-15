@@ -5,7 +5,6 @@
 
 package org.truelicense.spi.i18n;
 
-import javax.annotation.concurrent.Immutable;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -15,10 +14,10 @@ import static java.util.Objects.requireNonNull;
 /**
  * Wraps a {@link ResourceBundle} in order to format strings with
  * {@link MessageFormat#format(String, Object[])}.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class FormattedResourceBundle {
 
     /**

@@ -5,8 +5,9 @@
 
 package org.truelicense.maven.plugin;
 
-import javax.annotation.Nullable;
 import org.apache.maven.plugin.logging.Log;
+
+import java.util.Objects;
 
 /**
  * @author Christian Schlichtherle
@@ -14,13 +15,9 @@ import org.apache.maven.plugin.logging.Log;
 class DecoratingLog implements Log {
 
     /** The nullable log. */
-    @Nullable Log log;
+    final Log log;
 
-    DecoratingLog() { }
-
-    DecoratingLog(final @Nullable Log log) {
-        this.log = log;
-    }
+    DecoratingLog(final Log log) { this.log = Objects.requireNonNull(log); }
 
     @Override
     public boolean isDebugEnabled() { return log.isDebugEnabled(); }

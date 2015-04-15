@@ -5,8 +5,6 @@
 
 package org.truelicense.swing;
 
-import javax.annotation.concurrent.Immutable;
-
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.api.io.Source;
@@ -17,10 +15,10 @@ import org.truelicense.swing.util.Enabler;
  * successfully called {@link #install} or {@link #uninstall} on the delegate
  * manager.
  * If the operation fails, the component's state remains unchanged.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 final class EnablingLicenseConsumerManager
 extends UpdatingLicenseConsumerManager {
 

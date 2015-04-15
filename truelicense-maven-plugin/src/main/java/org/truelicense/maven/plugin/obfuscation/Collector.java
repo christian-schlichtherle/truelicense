@@ -5,10 +5,11 @@
 
 package org.truelicense.maven.plugin.obfuscation;
 
-import java.util.Set;
-import javax.annotation.CheckForNull;
-import static org.truelicense.obfuscate.ObfuscatedString.*;
 import org.objectweb.asm.FieldVisitor;
+
+import java.util.Set;
+
+import static org.truelicense.obfuscate.ObfuscatedString.literal;
 
 /**
  * @author Christian Schlichtherle
@@ -18,16 +19,16 @@ final class Collector extends Visitor {
     Collector(Processor ctx) { super(ctx, null); }
 
     @Override
-    public @CheckForNull FieldVisitor visitField(int access, String name, String desc, @CheckForNull String signature, @CheckForNull Object value) {
-        return value instanceof String
-                ? new O9n1stFieldNode(access, name, desc, signature, value)
+    public FieldVisitor visitField(int access, String name, String desc, String nullableSignature, Object nullableValue) {
+        return nullableValue instanceof String
+                ? new O9n1stFieldNode(access, name, desc, nullableSignature, nullableValue)
                 : null;
     }
 
     private final class O9n1stFieldNode extends O9nFieldNode {
 
-        O9n1stFieldNode(int access, String name, String desc, @CheckForNull String signature, @CheckForNull Object value) {
-            super(access, name, desc, signature, value);
+        O9n1stFieldNode(int access, String name, String desc, String nullableSignature, Object nullableValue) {
+            super(access, name, desc, nullableSignature, nullableValue);
         }
 
         @Override

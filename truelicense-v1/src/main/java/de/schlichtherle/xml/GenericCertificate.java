@@ -11,22 +11,16 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.obfuscate.Obfuscate;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.annotation.ParametersAreNullableByDefault;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
 /**
- * Provides compatibility with version 1 (V1) format license keys as used
- * by TrueLicense 1.X applications.
- * This type of repository is used in V1 format license keys.
+ * Provides compatibility with V1 format license keys.
+ * All properties are set to {@code null} by default.
  *
  * @author Christian Schlichtherle
  */
-@ParametersAreNullableByDefault
-@Nullable
 public final class GenericCertificate implements Repository {
 
     @Obfuscate private static final String SIGNATURE_ENCODING = "US-ASCII/Base64";
@@ -66,7 +60,6 @@ public final class GenericCertificate implements Repository {
     }
 
     @Override
-    @ParametersAreNonnullByDefault
     public Artifactory sign(final Codec codec, final Signature engine, final PrivateKey key, final Object artifact) throws Exception {
         final Artifactory a = repository.sign(codec, engine, key, artifact);
         setSignatureEncoding(SIGNATURE_ENCODING);
@@ -74,7 +67,6 @@ public final class GenericCertificate implements Repository {
     }
 
     @Override
-    @ParametersAreNonnullByDefault
     public Artifactory verify(Codec codec, Signature engine, PublicKey key) throws Exception {
         return repository.verify(codec, engine, key);
     }

@@ -9,17 +9,16 @@ import org.truelicense.api.passwd.*;
 import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * A static factory for password management objects.
+ * This class is trivially immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public final class Passwords {
 
     /** Returns a new password protection for the given obfuscated string. */

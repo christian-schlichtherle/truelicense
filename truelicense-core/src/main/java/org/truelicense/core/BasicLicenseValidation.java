@@ -5,17 +5,18 @@
 
 package org.truelicense.core;
 
-import java.util.Date;
-import javax.annotation.concurrent.Immutable;
-import static org.truelicense.core.Messages.*;
-
 import org.truelicense.api.*;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.obfuscate.Obfuscate;
 
+import java.util.Date;
+
+import static org.truelicense.core.Messages.message;
+
 /**
  * A basic license validation.
+ * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -25,7 +26,6 @@ import org.truelicense.obfuscate.Obfuscate;
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 final class BasicLicenseValidation
 implements ContextProvider<LicenseManagementContext>,
         Clock,

@@ -11,7 +11,6 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
 
-import javax.annotation.concurrent.Immutable;
 import java.io.*;
 import java.nio.file.Path;
 import java.util.List;
@@ -19,10 +18,10 @@ import java.util.prefs.Preferences;
 
 /**
  * The standard BIOS implementation.
+ * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public class StandardBIOS implements BIOS {
 
     /**
