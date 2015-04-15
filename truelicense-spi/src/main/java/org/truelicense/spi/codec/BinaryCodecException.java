@@ -7,7 +7,7 @@ package org.truelicense.spi.codec;
 
 import org.truelicense.api.codec.Codec;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 
 /**
  * Indicates that a {@link Codec} produces binary output instead of the
@@ -21,7 +21,7 @@ public class BinaryCodecException extends IllegalArgumentException {
 
     public BinaryCodecException() { }
 
-    public BinaryCodecException(@CheckForNull String message) {
+    public BinaryCodecException(@Nullable String message) {
         super(message);
     }
 }
