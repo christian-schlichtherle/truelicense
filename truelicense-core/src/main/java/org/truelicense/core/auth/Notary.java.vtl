@@ -22,9 +22,6 @@ import org.truelicense.spi.misc.Option;
 
 import java.io.InputStream;
 import java.security.*;
-import java.security.KeyStore.Entry;
-import java.security.KeyStore.PrivateKeyEntry;
-import java.security.KeyStore.TrustedCertificateEntry;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -102,9 +99,9 @@ public final class Notary implements Authentication {
         }
 
         PrivateKey privateKey() throws Exception {
-            final Entry entry = entry(PasswordUsage.WRITE);
-            if (entry instanceof PrivateKeyEntry) {
-                return ((PrivateKeyEntry) entry).getPrivateKey();
+            final KeyStore.Entry entry = keyStoreEntry(PasswordUsage.WRITE);
+            if (entry instanceof KeyStore.PrivateKeyEntry) {
+                return ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
             } else {
                 throw new NotaryException(message(NO_PRIVATE_KEY));
             }
@@ -135,29 +132,29 @@ public final class Notary implements Authentication {
         }
 
         Certificate certificate() throws Exception {
-            final Entry entry = entry(PasswordUsage.READ);
-            if (entry instanceof PrivateKeyEntry) {
-                return ((PrivateKeyEntry) entry).getCertificate();
-            } else if (entry instanceof TrustedCertificateEntry) {
-                return ((TrustedCertificateEntry) entry).getTrustedCertificate();
+            final KeyStore.Entry entry = keyStoreEntry(PasswordUsage.READ);
+            if (entry instanceof KeyStore.PrivateKeyEntry) {
+                return ((KeyStore.PrivateKeyEntry) entry).getCertificate();
+            } else if (entry instanceof KeyStore.TrustedCertificateEntry) {
+                return ((KeyStore.TrustedCertificateEntry) entry).getTrustedCertificate();
             } else {
                 throw new NotaryException(message(NO_CERTIFICATE));
             }
         }
 
-        Entry entry(final PasswordUsage usage) throws Exception {
+        KeyStore.Entry keyStoreEntry(final PasswordUsage usage) throws Exception {
             if (isKeyEntry()) {
                 try (Password password = keyProtection().password(usage)) {
                     final KeyStore.PasswordProtection protection =
                             new KeyStore.PasswordProtection(password.characters());
                     try {
-                        return entry(Option.wrap(protection));
+                        return keyStoreEntry(Option.wrap(protection));
                     } finally {
                         protection.destroy();
                     }
                 }
             } else if (isCertificateEntry()) {
-                return entry(Option.<KeyStore.PasswordProtection>none());
+                return keyStoreEntry(Option.<KeyStore.PasswordProtection>none());
             } else {
                 assert !keyStore().containsAlias(alias());
                 throw new NotaryException(message(NO_SUCH_ENTRY));
@@ -172,7 +169,7 @@ public final class Notary implements Authentication {
             return keyStore().isCertificateEntry(alias());
         }
 
-        Entry entry(List<KeyStore.PasswordProtection> optionalProtection) throws Exception {
+        KeyStore.Entry keyStoreEntry(List<KeyStore.PasswordProtection> optionalProtection) throws Exception {
             return keyStore().getEntry(alias(), Option.unwrap(optionalProtection));
         }
 
