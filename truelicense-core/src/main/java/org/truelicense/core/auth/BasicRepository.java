@@ -12,13 +12,16 @@ import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.spi.io.MemoryStore;
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 
-import static org.truelicense.spi.codec.Codecs.contentTransferCharset;
+import static org.truelicense.spi.codec.Codecs.charset;
 
 /**
  * A basic repository for storing authenticated objects (artifacts).
@@ -38,25 +41,21 @@ import static org.truelicense.spi.codec.Codecs.contentTransferCharset;
 public final class BasicRepository
 extends RepositoryModel implements Repository {
 
-    private static final Base64 base64 = new Base64();
-
+    private final Base64 base64 = new Base64();
+    
     private byte[] data(final Codec codec, final String body) {
-        try { return body.getBytes(contentTransferCharset(codec)); }
-        catch (IllegalArgumentException ex) { return decode(body); }
+        final @CheckForNull Charset cs = charset(codec);
+        return null != cs ? body.getBytes(cs) : decode(body);
     }
 
-    private static byte[] decode(String body) {
-        return base64.decode(body);
-    }
+    private byte[] decode(String body) { return base64.decode(body); }
 
     private String body(final Codec codec, final byte[] artifact) {
-        try { return new String(artifact, contentTransferCharset(codec)); }
-        catch (IllegalArgumentException ex) { return encode(artifact); }
+        final @CheckForNull Charset cs = charset(codec);
+        return null != cs ? new String(artifact, cs) : encode(artifact);
     }
 
-    private static String encode(byte[] data) {
-        return base64.encodeToString(data);
-    }
+    private String encode(byte[] data) { return base64.encodeToString(data); }
 
     @Override
     public final Artifactory sign(final Codec codec, final Signature engine, final PrivateKey key, final Object artifact) throws Exception {
