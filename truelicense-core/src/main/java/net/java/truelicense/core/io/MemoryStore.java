@@ -37,9 +37,28 @@ public final class MemoryStore implements Store {
         if (0 > (this.bufsize = bufsize)) throw new IllegalArgumentException();
     }
 
-    private static byte[] clone(@CheckForNull byte[] buffer) {
-        return null == buffer ? null : buffer.clone();
+    @Override
+    public InputStream input() throws IOException {
+        return new ByteArrayInputStream(checkedData());
     }
+
+    @Override
+    public OutputStream output() throws IOException {
+        return new ByteArrayOutputStream(bufsize) {
+            @Override public void close() throws IOException {
+                buffer = toByteArray();
+            }
+        };
+    }
+
+    @Override
+    public void delete() throws IOException {
+        checkedData();
+        buffer = null;
+    }
+
+    @Override
+    public boolean exists() { return null != buffer; }
 
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
     private byte[] checkedData() throws FileNotFoundException {
@@ -53,22 +72,7 @@ public final class MemoryStore implements Store {
         this.buffer = clone(buffer);
     }
 
-    @Override public InputStream input() throws IOException {
-        return new ByteArrayInputStream(checkedData());
+    private static byte[] clone(@CheckForNull byte[] buffer) {
+        return null == buffer ? null : buffer.clone();
     }
-
-    @Override public OutputStream output() throws IOException {
-        return new ByteArrayOutputStream(bufsize) {
-            @Override public void close() throws IOException {
-                buffer = toByteArray();
-            }
-        };
-    }
-
-    @Override public void delete() throws IOException {
-        checkedData();
-        buffer = null;
-    }
-
-    @Override public boolean exists() { return null != buffer; }
 }

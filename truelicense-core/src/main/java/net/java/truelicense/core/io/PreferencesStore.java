@@ -41,16 +41,40 @@ public final class PreferencesStore implements Store {
         this.key = requireNonNull(key);
     }
 
-    public boolean isUserNode() { return prefs.isUserNode(); }
+    @Override
+    public InputStream input() throws IOException {
+        return new ByteArrayInputStream(checkedData());
+    }
+
+    @Override
+    public OutputStream output() throws IOException {
+        return new ByteArrayOutputStream(BUFSIZE) {
+            @Override
+            public void close() throws IOException {
+                data(toByteArray());
+                sync();
+            }
+        };
+    }
+
+    @Override
+    public void delete() throws IOException {
+        checkedData();
+        data(null);
+        sync();
+    }
+
+    @Override
+    public boolean exists() { return null != data(); }
 
     private byte[] checkedData() throws FileNotFoundException {
         final byte[] data = data();
         if (null == data)
             throw new FileNotFoundException(
                     "Cannot locate the key \"" + key + "\" in the " +
-                    (isUserNode() ? "user" : "system") +
-                    " preferences node for the absolute path \"" +
-                    prefs.absolutePath() + "\".");
+                            (isUserNode() ? "user" : "system") +
+                            " preferences node for the absolute path \"" +
+                            prefs.absolutePath() + "\".");
         return data;
     }
 
@@ -61,30 +85,10 @@ public final class PreferencesStore implements Store {
         else prefs.remove(key);
     }
 
-    @Override public InputStream input() throws IOException {
-        return new ByteArrayInputStream(checkedData());
-    }
+    public boolean isUserNode() { return prefs.isUserNode(); }
 
-    @Override public OutputStream output() throws IOException {
-        return new ByteArrayOutputStream(BUFSIZE) {
-            @Override
-            public void close() throws IOException {
-                data(toByteArray());
-                sync();
-            }
-        };
-    }
-
-    @Override public void delete() throws IOException {
-        checkedData();
-        data(null);
-        sync();
-    }
-
-    private void sync() throws IOException {
+    public void sync() throws IOException {
         try { prefs.flush(); }
-        catch (final BackingStoreException ex) { throw new IOException(ex); }
+        catch (BackingStoreException e) { throw new IOException(e); }
     }
-
-    @Override public boolean exists() { return null != data(); }
 }
