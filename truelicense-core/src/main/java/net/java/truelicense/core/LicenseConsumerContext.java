@@ -291,7 +291,7 @@ extends LicenseApplicationContext {
         PbeInjection<ManagerBuilder> pbe();
 
         /**
-         * Stores the license key in the given store.
+         * Store the license key in the given store.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
          * license key and MUST BE KEPT SECRET!
@@ -301,7 +301,7 @@ extends LicenseApplicationContext {
         ManagerBuilder storeIn(Store store);
 
         /**
-         * Stores the license key in the given file.
+         * Store the license key in the given file.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
          * license key and MUST BE KEPT SECRET!
@@ -311,7 +311,7 @@ extends LicenseApplicationContext {
         ManagerBuilder storeInFile(File file);
 
         /**
-         * Stores the license key in the system preferences node for the
+         * Store the license key in the system preferences node for the
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
@@ -322,7 +322,7 @@ extends LicenseApplicationContext {
         ManagerBuilder storeInSystemNode(Class<?> classInPackage);
 
         /**
-         * Stores the license key in the user preferences node for the
+         * Store the license key in the user preferences node for the
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
          * configured, then the store will be used for the auto-generated FTP
