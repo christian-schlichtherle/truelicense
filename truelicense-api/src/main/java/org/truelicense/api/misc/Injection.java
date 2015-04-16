@@ -13,6 +13,6 @@ package org.truelicense.api.misc;
  */
 public interface Injection<Target> {
 
-    /** Injects the dependency into the target and returns the target. */
+    /** Injects a dependency into the target and returns the target. */
     Target inject();
 }

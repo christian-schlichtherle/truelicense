@@ -7,7 +7,7 @@ package org.truelicense.api.misc;
 
 /**
  * A builder for some product.
- * Clients should assume that builders are <em>not</em> thread-safe.
+ * Builders are generally <em>not</em> thread-safe.
  *
  * @param  <Product> the type of the product.
  * @author Christian Schlichtherle
