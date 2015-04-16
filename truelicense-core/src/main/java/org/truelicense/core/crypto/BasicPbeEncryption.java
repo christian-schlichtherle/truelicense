@@ -66,7 +66,7 @@ public abstract class BasicPbeEncryption implements Encryption {
      */
     protected static <V> V wrap(final Callable<V> task) throws IOException {
         try { return task.call(); }
-        catch (RuntimeException | IOException ex) { throw ex; }
-        catch (Throwable ex) { throw new IOException(ex); }
+        catch (RuntimeException | IOException e) { throw e; }
+        catch (Exception e) { throw new IOException(e); }
     }
 }
