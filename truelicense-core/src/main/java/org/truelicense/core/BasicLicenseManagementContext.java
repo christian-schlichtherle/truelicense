@@ -71,7 +71,7 @@ implements LicenseManagementContext<PasswordSpecification> {
      * returns a {@link StandardBIOS}.
      */
     @Override
-    public BIOS bios() { return new StandardBIOS(); } // TODO: Consider caching this object.
+    public BIOS bios() { return new StandardBIOS(); }
 
     /**
      * {@inheritDoc}
