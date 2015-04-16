@@ -26,28 +26,6 @@ import java.util.List;
 public interface KeyStoreParameters {
 
     /**
-     * Returns the optional input source for the key store.
-     * This is a list of at most one non-null item.
-     * The list may be empty to indicate that the key store type does not
-     * require loading from an input source / stream.
-     */
-    List<Source> optionalSource();
-
-    /**
-     * Returns the type of the key store, for example {@code "JCEKS"} or
-     * {@code "JKS"}.
-     * The returned string should be computed on demand from an obfuscated form,
-     * e.g. by processing it with the TrueLicense Maven Plugin.
-     */
-    String storeType();
-
-    /**
-     * Returns a password protection for verifying the integrity of the key
-     * store.
-     */
-    PasswordProtection storeProtection();
-
-    /**
      * Returns the alias of the entry in the key store.
      * The returned string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.
@@ -59,4 +37,26 @@ public interface KeyStoreParameters {
      * entry.
      */
     PasswordProtection keyProtection();
+
+    /**
+     * Returns the optional input source for the key store.
+     * This is a list of at most one non-null item.
+     * The list may be empty to indicate that the key store type does not
+     * require loading from an input source / stream.
+     */
+    List<Source> optionalSource();
+
+    /**
+     * Returns a password protection for verifying the integrity of the key
+     * store.
+     */
+    PasswordProtection storeProtection();
+
+    /**
+     * Returns the type of the key store, for example {@code "JCEKS"} or
+     * {@code "JKS"}.
+     * The returned string should be computed on demand from an obfuscated form,
+     * e.g. by processing it with the TrueLicense Maven Plugin.
+     */
+    String storeType();
 }
