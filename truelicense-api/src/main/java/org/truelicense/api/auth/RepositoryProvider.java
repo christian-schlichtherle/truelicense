@@ -11,6 +11,7 @@ package org.truelicense.api.auth;
  * @author Christian Schlichtherle
  */
 public interface RepositoryProvider {
+
     /** Returns the repository. */
     Repository repository();
 }
