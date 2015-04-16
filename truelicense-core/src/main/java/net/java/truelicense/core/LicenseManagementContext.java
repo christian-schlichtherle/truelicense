@@ -78,9 +78,9 @@ extends CachePeriodProvider,
     /**
      * Returns an encryption for the given PBE parameters.
      *
-     * @param pbe the PBE parameters.
+     * @param parameters the PBE parameters.
      */
-    Encryption encryption(PbeParameters pbe);
+    Encryption encryption(PbeParameters parameters);
 
     /**
      * Returns a context for license vendor applications alias license key

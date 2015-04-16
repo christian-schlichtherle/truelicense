@@ -134,7 +134,7 @@ extends BasicLicenseManagementContext {
      * returns an encryption for V1 format license keys with the given
      * parameters.
      */
-    @Override public final Encryption encryption(PbeParameters pbe) {
-        return new V1Encryption(pbe);
+    @Override public final Encryption encryption(PbeParameters parameters) {
+        return new V1Encryption(parameters);
     }
 }
