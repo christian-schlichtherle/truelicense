@@ -21,5 +21,5 @@ public interface Store extends Source, Sink {
     void delete() throws IOException;
 
     /** Returns {@code true} if and only if the data exists. */
-    boolean exists();
+    boolean exists() throws IOException;
 }

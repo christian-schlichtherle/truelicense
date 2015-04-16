@@ -14,6 +14,7 @@ import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * A caching license consumer manager which establishes a Chain Of
@@ -102,11 +103,23 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
         }
     }
 
-    private License createIffNewFtp(final LicenseManagementException ex)
+    private License createIffNewFtp(final LicenseManagementException e)
     throws LicenseManagementException {
-        if (!canCreateLicenseKeys()) throw ex;
+        if (!canCreateLicenseKeys())
+            throw e;
         final Store store = store();
-        if (store.exists()) throw ex;
+        if (exists(store))
+            throw e;
         return super.create(license(), store);
+    }
+
+    private static boolean exists(final Store store)
+    throws LicenseManagementException {
+        return wrap(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return store.exists();
+            }
+        });
     }
 }
