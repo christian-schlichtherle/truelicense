@@ -75,7 +75,8 @@ extends V2LicenseManagementContext {
      * The implementation in the class {@link V2XmlLicenseManagementContext}
      * returns a {@link JaxbCodec}.
      */
-    @Override public JaxbCodec codec() { return new JaxbCodec(context()); }
+    @Override
+    public JaxbCodec codec() { return new JaxbCodec(context()); }
 
     /**
      * Returns the JAXB context to use for {@link #codec}.

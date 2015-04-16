@@ -44,21 +44,6 @@ extends BiosProvider,
         PasswordProtectionProvider<PasswordSpecification>,
         RepositoryProvider {
 
-    /** Returns a <em>new</em> license. */
-    @Override License license();
-
-    /**
-     * Returns the name of the default key store type,
-     * for example {@code "JCEKS"} or {@code "JKS"}.
-     * You can override this default value when configuring the key store based
-     * authentication with the license vendor context or the license consumer
-     * context.
-     *
-     * @see   LicenseApplicationContext.KsbaInjection#storeType
-     * @since TrueLicense 2.1
-     */
-    String storeType();
-
     /**
      * Returns an authentication for the given key store parameters.
      *
@@ -67,15 +52,9 @@ extends BiosProvider,
     Authentication authentication(KeyStoreParameters parameters);
 
     /**
-     * Returns the name of the default Password Based Encryption (PBE)
-     * algorithm for the license key format.
-     * You can override this default value when configuring the PBE with the
-     * license vendor context or the license consumer context.
-     *
-     * @see   LicenseApplicationContext.PbeInjection#algorithm
-     * @since TrueLicense 2.1
+     * Returns a context for license consumer applications.
      */
-    String pbeAlgorithm();
+    LicenseConsumerContext<PasswordSpecification> consumer();
 
     /**
      * Returns an encryption for the given PBE parameters.
@@ -84,14 +63,32 @@ extends BiosProvider,
      */
     Encryption encryption(PbeParameters parameters);
 
-    /**
-     * Returns a context for license vendor applications alias license key
-     * tools.
-     */
-    LicenseVendorContext<PasswordSpecification> vendor();
+    /** Returns a <em>new</em> license. */
+    @Override
+    License license();
 
     /**
-     * Returns a context for license consumer applications.
+     * Returns the name of the default Password Based Encryption (PBE)
+     * algorithm for the license key format.
+     * You can override this default value when configuring the PBE with the
+     * license vendor context or the license consumer context.
+     *
+     * @see   LicenseApplicationContext.PbeInjection#algorithm
      */
-    LicenseConsumerContext<PasswordSpecification> consumer();
+    String pbeAlgorithm();
+
+    /**
+     * Returns the name of the default key store type,
+     * for example {@code "JCEKS"} or {@code "JKS"}.
+     * You can override this default value when configuring the key store based
+     * authentication with the license vendor context or the license consumer
+     * context.
+     */
+    String storeType();
+
+    /**
+     * Returns a context for license vendor applications alias license key
+     * generators.
+     */
+    LicenseVendorContext<PasswordSpecification> vendor();
 }

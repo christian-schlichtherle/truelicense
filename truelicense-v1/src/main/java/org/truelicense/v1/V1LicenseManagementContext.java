@@ -79,37 +79,14 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      */
     public V1LicenseManagementContext(String subject) { super(subject); }
 
-    /** Returns a <em>new</em> license content. */
-    // This introduces a cyclic dependency between the packages
-    // de.schlichtherle.license and this package.
-    // However, this is tolerable.
-    @Override public LicenseContent license() { return new LicenseContent(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseManagementContext}
-     * returns {@code "JKS"}.
-     */
-    @Override public final String storeType() { return STORE_TYPE; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseManagementContext}
-     * returns a new {@link GenericCertificate}.
-     */
-    @Override public final GenericCertificate repository() {
-        return new GenericCertificate();
-    }
-
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V1LicenseManagementContext}
      * returns an {@link X500PrincipalXmlCodec}.
      */
-    @Override public X500PrincipalXmlCodec codec() { return codec; }
+    @Override
+    public X500PrincipalXmlCodec codec() { return codec; }
 
     /**
      * {@inheritDoc}
@@ -117,9 +94,29 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      * The implementation in the class {@link V1LicenseManagementContext}
      * returns a compression for V1 format license keys.
      */
-    @Override public final Transformation compression() {
+    @Override
+    public final Transformation compression() {
         return new V1Compression();
     }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link V1LicenseManagementContext}
+     * returns an encryption for V1 format license keys with the given PBE
+     * parameters.
+     */
+    @Override
+    public final Encryption encryption(PbeParameters parameters) {
+        return new V1Encryption(parameters);
+    }
+
+    /** Returns a <em>new</em> license content. */
+    // This introduces a cyclic dependency between the packages
+    // de.schlichtherle.license and this package.
+    // However, this is tolerable.
+    @Override
+    public LicenseContent license() { return new LicenseContent(); }
 
     /**
      * {@inheritDoc}
@@ -129,16 +126,26 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      * This was the only supported PBE algorithm in TrueLicense 1 and its
      * not possible to use another one.
      */
-    @Override public final String pbeAlgorithm() { return PBE_ALGORITHM; }
+    @Override
+    public final String pbeAlgorithm() { return PBE_ALGORITHM; }
 
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V1LicenseManagementContext}
-     * returns an encryption for V1 format license keys with the given
-     * parameters.
+     * returns a new {@link GenericCertificate}.
      */
-    @Override public final Encryption encryption(PbeParameters parameters) {
-        return new V1Encryption(parameters);
+    @Override
+    public final GenericCertificate repository() {
+        return new GenericCertificate();
     }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link V1LicenseManagementContext}
+     * returns {@code "JKS"}.
+     */
+    @Override
+    public final String storeType() { return STORE_TYPE; }
 }

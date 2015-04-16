@@ -30,29 +30,7 @@ extends CommonLicenseManagementContext {
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithSHA1AndDESede";
 
-    protected V2LicenseManagementContext(String subject) {
-        super(subject);
-    }
-
-    @Override public License license() { return new License(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
-     * returns {@code "JCEKS"}.
-     */
-    @Override public final String storeType() { return STORE_TYPE; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
-     * returns a new {@link BasicRepository}.
-     */
-    @Override public final BasicRepository repository() {
-        return new BasicRepository();
-    }
+    protected V2LicenseManagementContext(String subject) { super(subject); }
 
     /**
      * {@inheritDoc}
@@ -60,7 +38,8 @@ extends CommonLicenseManagementContext {
      * The implementation in the class {@link V2LicenseManagementContext}
      * returns a compression for V2 format license keys.
      */
-    @Override public final Transformation compression() {
+    @Override
+    public final Transformation compression() {
         return new V2Compression();
     }
 
@@ -68,18 +47,43 @@ extends CommonLicenseManagementContext {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V2LicenseManagementContext}
-     * returns {@code "PBEWithSHA1AndDESede"}.
+     * returns an encryption for V2 format license keys with the given PBE
+     * parameters.
      */
-    @Override public final String pbeAlgorithm() { return PBE_ALGORITHM; }
+    @Override
+    public final Encryption encryption(PbeParameters parameters) {
+        return new V2Encryption(parameters);
+    }
+
+    @Override
+    public License license() { return new License(); }
 
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V2LicenseManagementContext}
-     * returns an encryption for V2 format license keys with the given
-     * parameters.
+     * returns {@code "PBEWithSHA1AndDESede"}.
      */
-    @Override public final Encryption encryption(PbeParameters parameters) {
-        return new V2Encryption(parameters);
+    @Override
+    public final String pbeAlgorithm() { return PBE_ALGORITHM; }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link V2LicenseManagementContext}
+     * returns a new {@link BasicRepository}.
+     */
+    @Override
+    public final BasicRepository repository() {
+        return new BasicRepository();
     }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link V2LicenseManagementContext}
+     * returns {@code "JCEKS"}.
+     */
+    @Override
+    public final String storeType() { return STORE_TYPE; }
 }

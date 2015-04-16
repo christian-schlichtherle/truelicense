@@ -9,8 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.Repository;
-import org.truelicense.api.crypto.Encryption;
-import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.core.auth.Notary;
 import org.truelicense.spi.io.StandardBIOS;
@@ -42,23 +40,18 @@ implements LicenseManagementContext<PasswordSpecification> {
         this.subject = Objects.requireNonNull(subject);
     }
 
+    /**
+     * Returns an authentication for the given key store parameters.
+     * <p>
+     * The implementation in the class {@link BasicLicenseManagementContext}
+     * returns a new {@link Notary} for the given parameters.
+     *
+     * @param parameters the key store parameters.
+     */
     @Override
-    public final LicenseVendorContext<PasswordSpecification> vendor() {
-        return new BasicLicenseVendorContext<>(this);
+    public Authentication authentication(KeyStoreParameters parameters) {
+        return new Notary(parameters);
     }
-
-    @Override
-    public final LicenseConsumerContext<PasswordSpecification> consumer() {
-        return new BasicLicenseConsumerContext<>(this);
-    }
-
-    /** Returns a <em>new</em> license. */
-    @Override
-    public abstract License license();
-
-    /** Returns the licensing subject. */
-    @Override
-    public final String subject() { return subject; }
 
     /**
      * {@inheritDoc}
@@ -69,6 +62,30 @@ implements LicenseManagementContext<PasswordSpecification> {
     @Override
     public LicenseAuthorization authorization() {
         return new BasicLicenseAuthorization();
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicLicenseManagementContext}
+     * returns a {@link StandardBIOS}.
+     */
+    @Override
+    public BIOS bios() { return new StandardBIOS(); } // TODO: Consider caching this object.
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicLicenseManagementContext}
+     * returns half an hour (in milliseconds) to account for external changes
+     * to the configured store for the license key.
+     */
+    @Override
+    public long cachePeriodMillis() { return 30 * 60 * 1000; }
+
+    @Override
+    public final LicenseConsumerContext<PasswordSpecification> consumer() {
+        return new BasicLicenseConsumerContext<>(this);
     }
 
     /**
@@ -92,45 +109,6 @@ implements LicenseManagementContext<PasswordSpecification> {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns a validation which validates the license
-     * {@linkplain License#getConsumerAmount consumer amount},
-     * {@linkplain License#getConsumerType consumer type},
-     * {@linkplain License#getHolder holder},
-     * {@linkplain License#getIssued issue date/time},
-     * {@linkplain License#getIssuer issuer},
-     * {@linkplain License#getSubject subject},
-     * {@linkplain License#getNotAfter not after date/time} (if set) and
-     * {@linkplain License#getNotBefore not before date/time} (if set).
-     */
-    @Override
-    public LicenseValidation validation() {
-        return new BasicLicenseValidation(this);
-    }
-
-    /**
-     * Returns a <em>new</em> repository to use for
-     * {@linkplain #license licenses}.
-     */
-    @Override
-    public abstract Repository repository();
-
-    /**
-     * Returns an authentication for the given key store parameters.
-     * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns a new {@link Notary} for the given parameters.
-     *
-     * @param parameters the key store parameters.
-     */
-    @Override
-    public Authentication authentication(KeyStoreParameters parameters) {
-        return new Notary(parameters);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
      * returns a new {@link Date}.
      */
     @Override
@@ -148,21 +126,37 @@ implements LicenseManagementContext<PasswordSpecification> {
     }
 
     /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns half an hour (in milliseconds) to account for external changes
-     * to the configured store for the license key.
+     * Returns a <em>new</em> repository to use for
+     * {@linkplain #license licenses}.
      */
     @Override
-    public long cachePeriodMillis() { return 30 * 60 * 1000; }
+    public abstract Repository repository();
+
+    /** Returns the licensing subject. */
+    @Override
+    public final String subject() { return subject; }
 
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns a {@link StandardBIOS}.
+     * returns a validation which validates the license
+     * {@linkplain License#getConsumerAmount consumer amount},
+     * {@linkplain License#getConsumerType consumer type},
+     * {@linkplain License#getHolder holder},
+     * {@linkplain License#getIssued issue date/time},
+     * {@linkplain License#getIssuer issuer},
+     * {@linkplain License#getSubject subject},
+     * {@linkplain License#getNotAfter not after date/time} (if set) and
+     * {@linkplain License#getNotBefore not before date/time} (if set).
      */
     @Override
-    public BIOS bios() { return new StandardBIOS(); } // TODO: Consider caching this object.
+    public LicenseValidation validation() {
+        return new BasicLicenseValidation(this);
+    }
+
+    @Override
+    public final LicenseVendorContext<PasswordSpecification> vendor() {
+        return new BasicLicenseVendorContext<>(this);
+    }
 }
