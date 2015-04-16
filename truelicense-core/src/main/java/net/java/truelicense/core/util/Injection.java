@@ -13,6 +13,6 @@ package net.java.truelicense.core.util;
  */
 public interface Injection<Target> {
 
-    /** Injects the dependency into the target and returns the target. */
+    /** Injects a dependency into the target and returns the target. */
     Target inject();
 }
