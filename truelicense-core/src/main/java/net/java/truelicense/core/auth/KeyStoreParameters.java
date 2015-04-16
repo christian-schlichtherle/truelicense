@@ -28,35 +28,6 @@ import java.util.Arrays;
 public interface KeyStoreParameters
 extends AuthenticationParameters, SourceProvider {
 
-    /**
-     * Returns the nullable input source for the key store.
-     *
-     * @return the nullable input source for the key store.
-     *         May be {@code null} if and only if the key store type does not
-     *         require loading from an input stream.
-     */
-    @Override @CheckForNull Source source();
-
-    /**
-     * Returns the type of the key store,
-     * for example {@code "JCEKS"} or {@code "JKS"}.
-     * The returned string should be computed on demand from an obfuscated form,
-     * e.g. by annotating a constant string value with the \@{@link Obfuscate}
-     * annotation and processing it with the TrueLicense Maven Plugin.
-     */
-    String storeType();
-
-    /**
-     * Returns a new char array with the password for verifying the integrity
-     * of the key store.
-     * <p>
-     * It is the caller's responsibility to wipe the contents of the char array
-     * after use, e.g. by a call to {@link Arrays#fill(char[], char)}.
-     *
-     * @return A new char array with the password for verifying the key store.
-     */
-    char[] storePassword();
-
     /** Returns the alias of the entry in the key store. */
     String alias();
 
@@ -73,4 +44,34 @@ extends AuthenticationParameters, SourceProvider {
      *         in the key entry.
      */
     char[] keyPassword();
+
+    /**
+     * Returns the nullable input source for the key store.
+     *
+     * @return the nullable input source for the key store.
+     *         May be {@code null} if and only if the key store type does not
+     *         require loading from an input stream.
+     */
+    @Override
+    @CheckForNull Source source();
+
+    /**
+     * Returns a new char array with the password for verifying the integrity
+     * of the key store.
+     * <p>
+     * It is the caller's responsibility to wipe the contents of the char array
+     * after use, e.g. by a call to {@link Arrays#fill(char[], char)}.
+     *
+     * @return A new char array with the password for verifying the key store.
+     */
+    char[] storePassword();
+
+    /**
+     * Returns the type of the key store,
+     * for example {@code "JCEKS"} or {@code "JKS"}.
+     * The returned string should be computed on demand from an obfuscated form,
+     * e.g. by annotating a constant string value with the \@{@link Obfuscate}
+     * annotation and processing it with the TrueLicense Maven Plugin.
+     */
+    String storeType();
 }
