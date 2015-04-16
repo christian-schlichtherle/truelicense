@@ -113,13 +113,6 @@ implements LicenseManagementContext {
     }
 
     /**
-     * Returns an encryption for the given PBE parameters.
-     *
-     * @param pbe the PBE parameters.
-     */
-    @Override public abstract Encryption encryption(PbeParameters pbe);
-
-    /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
