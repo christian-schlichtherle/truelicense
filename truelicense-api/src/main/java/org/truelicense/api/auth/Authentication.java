@@ -12,7 +12,7 @@ import org.truelicense.api.codec.Codec;
  *
  * @author Christian Schlichtherle
  */
-public interface Authentication extends AuthenticationParametersProvider {
+public interface Authentication extends KeyStoreParametersProvider {
 
     /**
      * Encodes and signs the given {@code artifact} in the provided

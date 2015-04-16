@@ -8,7 +8,7 @@ package org.truelicense.core.auth;
 
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.i18n.Message;
@@ -53,9 +53,9 @@ public final class Notary implements Authentication {
 
     private static volatile boolean logged;
 
-    private final AuthenticationParameters parameters;
+    private final KeyStoreParameters parameters;
 
-    public Notary(final AuthenticationParameters parameters) {
+    public Notary(final KeyStoreParameters parameters) {
         this.parameters = Objects.requireNonNull(parameters);
     }
 
@@ -69,7 +69,7 @@ public final class Notary implements Authentication {
         return new Cache().verify(codec, repository);
     }
 
-    @Override public AuthenticationParameters parameters() {
+    @Override public KeyStoreParameters parameters() {
         return parameters;
     }
 

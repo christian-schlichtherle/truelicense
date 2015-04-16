@@ -5,7 +5,6 @@
 
 package org.truelicense.core.auth;
 
-import org.truelicense.api.auth.AuthenticationParameters;
 import org.truelicense.api.i18n.Message;
 
 import java.security.GeneralSecurityException;
@@ -15,8 +14,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Indicates that a notary could not access the private or public key in a
- * key store due to insufficient or incorrect parameters in the
- * {@link AuthenticationParameters}.
+ * key store due to insufficient or incorrect configuration parameters.
  *
  * @author Christian Schlichtherle
  */

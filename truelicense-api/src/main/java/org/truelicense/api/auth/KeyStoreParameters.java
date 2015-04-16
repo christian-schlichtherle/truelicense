@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Christian Schlichtherle
  */
-public interface AuthenticationParameters {
+public interface KeyStoreParameters {
 
     /**
      * Returns the optional input source for the key store.

@@ -6,12 +6,12 @@
 package org.truelicense.api.auth;
 
 /**
- * Provides authentication parameters.
+ * Provides key store parameters.
  *
  * @author Christian Schlichtherle
  */
-public interface AuthenticationParametersProvider {
+public interface KeyStoreParametersProvider {
 
-    /** Returns the authentication parameters. */
-    AuthenticationParameters parameters();
+    /** Returns the key store parameters. */
+    KeyStoreParameters parameters();
 }

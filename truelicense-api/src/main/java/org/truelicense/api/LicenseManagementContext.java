@@ -6,7 +6,7 @@
 package org.truelicense.api;
 
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.RepositoryProvider;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
@@ -60,11 +60,11 @@ extends BiosProvider,
     String storeType();
 
     /**
-     * Returns an authentication for the given parameters.
+     * Returns an authentication for the given key store parameters.
      *
-     * @param parameters the authentication parameters.
+     * @param parameters the key store parameters.
      */
-    Authentication authentication(AuthenticationParameters parameters);
+    Authentication authentication(KeyStoreParameters parameters);
 
     /**
      * Returns the name of the default Password Based Encryption (PBE)

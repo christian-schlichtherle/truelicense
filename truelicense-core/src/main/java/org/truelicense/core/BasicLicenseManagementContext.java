@@ -7,7 +7,7 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
@@ -123,7 +123,7 @@ implements LicenseManagementContext<PasswordSpecification> {
      * @param parameters the authentication parameters.
      */
     @Override
-    public Authentication authentication(AuthenticationParameters parameters) {
+    public Authentication authentication(KeyStoreParameters parameters) {
         return new Notary(parameters);
     }
 

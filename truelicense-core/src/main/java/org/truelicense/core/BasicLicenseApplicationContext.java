@@ -7,7 +7,7 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.AuthenticationParameters;
+import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.Repository;
 import org.truelicense.api.auth.RepositoryProvider;
 import org.truelicense.api.codec.Codec;
@@ -186,13 +186,13 @@ implements ClassLoaderProvider,
                 optionalSource, optionalStoreType, storePassword, alias, optionalKeyPassword));
     }
 
-    final AuthenticationParameters keyStoreParameters(
+    final KeyStoreParameters keyStoreParameters(
             final List<Source> optionalSource,
             final List<String> optionalStoreType,
             final PasswordSpecification storePassword,
             final String alias,
             final List<PasswordSpecification> optionalKeyPassword) {
-        return new AuthenticationParameters() {
+        return new KeyStoreParameters() {
 
             final PasswordProtection checkedStoreProtection = checkedProtection(storePassword);
             final PasswordProtection checkedKeyProtection;
