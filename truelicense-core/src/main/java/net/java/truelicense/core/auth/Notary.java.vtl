@@ -208,17 +208,17 @@ public final class Notary implements Authentication {
             return null == source ? null : source.input();
         }
 
-        @CheckForNull Source source() { return parameters().source(); }
-
-        String storeType() { return parameters().storeType(); }
-
-        char[] storePassword() { return parameters().storePassword(); }
-
         String alias() { return parameters().alias(); }
+
+        @CheckForNull Source source() { return parameters().source(); }
 
         char[] keyPassword() {
             final char[] pwd = parameters().keyPassword();
             return 0 != pwd.length ? pwd : storePassword();
         }
+
+        char[] storePassword() { return parameters().storePassword(); }
+
+        String storeType() { return parameters().storeType(); }
     }
 }
