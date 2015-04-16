@@ -63,6 +63,6 @@ public abstract class BasicPbeEncryption implements Encryption {
         try { return task.call(); }
         catch (final RuntimeException ex) { throw ex; }
         catch (final IOException ex) { throw ex; }
-        catch (final Exception ex) { throw new IOException(ex); } // TODO: Make this a Throwable with Java 7
+        catch (final Exception ex) { throw new IOException(ex); }
     }
 }

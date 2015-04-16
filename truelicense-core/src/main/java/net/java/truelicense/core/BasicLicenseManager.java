@@ -101,7 +101,7 @@ implements LicenseParametersProvider, StoreProvider {
         try { return task.call(); }
         catch (final RuntimeException ex) { throw ex; }
         catch (final LicenseManagementException ex) { throw ex; }
-        catch (final Exception ex) { throw new LicenseManagementException(ex); } // TODO: Make this a Throwable with Java 7
+        catch (final Exception ex) { throw new LicenseManagementException(ex); }
     }
 
     //
