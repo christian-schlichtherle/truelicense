@@ -73,7 +73,8 @@ extends BasicV2LicenseManagementContext {
      * The implementation in the class {@link V2JsonLicenseManagementContext}
      * returns a new {@link JsonCodec}.
      */
-    @Override public JsonCodec codec() {
+    @Override
+    public JsonCodec codec() {
         return new JsonCodec(mapper());
     }
 

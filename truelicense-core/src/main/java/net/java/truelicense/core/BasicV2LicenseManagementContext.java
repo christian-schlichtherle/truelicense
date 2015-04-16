@@ -28,43 +28,16 @@ extends BasicLicenseManagementContext {
 
     protected BasicV2LicenseManagementContext(String subject) { super(subject); }
 
-    @Override public License license() { return new License(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicV2LicenseManagementContext}
-     * returns {@code "JCEKS"}.
-     */
-    @Override public final String storeType() { return STORE_TYPE; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicV2LicenseManagementContext}
-     * returns a new {@link BasicRepository}.
-     */
-    @Override public final BasicRepository repository() {
-        return new BasicRepository();
-    }
-
     /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicV2LicenseManagementContext}
      * returns a compression for V2 format license keys.
      */
-    @Override public final Transformation compression() {
+    @Override
+    public final Transformation compression() {
         return new V2Compression();
     }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicV2LicenseManagementContext}
-     * returns {@code "PBEWithSHA1AndDESede"}.
-     */
-    @Override public final String pbeAlgorithm() { return PBE_ALGORITHM; }
 
     /**
      * {@inheritDoc}
@@ -73,7 +46,40 @@ extends BasicLicenseManagementContext {
      * returns an encryption for V2 format license keys with the given
      * parameters.
      */
-    @Override public final Encryption encryption(PbeParameters parameters) {
+    @Override
+    public final Encryption encryption(PbeParameters parameters) {
         return new V2Encryption(parameters);
     }
+
+    @Override
+    public License license() { return new License(); }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicV2LicenseManagementContext}
+     * returns {@code "PBEWithSHA1AndDESede"}.
+     */
+    @Override
+    public final String pbeAlgorithm() { return PBE_ALGORITHM; }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicV2LicenseManagementContext}
+     * returns a new {@link BasicRepository}.
+     */
+    @Override
+    public final BasicRepository repository() {
+        return new BasicRepository();
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicV2LicenseManagementContext}
+     * returns {@code "JCEKS"}.
+     */
+    @Override
+    public final String storeType() { return STORE_TYPE; }
 }

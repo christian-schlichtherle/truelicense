@@ -37,8 +37,41 @@ extends CachePeriodProvider,
         PasswordPolicyProvider,
         RepositoryProvider {
 
+    /**
+     * Returns an authentication for the given key store parameters.
+     *
+     * @param parameters the key store parameters.
+     */
+    Authentication authentication(KeyStoreParameters parameters);
+
+    /**
+     * Returns a context for license consumer applications.
+     */
+    LicenseConsumerContext consumer();
+
+    /**
+     * Returns an encryption for the given PBE parameters.
+     *
+     * @param parameters the PBE parameters.
+     */
+    Encryption encryption(PbeParameters parameters);
+
     /** Returns a <em>new</em> license. */
-    @Override License license();
+    @Override
+    License license();
+
+    /**
+     * Returns the name of the default Password Based Encryption (PBE)
+     * algorithm for the license key format.
+     * You can override this default value when configuring the PBE with the
+     * license vendor context or the license consumer context.
+     *
+     * @see   LicenseConsumerContext#pbe
+     * @see   LicenseVendorContext#pbe
+     * @see   LicenseApplicationContext.PbeInjection#algorithm
+     * @since TrueLicense 2.1
+     */
+    String pbeAlgorithm();
 
     /**
      * Returns the name of the default key store type,
@@ -56,40 +89,8 @@ extends CachePeriodProvider,
     String storeType();
 
     /**
-     * Returns an authentication for the given key store parameters.
-     *
-     * @param parameters the key store parameters.
-     */
-    Authentication authentication(KeyStoreParameters parameters);
-
-    /**
-     * Returns the name of the default Password Based Encryption (PBE)
-     * algorithm for the license key format.
-     * You can override this default value when configuring the PBE with the
-     * license vendor context or the license consumer context.
-     *
-     * @see   LicenseConsumerContext#pbe
-     * @see   LicenseVendorContext#pbe
-     * @see   LicenseApplicationContext.PbeInjection#algorithm
-     * @since TrueLicense 2.1
-     */
-    String pbeAlgorithm();
-
-    /**
-     * Returns an encryption for the given PBE parameters.
-     *
-     * @param parameters the PBE parameters.
-     */
-    Encryption encryption(PbeParameters parameters);
-
-    /**
      * Returns a context for license vendor applications alias license key
-     * tools.
+     * generators.
      */
     LicenseVendorContext vendor();
-
-    /**
-     * Returns a context for license consumer applications.
-     */
-    LicenseConsumerContext consumer();
 }
