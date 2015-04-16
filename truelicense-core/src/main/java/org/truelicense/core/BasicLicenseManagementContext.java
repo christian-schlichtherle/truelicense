@@ -120,20 +120,12 @@ implements LicenseManagementContext<PasswordSpecification> {
      * The implementation in the class {@link BasicLicenseManagementContext}
      * returns a new {@link Notary} for the given parameters.
      *
-     * @param parameters the authentication parameters.
+     * @param parameters the key store parameters.
      */
     @Override
     public Authentication authentication(KeyStoreParameters parameters) {
         return new Notary(parameters);
     }
-
-    /**
-     * Returns an encryption for the given PBE parameters.
-     *
-     * @param pbe the PBE parameters.
-     */
-    @Override
-    public abstract Encryption encryption(PbeParameters pbe);
 
     /**
      * {@inheritDoc}

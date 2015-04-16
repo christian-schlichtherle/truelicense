@@ -29,7 +29,9 @@ public class NotaryException extends GeneralSecurityException {
      *
      * @param msg the message.
      */
-    public NotaryException(final Message msg) { this.msg = requireNonNull(msg); }
+    public NotaryException(final Message msg) {
+        this.msg = requireNonNull(msg);
+    }
 
     @Override
     public String getMessage() { return msg.toString(Locale.ROOT); }
