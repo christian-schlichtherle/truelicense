@@ -78,34 +78,11 @@ public interface LicenseApplicationContext {
     interface KsbaInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
-         * Sets the source for the key store.
+         * Sets the algorithm name (optional).
          *
          * @return {@code this}
          */
-        KsbaInjection<Target, PasswordSpecification> loadFrom(Source source);
-
-        /**
-         * Sets the resource name of the key store.
-         *
-         * @return {@code this}
-         */
-        KsbaInjection<Target, PasswordSpecification> loadFromResource(String name);
-
-        /**
-         * Sets the type of the key store,
-         * for example {@code "JCEKS"} or {@code "JKS"}.
-         *
-         * @return {@code this}
-         */
-        KsbaInjection<Target, PasswordSpecification> storeType(String storeType);
-
-        /**
-         * Sets the password protection for verifying the integrity of the key
-         * store.
-         *
-         * @return {@code this}
-         */
-        KsbaInjection<Target, PasswordSpecification> storePassword(PasswordSpecification storePassword);
+        KsbaInjection<Target, PasswordSpecification> algorithm(String algorithm);
 
         /**
          * Sets the alias name of the key entry.
@@ -115,8 +92,8 @@ public interface LicenseApplicationContext {
         KsbaInjection<Target, PasswordSpecification> alias(String alias);
 
         /**
-         * Sets the password protection for accessing the private key in the
-         * key entry.
+         * Sets the password for accessing the private key in the key
+         * entry (optional).
          * A private key entry is only required to create license keys, that is
          * for any {@linkplain LicenseVendorManager license vendor manager}
          * and for any
@@ -129,6 +106,36 @@ public interface LicenseApplicationContext {
          * @return {@code this}
          */
         KsbaInjection<Target, PasswordSpecification> keyPassword(PasswordSpecification keyPassword);
+
+        /**
+         * Sets the source for the key store (optional).
+         *
+         * @return {@code this}
+         */
+        KsbaInjection<Target, PasswordSpecification> loadFrom(Source source);
+
+        /**
+         * Sets the resource name of the key store (optional).
+         *
+         * @return {@code this}
+         */
+        KsbaInjection<Target, PasswordSpecification> loadFromResource(String name);
+
+        /**
+         * Sets the password protection for verifying the integrity of the key
+         * store.
+         *
+         * @return {@code this}
+         */
+        KsbaInjection<Target, PasswordSpecification> storePassword(PasswordSpecification storePassword);
+
+        /**
+         * Sets the type of the key store,
+         * for example {@code "JCEKS"} or {@code "JKS"} (optional).
+         *
+         * @return {@code this}
+         */
+        KsbaInjection<Target, PasswordSpecification> storeType(String storeType);
     }
 
     /**
@@ -137,7 +144,7 @@ public interface LicenseApplicationContext {
     interface PbeInjection<Target, PasswordSpecification> extends Injection<Target> {
 
         /**
-         * Sets the algorithm name.
+         * Sets the algorithm name (optional).
          *
          * @return {@code this}
          */

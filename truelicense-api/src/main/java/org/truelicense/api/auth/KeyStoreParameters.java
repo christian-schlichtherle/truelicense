@@ -39,6 +39,15 @@ public interface KeyStoreParameters {
     PasswordProtection keyProtection();
 
     /**
+     * Returns the optional signature algorithm.
+     * This is a list of at most one non-null item.
+     * The list may be empty to indicate that the same signature algorithm
+     * should be used which was used to sign the public key of the key store
+     * entry which is addressed by the other properties of this interface.
+     */
+    List<String> optionalAlgorithm();
+
+    /**
      * Returns the optional input source for the key store.
      * This is a list of at most one non-null item.
      * The list may be empty to indicate that the key store type does not

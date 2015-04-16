@@ -9,7 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.Repository;
-import org.truelicense.api.auth.RepositoryProvider;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
@@ -42,11 +41,12 @@ import static java.util.Calendar.getInstance;
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
 abstract class BasicLicenseApplicationContext<PasswordSpecification>
-implements ClassLoaderProvider,
+implements BiosProvider,
+           ClassLoaderProvider,
            Clock,
            ContextProvider<LicenseManagementContext<PasswordSpecification>>,
-        BiosProvider,
            LicenseApplicationContext,
+           LicenseInitializationProvider,
            LicenseSubjectProvider,
            PasswordPolicyProvider,
            PasswordProtectionProvider<PasswordSpecification> {
@@ -58,18 +58,124 @@ implements ClassLoaderProvider,
     }
 
     @Override
-    public final String subject() { return context().subject(); }
+    public final BIOS bios() { return context().bios(); }
 
-    @Override
-    public final LicenseManagementContext<PasswordSpecification> context() { return context; }
-
-    @Override
-    public final PasswordPolicy policy() { return context().policy(); }
-
-    @Override
-    public final PasswordProtection protection(PasswordSpecification specification) {
-        return context().protection(specification);
+    final LicenseParameters chainedParameters(
+            Authentication authentication,
+            List<Encryption> optionalEncryption,
+            LicenseConsumerManager parent) {
+        return parameters(authentication, initialization(), optionalEncryption,
+                parent);
     }
+
+    private PasswordProtection checkedProtection(
+            final PasswordSpecification password) {
+        return new PasswordProtection() {
+
+            @Override
+            public Password password(final PasswordUsage usage) throws Exception {
+                final PasswordProtection protection = protection(password);
+                if (usage.equals(PasswordUsage.WRITE)) // check null
+                    policy().check(protection);
+                return protection.password(usage);
+            }
+        };
+    }
+
+    @Override
+    public final LicenseManagementContext<PasswordSpecification> context() {
+        return context;
+    }
+
+    private static Encryption encryption(
+            final List<Encryption> optionalEncryption,
+            final LicenseConsumerManager parent) {
+        for (Encryption encryption : optionalEncryption)
+            return encryption;
+        return parent.parameters().encryption();
+    }
+
+    final LicenseParameters ftpParameters(
+            final Authentication authentication,
+            final int days,
+            final List<Encryption> optionalEncryption,
+            final LicenseConsumerManager parent) {
+        if (0 >= days) throw new IllegalArgumentException();
+        final LicenseInitialization initialization = new LicenseInitialization() {
+
+            @Override public void initialize(final License bean) {
+                initialization().initialize(bean);
+                final Calendar cal = getInstance();
+                cal.setTime(bean.getIssued());
+                bean.setNotBefore(cal.getTime()); // not before issued
+                cal.add(DATE, days); // FTP countdown starts NOW
+                bean.setNotAfter(cal.getTime());
+            }
+        };
+        return parameters(authentication, initialization, optionalEncryption,
+                parent);
+    }
+
+    @Override
+    public LicenseInitialization initialization() {
+        return context().initialization();
+    }
+
+    final Authentication keyStoreAuthentication(
+            String alias,
+            List<String> optionalAlgorithm,
+            List<PasswordSpecification> optionalKeyPassword,
+            List<Source> optionalSource,
+            List<String> optionalStoreType,
+            PasswordSpecification storePassword) {
+        return context().authentication(keyStoreParameters(
+                alias, optionalAlgorithm, optionalKeyPassword,
+                optionalSource, optionalStoreType, storePassword));
+    }
+
+    private KeyStoreParameters keyStoreParameters(
+            final String alias,
+            final List<String> optionalAlgorithm,
+            final List<PasswordSpecification> optionalKeyPassword,
+            final List<Source> optionalSource,
+            final List<String> optionalStoreType,
+            final PasswordSpecification storePassword) {
+        return new KeyStoreParameters() {
+
+            @Override
+            public String alias() { return alias; }
+
+            @Override
+            public PasswordProtection keyProtection() {
+                for (PasswordSpecification keyPassword : optionalKeyPassword)
+                    return checkedProtection(keyPassword);
+                return checkedProtection(storePassword);
+            }
+
+            @Override
+            public List<String> optionalAlgorithm() {
+                return optionalAlgorithm;
+            }
+
+            @Override
+            public List<Source> optionalSource() { return optionalSource; }
+
+            @Override
+            public PasswordProtection storeProtection() {
+                return checkedProtection(storePassword);
+            }
+
+            @Override
+            public String storeType() {
+                for (String storeType : optionalStoreType)
+                    return storeType;
+                return context().storeType();
+            }
+        };
+    }
+
+    @Override
+    public final Store memoryStore() { return bios().memoryStore(); }
 
     @Override
     public final Date now() { return context().now(); }
@@ -82,202 +188,86 @@ implements ClassLoaderProvider,
     final LicenseParameters parameters(
             Authentication authentication,
             Encryption encryption) {
-        return parameters(context().initialization(), authentication, encryption);
-    }
-
-    final LicenseParameters ftpParameters(
-            final LicenseConsumerManager parent,
-            final Authentication authentication,
-            final List<Encryption> optionalEncryption,
-            final int days) {
-        if (0 >= days) throw new IllegalArgumentException();
-        final LicenseInitialization initialization = new LicenseInitialization() {
-            final LicenseInitialization initialization = context().initialization();
-
-            @Override public void initialize(final License bean) {
-                initialization.initialize(bean);
-                final Calendar cal = getInstance();
-                cal.setTime(bean.getIssued());
-                bean.setNotBefore(cal.getTime()); // not before issued
-                cal.add(DATE, days); // FTP countdown starts NOW
-                bean.setNotAfter(cal.getTime());
-            }
-        };
-        return chainedParameters(parent, initialization, authentication, optionalEncryption);
-    }
-
-    final LicenseParameters chainedParameters(
-            final LicenseConsumerManager parent,
-            final Authentication authentication,
-            final List<Encryption> optionalEncryption) {
-        return chainedParameters(parent, context().initialization(),
-                authentication, optionalEncryption);
-    }
-
-    private LicenseParameters chainedParameters(
-            LicenseConsumerManager parent,
-            LicenseInitialization initialization,
-            Authentication authentication,
-            List<Encryption> optionalEncryption) {
-        return parameters(initialization, authentication,
-                resolveEncryption(parent, optionalEncryption));
-    }
-
-    private static Encryption resolveEncryption(
-            LicenseConsumerManager parent,
-            List<Encryption> optionalEncryption) {
-        for (Encryption encryption : optionalEncryption)
-            return encryption;
-        return parent.parameters().encryption();
+        return parameters(authentication, encryption, initialization());
     }
 
     private LicenseParameters parameters(
-            final LicenseInitialization initialization,
             final Authentication authentication,
-            final Encryption encryption) {
-        final LicenseManagementContext c = context();
-        return parameters(c.authorization(), initialization, c.validation(),
-                c, authentication, c.codec(), c.compression(), encryption);
-    }
-
-    private static LicenseParameters parameters(
-            final LicenseAuthorization authorization,
-            final LicenseInitialization initialization,
-            final LicenseValidation validation,
-            final RepositoryProvider rp,
-            final Authentication authentication,
-            final Codec codec,
-            final Transformation compression,
-            final Encryption encryption) {
+            final Encryption encryption,
+            final LicenseInitialization initialization) {
         return new LicenseParameters() {
-            @Override
-            public LicenseAuthorization authorization() { return authorization; }
-
-            @Override
-            public LicenseInitialization initialization() { return initialization; }
-
-            @Override
-            public LicenseValidation validation() { return validation; }
-
-            @Override
-            public Repository repository() { return rp.repository(); }
 
             @Override
             public Authentication authentication() { return authentication; }
 
             @Override
-            public Codec codec() { return codec; }
+            public LicenseAuthorization authorization() { return context().authorization(); }
 
             @Override
-            public Transformation compression() { return compression; }
+            public Codec codec() { return context().codec(); }
+
+            @Override
+            public Transformation compression() { return context().compression(); }
 
             @Override
             public Encryption encryption() { return encryption; }
+
+            @Override
+            public LicenseInitialization initialization() { return initialization; }
+
+            @Override
+            public Repository repository() { return context().repository(); }
+
+            @Override
+            public LicenseValidation validation() { return context().validation(); }
         };
     }
 
-    final Authentication keyStore(
-            List<Source> optionalSource,
-            List<String> optionalStoreType,
-            PasswordSpecification storePassword,
-            String alias,
-            List<PasswordSpecification> optionalKeyPassword) {
-        return context().authentication(keyStoreParameters(
-                optionalSource, optionalStoreType, storePassword, alias, optionalKeyPassword));
+    private LicenseParameters parameters(
+            Authentication authentication,
+            LicenseInitialization initialization,
+            List<Encryption> optionalEncryption,
+            LicenseConsumerManager parent) {
+        return parameters(authentication,
+                encryption(optionalEncryption, parent), initialization);
     }
 
-    final KeyStoreParameters keyStoreParameters(
-            final List<Source> optionalSource,
-            final List<String> optionalStoreType,
-            final PasswordSpecification storePassword,
-            final String alias,
-            final List<PasswordSpecification> optionalKeyPassword) {
-        return new KeyStoreParameters() {
-
-            final PasswordProtection checkedStoreProtection = checkedProtection(storePassword);
-            final PasswordProtection checkedKeyProtection;
-
-            {
-                PasswordProtection pp = checkedStoreProtection;
-                for (PasswordSpecification ps : optionalKeyPassword) {
-                    pp = checkedProtection(ps);
-                    break;
-                }
-                checkedKeyProtection = pp;
-            }
-
-            @Override
-            public List<Source> optionalSource() { return optionalSource; }
-
-            @Override
-            public String storeType() {
-                for (String storeType : optionalStoreType)
-                    return storeType;
-                return context().storeType();
-            }
-
-            @Override
-            public PasswordProtection storeProtection() {
-                return checkedStoreProtection;
-            }
-
-            @Override
-            public String alias() { return alias; }
-
-            @Override
-            public PasswordProtection keyProtection() {
-                return checkedKeyProtection;
-            }
-        };
-    }
-
-    final Encryption pbe(
+    final Encryption passwordBasedEncryption(
             List<String> optionalAlgorithm,
             PasswordSpecification password) {
         return context().encryption(pbeParameters(optionalAlgorithm, password));
     }
 
-    final PbeParameters pbeParameters(
+    @Override
+    public final Store pathStore(Path path) { return bios().pathStore(path); }
+
+    private PbeParameters pbeParameters(
             final List<String> optionalAlgorithm,
             final PasswordSpecification password) {
         return new PbeParameters() {
 
-            final String pbeAlgorithm = pbeAlgorithm(optionalAlgorithm);
-            final PasswordProtection checkedProtection = checkedProtection(password);
+            @Override
+            public String algorithm() {
+                for (String algorithm : optionalAlgorithm)
+                    return algorithm;
+                return context().pbeAlgorithm();
+            }
 
             @Override
-            public String algorithm() { return pbeAlgorithm; }
-
-            @Override
-            public PasswordProtection protection() { return checkedProtection; }
-        };
-    }
-
-    private String pbeAlgorithm(List<String> optionalAlgorithm) {
-        for (String algorithm : optionalAlgorithm)
-            return algorithm;
-        return context().pbeAlgorithm();
-    }
-
-    private PasswordProtection checkedProtection(final PasswordSpecification password) {
-        return new PasswordProtection() {
-
-            final PasswordProtection protection = protection(password);
-
-            @Override
-            public Password password(final PasswordUsage usage) throws Exception {
-                if (usage.equals(PasswordUsage.WRITE)) // check null
-                    policy().check(protection);
-                return protection.password(usage);
+            public PasswordProtection protection() {
+                return checkedProtection(password);
             }
         };
     }
 
     @Override
-    public final Store memoryStore() { return bios().memoryStore(); }
+    public final PasswordPolicy policy() { return context().policy(); }
 
     @Override
-    public final Store pathStore(Path path) { return bios().pathStore(path); }
+    public final PasswordProtection protection(
+            PasswordSpecification specification) {
+        return context().protection(specification);
+    }
 
     @Override
     public final Source resource(String name) {
@@ -295,6 +285,9 @@ implements ClassLoaderProvider,
     }
 
     @Override
+    public final String subject() { return context().subject(); }
+
+    @Override
     public final Store systemPreferencesStore(Class<?> classInPackage) {
         return bios().systemPreferencesStore(classInPackage, subject());
     }
@@ -303,7 +296,4 @@ implements ClassLoaderProvider,
     public final Store userPreferencesStore(Class<?> classInPackage) {
         return bios().userPreferencesStore(classInPackage, subject());
     }
-
-    @Override
-    public final BIOS bios() { return context().bios(); }
 }
