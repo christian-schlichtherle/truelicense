@@ -50,14 +50,14 @@
     <description>The parent POM for all license management modules.</description>
     <url>http://www.todo.com/</url>
     <licenses>
-        <!-- TODO: Fill in the gaps. -->
+        <!-- TO DO: Fill in the gaps. -->
     </licenses>
     <organization>
         <name>${dollar}{companyName}</name>
-        <!-- TODO: Fill in the gaps. -->
+        <!-- TO DO: Fill in the gaps. -->
     </organization>
     <developers>
-        <!-- TODO: Fill in the gaps. -->
+        <!-- TO DO: Fill in the gaps. -->
         <developer>
             <name>Christian Schlichtherle</name>
             <email>christian AT schlichtherle DOT de</email>
@@ -72,10 +72,10 @@
         </developer>
     </developers>
     <issueManagement>
-        <!-- TODO: Fill in the gaps. -->
+        <!-- TO DO: Fill in the gaps. -->
     </issueManagement>
     <scm>
-        <!-- TODO: Fill in the gaps. -->
+        <!-- TO DO: Fill in the gaps. -->
     </scm>
 
     <properties>
