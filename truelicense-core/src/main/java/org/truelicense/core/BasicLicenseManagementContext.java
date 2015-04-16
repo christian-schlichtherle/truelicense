@@ -41,10 +41,10 @@ implements LicenseManagementContext<PasswordSpecification> {
     }
 
     /**
-     * Returns an authentication for the given key store parameters.
+     * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
-     * returns a new {@link Notary} for the given parameters.
+     * returns a new {@link Notary} for the given key store parameters.
      *
      * @param parameters the key store parameters.
      */
