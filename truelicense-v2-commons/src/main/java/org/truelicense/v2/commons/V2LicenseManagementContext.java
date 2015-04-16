@@ -12,6 +12,8 @@ import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
 import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.v2.commons.comp.V2Compression;
+import org.truelicense.v2.commons.crypto.V2Encryption;
 
 /**
  * The root context for the management of V2 format license keys.

@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.v2.commons;
+package org.truelicense.v2.commons.crypto;
 
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Sink;

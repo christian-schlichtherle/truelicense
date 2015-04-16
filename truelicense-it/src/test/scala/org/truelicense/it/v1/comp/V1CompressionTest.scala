@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.it.v1.commons
+package org.truelicense.it.v1.comp
 
 import org.junit.runner._
 import org.scalatest.junit._

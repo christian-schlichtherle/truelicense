@@ -4,6 +4,8 @@
  */
 
 /**
+ * Provides encryption services.
+ *
  * @author Christian Schlichtherle
  */
-package org.truelicense.v1.commons;
+package org.truelicense.v2.commons.crypto;

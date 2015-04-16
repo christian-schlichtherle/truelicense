@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.v1.commons;
+package org.truelicense.v1.comp;
 
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;

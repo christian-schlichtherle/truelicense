@@ -15,8 +15,8 @@ import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v1.codec.X500PrincipalXmlCodec;
-import org.truelicense.v1.commons.V1Compression;
-import org.truelicense.v1.commons.V1Encryption;
+import org.truelicense.v1.comp.V1Compression;
+import org.truelicense.v1.crypto.V1Encryption;
 
 /**
  * The root context for the management of Version 1 (V1) format license keys.
