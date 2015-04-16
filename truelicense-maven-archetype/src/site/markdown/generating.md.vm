@@ -252,14 +252,27 @@ Note that property values are generally _case sensitive_.
         </tr>
         <tr>
             <td><code>keyPairAlgorithm</code></td>
-            <td><code>RSA</code></td>
+            <td><code>-</code></td>
             <td>The algorithm to use when generating key pairs in the key store
                 files at the first build.
                 This property is ignored if the key store files already exist.
+                Otherwise, if the value is set to <code>-</code>, then the 
+                default value of the keytool is used.
                 Otherwise, the algorithm needs to be supported by one of the 
                 security providers which are installed in the JRE.
-                At a minimum, <code>DSA</code> and <code>RSA</code> need to be available in any
-                compliant JRE.</td>
+                See <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">Java Cryptography Architecture Standard Algorithm Name Documentation - KeyPairGenerator Algorithms</a>.</td>
+        </tr>
+        <tr>
+            <td><code>keyPairSize</code></td>
+            <td><code>-</code></td>
+            <td>The key size in bits when generating key pairs in the key store
+                files at the first build.
+                This property is ignored if the key store files already exist.
+                Otherwise, if the value is set to <code>-</code>, then the 
+                default value of the keytool is used.
+                Otherwise, the bit size needs to match the configured
+                <code>${dollar}{keyPairAlgorithm}</code> and be supported by one of the
+                security providers which are installed in the JRE/JDK.</td>
         </tr>
         <tr>
             <td><code>keyStoreType</code></td>
@@ -347,6 +360,19 @@ Note that property values are generally _case sensitive_.
             <td>The path of the public key store file in the Key Manager module
                 relative to the base path
                 <code>${dollar}{artifactId}-keymgr/src/main/resources/</code>.</td>
+        </tr>
+        <tr>
+            <td><code>signatureAlgorithm</code></td>
+            <td><code>-</code></td>
+            <td>The algorithm to use when signing the generated key pairs in the
+                key store files at the first build.
+                This property is ignored if the key store files already exist.
+                Otherwise, if the value is set to <code>-</code>, then the 
+                default value of the keytool is used.
+                Otherwise, the signature algorithm needs to match the configured
+                <code>${dollar}{keyPairAlgorithm}</code> and be supported by one of the
+                security providers which are installed in the JRE/JDK.
+                See <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Signature">Java Cryptography Architecture Standard Algorithm Name Documentation - Signature Algorithms</a>.</td>
         </tr>
         <tr>
             <td><code>trueLicenseDependency</code></td>

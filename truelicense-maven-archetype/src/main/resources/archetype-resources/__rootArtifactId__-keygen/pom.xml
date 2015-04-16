@@ -83,9 +83,17 @@
                                             <configuration>
                                                 <alias>${dollar}{@item@KeyEntryAlias}</alias>
                                                 <dname>${dollar}{distinguishedName}</dname>
+#if($keyPairAlgorithm != "-")
                                                 <keyalg>${dollar}{keyPairAlgorithm}</keyalg>
+#end
                                                 <keypass>${dollar}{@item@KeyEntryPassword}</keypass>
+#if($keyPairSize != "-")
+                                                <keysize>${dollar}{keyPairSize}</keysize>
+#end
                                                 <keystore>${dollar}{basedir}/src/main/resources/${dollar}{privateKeyStoreFile}</keystore>
+#if($signatureAlgorithm != "-")
+                                                <sigalg>${dollar}{signatureAlgorithm}</sigalg>
+#end
                                                 <storepass>${dollar}{privateKeyStorePassword}</storepass>
                                                 <storetype>${dollar}{privateKeyStoreType}</storetype>
                                             </configuration>

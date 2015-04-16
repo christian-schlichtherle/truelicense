@@ -49,7 +49,10 @@
             <defaultValue>basic</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyPairAlgorithm">
-            <defaultValue>RSA</defaultValue>
+            <defaultValue>-</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="keyPairSize">
+            <defaultValue>-</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyStoreType">
             <defaultValue>-</defaultValue>
@@ -69,6 +72,9 @@
         </requiredProperty>
         <requiredProperty key="publicKeyStoreFile">
             <defaultValue>public.ks</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="signatureAlgorithm">
+            <defaultValue>-</defaultValue>
         </requiredProperty>
         <requiredProperty key="trueLicenseDependency">
             <defaultValue>-</defaultValue>

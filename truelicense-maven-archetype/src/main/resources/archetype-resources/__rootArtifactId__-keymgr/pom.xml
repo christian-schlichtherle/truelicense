@@ -288,9 +288,17 @@
                                 <configuration>
                                     <alias>${dollar}{ftpKeyEntryAlias}</alias>
                                     <dname>${dollar}{distinguishedName}</dname>
+#if($keyPairAlgorithm != "-")
                                     <keyalg>${dollar}{keyPairAlgorithm}</keyalg>
+#end
                                     <keypass>${dollar}{ftpKeyEntryPassword}</keypass>
+#if($keyPairSize != "-")
+                                    <keysize>${dollar}{keyPairSize}</keysize>
+#end
                                     <keystore>${dollar}{basedir}/src/main/resources/${dollar}{ftpKeyStoreFile}</keystore>
+#if($signatureAlgorithm != "-")
+                                    <sigalg>${dollar}{signatureAlgorithm}</sigalg>
+#end
 #if($freeTrialPeriod == 0)
                                     <skip>true</skip>
 #end

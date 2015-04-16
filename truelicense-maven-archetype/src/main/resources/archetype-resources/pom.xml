@@ -250,11 +250,22 @@
         <!-- The algorithm to use when generating key pairs in the key store
              files at the first build.
              This property is ignored if the key store files already exist.
+             Otherwise, if the value is set to "-", then the default value of
+             the keytool is used.
              Otherwise, the algorithm needs to be supported by one of the
              security providers which are installed in the JRE/JDK.
-             At a minimum, "DSA" and "RSA" need to be available in any
-             compliant JRE/JDK. -->
+             See http://docs.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator . -->
         <keyPairAlgorithm>$keyPairAlgorithm</keyPairAlgorithm>
+
+        <!-- The key size in bits when generating key pairs in the key store
+             files at the first build.
+             This property is ignored if the key store files already exist.
+             Otherwise, if the value is set to "-", then the default value of
+             the keytool is used.
+             Otherwise, the bit size needs to match the configured
+             "${dollar}{keyPairAlgorithm}" and be supported by one of the
+             security providers which are installed in the JRE/JDK. -->
+        <keyPairSize>$keyPairSize</keyPairSize>
 
         <!-- The default key store type.
              The type needs to be supported by one of the security
@@ -336,6 +347,33 @@
         <!-- The type of the public key store file
              ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
         <publicKeyStoreType>${dollar}{keyStoreType}</publicKeyStoreType>
+
+        <!-- The algorithm to use when signing the generated key pairs in the
+             key store files at the first build.
+             This property is ignored if the key store files already exist.
+             Otherwise, if the value is set to "-", then the default value of
+             the keytool is used.
+             Otherwise, the signature algorithm needs to match the configured
+             "${dollar}{keyPairAlgorithm}" and be supported by one of the
+             security providers which are installed in the JRE/JDK.
+             See http://docs.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Signature . -->
+        <signatureAlgorithm>$signatureAlgorithm</signatureAlgorithm>
+
+        <!-- The name of the module to depend upon for base functionality like
+             vending or consuming license keys.
+             One of "truelicense-core" or "truelicense-json".
+             If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
+             then this needs to be set to "truelicense-json", otherwise set it
+             to "truelicense-core". -->
+        <trueLicenseDependency>$trueLicenseDependency</trueLicenseDependency>
+
+        <!-- The TrueLicense version to depend upon. -->
+        <trueLicenseVersion>$trueLicenseVersion</trueLicenseVersion>
+
+        <!-- Whether or not the command line interface (CLI) should write
+             debugging information to the standard error stream by default.
+             One of "false" or "true". -->
+        <verboseCli>$verboseCli</verboseCli>
 #foreach($edition in $editionArray)
 #set($edition = $edition.trim())
 
@@ -360,22 +398,6 @@
              the privateKeyStorePassword property. -->
         <${edition}KeyEntryPassword>${dollar}{privateKeyStorePassword}</${edition}KeyEntryPassword>
 #end
-
-        <!-- The name of the module to depend upon for base functionality like
-             vending or consuming license keys.
-             One of "truelicense-core" or "truelicense-json".
-             If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
-             then this needs to be set to "truelicense-json", otherwise set it
-             to "truelicense-core". -->
-        <trueLicenseDependency>$trueLicenseDependency</trueLicenseDependency>
-
-        <!-- The TrueLicense version to depend upon. -->
-        <trueLicenseVersion>$trueLicenseVersion</trueLicenseVersion>
-
-        <!-- Whether or not the command line interface (CLI) should write
-             debugging information to the standard error stream by default.
-             One of "false" or "true". -->
-        <verboseCli>$verboseCli</verboseCli>
 
         <!--
           - The following properties control the behavior of some Maven plugins
