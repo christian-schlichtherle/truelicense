@@ -311,7 +311,8 @@
              providers which are installed in the JRE.
              If you require compatibility with license keys generated with
              TrueLicense 1, then you need to select "PBEWithMD5AndDES".
-             Otherwise, "PBEWithSHA1AndDESede" is a good choice. -->
+             Otherwise, "PBEWithSHA1AndDESede" is a good choice.
+             See http://docs.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Cipher . -->
         <pbeAlgorithm>$pbeAlgorithm</pbeAlgorithm>
 
         <!-- The type of the preferences nodes where to install license keys.
