@@ -43,7 +43,7 @@ extends BasicLicenseManagementContext {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicV2LicenseManagementContext}
-     * returns an encryption for V2 format license keys with the given
+     * returns an encryption for V2 format license keys with the given PBE
      * parameters.
      */
     @Override

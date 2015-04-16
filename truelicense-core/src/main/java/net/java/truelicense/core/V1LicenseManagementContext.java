@@ -99,7 +99,7 @@ extends BasicLicenseManagementContext {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V1LicenseManagementContext}
-     * returns an encryption for V1 format license keys with the given
+     * returns an encryption for V1 format license keys with the given PBE
      * parameters.
      */
     @Override
