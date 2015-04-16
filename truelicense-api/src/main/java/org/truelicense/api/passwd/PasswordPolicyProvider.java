@@ -11,6 +11,7 @@ package org.truelicense.api.passwd;
  * @author Christian Schlichtherle
  */
 public interface PasswordPolicyProvider {
+
     /** Returns the password policy. */
     PasswordPolicy policy();
 }

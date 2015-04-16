@@ -11,6 +11,7 @@ package org.truelicense.api.codec;
  * @author Christian Schlichtherle
  */
 public interface CodecProvider {
+
     /** Returns the codec. */
     Codec codec();
 }
