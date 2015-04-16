@@ -12,6 +12,7 @@ package net.java.truelicense.core.util;
  * @since  TrueLicense 2.2
  */
 public interface ContextProvider<T> {
+
     /** Returns the context from which this object originated. */
     T context();
 }

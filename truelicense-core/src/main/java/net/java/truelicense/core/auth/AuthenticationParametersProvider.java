@@ -11,6 +11,7 @@ package net.java.truelicense.core.auth;
  * @author Christian Schlichtherle
  */
 public interface AuthenticationParametersProvider {
+
     /** Returns the authentication parameters. */
     AuthenticationParameters parameters();
 }

@@ -11,6 +11,7 @@ package net.java.truelicense.core.policy;
  * @author Christian Schlichtherle
  */
 public interface PasswordPolicyProvider {
+
     /** Returns the password policy. */
     PasswordPolicy policy();
 }

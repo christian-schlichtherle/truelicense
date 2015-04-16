@@ -11,6 +11,7 @@ package net.java.truelicense.core.codec;
  * @author Christian Schlichtherle
  */
 public interface CodecProvider {
+
     /** Returns the codec. */
     Codec codec();
 }

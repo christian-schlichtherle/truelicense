@@ -11,6 +11,7 @@ package net.java.truelicense.core.io;
  * @author Christian Schlichtherle
  */
 public interface StoreProvider {
+
     /** Returns the store. */
     Store store();
 }

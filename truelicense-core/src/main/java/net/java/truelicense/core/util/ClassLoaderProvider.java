@@ -13,6 +13,7 @@ import javax.annotation.CheckForNull;
  * @author Christian Schlichtherle
  */
 public interface ClassLoaderProvider {
+
     /**
      * Returns a class loader or {@code null} if the system class loader
      * shall get used to load classes and resources.

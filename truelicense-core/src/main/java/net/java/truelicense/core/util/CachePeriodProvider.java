@@ -11,6 +11,7 @@ package net.java.truelicense.core.util;
  * @author Christian Schlichtherle
  */
 public interface CachePeriodProvider {
+
     /**
      * Returns the cache period for some intermediate results in milliseconds.
      * Any non-negative value is valid.
