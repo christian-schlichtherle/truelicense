@@ -5,15 +5,16 @@
 
 package net.java.truelicense.core.auth;
 
+import net.java.truelicense.core.util.Message;
+
 import java.security.GeneralSecurityException;
 import java.util.Locale;
-import net.java.truelicense.core.util.Message;
-import static net.java.truelicense.core.util.Objects.*;
+
+import static net.java.truelicense.core.util.Objects.requireNonNull;
 
 /**
  * Indicates that a notary could not access the private or public key in a
- * key store due to insufficient or incorrect parameters in the
- * {@link AuthenticationParameters}.
+ * key store due to insufficient or incorrect configuration parameters.
  *
  * @author Christian Schlichtherle
  */
@@ -28,7 +29,9 @@ public class NotaryException extends GeneralSecurityException {
      *
      * @param msg the message.
      */
-    public NotaryException(final Message msg) { this.msg = requireNonNull(msg); }
+    public NotaryException(final Message msg) {
+        this.msg = requireNonNull(msg);
+    }
 
     @Override
     public String getMessage() { return msg.toString(Locale.ROOT); }
