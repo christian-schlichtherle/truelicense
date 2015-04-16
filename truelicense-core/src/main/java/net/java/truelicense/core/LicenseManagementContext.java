@@ -58,9 +58,9 @@ extends CachePeriodProvider,
     /**
      * Returns an authentication for the given key store parameters.
      *
-     * @param ksp the key store parameters.
+     * @param parameters the key store parameters.
      */
-    Authentication authentication(KeyStoreParameters ksp);
+    Authentication authentication(KeyStoreParameters parameters);
 
     /**
      * Returns the name of the default Password Based Encryption (PBE)
