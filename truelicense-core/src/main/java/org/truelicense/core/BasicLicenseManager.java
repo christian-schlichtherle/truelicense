@@ -92,11 +92,22 @@ implements BiosProvider, LicenseParametersProvider {
     // Utility functions:
     //
 
-    private static <V> V wrap(final Callable<V> task)
+    /**
+     * Executes the given {@code task} and wraps any
+     * non-{@link RuntimeException} and non-{@link LicenseManagementException}
+     * in a new {@code LicenseManagementException}.
+     *
+     * @param  task the task to {@link Callable#call}.
+     * @return the result of calling the task.
+     * @throws RuntimeException at the discretion of the task.
+     * @throws LicenseManagementException on any other {@link Exception} thrown
+     *         by the task.
+     */
+    static <V> V wrap(final Callable<V> task)
     throws LicenseManagementException {
         try { return task.call(); }
-        catch (RuntimeException | LicenseManagementException ex) { throw ex; }
-        catch (Throwable ex) { throw new LicenseManagementException(ex); }
+        catch (RuntimeException | LicenseManagementException e) { throw e; }
+        catch (Exception e) { throw new LicenseManagementException(e); }
     }
 
     //
