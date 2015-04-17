@@ -43,7 +43,8 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     private LicenseVendorManager manager(final LicenseParameters parameters) {
 
-        class Manager extends BasicLicenseManager implements LicenseVendorManager {
+        class Manager extends BasicLicenseManager
+        implements LicenseVendorManager {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
 
@@ -63,8 +64,8 @@ implements LicenseVendorContext<PasswordSpecification> {
     }
 
     final class BasicLicenseVendorManagerBuilder
-            extends BasicLicenseManagerBuilder<BasicLicenseVendorManagerBuilder>
-            implements LicenseVendorManagerBuilder<PasswordSpecification> {
+    extends BasicLicenseManagerBuilder<BasicLicenseVendorManagerBuilder>
+    implements LicenseVendorManagerBuilder<PasswordSpecification> {
 
         @Override
         public LicenseVendorManager build() {

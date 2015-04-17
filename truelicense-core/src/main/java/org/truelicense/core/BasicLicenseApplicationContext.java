@@ -302,23 +302,23 @@ implements BiosProvider,
         List<Authentication> authentication = Option.none();
         List<Encryption> encryption = Option.none();
 
-        public This authentication(final Authentication authentication) {
+        public final This authentication(final Authentication authentication) {
             this.authentication = Option.wrap(authentication);
             return (This) this;
         }
 
-        public PbeBuilder encryption() { return new PbeBuilder(); }
+        public final PbeBuilder encryption() { return new PbeBuilder(); }
 
-        public This encryption(final Encryption encryption) {
+        public final This encryption(final Encryption encryption) {
             this.encryption = Option.wrap(encryption);
             return (This) this;
         }
 
-        public KsbaBuilder keyStore() { return new KsbaBuilder(); }
+        public final KsbaBuilder keyStore() { return new KsbaBuilder(); }
 
         final class KsbaBuilder
-                implements Builder<Authentication>,
-                           KsbaInjection<PasswordSpecification, This> {
+        implements Builder<Authentication>,
+                   KsbaInjection<PasswordSpecification, This> {
 
             List<String> algorithm = Option.none();
             List<String> alias = Option.none();
@@ -378,8 +378,8 @@ implements BiosProvider,
         }
 
         final class PbeBuilder
-                implements Builder<Encryption>,
-                           PbeInjection<PasswordSpecification, This> {
+        implements Builder<Encryption>,
+                   PbeInjection<PasswordSpecification, This> {
 
             List<String> algorithm = Option.none();
             List<PasswordSpecification> password = Option.none();

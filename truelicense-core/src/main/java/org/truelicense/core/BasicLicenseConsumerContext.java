@@ -49,7 +49,8 @@ implements CachePeriodProvider,
             final LicenseConsumerManager parent,
             final Store store) {
 
-        class Manager extends ChainedLicenseConsumerManager implements LicenseConsumerManager {
+        class Manager extends ChainedLicenseConsumerManager
+        implements LicenseConsumerManager {
 
             final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
@@ -99,7 +100,8 @@ implements CachePeriodProvider,
             final LicenseParameters parameters,
             final Store store) {
 
-        class Manager extends CachingLicenseConsumerManager implements LicenseConsumerManager {
+        class Manager extends CachingLicenseConsumerManager
+        implements LicenseConsumerManager {
 
             final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
@@ -124,8 +126,8 @@ implements CachePeriodProvider,
     }
 
     class ChildLicenseConsumerManagerBuilder
-            extends BasicLicenseManagerBuilder<ChildLicenseConsumerManagerBuilder>
-            implements LicenseConsumerManagerBuilder<PasswordSpecification> {
+    extends BasicLicenseManagerBuilder<ChildLicenseConsumerManagerBuilder>
+    implements LicenseConsumerManagerBuilder<PasswordSpecification> {
 
         int ftpDays;
         List<LicenseConsumerManager> parent = Option.none();
@@ -179,7 +181,7 @@ implements CachePeriodProvider,
         }
 
         final class ParentLicenseConsumerManagerBuilder
-                extends ChildLicenseConsumerManagerBuilder {
+        extends ChildLicenseConsumerManagerBuilder {
 
             @Override public ChildLicenseConsumerManagerBuilder inject() {
                 return ChildLicenseConsumerManagerBuilder.this.parent(build());
