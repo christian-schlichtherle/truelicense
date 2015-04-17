@@ -13,10 +13,12 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.*;
+import org.truelicense.api.misc.Builder;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
+import org.truelicense.spi.misc.Option;
 
 import java.nio.file.Path;
 import java.util.Calendar;
@@ -62,9 +64,9 @@ implements BiosProvider,
 
     final LicenseParameters chainedParameters(
             Authentication authentication,
-            List<Encryption> optionalEncryption,
+            List<Encryption> encryption,
             LicenseConsumerManager parent) {
-        return parameters(authentication, initialization(), optionalEncryption,
+        return parameters(authentication, initialization(), encryption,
                 parent);
     }
 
@@ -88,17 +90,17 @@ implements BiosProvider,
     }
 
     private static Encryption encryption(
-            final List<Encryption> optionalEncryption,
+            final List<Encryption> encryption,
             final LicenseConsumerManager parent) {
-        for (Encryption encryption : optionalEncryption)
-            return encryption;
+        for (Encryption e : encryption)
+            return e;
         return parent.parameters().encryption();
     }
 
     final LicenseParameters ftpParameters(
             final Authentication authentication,
             final int days,
-            final List<Encryption> optionalEncryption,
+            final List<Encryption> encryption,
             final LicenseConsumerManager parent) {
         if (0 >= days) throw new IllegalArgumentException();
         final LicenseInitialization initialization = new LicenseInitialization() {
@@ -112,8 +114,7 @@ implements BiosProvider,
                 bean.setNotAfter(cal.getTime());
             }
         };
-        return parameters(authentication, initialization, optionalEncryption,
-                parent);
+        return parameters(authentication, initialization, encryption, parent);
     }
 
     @Override
@@ -121,25 +122,13 @@ implements BiosProvider,
         return context().initialization();
     }
 
-    final Authentication keyStoreAuthentication(
-            String alias,
-            List<String> optionalAlgorithm,
-            List<PasswordSpecification> optionalKeyPassword,
-            List<Source> optionalSource,
-            List<String> optionalStoreType,
-            PasswordSpecification storePassword) {
-        return context().authentication(keyStoreParameters(
-                alias, optionalAlgorithm, optionalKeyPassword,
-                optionalSource, optionalStoreType, storePassword));
-    }
-
     private KeyStoreParameters keyStoreParameters(
+            final List<String> algorithm,
             final String alias,
-            final List<String> optionalAlgorithm,
-            final List<PasswordSpecification> optionalKeyPassword,
-            final List<Source> optionalSource,
-            final List<String> optionalStoreType,
-            final PasswordSpecification storePassword) {
+            final List<PasswordSpecification> keyPassword,
+            final List<Source> source,
+            final PasswordSpecification storePassword,
+            final List<String> storeType) {
         return new KeyStoreParameters() {
 
             @Override
@@ -147,18 +136,18 @@ implements BiosProvider,
 
             @Override
             public PasswordProtection keyProtection() {
-                for (PasswordSpecification keyPassword : optionalKeyPassword)
-                    return checkedProtection(keyPassword);
+                for (PasswordSpecification kp : keyPassword)
+                    return checkedProtection(kp);
                 return checkedProtection(storePassword);
             }
 
             @Override
             public List<String> optionalAlgorithm() {
-                return optionalAlgorithm;
+                return algorithm;
             }
 
             @Override
-            public List<Source> optionalSource() { return optionalSource; }
+            public List<Source> optionalSource() { return source; }
 
             @Override
             public PasswordProtection storeProtection() {
@@ -167,11 +156,23 @@ implements BiosProvider,
 
             @Override
             public String storeType() {
-                for (String storeType : optionalStoreType)
-                    return storeType;
+                for (String st : storeType)
+                    return st;
                 return context().storeType();
             }
         };
+    }
+
+    final Authentication ksba(
+            List<String> algorithm,
+            String alias,
+            List<PasswordSpecification> keyPassword,
+            List<Source> source,
+            List<String> storeType,
+            PasswordSpecification storePassword) {
+        return context().authentication(keyStoreParameters(
+                algorithm, alias, keyPassword,
+                source, storePassword, storeType));
     }
 
     @Override
@@ -226,30 +227,30 @@ implements BiosProvider,
     private LicenseParameters parameters(
             Authentication authentication,
             LicenseInitialization initialization,
-            List<Encryption> optionalEncryption,
+            List<Encryption> encryption,
             LicenseConsumerManager parent) {
         return parameters(authentication,
-                encryption(optionalEncryption, parent), initialization);
-    }
-
-    final Encryption passwordBasedEncryption(
-            List<String> optionalAlgorithm,
-            PasswordSpecification password) {
-        return context().encryption(pbeParameters(optionalAlgorithm, password));
+                encryption(encryption, parent), initialization);
     }
 
     @Override
     public final Store pathStore(Path path) { return bios().pathStore(path); }
 
+    final Encryption pbe(
+            List<String> algorithm,
+            PasswordSpecification password) {
+        return context().encryption(pbeParameters(algorithm, password));
+    }
+
     private PbeParameters pbeParameters(
-            final List<String> optionalAlgorithm,
+            final List<String> algorithm,
             final PasswordSpecification password) {
         return new PbeParameters() {
 
             @Override
             public String algorithm() {
-                for (String algorithm : optionalAlgorithm)
-                    return algorithm;
+                for (String a : algorithm)
+                    return a;
                 return context().pbeAlgorithm();
             }
 
@@ -295,5 +296,88 @@ implements BiosProvider,
     @Override
     public final Store userPreferencesStore(Class<?> classInPackage) {
         return bios().userPreferencesStore(classInPackage, subject());
+    }
+
+    abstract class KsbaConfiguration<Target>
+    implements Builder<Authentication>,
+               KsbaInjection<Target, PasswordSpecification> {
+
+        List<String> algorithm = Option.none();
+        List<String> alias = Option.none();
+        List<PasswordSpecification> keyPassword = Option.none();
+        List<Source> source = Option.none();
+        List<PasswordSpecification> storePassword = Option.none();
+        List<String> storeType = Option.none();
+
+        @Override
+        public final KsbaConfiguration<Target> algorithm(final String algorithm) {
+            this.algorithm = Option.wrap(algorithm);
+            return this;
+        }
+
+        @Override
+        public final KsbaConfiguration<Target> alias(final String alias) {
+            this.alias = Option.wrap(alias);
+            return this;
+        }
+
+        @Override
+        public final Authentication build() {
+            return ksba(algorithm, alias.get(0), keyPassword, source, storeType, storePassword.get(0));
+        }
+
+        @Override
+        public final KsbaConfiguration<Target> keyPassword(final PasswordSpecification keyPassword) {
+            this.keyPassword = Option.wrap(keyPassword);
+            return this;
+        }
+
+        @Override
+        public final KsbaConfiguration<Target> loadFrom(final Source source) {
+            this.source = Option.wrap(source);
+            return this;
+        }
+
+        @Override
+        public final KsbaConfiguration<Target> loadFromResource(String name) {
+            return loadFrom(resource(name));
+        }
+
+        @Override
+        public final KsbaConfiguration<Target> storePassword(final PasswordSpecification storePassword) {
+            this.storePassword = Option.wrap(storePassword);
+            return this;
+        }
+
+        @Override
+        public final KsbaConfiguration<Target> storeType(final String storeType) {
+            this.storeType = Option.wrap(storeType);
+            return this;
+        }
+    }
+
+    abstract class PbeConfiguration<Target>
+    implements Builder<Encryption>,
+               PbeInjection<Target, PasswordSpecification> {
+
+        List<String> algorithm = Option.none();
+        List<PasswordSpecification> password = Option.none();
+
+        @Override
+        public final PbeConfiguration<Target> algorithm(final String algorithm) {
+            this.algorithm = Option.wrap(algorithm);
+            return this;
+        }
+
+        @Override
+        public final Encryption build() {
+            return pbe(algorithm, password.get(0));
+        }
+
+        @Override
+        public final PbeConfiguration<Target> password(final PasswordSpecification password) {
+            this.password = Option.wrap(password);
+            return this;
+        }
     }
 }

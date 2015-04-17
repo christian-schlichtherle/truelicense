@@ -9,7 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.BIOS;
-import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
@@ -71,200 +70,28 @@ implements CachePeriodProvider,
 
     LicenseConsumerManager chainedManager(
             Authentication authentication,
-            List<Encryption> optionalEncryption,
+            List<Encryption> encryption,
             LicenseConsumerManager parent,
             Store store) {
         return chainedManager(
-                chainedParameters(authentication, optionalEncryption, parent),
+                chainedParameters(authentication, encryption, parent),
                 parent, store);
     }
 
     LicenseConsumerManager ftpManager(
             Authentication authentication,
             int days,
-            List<Encryption> optionalEncryption,
+            List<Encryption> encryption,
             LicenseConsumerManager parent,
             Store secret) {
         return chainedManager(
-                ftpParameters(authentication, days, optionalEncryption, parent),
+                ftpParameters(authentication, days, encryption, parent),
                 parent, secret);
     }
 
     @Override public License license() { return context().license(); }
 
-    @SuppressWarnings("PackageVisibleField")
-    @Override public ManagerBuilder<PasswordSpecification> manager() {
-
-        class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
-
-            final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
-
-            int ftpDays;
-            List<Authentication> optionalAuthentication = Option.none();
-            List<Encryption> optionalEncryption = Option.none();
-            List<LicenseConsumerManager> optionalParent = Option.none();
-            List<Store> optionalStore = Option.none();
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> authentication(final Authentication authentication) {
-                this.optionalAuthentication = Option.wrap(authentication);
-                return this;
-            }
-
-            @Override
-            public LicenseConsumerManager build() {
-                for (LicenseConsumerManager parent : optionalParent)
-                    return 0 != ftpDays
-                            ? cc.ftpManager(optionalAuthentication.get(0), ftpDays, optionalEncryption, parent, optionalStore.get(0))
-                            : cc.chainedManager(optionalAuthentication.get(0), optionalEncryption, parent, optionalStore.get(0));
-                return cc.manager(optionalAuthentication.get(0), optionalEncryption.get(0), optionalStore.get(0));
-            }
-
-            @Override
-            public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
-
-                class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-
-                    List<String> optionalAlgorithm = Option.none();
-                    List<PasswordSpecification> password = Option.none();
-
-                    @Override
-                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.optionalAlgorithm = Option.wrap(algorithm);
-                        return this;
-                    }
-
-                    @Override
-                    public ManagerBuilder<PasswordSpecification> inject() {
-                        return encryption(cc.passwordBasedEncryption(optionalAlgorithm, password.get(0)));
-                    }
-
-                    @Override
-                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> password(final PasswordSpecification password) {
-                        this.password = Option.wrap(password);
-                        return this;
-                    }
-                }
-                return new EncryptionConfiguration();
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> encryption(final Encryption encryption) {
-                this.optionalEncryption = Option.wrap(encryption);
-                return this;
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> ftpDays(final int ftpDays) {
-                this.ftpDays = ftpDays;
-                return this;
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> inject() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
-
-                class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-
-                    List<String> alias = Option.none();
-                    List<String> optionalAlgorithm = Option.none();
-                    List<PasswordSpecification> optionalKeyPassword = Option.none();
-                    List<Source> optionalSource = Option.none();
-                    List<String> optionalStoreType = Option.none();
-                    List<PasswordSpecification> storePassword = Option.none();
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.optionalAlgorithm = Option.wrap(algorithm);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> alias(final String alias) {
-                        this.alias = Option.wrap(alias);
-                        return this;
-                    }
-
-                    @Override
-                    public ManagerBuilder<PasswordSpecification> inject() {
-                        return authentication(
-                                cc.keyStoreAuthentication(alias.get(0), optionalAlgorithm, optionalKeyPassword, optionalSource, optionalStoreType, storePassword.get(0)));
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyPassword(final PasswordSpecification keyPassword) {
-                        this.optionalKeyPassword = Option.wrap(keyPassword);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFrom(final Source source) {
-                        this.optionalSource = Option.wrap(source);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFromResource(String name) {
-                        return loadFrom(cc.resource(name));
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storePassword(final PasswordSpecification storePassword) {
-                        this.storePassword = Option.wrap(storePassword);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
-                        this.optionalStoreType = Option.wrap(storeType);
-                        return this;
-                    }
-                }
-                return new KeyStoreConfiguration();
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> parent() {
-
-                class ParentManagerConfiguration extends ChildManagerConfiguration {
-                    @Override public ManagerBuilder<PasswordSpecification> inject() {
-                        return ChildManagerConfiguration.this.parent(build());
-                    }
-                }
-                return new ParentManagerConfiguration();
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> parent(final LicenseConsumerManager parent) {
-                this.optionalParent = Option.wrap(parent);
-                return this;
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> storeIn(final Store store) {
-                this.optionalStore = Option.wrap(store);
-                return this;
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> storeInPath(Path path) {
-                return storeIn(cc.pathStore(path));
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> storeInSystemPreferences(Class<?> classInPackage) {
-                return storeIn(cc.systemPreferencesStore(classInPackage));
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> storeInUserPreferences(Class<?> classInPackage) {
-                return storeIn(cc.userPreferencesStore(classInPackage));
-            }
-        }
+    @Override public ChildManagerConfiguration manager() {
         return new ChildManagerConfiguration();
     }
 
@@ -294,5 +121,113 @@ implements CachePeriodProvider,
             Encryption encryption,
             Store store) {
         return manager(parameters(authentication, encryption), store);
+    }
+
+    class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
+
+        int ftpDays;
+        List<Authentication> authentication = Option.none();
+        List<Encryption> encryption = Option.none();
+        List<LicenseConsumerManager> parent = Option.none();
+        List<Store> store = Option.none();
+
+        @Override
+        public ChildManagerConfiguration authentication(final Authentication authentication) {
+            this.authentication = Option.wrap(authentication);
+            return this;
+        }
+
+        @Override
+        public LicenseConsumerManager build() {
+            for (LicenseConsumerManager parent : this.parent)
+                return 0 != ftpDays
+                        ? ftpManager(authentication.get(0), ftpDays, encryption, parent, store.get(0))
+                        : chainedManager(authentication.get(0), encryption, parent, store.get(0));
+            return manager(authentication.get(0), encryption.get(0), store.get(0));
+        }
+
+        @Override
+        public PbeConsumerConfiguration encryption() {
+            return new PbeConsumerConfiguration();
+        }
+
+        @Override
+        public ChildManagerConfiguration encryption(final Encryption encryption) {
+            this.encryption = Option.wrap(encryption);
+            return this;
+        }
+
+        @Override
+        public ChildManagerConfiguration ftpDays(final int ftpDays) {
+            this.ftpDays = ftpDays;
+            return this;
+        }
+
+        @Override
+        public ChildManagerConfiguration inject() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public KsbaConsumerConfiguration keyStore() {
+            return new KsbaConsumerConfiguration();
+        }
+
+        @Override
+        public ParentManagerConfiguration parent() {
+            return new ParentManagerConfiguration();
+        }
+
+        @Override
+        public ChildManagerConfiguration parent(final LicenseConsumerManager parent) {
+            this.parent = Option.wrap(parent);
+            return this;
+        }
+
+        @Override
+        public ChildManagerConfiguration storeIn(final Store store) {
+            this.store = Option.wrap(store);
+            return this;
+        }
+
+        @Override
+        public ChildManagerConfiguration storeInPath(Path path) {
+            return storeIn(pathStore(path));
+        }
+
+        @Override
+        public ChildManagerConfiguration storeInSystemPreferences(Class<?> classInPackage) {
+            return storeIn(systemPreferencesStore(classInPackage));
+        }
+
+        @Override
+        public ChildManagerConfiguration storeInUserPreferences(Class<?> classInPackage) {
+            return storeIn(userPreferencesStore(classInPackage));
+        }
+
+        final class KsbaConsumerConfiguration
+                extends KsbaConfiguration<ChildManagerConfiguration>{
+
+            @Override
+            public ChildManagerConfiguration inject() {
+                return authentication(build());
+            }
+        }
+
+        final class ParentManagerConfiguration extends ChildManagerConfiguration {
+
+            @Override public ChildManagerConfiguration inject() {
+                return ChildManagerConfiguration.this.parent(build());
+            }
+        }
+
+        final class PbeConsumerConfiguration
+                extends PbeConfiguration<ChildManagerConfiguration> {
+
+            @Override
+            public ChildManagerConfiguration inject() {
+                return encryption(build());
+            }
+        }
     }
 }

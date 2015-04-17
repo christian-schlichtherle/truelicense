@@ -5,15 +5,11 @@
 
 package org.truelicense.core;
 
-import org.truelicense.api.License;
-import org.truelicense.api.LicenseParameters;
-import org.truelicense.api.LicenseVendorContext;
-import org.truelicense.api.LicenseVendorManager;
+import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.BIOS;
-import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
 
@@ -44,123 +40,7 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     @Override public License license() { return context().license(); }
 
-    @SuppressWarnings("PackageVisibleField")
-    @Override public ManagerBuilder<PasswordSpecification> manager() {
-
-        class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
-
-            final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
-
-            List<Authentication> optionalAuthentication = Option.none();
-            List<Encryption> optionalEncryption = Option.none();
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> authentication(final Authentication authentication) {
-                this.optionalAuthentication = Option.wrap(authentication);
-                return this;
-            }
-
-            @Override
-            public LicenseVendorManager build() {
-                return vc.manager(optionalAuthentication.get(0), optionalEncryption.get(0));
-            }
-
-            @Override
-            public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption() {
-
-                class EncryptionConfiguration implements PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-
-                    List<String> optionalAlgorithm = Option.none();
-                    List<PasswordSpecification> password = Option.none();
-
-                    @Override
-                    public ManagerBuilder<PasswordSpecification> inject() {
-                        return encryption(vc.passwordBasedEncryption(optionalAlgorithm, password.get(0)));
-                    }
-
-                    @Override
-                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.optionalAlgorithm = Option.wrap(algorithm);
-                        return this;
-                    }
-
-                    @Override
-                    public PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> password(final PasswordSpecification password) {
-                        this.password = Option.wrap(password);
-                        return this;
-                    }
-                }
-                return new EncryptionConfiguration();
-            }
-
-            @Override
-            public ManagerBuilder<PasswordSpecification> encryption(final Encryption encryption) {
-                this.optionalEncryption = Option.wrap(encryption);
-                return this;
-            }
-
-            @Override
-            public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore() {
-
-                class KeyStoreConfiguration implements KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> {
-
-                    List<String> alias = Option.none();
-                    List<String> optionalAlgorithm = Option.none();
-                    List<PasswordSpecification> optionalKeyPassword = Option.none();
-                    List<Source> optionalSource = Option.none();
-                    List<String> optionalStoreType = Option.none();
-                    List<PasswordSpecification> storePassword = Option.none();
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> algorithm(final String algorithm) {
-                        this.optionalAlgorithm = Option.wrap(algorithm);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> alias(final String alias) {
-                        this.alias = Option.wrap(alias);
-                        return this;
-                    }
-
-                    @Override
-                    public ManagerBuilder<PasswordSpecification> inject() {
-                        return authentication(
-                                vc.keyStoreAuthentication(alias.get(0), optionalAlgorithm, optionalKeyPassword, optionalSource, optionalStoreType, storePassword.get(0)));
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyPassword(final PasswordSpecification keyPassword) {
-                        this.optionalKeyPassword = Option.wrap(keyPassword);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFrom(final Source source) {
-                        this.optionalSource = Option.wrap(source);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> loadFromResource(String name) {
-                        return loadFrom(vc.resource(name));
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storePassword(final PasswordSpecification storePassword) {
-                        this.storePassword = Option.wrap(storePassword);
-                        return this;
-                    }
-
-                    @Override
-                    public KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> storeType(final String storeType) {
-                        this.optionalStoreType = Option.wrap(storeType);
-                        return this;
-                    }
-                }
-                return new KeyStoreConfiguration();
-            }
-        }
+    @Override public ManagerConfiguration manager() {
         return new ManagerConfiguration();
     }
 
@@ -183,5 +63,56 @@ implements LicenseVendorContext<PasswordSpecification> {
             Authentication authentication,
             Encryption encryption) {
         return manager(parameters(authentication, encryption));
+    }
+
+    final class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
+
+        List<Authentication> authentication = Option.none();
+        List<Encryption> encryption = Option.none();
+
+        @Override
+        public ManagerConfiguration authentication(final Authentication authentication) {
+            this.authentication = Option.wrap(authentication);
+            return this;
+        }
+
+        @Override
+        public LicenseVendorManager build() {
+            return manager(authentication.get(0), encryption.get(0));
+        }
+
+        @Override
+        public PbeVendorConfiguration encryption() {
+            return new PbeVendorConfiguration();
+        }
+
+        @Override
+        public ManagerConfiguration encryption(final Encryption encryption) {
+            this.encryption = Option.wrap(encryption);
+            return this;
+        }
+
+        @Override
+        public KsbaVendorConfiguration keyStore() {
+            return new KsbaVendorConfiguration();
+        }
+
+        final class KsbaVendorConfiguration
+                extends KsbaConfiguration<ManagerConfiguration> {
+
+            @Override
+            public ManagerConfiguration inject() {
+                return authentication(build());
+            }
+        }
+
+        final class PbeVendorConfiguration
+                extends PbeConfiguration<ManagerConfiguration> {
+
+            @Override
+            public ManagerConfiguration inject() {
+                return encryption(build());
+            }
+        }
     }
 }
