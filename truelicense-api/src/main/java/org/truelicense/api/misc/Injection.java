@@ -8,7 +8,7 @@ package org.truelicense.api.misc;
 /**
  * Injects a dependency into some target.
  *
- * @param  <Target> the type of the target.
+ * @param <Target> the type of the target.
  * @author Christian Schlichtherle
  */
 public interface Injection<Target> {
