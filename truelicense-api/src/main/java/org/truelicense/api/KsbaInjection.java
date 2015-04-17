@@ -17,7 +17,7 @@ import org.truelicense.api.misc.Injection;
  * @author Christian Schlichtherle
  */
 public interface KsbaInjection<PasswordSpecification, Target>
-        extends Injection<Target> {
+extends Injection<Target> {
 
     /**
      * Sets the algorithm name (optional).
