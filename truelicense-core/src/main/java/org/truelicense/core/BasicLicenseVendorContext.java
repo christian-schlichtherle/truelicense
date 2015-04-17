@@ -11,9 +11,6 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Store;
-import org.truelicense.spi.misc.Option;
-
-import java.util.List;
 
 /**
  * A basic context for license vendor applications alias license key tools.
@@ -40,8 +37,8 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     @Override public License license() { return context().license(); }
 
-    @Override public ManagerConfiguration manager() {
-        return new ManagerConfiguration();
+    @Override public LicenseVendorManagerBuilder manager() {
+        return new LicenseVendorManagerBuilder();
     }
 
     private LicenseVendorManager manager(final LicenseParameters parameters) {
@@ -65,54 +62,13 @@ implements LicenseVendorContext<PasswordSpecification> {
         return manager(parameters(authentication, encryption));
     }
 
-    final class ManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
-
-        List<Authentication> authentication = Option.none();
-        List<Encryption> encryption = Option.none();
-
-        @Override
-        public ManagerConfiguration authentication(final Authentication authentication) {
-            this.authentication = Option.wrap(authentication);
-            return this;
-        }
+    final class LicenseVendorManagerBuilder
+            extends BasicLicenseManagerBuilder<LicenseVendorManagerBuilder>
+            implements ManagerBuilder<PasswordSpecification> {
 
         @Override
         public LicenseVendorManager build() {
             return manager(authentication.get(0), encryption.get(0));
-        }
-
-        @Override
-        public PbeVendorConfiguration encryption() {
-            return new PbeVendorConfiguration();
-        }
-
-        @Override
-        public ManagerConfiguration encryption(final Encryption encryption) {
-            this.encryption = Option.wrap(encryption);
-            return this;
-        }
-
-        @Override
-        public KsbaVendorConfiguration keyStore() {
-            return new KsbaVendorConfiguration();
-        }
-
-        final class KsbaVendorConfiguration
-                extends KsbaConfiguration<ManagerConfiguration> {
-
-            @Override
-            public ManagerConfiguration inject() {
-                return authentication(build());
-            }
-        }
-
-        final class PbeVendorConfiguration
-                extends PbeConfiguration<ManagerConfiguration> {
-
-            @Override
-            public ManagerConfiguration inject() {
-                return encryption(build());
-            }
         }
     }
 }

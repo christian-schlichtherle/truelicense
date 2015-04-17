@@ -296,7 +296,7 @@ implements BiosProvider,
         return bios().userPreferencesStore(classInPackage, subject());
     }
 
-    abstract class KsbaConfiguration<Target>
+    abstract class BasicKsbaBuilder<Target>
     implements Builder<Authentication>,
                KsbaInjection<Target, PasswordSpecification> {
 
@@ -308,13 +308,13 @@ implements BiosProvider,
         List<String> storeType = Option.none();
 
         @Override
-        public final KsbaConfiguration<Target> algorithm(final String algorithm) {
+        public final BasicKsbaBuilder<Target> algorithm(final String algorithm) {
             this.algorithm = Option.wrap(algorithm);
             return this;
         }
 
         @Override
-        public final KsbaConfiguration<Target> alias(final String alias) {
+        public final BasicKsbaBuilder<Target> alias(final String alias) {
             this.alias = Option.wrap(alias);
             return this;
         }
@@ -325,36 +325,73 @@ implements BiosProvider,
         }
 
         @Override
-        public final KsbaConfiguration<Target> keyPassword(final PasswordSpecification keyPassword) {
+        public final BasicKsbaBuilder<Target> keyPassword(final PasswordSpecification keyPassword) {
             this.keyPassword = Option.wrap(keyPassword);
             return this;
         }
 
         @Override
-        public final KsbaConfiguration<Target> loadFrom(final Source source) {
+        public final BasicKsbaBuilder<Target> loadFrom(final Source source) {
             this.source = Option.wrap(source);
             return this;
         }
 
         @Override
-        public final KsbaConfiguration<Target> loadFromResource(String name) {
+        public final BasicKsbaBuilder<Target> loadFromResource(String name) {
             return loadFrom(resource(name));
         }
 
         @Override
-        public final KsbaConfiguration<Target> storePassword(final PasswordSpecification storePassword) {
+        public final BasicKsbaBuilder<Target> storePassword(final PasswordSpecification storePassword) {
             this.storePassword = Option.wrap(storePassword);
             return this;
         }
 
         @Override
-        public final KsbaConfiguration<Target> storeType(final String storeType) {
+        public final BasicKsbaBuilder<Target> storeType(final String storeType) {
             this.storeType = Option.wrap(storeType);
             return this;
         }
     }
 
-    abstract class PbeConfiguration<Target>
+    @SuppressWarnings("unchecked")
+    abstract class BasicLicenseManagerBuilder<This extends BasicLicenseManagerBuilder<This>> {
+
+        List<Authentication> authentication = Option.none();
+        List<Encryption> encryption = Option.none();
+
+        public This authentication(final Authentication authentication) {
+            this.authentication = Option.wrap(authentication);
+            return (This) this;
+        }
+
+        public PbeConsumerConfiguration encryption() {
+            return new PbeConsumerConfiguration();
+        }
+
+        public This encryption(final Encryption encryption) {
+            this.encryption = Option.wrap(encryption);
+            return (This) this;
+        }
+
+        public KsbaConsumerConfiguration keyStore() {
+            return new KsbaConsumerConfiguration();
+        }
+
+        final class KsbaConsumerConfiguration extends BasicKsbaBuilder<This> {
+
+            @Override
+            public This inject() { return authentication(build()); }
+        }
+
+        final class PbeConsumerConfiguration extends BasicPbeBuilder<This> {
+
+            @Override
+            public This inject() { return encryption(build()); }
+        }
+    }
+
+    abstract class BasicPbeBuilder<Target>
     implements Builder<Encryption>,
                PbeInjection<Target, PasswordSpecification> {
 
@@ -362,7 +399,7 @@ implements BiosProvider,
         List<PasswordSpecification> password = Option.none();
 
         @Override
-        public final PbeConfiguration<Target> algorithm(final String algorithm) {
+        public final BasicPbeBuilder<Target> algorithm(final String algorithm) {
             this.algorithm = Option.wrap(algorithm);
             return this;
         }
@@ -373,7 +410,7 @@ implements BiosProvider,
         }
 
         @Override
-        public final PbeConfiguration<Target> password(final PasswordSpecification password) {
+        public final BasicPbeBuilder<Target> password(final PasswordSpecification password) {
             this.password = Option.wrap(password);
             return this;
         }

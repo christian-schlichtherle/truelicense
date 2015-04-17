@@ -91,8 +91,8 @@ implements CachePeriodProvider,
 
     @Override public License license() { return context().license(); }
 
-    @Override public ChildManagerConfiguration manager() {
-        return new ChildManagerConfiguration();
+    @Override public ChildLicenseConsumerManagerBuilder manager() {
+        return new ChildLicenseConsumerManagerBuilder();
     }
 
     private LicenseConsumerManager manager(
@@ -123,19 +123,13 @@ implements CachePeriodProvider,
         return manager(parameters(authentication, encryption), store);
     }
 
-    class ChildManagerConfiguration implements ManagerBuilder<PasswordSpecification> {
+    class ChildLicenseConsumerManagerBuilder
+            extends BasicLicenseManagerBuilder<ChildLicenseConsumerManagerBuilder>
+            implements ManagerBuilder<PasswordSpecification> {
 
         int ftpDays;
-        List<Authentication> authentication = Option.none();
-        List<Encryption> encryption = Option.none();
         List<LicenseConsumerManager> parent = Option.none();
         List<Store> store = Option.none();
-
-        @Override
-        public ChildManagerConfiguration authentication(final Authentication authentication) {
-            this.authentication = Option.wrap(authentication);
-            return this;
-        }
 
         @Override
         public LicenseConsumerManager build() {
@@ -146,87 +140,49 @@ implements CachePeriodProvider,
             return manager(authentication.get(0), encryption.get(0), store.get(0));
         }
 
-        @Override
-        public PbeConsumerConfiguration encryption() {
-            return new PbeConsumerConfiguration();
-        }
-
-        @Override
-        public ChildManagerConfiguration encryption(final Encryption encryption) {
-            this.encryption = Option.wrap(encryption);
-            return this;
-        }
-
-        @Override
-        public ChildManagerConfiguration ftpDays(final int ftpDays) {
+        public ChildLicenseConsumerManagerBuilder ftpDays(final int ftpDays) {
             this.ftpDays = ftpDays;
             return this;
         }
 
         @Override
-        public ChildManagerConfiguration inject() {
+        public ChildLicenseConsumerManagerBuilder inject() {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public KsbaConsumerConfiguration keyStore() {
-            return new KsbaConsumerConfiguration();
+        public ParentLicenseConsumerManagerBuilder parent() {
+            return new ParentLicenseConsumerManagerBuilder();
         }
 
         @Override
-        public ParentManagerConfiguration parent() {
-            return new ParentManagerConfiguration();
-        }
-
-        @Override
-        public ChildManagerConfiguration parent(final LicenseConsumerManager parent) {
+        public ChildLicenseConsumerManagerBuilder parent(final LicenseConsumerManager parent) {
             this.parent = Option.wrap(parent);
             return this;
         }
 
-        @Override
-        public ChildManagerConfiguration storeIn(final Store store) {
+        public ChildLicenseConsumerManagerBuilder storeIn(final Store store) {
             this.store = Option.wrap(store);
             return this;
         }
 
-        @Override
-        public ChildManagerConfiguration storeInPath(Path path) {
+        public ChildLicenseConsumerManagerBuilder storeInPath(Path path) {
             return storeIn(pathStore(path));
         }
 
-        @Override
-        public ChildManagerConfiguration storeInSystemPreferences(Class<?> classInPackage) {
+        public ChildLicenseConsumerManagerBuilder storeInSystemPreferences(Class<?> classInPackage) {
             return storeIn(systemPreferencesStore(classInPackage));
         }
 
-        @Override
-        public ChildManagerConfiguration storeInUserPreferences(Class<?> classInPackage) {
+        public ChildLicenseConsumerManagerBuilder storeInUserPreferences(Class<?> classInPackage) {
             return storeIn(userPreferencesStore(classInPackage));
         }
 
-        final class KsbaConsumerConfiguration
-                extends KsbaConfiguration<ChildManagerConfiguration>{
+        final class ParentLicenseConsumerManagerBuilder
+                extends ChildLicenseConsumerManagerBuilder {
 
-            @Override
-            public ChildManagerConfiguration inject() {
-                return authentication(build());
-            }
-        }
-
-        final class ParentManagerConfiguration extends ChildManagerConfiguration {
-
-            @Override public ChildManagerConfiguration inject() {
-                return ChildManagerConfiguration.this.parent(build());
-            }
-        }
-
-        final class PbeConsumerConfiguration
-                extends PbeConfiguration<ChildManagerConfiguration> {
-
-            @Override
-            public ChildManagerConfiguration inject() {
-                return encryption(build());
+            @Override public ChildLicenseConsumerManagerBuilder inject() {
+                return ChildLicenseConsumerManagerBuilder.this.parent(build());
             }
         }
     }
