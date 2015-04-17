@@ -318,7 +318,7 @@ implements BiosProvider,
 
         final class KsbaBuilder
                 implements Builder<Authentication>,
-                LicenseManagerBuilder.KsbaInjection<PasswordSpecification, This> {
+                           KsbaInjection<PasswordSpecification, This> {
 
             List<String> algorithm = Option.none();
             List<String> alias = Option.none();
@@ -379,7 +379,7 @@ implements BiosProvider,
 
         final class PbeBuilder
                 implements Builder<Encryption>,
-                LicenseManagerBuilder.PbeInjection<PasswordSpecification, This> {
+                           PbeInjection<PasswordSpecification, This> {
 
             List<String> algorithm = Option.none();
             List<PasswordSpecification> password = Option.none();

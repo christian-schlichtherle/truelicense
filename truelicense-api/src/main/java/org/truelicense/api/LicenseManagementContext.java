@@ -73,7 +73,7 @@ extends BiosProvider,
      * You can override this default value when configuring the PBE with the
      * license vendor context or the license consumer context.
      *
-     * @see   LicenseManagerBuilder.PbeInjection#algorithm
+     * @see PbeInjection#algorithm
      */
     String pbeAlgorithm();
 
