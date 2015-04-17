@@ -191,25 +191,25 @@ object LicenseWizardIT {
 
   private def vendorManager =
     managementContext.vendor.manager
+      .encryption
+        .password(test1234)
+        .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.ks")
         .storePassword(test1234)
         .inject
-      .encryption
-        .password(test1234)
-        .inject
       .build
 
   private def consumerManager =
     managementContext.consumer.manager
+      .encryption
+        .password(test1234)
+        .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.ks")
         .storePassword(test1234)
-        .inject
-      .encryption
-        .password(test1234)
         .inject
       .storeIn(new MemoryStore)
       .build()

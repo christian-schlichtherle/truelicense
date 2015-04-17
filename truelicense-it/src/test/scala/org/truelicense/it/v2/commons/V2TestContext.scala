@@ -16,13 +16,13 @@ trait V2TestContext extends TestContext {
 
   override final def vendorManager = {
     val vm = vendorContext.manager
+      .encryption
+        .password(test1234)
+        .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.jceks")
         .storePassword(test1234)
-        .inject
-      .encryption
-        .password(test1234)
         .inject
       .build
     require(vm.context eq vendorContext)
@@ -31,13 +31,13 @@ trait V2TestContext extends TestContext {
 
   override final def chainedVendorManager = {
     val vm = vendorContext.manager
+      .encryption
+        .password(test1234)
+        .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jceks")
         .storePassword(test1234)
-        .inject
-      .encryption
-        .password(test1234)
         .inject
       .build
     require(vm.context eq vendorContext)
@@ -46,13 +46,13 @@ trait V2TestContext extends TestContext {
 
   override final def consumerManager(store: Store) = {
     val cm = consumerContext.manager
+      .encryption
+        .password(test1234)
+        .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.jceks")
         .storePassword(test1234)
-        .inject
-      .encryption
-        .password(test1234)
         .inject
       .storeIn(store)
       .build

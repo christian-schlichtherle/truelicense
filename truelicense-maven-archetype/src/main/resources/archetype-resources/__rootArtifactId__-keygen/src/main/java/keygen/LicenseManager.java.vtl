@@ -61,6 +61,13 @@ public enum LicenseManager implements LicenseVendorManager {
         @Override
         LicenseVendorManager newManager() {
             return _context.manager()
+                    .encryption()
+#if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
+    $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
+                        .algorithm(PBE_ALGORITHM)
+#end
+                        .password(#password($editionPbePassword))
+                        .inject()
                     .keyStore()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
@@ -72,13 +79,6 @@ public enum LicenseManager implements LicenseVendorManager {
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
 #end
-                        .inject()
-                    .encryption()
-#if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
-    $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
-                        .algorithm(PBE_ALGORITHM)
-#end
-                        .password(#password($editionPbePassword))
                         .inject()
                     .build();
         }
