@@ -296,64 +296,6 @@ implements BiosProvider,
         return bios().userPreferencesStore(classInPackage, subject());
     }
 
-    abstract class BasicKsbaBuilder<Target>
-    implements Builder<Authentication>,
-               KsbaInjection<Target, PasswordSpecification> {
-
-        List<String> algorithm = Option.none();
-        List<String> alias = Option.none();
-        List<PasswordSpecification> keyPassword = Option.none();
-        List<Source> source = Option.none();
-        List<PasswordSpecification> storePassword = Option.none();
-        List<String> storeType = Option.none();
-
-        @Override
-        public final BasicKsbaBuilder<Target> algorithm(final String algorithm) {
-            this.algorithm = Option.wrap(algorithm);
-            return this;
-        }
-
-        @Override
-        public final BasicKsbaBuilder<Target> alias(final String alias) {
-            this.alias = Option.wrap(alias);
-            return this;
-        }
-
-        @Override
-        public final Authentication build() {
-            return ksba(algorithm, alias.get(0), keyPassword, source, storeType, storePassword.get(0));
-        }
-
-        @Override
-        public final BasicKsbaBuilder<Target> keyPassword(final PasswordSpecification keyPassword) {
-            this.keyPassword = Option.wrap(keyPassword);
-            return this;
-        }
-
-        @Override
-        public final BasicKsbaBuilder<Target> loadFrom(final Source source) {
-            this.source = Option.wrap(source);
-            return this;
-        }
-
-        @Override
-        public final BasicKsbaBuilder<Target> loadFromResource(String name) {
-            return loadFrom(resource(name));
-        }
-
-        @Override
-        public final BasicKsbaBuilder<Target> storePassword(final PasswordSpecification storePassword) {
-            this.storePassword = Option.wrap(storePassword);
-            return this;
-        }
-
-        @Override
-        public final BasicKsbaBuilder<Target> storeType(final String storeType) {
-            this.storeType = Option.wrap(storeType);
-            return this;
-        }
-    }
-
     @SuppressWarnings("unchecked")
     abstract class BasicLicenseManagerBuilder<This extends BasicLicenseManagerBuilder<This>> {
 
@@ -365,54 +307,102 @@ implements BiosProvider,
             return (This) this;
         }
 
-        public PbeConsumerConfiguration encryption() {
-            return new PbeConsumerConfiguration();
-        }
+        public PbeBuilder encryption() { return new PbeBuilder(); }
 
         public This encryption(final Encryption encryption) {
             this.encryption = Option.wrap(encryption);
             return (This) this;
         }
 
-        public KsbaConsumerConfiguration keyStore() {
-            return new KsbaConsumerConfiguration();
-        }
+        public KsbaBuilder keyStore() { return new KsbaBuilder(); }
 
-        final class KsbaConsumerConfiguration extends BasicKsbaBuilder<This> {
+        final class KsbaBuilder
+                implements Builder<Authentication>,
+                           KsbaInjection<This,PasswordSpecification> {
+
+            List<String> algorithm = Option.none();
+            List<String> alias = Option.none();
+            List<PasswordSpecification> keyPassword = Option.none();
+            List<Source> source = Option.none();
+            List<PasswordSpecification> storePassword = Option.none();
+            List<String> storeType = Option.none();
 
             @Override
             public This inject() { return authentication(build()); }
+
+            @Override
+            public final KsbaBuilder algorithm(final String algorithm) {
+                this.algorithm = Option.wrap(algorithm);
+                return this;
+            }
+
+            @Override
+            public final KsbaBuilder alias(final String alias) {
+                this.alias = Option.wrap(alias);
+                return this;
+            }
+
+            @Override
+            public final Authentication build() {
+                return ksba(algorithm, alias.get(0), keyPassword, source, storeType, storePassword.get(0));
+            }
+
+            @Override
+            public final KsbaBuilder keyPassword(final PasswordSpecification keyPassword) {
+                this.keyPassword = Option.wrap(keyPassword);
+                return this;
+            }
+
+            @Override
+            public final KsbaBuilder loadFrom(final Source source) {
+                this.source = Option.wrap(source);
+                return this;
+            }
+
+            @Override
+            public final KsbaBuilder loadFromResource(String name) {
+                return loadFrom(resource(name));
+            }
+
+            @Override
+            public final KsbaBuilder storePassword(final PasswordSpecification storePassword) {
+                this.storePassword = Option.wrap(storePassword);
+                return this;
+            }
+
+            @Override
+            public final KsbaBuilder storeType(final String storeType) {
+                this.storeType = Option.wrap(storeType);
+                return this;
+            }
         }
 
-        final class PbeConsumerConfiguration extends BasicPbeBuilder<This> {
+        final class PbeBuilder
+                implements Builder<Encryption>,
+                           PbeInjection<This,PasswordSpecification> {
+
+            List<String> algorithm = Option.none();
+            List<PasswordSpecification> password = Option.none();
 
             @Override
             public This inject() { return encryption(build()); }
-        }
-    }
 
-    abstract class BasicPbeBuilder<Target>
-    implements Builder<Encryption>,
-               PbeInjection<Target, PasswordSpecification> {
+            @Override
+            public final PbeBuilder algorithm(final String algorithm) {
+                this.algorithm = Option.wrap(algorithm);
+                return this;
+            }
 
-        List<String> algorithm = Option.none();
-        List<PasswordSpecification> password = Option.none();
+            @Override
+            public final Encryption build() {
+                return pbe(algorithm, password.get(0));
+            }
 
-        @Override
-        public final BasicPbeBuilder<Target> algorithm(final String algorithm) {
-            this.algorithm = Option.wrap(algorithm);
-            return this;
-        }
-
-        @Override
-        public final Encryption build() {
-            return pbe(algorithm, password.get(0));
-        }
-
-        @Override
-        public final BasicPbeBuilder<Target> password(final PasswordSpecification password) {
-            this.password = Option.wrap(password);
-            return this;
+            @Override
+            public final PbeBuilder password(final PasswordSpecification password) {
+                this.password = Option.wrap(password);
+                return this;
+            }
         }
     }
 }
