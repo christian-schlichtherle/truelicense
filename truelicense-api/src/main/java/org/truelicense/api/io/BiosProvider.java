@@ -7,6 +7,6 @@ package org.truelicense.api.io;
  */
 public interface BiosProvider {
 
-    /** Returns a BIOS. */
+    /** Returns the BIOS. */
     BIOS bios();
 }

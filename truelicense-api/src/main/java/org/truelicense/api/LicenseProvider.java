@@ -12,6 +12,6 @@ package org.truelicense.api;
  */
 public interface LicenseProvider {
 
-    /** Returns a license. */
+    /** Returns the license. */
     License license();
 }

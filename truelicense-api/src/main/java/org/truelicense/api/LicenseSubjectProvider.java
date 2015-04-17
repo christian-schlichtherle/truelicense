@@ -6,12 +6,12 @@
 package org.truelicense.api;
 
 /**
- * Provides a licensing subject.
+ * Provides a license subject.
  *
  * @author Christian Schlichtherle
  */
 public interface LicenseSubjectProvider {
 
-    /** Returns the licensing subject. */
+    /** Returns the license subject. */
     String subject();
 }
