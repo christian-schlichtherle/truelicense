@@ -49,16 +49,57 @@ extends LicenseApplicationContext {
     extends Builder<LicenseConsumerManager>, Injection<ManagerBuilder<PasswordSpecification>> {
 
         /**
-         * Sets the parent license consumer manager.
-         * A parent license consumer manager is required to configure a
-         * non-zero {@linkplain #ftpDays free trial period} (FTP).
-         * The parent license consumer manager will be tried first whenever a
-         * {@linkplain LicenseConsumerManager life cycle management method}
-         * is executed, e.g. when verifying a license key.
+         * Sets the authentication.
          *
          * @return {@code this}.
          */
-        ManagerBuilder<PasswordSpecification> parent(LicenseConsumerManager parent);
+        ManagerBuilder<PasswordSpecification> authentication(Authentication authentication);
+
+        /**
+         * Returns an injection for a password based encryption (PBE).
+         * Call its {@link Injection#inject} method to build and inject the
+         * configured encryption into this builder and return it.
+         * <p>
+         * PBE parameters need to be configured if no
+         * {@linkplain #parent parent license consumer manager} is configured.
+         * Otherwise, the PBE parameters get inherited from the parent license
+         * consumer manager.
+         *
+         * @see #encryption(Encryption)
+         */
+        PbeInjection<? extends ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
+
+        /**
+         * Sets the encryption.
+         * An encryption needs to be configured if no
+         * {@linkplain #parent parent license consumer manager} is configured.
+         * Otherwise, the encryption gets inherited from the parent license
+         * consumer manager.
+         *
+         * @return {@code this}.
+         */
+        ManagerBuilder<PasswordSpecification> encryption(Encryption encryption);
+
+        /**
+         * Sets the free trial period (FTP) in days (the 24 hour equivalent).
+         * If this is zero, then no FTP is configured.
+         * Otherwise, the {@linkplain #keyStore key store} needs to have a
+         * password configured for the private key entry and a
+         * {@linkplain #parent parent license consumer manager}
+         * needs to be configured for the regular license keys.
+         *
+         * @return {@code this}.
+         */
+        ManagerBuilder<PasswordSpecification> ftpDays(int ftpDays);
+
+        /**
+         * Returns an injection for a key store based authentication (KSBA).
+         * Call its {@link Injection#inject} method to build and inject the
+         * configured authentication into this builder and return it.
+         *
+         * @see #authentication(Authentication)
+         */
+        KsbaInjection<? extends ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
 
         /**
          * Returns a builder for the parent license consumer manager.
@@ -77,61 +118,16 @@ extends LicenseApplicationContext {
         ManagerBuilder<PasswordSpecification> parent();
 
         /**
-         * Sets the free trial period (FTP) in days (the 24 hour equivalent).
-         * If this is zero, then no FTP is configured.
-         * Otherwise, the {@linkplain #keyStore key store} needs to have a
-         * password configured for the private key entry and a
-         * {@linkplain #parent parent license consumer manager}
-         * needs to be configured for the regular license keys.
+         * Sets the parent license consumer manager.
+         * A parent license consumer manager is required to configure a
+         * non-zero {@linkplain #ftpDays free trial period} (FTP).
+         * The parent license consumer manager will be tried first whenever a
+         * {@linkplain LicenseConsumerManager life cycle management method}
+         * is executed, e.g. when verifying a license key.
          *
          * @return {@code this}.
          */
-        ManagerBuilder<PasswordSpecification> ftpDays(int ftpDays);
-
-        /**
-         * Sets the authentication.
-         *
-         * @return {@code this}.
-         */
-        ManagerBuilder<PasswordSpecification> authentication(Authentication authentication);
-
-        /**
-         * Returns an injection for a key store based authentication.
-         * Call its {@link Injection#inject} method to build and inject the
-         * configured authentication into this builder and return it.
-         * <p>
-         * The keystore needs to have a key password configured if and only if
-         * the license consumer manager to build defines a non-zero
-         * {@linkplain #ftpDays free trial period} (FTP).
-         *
-         * @see #authentication(Authentication)
-         */
-        KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
-
-        /**
-         * Sets the encryption.
-         * An encryption needs to be configured if no
-         * {@linkplain #parent parent license consumer manager} is configured.
-         * Otherwise, the encryption gets inherited from the parent license
-         * consumer manager.
-         *
-         * @return {@code this}.
-         */
-        ManagerBuilder<PasswordSpecification> encryption(Encryption encryption);
-
-        /**
-         * Returns an injection for a password based encryption (PBE).
-         * Call its {@link Injection#inject} method to build and inject the
-         * configured encryption into this builder and return it.
-         * <p>
-         * PBE parameters need to be configured if no
-         * {@linkplain #parent parent license consumer manager} is configured.
-         * Otherwise, the PBE parameters get inherited from the parent license
-         * consumer manager.
-         *
-         * @see #encryption(Encryption)
-         */
-        PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
+        ManagerBuilder<PasswordSpecification> parent(LicenseConsumerManager parent);
 
         /**
          * Store the license key in the given store.

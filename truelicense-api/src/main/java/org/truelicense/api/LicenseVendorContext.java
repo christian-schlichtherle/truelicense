@@ -56,16 +56,13 @@ extends CodecProvider,
         ManagerBuilder<PasswordSpecification> authentication(Authentication authentication);
 
         /**
-         * Returns an injection for a key store based authentication.
+         * Returns an injection for a password based encryption.
          * Call its {@link Injection#inject} method to build and inject the
-         * configured authentication into this builder and return it.
-         * <p>
-         * The keystore needs to have a key password configured for the private
-         * key entry.
+         * configured encryption into this builder and return it.
          *
-         * @see #authentication(Authentication)
+         * @see #encryption(Encryption)
          */
-        KsbaInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
+        PbeInjection<? extends ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
 
         /**
          * Sets the encryption.
@@ -75,12 +72,12 @@ extends CodecProvider,
         ManagerBuilder<PasswordSpecification> encryption(Encryption encryption);
 
         /**
-         * Returns an injection for a password based encryption.
+         * Returns an injection for a key store based authentication (KSBA).
          * Call its {@link Injection#inject} method to build and inject the
-         * configured encryption into this builder and return it.
+         * configured authentication into this builder and return it.
          *
-         * @see #encryption(Encryption)
+         * @see #authentication(Authentication)
          */
-        PbeInjection<ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
+        KsbaInjection<? extends ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
     }
 }
