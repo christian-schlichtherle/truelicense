@@ -87,7 +87,7 @@
                                                 <keyalg>${dollar}{keyPairAlgorithm}</keyalg>
 #end
                                                 <keypass>${dollar}{@item@KeyEntryPassword}</keypass>
-#if($keyPairSize != "-")
+#if($keyPairSize != 0)
                                                 <keysize>${dollar}{keyPairSize}</keysize>
 #end
                                                 <keystore>${dollar}{basedir}/src/main/resources/${dollar}{privateKeyStoreFile}</keystore>
