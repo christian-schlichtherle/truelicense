@@ -26,6 +26,15 @@ import java.util.List;
 public interface KeyStoreParameters {
 
     /**
+     * Returns the optional signature algorithm.
+     * This is a list of at most one non-null item.
+     * The list may be empty to indicate that the same signature algorithm
+     * should be used which was used to sign the public key of the key store
+     * entry which is addressed by the other properties of this interface.
+     */
+    List<String> algorithm();
+
+    /**
      * Returns the alias of the entry in the key store.
      * The returned string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.
@@ -39,21 +48,12 @@ public interface KeyStoreParameters {
     PasswordProtection keyProtection();
 
     /**
-     * Returns the optional signature algorithm.
-     * This is a list of at most one non-null item.
-     * The list may be empty to indicate that the same signature algorithm
-     * should be used which was used to sign the public key of the key store
-     * entry which is addressed by the other properties of this interface.
-     */
-    List<String> optionalAlgorithm();
-
-    /**
      * Returns the optional input source for the key store.
      * This is a list of at most one non-null item.
      * The list may be empty to indicate that the key store type does not
      * require loading from an input source / stream.
      */
-    List<Source> optionalSource();
+    List<Source> source();
 
     /**
      * Returns a password protection for verifying the integrity of the key

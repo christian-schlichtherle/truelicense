@@ -142,12 +142,10 @@ implements BiosProvider,
             }
 
             @Override
-            public List<String> optionalAlgorithm() {
-                return algorithm;
-            }
+            public List<String> algorithm() { return algorithm; }
 
             @Override
-            public List<Source> optionalSource() { return source; }
+            public List<Source> source() { return source; }
 
             @Override
             public PasswordProtection storeProtection() {
@@ -182,8 +180,8 @@ implements BiosProvider,
     public final Date now() { return context().now(); }
 
     @Override
-    public final List<ClassLoader> optionalClassLoader() {
-        return context().optionalClassLoader();
+    public final List<ClassLoader> classLoader() {
+        return context().classLoader();
     }
 
     final LicenseParameters parameters(
@@ -272,7 +270,7 @@ implements BiosProvider,
 
     @Override
     public final Source resource(String name) {
-        return bios().resource(name, optionalClassLoader());
+        return bios().resource(name, classLoader());
     }
 
     @Override

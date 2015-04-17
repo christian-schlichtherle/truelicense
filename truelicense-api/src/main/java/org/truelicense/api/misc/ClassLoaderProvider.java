@@ -15,10 +15,10 @@ import java.util.List;
 public interface ClassLoaderProvider {
 
     /**
-     * Returns an optional class loader.
+     * Returns the optional class loader.
      * This is a list of at most one non-null item.
      * The list may be empty to indicate that the system class loader shall get
      * used to load classes and resources.
      */
-    List<ClassLoader> optionalClassLoader();
+    List<ClassLoader> classLoader();
 }

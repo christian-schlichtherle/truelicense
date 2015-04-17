@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-#macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "").replaceAll(" /\*.*\*/", ".toString()")#end
+#macro(obfuscate $string)$java.obfuscatedString($string).replaceAll(" /\*.*\*/", ".toString()")#end
 package org.truelicense.core.auth;
 
 import org.truelicense.api.auth.Artifactory;
@@ -17,7 +17,6 @@ import org.truelicense.api.passwd.Password;
 import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.api.passwd.PasswordUsage;
 import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.misc.Option;
 
 import java.io.InputStream;
@@ -37,6 +36,7 @@ import java.util.logging.Logger;
  *
  * @author Christian Schlichtherle
  */
+@SuppressWarnings("LoopStatementThatDoesntLoop")
 public final class Notary implements Authentication {
 
     @Obfuscate
@@ -89,10 +89,9 @@ public final class Notary implements Authentication {
             return Signature.getInstance(algorithm());
         }
 
-        @SuppressWarnings("LoopStatementThatDoesntLoop")
         String algorithm() throws Exception {
-            for (String signatureAlgorithm : optionalAlgorithm())
-                return signatureAlgorithm;
+            for (String algorithm : configuredAlgorithm())
+                return algorithm;
             return defaultAlgorithm();
         }
 
@@ -176,8 +175,8 @@ public final class Notary implements Authentication {
             return keyStore().isCertificateEntry(alias());
         }
 
-        KeyStore.Entry keyStoreEntry(List<KeyStore.PasswordProtection> optionalProtection) throws Exception {
-            return keyStore().getEntry(alias(), Option.unwrap(optionalProtection));
+        KeyStore.Entry keyStoreEntry(List<KeyStore.PasswordProtection> protection) throws Exception {
+            return keyStore().getEntry(alias(), Option.unwrap(protection));
         }
 
         KeyStore keyStore() throws Exception {
@@ -185,12 +184,11 @@ public final class Notary implements Authentication {
             return null != ks ? ks : (keyStore = newKeyStore());
         }
 
-        @SuppressWarnings("LoopStatementThatDoesntLoop")
         KeyStore newKeyStore() throws Exception {
             try (Password password = storeProtection().password(PasswordUsage.READ)) {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
                 final char[] pc = password.characters();
-                for (final Source source : optionalSource()) {
+                for (final Source source : source()) {
                     try (InputStream in = source.input()) {
                         keyStore.load(in, pc);
                         return keyStore;
@@ -209,11 +207,11 @@ public final class Notary implements Authentication {
             return parameters().keyProtection();
         }
 
-        List<String> optionalAlgorithm() {
-            return parameters().optionalAlgorithm();
+        List<String> configuredAlgorithm() {
+            return parameters().algorithm();
         }
 
-        List<Source> optionalSource() { return parameters().optionalSource(); }
+        List<Source> source() { return parameters().source(); }
 
         PasswordProtection storeProtection() {
             return parameters().storeProtection();

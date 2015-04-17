@@ -41,7 +41,7 @@ import org.truelicense.v2.json.codec.JsonCodec;
  * <p>
  * Where required, you should subclass this class to customize its properties,
  * e.g. its {@linkplain #codec encoding}, {@linkplain #now clock},
- * {@linkplain #optionalClassLoader optional class loader} etc.
+ * {@linkplain #classLoader optional class loader} etc.
  * <p>
  * Note that this class is immutable.
  * Unless stated otherwise, all no-argument methods need to return consistent

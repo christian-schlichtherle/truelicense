@@ -121,7 +121,7 @@ implements LicenseManagementContext<PasswordSpecification> {
      * lists the current thread's context class loader, if not {@code null}.
      */
     @Override
-    public List<ClassLoader> optionalClassLoader() {
+    public List<ClassLoader> classLoader() {
         return Option.wrap(Thread.currentThread().getContextClassLoader());
     }
 

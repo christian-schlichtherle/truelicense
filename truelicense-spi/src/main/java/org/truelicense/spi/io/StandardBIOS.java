@@ -55,17 +55,17 @@ public class StandardBIOS implements BIOS {
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     public Source resource(
             final String name,
-            final List<ClassLoader> optionalLoader) {
+            final List<ClassLoader> classLoader) {
         return new Source() {
             @Override public InputStream input() throws IOException {
-                for (InputStream in : optionalInputStream())
+                for (InputStream in : inputStream())
                     return in;
                 throw new FileNotFoundException(name);
             }
 
-            List<InputStream> optionalInputStream() {
-                for (ClassLoader loader : optionalLoader)
-                    return Option.wrap(loader.getResourceAsStream(name));
+            List<InputStream> inputStream() {
+                for (ClassLoader cl : classLoader)
+                    return Option.wrap(cl.getResourceAsStream(name));
                 return Option.wrap(ClassLoader.getSystemResourceAsStream(name));
             }
         };
