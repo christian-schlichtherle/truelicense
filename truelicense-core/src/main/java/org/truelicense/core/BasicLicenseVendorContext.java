@@ -37,8 +37,8 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     @Override public License license() { return context().license(); }
 
-    @Override public LicenseVendorManagerBuilder manager() {
-        return new LicenseVendorManagerBuilder();
+    @Override public BasicLicenseVendorManagerBuilder manager() {
+        return new BasicLicenseVendorManagerBuilder();
     }
 
     private LicenseVendorManager manager(final LicenseParameters parameters) {
@@ -62,9 +62,9 @@ implements LicenseVendorContext<PasswordSpecification> {
         return manager(parameters(authentication, encryption));
     }
 
-    final class LicenseVendorManagerBuilder
-            extends BasicLicenseManagerBuilder<LicenseVendorManagerBuilder>
-            implements ManagerBuilder<PasswordSpecification> {
+    final class BasicLicenseVendorManagerBuilder
+            extends BasicLicenseManagerBuilder<BasicLicenseVendorManagerBuilder>
+            implements LicenseVendorManagerBuilder<PasswordSpecification> {
 
         @Override
         public LicenseVendorManager build() {

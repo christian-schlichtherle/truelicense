@@ -125,7 +125,7 @@ implements CachePeriodProvider,
 
     class ChildLicenseConsumerManagerBuilder
             extends BasicLicenseManagerBuilder<ChildLicenseConsumerManagerBuilder>
-            implements ManagerBuilder<PasswordSpecification> {
+            implements LicenseConsumerManagerBuilder<PasswordSpecification> {
 
         int ftpDays;
         List<LicenseConsumerManager> parent = Option.none();

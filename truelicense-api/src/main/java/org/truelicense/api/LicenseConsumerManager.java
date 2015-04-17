@@ -20,7 +20,7 @@ import org.truelicense.api.misc.ContextProvider;
  * {@linkplain LicenseConsumerContext license consumer context}
  * to configure a license consumer manager which uses a transient
  * {@link org.truelicense.spi.io.MemoryStore} instead of a persistent
- * store - see {@link LicenseConsumerContext.ManagerBuilder#storeIn}.
+ * store - see {@link LicenseConsumerManagerBuilder#storeIn}.
  * Once configured, you can {@linkplain #install install} the license key to
  * the transient memory store and {@linkplain #view view} its encoded license
  * bean.

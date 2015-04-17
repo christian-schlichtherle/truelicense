@@ -5,11 +5,7 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.codec.CodecProvider;
-import org.truelicense.api.crypto.Encryption;
-import org.truelicense.api.misc.Builder;
-import org.truelicense.api.misc.Injection;
 
 /**
  * A derived context for license vendor applications alias license key tools.
@@ -33,51 +29,8 @@ extends CodecProvider,
     /**
      * Returns a builder for a
      * {@linkplain LicenseVendorManager license vendor manager}.
-     * Call its {@link ManagerBuilder#build} method to obtain a configured
-     * license vendor manager.
+     * Call its {@link LicenseVendorManagerBuilder#build} method to obtain
+     * the configured license vendor manager.
      */
-    ManagerBuilder<PasswordSpecification> manager();
-
-    /**
-     * A builder for
-     * {@linkplain LicenseVendorManager license vendor managers}.
-     * Call its {@link #build} method to obtain a configured license vendor
-     * manager.
-     *
-     * @author Christian Schlichtherle
-     */
-    interface ManagerBuilder<PasswordSpecification> extends Builder<LicenseVendorManager> {
-
-        /**
-         * Sets the authentication.
-         *
-         * @return {@code this}.
-         */
-        ManagerBuilder<PasswordSpecification> authentication(Authentication authentication);
-
-        /**
-         * Returns an injection for a password based encryption.
-         * Call its {@link Injection#inject} method to build and inject the
-         * configured encryption into this builder and return it.
-         *
-         * @see #encryption(Encryption)
-         */
-        PbeInjection<? extends ManagerBuilder<PasswordSpecification>, PasswordSpecification> encryption();
-
-        /**
-         * Sets the encryption.
-         *
-         * @return {@code this}.
-         */
-        ManagerBuilder<PasswordSpecification> encryption(Encryption encryption);
-
-        /**
-         * Returns an injection for a key store based authentication (KSBA).
-         * Call its {@link Injection#inject} method to build and inject the
-         * configured authentication into this builder and return it.
-         *
-         * @see #authentication(Authentication)
-         */
-        KsbaInjection<? extends ManagerBuilder<PasswordSpecification>, PasswordSpecification> keyStore();
-    }
+    LicenseVendorManagerBuilder<PasswordSpecification> manager();
 }
