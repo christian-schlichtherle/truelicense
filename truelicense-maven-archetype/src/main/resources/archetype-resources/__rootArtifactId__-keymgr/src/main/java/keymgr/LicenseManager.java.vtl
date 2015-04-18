@@ -18,7 +18,7 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#set($preferencesNodeType = $display.capitalize($preferencesNodeType.toLowerCase($english)))
+#set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
 #macro(password $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
@@ -84,7 +84,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if(0 < $foreach.index)
                     .parent(LicenseManager.$parentEdition)
 #end
-                    .storeIn${preferencesNodeType}Preferences(Main.class) // must be a non-obfuscated class!
+                    .storeIn${preferencesType}Preferences(Main.class) // must be a non-obfuscated class!
                     .build();
         }
     }#if($foreach.count == $editionsSize && $freeTrialPeriod == 0);#{else},#end
@@ -139,9 +139,9 @@ public enum LicenseManager implements LicenseConsumerManager {
                         .inject()
                     .parent(LicenseManager.$parentEdition)
 #if($dynamicClassLoading == true)
-                    .storeIn${preferencesNodeType}Preferences(classForName(SECRET_MARKER_CLASS))
+                    .storeIn${preferencesType}Preferences(classForName(SECRET_MARKER_CLASS))
 #else
-                    .storeIn${preferencesNodeType}Preferences(${ftpSecretMarkerClass.replace('$', '.')}.class)
+                    .storeIn${preferencesType}Preferences(${ftpSecretMarkerClass.replace('$', '.')}.class)
 #end
                     .build();
         }

@@ -323,7 +323,7 @@
              administrator privileges or otherwise a
              java.util.prefs.BackingStoreException may get thrown by the
              generated integration tests. -->
-        <preferencesNodeType>$preferencesNodeType</preferencesNodeType>
+        <preferencesType>$preferencesType</preferencesType>
 
         <!-- The path of the private key store file in the Key Generator module
              relative to the base path

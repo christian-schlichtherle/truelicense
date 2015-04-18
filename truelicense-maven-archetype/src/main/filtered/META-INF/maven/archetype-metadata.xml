@@ -64,7 +64,7 @@
         <requiredProperty key="pbeAlgorithm">
             <defaultValue>-</defaultValue>
         </requiredProperty>
-        <requiredProperty key="preferencesNodeType">
+        <requiredProperty key="preferencesType">
             <defaultValue>user</defaultValue>
         </requiredProperty>
         <requiredProperty key="privateKeyStoreFile">

@@ -214,7 +214,7 @@ you need to define the values of the following properties as follows:
     <dt><code>package</code></dt>
     <dd>Enter the part of the package name before the <code>keymgr</code>
         element in the same class.</dd>
-    <dt><code>preferencesNodeType</code></dt>
+    <dt><code>preferencesType</code></dt>
     <dd>Search for the expression matching the pattern 
         <code>storeIn*Node(LicensingSchema.class)</code> and select the value 
         as follows:
@@ -242,7 +242,7 @@ equal:
 * `licenseKeyFormat`
 * `licensingSubject`
 * `package`
-* `preferencesNodeType`
+* `preferencesType`
 * `privateKeyStoreFile`
 * `publicKeyStoreFile`
 
