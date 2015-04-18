@@ -96,6 +96,7 @@
 #end
                                                 <storepass>${dollar}{privateKeyStorePassword}</storepass>
                                                 <storetype>${dollar}{privateKeyStoreType}</storetype>
+                                                <validity>365</validity>
                                             </configuration>
                                         </pluginExecutor>
                                     </pluginExecutors>
