@@ -83,6 +83,17 @@ implements LicenseManagementContext<PasswordSpecification> {
     @Override
     public long cachePeriodMillis() { return 30 * 60 * 1000; }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link BasicLicenseManagementContext}
+     * lists the current thread's context class loader, if not {@code null}.
+     */
+    @Override
+    public List<ClassLoader> classLoader() {
+        return Option.wrap(Thread.currentThread().getContextClassLoader());
+    }
+
     @Override
     public final LicenseConsumerContext<PasswordSpecification> consumer() {
         return new BasicLicenseConsumerContext<>(this);
@@ -113,17 +124,6 @@ implements LicenseManagementContext<PasswordSpecification> {
      */
     @Override
     public Date now() { return new Date(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
-     * lists the current thread's context class loader, if not {@code null}.
-     */
-    @Override
-    public List<ClassLoader> classLoader() {
-        return Option.wrap(Thread.currentThread().getContextClassLoader());
-    }
 
     /**
      * Returns a <em>new</em> repository to use for
