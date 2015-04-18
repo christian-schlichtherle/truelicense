@@ -52,7 +52,7 @@
             <defaultValue>-</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyPairSize">
-            <defaultValue>-</defaultValue>
+            <defaultValue>0</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyStoreType">
             <defaultValue>-</defaultValue>

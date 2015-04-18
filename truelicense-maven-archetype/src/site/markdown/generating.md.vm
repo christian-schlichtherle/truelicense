@@ -264,11 +264,11 @@ Note that property values are generally _case sensitive_.
         </tr>
         <tr>
             <td><code>keyPairSize</code></td>
-            <td><code>-</code></td>
+            <td><code>0</code></td>
             <td>The key size in bits when generating key pairs in the key store
                 files at the first build.
                 This property is ignored if the key store files already exist.
-                Otherwise, if the value is set to <code>-</code>, then the 
+                Otherwise, if the value is set to <code>0</code>, then the 
                 default value of the keytool is used.
                 Otherwise, the bit size needs to match the configured
                 <code>${dollar}{keyPairAlgorithm}</code> and be supported by one of the

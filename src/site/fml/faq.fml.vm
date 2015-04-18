@@ -49,7 +49,7 @@
                     for generating a custom project for you.
                     Once Maven has build your custom project, you can grab the
                     standalone JAR of the Key Generator or Key Manager module
-                    and put it on the your class path.
+                    and put it on your class path.
                 </p>
                 <a href="truelicense-maven-archetype/using-api.html#Without_Maven"
                    class="btn btn-info">
