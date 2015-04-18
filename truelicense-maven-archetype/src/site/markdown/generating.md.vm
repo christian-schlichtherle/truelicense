@@ -339,7 +339,7 @@ Note that property values are generally _case sensitive_.
                 See <a href="http://docs.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation - Cipher (Encryption) Algorithms</a>.</td>
         </tr>
         <tr>
-            <td><code>preferencesNodeType</code></td>
+            <td><code>preferencesType</code></td>
             <td><code>user</code></td>
             <td>The type of the preferences nodes where to install license keys.
                 One of <code>system</code> or <code>user</code>.
