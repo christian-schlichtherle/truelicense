@@ -99,7 +99,7 @@
 #if($keyMgrClockClass != "-")
                                 -keep class $keyMgrClockClass
 #end
-#if($keyMgrLicenseValidationFunction != "basic")
+#if($keyMgrLicenseValidationClass != "-")
                                 -keep class $keyMgrLicenseValidationClass
 #end
 #if($dynamicClassLoading == false)

@@ -162,8 +162,8 @@ Note that property values are generally _case sensitive_.
             <td>The path of the FTP key store file in the Key Manager module
                 relative to the base path 
                 <code>${dollar}{artifactId}-keymgr/src/main/resources/</code>. 
-                The value of this property is ignored if the value of the property
-                <code>freeTrialPeriod</code> is <code>0</code>.
+                This property is ignored if the property
+                <code>freeTrialPeriod</code> is set to <code>0</code>.
                 Otherwise, if the value is set to <code>-</code>, then it gets 
                 overridden with the value of the property <code>publicKeyStoreFile</code>.</td>
         </tr>
@@ -173,8 +173,8 @@ Note that property values are generally _case sensitive_.
             <td>A fully qualified binary class name which defines the user or 
                 system preferences node to use for storing the auto-generated FTP 
                 license key.
-                The value of this property is ignored if the value of the property 
-                <code>freeTrialPeriod</code> is <code>0</code>.
+                This property is ignored if the property
+                <code>freeTrialPeriod</code> is set to <code>0</code>.
                 Otherwise, the <strong>package name</strong> of the referenced class needs to be
                 kept <strong>absolutely secret</strong> because removing the FTP license key from
                 the preferences node triggers the auto-generation of another FTP
@@ -200,25 +200,27 @@ Note that property values are generally _case sensitive_.
         </tr>
         <tr>
             <td><code>keyGenLicenseValidationClass</code></td>
-            <td>n/a</td>
+            <td><code>-</code></td>
             <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>net.java.truelicense.core.LicenseValidation</code></a> for use in the Key 
                 Generator module.
-                The value of this property is ignored if the value of the property
-                <code>keyGenLicenseValidationFunction</code> is <code>basic</code>.</td>
+                Select <code>-</code> to use only the built-in basic license validation 
+                function.</td>
         </tr>
         <tr>
             <td><code>keyGenLicenseValidationFunction</code></td>
-            <td><code>basic</code></td>
+            <td><code>auto</code></td>
             <td>Selects the function for license validation in the Key Generator 
                 module.
-                One of <code>basic</code>, <code>custom</code> or <code>both</code>.
-                Select <code>basic</code> to use only the basic license validation which is
-                implemented in the TrueLicense Core module.
-                Select <code>custom</code> to use only the custom license validation which
-                is implemented in the class referenced by the property
-                <code>keyGenLicenseValidationClass</code>.
-                Select <code>both</code> to use both functions.</td>
+                One of <code>override</code> or <code>decorate</code>.
+                This property is ignored if the property 
+                <code>keyGenLicenseValidationClass</code> is set to <code>-</code>.
+                Otherwise, select <code>override</code> to apply only the 
+                the custom license validation function which is implemented by
+                the <code>${keyGenLicenseValidationClass}</code>.
+                Select <code>decorate</code> instead to apply both the custom license 
+                validation function and the basic license validation function 
+                which is implemented in the TrueLicense Core module.</td>
         </tr>
         <tr>
             <td><code>keyMgrClockClass</code></td>
@@ -230,25 +232,27 @@ Note that property values are generally _case sensitive_.
         </tr>
         <tr>
             <td><code>keyMgrLicenseValidationClass</code></td>
-            <td>n/a</td>
+            <td><code>-</code></td>
             <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>net.java.truelicense.core.LicenseValidation</code></a> for use in the Key 
                 Manager module.
-                The value of this property is ignored if the value of the property
-                <code>keyMgrLicenseValidationFunction</code> is <code>basic</code>.</td>
+                Select <code>-</code> to use only the built-in basic license validation 
+                function.</td>
         </tr>
         <tr>
             <td><code>keyMgrLicenseValidationFunction</code></td>
             <td><code>basic</code></td>
             <td>Selects the function for license validation in the Key Manager 
                 module.
-                One of <code>basic</code>, <code>custom</code> or <code>both</code>.
-                Select <code>basic</code> to use only the basic license validation which is
-                implemented in the TrueLicense Core module.
-                Select <code>custom</code> to use only the custom license validation which
-                is implemented in the class referenced by the property
-                <code>keyMgrLicenseValidationClass</code>.
-                Select <code>both</code> to use both functions.</td>
+                One of <code>override</code> or <code>decorate</code>.
+                This property is ignored if the property 
+                <code>keyMgrLicenseValidationClass</code> is set to <code>-</code>.
+                Otherwise, select <code>override</code> to apply only the 
+                the custom license validation function which is implemented by
+                the <code>${keyMgrLicenseValidationClass}</code>.
+                Select <code>decorate</code> instead to apply both the custom license 
+                validation function and the basic license validation function 
+                which is implemented in the TrueLicense Core module.</td>
         </tr>
         <tr>
             <td><code>keyPairAlgorithm</code></td>

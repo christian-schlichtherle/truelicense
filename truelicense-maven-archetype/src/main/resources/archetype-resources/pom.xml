@@ -212,19 +212,21 @@
         <!-- A fully qualified binary class name which implements the interface
              "net.java.truelicense.core.LicenseValidation" for use in the Key
              Generator module.
-             The value of this property is ignored if the value of the property
-             "keyGenLicenseValidationFunction" is "basic".  -->
+             Select "-" to use only the built-in basic license validation
+             function. -->
         <keyGenLicenseValidationClass>$keyGenLicenseValidationClass</keyGenLicenseValidationClass>
 
         <!-- Selects the function for license validation in the Key Generator
              module.
-             One of "basic", "custom" or "both".
-             Select "basic" to use only the basic license validation which is
-             implemented in the TrueLicense Core module.
-             Select "custom" to use only the custom license validation which
-             is implemented in the class referenced by the property
-             "keyGenLicenseValidationClass".
-             Select "both" to use both functions. -->
+             One of "override" or "decorate".
+             This property is ignored if the property
+             "keyGenLicenseValidationClass" is set to "-".
+             Otherwise, select "override" to apply only the
+             the custom license validation function which is implemented by
+             the "${keyGenLicenseValidationClass}".
+             Select "decorate" instead to apply both the custom license
+             validation function and the basic license validation function
+             which is implemented in the TrueLicense Core module. -->
         <keyGenLicenseValidationFunction>$keyGenLicenseValidationFunction</keyGenLicenseValidationFunction>
 
         <!-- A fully qualified binary class name which implements the interface
@@ -236,19 +238,21 @@
         <!-- A fully qualified binary class name which implements the interface
              "net.java.truelicense.core.LicenseValidation" for use in the Key
              Manager module.
-             The value of this property is ignored if the value of the property
-             "keyMgrLicenseValidationFunction" is "basic". -->
+             Select "-" to use only the built-in basic license validation
+             function. -->
         <keyMgrLicenseValidationClass>$keyMgrLicenseValidationClass</keyMgrLicenseValidationClass>
 
         <!-- Selects the function for license validation in the Key Manager
              module.
-             One of "basic", "custom" or "both".
-             Select "basic" to use only the basic license validation which is
-             implemented in the TrueLicense Core module.
-             Select "custom" to use only the custom license validation which
-             is implemented in the class referenced by the property
-             "keyMgrLicenseValidationClass".
-             Select "both" to use both functions. -->
+             One of "override" or "decorate".
+             This property is ignored if the property
+             "keyMgrLicenseValidationClass" is set to "-".
+             Otherwise, select "override" to apply only the
+             the custom license validation function which is implemented by
+             the "${keyMgrLicenseValidationClass}".
+             Select "decorate" instead to apply both the custom license
+             validation function and the basic license validation function
+             which is implemented in the TrueLicense Core module. -->
         <keyMgrLicenseValidationFunction>$keyMgrLicenseValidationFunction</keyMgrLicenseValidationFunction>
 
         <!-- The algorithm to use when generating key pairs in the key store
