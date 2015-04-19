@@ -76,9 +76,6 @@
         <requiredProperty key="signatureAlgorithm">
             <defaultValue>-</defaultValue>
         </requiredProperty>
-        <requiredProperty key="trueLicenseDependency">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
         <requiredProperty key="trueLicenseVersion">
             <defaultValue>${project.version}</defaultValue>
         </requiredProperty>

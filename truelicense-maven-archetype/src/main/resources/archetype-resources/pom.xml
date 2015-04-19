@@ -20,12 +20,10 @@
 #set($pbeAlgorithm = "PBEWithSHA1AndDESede")
 #end
 #end
-#if($trueLicenseDependency == "-")
 #if($licenseKeyFormat == "V2/JSON")
 #set($trueLicenseDependency = "truelicense-json")
 #else
 #set($trueLicenseDependency = "truelicense-core")
-#end
 #end
 #set($delimiter = "[, \t\r\n]+")
 #set($dollar = '$')
