@@ -204,8 +204,7 @@ Note that property values are generally _case sensitive_.
             <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>net.java.truelicense.core.LicenseValidation</code></a> for use in the Key 
                 Generator module.
-                Select <code>-</code> to use only the built-in basic license validation 
-                function.</td>
+                Select <code>-</code> to use only the built-in license validation function.</td>
         </tr>
         <tr>
             <td><code>keyGenLicenseValidationFunction</code></td>
@@ -219,8 +218,7 @@ Note that property values are generally _case sensitive_.
                 the custom license validation function which is implemented by
                 the <code>${keyGenLicenseValidationClass}</code>.
                 Select <code>decorate</code> instead to apply both the custom license 
-                validation function and the basic license validation function 
-                which is implemented in the TrueLicense Core module.</td>
+                validation function and the built-in license validation function.</td>
         </tr>
         <tr>
             <td><code>keyMgrClockClass</code></td>
@@ -236,8 +234,7 @@ Note that property values are generally _case sensitive_.
             <td>A fully qualified binary class name which implements the interface
                 <a href="../apidocs/net/java/truelicense/core/LicenseValidation.html"><code>net.java.truelicense.core.LicenseValidation</code></a> for use in the Key 
                 Manager module.
-                Select <code>-</code> to use only the built-in basic license validation 
-                function.</td>
+                Select <code>-</code> to use only the built-in license validation function.</td>
         </tr>
         <tr>
             <td><code>keyMgrLicenseValidationFunction</code></td>
@@ -251,8 +248,7 @@ Note that property values are generally _case sensitive_.
                 the custom license validation function which is implemented by
                 the <code>${keyMgrLicenseValidationClass}</code>.
                 Select <code>decorate</code> instead to apply both the custom license 
-                validation function and the basic license validation function 
-                which is implemented in the TrueLicense Core module.</td>
+                validation function and the built-in license validation function.</td>
         </tr>
         <tr>
             <td><code>keyPairAlgorithm</code></td>

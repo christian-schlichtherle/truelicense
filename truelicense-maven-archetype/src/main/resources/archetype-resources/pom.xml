@@ -212,8 +212,7 @@
         <!-- A fully qualified binary class name which implements the interface
              "net.java.truelicense.core.LicenseValidation" for use in the Key
              Generator module.
-             Select "-" to use only the built-in basic license validation
-             function. -->
+             Select "-" to use only the built-in license validation function. -->
         <keyGenLicenseValidationClass>$keyGenLicenseValidationClass</keyGenLicenseValidationClass>
 
         <!-- Selects the function for license validation in the Key Generator
@@ -225,8 +224,7 @@
              the custom license validation function which is implemented by
              the "${keyGenLicenseValidationClass}".
              Select "decorate" instead to apply both the custom license
-             validation function and the basic license validation function
-             which is implemented in the TrueLicense Core module. -->
+             validation function and the built-in license validation function. -->
         <keyGenLicenseValidationFunction>$keyGenLicenseValidationFunction</keyGenLicenseValidationFunction>
 
         <!-- A fully qualified binary class name which implements the interface
@@ -238,8 +236,7 @@
         <!-- A fully qualified binary class name which implements the interface
              "net.java.truelicense.core.LicenseValidation" for use in the Key
              Manager module.
-             Select "-" to use only the built-in basic license validation
-             function. -->
+             Select "-" to use only the built-in license validation function. -->
         <keyMgrLicenseValidationClass>$keyMgrLicenseValidationClass</keyMgrLicenseValidationClass>
 
         <!-- Selects the function for license validation in the Key Manager
@@ -251,8 +248,7 @@
              the custom license validation function which is implemented by
              the "${keyMgrLicenseValidationClass}".
              Select "decorate" instead to apply both the custom license
-             validation function and the basic license validation function
-             which is implemented in the TrueLicense Core module. -->
+             validation function and the built-in license validation function. -->
         <keyMgrLicenseValidationFunction>$keyMgrLicenseValidationFunction</keyMgrLicenseValidationFunction>
 
         <!-- The algorithm to use when generating key pairs in the key store
