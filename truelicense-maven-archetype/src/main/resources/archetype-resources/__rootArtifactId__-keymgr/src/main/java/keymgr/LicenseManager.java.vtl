@@ -12,7 +12,7 @@
 #set($licenseManagementContextPackage = "net.java.truelicense.core")
 #set($licenseManagementContextClass = "V1LicenseManagementContext")
 #end
-#set($editions = $convert.toStrings($editions))
+#set($editions = $editions.split($delimiter))
 #set($editionsSize = $editions.size())
 #set($hash = '#')
 #set($dollar = '$')

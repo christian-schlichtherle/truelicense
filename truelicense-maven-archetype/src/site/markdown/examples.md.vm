@@ -49,7 +49,7 @@ obviously not secret anymore.
 
 $h3 Multiple Product Editions
 
-This example adds `editions=enterprise, standard` to the basic configuration
+This example adds `editions=enterprise standard` to the basic configuration
 example in order to manage separate license keys for a Standard Edition and an
 Enterprise Edition of the software product.
 Note that due to the ordering of the editions, the Enterprise Edition is a 
@@ -62,7 +62,7 @@ superset of the Standard Edition.
         -DartifactId=license \
         -DcompanyName="Company Inc." \
         -DdefaultPassword=test1234 \
-        -Deditions=enterprise, standard \
+        -Deditions=enterprise standard \
         -DgroupId=com.company.product \
         -DlicensingSubject="Product 1" \
         -Dversion=1.0-SNAPSHOT

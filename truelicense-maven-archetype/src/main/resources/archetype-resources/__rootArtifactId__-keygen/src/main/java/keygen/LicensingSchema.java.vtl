@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-#set($editions = $convert.toStrings($editions))
+#set($editions = $editions.split($delimiter))
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
