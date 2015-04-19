@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>net.java.truelicense</groupId>
-            <artifactId>${dollar}{trueLicenseDependency}</artifactId>
+            <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
         </dependency>
 #if($disableLicenseWizard == false)
         <!-- This dependency is only required for the "wizard" command of the

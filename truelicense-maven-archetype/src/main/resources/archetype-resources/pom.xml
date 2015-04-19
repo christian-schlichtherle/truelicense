@@ -21,9 +21,9 @@
 #end
 #end
 #if($licenseKeyFormat == "V2/JSON")
-#set($trueLicenseDependency = "truelicense-json")
+#set($trueLicenseArtifactId = "truelicense-json")
 #else
-#set($trueLicenseDependency = "truelicense-core")
+#set($trueLicenseArtifactId = "truelicense-core")
 #end
 #set($delimiter = "[, \t\r\n]+")
 #set($dollar = '$')
@@ -368,7 +368,7 @@
              If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
              then this needs to be set to "truelicense-json", otherwise set it
              to "truelicense-core". -->
-        <trueLicenseDependency>$trueLicenseDependency</trueLicenseDependency>
+        <trueLicenseArtifactId>$trueLicenseArtifactId</trueLicenseArtifactId>
 
         <!-- The TrueLicense version to depend upon. -->
         <trueLicenseVersion>$trueLicenseVersion</trueLicenseVersion>
