@@ -34,19 +34,19 @@
             <defaultValue>false</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyGenLicenseValidationClass">
-            <defaultValue>n/a</defaultValue>
+            <defaultValue>-</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyGenLicenseValidationFunction">
-            <defaultValue>basic</defaultValue>
+            <defaultValue>decorate</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyMgrClockClass">
             <defaultValue>-</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyMgrLicenseValidationClass">
-            <defaultValue>n/a</defaultValue>
+            <defaultValue>-</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyMgrLicenseValidationFunction">
-            <defaultValue>basic</defaultValue>
+            <defaultValue>decorate</defaultValue>
         </requiredProperty>
         <requiredProperty key="keyPairAlgorithm">
             <defaultValue>-</defaultValue>

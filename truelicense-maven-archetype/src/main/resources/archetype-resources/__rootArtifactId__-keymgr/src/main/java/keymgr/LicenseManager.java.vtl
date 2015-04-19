@@ -161,7 +161,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     @Obfuscate
     private static final String KEY_STORE_TYPE = "$publicKeyStoreType";
 #end
-#if($dynamicClassLoading == true && $keyMgrLicenseValidationFunction != "basic")
+#if($dynamicClassLoading == true && $keyMgrLicenseValidationClass != "-")
 
     @Obfuscate
     private static final String LICENSE_VALIDATION_CLASS = "$keyMgrLicenseValidationClass";
@@ -197,10 +197,10 @@ public enum LicenseManager implements LicenseConsumerManager {
 
                 @Override public Date now() { return clock.now(); }
 #end
-#if($keyMgrLicenseValidationFunction != "basic")
+#if($keyMgrLicenseValidationClass != "-")
 
                 @Override public LicenseValidation validation() {
-#if($keyMgrLicenseValidationFunction == "both")
+#if($keyMgrLicenseValidationFunction != "override")
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
@@ -215,7 +215,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 
                         public void validate(final License bean) throws LicenseValidationException {
                             custom.validate(bean);
-#if($keyMgrLicenseValidationFunction == "both")
+#if($keyMgrLicenseValidationFunction != "override")
                             basic.validate(bean);
 #end
                         }
@@ -226,7 +226,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 
     private volatile LicenseConsumerManager _manager;
 #if($dynamicClassLoading == true)
-#if($keyMgrLicenseValidationFunction != "basic")
+#if($keyMgrLicenseValidationClass != "-")
 
     private static <T> T newInstance(Class<T> clazz) {
         try {
@@ -238,7 +238,7 @@ public enum LicenseManager implements LicenseConsumerManager {
         }
     }
 #end
-#if($keyMgrLicenseValidationFunction != "basic" || $freeTrialPeriod != 0)
+#if($keyMgrLicenseValidationClass != "-" || $freeTrialPeriod != 0)
 
     private static Class<?> classForName(final String className) {
         try {

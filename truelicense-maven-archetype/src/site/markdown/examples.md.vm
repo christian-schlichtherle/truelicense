@@ -109,12 +109,11 @@ generated code.
 $h3 Custom License Validation
 
 This example adds 
-`keyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation`,
-`keyGenLicenseValidationFunction=both`,
-`keyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation` and
-`keyMgrLicenseValidationFunction=both` to the basic configuration example in 
-order to decorate the basic license validation in the Key Generator and Key 
-Manager modules with custom functions.
+`keyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation` and
+`keyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation`
+to the basic configuration example in 
+order to decorate the basic license validation function in the Key Generator 
+and Key Manager modules with the named custom class.
 
     ${dollar} mvn archetype:generate -B \
         -DarchetypeArtifactId=$project.artifactId \
@@ -125,9 +124,7 @@ Manager modules with custom functions.
         -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DkeyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation \
-        -DkeyGenLicenseValidationFunction=both \
         -DkeyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation \
-        -DkeyMgrLicenseValidationFunction=both \
         -DlicensingSubject="Product 1" \
         -Dversion=1.0-SNAPSHOT
     [...]

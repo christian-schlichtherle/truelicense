@@ -97,7 +97,7 @@ public enum LicenseManager implements LicenseVendorManager {
     @Obfuscate
     private static final String KEY_STORE_TYPE = "$privateKeyStoreType";
 #end
-#if($dynamicClassLoading == true && $keyGenLicenseValidationFunction != "basic")
+#if($dynamicClassLoading == true && $keyGenLicenseValidationClass != "-")
 
     @Obfuscate
     private static final String LICENSE_VALIDATION_CLASS = "$keyGenLicenseValidationClass";
@@ -133,11 +133,11 @@ public enum LicenseManager implements LicenseVendorManager {
                         }
                     };
                 }
-#if($keyGenLicenseValidationFunction != "basic")
+#if($keyGenLicenseValidationClass != "-")
 
                 @Override
                 public LicenseValidation validation() {
-#if($keyGenLicenseValidationFunction == "both")
+#if($keyGenLicenseValidationFunction != "override")
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
@@ -153,7 +153,7 @@ public enum LicenseManager implements LicenseVendorManager {
                         @Override
                         public void validate(final License bean) throws LicenseValidationException {
                             custom.validate(bean);
-#if($keyGenLicenseValidationFunction == "both")
+#if($keyGenLicenseValidationFunction != "override")
                             basic.validate(bean);
 #end
                         }
@@ -163,7 +163,7 @@ public enum LicenseManager implements LicenseVendorManager {
             }.vendor();
 
     private volatile LicenseVendorManager _manager;
-#if($dynamicClassLoading == true && $keyGenLicenseValidationFunction != "basic")
+#if($dynamicClassLoading == true && $keyGenLicenseValidationClass != "-")
 
     private static <T> T newInstance(Class<T> clazz) {
         try {
