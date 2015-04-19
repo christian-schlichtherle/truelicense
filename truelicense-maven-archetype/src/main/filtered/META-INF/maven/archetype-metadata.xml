@@ -76,12 +76,6 @@
         <requiredProperty key="signatureAlgorithm">
             <defaultValue>-</defaultValue>
         </requiredProperty>
-        <requiredProperty key="trueLicenseArtifactId">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="trueLicenseGroupId">
-            <defaultValue>${project.groupId}</defaultValue>
-        </requiredProperty>
         <requiredProperty key="trueLicenseVersion">
             <defaultValue>${project.version}</defaultValue>
         </requiredProperty>

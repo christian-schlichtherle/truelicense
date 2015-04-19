@@ -40,7 +40,7 @@
         </dependency>
 
         <dependency>
-            <groupId>${dollar}{trueLicenseGroupId}</groupId>
+            <groupId>org.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
             <version>${dollar}{trueLicenseVersion}</version>
         </dependency>
