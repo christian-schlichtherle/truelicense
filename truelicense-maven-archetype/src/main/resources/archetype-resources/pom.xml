@@ -29,8 +29,9 @@
 #set($trueLicenseArtifactId = "truelicense-v2-xml")
 #end
 #end
+#set($delimiter = "[, \t\r\n]+")
 #set($dollar = '$')
-#set($editionArray = $editions.split(","))
+#set($editionArray = $editions.split($delimiter))
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -110,6 +111,9 @@
              improves the security level of your licensing schema. -->
         <defaultPassword>$defaultPassword</defaultPassword>
 
+        <!-- The delimiter for editions. -->
+        <delimiter>$delimiter</delimiter>
+
         <!-- Whether or not the Swing wizard dialog in the Key Manager module
              should be disabled.
              One of "false" or "true".
@@ -138,9 +142,9 @@
              loading is done in the Key Manager module. -->
         <dynamicClassLoading>$dynamicClassLoading</dynamicClassLoading>
 
-        <!-- A comma separated list of edition names, ordered from supersets to
+        <!-- A space separated list of edition names, ordered from supersets to
              subsets.
-             Each name must be a valid Java identifier and should be
+             Each name must be a valid Java identifier name and should be
              camel-cased with with the initial character being lower-cased.
              The names "edition" and "ftp" are reserved for internal use.
              Example: "enterprise, standard". -->
@@ -379,7 +383,6 @@
              One of "false" or "true". -->
         <verboseCli>$verboseCli</verboseCli>
 #foreach($edition in $editionArray)
-#set($edition = $edition.trim())
 
         <!-- The password for encrypting and decrypting license keys for the
              edition "$edition".
@@ -493,6 +496,9 @@
                     <groupId>com.soebes.maven.plugins</groupId>
                     <artifactId>iterator-maven-plugin</artifactId>
                     <version>0.3</version>
+                    <configuration>
+                        <delimiter>${dollar}{delimiter}</delimiter>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>

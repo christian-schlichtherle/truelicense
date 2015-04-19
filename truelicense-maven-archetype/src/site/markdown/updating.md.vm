@@ -94,14 +94,14 @@ _superset_ of the existing _Standard Edition_ (sold at a higher price),
 then you need to insert the name of the `enterprise` edition _before_ the name
 of the `standard` edition:
 
-    <editions>enterprise, standard</editions>
+    <editions>enterprise standard</editions>
 
 On the other hand, if you want add a _Lite Edition_ which shall be a
 _subset_ of the existing _Standard Edition_ (sold at a lower price),
 then you need to append the name of the `lite` edition _after_ the name of the
 `standard` edition:
 
-    <editions>standard, lite</editions>
+    <editions>standard lite</editions>
 
 $h4 Adding Passwords
 

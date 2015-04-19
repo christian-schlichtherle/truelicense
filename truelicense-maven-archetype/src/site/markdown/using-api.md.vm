@@ -93,7 +93,7 @@ a set of [Apache Velocity] template files - listed in alphabetic order:
 
 The main entry point to the API is the enumeration class `LicenseManager`.
 For example, if the project defines the property `${dollar}{editions}` to be
-`enterprise, standard`, then this class is defined as follows:
+`enterprise standard`, then this class is defined as follows:
 
     package ${dollar}{package}.keygen;
 
@@ -199,7 +199,7 @@ a set of [Apache Velocity] template files - listed in alphabetic order:
 
 The main entry point to the API is the enumeration class `LicenseManager`.
 For example, if the project defines the properties `${dollar}{editions}` to be
-`enterprise, standard` and `${dollar}{freeTrialPeriod}` to be `30`, then this
+`enterprise standard` and `${dollar}{freeTrialPeriod}` to be `30`, then this
 class is defined as follows:
 
     package ${dollar}{package}.keymgr;
