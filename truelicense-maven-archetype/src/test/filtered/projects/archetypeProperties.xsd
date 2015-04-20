@@ -94,7 +94,7 @@
             <element type="boolean" name="verboseCli" minOccurs="0"/>
             <element type="token" name="version"/>
         </all>
-        <attribute name="version" default="${project.version}"/>
+        <attribute type="token" name="version" use="optional"/>
     </complexType>
     <simpleType name="Password">
         <restriction base="string">
