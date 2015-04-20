@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<archetype xmlns="http://truelicense.org/xmlns/properties/archetype"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://truelicense.org/xmlns/properties/archetype ../archetype.xsd">
+    <artifactId>customLicenseValidation</artifactId>
+    <companyName>Company Inc.</companyName>
+    <defaultPassword>test1234</defaultPassword>
+    <groupId>com.company.product</groupId>
+    <keyGenLicenseValidationClass>
+        com.company.product.keygen.Main$NoLicenseValidation
+    </keyGenLicenseValidationClass>
+    <keyMgrLicenseValidationClass>
+        com.company.product.keymgr.Main$NoLicenseValidation
+    </keyMgrLicenseValidationClass>
+    <licensingSubject>Product 1</licensingSubject>
+    <version>1.0-SNAPSHOT</version>
+</archetype>
