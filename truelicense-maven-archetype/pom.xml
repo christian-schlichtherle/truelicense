@@ -88,7 +88,7 @@
                                         <include>**/*.xml</include>
                                     </includes>
                                     <outputDir>${it-projects}</outputDir>
-                                    <stylesheet>${it-projects}/archetype.xsl</stylesheet>
+                                    <stylesheet>${it-projects}/archetypeProperties.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                             <validationSets>
@@ -97,7 +97,7 @@
                                     <includes>
                                         <include>**/*.xml</include>
                                     </includes>
-                                    <systemId>${it-projects}/archetype.xsd</systemId>
+                                    <systemId>${it-projects}/archetypeProperties.xsd</systemId>
                                 </validationSet>
                             </validationSets>
                         </configuration>
