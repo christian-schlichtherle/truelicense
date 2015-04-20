@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-~ Copyright (C) 2005-2015 Schlichtherle IT Services.
-~ All rights reserved. Use is subject to license terms.
--->
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
 <schema elementFormDefault="qualified"
-        targetNamespace="http://truelicense.org/xmlns/properties/archetype"
+        targetNamespace="${project.url}/xmlns/archetypeProperties"
+        version="${project.version}"
         xml:lang="en"
         xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:a="http://truelicense.org/xmlns/properties/archetype">
-    <element type="a:Archetype" name="archetype"/>
+        xmlns:ap="${project.url}/xmlns/archetypeProperties">
+    <element type="ap:ArchetypeProperties" name="archetypeProperties"/>
     <simpleType name="JavaIdentifier">
         <restriction>
             <simpleType>
@@ -20,7 +21,7 @@
         </restriction>
     </simpleType>
     <simpleType name="JavaIdentifiers">
-        <list itemType="a:JavaIdentifier"/>
+        <list itemType="ap:JavaIdentifier"/>
     </simpleType>
     <simpleType name="KeyPairAlgorithm">
         <restriction base="token">
@@ -48,40 +49,52 @@
             <enumeration value="V2/XML"/>
         </restriction>
     </simpleType>
-    <complexType name="Archetype">
+    <complexType name="ArchetypeProperties">
         <all>
             <element type="token" name="artifactId"/>
             <element type="token" name="artifactName" minOccurs="0"/>
             <element type="token" name="companyName"/>
-            <element type="a:Password" name="defaultPassword"/>
-            <element type="boolean" name="disableLicenseWizard" default="false" minOccurs="0"/>
-            <element type="boolean" name="dynamicClassLoading" default="false" minOccurs="0"/>
-            <element type="a:JavaIdentifiers" name="editions" minOccurs="0"/>
-            <element type="nonNegativeInteger" name="freeTrialPeriod" default="0" minOccurs="0"/>
+            <element type="ap:Password" name="defaultPassword"/>
+            <element type="boolean" name="disableLicenseWizard" default="false"
+                     minOccurs="0"/>
+            <element type="boolean" name="dynamicClassLoading" default="false"
+                     minOccurs="0"/>
+            <element type="ap:JavaIdentifiers" name="editions" minOccurs="0"/>
+            <element type="nonNegativeInteger" name="freeTrialPeriod"
+                     default="0" minOccurs="0"/>
             <element type="token" name="ftpKeyStoreFile" minOccurs="0"/>
             <element type="token" name="ftpSecretMarkerClass" minOccurs="0"/>
             <element type="token" name="groupId"/>
             <element type="boolean" name="hideUninstallAction" minOccurs="0"/>
-            <element type="token" name="keyGenLicenseValidationClass" minOccurs="0"/>
-            <element type="a:ValidationFunction" name="keyGenLicenseValidationFunction" minOccurs="0"/>
+            <element type="token" name="keyGenLicenseValidationClass"
+                     minOccurs="0"/>
+            <element type="ap:ValidationFunction"
+                     name="keyGenLicenseValidationFunction" minOccurs="0"/>
             <element type="token" name="keyMgrClockClass" minOccurs="0"/>
-            <element type="token" name="keyMgrLicenseValidationClass" minOccurs="0"/>
-            <element type="a:ValidationFunction" name="keyMgrLicenseValidationFunction" minOccurs="0"/>
-            <element type="a:KeyPairAlgorithm" name="keyPairAlgorithm" minOccurs="0"/>
-            <element type="a:KeyPairSize" name="keyPairSize" minOccurs="0"/>
-            <element type="a:KeyStoreType" name="keyStoreType" minOccurs="0"/>
-            <element type="a:LicenseKeyFormat" name="licenseKeyFormat" default="V2/JSON" minOccurs="0"/>
+            <element type="token" name="keyMgrLicenseValidationClass"
+                     minOccurs="0"/>
+            <element type="ap:ValidationFunction"
+                     name="keyMgrLicenseValidationFunction" minOccurs="0"/>
+            <element type="ap:KeyPairAlgorithm" name="keyPairAlgorithm"
+                     minOccurs="0"/>
+            <element type="ap:KeyPairSize" name="keyPairSize" minOccurs="0"/>
+            <element type="ap:KeyStoreType" name="keyStoreType" minOccurs="0"/>
+            <element type="ap:LicenseKeyFormat" name="licenseKeyFormat"
+                     default="V2/JSON" minOccurs="0"/>
             <element type="token" name="licensingSubject"/>
             <element type="token" name="package" minOccurs="0"/>
-            <element type="a:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"/>
-            <element type="a:PreferencesType" name="preferencesType" minOccurs="0"/>
+            <element type="ap:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"/>
+            <element type="ap:PreferencesType" name="preferencesType"
+                     minOccurs="0"/>
             <element type="token" name="privateKeyStoreFile" minOccurs="0"/>
             <element type="token" name="publicKeyStoreFile" minOccurs="0"/>
-            <element type="a:SignatureAlgorithm" name="signatureAlgorithm" minOccurs="0"/>
+            <element type="ap:SignatureAlgorithm" name="signatureAlgorithm"
+                     minOccurs="0"/>
             <element type="token" name="trueLicenseVersion" minOccurs="0"/>
             <element type="boolean" name="verboseCli" minOccurs="0"/>
             <element type="token" name="version"/>
         </all>
+        <attribute name="version" default="${project.version}"/>
     </complexType>
     <simpleType name="Password">
         <restriction base="string">
