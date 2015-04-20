@@ -13,10 +13,9 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd
-                                    ${project.url}/xml/archetypeProperties archetypeProperties.xsd
                                     http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
     <xsl:variable name="allProperties"
-                  select="document('archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
+                  select="document('${project.build.outputDirectory}/META-INF/maven/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
     <xsl:variable name="requiredProperties"
                   select="document('${project.build.outputDirectory}/META-INF/maven/archetype-metadata.xml')/ad:archetype-descriptor/ad:requiredProperties/ad:requiredProperty"/>
 

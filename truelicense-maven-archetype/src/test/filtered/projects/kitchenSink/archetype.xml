@@ -3,10 +3,7 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<archetypeProperties
-        xmlns="${project.url}/xml/archetypeProperties"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="${project.url}/xml/archetypeProperties ../archetypeProperties.xsd">
+<archetypeProperties xmlns="${project.url}/xml/archetypeProperties">
     <artifactId>kitchenSink</artifactId>
     <artifactName>Kitchen Sink</artifactName>
     <companyName>Company Inc.</companyName>
