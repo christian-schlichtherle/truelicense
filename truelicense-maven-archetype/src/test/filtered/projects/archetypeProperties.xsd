@@ -4,11 +4,11 @@
   ~ All rights reserved. Use is subject to license terms.
   -->
 <schema elementFormDefault="qualified"
-        targetNamespace="${project.url}/xmlns/archetypeProperties"
+        targetNamespace="${project.url}/xml/archetypeProperties"
         version="${project.version}"
         xml:lang="en"
         xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:ap="${project.url}/xmlns/archetypeProperties">
+        xmlns:ap="${project.url}/xml/archetypeProperties">
     <element type="ap:ArchetypeProperties" name="archetypeProperties"/>
     <simpleType name="JavaIdentifier">
         <restriction>

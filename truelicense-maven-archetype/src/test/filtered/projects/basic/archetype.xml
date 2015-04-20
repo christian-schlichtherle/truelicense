@@ -4,9 +4,9 @@
   ~ All rights reserved. Use is subject to license terms.
   -->
 <archetypeProperties
-        xmlns="${project.url}/xmlns/archetypeProperties"
+        xmlns="${project.url}/xml/archetypeProperties"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="${project.url}/xmlns/archetypeProperties ../archetypeProperties.xsd">
+        xsi:schemaLocation="${project.url}/xml/archetypeProperties ../archetypeProperties.xsd">
     <artifactId>basic</artifactId>
     <companyName>Company Inc.</companyName>
     <defaultPassword>test1234</defaultPassword>

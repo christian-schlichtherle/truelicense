@@ -8,12 +8,12 @@
         ]>
 <xsl:stylesheet version="1.0"
                 xmlns:ad="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
-                xmlns:ap="${project.url}/xmlns/archetypeProperties"
+                xmlns:ap="${project.url}/xml/archetypeProperties"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd
-                                    ${project.url}/xmlns/archetypeProperties archetypeProperties.xsd
+                                    ${project.url}/xml/archetypeProperties archetypeProperties.xsd
                                     http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
     <xsl:variable name="allProperties"
                   select="document('archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
