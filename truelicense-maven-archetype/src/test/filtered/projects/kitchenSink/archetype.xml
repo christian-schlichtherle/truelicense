@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<archetype xmlns="http://truelicense.org/xmlns/properties/archetype"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://truelicense.org/xmlns/properties/archetype ../archetype.xsd">
+    <artifactId>kitchenSink</artifactId>
+    <artifactName>Kitchen Sink</artifactName>
+    <companyName>Company Inc.</companyName>
+    <defaultPassword>test1234</defaultPassword>
+    <disableLicenseWizard>true</disableLicenseWizard>
+    <dynamicClassLoading>true</dynamicClassLoading>
+    <editions>enterprise standard</editions>
+    <freeTrialPeriod>30</freeTrialPeriod>
+    <ftpKeyStoreFile>ftp.ks</ftpKeyStoreFile>
+    <ftpSecretMarkerClass>sun.security.provider.Sun</ftpSecretMarkerClass>
+    <groupId>com.company.product</groupId>
+    <hideUninstallAction>false</hideUninstallAction>
+    <keyGenLicenseValidationClass>
+        com.company.product.keygen.Main$NoLicenseValidation
+    </keyGenLicenseValidationClass>
+    <keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
+    </keyMgrClockClass>
+    <keyMgrLicenseValidationClass>
+        com.company.product.keymgr.Main$NoLicenseValidation
+    </keyMgrLicenseValidationClass>
+    <keyPairAlgorithm>RSA</keyPairAlgorithm>
+    <keyPairSize>2048</keyPairSize>
+    <keyStoreType>JKS</keyStoreType>
+    <licenseKeyFormat>V2/XML</licenseKeyFormat>
+    <licensingSubject>Product 1</licensingSubject>
+    <package>com.company.product</package>
+    <pbeAlgorithm>PBEWithMD5AndDES</pbeAlgorithm>
+    <preferencesType>user</preferencesType>
+    <privateKeyStoreFile>private.ks</privateKeyStoreFile>
+    <publicKeyStoreFile>public.ks</publicKeyStoreFile>
+    <signatureAlgorithm>SHA1withRSA</signatureAlgorithm>
+    <trueLicenseVersion>${project.version}</trueLicenseVersion>
+    <verboseCli>true</verboseCli>
+    <version>1.0-SNAPSHOT</version>
+</archetype>

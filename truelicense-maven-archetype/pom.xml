@@ -32,6 +32,8 @@
         <!-- For reference in the Maven site. -->
         <maven-enforcer-requireJavaVersion>${maven.enforcer.requireJavaVersion}</maven-enforcer-requireJavaVersion>
         <maven-enforcer-requireMavenVersion>${maven.enforcer.requireMavenVersion}</maven-enforcer-requireMavenVersion>
+
+        <it-projects>${project.build.testOutputDirectory}/projects</it-projects>
     </properties>
 
     <dependencies>
@@ -52,6 +54,50 @@
             <artifactId>truelicense-swing</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>xml-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>validate</goal>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>${it-projects}</dir>
+                                    <fileMappers>
+                                        <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                            <targetExtension>properties</targetExtension>
+                                        </fileMapper>
+                                    </fileMappers>
+                                    <includes>
+                                        <include>**/*.xml</include>
+                                    </includes>
+                                    <outputDir>${it-projects}</outputDir>
+                                    <stylesheet>${it-projects}/archetype.xsl</stylesheet>
+                                </transformationSet>
+                            </transformationSets>
+                            <validationSets>
+                                <validationSet>
+                                    <dir>${it-projects}</dir>
+                                    <includes>
+                                        <include>**/*.xml</include>
+                                    </includes>
+                                    <systemId>${it-projects}/archetype.xsd</systemId>
+                                </validationSet>
+                            </validationSets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <profiles>
         <profile>
