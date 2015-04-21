@@ -29,7 +29,7 @@
     <keyStoreType>JKS</keyStoreType>
     <licenseKeyFormat>V2/XML</licenseKeyFormat>
     <licensingSubject>Product 1</licensingSubject>
-    <package>${project.groupId}</package>
+    <package>com.company.product</package>
     <pbeAlgorithm>PBEWithMD5AndDES</pbeAlgorithm>
     <preferencesType>user</preferencesType>
     <privateKeyStoreFile>private.ks</privateKeyStoreFile>
