@@ -33,6 +33,9 @@
         <maven-enforcer-requireJavaVersion>${maven.enforcer.requireJavaVersion}</maven-enforcer-requireJavaVersion>
         <maven-enforcer-requireMavenVersion>${maven.enforcer.requireMavenVersion}</maven-enforcer-requireMavenVersion>
 
+        <!-- For filtering resources. -->
+        <dollar>$</dollar>
+
         <it-projects>${project.build.testOutputDirectory}/projects</it-projects>
     </properties>
 
