@@ -531,10 +531,10 @@
                      minOccurs="0" default="-">
                 <annotation>
                     <documentation>
-                        The algorithm to use when signing the generated key
-                        pairs in the key store files at the first build.
-                        This property is ignored if the key store files already
-                        exist.
+                        The algorithm to use when signing a generated key
+                        pair in a key store file at the first build.
+                        This property is ignored if the key store file already
+                        exists.
                         Otherwise, if the value is set to
                         <code>-</code>,
                         then the default value of the keytool is used.
