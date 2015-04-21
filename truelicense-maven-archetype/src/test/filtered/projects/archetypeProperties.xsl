@@ -42,12 +42,12 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
-                <xsl:when test="$defaultValue">
-                    <xsl:value-of select="$defaultValue"/>
-                </xsl:when>
                 <xsl:when test="$propertyName = 'package'">
                     <xsl:value-of
                             select="$configuredProperties[name() = 'groupId']"/>
+                </xsl:when>
+                <xsl:when test="$defaultValue">
+                    <xsl:value-of select="$defaultValue"/>
                 </xsl:when>
             </xsl:choose>
             <xsl:text>&lf;</xsl:text>
