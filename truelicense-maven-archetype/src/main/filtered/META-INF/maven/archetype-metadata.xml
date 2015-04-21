@@ -3,86 +3,11 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<archetype-descriptor xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
-                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                      xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd">
-    <requiredProperties>
-        <requiredProperty key="artifactName">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="companyName"/>
-        <requiredProperty key="defaultPassword"/>
-        <requiredProperty key="disableLicenseWizard">
-            <defaultValue>false</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="dynamicClassLoading">
-            <defaultValue>false</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="editions">
-            <defaultValue>standard</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="freeTrialPeriod">
-            <defaultValue>0</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="ftpKeyStoreFile">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="ftpSecretMarkerClass">
-            <defaultValue>n/a</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="hideUninstallAction">
-            <defaultValue>false</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyGenLicenseValidationClass">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyGenLicenseValidationFunction">
-            <defaultValue>decorate</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyMgrClockClass">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyMgrLicenseValidationClass">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyMgrLicenseValidationFunction">
-            <defaultValue>decorate</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyPairAlgorithm">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyPairSize">
-            <defaultValue>0</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="keyStoreType">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="licenseKeyFormat">
-            <defaultValue>V2/JSON</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="licensingSubject"/>
-        <requiredProperty key="pbeAlgorithm">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="preferencesType">
-            <defaultValue>user</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="privateKeyStoreFile">
-            <defaultValue>private.ks</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="publicKeyStoreFile">
-            <defaultValue>public.ks</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="signatureAlgorithm">
-            <defaultValue>-</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="trueLicenseVersion">
-            <defaultValue>${project.version}</defaultValue>
-        </requiredProperty>
-        <requiredProperty key="verboseCli">
-            <defaultValue>false</defaultValue>
-        </requiredProperty>
-    </requiredProperties>
+<archetype-descriptor
+        xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd">
+    <requiredProperties/>
     <fileSets>
         <fileSet>
             <directory/>
@@ -92,7 +17,9 @@
         </fileSet>
     </fileSets>
     <modules>
-        <module id="${rootArtifactId}-keygen" dir="__rootArtifactId__-keygen" name="${rootArtifactId}-keygen">
+        <module dir="__rootArtifactId__-keygen"
+                id="${dollar}{rootArtifactId}-keygen"
+                name="${dollar}{rootArtifactId}-keygen">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>
@@ -123,7 +50,9 @@
                 </fileSet>
             </fileSets>
         </module>
-        <module id="${rootArtifactId}-keymgr" dir="__rootArtifactId__-keymgr" name="${rootArtifactId}-keymgr">
+        <module dir="__rootArtifactId__-keymgr"
+                id="${dollar}{rootArtifactId}-keymgr"
+                name="${dollar}{rootArtifactId}-keymgr">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>
@@ -157,7 +86,9 @@
                 </fileSet>
             </fileSets>
         </module>
-        <module id="${rootArtifactId}-keymgrsvc" dir="__rootArtifactId__-keymgrsvc" name="${rootArtifactId}-keymgrsvc">
+        <module dir="__rootArtifactId__-keymgrsvc"
+                id="${dollar}{rootArtifactId}-keymgrsvc"
+                name="${dollar}{rootArtifactId}-keymgrsvc">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>

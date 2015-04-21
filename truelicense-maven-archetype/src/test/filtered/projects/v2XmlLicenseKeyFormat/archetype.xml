@@ -3,10 +3,7 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<archetypeProperties
-        xmlns="${project.url}/xmlns/archetypeProperties"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="${project.url}/xmlns/archetypeProperties ../archetypeProperties.xsd">
+<archetypeProperties xmlns="${project.url}/xml/archetypeProperties">
     <artifactId>v2XmlLicenseKeyFormat</artifactId>
     <companyName>Company Inc.</companyName>
     <defaultPassword>test1234</defaultPassword>

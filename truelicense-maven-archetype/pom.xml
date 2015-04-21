@@ -33,6 +33,10 @@
         <maven-enforcer-requireJavaVersion>${maven.enforcer.requireJavaVersion}</maven-enforcer-requireJavaVersion>
         <maven-enforcer-requireMavenVersion>${maven.enforcer.requireMavenVersion}</maven-enforcer-requireMavenVersion>
 
+        <!-- For filtering resources. -->
+        <dollar>$</dollar>
+
+        <meta-inf-maven>${project.build.outputDirectory}/META-INF/maven</meta-inf-maven>
         <it-projects>${project.build.testOutputDirectory}/projects</it-projects>
     </properties>
 
@@ -75,34 +79,55 @@
                             <goal>validate</goal>
                             <goal>transform</goal>
                         </goals>
-                        <configuration>
-                            <transformationSets>
-                                <transformationSet>
-                                    <dir>${it-projects}</dir>
-                                    <fileMappers>
-                                        <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                                            <targetExtension>properties</targetExtension>
-                                        </fileMapper>
-                                    </fileMappers>
-                                    <includes>
-                                        <include>**/*.xml</include>
-                                    </includes>
-                                    <outputDir>${it-projects}</outputDir>
-                                    <stylesheet>${it-projects}/archetypeProperties.xsl</stylesheet>
-                                </transformationSet>
-                            </transformationSets>
-                            <validationSets>
-                                <validationSet>
-                                    <dir>${it-projects}</dir>
-                                    <includes>
-                                        <include>**/*.xml</include>
-                                    </includes>
-                                    <systemId>${it-projects}/archetypeProperties.xsd</systemId>
-                                </validationSet>
-                            </validationSets>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <transformationSets>
+                        <transformationSet>
+                            <dir>${meta-inf-maven}</dir>
+                            <includes>
+                                <include>**/*.xml</include>
+                            </includes>
+                            <outputDir>${meta-inf-maven}</outputDir>
+                            <outputProperties>
+                                <outputProperty>
+                                    <name>indent</name>
+                                    <value>yes</value>
+                                </outputProperty>
+                            </outputProperties>
+                            <stylesheet>${meta-inf-maven}/archetype-metadata.xsl</stylesheet>
+                        </transformationSet>
+                        <transformationSet>
+                            <dir>${it-projects}</dir>
+                            <fileMappers>
+                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                    <targetExtension>properties</targetExtension>
+                                </fileMapper>
+                            </fileMappers>
+                            <includes>
+                                <include>**/*.xml</include>
+                            </includes>
+                            <outputDir>${it-projects}</outputDir>
+                            <stylesheet>${it-projects}/archetypeProperties.xsl</stylesheet>
+                        </transformationSet>
+                    </transformationSets>
+                    <validationSets>
+                        <validationSet>
+                            <dir>${it-projects}</dir>
+                            <includes>
+                                <include>**/*.xml</include>
+                            </includes>
+                            <systemId>${meta-inf-maven}/archetypeProperties.xsd</systemId>
+                        </validationSet>
+                    </validationSets>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.saxon</groupId>
+                        <artifactId>Saxon-HE</artifactId>
+                        <version>9.6.0-5</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
