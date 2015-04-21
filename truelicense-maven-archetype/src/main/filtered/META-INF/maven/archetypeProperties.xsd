@@ -447,8 +447,7 @@
                     </documentation>
                 </annotation>
             </element>
-            <element type="token" name="package" minOccurs="0"
-                     default="${dollar}{groupId}">
+            <element type="token" name="package" minOccurs="0">
                 <annotation>
                     <documentation>
                         The base package name of the generated project.
