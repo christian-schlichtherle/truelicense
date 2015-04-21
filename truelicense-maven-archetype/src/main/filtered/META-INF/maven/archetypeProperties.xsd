@@ -197,7 +197,8 @@
                     </documentation>
                 </annotation>
             </element>
-            <element type="token" name="ftpSecretMarkerClass" minOccurs="0">
+            <element type="token" name="ftpSecretMarkerClass" minOccurs="0"
+                    default="n/a">
                 <annotation>
                     <documentation>
                         A fully qualified binary class name which defines the
