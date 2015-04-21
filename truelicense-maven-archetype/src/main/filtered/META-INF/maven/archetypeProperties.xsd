@@ -8,7 +8,8 @@
         version="${project.version}"
         xml:lang="en"
         xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:ap="${project.url}/xml/archetypeProperties">
+        xmlns:ap="${project.url}/xml/archetypeProperties"
+        xmlns:h="http://www.w3.org/1999/xhtml">
     <element type="ap:ArchetypeProperties" name="archetypeProperties"/>
     <simpleType name="JavaIdentifier">
         <restriction>
@@ -53,19 +54,19 @@
                 <annotation>
                     <documentation>
                         The artifact ID of the parent
-                        <a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">
-                            <abbr title="Project Object Model">POM</abbr>
-                        </a>
+                        <h:a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">
+                            <h:abbr title="Project Object Model">POM</h:abbr>
+                        </h:a>
                         for the generated project.
                         This could match the name of your software product, e.g.
-                        <code>product</code>, or be generic, e.g.
-                        <code>license</code>.
+                        <h:code>product</h:code>, or be generic, e.g.
+                        <h:code>license</h:code>.
                         Whatever it is, it should be a lower-case string and
                         must not contain spaces.
                         See
-                        <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
+                        <h:a href="http://maven.apache.org/pom.html#Maven_Coordinates">
                             Maven - POM Reference - Maven Coordinates
-                        </a>.
+                        </h:a>.
                     </documentation>
                 </annotation>
             </element>
@@ -75,8 +76,8 @@
                         The display name of the parent POM for the generated
                         project.
                         This could be the name of your software product, e.g.
-                        <code>Product</code>, or be generic, e.g.
-                        <code>License</code>.
+                        <h:code>Product</h:code>, or be generic, e.g.
+                        <h:code>License</h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -84,7 +85,7 @@
                 <annotation>
                     <documentation>
                         The display name of your company, e.g.
-                        <code>Company Inc.</code>.
+                        <h:code>Company Inc.</h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -109,7 +110,7 @@
                         Whether or not the Swing wizard dialog in the Key
                         Manager module should be disabled.
                         Select
-                        <code>true</code>
+                        <h:code>true</h:code>
                         to cut the dependency on the TrueLicense Swing module
                         and reduce the code size.
                     </documentation>
@@ -121,19 +122,19 @@
                     <documentation>
                         Whether or not the classes referenced by the properties
                         with the name pattern
-                        <code>*Class</code>
+                        <h:code>*Class</h:code>
                         should get dynamically loaded at runtime.
                         Select
-                        <code>false</code>
+                        <h:code>false</h:code>
                         to statically
-                        <code>new</code>
+                        <h:code>new</h:code>
                         the classes in the generated code.
                         The advantage is that the classes can be safely included
                         in the byte code obfuscation process.
                         However, the classes need to be present on the class
                         path of the respective module at compile time.
                         Select
-                        <code>true</code>
+                        <h:code>true</h:code>
                         to dynamically load the classes at runtime.
                         The advantage is that the classes only need to be
                         present on the class path of the respective module at
@@ -151,14 +152,14 @@
                     <documentation>
                         A space separated list of edition names, ordered from
                         supersets to subsets, e.g.
-                        <code>enterprise standard</code>.
+                        <h:code>enterprise standard</h:code>.
                         Each name must be a valid Java identifier name and
                         should be a camel-case string with a lower-case initial
                         character.
                         The names
-                        <code>edition</code>
+                        <h:code>edition</h:code>
                         and
-                        <code>ftp</code>
+                        <h:code>ftp</h:code>
                         are reserved for internal use.
                     </documentation>
                 </annotation>
@@ -168,11 +169,11 @@
                 <annotation>
                     <documentation>
                         The number of days for an auto-generated
-                        <abbr title="Free Trial Period">FTP</abbr>.
+                        <h:abbr title="Free Trial Period">FTP</h:abbr>.
                         Needs to be a non-negative integer, e.g.
-                        <code>30</code>.
+                        <h:code>30</h:code>.
                         Specify
-                        <code>0</code>
+                        <h:code>0</h:code>
                         to disable the auto-generation of FTP license keys.
                     </documentation>
                 </annotation>
@@ -183,17 +184,17 @@
                     <documentation>
                         The path of the FTP key store file in the Key Manager
                         module relative to the base path
-                        <code>
+                        <h:code>
                             ${dollar}{artifactId}-keymgr/src/main/resources/
-                        </code>.
+                        </h:code>.
                         This property is ignored if the property
-                        <code>freeTrialPeriod</code>
+                        <h:code>freeTrialPeriod</h:code>
                         is set to
-                        <code>0</code>.
+                        <h:code>0</h:code>.
                         Otherwise, if the value is set to
-                        <code>-</code>,
+                        <h:code>-</h:code>,
                         then it gets overridden with the value of the property
-                        <code>publicKeyStoreFile</code>.
+                        <h:code>publicKeyStoreFile</h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -205,13 +206,13 @@
                         user or system preferences node to use for storing the
                         auto-generated FTP license key.
                         This property is ignored if the property
-                        <code>freeTrialPeriod</code>
+                        <h:code>freeTrialPeriod</h:code>
                         is set to
-                        <code>0</code>.
+                        <h:code>0</h:code>.
                         Otherwise, the
-                        <strong>package name</strong>
+                        <h:strong>package name</h:strong>
                         of the referenced class needs to be kept
-                        <strong>absolutely secret</strong>
+                        <h:strong>absolutely secret</h:strong>
                         because removing the FTP license key from the
                         preferences node triggers the auto-generation of another
                         FTP license key!
@@ -228,9 +229,9 @@
                         This could be the reversed domain name for your company
                         plus the name of the software product.
                         See
-                        <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
+                        <h:a href="http://maven.apache.org/pom.html#Maven_Coordinates">
                             Maven - POM Reference - Maven Coordinates
-                        </a>.
+                        </h:a>.
                     </documentation>
                 </annotation>
             </element>
@@ -250,12 +251,12 @@
                     <documentation>
                         A fully qualified binary class name which implements the
                         interface
-                        <a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
-                            <code>${apiPackage}.LicenseValidation</code>
-                        </a>
+                        <h:a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
+                            <h:code>${apiPackage}.LicenseValidation</h:code>
+                        </h:a>
                         for use in the Key Generator module.
                         Select
-                        <code>-</code>
+                        <h:code>-</h:code>
                         to use only the built-in license validation function.
                     </documentation>
                 </annotation>
@@ -268,17 +269,17 @@
                         Selects the function for license validation in the Key
                         Generator module.
                         This property is ignored if the property
-                        <code>keyGenLicenseValidationClass</code>
+                        <h:code>keyGenLicenseValidationClass</h:code>
                         is set to
-                        <code>-</code>.
+                        <h:code>-</h:code>.
                         Otherwise, select
-                        <code>override</code>
+                        <h:code>override</h:code>
                         to apply only the the custom license validation function
                         which is implemented by the
-                        <code>${dollar}{keyGenLicenseValidationClass}</code>
+                        <h:code>${dollar}{keyGenLicenseValidationClass}</h:code>
                         .
                         Select
-                        <code>decorate</code>
+                        <h:code>decorate</h:code>
                         instead to apply both the custom license validation
                         function and the built-in license validation function.
                     </documentation>
@@ -290,12 +291,12 @@
                     <documentation>
                         A fully qualified binary class name which implements the
                         interface
-                        <a href="../apidocs/${miscApiPackagePath}/Clock.html">
-                            <code>${miscApiPackage}.Clock</code>
-                        </a>
+                        <h:a href="../apidocs/${miscApiPackagePath}/Clock.html">
+                            <h:code>${miscApiPackage}.Clock</h:code>
+                        </h:a>
                         for use in the Key Manager module.
                         Select
-                        <code>-</code>
+                        <h:code>-</h:code>
                         to use the system clock.
                     </documentation>
                 </annotation>
@@ -306,12 +307,12 @@
                     <documentation>
                         A fully qualified binary class name which implements the
                         interface
-                        <a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
-                            <code>${apiPackage}.LicenseValidation</code>
-                        </a>
+                        <h:a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
+                            <h:code>${apiPackage}.LicenseValidation</h:code>
+                        </h:a>
                         for use in the Key Manager module.
                         Select
-                        <code>-</code>
+                        <h:code>-</h:code>
                         to use only the built-in license validation function.
                     </documentation>
                 </annotation>
@@ -324,16 +325,16 @@
                         Selects the function for license validation in the Key
                         Manager module.
                         This property is ignored if the property
-                        <code>keyMgrLicenseValidationClass</code>
+                        <h:code>keyMgrLicenseValidationClass</h:code>
                         is set to
-                        <code>-</code>.
+                        <h:code>-</h:code>.
                         Otherwise, select
-                        <code>override</code>
+                        <h:code>override</h:code>
                         to apply only the the custom license validation function
                         which is implemented by the
-                        <code>${dollar}{keyMgrLicenseValidationClass}</code>.
+                        <h:code>${dollar}{keyMgrLicenseValidationClass}</h:code>.
                         Select
-                        <code>decorate</code>
+                        <h:code>decorate</h:code>
                         instead to apply both the custom license validation
                         function and the built-in license validation function.
                     </documentation>
@@ -350,10 +351,10 @@
                         The algorithm needs to be supported by one of the
                         security providers which are installed in the JRE.
                         See
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
+                        <h:a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
                             Java Cryptography Architecture Standard Algorithm
                             Name Documentation - KeyPairGenerator Algorithms
-                        </a>.
+                        </h:a>.
                     </documentation>
                 </annotation>
             </element>
@@ -366,10 +367,10 @@
                         This property is ignored if the key store files already
                         exist.
                         Otherwise, if the value is set to
-                        <code>0</code>,
+                        <h:code>0</h:code>,
                         then the default value of the keytool is used.
                         Otherwise, the bit size needs to match the configured
-                        <code>${dollar}{keyPairAlgorithm}</code>
+                        <h:code>${dollar}{keyPairAlgorithm}</h:code>
                         and be supported by one of the security providers which
                         are installed in the JRE/JDK.
                     </documentation>
@@ -383,16 +384,16 @@
                         The type needs to be supported by one of the security
                         providers which are installed in the JRE.
                         If the value is set to
-                        <code>-</code>,
+                        <h:code>-</h:code>,
                         then it gets overridden as follows:
                         If the value of the
-                        <code>licenseKeyFormat</code>
+                        <h:code>licenseKeyFormat</h:code>
                         property is set to
-                        <code>V1</code>,
+                        <h:code>V1</h:code>,
                         then this gets set to
-                        <code>JKS</code>,
+                        <h:code>JKS</h:code>,
                         otherwise it gets set to
-                        <code>JCEKS</code>.
+                        <h:code>JCEKS</h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -402,15 +403,15 @@
                     <documentation>
                         The format of the license keys.
                         Select
-                        <code>V1</code>
+                        <h:code>V1</h:code>
                         if you need to retain compatibility with license keys
                         generated with TrueLicense 1.
                         Otherwise, select
-                        <code>V2/XML</code>
+                        <h:code>V2/XML</h:code>
                         if you want to exclude an additional dependency on the
                         Jackson JSON Processor.
                         Otherwise, select
-                        <code>V2/JSON</code>
+                        <h:code>V2/JSON</h:code>
                         for the smallest license keys and the fastest
                         processing.
                     </documentation>
@@ -423,25 +424,25 @@
                         The value of this property gets stored in the generated
                         license keys and is used for validation.
                         A
-                        <a href="../apidocs/${apiPackagePath}/LicenseValidationException.html">
-                            <code>${apiPackage}.LicenseValidationException
-                            </code>
-                        </a>
+                        <h:a href="../apidocs/${apiPackagePath}/LicenseValidationException.html">
+                            <h:code>${apiPackage}.LicenseValidationException
+                            </h:code>
+                        </h:a>
                         is thrown if the validation fails.
                         It's best practice to include the name of your software
                         product and a version number range for which the license
                         keys are valid, e.g.
-                        <code>Product 1</code>
+                        <h:code>Product 1</h:code>
                         or
-                        <code>Product 1.X</code>.
+                        <h:code>Product 1.X</h:code>.
                         The license validation step compares the entire string,
                         so the version number format doesn't matter.
                         If you want to obsolete existing license keys in a
                         future release then all you need to do is to change the
                         value, e.g. to
-                        <code>Product 2</code>
+                        <h:code>Product 2</h:code>
                         or
-                        <code>Product 2.X</code>.
+                        <h:code>Product 2.X</h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -450,9 +451,9 @@
                     <documentation>
                         The base package name of the generated project.
                         It's best practice to use the expression
-                        <code>${dollar}{groupId}</code>
+                        <h:code>${dollar}{groupId}</h:code>
                         or
-                        <code>${dollar}{groupId}.${dollar}{artifactId}</code>
+                        <h:code>${dollar}{groupId}.${dollar}{artifactId}</h:code>
                         if this results in a valid package name.
                     </documentation>
                 </annotation>
@@ -465,21 +466,21 @@
                         The algorithm needs to be supported by one of the
                         security providers which are installed in the JRE.
                         If the value is set to
-                        <code>-</code>,
+                        <h:code>-</h:code>,
                         then it gets overridden as follows:
                         If the value of the
-                        <code>licenseKeyFormat</code>
+                        <h:code>licenseKeyFormat</h:code>
                         property is set to
-                        <code>V1</code>,
+                        <h:code>V1</h:code>,
                         then this gets set to
-                        <code>PBEWithMD5AndDES</code>,
+                        <h:code>PBEWithMD5AndDES</h:code>,
                         otherwise it gets set to
-                        <code>PBEWithSHA1AndDESede</code>.
+                        <h:code>PBEWithSHA1AndDESede</h:code>.
                         See
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Cipher">
+                        <h:a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Cipher">
                             Java Cryptography Architecture Standard Algorithm
                             Name Documentation - Cipher (Encryption) Algorithms
-                        </a>.
+                        </h:a>.
                     </documentation>
                 </annotation>
             </element>
@@ -490,12 +491,12 @@
                         The type of the preferences nodes where to install
                         license keys.
                         Note that the value
-                        <code>system</code>
+                        <h:code>system</h:code>
                         generally requires the JVM to be run with administrator
                         privileges or otherwise a
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/api/java/util/prefs/BackingStoreException.html">
-                            <code>java.util.prefs.BackingStoreException</code>
-                        </a>
+                        <h:a href="http://docs.oracle.com/javase/${javase.major}/docs/api/java/util/prefs/BackingStoreException.html">
+                            <h:code>java.util.prefs.BackingStoreException</h:code>
+                        </h:a>
                         may get thrown by the generated integration tests.
                     </documentation>
                 </annotation>
@@ -506,9 +507,9 @@
                     <documentation>
                         The path of the private key store file in the Key
                         Generator module relative to the base path
-                        <code>
+                        <h:code>
                             ${dollar}{artifactId}-keygen/src/main/resources/
-                        </code>.
+                        </h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -518,9 +519,9 @@
                     <documentation>
                         The path of the public key store file in the Key
                         Manager module relative to the base path
-                        <code>
+                        <h:code>
                             ${dollar}{artifactId}-keymgr/src/main/resources/
-                        </code>.
+                        </h:code>.
                     </documentation>
                 </annotation>
             </element>
@@ -533,18 +534,18 @@
                         This property is ignored if the key store file already
                         exists.
                         Otherwise, if the value is set to
-                        <code>-</code>,
+                        <h:code>-</h:code>,
                         then the default value of the keytool is used.
                         Otherwise, the signature algorithm needs to match the
                         configured
-                        <code>${dollar}{keyPairAlgorithm}</code>
+                        <h:code>${dollar}{keyPairAlgorithm}</h:code>
                         and be supported by one of the security providers which
                         are installed in the JRE/JDK.
                         See
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Signature">
+                        <h:a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Signature">
                             Java Cryptography Architecture Standard Algorithm
                             Name Documentation - Signature Algorithms
-                        </a>.
+                        </h:a>.
                     </documentation>
                 </annotation>
             </element>
@@ -561,7 +562,7 @@
                 <annotation>
                     <documentation>
                         Whether or not the
-                        <abbr title="Command Line Interface">CLI</abbr>
+                        <h:abbr title="Command Line Interface">CLI</h:abbr>
                         should write debugging information to the standard error
                         stream by default.
                     </documentation>
@@ -573,14 +574,14 @@
                         The version of the generated project.
                         This should be the version of your software product.
                         Whatever it is, it needs to match the
-                        <a href="http://books.sonatype.com/mvnref-book/reference/pom-relationships-sect-pom-syntax.html#pom-reationships-sect-versions">
+                        <h:a href="http://books.sonatype.com/mvnref-book/reference/pom-relationships-sect-pom-syntax.html#pom-reationships-sect-versions">
                             Maven version number
-                        </a>
+                        </h:a>
                         requirements.
                         See
-                        <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
+                        <h:a href="http://maven.apache.org/pom.html#Maven_Coordinates">
                             Maven - POM Reference - Maven Coordinates
-                        </a>.
+                        </h:a>.
                     </documentation>
                 </annotation>
             </element>
