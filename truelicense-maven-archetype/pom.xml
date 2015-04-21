@@ -36,8 +36,15 @@
         <!-- For filtering resources. -->
         <dollar>$</dollar>
 
-        <meta-inf-maven>${project.build.outputDirectory}/META-INF/maven</meta-inf-maven>
+        <api>core</api>
+        <apiPackage>${project.groupId}.${api}</apiPackage>
+        <apiPackagePath>${packagePath}/${api}</apiPackagePath>
         <it-projects>${project.build.testOutputDirectory}/projects</it-projects>
+        <meta-inf-maven>${project.build.outputDirectory}/META-INF/maven</meta-inf-maven>
+        <misc>util</misc>
+        <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
+        <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
+        <packagePath>net/java/truelicense</packagePath>
     </properties>
 
     <dependencies>

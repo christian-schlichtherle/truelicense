@@ -88,12 +88,14 @@
         <!-- clirr-maven-plugin -->
         <comparisonVersion>2.0</comparisonVersion>
 
+        <javase.major>6</javase.major>
+
         <!-- maven-compiler-plugin -->
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.optimize>true</maven.compiler.optimize>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
-        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.source>1.${javase.major}</maven.compiler.source>
 
         <!-- maven-failsafe-plugin && maven-surefire-plugin -->
         <parallel>classesAndMethods</parallel>
@@ -126,7 +128,7 @@
 
         <!-- dependencies -->
         <jackson.version>2.5.2</jackson.version>
-        <javaee.version>6.0</javaee.version>
+        <javaee.version>${javase.major}.0</javaee.version>
         <truezip.version>7.7.8</truezip.version>
     </properties>
 
