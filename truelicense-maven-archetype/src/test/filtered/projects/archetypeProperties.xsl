@@ -6,27 +6,23 @@
 <!DOCTYPE stylesheet [
         <!ENTITY lf "&#10;">
         ]>
-<xsl:stylesheet version="1.0"
-                xmlns:ad="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
-                xmlns:ap="${project.url}/xml/archetypeProperties"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd
-                                    http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
-    <xsl:variable name="allProperties"
-                  select="document('${project.build.outputDirectory}/META-INF/maven/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
-    <xsl:variable name="requiredProperties"
-                  select="document('${project.build.outputDirectory}/META-INF/maven/archetype-metadata.xml')/ad:archetype-descriptor/ad:requiredProperties/ad:requiredProperty"/>
+<xsl:stylesheet
+        version="1.0"
+        xmlns:ap="${project.url}/xml/archetypeProperties"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+
+    <xsl:output method="text"/>
 
     <xsl:template match="/ap:archetypeProperties">
         <xsl:variable name="configuredProperties" select="*"/>
-        <xsl:for-each select="$allProperties">
+        <xsl:for-each select="$archetypeProperties">
             <xsl:variable name="propertyName" select="@name"/>
             <xsl:variable name="configuredValue"
                           select="$configuredProperties[name() = $propertyName]"/>
-            <xsl:variable name="defaultValue"
-                          select="$requiredProperties[@key = $propertyName]/ad:defaultValue"/>
+            <xsl:variable name="defaultValue" select="@default"/>
             <xsl:value-of select="$propertyName"/>
             <xsl:text>=</xsl:text>
             <xsl:choose>
@@ -54,5 +50,6 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:output method="text"/>
+    <xsl:variable name="archetypeProperties"
+                  select="document('${meta-inf-maven}/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
 </xsl:stylesheet>
