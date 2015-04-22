@@ -39,6 +39,7 @@
         <api>core</api>
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
+        <archetype-resources>${project.build.outputDirectory}/archetype-resources</archetype-resources>
         <it-projects>${project.build.testOutputDirectory}/projects</it-projects>
         <meta-inf-maven>${project.build.outputDirectory}/META-INF/maven</meta-inf-maven>
         <misc>util</misc>
@@ -86,13 +87,15 @@
                                         <include>**/*.xml</include>
                                     </includes>
                                     <outputDir>${meta-inf-maven}</outputDir>
-                                    <outputProperties>
-                                        <outputProperty>
-                                            <name>indent</name>
-                                            <value>yes</value>
-                                        </outputProperty>
-                                    </outputProperties>
                                     <stylesheet>${meta-inf-maven}/archetype-metadata.xsl</stylesheet>
+                                </transformationSet>
+                                <transformationSet>
+                                    <dir>${archetype-resources}</dir>
+                                    <includes>
+                                        <include>pom.xml</include>
+                                    </includes>
+                                    <outputDir>${archetype-resources}</outputDir>
+                                    <stylesheet>${archetype-resources}/pom.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
