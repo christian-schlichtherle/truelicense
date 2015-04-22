@@ -4,7 +4,9 @@
   ~ All rights reserved. Use is subject to license terms.
   -->
 <!DOCTYPE stylesheet [
-        <!ENTITY lf "&#10;">
+        <!-- Use whatever line separator is used in this document: CR, LF or CRLF. -->
+        <!ENTITY lineSeparator "
+">
         ]>
 <xsl:stylesheet
         version="1.0"
@@ -46,7 +48,7 @@
                     <xsl:value-of select="$defaultValue"/>
                 </xsl:when>
             </xsl:choose>
-            <xsl:text>&lf;</xsl:text>
+            <xsl:text>&lineSeparator;</xsl:text>
         </xsl:for-each>
     </xsl:template>
 
