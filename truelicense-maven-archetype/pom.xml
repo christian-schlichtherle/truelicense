@@ -39,7 +39,6 @@
         <api>core</api>
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
-        <archetype-resources-directory>${main-xml-directory}/archetype-resources</archetype-resources-directory>
         <main-xml-directory>${project.build.directory}/xml/main</main-xml-directory>
         <meta-inf-maven-directory>${main-xml-directory}/META-INF/maven</meta-inf-maven-directory>
         <misc>util</misc>
@@ -84,16 +83,7 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/xml</directory>
-                                    <excludes>
-                                        <exclude>**/pom.xml</exclude>
-                                    </excludes>
                                     <filtering>true</filtering>
-                                </resource>
-                                <resource>
-                                    <directory>src/main/xml</directory>
-                                    <includes>
-                                        <include>**/pom.xml</include>
-                                    </includes>
                                 </resource>
                             </resources>
                             <outputDirectory>${main-xml-directory}</outputDirectory>
@@ -138,12 +128,12 @@
                                     <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
                                 </transformationSet>
                                 <transformationSet>
-                                    <dir>${archetype-resources-directory}</dir>
+                                    <dir>src/main/resources/archetype-resources</dir>
                                     <includes>
-                                        <include>**/pom.xml</include>
+                                        <include>pom.xml</include>
                                     </includes>
                                     <outputDir>${project.build.outputDirectory}/archetype-resources</outputDir>
-                                    <stylesheet>${archetype-resources-directory}/pom.xsl</stylesheet>
+                                    <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
