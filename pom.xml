@@ -299,22 +299,6 @@
                 <version>3.0.21</version>
             </dependency>
             <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-driver-zip</artifactId>
-                <version>${truezip.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.bouncycastle</groupId>
-                        <artifactId>bcprov-jdk15on</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-file</artifactId>
-                <version>${truezip.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>1.7</version>
