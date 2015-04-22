@@ -53,5 +53,5 @@
     </xsl:template>
 
     <xsl:variable name="archetypeProperties"
-                  select="document('../../classes/META-INF/maven/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
+                  select="document('${meta-inf-maven}/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
 </xsl:stylesheet>

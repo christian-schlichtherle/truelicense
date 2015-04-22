@@ -40,14 +40,14 @@
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
         <archetype-resources>${project.build.outputDirectory}/archetype-resources</archetype-resources>
-        <main-xslt>${project.build.outputDirectory}/xslt</main-xslt>
+        <main-xslt>${project.build.directory}/xslt/main</main-xslt>
         <meta-inf-maven>${project.build.outputDirectory}/META-INF/maven</meta-inf-maven>
         <misc>util</misc>
         <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
         <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
         <packagePath>net/java/truelicense</packagePath>
         <test-projects>${project.build.testOutputDirectory}/projects</test-projects>
-        <test-xslt>${project.build.testOutputDirectory}/xslt</test-xslt>
+        <test-xslt>${project.build.directory}/xslt/test</test-xslt>
     </properties>
 
     <dependencies>
@@ -71,6 +71,43 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-main-xslt</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/xslt</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${main-xslt}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-test-xslt</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/xslt</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${test-xslt}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>xml-maven-plugin</artifactId>
