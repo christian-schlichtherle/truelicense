@@ -204,7 +204,7 @@
             </xs:element>
             <xs:element type="xs:token" name="ftpSecretMarkerClass"
                         minOccurs="0"
-                        default="n/a">
+                        default="-">
                 <xs:annotation>
                     <xs:documentation>
                         A fully qualified binary class name which defines the
