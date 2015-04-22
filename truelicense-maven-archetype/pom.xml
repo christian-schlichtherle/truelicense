@@ -39,15 +39,15 @@
         <api>core</api>
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
-        <archetype-resources>${project.build.outputDirectory}/archetype-resources</archetype-resources>
-        <main-xslt>${project.build.directory}/xslt/main</main-xslt>
-        <meta-inf-maven>${project.build.outputDirectory}/META-INF/maven</meta-inf-maven>
+        <archetype-resources-directory>${main-xml-directory}/archetype-resources</archetype-resources-directory>
+        <main-xml-directory>${project.build.directory}/xml/main</main-xml-directory>
+        <meta-inf-maven-directory>${main-xml-directory}/META-INF/maven</meta-inf-maven-directory>
         <misc>util</misc>
         <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
         <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
         <packagePath>net/java/truelicense</packagePath>
-        <test-projects>${project.build.testOutputDirectory}/projects</test-projects>
-        <test-xslt>${project.build.directory}/xslt/test</test-xslt>
+        <test-projects-directory>${test-xml-directory}/projects</test-projects-directory>
+        <test-xml-directory>${project.build.directory}/xml/test</test-xml-directory>
     </properties>
 
     <dependencies>
@@ -75,7 +75,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>generate-main-xslt</id>
+                        <id>generate-main-xml</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -83,15 +83,24 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>src/main/xslt</directory>
+                                    <directory>src/main/xml</directory>
+                                    <excludes>
+                                        <exclude>**/pom.xml</exclude>
+                                    </excludes>
                                     <filtering>true</filtering>
                                 </resource>
+                                <resource>
+                                    <directory>src/main/xml</directory>
+                                    <includes>
+                                        <include>**/pom.xml</include>
+                                    </includes>
+                                </resource>
                             </resources>
-                            <outputDirectory>${main-xslt}</outputDirectory>
+                            <outputDirectory>${main-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>generate-test-xslt</id>
+                        <id>generate-test-xml</id>
                         <phase>generate-test-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -99,11 +108,11 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>src/test/xslt</directory>
+                                    <directory>src/test/xml</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
-                            <outputDirectory>${test-xslt}</outputDirectory>
+                            <outputDirectory>${test-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -121,20 +130,20 @@
                         <configuration>
                             <transformationSets>
                                 <transformationSet>
-                                    <dir>${meta-inf-maven}</dir>
+                                    <dir>${meta-inf-maven-directory}</dir>
                                     <includes>
-                                        <include>**/*.xml</include>
+                                        <include>archetype-metadata.xml</include>
                                     </includes>
-                                    <outputDir>${meta-inf-maven}</outputDir>
-                                    <stylesheet>${main-xslt}/archetype-metadata.xsl</stylesheet>
+                                    <outputDir>${project.build.outputDirectory}/META-INF/maven</outputDir>
+                                    <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
                                 </transformationSet>
                                 <transformationSet>
-                                    <dir>${archetype-resources}</dir>
+                                    <dir>${archetype-resources-directory}</dir>
                                     <includes>
-                                        <include>pom.xml</include>
+                                        <include>**/pom.xml</include>
                                     </includes>
-                                    <outputDir>${archetype-resources}</outputDir>
-                                    <stylesheet>${main-xslt}/pom.xsl</stylesheet>
+                                    <outputDir>${project.build.outputDirectory}/archetype-resources</outputDir>
+                                    <stylesheet>${archetype-resources-directory}/pom.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
@@ -149,26 +158,26 @@
                         <configuration>
                             <transformationSets>
                                 <transformationSet>
-                                    <dir>${test-projects}</dir>
+                                    <dir>${test-projects-directory}</dir>
                                     <fileMappers>
                                         <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
                                             <targetExtension>properties</targetExtension>
                                         </fileMapper>
                                     </fileMappers>
                                     <includes>
-                                        <include>**/*.xml</include>
+                                        <include>**/archetype.xml</include>
                                     </includes>
-                                    <outputDir>${test-projects}</outputDir>
-                                    <stylesheet>${test-xslt}/archetypeProperties.xsl</stylesheet>
+                                    <outputDir>${project.build.testOutputDirectory}/projects</outputDir>
+                                    <stylesheet>${test-projects-directory}/archetypeProperties.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                             <validationSets>
                                 <validationSet>
-                                    <dir>${test-projects}</dir>
+                                    <dir>${test-projects-directory}</dir>
                                     <includes>
-                                        <include>**/*.xml</include>
+                                        <include>**/archetype.xml</include>
                                     </includes>
-                                    <systemId>${meta-inf-maven}/archetypeProperties.xsd</systemId>
+                                    <systemId>${meta-inf-maven-directory}/archetypeProperties.xsd</systemId>
                                 </validationSet>
                             </validationSets>
                         </configuration>
