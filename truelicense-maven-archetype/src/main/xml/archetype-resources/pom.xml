@@ -3,6 +3,9 @@
   - Copyright (C) 2005-2015 Schlichtherle IT Services.
   - All rights reserved. Use is subject to license terms.
   -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 #if($ftpKeyStoreFile == "-")
 #set($ftpKeyStoreFile = $publicKeyStoreFile)
 #end
@@ -30,9 +33,6 @@
 #set($delimiter = "[, \t\r\n]+")
 #set($dollar = '$')
 #set($editionArray = $editions.split($delimiter))
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <prerequisites>
         <maven>${dollar}{maven.enforcer.requireMavenVersion}</maven>
@@ -79,79 +79,12 @@
 
     <properties>
 
-        <!--
-          - # Important Notes
-          -
-          - The following properties have been configured by the TrueLicense
-          - Maven Archetype.
-          -
-          - 1. **If you want to change the value of any of the following
-          -    properties then it's generally necessary to generate another
-          -    project from the TrueLicense Maven Archetype.**
-          - 2. **For any two generated projects, their license keys are not
-          -    compatible even if all property values are equal, unless both
-          -    projects also share a copy of the same key store files:**
-          -     * `${artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
-          -     * `${artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
-          -     * `${artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
-          -->
-
-        <!-- The display name of your company, e.g "Company Inc.". -->
-        <companyName>$companyName</companyName>
-
-        <!-- The default password for everything.
-             If you feel lazy, then the only password you need to edit is this
-             one before running the build for the first time.
-             As a general requirement, all passwords must be at least eight
-             characters long and contain letters and digits.
-             You should consider this to be the bare minimum.
-             Entering a longer password with additional punctation characters
-             improves the security level of your licensing schema. -->
-        <defaultPassword>$defaultPassword</defaultPassword>
-
         <!-- The delimiter for editions. -->
         <delimiter>$delimiter</delimiter>
-
-        <!-- Whether or not the Swing wizard dialog in the Key Manager module
-             should be disabled.
-             One of "false" or "true".
-             Selecting "true" cuts the dependency on the TrueLicense Swing
-             module and reduces the code size. -->
-        <disableLicenseWizard>$disableLicenseWizard</disableLicenseWizard>
 
         <!-- The distinguished name to use when generating private key entries
              in key stores and initializing the issuer in license beans. -->
         <distinguishedName>CN=${dollar}{companyName}</distinguishedName>
-
-        <!-- Whether or not the classes referenced by the properties with the
-             name pattern "*Class" should get dynamically loaded at runtime.
-             One of "false" or "true".
-             Select "false" to statically "new" the classes in the generated
-             code.
-             The advantage is that the classes can be safely included in the
-             byte code obfuscation process.
-             However, the classes need to be present on the class path of the
-             respective module at compile time.
-             Select "true" to dynamically load the classes at runtime.
-             The advantage is that the classes only need to be present on the
-             class path of the respective module at runtime.
-             However, the classes need to be excluded from the byte code
-             obfuscation process, which is a security leak if any dynamic class
-             loading is done in the Key Manager module. -->
-        <dynamicClassLoading>$dynamicClassLoading</dynamicClassLoading>
-
-        <!-- A space separated list of edition names, ordered from supersets to
-             subsets.
-             Each name must be a valid Java identifier name and should be
-             camel-cased with with the initial character being lower-cased.
-             The names "edition" and "ftp" are reserved for internal use.
-             Example: "enterprise, standard". -->
-        <editions>$editions</editions>
-
-        <!-- The number of days for an auto-generated free trial period (FTP).
-             Needs to be a non-negative integer, e.g. "30".
-             Specify "0" to disable the auto-generation of an FTP license key. -->
-        <freeTrialPeriod>$freeTrialPeriod</freeTrialPeriod>
 
         <!-- The alias of the entry with the private key for the edition
              "ftp" in the FTP key store file ${dollar}{ftpKeyStoreFile} in the
@@ -171,13 +104,6 @@
              the value of the ftpKeyStorePassword property. -->
         <ftpKeyEntryPassword>${dollar}{ftpKeyStorePassword}</ftpKeyEntryPassword>
 
-        <!-- The path of the FTP key store file in the Key Manager module
-             relative to the base path
-             "${dollar}{artifactId}-keymgr/src/main/resources/".
-             The value of this property is ignored if the value of the property
-             "freeTrialPeriod" is "0". -->
-        <ftpKeyStoreFile>$ftpKeyStoreFile</ftpKeyStoreFile>
-
         <!-- The password for verifying the integrity of the FTP key store file
              ${dollar}{ftpKeyStoreFile} in the Key Manager module.
              The value of this property is ignored if the value of the property
@@ -190,148 +116,6 @@
              "freeTrialPeriod" is "0". -->
         <ftpKeyStoreType>${dollar}{keyStoreType}</ftpKeyStoreType>
 
-        <!-- A fully qualified binary class name which defines the user or
-             system preferences node to use for storing an auto-generated FTP
-             license key.
-             The value of this property is ignored if the value of the property
-             "freeTrialPeriod" is "0".
-             Otherwise, the PACKAGE NAME of the referenced class needs to be
-             kept ABSOLUTELY SECRET because removing the FTP license key from
-             the preferences node triggers the auto-generation of another FTP
-             license key!
-             The named class gets dynamically loaded at run time, so it doesn't
-             have to be on the compile time class path of the Key Manager
-             module. -->
-        <ftpSecretMarkerClass>$ftpSecretMarkerClass</ftpSecretMarkerClass>
-
-        <!-- Whether or not the Swing wizard dialog in the Key Manager module
-             should hide the action for uninstalling the license key.
-             One of "false" or "true". -->
-        <hideUninstallAction>$hideUninstallAction</hideUninstallAction>
-
-        <!-- A fully qualified binary class name which implements the interface
-             "org.truelicense.api.LicenseValidation" for use in the Key
-             Generator module.
-             Select "-" to use only the built-in license validation function. -->
-        <keyGenLicenseValidationClass>$keyGenLicenseValidationClass</keyGenLicenseValidationClass>
-
-        <!-- Selects the function for license validation in the Key Generator
-             module.
-             One of "override" or "decorate".
-             This property is ignored if the property
-             "keyGenLicenseValidationClass" is set to "-".
-             Otherwise, select "override" to apply only the
-             the custom license validation function which is implemented by
-             the "${keyGenLicenseValidationClass}".
-             Select "decorate" instead to apply both the custom license
-             validation function and the built-in license validation function. -->
-        <keyGenLicenseValidationFunction>$keyGenLicenseValidationFunction</keyGenLicenseValidationFunction>
-
-        <!-- A fully qualified binary class name which implements the interface
-             "org.truelicense.api.misc.Clock" for use in the Key Manager
-             module.
-             Select "-" to use the system clock. -->
-        <keyMgrClockClass>$keyMgrClockClass</keyMgrClockClass>
-
-        <!-- A fully qualified binary class name which implements the interface
-             "org.truelicense.api.LicenseValidation" for use in the Key
-             Manager module.
-             Select "-" to use only the built-in license validation function. -->
-        <keyMgrLicenseValidationClass>$keyMgrLicenseValidationClass</keyMgrLicenseValidationClass>
-
-        <!-- Selects the function for license validation in the Key Manager
-             module.
-             One of "override" or "decorate".
-             This property is ignored if the property
-             "keyMgrLicenseValidationClass" is set to "-".
-             Otherwise, select "override" to apply only the
-             the custom license validation function which is implemented by
-             the "${keyMgrLicenseValidationClass}".
-             Select "decorate" instead to apply both the custom license
-             validation function and the built-in license validation function. -->
-        <keyMgrLicenseValidationFunction>$keyMgrLicenseValidationFunction</keyMgrLicenseValidationFunction>
-
-        <!-- The algorithm to use when generating key pairs in the key store
-             files at the first build.
-             This property is ignored if the key store files already exist.
-             Otherwise, if the value is set to "-", then the default value of
-             the keytool is used.
-             Otherwise, the algorithm needs to be supported by one of the
-             security providers which are installed in the JRE/JDK.
-             See http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator . -->
-        <keyPairAlgorithm>$keyPairAlgorithm</keyPairAlgorithm>
-
-        <!-- The key size in bits when generating key pairs in the key store
-             files at the first build.
-             This property is ignored if the key store files already exist.
-             Otherwise, if the value is set to "-", then the default value of
-             the keytool is used.
-             Otherwise, the bit size needs to match the configured
-             "${dollar}{keyPairAlgorithm}" and be supported by one of the
-             security providers which are installed in the JRE/JDK. -->
-        <keyPairSize>$keyPairSize</keyPairSize>
-
-        <!-- The default key store type.
-             The type needs to be supported by one of the security
-             providers which are installed in the JRE.
-             If you require compatibility with license keys generated with
-             TrueLicense 1, then you need to select "JKS".
-             Otherwise, "JCEKS" is a good choice. -->
-        <keyStoreType>$keyStoreType</keyStoreType>
-
-        <!-- The format of the license keys.
-             One of "V1", "V2/JSON" or "V2/XML".
-             Select "V1" if you need to retain compatiblity with license
-             keys generated with TrueLicense 1.
-             Otherwise, select "V2/XML" if you want to exclude an additional
-             dependency on the Jackson JSON Processor.
-             Otherwise, select "V2/JSON" for the smallest license keys and the
-             fastest processing. -->
-        <licenseKeyFormat>$licenseKeyFormat</licenseKeyFormat>
-
-        <!-- The licensing subject.
-             The value of this property gets stored in the generated license
-             keys and is used for validation.
-             A "org.truelicense.api.LicenseValidationException" is thrown
-             if the validation fails.
-             It's best practice to include the name of your software product
-             and a version number range for which the license keys are valid,
-             e.g. "Product 1" or "Product 1.X".
-             The license validation step compares the entire string, so the
-             version number format doesn't matter.
-             If you want to obsolete existing license keys in a future release
-             then all you need to do is to change the value,
-             e.g. to "Product 2" or "Product 2.X". -->
-        <licensingSubject>$licensingSubject</licensingSubject>
-
-        <!-- The base package name of the generated project.
-             It's best practice to use the expression "${project.groupId}"
-             or "${project.groupId}.${project.artifactId}" as the package name
-             if this results in a valid package name -->
-        <package>$package</package>
-
-        <!-- The algorithm for the password based encryption.
-             The algorithm needs to be supported by one of the security
-             providers which are installed in the JRE.
-             If you require compatibility with license keys generated with
-             TrueLicense 1, then you need to select "PBEWithMD5AndDES".
-             Otherwise, "PBEWithSHA1AndDESede" is a good choice.
-             See http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher . -->
-        <pbeAlgorithm>$pbeAlgorithm</pbeAlgorithm>
-
-        <!-- The type of the preferences nodes where to install license keys.
-             One of "system" or "user".
-             Note that "system" generally requires the JVM to be run with
-             administrator privileges or otherwise a
-             java.util.prefs.BackingStoreException may get thrown by the
-             generated integration tests. -->
-        <preferencesType>$preferencesType</preferencesType>
-
-        <!-- The path of the private key store file in the Key Generator module
-             relative to the base path
-             "${dollar}{artifactId}-keygen/src/main/resources/". -->
-        <privateKeyStoreFile>$privateKeyStoreFile</privateKeyStoreFile>
-
         <!-- The password for verifying the integrity of the private key store
              file ${dollar}{privateKeyStoreFile} in the Key Generator module. -->
         <privateKeyStorePassword>${dollar}{defaultPassword}</privateKeyStorePassword>
@@ -339,11 +123,6 @@
         <!-- The type of the private key store file
              ${dollar}{privateKeyStoreFile} in the Key Generator module. -->
         <privateKeyStoreType>${dollar}{keyStoreType}</privateKeyStoreType>
-
-        <!-- The path of the public key store file in the Key Manager module
-             relative to the base path
-             "${dollar}{artifactId}-keymgr/src/main/resources/". -->
-        <publicKeyStoreFile>$publicKeyStoreFile</publicKeyStoreFile>
 
         <!-- The password for verifying the integrity of the public key store
              file ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
@@ -353,40 +132,20 @@
              ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
         <publicKeyStoreType>${dollar}{keyStoreType}</publicKeyStoreType>
 
-        <!-- The algorithm to use when signing the generated key pairs in the
-             key store files at the first build.
-             This property is ignored if the key store files already exist.
-             Otherwise, if the value is set to "-", then the default value of
-             the keytool is used.
-             Otherwise, the signature algorithm needs to match the configured
-             "${dollar}{keyPairAlgorithm}" and be supported by one of the
-             security providers which are installed in the JRE/JDK.
-             See http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Signature . -->
-        <signatureAlgorithm>$signatureAlgorithm</signatureAlgorithm>
-
-        <!-- The artifact ID of the module which implements the license key format.
-             This generally needs to match the property
-             ${dollar}{licenseKeyFormat} and should be one of "truelicense-v1",
-             "truelicense-v2-json" or "truelicense-v2-xml". -->
+        <!-- The name of the module to depend upon for base functionality like
+             vending or consuming license keys.
+             One of "truelicense-core" or "truelicense-json".
+             If the ${dollar}{licenseKeyFormat} property is set to "V2/JSON",
+             then this needs to be set to "truelicense-json", otherwise set it
+             to "truelicense-core". -->
         <trueLicenseArtifactId>$trueLicenseArtifactId</trueLicenseArtifactId>
-
-        <!-- The group ID of the module which implements the license key format. -->
-        <trueLicenseGroupId>$trueLicenseGroupId</trueLicenseGroupId>
-
-        <!-- The version of the module which implements the license key format. -->
-        <trueLicenseVersion>$trueLicenseVersion</trueLicenseVersion>
-
-        <!-- Whether or not the command line interface (CLI) should write
-             debugging information to the standard error stream by default.
-             One of "false" or "true". -->
-        <verboseCli>$verboseCli</verboseCli>
 #foreach($edition in $editionArray)
 
         <!-- The password for encrypting and decrypting license keys for the
              edition "$edition".
              If this property is not defined, then it defaults to the value of
              the defaultPassword property. -->
-        <${edition}PbePassword>${dollar}{defaultPassword}</${edition}PbePassword>
+        <PbePassword prefix="${edition}">${dollar}{defaultPassword}</PbePassword>
 
         <!-- The alias of the entry with the private key for the edition
              "$edition" in the private key store file ${dollar}{privateKeyStoreFile}
@@ -394,14 +153,14 @@
              ${dollar}{publicKeyStoreFile} in the Key Manager module.
              If this property is not defined, then it defaults to the feature
              set name. -->
-        <${edition}KeyEntryAlias>$edition</${edition}KeyEntryAlias>
+        <KeyEntryAlias prefix="${edition}">$edition</KeyEntryAlias>
 
         <!-- The password for accessing the private key for the edition
              "$edition" in the private key store file ${dollar}{privateKeyStoreFile} in
              the Key Generator module.
              If this property is not defined, then it defaults to the value of
              the privateKeyStorePassword property. -->
-        <${edition}KeyEntryPassword>${dollar}{privateKeyStorePassword}</${edition}KeyEntryPassword>
+        <KeyEntryPassword prefix="${edition}">${dollar}{privateKeyStorePassword}</KeyEntryPassword>
 #end
 
         <!--
@@ -442,6 +201,23 @@
 
         <!-- maven-release-plugin -->
         <preparationGoals>clean install</preparationGoals>
+
+        <!--
+          - # Important Notes
+          -
+          - The following properties have been configured by the TrueLicense
+          - Maven Archetype.
+          -
+          - 1. **If you want to change the value of any of the following
+          -    properties then it's generally necessary to generate another
+          -    project from the TrueLicense Maven Archetype.**
+          - 2. **For any two generated projects, their license keys are not
+          -    compatible even if all property values are equal, unless both
+          -    projects also share a copy of the same key store files:**
+          -     * `${artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
+          -     * `${artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
+          -     * `${artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
+          -->
     </properties>
 
     <dependencyManagement>
@@ -449,12 +225,12 @@
             <dependency>
                 <groupId>${dollar}{project.groupId}</groupId>
                 <artifactId>${rootArtifactId}-keygen</artifactId>
-                <version>${project.version}</version>
+                <version>${dollar}{project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${dollar}{project.groupId}</groupId>
                 <artifactId>${rootArtifactId}-keymgr</artifactId>
-                <version>${project.version}</version>
+                <version>${dollar}{project.version}</version>
             </dependency>
 
             <dependency>

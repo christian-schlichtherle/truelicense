@@ -3,55 +3,57 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<schema elementFormDefault="qualified"
+<xs:schema
+        elementFormDefault="qualified"
         targetNamespace="${project.url}/xml/archetypeProperties"
         version="${project.version}"
         xml:lang="en"
-        xmlns="http://www.w3.org/2001/XMLSchema"
-        xmlns:ap="${project.url}/xml/archetypeProperties">
-    <element type="ap:ArchetypeProperties" name="archetypeProperties"/>
-    <simpleType name="JavaIdentifier">
-        <restriction>
-            <simpleType>
-                <restriction base="token">
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ap="${project.url}/xml/archetypeProperties"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element type="ap:ArchetypeProperties" name="archetypeProperties"/>
+    <xs:simpleType name="JavaIdentifier">
+        <xs:restriction>
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
                     <!-- Not exactly, but good enough for this purpose. -->
-                    <pattern value="[A-Za-z_$][A-Za-z0-9_$]*"/>
-                </restriction>
-            </simpleType>
-        </restriction>
-    </simpleType>
-    <simpleType name="JavaIdentifiers">
-        <list itemType="ap:JavaIdentifier"/>
-    </simpleType>
-    <simpleType name="KeyPairAlgorithm">
-        <restriction base="token">
-            <enumeration value="-"/>
-            <enumeration value="EC"/>
-            <enumeration value="DSA"/>
-            <enumeration value="RSA"/>
-        </restriction>
-    </simpleType>
-    <simpleType name="KeyStoreType">
-        <restriction base="token">
-            <enumeration value="-"/>
-            <enumeration value="JCEKS"/>
-            <enumeration value="JKS"/>
-            <enumeration value="PKCS12"/>
-        </restriction>
-    </simpleType>
-    <simpleType name="LicenseKeyFormat">
-        <restriction base="token">
-            <enumeration value="-"/>
-            <enumeration value="V1"/>
-            <enumeration value="V2/JSON"/>
-            <enumeration value="V2/XML"/>
-        </restriction>
-    </simpleType>
-    <complexType name="ArchetypeProperties">
-        <all>
-            <element type="token" name="artifactId">
-                <annotation>
-                    <documentation>
+                    <xs:pattern value="[A-Za-z_$][A-Za-z0-9_$]*"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="JavaIdentifiers">
+        <xs:list itemType="ap:JavaIdentifier"/>
+    </xs:simpleType>
+    <xs:simpleType name="KeyPairAlgorithm">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="-"/>
+            <xs:enumeration value="EC"/>
+            <xs:enumeration value="DSA"/>
+            <xs:enumeration value="RSA"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="KeyStoreType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="-"/>
+            <xs:enumeration value="JCEKS"/>
+            <xs:enumeration value="JKS"/>
+            <xs:enumeration value="PKCS12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="LicenseKeyFormat">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="-"/>
+            <xs:enumeration value="V1"/>
+            <xs:enumeration value="V2/JSON"/>
+            <xs:enumeration value="V2/XML"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ArchetypeProperties">
+        <xs:all>
+            <xs:element type="xs:token" name="artifactId">
+                <xs:annotation>
+                    <xs:documentation>
                         The artifact ID of the parent
                         <a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">
                             <abbr title="Project Object Model">POM</abbr>
@@ -66,31 +68,32 @@
                         <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
                             Maven - POM Reference - Maven Coordinates
                         </a>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="artifactName" minOccurs="0" default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="artifactName" minOccurs="0"
+                        default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         The display name of the parent POM for the generated
                         project.
                         This could be the name of your software product, e.g.
                         <code>Product</code>, or be generic, e.g.
                         <code>License</code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="companyName">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="companyName">
+                <xs:annotation>
+                    <xs:documentation>
                         The display name of your company, e.g.
                         <code>Company Inc.</code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:Password" name="defaultPassword">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:Password" name="defaultPassword">
+                <xs:annotation>
+                    <xs:documentation>
                         The default password for accessing key stores,
                         encrypting license keys etc.
                         As a general requirement, passwords must be at least
@@ -99,26 +102,28 @@
                         Entering a longer password with additional punctation
                         characters improves the security level of your licensing
                         schema.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="boolean" name="disableLicenseWizard" minOccurs="0"
-                     default="false">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:boolean" name="disableLicenseWizard"
+                        minOccurs="0"
+                        default="false">
+                <xs:annotation>
+                    <xs:documentation>
                         Whether or not the Swing wizard dialog in the Key
                         Manager module should be disabled.
                         Select
                         <code>true</code>
                         to cut the dependency on the TrueLicense Swing module
                         and reduce the code size.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="boolean" name="dynamicClassLoading" minOccurs="0"
-                     default="false">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:boolean" name="dynamicClassLoading"
+                        minOccurs="0"
+                        default="false">
+                <xs:annotation>
+                    <xs:documentation>
                         Whether or not the classes referenced by the properties
                         with the name pattern
                         <code>*Class</code>
@@ -142,13 +147,13 @@
                         code obfuscation process, which is a security leak if
                         any dynamic class loading is done in the Key Manager
                         module.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:JavaIdentifiers" name="editions" minOccurs="0"
-                     default="standard">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:JavaIdentifiers" name="editions" minOccurs="0"
+                        default="standard">
+                <xs:annotation>
+                    <xs:documentation>
                         A space separated list of edition names, ordered from
                         supersets to subsets, e.g.
                         <code>enterprise standard</code>.
@@ -160,13 +165,13 @@
                         and
                         <code>ftp</code>
                         are reserved for internal use.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="nonNegativeInteger" name="freeTrialPeriod"
-                     minOccurs="0" default="0">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:nonNegativeInteger" name="freeTrialPeriod"
+                        minOccurs="0" default="0">
+                <xs:annotation>
+                    <xs:documentation>
                         The number of days for an auto-generated
                         <abbr title="Free Trial Period">FTP</abbr>.
                         Needs to be a non-negative integer, e.g.
@@ -174,13 +179,13 @@
                         Specify
                         <code>0</code>
                         to disable the auto-generation of FTP license keys.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="ftpKeyStoreFile" minOccurs="0"
-                     default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="ftpKeyStoreFile" minOccurs="0"
+                        default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         The path of the FTP key store file in the Key Manager
                         module relative to the base path
                         <code>
@@ -194,13 +199,14 @@
                         <code>-</code>,
                         then it gets overridden with the value of the property
                         <code>publicKeyStoreFile</code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="ftpSecretMarkerClass" minOccurs="0"
-                     default="n/a">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="ftpSecretMarkerClass"
+                        minOccurs="0"
+                        default="n/a">
+                <xs:annotation>
+                    <xs:documentation>
                         A fully qualified binary class name which defines the
                         user or system preferences node to use for storing the
                         auto-generated FTP license key.
@@ -218,12 +224,12 @@
                         The named class gets dynamically loaded at run time, so
                         it doesn't have to be on the compile time class path of
                         the Key Manager module.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="groupId">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="groupId">
+                <xs:annotation>
+                    <xs:documentation>
                         The group ID of the generated project.
                         This could be the reversed domain name for your company
                         plus the name of the software product.
@@ -231,23 +237,24 @@
                         <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
                             Maven - POM Reference - Maven Coordinates
                         </a>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="boolean" name="hideUninstallAction" minOccurs="0"
-                     default="false">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:boolean" name="hideUninstallAction"
+                        minOccurs="0"
+                        default="false">
+                <xs:annotation>
+                    <xs:documentation>
                         Whether or not the Swing wizard dialog in the Key
                         Manager module should hide the action for uninstalling
                         the license key.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="keyGenLicenseValidationClass"
-                     minOccurs="0" default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="keyGenLicenseValidationClass"
+                        minOccurs="0" default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         A fully qualified binary class name which implements the
                         interface
                         <a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
@@ -257,14 +264,14 @@
                         Select
                         <code>-</code>
                         to use only the built-in license validation function.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:ValidationFunction"
-                     name="keyGenLicenseValidationFunction" minOccurs="0"
-                     default="decorate">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:ValidationFunction"
+                        name="keyGenLicenseValidationFunction" minOccurs="0"
+                        default="decorate">
+                <xs:annotation>
+                    <xs:documentation>
                         Selects the function for license validation in the Key
                         Generator module.
                         This property is ignored if the property
@@ -281,13 +288,13 @@
                         <code>decorate</code>
                         instead to apply both the custom license validation
                         function and the built-in license validation function.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="keyMgrClockClass" minOccurs="0"
-                     default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="keyMgrClockClass" minOccurs="0"
+                        default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         A fully qualified binary class name which implements the
                         interface
                         <a href="../apidocs/${miscApiPackagePath}/Clock.html">
@@ -297,13 +304,13 @@
                         Select
                         <code>-</code>
                         to use the system clock.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="keyMgrLicenseValidationClass"
-                     minOccurs="0" default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="keyMgrLicenseValidationClass"
+                        minOccurs="0" default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         A fully qualified binary class name which implements the
                         interface
                         <a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
@@ -313,14 +320,14 @@
                         Select
                         <code>-</code>
                         to use only the built-in license validation function.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:ValidationFunction"
-                     name="keyMgrLicenseValidationFunction" minOccurs="0"
-                     default="decorate">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:ValidationFunction"
+                        name="keyMgrLicenseValidationFunction" minOccurs="0"
+                        default="decorate">
+                <xs:annotation>
+                    <xs:documentation>
                         Selects the function for license validation in the Key
                         Manager module.
                         This property is ignored if the property
@@ -331,18 +338,19 @@
                         <code>override</code>
                         to apply only the the custom license validation function
                         which is implemented by the
-                        <code>${dollar}{keyMgrLicenseValidationClass}</code>.
+                        <code>${dollar}{keyMgrLicenseValidationClass}</code>
+                        .
                         Select
                         <code>decorate</code>
                         instead to apply both the custom license validation
                         function and the built-in license validation function.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:KeyPairAlgorithm" name="keyPairAlgorithm"
-                     minOccurs="0" default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:KeyPairAlgorithm" name="keyPairAlgorithm"
+                        minOccurs="0" default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         The algorithm to use when generating key pairs in the
                         key store files on the first build.
                         This property is ignored if the key store files already
@@ -354,13 +362,14 @@
                             Java Cryptography Architecture Standard Algorithm
                             Name Documentation - KeyPairGenerator Algorithms
                         </a>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="nonNegativeInteger" name="keyPairSize" minOccurs="0"
-                     default="0">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:nonNegativeInteger" name="keyPairSize"
+                        minOccurs="0"
+                        default="0">
+                <xs:annotation>
+                    <xs:documentation>
                         The key size in bits when generating key pairs in the
                         key store files at the first build.
                         This property is ignored if the key store files already
@@ -372,13 +381,13 @@
                         <code>${dollar}{keyPairAlgorithm}</code>
                         and be supported by one of the security providers which
                         are installed in the JRE/JDK.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:KeyStoreType" name="keyStoreType" minOccurs="0"
-                     default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:KeyStoreType" name="keyStoreType" minOccurs="0"
+                        default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         The default key store type.
                         The type needs to be supported by one of the security
                         providers which are installed in the JRE.
@@ -393,13 +402,13 @@
                         <code>JKS</code>,
                         otherwise it gets set to
                         <code>JCEKS</code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:LicenseKeyFormat" name="licenseKeyFormat"
-                     minOccurs="0" default="V2/JSON">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:LicenseKeyFormat" name="licenseKeyFormat"
+                        minOccurs="0" default="V2/JSON">
+                <xs:annotation>
+                    <xs:documentation>
                         The format of the license keys.
                         Select
                         <code>V1</code>
@@ -413,12 +422,12 @@
                         <code>V2/JSON</code>
                         for the smallest license keys and the fastest
                         processing.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="licensingSubject">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="licensingSubject">
+                <xs:annotation>
+                    <xs:documentation>
                         The licensing subject.
                         The value of this property gets stored in the generated
                         license keys and is used for validation.
@@ -442,25 +451,26 @@
                         <code>Product 2</code>
                         or
                         <code>Product 2.X</code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="package" minOccurs="0">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="package" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
                         The base package name of the generated project.
                         It's best practice to use the expression
                         <code>${dollar}{groupId}</code>
                         or
-                        <code>${dollar}{groupId}.${dollar}{artifactId}</code>
+                        <code>${dollar}{groupId}.${dollar}{artifactId}
+                        </code>
                         if this results in a valid package name.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"
-                     default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"
+                        default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         The algorithm for the password based encryption.
                         The algorithm needs to be supported by one of the
                         security providers which are installed in the JRE.
@@ -480,13 +490,13 @@
                             Java Cryptography Architecture Standard Algorithm
                             Name Documentation - Cipher (Encryption) Algorithms
                         </a>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:PreferencesType" name="preferencesType"
-                     minOccurs="0" default="user">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:PreferencesType" name="preferencesType"
+                        minOccurs="0" default="user">
+                <xs:annotation>
+                    <xs:documentation>
                         The type of the preferences nodes where to install
                         license keys.
                         Note that the value
@@ -494,40 +504,41 @@
                         generally requires the JVM to be run with administrator
                         privileges or otherwise a
                         <a href="http://docs.oracle.com/javase/${javase.major}/docs/api/java/util/prefs/BackingStoreException.html">
-                            <code>java.util.prefs.BackingStoreException</code>
+                            <code>java.util.prefs.BackingStoreException
+                            </code>
                         </a>
                         may get thrown by the generated integration tests.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="privateKeyStoreFile" minOccurs="0"
-                     default="private.ks">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="privateKeyStoreFile" minOccurs="0"
+                        default="private.ks">
+                <xs:annotation>
+                    <xs:documentation>
                         The path of the private key store file in the Key
                         Generator module relative to the base path
                         <code>
                             ${dollar}{artifactId}-keygen/src/main/resources/
                         </code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="publicKeyStoreFile" minOccurs="0"
-                     default="public.ks">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="publicKeyStoreFile" minOccurs="0"
+                        default="public.ks">
+                <xs:annotation>
+                    <xs:documentation>
                         The path of the public key store file in the Key
                         Manager module relative to the base path
                         <code>
                             ${dollar}{artifactId}-keymgr/src/main/resources/
                         </code>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="ap:SignatureAlgorithm" name="signatureAlgorithm"
-                     minOccurs="0" default="-">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="ap:SignatureAlgorithm" name="signatureAlgorithm"
+                        minOccurs="0" default="-">
+                <xs:annotation>
+                    <xs:documentation>
                         The algorithm to use when signing a generated key
                         pair in a key store file at the first build.
                         This property is ignored if the key store file already
@@ -545,31 +556,31 @@
                             Java Cryptography Architecture Standard Algorithm
                             Name Documentation - Signature Algorithms
                         </a>.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="trueLicenseVersion" minOccurs="0"
-                     default="${project.version}">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="trueLicenseVersion" minOccurs="0"
+                        default="${project.version}">
+                <xs:annotation>
+                    <xs:documentation>
                         The TrueLicense version to depend upon.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="boolean" name="verboseCli" minOccurs="0"
-                     default="false">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:boolean" name="verboseCli" minOccurs="0"
+                        default="false">
+                <xs:annotation>
+                    <xs:documentation>
                         Whether or not the
                         <abbr title="Command Line Interface">CLI</abbr>
                         should write debugging information to the standard error
                         stream by default.
-                    </documentation>
-                </annotation>
-            </element>
-            <element type="token" name="version">
-                <annotation>
-                    <documentation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="version">
+                <xs:annotation>
+                    <xs:documentation>
                         The version of the generated project.
                         This should be the version of your software product.
                         Whatever it is, it needs to match the
@@ -581,65 +592,65 @@
                         <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
                             Maven - POM Reference - Maven Coordinates
                         </a>.
-                    </documentation>
-                </annotation>
-            </element>
-        </all>
-        <attribute type="token" name="version" use="optional"/>
-    </complexType>
-    <simpleType name="Password">
-        <restriction base="string">
-            <minLength value="8"/>
-        </restriction>
-    </simpleType>
-    <simpleType name="PbeAlgorithm">
-        <restriction base="token">
-            <enumeration value="-"/>
-            <enumeration value="PBEWithMD5AndDES"/>
-            <enumeration value="PBEWithSHA1AndDESede"/>
-            <enumeration value="PBEWithHmacSHA1AndAES_128"/>
-            <enumeration value="PBEWithHmacSHA224AndAES_128"/>
-            <enumeration value="PBEWithHmacSHA256AndAES_128"/>
-            <enumeration value="PBEWithHmacSHA384AndAES_128"/>
-            <enumeration value="PBEWithHmacSHA512AndAES_128"/>
-            <enumeration value="PBEWithHmacSHA1AndAES_256"/>
-            <enumeration value="PBEWithHmacSHA224AndAES_256"/>
-            <enumeration value="PBEWithHmacSHA256AndAES_256"/>
-            <enumeration value="PBEWithHmacSHA384AndAES_256"/>
-            <enumeration value="PBEWithHmacSHA512AndAES_256"/>
-        </restriction>
-    </simpleType>
-    <simpleType name="PreferencesType">
-        <restriction base="token">
-            <enumeration value="system"/>
-            <enumeration value="user"/>
-        </restriction>
-    </simpleType>
-    <simpleType name="SignatureAlgorithm">
-        <restriction base="token">
-            <enumeration value="-"/>
-            <enumeration value="NONEwithDSA"/>
-            <enumeration value="SHA1withDSA"/>
-            <enumeration value="SHA224withDSA"/>
-            <enumeration value="SHA256withDSA"/>
-            <enumeration value="NONEwithECDSA"/>
-            <enumeration value="SHA1withECDSA"/>
-            <enumeration value="SHA224withECDSA"/>
-            <enumeration value="SHA256withECDSA"/>
-            <enumeration value="SHA384withECDSA"/>
-            <enumeration value="SHA512withECDSA"/>
-            <enumeration value="NONEwithRSA"/>
-            <enumeration value="SHA1withRSA"/>
-            <enumeration value="SHA224withRSA"/>
-            <enumeration value="SHA256withRSA"/>
-            <enumeration value="SHA384withRSA"/>
-            <enumeration value="SHA512withRSA"/>
-        </restriction>
-    </simpleType>
-    <simpleType name="ValidationFunction">
-        <restriction base="token">
-            <enumeration value="decorate"/>
-            <enumeration value="override"/>
-        </restriction>
-    </simpleType>
-</schema>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:all>
+        <xs:attribute type="xs:token" name="version" use="optional"/>
+    </xs:complexType>
+    <xs:simpleType name="Password">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="8"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PbeAlgorithm">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="-"/>
+            <xs:enumeration value="PBEWithMD5AndDES"/>
+            <xs:enumeration value="PBEWithSHA1AndDESede"/>
+            <xs:enumeration value="PBEWithHmacSHA1AndAES_128"/>
+            <xs:enumeration value="PBEWithHmacSHA224AndAES_128"/>
+            <xs:enumeration value="PBEWithHmacSHA256AndAES_128"/>
+            <xs:enumeration value="PBEWithHmacSHA384AndAES_128"/>
+            <xs:enumeration value="PBEWithHmacSHA512AndAES_128"/>
+            <xs:enumeration value="PBEWithHmacSHA1AndAES_256"/>
+            <xs:enumeration value="PBEWithHmacSHA224AndAES_256"/>
+            <xs:enumeration value="PBEWithHmacSHA256AndAES_256"/>
+            <xs:enumeration value="PBEWithHmacSHA384AndAES_256"/>
+            <xs:enumeration value="PBEWithHmacSHA512AndAES_256"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PreferencesType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="system"/>
+            <xs:enumeration value="user"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SignatureAlgorithm">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="-"/>
+            <xs:enumeration value="NONEwithDSA"/>
+            <xs:enumeration value="SHA1withDSA"/>
+            <xs:enumeration value="SHA224withDSA"/>
+            <xs:enumeration value="SHA256withDSA"/>
+            <xs:enumeration value="NONEwithECDSA"/>
+            <xs:enumeration value="SHA1withECDSA"/>
+            <xs:enumeration value="SHA224withECDSA"/>
+            <xs:enumeration value="SHA256withECDSA"/>
+            <xs:enumeration value="SHA384withECDSA"/>
+            <xs:enumeration value="SHA512withECDSA"/>
+            <xs:enumeration value="NONEwithRSA"/>
+            <xs:enumeration value="SHA1withRSA"/>
+            <xs:enumeration value="SHA224withRSA"/>
+            <xs:enumeration value="SHA256withRSA"/>
+            <xs:enumeration value="SHA384withRSA"/>
+            <xs:enumeration value="SHA512withRSA"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ValidationFunction">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="decorate"/>
+            <xs:enumeration value="override"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
