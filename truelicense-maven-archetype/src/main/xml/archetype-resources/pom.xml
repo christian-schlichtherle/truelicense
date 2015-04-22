@@ -223,12 +223,12 @@
             <dependency>
                 <groupId>${dollar}{project.groupId}</groupId>
                 <artifactId>${rootArtifactId}-keygen</artifactId>
-                <version>${project.version}</version>
+                <version>${dollar}{project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${dollar}{project.groupId}</groupId>
                 <artifactId>${rootArtifactId}-keymgr</artifactId>
-                <version>${project.version}</version>
+                <version>${dollar}{project.version}</version>
             </dependency>
 
             <dependency>
