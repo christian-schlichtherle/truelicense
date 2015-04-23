@@ -20,110 +20,105 @@
         xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd
                             http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
 
+    <xsl:param name="lang" select="'en'"/>
+
     <xsl:template match="xdoc:tbody[@id = 'properties']">
         <tbody>
-            <xsl:for-each select="$properties">
+            <xsl:for-each select="$schema/xs:complexType[@name='Properties']/xs:all/xs:element">
                 <tr>
                     <td>
                         <code>
                             <xsl:value-of select="@name"/>
                         </code>
                     </td>
-                    <xsl:variable name="property" select="."/>
-                    <xsl:for-each
-                            select="xs:annotation/xs:documentation[not(@xml:lang) or @xml:lang = 'en']">
-                        <td>
-                            <xsl:copy-of select="@xml:lang"/>
-                            <xsl:for-each select="$property">
-                                <dl class="dl-horizontal">
-                                    <dt>Description</dt>
-                                    <dd>
-                                        <xsl:apply-templates select="node()"
-                                                             mode="stripped"/>
-                                    </dd>
-                                    <dt>Type</dt>
-                                    <dd>
-                                        <xsl:variable name="localName"
-                                                      select="substring-after(@type, ':')"/>
-                                        <xsl:variable name="nsPrefix"
-                                                      select="substring-before(@type, ':')"/>
-                                        <xsl:variable name="nsUri"
-                                                      select="$schema/namespace::*[local-name() = $nsPrefix]"/>
-                                        <xsl:choose>
-                                            <xsl:when
-                                                    test="$nsUri = 'http://www.w3.org/2001/XMLSchema'">
-                                                <a href="http://www.w3.org/TR/xmlschema-2/#{$localName}">
-                                                    <abbr title="A built-in datatype of XML Schema.">
-                                                        <xsl:value-of
-                                                                select="$localName"/>
-                                                    </abbr>
-                                                </a>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <xsl:variable name="href"
-                                                              select="$schema/xs:simpleType[@name = $localName]/@h:href"/>
-                                                <xsl:choose>
-                                                    <xsl:when test="$href">
-                                                        <a href="{$href}">
-                                                            <abbr title="A custom datatype based on a built-in datatype of XML Schema with additional restrictions.">
-                                                                <xsl:value-of
-                                                                        select="$localName"/>
-                                                            </abbr>
-                                                        </a>
-                                                    </xsl:when>
-                                                    <xsl:otherwise>
-                                                        <abbr title="A custom datatype based on a built-in datatype of XML Schema with additional restrictions.">
-                                                            <xsl:value-of
-                                                                    select="$localName"/>
-                                                        </abbr>
-                                                    </xsl:otherwise>
-                                                </xsl:choose>
-                                                <xsl:text>: </xsl:text>
-                                                <xsl:variable
-                                                        name="enumerations"
-                                                        select="$schema/xs:simpleType[@name = $localName]/xs:restriction/xs:enumeration"/>
-                                                <xsl:if test="$enumerations">
-                                                    <xsl:text>One of </xsl:text>
-                                                    <xsl:for-each
-                                                            select="$enumerations">
-                                                        <xsl:choose>
-                                                            <xsl:when
-                                                                    test="position() = last()">
-                                                                <xsl:text> or </xsl:text>
-                                                            </xsl:when>
-                                                            <xsl:when
-                                                                    test="position() != 1">
-                                                                <xsl:text>, </xsl:text>
-                                                            </xsl:when>
-                                                        </xsl:choose>
-                                                        <code>
-                                                            <xsl:value-of
-                                                                    select="@value"/>
-                                                        </code>
-                                                    </xsl:for-each>
-                                                    <xsl:text>. </xsl:text>
-                                                </xsl:if>
+                    <td>
+                        <dl class="dl-horizontal">
+                            <dt>Description</dt>
+                            <dd>
+                                <xsl:apply-templates select="xs:annotation/xs:documentation[ancestor-or-self::*[@xml:lang][1]/@xml:lang = $lang]/node()"
+                                                     mode="stripped"/>
+                            </dd>
+                            <dt>Type</dt>
+                            <dd>
+                                <xsl:variable name="localName"
+                                              select="substring-after(@type, ':')"/>
+                                <xsl:variable name="nsPrefix"
+                                              select="substring-before(@type, ':')"/>
+                                <xsl:variable name="nsUri"
+                                              select="namespace::*[local-name() = $nsPrefix]"/>
+                                <xsl:choose>
+                                    <xsl:when
+                                            test="$nsUri = 'http://www.w3.org/2001/XMLSchema'">
+                                        <a href="http://www.w3.org/TR/xmlschema-2/#{$localName}">
+                                            <abbr title="A built-in datatype of XML Schema.">
+                                                <xsl:value-of
+                                                        select="$localName"/>
+                                            </abbr>
+                                        </a>
+                                    </xsl:when>
+                                    <xsl:when
+                                            test="$nsUri = '${project.url}/xml/archetype-properties'">
+                                        <xsl:for-each select="$schema/xs:simpleType[@name = $localName]">
+                                            <xsl:variable name="href"
+                                                          select="@h:href"/>
+                                            <xsl:variable name="typeOutput">
+                                                <abbr title="A custom datatype based on a built-in datatype of XML Schema with additional restrictions.">
+                                                    <xsl:value-of
+                                                            select="$localName"/>
+                                                </abbr>
+                                            </xsl:variable>
+                                            <xsl:choose>
+                                                <xsl:when test="$href">
+                                                    <a href="{$href}">
+                                                        <xsl:copy-of select="$typeOutput"/>
+                                                    </a>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:copy-of select="$typeOutput"/>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                            <xsl:text>: </xsl:text>
+                                            <xsl:variable
+                                                    name="enumerations"
+                                                    select="xs:restriction/xs:enumeration"/>
+                                            <xsl:if test="$enumerations">
+                                                <xsl:text>One of </xsl:text>
                                                 <xsl:for-each
-                                                        select="$schema/xs:simpleType[@name = $localName]/xs:annotation/xs:documentation[not(@xml:lang) or @xml:lang = 'en']">
-                                                    <xsl:apply-templates
-                                                            select="node()"
-                                                            mode="stripped"/>
+                                                        select="$enumerations">
+                                                    <xsl:choose>
+                                                        <xsl:when
+                                                                test="position() = last()">
+                                                            <xsl:text> or </xsl:text>
+                                                        </xsl:when>
+                                                        <xsl:when
+                                                                test="position() != 1">
+                                                            <xsl:text>, </xsl:text>
+                                                        </xsl:when>
+                                                    </xsl:choose>
+                                                    <code>
+                                                        <xsl:value-of
+                                                                select="@value"/>
+                                                    </code>
                                                 </xsl:for-each>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </dd>
-                                    <xsl:for-each select="@default">
-                                        <dt>Default</dt>
-                                        <dd>
-                                            <code>
-                                                <xsl:value-of select="."/>
-                                            </code>
-                                        </dd>
-                                    </xsl:for-each>
-                                </dl>
+                                                <xsl:text>. </xsl:text>
+                                            </xsl:if>
+                                            <xsl:apply-templates
+                                                    select="xs:annotation/xs:documentation[ancestor-or-self::*[@xml:lang][1]/@xml:lang = $lang]/node()"
+                                                    mode="stripped"/>
+                                        </xsl:for-each>
+                                    </xsl:when>
+                                </xsl:choose>
+                            </dd>
+                            <xsl:for-each select="@default">
+                                <dt>Default</dt>
+                                <dd>
+                                    <code>
+                                        <xsl:value-of select="."/>
+                                    </code>
+                                </dd>
                             </xsl:for-each>
-                        </td>
-                    </xsl:for-each>
+                        </dl>
+                    </td>
                 </tr>
             </xsl:for-each>
         </tbody>
@@ -147,6 +142,4 @@
 
     <xsl:variable name="schema"
                   select="document('archetype-properties.xsd')/xs:schema"/>
-    <xsl:variable name="properties"
-                  select="$schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>
