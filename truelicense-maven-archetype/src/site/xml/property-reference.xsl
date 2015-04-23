@@ -146,7 +146,7 @@
     </xsl:template>
 
     <xsl:variable name="schema"
-                  select="document('META-INF/maven/archetype-properties.xsd')/xs:schema"/>
+                  select="document('archetype-properties.xsd')/xs:schema"/>
     <xsl:variable name="properties"
                   select="$schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>

@@ -40,8 +40,7 @@
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
         <main-xml-directory>${project.build.directory}/xml/main</main-xml-directory>
-        <meta-inf-maven-directory>${main-xml-directory}/META-INF/maven</meta-inf-maven-directory>
-        <misc>misc</misc>
+        <misc>util</misc>
         <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
         <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
         <packagePath>org/truelicense</packagePath>
@@ -109,7 +108,7 @@
                                 <resource>
                                     <directory>src/main/xml</directory>
                                     <includes>
-                                        <include>META-INF/maven/archetype-properties.xsd</include>
+                                        <include>archetype-properties.xsd</include>
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
@@ -152,20 +151,20 @@
                         <configuration>
                             <transformationSets>
                                 <transformationSet>
-                                    <dir>${meta-inf-maven-directory}</dir>
+                                    <dir>src/main/resources</dir>
                                     <includes>
-                                        <include>archetype-metadata.xml</include>
+                                        <include>archetype-resources/pom.xml</include>
                                     </includes>
-                                    <outputDir>${project.build.outputDirectory}/META-INF/maven</outputDir>
-                                    <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
+                                    <outputDir>${project.build.outputDirectory}</outputDir>
+                                    <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
                                 </transformationSet>
                                 <transformationSet>
-                                    <dir>src/main/resources/archetype-resources</dir>
+                                    <dir>src/main/resources</dir>
                                     <includes>
-                                        <include>pom.xml</include>
+                                        <include>META-INF/maven/archetype-metadata.xml</include>
                                     </includes>
-                                    <outputDir>${project.build.outputDirectory}/archetype-resources</outputDir>
-                                    <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
+                                    <outputDir>${project.build.outputDirectory}</outputDir>
+                                    <stylesheet>${main-xml-directory}/META-INF/maven/archetype-metadata.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
@@ -218,7 +217,7 @@
                                     <includes>
                                         <include>**/archetype.xml</include>
                                     </includes>
-                                    <systemId>${meta-inf-maven-directory}/archetype-properties.xsd</systemId>
+                                    <systemId>${main-xml-directory}/archetype-properties.xsd</systemId>
                                 </validationSet>
                             </validationSets>
                         </configuration>
