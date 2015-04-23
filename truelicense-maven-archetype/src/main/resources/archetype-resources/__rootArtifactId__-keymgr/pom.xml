@@ -23,7 +23,7 @@
 
     <artifactId>$artifactId</artifactId>
 
-#if($artifactName != '-')
+#if($artifactName != "-")
     <name>$artifactName Key Manager</name>
 #end
     <description>The license consumer application.</description>

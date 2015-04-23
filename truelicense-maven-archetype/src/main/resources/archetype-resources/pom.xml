@@ -41,7 +41,7 @@
     <version>$version</version>
     <packaging>pom</packaging>
 
-#if($artifactName != '-')
+#if($artifactName != "-")
     <name>$artifactName</name>
 #end
     <description>The parent POM for all license management modules.</description>

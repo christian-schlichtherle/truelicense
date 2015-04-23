@@ -20,7 +20,7 @@
 
     <artifactId>$artifactId</artifactId>
 
-#if($artifactName != '-')
+#if($artifactName != "-")
     <name>$artifactName Key Generator</name>
 #end
     <description>The license vendor application alias license key tool.</description>

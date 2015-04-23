@@ -20,7 +20,7 @@
 
     <artifactId>$artifactId</artifactId>
 
-#if($artifactName != '-')
+#if($artifactName != "-")
     <name>$artifactName Key Manager Service</name>
 #end
     <description>The RESTful web service interface for the license consumer application.</description>
