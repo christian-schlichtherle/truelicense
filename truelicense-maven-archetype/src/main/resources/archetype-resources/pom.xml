@@ -9,14 +9,14 @@
 #if($ftpKeyStoreFile == "-")
 #set($ftpKeyStoreFile = $publicKeyStoreFile)
 #end
-#if($keyStoreType == "-")
+#if($keyStoreType == "auto")
 #if($licenseKeyFormat == "V1")
 #set($keyStoreType = "JKS")
 #else
 #set($keyStoreType = "JCEKS")
 #end
 #end
-#if($pbeAlgorithm == "-")
+#if($pbeAlgorithm == "auto")
 #if($licenseKeyFormat == "V1")
 #set($pbeAlgorithm = "PBEWithMD5AndDES")
 #else
