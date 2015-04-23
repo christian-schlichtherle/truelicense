@@ -7,7 +7,6 @@
     <artifactId>kitchenSink</artifactId>
     <artifactName>Kitchen Sink</artifactName>
     <companyName>Company Inc.</companyName>
-    <defaultPassword>test1234</defaultPassword>
     <disableLicenseWizard>true</disableLicenseWizard>
     <dynamicClassLoading>true</dynamicClassLoading>
     <editions>enterprise standard</editions>
@@ -30,6 +29,7 @@
     <licenseKeyFormat>V2/XML</licenseKeyFormat>
     <licensingSubject>Product 1</licensingSubject>
     <package>com.company.product</package>
+    <password>test1234</password>
     <pbeAlgorithm>PBEWithMD5AndDES</pbeAlgorithm>
     <preferencesType>user</preferencesType>
     <privateKeyStoreFile>private.ks</privateKeyStoreFile>

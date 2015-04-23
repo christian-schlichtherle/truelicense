@@ -6,9 +6,9 @@
 <properties xmlns="${project.url}/xml/archetype-properties">
     <artifactId>v1LicenseKeyFormat</artifactId>
     <companyName>Company Inc.</companyName>
-    <defaultPassword>test1234</defaultPassword>
     <groupId>com.company.product</groupId>
     <licenseKeyFormat>V1</licenseKeyFormat>
     <licensingSubject>Product 1</licensingSubject>
+    <password>test1234</password>
     <version>1.0-SNAPSHOT</version>
 </properties>

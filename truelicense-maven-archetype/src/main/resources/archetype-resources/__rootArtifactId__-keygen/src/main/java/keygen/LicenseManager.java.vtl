@@ -46,7 +46,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #evaluate("${hash}set (${dollar}editionKeyEntryAlias = ${dollar}${edition}KeyEntryAlias)")
 #set($editionKeyEntryPassword = $privateKeyStorePassword)
 #evaluate("${hash}set (${dollar}editionKeyEntryPassword = ${dollar}${edition}KeyEntryPassword)")
-#set($editionPbePassword = $defaultPassword)
+#set($editionPbePassword = $password)
 #evaluate("${hash}set (${dollar}editionPbePassword = ${dollar}${edition}PbePassword)")
 
     $edition {

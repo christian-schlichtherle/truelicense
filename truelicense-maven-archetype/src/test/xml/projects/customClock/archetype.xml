@@ -6,10 +6,10 @@
 <properties xmlns="${project.url}/xml/archetype-properties">
     <artifactId>customClock</artifactId>
     <companyName>Company Inc.</companyName>
-    <defaultPassword>test1234</defaultPassword>
     <groupId>com.company.product</groupId>
     <keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
     </keyMgrClockClass>
     <licensingSubject>Product 1</licensingSubject>
+    <password>test1234</password>
     <version>1.0-SNAPSHOT</version>
 </properties>

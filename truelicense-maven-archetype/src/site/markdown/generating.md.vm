@@ -32,9 +32,9 @@ match your licensing schema and paste the result into a shell:
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -98,18 +98,6 @@ Note that property values are generally _case sensitive_.
             <td><code>companyName</code></td>
             <td>n/a</td>
             <td>The display name of your company, e.g. <code>Company Inc.</code>.</td>
-        </tr>
-        <tr>
-            <td><code>defaultPassword</code></td>
-            <td>n/a</td>
-            <td>The default password for everything.
-                If you feel lazy, then the only password you need to edit is this
-                one before running the build for the first time.
-                As a general requirement, all passwords must be at least eight
-                characters long and contain letters and digits.
-                You should consider this to be the bare minimum.
-                Entering a longer password with additional punctation characters
-                improves the security level of your licensing schema.</td>
         </tr>
         <tr>
             <td><code>disableLicenseWizard</code></td>
@@ -323,6 +311,18 @@ Note that property values are generally _case sensitive_.
                 It's best practice to use the expression <code>${groupId}</code>
                 or <code>${groupId}.${artifactId}</code> as the package name
                 if this results in a valid package name.</td>
+        </tr>
+        <tr>
+            <td><code>password</code></td>
+            <td>n/a</td>
+            <td>The default password for everything.
+                If you feel lazy, then the only password you need to edit is this
+                one before running the build for the first time.
+                As a general requirement, all passwords must be at least eight
+                characters long and contain letters and digits.
+                You should consider this to be the bare minimum.
+                Entering a longer password with additional punctation characters
+                improves the security level of your licensing schema.</td>
         </tr>
         <tr>
             <td><code>pbeAlgorithm</code></td>

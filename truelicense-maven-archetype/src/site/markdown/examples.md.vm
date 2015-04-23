@@ -19,9 +19,9 @@ with the name "standard" and no free trial period.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -39,11 +39,11 @@ obviously not secret anymore.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DfreeTrialPeriod=30 \
         -DftpSecretMarkerClass=sun.security.provider.Sun \
         -DgroupId=com.company.product \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -61,10 +61,10 @@ superset of the Standard Edition.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -Deditions=enterprise standard \
         -DgroupId=com.company.product \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -80,10 +80,10 @@ action from the license wizard dialog.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DhideUninstallAction=true \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -99,10 +99,10 @@ generated code.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DdisableLicenseWizard=true \
         -DgroupId=com.company.product \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -121,11 +121,11 @@ and Key Manager modules with the named custom class.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DkeyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation \
         -DkeyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -141,10 +141,10 @@ custom implementation.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DkeyMgrClockClass=com.company.product.keymgr.CustomClock \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
@@ -160,10 +160,10 @@ Jackson JSON Processor from the generated code.
         -DarchetypeVersion=$project.version \
         -DartifactId=license \
         -DcompanyName="Company Inc." \
-        -DdefaultPassword=test1234 \
         -DgroupId=com.company.product \
         -DlicenseKeyFormat=V2/XML \
         -DlicensingSubject="Product 1" \
+        -Dpassword=test1234 \
         -Dversion=1.0-SNAPSHOT
     [...]
 
