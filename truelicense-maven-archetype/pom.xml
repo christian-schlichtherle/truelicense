@@ -39,13 +39,13 @@
         <api>api</api>
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
-        <archetype-resources-directory>${main-xml-directory}/archetype-resources</archetype-resources-directory>
         <main-xml-directory>${project.build.directory}/xml/main</main-xml-directory>
         <meta-inf-maven-directory>${main-xml-directory}/META-INF/maven</meta-inf-maven-directory>
         <misc>misc</misc>
         <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
         <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
         <packagePath>org/truelicense</packagePath>
+        <site-xml-directory>${project.build.directory}/xml/site</site-xml-directory>
         <test-projects-directory>${test-xml-directory}/projects</test-projects-directory>
         <test-xml-directory>${project.build.directory}/xml/test</test-xml-directory>
     </properties>
@@ -92,19 +92,33 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/xml</directory>
-                                    <excludes>
-                                        <exclude>**/pom.xml</exclude>
-                                    </excludes>
                                     <filtering>true</filtering>
-                                </resource>
-                                <resource>
-                                    <directory>src/main/xml</directory>
-                                    <includes>
-                                        <include>**/pom.xml</include>
-                                    </includes>
                                 </resource>
                             </resources>
                             <outputDirectory>${main-xml-directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-site-xml</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/xml</directory>
+                                    <includes>
+                                        <include>META-INF/maven/archetypeProperties.xsd</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/site/xml</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${site-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -146,12 +160,31 @@
                                     <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
                                 </transformationSet>
                                 <transformationSet>
-                                    <dir>${archetype-resources-directory}</dir>
+                                    <dir>src/main/resources/archetype-resources</dir>
                                     <includes>
-                                        <include>**/pom.xml</include>
+                                        <include>pom.xml</include>
                                     </includes>
                                     <outputDir>${project.build.outputDirectory}/archetype-resources</outputDir>
-                                    <stylesheet>${archetype-resources-directory}/pom.xsl</stylesheet>
+                                    <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>process-site-xml</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>${site-xml-directory}</dir>
+                                    <includes>
+                                        <include>property-reference.xml</include>
+                                    </includes>
+                                    <outputDir>${project.build.directory}/generated-site/xdoc</outputDir>
+                                    <stylesheet>${site-xml-directory}/property-reference.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
@@ -176,7 +209,7 @@
                                         <include>**/archetype.xml</include>
                                     </includes>
                                     <outputDir>${project.build.testOutputDirectory}/projects</outputDir>
-                                    <stylesheet>${test-projects-directory}/archetypeProperties.xsl</stylesheet>
+                                    <stylesheet>${test-projects-directory}/archetype.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                             <validationSets>
@@ -214,26 +247,6 @@
             </build>
         </profile>
         <profile>
-            <id>saxon</id>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>xml-maven-plugin</artifactId>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>net.sf.saxon</groupId>
-                                    <artifactId>Saxon-HE</artifactId>
-                                    <version>9.6.0-5</version>
-                                </dependency>
-                            </dependencies>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
             <id>skip-tests</id>
             <activation>
                 <property>
@@ -250,26 +263,6 @@
                         </configuration>
                     </plugin>
                 </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>xalan</id>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>xml-maven-plugin</artifactId>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>xalan</groupId>
-                                    <artifactId>xalan</artifactId>
-                                    <version>2.7.2</version>
-                                </dependency>
-                            </dependencies>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
             </build>
         </profile>
     </profiles>

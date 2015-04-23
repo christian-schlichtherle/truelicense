@@ -10,6 +10,7 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:ap="${project.url}/xml/archetypeProperties"
+        xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element type="ap:ArchetypeProperties" name="archetypeProperties"/>
     <xs:simpleType name="JavaIdentifier">
@@ -22,18 +23,32 @@
             </xs:simpleType>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="JavaIdentifiers">
+    <xs:simpleType name="JavaIdentifierList">
+        <xs:annotation>
+            <xs:documentation>
+                A space separated list of valid identifiers in the Java
+                language.
+            </xs:documentation>
+        </xs:annotation>
         <xs:list itemType="ap:JavaIdentifier"/>
     </xs:simpleType>
-    <xs:simpleType name="KeyPairAlgorithm">
+    <xs:simpleType name="KeyPairAlgorithm"
+                   h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
         <xs:restriction base="xs:token">
             <xs:enumeration value="-"/>
-            <xs:enumeration value="EC"/>
             <xs:enumeration value="DSA"/>
+            <xs:enumeration value="EC"/>
             <xs:enumeration value="RSA"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="KeyStoreType">
+    <xs:simpleType name="KeyStoreType"
+                   h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyStore">
+        <xs:annotation>
+            <xs:documentation>
+                <code>PKCS12</code>
+                requires Java SE 8.
+            </xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:token">
             <xs:enumeration value="-"/>
             <xs:enumeration value="JCEKS"/>
@@ -43,7 +58,6 @@
     </xs:simpleType>
     <xs:simpleType name="LicenseKeyFormat">
         <xs:restriction base="xs:token">
-            <xs:enumeration value="-"/>
             <xs:enumeration value="V1"/>
             <xs:enumeration value="V2/JSON"/>
             <xs:enumeration value="V2/XML"/>
@@ -54,7 +68,7 @@
             <xs:element type="xs:token" name="artifactId">
                 <xs:annotation>
                     <xs:documentation>
-                        The artifact ID of the parent
+                        The root artifact ID of the
                         <a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">
                             <abbr title="Project Object Model">POM</abbr>
                         </a>
@@ -96,12 +110,6 @@
                     <xs:documentation>
                         The default password for accessing key stores,
                         encrypting license keys etc.
-                        As a general requirement, passwords must be at least
-                        eight characters long and contain letters and digits.
-                        You should consider this to be the bare minimum.
-                        Entering a longer password with additional punctation
-                        characters improves the security level of your licensing
-                        schema.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -150,7 +158,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:JavaIdentifiers" name="editions" minOccurs="0"
+            <xs:element type="ap:JavaIdentifierList" name="editions"
+                        minOccurs="0"
                         default="standard">
                 <xs:annotation>
                     <xs:documentation>
@@ -158,7 +167,7 @@
                         supersets to subsets, e.g.
                         <code>enterprise standard</code>.
                         Each name must be a valid Java identifier name and
-                        should be a camel-case string with a lower-case initial
+                        should be camel-cased with a lower-case initial
                         character.
                         The names
                         <code>edition</code>
@@ -204,7 +213,7 @@
             </xs:element>
             <xs:element type="xs:token" name="ftpSecretMarkerClass"
                         minOccurs="0"
-                        default="n/a">
+                        default="-">
                 <xs:annotation>
                     <xs:documentation>
                         A fully qualified binary class name which defines the
@@ -357,11 +366,6 @@
                         exist.
                         The algorithm needs to be supported by one of the
                         security providers which are installed in the JRE.
-                        See
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
-                            Java Cryptography Architecture Standard Algorithm
-                            Name Documentation - KeyPairGenerator Algorithms
-                        </a>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -485,11 +489,6 @@
                         <code>PBEWithMD5AndDES</code>,
                         otherwise it gets set to
                         <code>PBEWithSHA1AndDESede</code>.
-                        See
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Cipher">
-                            Java Cryptography Architecture Standard Algorithm
-                            Name Documentation - Cipher (Encryption) Algorithms
-                        </a>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -551,11 +550,6 @@
                         <code>${dollar}{keyPairAlgorithm}</code>
                         and be supported by one of the security providers which
                         are installed in the JRE/JDK.
-                        See
-                        <a href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Signature">
-                            Java Cryptography Architecture Standard Algorithm
-                            Name Documentation - Signature Algorithms
-                        </a>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -599,11 +593,22 @@
         <xs:attribute type="xs:token" name="version" use="optional"/>
     </xs:complexType>
     <xs:simpleType name="Password">
+        <xs:annotation>
+            <xs:documentation>
+                A string of at least eight characters which must contain letters
+                and digits.
+                You should consider this to be the bare minimum.
+                Choosing a longer password with additional punctuation
+                characters significantly improves the security level of your
+                licensing schema.
+            </xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="8"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="PbeAlgorithm">
+    <xs:simpleType name="PbeAlgorithm"
+                   h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Cipher">
         <xs:restriction base="xs:token">
             <xs:enumeration value="-"/>
             <xs:enumeration value="PBEWithMD5AndDES"/>
@@ -626,7 +631,8 @@
             <xs:enumeration value="user"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="SignatureAlgorithm">
+    <xs:simpleType name="SignatureAlgorithm"
+                   h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Signature">
         <xs:restriction base="xs:token">
             <xs:enumeration value="-"/>
             <xs:enumeration value="NONEwithDSA"/>

@@ -481,5 +481,45 @@
                 </pluginManagement>
             </build>
         </profile>
+        <profile>
+            <id>saxon</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>xml-maven-plugin</artifactId>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>net.sf.saxon</groupId>
+                                    <artifactId>Saxon-HE</artifactId>
+                                    <version>9.6.0-5</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>xalan</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>xml-maven-plugin</artifactId>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>xalan</groupId>
+                                    <artifactId>xalan</artifactId>
+                                    <version>2.7.2</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
     </profiles>
 </project>
