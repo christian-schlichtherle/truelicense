@@ -6,9 +6,9 @@
 <properties xmlns="${project.url}/xml/archetype-properties">
     <artifactId>hideUninstallAction</artifactId>
     <companyName>Company Inc.</companyName>
-    <defaultPassword>test1234</defaultPassword>
     <groupId>com.company.product</groupId>
     <hideUninstallAction>true</hideUninstallAction>
     <licensingSubject>Product 1</licensingSubject>
+    <password>test1234</password>
     <version>1.0-SNAPSHOT</version>
 </properties>

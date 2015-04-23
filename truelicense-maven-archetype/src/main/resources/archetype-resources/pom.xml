@@ -106,7 +106,7 @@
              ${dollar}{ftpKeyStoreFile} in the Key Manager module.
              The value of this property is ignored if the value of the property
              "freeTrialPeriod" is "0". -->
-        <ftpKeyStorePassword>${dollar}{defaultPassword}</ftpKeyStorePassword>
+        <ftpKeyStorePassword>${dollar}{password}</ftpKeyStorePassword>
 
         <!-- The type of the FTP key store file ${dollar}{ftpKeyStoreFile} in
              the Key Manager module.
@@ -116,7 +116,7 @@
 
         <!-- The password for verifying the integrity of the private key store
              file ${dollar}{privateKeyStoreFile} in the Key Generator module. -->
-        <privateKeyStorePassword>${dollar}{defaultPassword}</privateKeyStorePassword>
+        <privateKeyStorePassword>${dollar}{password}</privateKeyStorePassword>
 
         <!-- The type of the private key store file
              ${dollar}{privateKeyStoreFile} in the Key Generator module. -->
@@ -124,7 +124,7 @@
 
         <!-- The password for verifying the integrity of the public key store
              file ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
-        <publicKeyStorePassword>${dollar}{defaultPassword}</publicKeyStorePassword>
+        <publicKeyStorePassword>${dollar}{password}</publicKeyStorePassword>
 
         <!-- The type of the public key store file
              ${dollar}{publicKeyStoreFile} in the Key Manager module. -->
@@ -139,11 +139,10 @@
         <trueLicenseArtifactId>$trueLicenseArtifactId</trueLicenseArtifactId>
 #foreach($edition in $editionArray)
 
-        <!-- The password for encrypting and decrypting license keys for the
-             edition "$edition".
-             If this property is not defined, then it defaults to the value of
-             the defaultPassword property. -->
-        <PbePassword prefix="${edition}">${dollar}{defaultPassword}</PbePassword>
+        <!-- The password for encrypting license keys for the edition
+             "$edition".
+             If this property is not defined, then it defaults to ${password}. -->
+        <PbePassword prefix="${edition}">${dollar}{password}</PbePassword>
 
         <!-- The alias of the entry with the private key for the edition
              "$edition" in the private key store file ${dollar}{privateKeyStoreFile}

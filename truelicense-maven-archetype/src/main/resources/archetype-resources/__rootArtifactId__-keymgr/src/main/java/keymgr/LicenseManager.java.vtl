@@ -47,7 +47,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #foreach($edition in $editions)
 #set($editionCertEntryAlias = $edition)
 #evaluate("${hash}set (${dollar}editionCertEntryAlias = ${dollar}${edition}KeyEntryAlias)")
-#set($editionPbePassword = $defaultPassword)
+#set($editionPbePassword = $password)
 #evaluate("${hash}set(${dollar}editionPbePassword = ${dollar}${edition}PbePassword)")
 
     $edition {

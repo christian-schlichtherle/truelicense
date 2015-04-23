@@ -6,7 +6,6 @@
 <properties xmlns="${project.url}/xml/archetype-properties">
     <artifactId>customLicenseValidation</artifactId>
     <companyName>Company Inc.</companyName>
-    <defaultPassword>test1234</defaultPassword>
     <groupId>com.company.product</groupId>
     <keyGenLicenseValidationClass>
         com.company.product.keygen.Main$NoLicenseValidation
@@ -15,5 +14,6 @@
         com.company.product.keymgr.Main$NoLicenseValidation
     </keyMgrLicenseValidationClass>
     <licensingSubject>Product 1</licensingSubject>
+    <password>test1234</password>
     <version>1.0-SNAPSHOT</version>
 </properties>

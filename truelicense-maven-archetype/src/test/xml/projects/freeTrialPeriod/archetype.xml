@@ -6,10 +6,10 @@
 <properties xmlns="${project.url}/xml/archetype-properties">
     <artifactId>freeTrialPeriod</artifactId>
     <companyName>Company Inc.</companyName>
-    <defaultPassword>test1234</defaultPassword>
     <freeTrialPeriod>30</freeTrialPeriod>
     <ftpSecretMarkerClass>sun.security.provider.Sun</ftpSecretMarkerClass>
     <groupId>com.company.product</groupId>
     <licensingSubject>Product 1</licensingSubject>
+    <password>test1234</password>
     <version>1.0-SNAPSHOT</version>
 </properties>

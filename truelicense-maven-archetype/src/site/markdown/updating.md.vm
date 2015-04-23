@@ -185,7 +185,7 @@ If the old project was created using the $project.name before version 2.4, then
 you need to define the values of the following properties as follows:
 
 <dl class="dl-horizontal dt-wide">
-    <dt><code>defaultPassword</code></dt>
+    <dt><code>password</code></dt>
     <dd>Enter the value produced by the obfuscated string field 
         <code>PBE_PASSWORD</code> in the class 
         <code>**.keymgr.LicensingSchema${dollar}Lazy</code>.</dd>
@@ -234,7 +234,6 @@ If the old project was created using the $project.name version 2.4 or later,
 then you need to make sure that the values of the following properties are
 equal:
 
-* `defaultPassword`
 * `editions`
 * `freeTrialPeriod`
 * `ftpKeyStoreFile`
@@ -242,6 +241,7 @@ equal:
 * `licenseKeyFormat`
 * `licensingSubject`
 * `package`
+* `password`
 * `preferencesType`
 * `privateKeyStoreFile`
 * `publicKeyStoreFile`
