@@ -158,7 +158,7 @@
                                         <include>**/archetype.xml</include>
                                     </includes>
                                     <outputDir>${project.build.testOutputDirectory}/projects</outputDir>
-                                    <stylesheet>${test-projects-directory}/archetypeProperties.xsl</stylesheet>
+                                    <stylesheet>${test-projects-directory}/archetype.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                             <validationSets>
