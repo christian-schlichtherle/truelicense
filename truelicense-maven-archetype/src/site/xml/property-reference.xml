@@ -3,9 +3,10 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<document xmlns="http://maven.apache.org/XDOC/2.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+<document
+        xmlns="http://maven.apache.org/XDOC/2.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
     <properties>
         <title>Property Reference</title>
     </properties>
@@ -17,21 +18,10 @@
                 Note that property values are generally
                 <em>case sensitive</em>.
             </p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Explanation</th>
-                    </tr>
-                </thead>
-                <tbody id="properties">
-                    <!-- The parent element gets replaced when generating the
-                         main resources.
-                         The following elements are solely provided to conform
-                         to the schema. -->
-                    <tr><td/></tr>
-                </tbody>
-            </table>
+            <div class="archetype-properties">
+                <!-- This content gets replaced when processing the site
+                     resources. -->
+            </div>
         </section>
     </body>
 </document>
