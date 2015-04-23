@@ -9,14 +9,14 @@
 #if($ftpKeyStoreFile == "-")
 #set($ftpKeyStoreFile = $publicKeyStoreFile)
 #end
-#if($keyStoreType == "-")
+#if($keyStoreType == "auto")
 #if($licenseKeyFormat == "V1")
 #set($keyStoreType = "JKS")
 #else
 #set($keyStoreType = "JCEKS")
 #end
 #end
-#if($pbeAlgorithm == "-")
+#if($pbeAlgorithm == "auto")
 #if($licenseKeyFormat == "V1")
 #set($pbeAlgorithm = "PBEWithMD5AndDES")
 #else
@@ -43,7 +43,7 @@
     <version>$version</version>
     <packaging>pom</packaging>
 
-#if($artifactName != '-')
+#if($artifactName != "-")
     <name>$artifactName</name>
 #end
     <description>The parent POM for all license management modules.</description>

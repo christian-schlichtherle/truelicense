@@ -35,7 +35,7 @@
     <xs:simpleType name="KeyPairAlgorithm"
                    h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
         <xs:restriction base="xs:token">
-            <xs:enumeration value="-"/>
+            <xs:enumeration value="auto"/>
             <xs:enumeration value="DSA"/>
             <xs:enumeration value="EC"/>
             <xs:enumeration value="RSA"/>
@@ -50,7 +50,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:token">
-            <xs:enumeration value="-"/>
+            <xs:enumeration value="auto"/>
             <xs:enumeration value="JCEKS"/>
             <xs:enumeration value="JKS"/>
             <xs:enumeration value="PKCS12"/>
@@ -357,7 +357,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="ap:KeyPairAlgorithm" name="keyPairAlgorithm"
-                        minOccurs="0" default="-">
+                        minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
                         The algorithm to use when generating key pairs in the
@@ -389,14 +389,14 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="ap:KeyStoreType" name="keyStoreType" minOccurs="0"
-                        default="-">
+                        default="auto">
                 <xs:annotation>
                     <xs:documentation>
                         The default key store type.
                         The type needs to be supported by one of the security
                         providers which are installed in the JRE.
                         If the value is set to
-                        <code>-</code>,
+                        <code>auto</code>,
                         then it gets overridden as follows:
                         If the value of the
                         <code>licenseKeyFormat</code>
@@ -472,14 +472,14 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="ap:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"
-                        default="-">
+                        default="auto">
                 <xs:annotation>
                     <xs:documentation>
                         The algorithm for the password based encryption.
                         The algorithm needs to be supported by one of the
                         security providers which are installed in the JRE.
                         If the value is set to
-                        <code>-</code>,
+                        <code>auto</code>,
                         then it gets overridden as follows:
                         If the value of the
                         <code>licenseKeyFormat</code>
@@ -535,7 +535,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="ap:SignatureAlgorithm" name="signatureAlgorithm"
-                        minOccurs="0" default="-">
+                        minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
                         The algorithm to use when signing a generated key
@@ -543,7 +543,7 @@
                         This property is ignored if the key store file already
                         exists.
                         Otherwise, if the value is set to
-                        <code>-</code>,
+                        <code>auto</code>,
                         then the default value of the keytool is used.
                         Otherwise, the signature algorithm needs to match the
                         configured
@@ -610,7 +610,7 @@
     <xs:simpleType name="PbeAlgorithm"
                    h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Cipher">
         <xs:restriction base="xs:token">
-            <xs:enumeration value="-"/>
+            <xs:enumeration value="auto"/>
             <xs:enumeration value="PBEWithMD5AndDES"/>
             <xs:enumeration value="PBEWithSHA1AndDESede"/>
             <xs:enumeration value="PBEWithHmacSHA1AndAES_128"/>
@@ -634,7 +634,7 @@
     <xs:simpleType name="SignatureAlgorithm"
                    h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#Signature">
         <xs:restriction base="xs:token">
-            <xs:enumeration value="-"/>
+            <xs:enumeration value="auto"/>
             <xs:enumeration value="NONEwithDSA"/>
             <xs:enumeration value="SHA1withDSA"/>
             <xs:enumeration value="SHA224withDSA"/>

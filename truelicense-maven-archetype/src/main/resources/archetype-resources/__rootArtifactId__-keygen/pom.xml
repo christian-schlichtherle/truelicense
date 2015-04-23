@@ -20,7 +20,7 @@
 
     <artifactId>$artifactId</artifactId>
 
-#if($artifactName != '-')
+#if($artifactName != "-")
     <name>$artifactName Key Generator</name>
 #end
     <description>The license vendor application alias license key tool.</description>
@@ -83,7 +83,7 @@
                                             <configuration>
                                                 <alias>${dollar}{@item@KeyEntryAlias}</alias>
                                                 <dname>${dollar}{distinguishedName}</dname>
-#if($keyPairAlgorithm != "-")
+#if($keyPairAlgorithm != "auto")
                                                 <keyalg>${dollar}{keyPairAlgorithm}</keyalg>
 #end
                                                 <keypass>${dollar}{@item@KeyEntryPassword}</keypass>
@@ -91,7 +91,7 @@
                                                 <keysize>${dollar}{keyPairSize}</keysize>
 #end
                                                 <keystore>${dollar}{basedir}/src/main/resources/${dollar}{privateKeyStoreFile}</keystore>
-#if($signatureAlgorithm != "-")
+#if($signatureAlgorithm != "auto")
                                                 <sigalg>${dollar}{signatureAlgorithm}</sigalg>
 #end
                                                 <storepass>${dollar}{privateKeyStorePassword}</storepass>
