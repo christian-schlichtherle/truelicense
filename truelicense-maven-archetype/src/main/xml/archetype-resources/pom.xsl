@@ -35,15 +35,7 @@
         <properties>
             <xsl:apply-templates select="@* | node()"/>
             <xsl:for-each select="$archetypeProperties">
-                <xsl:text>&lineSeparator;        </xsl:text>
-                <xsl:for-each
-                        select="xs:annotation/xs:documentation[not(@xml:lang) or @xml:lang = 'en']">
-                    <xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
-                    <xsl:apply-templates select="node()" mode="stripped"/>
-                    <xsl:text
-                            disable-output-escaping="yes">--&gt;</xsl:text>
-                    <xsl:text>&lineSeparator;        </xsl:text>
-                </xsl:for-each>
+                <xsl:text>    </xsl:text>
                 <xsl:element name="{@name}">
                     <xsl:text>$</xsl:text>
                     <xsl:value-of select="@name"/>
@@ -57,16 +49,6 @@
         <xsl:copy>
             <xsl:apply-templates select="@* | node()"/>
         </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="*" mode="stripped">
-        <xsl:element name="{local-name()}">
-            <xsl:apply-templates select="@* | node()" mode="stripped"/>
-        </xsl:element>
-    </xsl:template>
-
-    <xsl:template match="@* | text()" mode="stripped">
-        <xsl:copy/>
     </xsl:template>
 
     <xsl:variable name="archetypeProperties"
