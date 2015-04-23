@@ -21,8 +21,8 @@
     </fileSets>
     <modules>
         <module dir="__rootArtifactId__-keygen"
-                id="${dollar}{rootArtifactId}-keygen"
-                name="${dollar}{rootArtifactId}-keygen">
+                id="${rootArtifactId}-keygen"
+                name="${rootArtifactId}-keygen">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>
@@ -54,8 +54,8 @@
             </fileSets>
         </module>
         <module dir="__rootArtifactId__-keymgr"
-                id="${dollar}{rootArtifactId}-keymgr"
-                name="${dollar}{rootArtifactId}-keymgr">
+                id="${rootArtifactId}-keymgr"
+                name="${rootArtifactId}-keymgr">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>
@@ -90,8 +90,8 @@
             </fileSets>
         </module>
         <module dir="__rootArtifactId__-keymgrsvc"
-                id="${dollar}{rootArtifactId}-keymgrsvc"
-                name="${dollar}{rootArtifactId}-keymgrsvc">
+                id="${rootArtifactId}-keymgrsvc"
+                name="${rootArtifactId}-keymgrsvc">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>

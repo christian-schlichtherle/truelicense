@@ -144,20 +144,20 @@
                         <configuration>
                             <transformationSets>
                                 <transformationSet>
-                                    <dir>${meta-inf-maven-directory}</dir>
+                                    <dir>src/main/resources</dir>
                                     <includes>
-                                        <include>archetype-metadata.xml</include>
+                                        <include>archetype-resources/pom.xml</include>
                                     </includes>
-                                    <outputDir>${project.build.outputDirectory}/META-INF/maven</outputDir>
-                                    <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
+                                    <outputDir>${project.build.outputDirectory}</outputDir>
+                                    <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
                                 </transformationSet>
                                 <transformationSet>
-                                    <dir>src/main/resources/archetype-resources</dir>
+                                    <dir>src/main/resources</dir>
                                     <includes>
-                                        <include>pom.xml</include>
+                                        <include>META-INF/maven/archetype-metadata.xml</include>
                                     </includes>
-                                    <outputDir>${project.build.outputDirectory}/archetype-resources</outputDir>
-                                    <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
+                                    <outputDir>${project.build.outputDirectory}</outputDir>
+                                    <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
