@@ -24,7 +24,7 @@
                         <th>Explanation</th>
                     </tr>
                 </thead>
-                <tbody id="archetypeProperties">
+                <tbody id="properties">
                     <!-- The parent element gets replaced when generating the
                          main resources.
                          The following elements are solely provided to conform

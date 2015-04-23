@@ -21,7 +21,7 @@
 
     <xsl:template match="/ad:archetype-descriptor/ad:requiredProperties">
         <requiredProperties>
-            <xsl:for-each select="$archetypeProperties">
+            <xsl:for-each select="$properties">
                 <xsl:text>&lineSeparator;        </xsl:text>
                 <requiredProperty key="{@name}">
                     <xsl:if test="@default">
@@ -43,6 +43,6 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:variable name="archetypeProperties"
-                  select="document('archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
+    <xsl:variable name="properties"
+                  select="document('archetype-properties.xsd')/xs:schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>

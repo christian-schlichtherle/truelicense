@@ -10,7 +10,7 @@
         ]>
 <xsl:stylesheet
         version="1.0"
-        xmlns:ap="${project.url}/xml/archetypeProperties"
+        xmlns:ap="${project.url}/xml/archetype-properties"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -18,9 +18,9 @@
 
     <xsl:output method="text"/>
 
-    <xsl:template match="/ap:archetypeProperties">
+    <xsl:template match="/ap:properties">
         <xsl:variable name="configuredProperties" select="*"/>
-        <xsl:for-each select="$archetypeProperties">
+        <xsl:for-each select="$properties">
             <xsl:variable name="propertyName" select="@name"/>
             <xsl:variable name="configuredValue"
                           select="$configuredProperties[name() = $propertyName]"/>
@@ -52,6 +52,6 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:variable name="archetypeProperties"
-                  select="document('../../main/META-INF/maven/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
+    <xsl:variable name="properties"
+                  select="document('../../main/META-INF/maven/archetype-properties.xsd')/xs:schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>

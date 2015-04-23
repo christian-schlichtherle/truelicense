@@ -34,7 +34,7 @@
     <xsl:template match="/pom:project/pom:properties">
         <properties>
             <xsl:apply-templates select="@* | node()"/>
-            <xsl:for-each select="$archetypeProperties">
+            <xsl:for-each select="$properties">
                 <xsl:text>    </xsl:text>
                 <xsl:element name="{@name}">
                     <xsl:text>$</xsl:text>
@@ -51,6 +51,6 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:variable name="archetypeProperties"
-                  select="document('../META-INF/maven/archetypeProperties.xsd')/xs:schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
+    <xsl:variable name="properties"
+                  select="document('../META-INF/maven/archetype-properties.xsd')/xs:schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>
