@@ -20,7 +20,8 @@
                             http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
 
     <xsl:template match="/ad:archetype-descriptor/ad:requiredProperties">
-        <requiredProperties>
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
             <xsl:for-each select="$properties">
                 <xsl:text>&lineSeparator;        </xsl:text>
                 <requiredProperty key="{@name}">
@@ -34,7 +35,7 @@
                 </requiredProperty>
             </xsl:for-each>
             <xsl:text>&lineSeparator;    </xsl:text>
-        </requiredProperties>
+        </xsl:copy>
     </xsl:template>
 
     <xsl:template match="@* | node()">
