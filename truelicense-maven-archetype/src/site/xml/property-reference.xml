@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<document xmlns="http://maven.apache.org/XDOC/2.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+    <properties>
+        <title>Property Reference</title>
+    </properties>
+    <body>
+        <section name="Property Reference">
+            <p>
+                Following is the list of properties for generating a project
+                from the ${project.name} in alphabetic order.
+                Note that property values are generally
+                <em>case sensitive</em>.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody id="archetypeProperties">
+                    <!-- The parent element gets replaced when generating the
+                         main resources.
+                         The following elements are solely provided to conform
+                         to the schema. -->
+                    <tr><td/></tr>
+                </tbody>
+            </table>
+        </section>
+    </body>
+</document>

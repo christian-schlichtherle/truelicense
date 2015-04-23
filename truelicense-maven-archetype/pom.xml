@@ -45,6 +45,7 @@
         <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
         <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
         <packagePath>net/java/truelicense</packagePath>
+        <site-xml-directory>${project.build.directory}/xml/site</site-xml-directory>
         <test-projects-directory>${test-xml-directory}/projects</test-projects-directory>
         <test-xml-directory>${project.build.directory}/xml/test</test-xml-directory>
     </properties>
@@ -87,6 +88,29 @@
                                 </resource>
                             </resources>
                             <outputDirectory>${main-xml-directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-site-xml</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/xml</directory>
+                                    <includes>
+                                        <include>META-INF/maven/archetypeProperties.xsd</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/site/xml</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${site-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -134,6 +158,25 @@
                                     </includes>
                                     <outputDir>${project.build.outputDirectory}/archetype-resources</outputDir>
                                     <stylesheet>${main-xml-directory}/archetype-resources/pom.xsl</stylesheet>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>process-site-xml</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>transform</goal>
+                        </goals>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>${site-xml-directory}</dir>
+                                    <includes>
+                                        <include>property-reference.xml</include>
+                                    </includes>
+                                    <outputDir>${project.build.directory}/generated-site/xdoc</outputDir>
+                                    <stylesheet>${site-xml-directory}/property-reference.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
