@@ -20,9 +20,9 @@
         xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd
                             http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
 
-    <xsl:template match="xdoc:tbody[@id = 'archetypeProperties']">
+    <xsl:template match="xdoc:tbody[@id = 'properties']">
         <tbody>
-            <xsl:for-each select="$archetypeProperties">
+            <xsl:for-each select="$properties">
                 <tr>
                     <td>
                         <code>
@@ -146,7 +146,7 @@
     </xsl:template>
 
     <xsl:variable name="schema"
-                  select="document('META-INF/maven/archetypeProperties.xsd')/xs:schema"/>
-    <xsl:variable name="archetypeProperties"
-                  select="$schema/xs:complexType[@name='ArchetypeProperties']/xs:all/xs:element"/>
+                  select="document('META-INF/maven/archetype-properties.xsd')/xs:schema"/>
+    <xsl:variable name="properties"
+                  select="$schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>

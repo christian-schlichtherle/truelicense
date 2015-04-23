@@ -5,14 +5,14 @@
   -->
 <xs:schema
         elementFormDefault="qualified"
-        targetNamespace="${project.url}/xml/archetypeProperties"
+        targetNamespace="${project.url}/xml/archetype-properties"
         version="${project.version}"
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:ap="${project.url}/xml/archetypeProperties"
+        xmlns:ap="${project.url}/xml/archetype-properties"
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element type="ap:ArchetypeProperties" name="archetypeProperties"/>
+    <xs:element type="ap:Properties" name="properties"/>
     <xs:simpleType name="JavaIdentifier">
         <xs:restriction>
             <xs:simpleType>
@@ -63,7 +63,7 @@
             <xs:enumeration value="V2/XML"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="ArchetypeProperties">
+    <xs:complexType name="Properties">
         <xs:all>
             <xs:element type="xs:token" name="artifactId">
                 <xs:annotation>

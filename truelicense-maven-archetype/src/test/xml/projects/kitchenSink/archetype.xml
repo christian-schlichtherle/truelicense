@@ -3,7 +3,7 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<archetypeProperties xmlns="${project.url}/xml/archetypeProperties">
+<properties xmlns="${project.url}/xml/archetype-properties">
     <artifactId>kitchenSink</artifactId>
     <artifactName>Kitchen Sink</artifactName>
     <companyName>Company Inc.</companyName>
@@ -38,4 +38,4 @@
     <trueLicenseVersion>${project.version}</trueLicenseVersion>
     <verboseCli>true</verboseCli>
     <version>1.0-SNAPSHOT</version>
-</archetypeProperties>
+</properties>
