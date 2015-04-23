@@ -40,7 +40,6 @@
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
         <main-xml-directory>${project.build.directory}/xml/main</main-xml-directory>
-        <meta-inf-maven-directory>${main-xml-directory}/META-INF/maven</meta-inf-maven-directory>
         <misc>util</misc>
         <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
         <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
@@ -101,7 +100,7 @@
                                 <resource>
                                     <directory>src/main/xml</directory>
                                     <includes>
-                                        <include>META-INF/maven/archetype-properties.xsd</include>
+                                        <include>archetype-properties.xsd</include>
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
@@ -157,7 +156,7 @@
                                         <include>META-INF/maven/archetype-metadata.xml</include>
                                     </includes>
                                     <outputDir>${project.build.outputDirectory}</outputDir>
-                                    <stylesheet>${meta-inf-maven-directory}/archetype-metadata.xsl</stylesheet>
+                                    <stylesheet>${main-xml-directory}/META-INF/maven/archetype-metadata.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>
@@ -210,7 +209,7 @@
                                     <includes>
                                         <include>**/archetype.xml</include>
                                     </includes>
-                                    <systemId>${meta-inf-maven-directory}/archetype-properties.xsd</systemId>
+                                    <systemId>${main-xml-directory}/archetype-properties.xsd</systemId>
                                 </validationSet>
                             </validationSets>
                         </configuration>
