@@ -8,7 +8,6 @@
 #set($h4 = '####')
 #set($h5 = '#####')
 #set($h6 = '######')
-#set($dollar = '$')
 #macro(title $title)
 <head>
     <title>$title</title>
