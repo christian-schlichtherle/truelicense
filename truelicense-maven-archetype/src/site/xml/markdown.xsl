@@ -46,7 +46,7 @@
         <xsl:text>&lineSeparator;    [...]</xsl:text>
     </xsl:template>
 
-    <xsl:template match="h:div[contains(@class, 'archetype-properties')]" mode="markdown">
+    <xsl:template match="h:div[contains(@class, 'property-reference')]" mode="markdown">
         <xsl:param name="lang">
             <xsl:variable name="docLang"
                           select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
