@@ -30,15 +30,7 @@ $h3 Generation Action
 Please copy the following sample command, customize the property values to
 match your licensing schema and paste the result into a shell:
 
-<p:properties>
-    <!-- The parent element gets replaced when processing the site resources. -->
-    <p:artifactId>license</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
-</p:properties>
+<a href="../projects/basic/archetype.xml" class="maven-command"/>
 
 Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
 indicates command output, so please don't copy/paste these.

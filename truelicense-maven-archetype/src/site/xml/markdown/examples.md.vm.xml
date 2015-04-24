@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<body   xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml">
+#parse("_stddef.md.vm")
+#title("Example Configurations")
+
+This page shows some example configurations which you can use when
+[generating your project]. 
+
+$h3 Basic Configuration
+
+This is a basic configuration example for a software product with only edition
+with the name "standard" and no free trial period.
+
+<a href="../projects/basic/archetype.xml" class="maven-command"/>
+
+$h3 Free Trial Period
+
+This example adds `freeTrialPeriod=30` and 
+`ftpSecretMarkerClass=sun.security.provider.Sun` to the basic configuration 
+example in order to configure a free trial period of thirty days.
+Please change the value of the property `ftpSecretMarkerClass` because it's 
+obviously not secret anymore.
+
+<a href="../projects/freeTrialPeriod/archetype.xml" class="maven-command"/>
+
+$h3 Multiple Product Editions
+
+This example adds `editions=enterprise standard` to the basic configuration
+example in order to manage separate license keys for a Standard Edition and an
+Enterprise Edition of the software product.
+Note that due to the ordering of the editions, the Enterprise Edition is a 
+superset of the Standard Edition.
+
+<a href="../projects/multipleProductEditions/archetype.xml" class="maven-command"/>
+
+$h3 Hide Uninstall Action
+
+This example adds `hideUninstallAction=true` to the basic configuration example
+in order to remove the "Uninstall ${dollar}{licensingSubject} license key" 
+action from the license wizard dialog.
+
+<a href="../projects/hideUninstallAction/archetype.xml" class="maven-command"/>
+
+$h3 Disable License Wizard
+
+This example adds `disableLicenseWizard=true` to the basic configuration
+example in order to completely remove the license wizard dialog from the 
+generated code.
+
+<a href="../projects/disableLicenseWizard/archetype.xml" class="maven-command"/>
+
+$h3 Custom License Validation
+
+This example adds 
+`keyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation` and
+`keyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation`
+to the basic configuration example in 
+order to decorate the basic license validation function in the Key Generator 
+and Key Manager modules with the named custom class.
+
+<a href="../projects/customLicenseValidation/archetype.xml" class="maven-command"/>
+
+$h3 Custom Clock
+
+This example adds `keyMgrClockClass=com.company.product.keymgr.CustomClock` to 
+the basic configuration example in order to replace the system clock with a 
+custom implementation.
+
+<a href="../projects/customCLock/archetype.xml" class="maven-command"/>
+
+$h3 V2/XML License Key Format
+
+This example adds `licenseKeyFormat=V2/XML` to the basic configuration example
+in order to use the V2/XML license key format and remove the dependency on the
+Jackson JSON Processor from the generated code.
+
+<a href="../projects/v2XmlLicenseKeyFormat/archetype.xml" class="maven-command"/>
+
+---
+
+#prev("Generating Your Project" "generating.html")
+#next("Exploring Your Project" "exploring.html")
+</body>
