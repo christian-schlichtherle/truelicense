@@ -31,6 +31,7 @@ Please copy the following sample command, customize the property values to
 match your licensing schema and paste the result into a shell:
 
 <p:properties>
+    <!-- The parent element gets replaced when processing the site resources. -->
     <p:artifactId>license</p:artifactId>
     <p:companyName>Company Inc.</p:companyName>
     <p:groupId>com.company.product</p:groupId>
@@ -67,7 +68,7 @@ Following is the list of properties for generating a project from the
 $project.name in alphabetic order.
 Note that property values are generally _case sensitive_.
 
-<div class="archetype-properties">
+<div class="property-reference">
     <!-- This content gets replaced when processing the site resources. -->
 </div>
 
