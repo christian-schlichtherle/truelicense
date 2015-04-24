@@ -32,9 +32,10 @@
     </xsl:template>
 
     <xsl:template match="/pom:project/pom:properties">
-        <properties>
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
             <xsl:apply-templates select="@* | node()"/>
-            <xsl:for-each select="$properties">
+            <xsl:for-each select="document('../archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
                 <xsl:text>    </xsl:text>
                 <xsl:element name="{@name}">
                     <xsl:text>$</xsl:text>
@@ -42,7 +43,7 @@
                 </xsl:element>
                 <xsl:text>&lineSeparator;    </xsl:text>
             </xsl:for-each>
-        </properties>
+        </xsl:copy>
     </xsl:template>
 
     <xsl:template match="@* | node()">
@@ -50,7 +51,4 @@
             <xsl:apply-templates select="@* | node()"/>
         </xsl:copy>
     </xsl:template>
-
-    <xsl:variable name="properties"
-                  select="document('../archetype-properties.xsd')/xs:schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>

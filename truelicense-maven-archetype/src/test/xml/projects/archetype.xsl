@@ -19,39 +19,36 @@
     <xsl:output method="text"/>
 
     <xsl:template match="/ap:properties">
-        <xsl:variable name="configuredProperties" select="*"/>
-        <xsl:for-each select="$properties">
-            <xsl:variable name="propertyName" select="@name"/>
-            <xsl:variable name="configuredValue"
-                          select="$configuredProperties[name() = $propertyName]"/>
-            <xsl:variable name="defaultValue" select="@default"/>
-            <xsl:value-of select="$propertyName"/>
+        <xsl:variable name="properties" select="*"/>
+        <xsl:for-each
+                select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
+            <xsl:variable name="name" select="@name"/>
+            <xsl:variable name="value" select="$properties[name() = $name]"/>
+            <xsl:variable name="default" select="@default"/>
+            <xsl:value-of select="$name"/>
             <xsl:text>=</xsl:text>
             <xsl:choose>
-                <xsl:when test="$configuredValue">
+                <xsl:when test="$value">
                     <xsl:choose>
                         <xsl:when
                                 test="substring-after(@type, ':') = 'Password'">
-                            <xsl:value-of select="$configuredValue"/>
+                            <xsl:value-of select="$value"/>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:value-of
-                                    select="normalize-space($configuredValue)"/>
+                                    select="normalize-space($value)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
-                <xsl:when test="$propertyName = 'package'">
+                <xsl:when test="$name = 'package'">
                     <xsl:value-of
-                            select="$configuredProperties[name() = 'groupId']"/>
+                            select="$properties[name() = 'groupId']"/>
                 </xsl:when>
-                <xsl:when test="$defaultValue">
-                    <xsl:value-of select="$defaultValue"/>
+                <xsl:when test="$default">
+                    <xsl:value-of select="$default"/>
                 </xsl:when>
             </xsl:choose>
             <xsl:text>&lineSeparator;</xsl:text>
         </xsl:for-each>
     </xsl:template>
-
-    <xsl:variable name="properties"
-                  select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>
