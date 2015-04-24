@@ -3,7 +3,9 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<body xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<body   xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="https://truelicense.java.net/truelicense-maven-archetype/xml/archetype-properties">
 #parse("_stddef.md.vm")
 #title("Generating Your Project")
 
@@ -28,17 +30,14 @@ $h3 Generation Action
 Please copy the following sample command, customize the property values to
 match your licensing schema and paste the result into a shell:
 
-    ${dollar} mvn archetype:generate -B \
-        -DarchetypeArtifactId=$project.artifactId \
-        -DarchetypeGroupId=$project.groupId \
-        -DarchetypeVersion=$project.version \
-        -DartifactId=license \
-        -DcompanyName="Company Inc." \
-        -DgroupId=com.company.product \
-        -DlicensingSubject="Product 1" \
-        -Dpassword=test1234 \
-        -Dversion=1.0-SNAPSHOT
-    [...]
+<p:properties>
+    <p:artifactId>license</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:groupId>com.company.product</p:groupId>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>
 
 Throughout this tutorial, a leading `${dollar} ` indicates a shell prompt and
 a `[...]` indicates command output, so please don't copy/paste these.
