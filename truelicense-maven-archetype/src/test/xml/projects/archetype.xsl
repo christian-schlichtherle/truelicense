@@ -23,7 +23,7 @@
         <xsl:for-each
                 select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
             <xsl:variable name="name" select="@name"/>
-            <xsl:variable name="value" select="$properties[name() = $name]"/>
+            <xsl:variable name="value" select="$properties[local-name() = $name]"/>
             <xsl:variable name="default" select="@default"/>
             <xsl:value-of select="$name"/>
             <xsl:text>=</xsl:text>
@@ -42,7 +42,7 @@
                 </xsl:when>
                 <xsl:when test="$name = 'package'">
                     <xsl:value-of
-                            select="$properties[name() = 'groupId']"/>
+                            select="$properties[local-name() = 'groupId']"/>
                 </xsl:when>
                 <xsl:when test="$default">
                     <xsl:value-of select="$default"/>
