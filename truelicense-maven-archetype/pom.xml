@@ -99,10 +99,10 @@
                             <resources>
                                 <resource>
                                     <directory>src/main/xml</directory>
-                                    <includes>
-                                        <include>archetype-properties.xsd</include>
-                                    </includes>
                                     <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*.xsd</include>
+                                    </includes>
                                 </resource>
                                 <resource>
                                     <directory>src/site/xml</directory>
@@ -110,6 +110,24 @@
                                 </resource>
                             </resources>
                             <outputDirectory>${site-xml-directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-site-resources</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/site</directory>
+                                    <includes>
+                                        <include>markdown/_stddef.md.vm</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                            <outputDirectory>${project.build.directory}/generated-site</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -170,12 +188,18 @@
                         <configuration>
                             <transformationSets>
                                 <transformationSet>
-                                    <dir>${site-xml-directory}</dir>
+                                    <dir>src/site</dir>
+                                    <fileMappers>
+                                        <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
+                                            <pattern>(.*)\.xml$</pattern>
+                                            <replacement>$1</replacement>
+                                        </fileMapper>
+                                    </fileMappers>
                                     <includes>
-                                        <include>property-reference.xml</include>
+                                        <include>markdown/**/*.xml</include>
                                     </includes>
-                                    <outputDir>${project.build.directory}/generated-site/xdoc</outputDir>
-                                    <stylesheet>${site-xml-directory}/property-reference.xsl</stylesheet>
+                                    <outputDir>${project.build.directory}/generated-site</outputDir>
+                                    <stylesheet>${site-xml-directory}/markdown.xsl</stylesheet>
                                 </transformationSet>
                             </transformationSets>
                         </configuration>

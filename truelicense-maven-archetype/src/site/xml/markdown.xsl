@@ -3,26 +3,25 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<!DOCTYPE stylesheet [
-        <!-- Use whatever line separator is used in this document: CR, LF or CRLF. -->
-        <!ENTITY lineSeparator "
-">
-        ]>
 <xsl:stylesheet
-        exclude-result-prefixes="h xdoc xs"
+        exclude-result-prefixes="h xs"
         version="1.0"
         xmlns="http://maven.apache.org/XDOC/2.0"
         xmlns:h="http://www.w3.org/1999/xhtml"
-        xmlns:xdoc="http://maven.apache.org/XDOC/2.0"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd
-                            http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+        xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
 
     <xsl:key name="simpleType" match="/xs:schema/xs:simpleType" use="@name"/>
 
-    <xsl:template match="xdoc:div[contains(@class, 'archetype-properties')]">
+    <xsl:output omit-xml-declaration="yes"/>
+
+    <xsl:template match="h:html | h:body">
+        <xsl:apply-templates mode="markdown"/>
+    </xsl:template>
+
+    <xsl:template match="h:div[contains(@class, 'archetype-properties')]" mode="markdown">
         <xsl:param name="lang">
             <xsl:variable name="docLang"
                           select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
@@ -155,9 +154,9 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="@* | node()">
+    <xsl:template match="@* | node()" mode="markdown">
         <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
+            <xsl:apply-templates select="@* | node()" mode="markdown"/>
         </xsl:copy>
     </xsl:template>
 
