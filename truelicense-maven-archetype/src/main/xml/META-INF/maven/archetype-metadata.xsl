@@ -20,8 +20,9 @@
                             http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
 
     <xsl:template match="/ad:archetype-descriptor/ad:requiredProperties">
-        <requiredProperties>
-            <xsl:for-each select="$properties">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:for-each select="document('../../archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
                 <xsl:text>&lineSeparator;        </xsl:text>
                 <requiredProperty key="{@name}">
                     <xsl:if test="@default">
@@ -34,7 +35,7 @@
                 </requiredProperty>
             </xsl:for-each>
             <xsl:text>&lineSeparator;    </xsl:text>
-        </requiredProperties>
+        </xsl:copy>
     </xsl:template>
 
     <xsl:template match="@* | node()">
@@ -42,7 +43,4 @@
             <xsl:apply-templates select="@* | node()"/>
         </xsl:copy>
     </xsl:template>
-
-    <xsl:variable name="properties"
-                  select="document('../../archetype-properties.xsd')/xs:schema/xs:complexType[@name='Properties']/xs:all/xs:element"/>
 </xsl:stylesheet>
