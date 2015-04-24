@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<body   xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+#parse("_stddef.md.vm")
+#title("Generating Your Project")
+
+This page shows you how to generate your project from the $project.name.
+Generating a project from the archetype involves customizing a set of property
+values as explained below.
+
+$h3 Important Notes
+
+1. **If you want to change the value of any of the following properties then
+   it's generally necessary to generate another project from the TrueLicense 
+   Maven Archetype.**
+2. **For any two generated projects, their license keys are not compatible even
+   if all property values are equal, unless both projects also share a copy of
+   the same key store files:**
+    * `${dollar}{artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
+    * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
+    * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
+
+$h3 Generation Action
+
+Please copy the following sample command, customize the property values to
+match your licensing schema and paste the result into a shell:
+
+<p:properties>
+    <p:artifactId>license</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:groupId>com.company.product</p:groupId>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>
+
+Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
+indicates command output, so please don't copy/paste these.
+The properties `archetypeArtifactId`, `archetypeGroupId` and `archetypeVersion`
+reference the $project.name itself, so you shouldn't change their values.
+All other property values are customizable as explained in the following
+reference.
+
+Furthermore, you may sometimes see an expression starting with a `$`, followed
+by a name in braces.
+Such an expression is a reference to the value of the equal named property.
+For example, assuming that the project is generated as shown above, the
+expression `${dollar}{package}` is a reference to the value
+`com.company.product`.
+This syntax has been borrowed from [Apache Maven].
+
+Upon successful execution, a new directory with the artifact ID as its name
+exists in the current directory.
+For the rest of this documentation, all commands assume that this is the
+current directory, so you need to change to it now:
+
+    $ cd ${dollar}{artifactId}
+
+$h3 Property Reference
+
+Following is the list of properties for generating a project from the
+$project.name in alphabetic order.
+Note that property values are generally _case sensitive_.
+
+<div class="archetype-properties">
+    <!-- This content gets replaced when processing the site resources. -->
+</div>
+
+---
+
+#prev("Prerequisites" "prerequisites.html")
+#next("Example Configurations" "examples.html")
+</body>
