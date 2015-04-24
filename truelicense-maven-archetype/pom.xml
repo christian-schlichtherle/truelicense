@@ -80,13 +80,13 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${main-xml-directory}</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/xml</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
-                            <outputDirectory>${main-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -96,6 +96,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${site-xml-directory}</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/main/xml</directory>
@@ -109,7 +110,6 @@
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
-                            <outputDirectory>${site-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -119,6 +119,7 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${project.build.directory}/generated-site</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/site</directory>
@@ -127,7 +128,6 @@
                                     </includes>
                                 </resource>
                             </resources>
-                            <outputDirectory>${project.build.directory}/generated-site</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
@@ -137,13 +137,13 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
+                            <outputDirectory>${test-xml-directory}</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/test/xml</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
-                            <outputDirectory>${test-xml-directory}</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
