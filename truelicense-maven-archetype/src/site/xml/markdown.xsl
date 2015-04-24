@@ -9,15 +9,13 @@
 ">
         ]>
 <xsl:stylesheet
-        exclude-result-prefixes="h p xs xsi"
+        exclude-result-prefixes="h p xs"
         version="1.0"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:key name="simpleType" match="/xs:schema/xs:simpleType" use="@name"/>
 
@@ -45,7 +43,7 @@
             </xsl:choose>
             <xsl:text>'</xsl:text>
         </xsl:for-each>
-        <xsl:text>&lineSeparator;    [...]&lineSeparator;</xsl:text>
+        <xsl:text>&lineSeparator;    [...]</xsl:text>
     </xsl:template>
 
     <xsl:template match="h:div[contains(@class, 'archetype-properties')]" mode="markdown">
@@ -61,7 +59,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:param>
-        <xsl:copy>
+        <div>
             <xsl:copy-of select="@*"/>
             <table>
                 <thead>
@@ -178,7 +176,7 @@
                     </xsl:for-each>
                 </tbody>
             </table>
-        </xsl:copy>
+        </div>
     </xsl:template>
 
     <xsl:template match="@* | node()" mode="markdown">
