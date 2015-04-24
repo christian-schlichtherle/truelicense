@@ -3,7 +3,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
     <head>
-        <script src="js/carousel.js"/>
+        <script src="js/carousel.js" type="text/javascript"/>
         <title>Welcome!</title>
     </head>
     <body>
