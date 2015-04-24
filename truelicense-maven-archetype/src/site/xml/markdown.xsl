@@ -3,11 +3,17 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
+<!DOCTYPE stylesheet [
+        <!-- Use whatever line separator is used in this document: CR, LF or CRLF. -->
+        <!ENTITY lineSeparator "
+">
+        ]>
 <xsl:stylesheet
-        exclude-result-prefixes="h xs"
+        exclude-result-prefixes="h p xs xsi"
         version="1.0"
-        xmlns="http://maven.apache.org/XDOC/2.0"
+        xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -19,6 +25,27 @@
 
     <xsl:template match="h:html | h:body">
         <xsl:apply-templates mode="markdown"/>
+    </xsl:template>
+
+    <xsl:template match="p:properties" mode="markdown">
+        <xsl:text>    $ mvn archetype:generate -B \&lineSeparator;        -DarchetypeGroupId=${project.groupId} \&lineSeparator;        -DarchetypeArtifactId=${project.artifactId} \&lineSeparator;        -DarchetypeVersion=${project.version}</xsl:text>
+        <xsl:for-each select="*">
+            <xsl:variable name="name" select="local-name()"/>
+            <xsl:variable name="value" select="text()"/>
+            <xsl:text> \&lineSeparator;        -D</xsl:text>
+            <xsl:value-of select="$name"/>
+            <xsl:text>='</xsl:text>
+            <xsl:choose>
+                <xsl:when test="$name = 'password'">
+                    <xsl:value-of select="$value"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="normalize-space($value)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:text>'</xsl:text>
+        </xsl:for-each>
+        <xsl:text>&lineSeparator;    [...]&lineSeparator;</xsl:text>
     </xsl:template>
 
     <xsl:template match="h:div[contains(@class, 'archetype-properties')]" mode="markdown">
