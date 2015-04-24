@@ -49,8 +49,8 @@
                         </div>
                     </div>
                 </div>
-                <a class="left carousel-control" href="#">&#8249;</a>
-                <a class="right carousel-control" href="#">&#8250;</a>
+                <a class="left carousel-control" href="#welcome">&#8249;</a>
+                <a class="right carousel-control" href="#welcome">&#8250;</a>
             </div>
         </section>
     </body>
