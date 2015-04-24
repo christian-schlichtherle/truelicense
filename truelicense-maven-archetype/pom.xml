@@ -188,7 +188,7 @@
                         <configuration>
                             <transformationSets>
                                 <transformationSet>
-                                    <dir>src/site</dir>
+                                    <dir>${site-xml-directory}</dir>
                                     <fileMappers>
                                         <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.RegExpFileMapper">
                                             <pattern>(.*)\.xml$</pattern>

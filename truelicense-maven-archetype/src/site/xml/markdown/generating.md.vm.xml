@@ -5,7 +5,7 @@
   -->
 <body   xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:p="https://truelicense.java.net/truelicense-maven-archetype/xml/archetype-properties">
+        xmlns:p="${project.url}/xml/archetype-properties">
 #parse("_stddef.md.vm")
 #title("Generating Your Project")
 
@@ -21,9 +21,9 @@ $h3 Important Notes
 2. **For any two generated projects, their license keys are not compatible even
    if all property values are equal, unless both projects also share a copy of
    the same key store files:**
-    * `${artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
-    * `${artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
-    * `${artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
+    * `${dollar}{artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
+    * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
+    * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
 
 $h3 Generation Action
 
@@ -39,15 +39,15 @@ match your licensing schema and paste the result into a shell:
     <p:version>1.0-SNAPSHOT</p:version>
 </p:properties>
 
-Throughout this tutorial, a leading `${dollar} ` indicates a shell prompt and
-a `[...]` indicates command output, so please don't copy/paste these.
+Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
+indicates command output, so please don't copy/paste these.
 The properties `archetypeArtifactId`, `archetypeGroupId` and `archetypeVersion`
 reference the $project.name itself, so you shouldn't change their values.
 All other property values are customizable as explained in the following
 reference.
 
-Furthermore, you may sometimes see an expression starting with a `${dollar}`,
-followed by a name in braces.
+Furthermore, you may sometimes see an expression starting with a `$`, followed
+by a name in braces.
 Such an expression is a reference to the value of the equal named property.
 For example, assuming that the project is generated as shown above, the
 expression `${dollar}{package}` is a reference to the value
@@ -59,7 +59,7 @@ exists in the current directory.
 For the rest of this documentation, all commands assume that this is the
 current directory, so you need to change to it now:
 
-    ${dollar} cd ${dollar}{artifactId}
+    $ cd ${dollar}{artifactId}
 
 $h3 Property Reference
 
