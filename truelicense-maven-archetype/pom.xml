@@ -109,12 +109,13 @@
                                 <resource>
                                     <directory>src/main/xml</directory>
                                     <filtering>true</filtering>
-                                    <includes>
-                                        <include>**/*.xsd</include>
-                                    </includes>
                                 </resource>
                                 <resource>
                                     <directory>src/site/xml</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/test/xml</directory>
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>

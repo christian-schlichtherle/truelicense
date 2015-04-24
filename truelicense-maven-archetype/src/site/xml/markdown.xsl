@@ -46,6 +46,10 @@
         <xsl:text>&lineSeparator;    [...]</xsl:text>
     </xsl:template>
 
+    <xsl:template match="h:a[contains(@class, 'maven-command')]" mode="markdown">
+        <xsl:apply-templates select="document(@href)/p:properties" mode="markdown"/>
+    </xsl:template>
+
     <xsl:template match="h:div[contains(@class, 'property-reference')]" mode="markdown">
         <xsl:param name="lang">
             <xsl:variable name="docLang"
