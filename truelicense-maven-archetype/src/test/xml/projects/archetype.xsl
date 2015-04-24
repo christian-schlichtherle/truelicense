@@ -10,7 +10,7 @@
         ]>
 <xsl:stylesheet
         version="1.0"
-        xmlns:ap="${project.url}/xml/archetype-properties"
+        xmlns:p="${project.url}/xml/archetype-properties"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -18,7 +18,7 @@
 
     <xsl:output method="text"/>
 
-    <xsl:template match="/ap:properties">
+    <xsl:template match="/p:properties">
         <xsl:variable name="properties" select="*"/>
         <xsl:for-each
                 select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">

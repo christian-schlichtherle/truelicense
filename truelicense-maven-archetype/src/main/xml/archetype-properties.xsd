@@ -9,10 +9,10 @@
         version="${project.version}"
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:ap="${project.url}/xml/archetype-properties"
+        xmlns:p="${project.url}/xml/archetype-properties"
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element type="ap:Properties" name="properties"/>
+    <xs:element type="p:Properties" name="properties"/>
     <xs:simpleType name="JavaIdentifier">
         <xs:restriction>
             <xs:simpleType>
@@ -30,7 +30,7 @@
                 language.
             </xs:documentation>
         </xs:annotation>
-        <xs:list itemType="ap:JavaIdentifier"/>
+        <xs:list itemType="p:JavaIdentifier"/>
     </xs:simpleType>
     <xs:simpleType name="KeyPairAlgorithm"
                    h:href="http://docs.oracle.com/javase/${javase.major}/docs/technotes/guides/security/StandardNames.html#KeyPairGenerator">
@@ -150,7 +150,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:JavaIdentifierList" name="editions"
+            <xs:element type="p:JavaIdentifierList" name="editions"
                         minOccurs="0"
                         default="standard">
                 <xs:annotation>
@@ -268,7 +268,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:ValidationFunction"
+            <xs:element type="p:ValidationFunction"
                         name="keyGenLicenseValidationFunction" minOccurs="0"
                         default="decorate">
                 <xs:annotation>
@@ -324,7 +324,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:ValidationFunction"
+            <xs:element type="p:ValidationFunction"
                         name="keyMgrLicenseValidationFunction" minOccurs="0"
                         default="decorate">
                 <xs:annotation>
@@ -348,7 +348,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:KeyPairAlgorithm" name="keyPairAlgorithm"
+            <xs:element type="p:KeyPairAlgorithm" name="keyPairAlgorithm"
                         minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
@@ -380,7 +380,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:KeyStoreType" name="keyStoreType" minOccurs="0"
+            <xs:element type="p:KeyStoreType" name="keyStoreType" minOccurs="0"
                         default="auto">
                 <xs:annotation>
                     <xs:documentation>
@@ -401,7 +401,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:LicenseKeyFormat" name="licenseKeyFormat"
+            <xs:element type="p:LicenseKeyFormat" name="licenseKeyFormat"
                         minOccurs="0" default="V2/JSON">
                 <xs:annotation>
                     <xs:documentation>
@@ -463,7 +463,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:Password" name="password">
+            <xs:element type="p:Password" name="password">
                 <xs:annotation>
                     <xs:documentation>
                         The common password for accessing key stores and
@@ -471,7 +471,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"
+            <xs:element type="p:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"
                         default="auto">
                 <xs:annotation>
                     <xs:documentation>
@@ -492,7 +492,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:PreferencesType" name="preferencesType"
+            <xs:element type="p:PreferencesType" name="preferencesType"
                         minOccurs="0" default="user">
                 <xs:annotation>
                     <xs:documentation>
@@ -534,7 +534,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="ap:SignatureAlgorithm" name="signatureAlgorithm"
+            <xs:element type="p:SignatureAlgorithm" name="signatureAlgorithm"
                         minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
