@@ -62,11 +62,16 @@
         <xsl:param name="lang">
             <xsl:call-template name="lang"/>
         </xsl:param>
+        <xsl:param name="required"
+                   select="not(contains(@class, 'no-required'))"/>
+        <xsl:param name="optional"
+                   select="not(contains(@class, 'no-optional'))"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <div class="accordion" id="accordion2">
+            <div class="accordion" id="{ generate-id() }">
                 <xsl:for-each
-                        select="document('archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
+                        select="document('archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
+                    <xsl:sort select="@name"/>
                     <xsl:variable name="type">
                         <xsl:call-template name="type">
                             <xsl:with-param name="lang" select="$lang"/>
@@ -75,37 +80,27 @@
                     <div class="accordion-group">
                         <div class="accordion-heading">
                             <a class="accordion-toggle"
-                               href="{ concat('#collapse', position()) }">
-                                <xsl:variable name="declaration">
+                               href="#{ generate-id() }">
+                                <code>
+                                    <xsl:value-of select="@name"/>
+                                </code>
+                                <xsl:text>: </xsl:text>
+                                <xsl:copy-of select="$type//h:abbr"/>
+                                <xsl:if test="@default">
+                                    <xsl:text> [</xsl:text>
                                     <code>
-                                        <xsl:value-of select="@name"/>
+                                        <xsl:value-of select="@default"/>
                                     </code>
-                                    <xsl:text>: </xsl:text>
-                                    <xsl:copy-of select="$type//h:abbr"/>
-                                </xsl:variable>
-                                <xsl:choose>
-                                    <xsl:when test="@default">
-                                        <xsl:copy-of select="$declaration"/>
-                                        <xsl:text> [</xsl:text>
-                                        <code>
-                                            <xsl:value-of select="@default"/>
-                                        </code>
-                                        <xsl:text>]</xsl:text>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <strong>
-                                            <xsl:copy-of select="$declaration"/>
-                                        </strong>
-                                    </xsl:otherwise>
-                                </xsl:choose>
+                                    <xsl:text>]</xsl:text>
+                                </xsl:if>
                             </a>
                         </div>
                         <xsl:variable name="optionalIn">
-                            <xsl:if test="not(@default)">
+                            <xsl:if test="position() = 1">
                                 <xsl:text> in</xsl:text>
                             </xsl:if>
                         </xsl:variable>
-                        <div id="{ concat('collapse', position()) }"
+                        <div id="{ generate-id() }"
                              class="accordion-body collapse{ $optionalIn }">
                             <div class="accordion-inner">
                                 <dl class="dl-horizontal">
@@ -125,7 +120,8 @@
                                         <dt>Default</dt>
                                         <dd>
                                             <code>
-                                                <xsl:value-of select="@default"/>
+                                                <xsl:value-of
+                                                        select="@default"/>
                                             </code>
                                         </dd>
                                     </xsl:if>

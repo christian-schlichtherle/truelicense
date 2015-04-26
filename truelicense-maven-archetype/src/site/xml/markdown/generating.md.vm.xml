@@ -64,7 +64,15 @@ Following is the list of properties for generating a project from the
 $project.name in alphabetic order.
 Note that property values are generally _case sensitive_.
 
-<div class="property-reference">
+$h4 Required Properties
+
+<div class="property-reference no-optional">
+    <!-- This content gets replaced when processing the site resources. -->
+</div>
+
+$h4 Optional Properties
+
+<div class="property-reference no-required">
     <!-- This content gets replaced when processing the site resources. -->
 </div>
 
