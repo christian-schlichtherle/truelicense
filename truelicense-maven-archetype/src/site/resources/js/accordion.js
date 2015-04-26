@@ -4,5 +4,10 @@
  */
 
 $(function () {
-    $('.accordion-toggle').attr('data-toggle', 'collapse');
+    $('.accordion').each(function () {
+        $(this)
+            .find('.accordion-toggle')
+            .attr('data-parent', '#' + this.id)
+            .attr('data-toggle', 'collapse');
+    });
 });
