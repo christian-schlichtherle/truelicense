@@ -283,8 +283,7 @@
                         <code>override</code>
                         to apply only the the custom license validation function
                         which is implemented by the
-                        <code>${dollar}{keyGenLicenseValidationClass}</code>
-                        .
+                        <code>${dollar}{keyGenLicenseValidationClass}</code>.
                         Select
                         <code>decorate</code>
                         instead to apply both the custom license validation
@@ -339,8 +338,7 @@
                         <code>override</code>
                         to apply only the the custom license validation function
                         which is implemented by the
-                        <code>${dollar}{keyMgrLicenseValidationClass}</code>
-                        .
+                        <code>${dollar}{keyMgrLicenseValidationClass}</code>.
                         Select
                         <code>decorate</code>
                         instead to apply both the custom license validation
@@ -429,7 +427,8 @@
                         license keys and is used for validation.
                         A
                         <a href="../apidocs/${apiPackagePath}/LicenseValidationException.html">
-                            <code>${apiPackage}.LicenseValidationException
+                            <code>
+                                ${apiPackage}.LicenseValidationException
                             </code>
                         </a>
                         is thrown if the validation fails.
@@ -457,8 +456,7 @@
                         It's best practice to use the expression
                         <code>${dollar}{groupId}</code>
                         or
-                        <code>${dollar}{groupId}.${dollar}{artifactId}
-                        </code>
+                        <code>${dollar}{groupId}.${dollar}{artifactId}</code>
                         if this results in a valid package name.
                     </xs:documentation>
                 </xs:annotation>
@@ -503,8 +501,7 @@
                         generally requires the JVM to be run with administrator
                         privileges or otherwise a
                         <a href="http://docs.oracle.com/javase/${javase.major}/docs/api/java/util/prefs/BackingStoreException.html">
-                            <code>java.util.prefs.BackingStoreException
-                            </code>
+                            <code>java.util.prefs.BackingStoreException</code>
                         </a>
                         may get thrown by the generated integration tests.
                     </xs:documentation>
