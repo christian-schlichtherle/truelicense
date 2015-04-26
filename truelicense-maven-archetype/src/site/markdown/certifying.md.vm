@@ -135,5 +135,4 @@ You are now set for [building your project] again.
 
 ---
 
-#prev("Using the API" "using-api.html")
-#next("Updating Your Project" "updating.html")
+#nav("Using the API" "using-api.html" "Updating Your Project" "updating.html")

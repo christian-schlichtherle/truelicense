@@ -47,5 +47,4 @@ follows:
 
 ---
 
-#prev("Exploring Your Project" "exploring.html")
-#next("Building Your Project" "building.html")
+#nav("Exploring Your Project" "exploring.html" "Building Your Project" "building.html")

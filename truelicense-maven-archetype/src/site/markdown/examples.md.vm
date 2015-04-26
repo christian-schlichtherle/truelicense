@@ -172,5 +172,4 @@ Jackson JSON Processor from the generated code.
 
 ---
 
-#prev("Generating Your Project" "generating.html")
-#next("Exploring Your Project" "exploring.html")
+#nav("Generating Your Project" "generating.html" "Exploring Your Project" "exploring.html")

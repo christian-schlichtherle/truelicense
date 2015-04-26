@@ -68,5 +68,4 @@ message.
 
 ---
 
-#prev("Using the CLI" "using-cli.html")
-#next("Using the WSI" "using-wsi.html")
+#nav("Using the CLI" "using-cli.html" "Using the WSI" "using-wsi.html")

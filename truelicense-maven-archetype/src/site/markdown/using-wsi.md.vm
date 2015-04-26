@@ -229,5 +229,4 @@ server responds with the status code 404 and sends the exception message:
 
 ---
 
-#prev("Using the GUI" "using-gui.html")
-#next("Using the API" "using-api.html")
+#nav("Using the GUI" "using-gui.html" "Using the API" "using-api.html")
