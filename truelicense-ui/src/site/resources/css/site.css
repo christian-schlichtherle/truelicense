@@ -4,12 +4,16 @@
  */
 
 a:not([href]) {
-    color: inherit;
+    color: initial;
     text-decoration: none;
 }
 
 a tt {
     color: inherit;
+}
+
+dl {
+    margin: initial;
 }
 
 tt {
