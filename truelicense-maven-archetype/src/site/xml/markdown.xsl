@@ -85,23 +85,20 @@
                                 <xsl:variable name="declaration">
                                     <xsl:copy-of select="$name"/>
                                     <xsl:text>: </xsl:text>
-                                    <xsl:copy-of select="$type//h:abbr/node()"/>
+                                    <xsl:copy-of select="$type//h:abbr"/>
                                 </xsl:variable>
                                 <xsl:choose>
                                     <xsl:when test="@default">
+                                        <xsl:copy-of select="$declaration"/>
+                                        <xsl:text> [</xsl:text>
                                         <code>
-                                            <xsl:copy-of select="$declaration"/>
-                                            <xsl:text> [</xsl:text>
                                             <xsl:copy-of select="$default"/>
-                                            <xsl:text>]</xsl:text>
                                         </code>
+                                        <xsl:text>]</xsl:text>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <strong>
-                                            <code>
-                                                <xsl:copy-of
-                                                        select="$declaration"/>
-                                            </code>
+                                            <xsl:copy-of select="$declaration"/>
                                         </strong>
                                     </xsl:otherwise>
                                 </xsl:choose>
