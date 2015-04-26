@@ -77,7 +77,9 @@
                             <a class="accordion-toggle"
                                href="{ concat('#collapse', position()) }">
                                 <xsl:variable name="declaration">
-                                    <xsl:value-of select="@name"/>
+                                    <code>
+                                        <xsl:value-of select="@name"/>
+                                    </code>
                                     <xsl:text>: </xsl:text>
                                     <xsl:copy-of select="$type//h:abbr"/>
                                 </xsl:variable>
