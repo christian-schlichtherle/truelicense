@@ -449,7 +449,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="package" minOccurs="0">
+            <xs:element type="xs:token" name="package" minOccurs="0"
+                        default="${groupId}">
                 <xs:annotation>
                     <xs:documentation>
                         The base package name of the generated project.
