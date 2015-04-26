@@ -48,7 +48,7 @@
                 Reflection API.
                 The advantage is that the classes don't need to be known at
                 compile time so that manual editing of the generated POM files
-                for the Key Generator or Key Manager module is not necessary.
+                is not necessary.
                 The disadvantage is that the classes need to be generally
                 excluded from the byte code obfuscation process, e.g. for the
                 Key Manager module.
