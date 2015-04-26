@@ -36,5 +36,4 @@ product** under the terms of the
 
 ---
 
-#prev("Overview" "index.html")
-#next("Generating Your Project" "generating.html")
+#nav("Overview" "index.html" "Generating Your Project" "generating.html")

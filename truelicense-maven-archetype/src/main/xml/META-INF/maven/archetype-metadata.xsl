@@ -22,7 +22,8 @@
     <xsl:template match="/d:archetype-descriptor/d:requiredProperties">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:for-each select="document('../../archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
+            <xsl:for-each
+                    select="document('../../archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
                 <xsl:text>&lineSeparator;        </xsl:text>
                 <requiredProperty key="{@name}">
                     <xsl:if test="@default">

@@ -3,9 +3,12 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<body   xml:lang="en"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:p="${project.url}/xml/archetype-properties">
+<html   xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="js/accordion.js"/>
+</head>
+<body>
 #parse("_stddef.md.vm")
 #title("Generating Your Project")
 
@@ -31,6 +34,7 @@ Please copy the following sample command, customize the property values to
 match your licensing schema and paste the result into a shell:
 
 <a href="../projects/basic/archetype.xml" class="maven-command"/>
+    [...]
 
 Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
 indicates command output, so please don't copy/paste these.
@@ -66,6 +70,6 @@ Note that property values are generally _case sensitive_.
 
 ---
 
-#prev("Prerequisites" "prerequisites.html")
-#next("Example Configurations" "examples.html")
+#nav("Prerequisites" "prerequisites.html" "Example Configurations" "examples.html")
 </body>
+</html>

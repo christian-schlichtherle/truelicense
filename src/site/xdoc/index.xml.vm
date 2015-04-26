@@ -12,6 +12,13 @@
         </section>
         <section name="">
             <div id="welcome" class="carousel slide">
+                <ol class="carousel-indicators">
+                    <li class="active"/>
+                    <li/>
+                    <li/>
+                    <li/>
+                    <li/>
+                </ol>
                 <div class="carousel-inner">
                     <div class="item active">
                         <div class="hero-unit">
@@ -37,20 +44,20 @@
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Affordable Pricing</h1>
-                            <p>A TrueLicense certificate costs <strong>only 299 EUR per annum</strong>, plus VAT if applicable.</p>
+                            <p>A TrueLicense certificate costs <strong>only 299 EUR per annum</strong>, plus VAT where applicable.</p>
                             <p><a class="btn btn-large btn-info pull-right" href="pricing.html">Learn more</a></p>
                         </div>
                     </div>
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Do You Need Help?</h1>
-                            <p>You can check the web site, FAQ, Javadoc, mailing lists, issue tracker or ask for professional services.</p>
+                            <p>Explore the web site, FAQ, Javadoc, mailing lists, issue tracker or ask for professional services.</p>
                             <p><a class="btn btn-large btn-info pull-right" href="help.html">Learn more</a></p>
                         </div>
                     </div>
                 </div>
-                <a class="left carousel-control" href="#">&#8249;</a>
-                <a class="right carousel-control" href="#">&#8250;</a>
+                <a class="left carousel-control" href="#welcome">&#8249;</a>
+                <a class="right carousel-control" href="#welcome">&#8250;</a>
             </div>
         </section>
     </body>

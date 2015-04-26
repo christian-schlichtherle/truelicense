@@ -15,11 +15,29 @@
 
 $h2 $title
 #end
-#macro(prev $text $href)
-<a href="$href" class="btn btn-primary pull-left">&laquo; $text</a>
+#macro(nav $prev-text $prev-href $next-text $next-href)
+<ul class="pager">
+  <li class="previous">
+    <a href="$prev-href">&larr; $prev-text</a>
+  </li>
+  <li class="next">
+    <a href="$next-href">$next-text &rarr;</a>
+  </li>
+</ul>
 #end
-#macro(next $text $href)
-<a href="$href" class="btn btn-primary pull-right">$text &raquo;</a>
+#macro(prev $prev-text $prev-href)
+<ul class="pager">
+  <li class="previous">
+    <a href="$prev-href">&larr; $prev-text</a>
+  </li>
+</ul>
+#end
+#macro(next $next-text $next-href)
+<ul class="pager">
+  <li class="next">
+    <a href="$next-href">$next-text &rarr;</a>
+  </li>
+</ul>
 #end
 
 ## Internal links to documentation pages in alphabetic order:

@@ -383,5 +383,4 @@ key is installed, then a
 
 ---
 
-#prev("Using the WSI" "using-wsi.html")
-#next("Certifying Your Project" "certifying.html")
+#nav("Using the WSI" "using-wsi.html" "Certifying Your Project" "certifying.html")

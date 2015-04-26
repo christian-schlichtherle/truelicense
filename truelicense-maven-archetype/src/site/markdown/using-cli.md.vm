@@ -349,5 +349,4 @@ is thrown instead:
 
 ---
 
-#prev("Building Your Project" "building.html")
-#next("Using the GUI" "using-gui.html")
+#nav("Building Your Project" "building.html" "Using the GUI" "using-gui.html")
