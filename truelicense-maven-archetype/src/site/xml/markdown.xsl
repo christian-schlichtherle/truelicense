@@ -3,11 +3,6 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<!DOCTYPE stylesheet [
-        <!-- Use whatever line separator is used in this document: CR, LF or CRLF. -->
-        <!ENTITY lineSeparator "
-">
-        ]>
 <xsl:stylesheet
         exclude-result-prefixes="h p xs"
         version="1.0"
@@ -33,11 +28,15 @@
     </xsl:template>
 
     <xsl:template match="p:properties" mode="markdown">
-        <xsl:text>    $ mvn archetype:generate -B \&lineSeparator;        -DarchetypeGroupId=${project.groupId} \&lineSeparator;        -DarchetypeArtifactId=${project.artifactId} \&lineSeparator;        -DarchetypeVersion=${project.version}</xsl:text>
+        <xsl:text>    $ mvn archetype:generate -B \
+        -DarchetypeGroupId=${project.groupId} \
+        -DarchetypeArtifactId=${project.artifactId} \
+        -DarchetypeVersion=${project.version}</xsl:text>
         <xsl:for-each select="*">
             <xsl:variable name="name" select="local-name()"/>
             <xsl:variable name="value" select="text()"/>
-            <xsl:text> \&lineSeparator;        -D</xsl:text>
+            <xsl:text> \
+        -D</xsl:text>
             <xsl:value-of select="$name"/>
             <xsl:text>='</xsl:text>
             <xsl:choose>
@@ -52,42 +51,70 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template match="h:a[contains(@class, 'maven-command')]" mode="markdown">
-        <xsl:apply-templates select="document(@href)/p:properties" mode="markdown"/>
+    <xsl:template match="h:a[contains(@class, 'maven-command')]"
+                  mode="markdown">
+        <xsl:apply-templates select="document(@href)/p:properties"
+                             mode="markdown"/>
     </xsl:template>
 
-    <xsl:template match="h:div[contains(@class, 'property-reference')]" mode="markdown">
+    <xsl:template match="h:div[contains(@class, 'property-reference')]"
+                  mode="markdown">
         <xsl:param name="lang">
-            <xsl:variable name="docLang"
-                          select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
-            <xsl:choose>
-                <xsl:when test="$docLang">
-                    <xsl:value-of select="$docLang"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:text>en</xsl:text>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:call-template name="lang"/>
         </xsl:param>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Explanation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <xsl:for-each
-                            select="document('archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
-                        <tr>
-                            <td>
-                                <code>
-                                    <xsl:value-of select="@name"/>
-                                </code>
-                            </td>
-                            <td>
+            <div class="accordion" id="accordion2">
+                <xsl:for-each
+                        select="document('archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
+                    <xsl:variable name="name">
+                        <xsl:value-of select="@name"/>
+                    </xsl:variable>
+                    <xsl:variable name="type">
+                        <xsl:call-template name="type">
+                            <xsl:with-param name="lang" select="$lang"/>
+                        </xsl:call-template>
+                    </xsl:variable>
+                    <xsl:variable name="default">
+                        <xsl:value-of select="@default"/>
+                    </xsl:variable>
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle"
+                               href="{ concat('#collapse', position()) }">
+                                <xsl:variable name="declaration">
+                                    <xsl:copy-of select="$name"/>
+                                    <xsl:text>: </xsl:text>
+                                    <xsl:copy-of select="$type//h:abbr/node()"/>
+                                </xsl:variable>
+                                <xsl:choose>
+                                    <xsl:when test="@default">
+                                        <code>
+                                            <xsl:copy-of select="$declaration"/>
+                                            <xsl:text> [</xsl:text>
+                                            <xsl:copy-of select="$default"/>
+                                            <xsl:text>]</xsl:text>
+                                        </code>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <strong>
+                                            <code>
+                                                <xsl:copy-of
+                                                        select="$declaration"/>
+                                            </code>
+                                        </strong>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </a>
+                        </div>
+                        <xsl:variable name="optionalIn">
+                            <xsl:if test="not(@default)">
+                                <xsl:text> in</xsl:text>
+                            </xsl:if>
+                        </xsl:variable>
+                        <div id="{ concat('collapse', position()) }"
+                             class="accordion-body collapse{ $optionalIn }">
+                            <div class="accordion-inner">
                                 <dl class="dl-horizontal">
                                     <xsl:for-each
                                             select="xs:annotation/xs:documentation[lang($lang)]">
@@ -99,94 +126,99 @@
                                     </xsl:for-each>
                                     <dt>Type</dt>
                                     <dd>
-                                        <xsl:variable name="localName"
-                                                      select="substring-after(@type, ':')"/>
-                                        <xsl:variable name="nsPrefix"
-                                                      select="substring-before(@type, ':')"/>
-                                        <xsl:variable name="nsUri"
-                                                      select="namespace::*[local-name() = $nsPrefix]"/>
-                                        <xsl:choose>
-                                            <xsl:when
-                                                    test="$nsUri = 'http://www.w3.org/2001/XMLSchema'">
-                                                <a href="http://www.w3.org/TR/xmlschema-2/#{$localName}">
-                                                    <abbr title="A built-in datatype of XML Schema.">
-                                                        <xsl:value-of
-                                                                select="$localName"/>
-                                                    </abbr>
-                                                </a>
-                                            </xsl:when>
-                                            <xsl:when
-                                                    test="$nsUri = '${project.url}/xml/archetype-properties'">
-                                                <xsl:for-each
-                                                        select="key('simpleType', $localName)">
-                                                    <xsl:variable name="href"
-                                                                  select="@h:href"/>
-                                                    <xsl:variable
-                                                            name="typeOutput">
-                                                        <abbr title="A custom datatype based on a built-in datatype of XML Schema with additional restrictions.">
-                                                            <xsl:value-of
-                                                                    select="$localName"/>
-                                                        </abbr>
-                                                    </xsl:variable>
-                                                    <xsl:choose>
-                                                        <xsl:when test="$href">
-                                                            <a href="{$href}">
-                                                                <xsl:copy-of
-                                                                        select="$typeOutput"/>
-                                                            </a>
-                                                        </xsl:when>
-                                                        <xsl:otherwise>
-                                                            <xsl:copy-of
-                                                                    select="$typeOutput"/>
-                                                        </xsl:otherwise>
-                                                    </xsl:choose>
-                                                    <xsl:text>: </xsl:text>
-                                                    <xsl:variable
-                                                            name="enumerations"
-                                                            select="xs:restriction/xs:enumeration"/>
-                                                    <xsl:if test="$enumerations">
-                                                        <xsl:text>One of </xsl:text>
-                                                        <xsl:for-each
-                                                                select="$enumerations">
-                                                            <xsl:choose>
-                                                                <xsl:when
-                                                                        test="position() = last()">
-                                                                    <xsl:text> or </xsl:text>
-                                                                </xsl:when>
-                                                                <xsl:when
-                                                                        test="position() != 1">
-                                                                    <xsl:text>, </xsl:text>
-                                                                </xsl:when>
-                                                            </xsl:choose>
-                                                            <code>
-                                                                <xsl:value-of
-                                                                        select="@value"/>
-                                                            </code>
-                                                        </xsl:for-each>
-                                                        <xsl:text>. </xsl:text>
-                                                    </xsl:if>
-                                                    <xsl:apply-templates
-                                                            select="xs:annotation/xs:documentation[lang($lang)]/node()"
-                                                            mode="stripped"/>
-                                                </xsl:for-each>
-                                            </xsl:when>
-                                        </xsl:choose>
+                                        <xsl:copy-of select="$type"/>
                                     </dd>
-                                    <xsl:for-each select="@default">
+                                    <xsl:if test="@default">
                                         <dt>Default</dt>
                                         <dd>
                                             <code>
-                                                <xsl:value-of select="."/>
+                                                <xsl:copy-of select="$default"/>
                                             </code>
                                         </dd>
-                                    </xsl:for-each>
+                                    </xsl:if>
                                 </dl>
-                            </td>
-                        </tr>
-                    </xsl:for-each>
-                </tbody>
-            </table>
+                            </div>
+                        </div>
+                    </div>
+                </xsl:for-each>
+            </div>
         </xsl:copy>
+    </xsl:template>
+
+    <xsl:template name="type">
+        <xsl:param name="lang">
+            <xsl:call-template name="lang"/>
+        </xsl:param>
+        <xsl:variable name="localName" select="substring-after(@type, ':')"/>
+        <xsl:variable name="nsPrefix" select="substring-before(@type, ':')"/>
+        <xsl:variable name="nsUri"
+                      select="namespace::*[local-name() = $nsPrefix]"/>
+        <xsl:choose>
+            <xsl:when test="$nsUri = 'http://www.w3.org/2001/XMLSchema'">
+                <a href="http://www.w3.org/TR/xmlschema-2/#{$localName}">
+                    <abbr title="A built-in datatype of XML Schema.">
+                        <xsl:value-of select="$localName"/>
+                    </abbr>
+                </a>
+            </xsl:when>
+            <xsl:when test="$nsUri = '${project.url}/xml/archetype-properties'">
+                <xsl:for-each select="key('simpleType', $localName)">
+                    <xsl:variable name="href" select="@h:href"/>
+                    <xsl:variable name="output">
+                        <abbr title="A custom datatype based on a built-in datatype of XML Schema with additional restrictions.">
+                            <xsl:value-of select="$localName"/>
+                        </abbr>
+                    </xsl:variable>
+                    <xsl:choose>
+                        <xsl:when test="$href">
+                            <a href="{$href}">
+                                <xsl:copy-of select="$output"/>
+                            </a>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:copy-of select="$output"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:text>: </xsl:text>
+                    <xsl:variable
+                            name="enumerations"
+                            select="xs:restriction/xs:enumeration"/>
+                    <xsl:if test="$enumerations">
+                        <xsl:text>One of </xsl:text>
+                        <xsl:for-each select="$enumerations">
+                            <xsl:choose>
+                                <xsl:when test="position() = last()">
+                                    <xsl:text> or </xsl:text>
+                                </xsl:when>
+                                <xsl:when test="position() != 1">
+                                    <xsl:text>, </xsl:text>
+                                </xsl:when>
+                            </xsl:choose>
+                            <code>
+                                <xsl:value-of select="@value"/>
+                            </code>
+                        </xsl:for-each>
+                        <xsl:text>. </xsl:text>
+                    </xsl:if>
+                    <xsl:apply-templates
+                            select="xs:annotation/xs:documentation[lang($lang)]/node()"
+                            mode="stripped"/>
+                </xsl:for-each>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="lang">
+        <xsl:variable name="lang"
+                      select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
+        <xsl:choose>
+            <xsl:when test="$lang">
+                <xsl:value-of select="$lang"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>en</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="@* | node()" mode="markdown">
