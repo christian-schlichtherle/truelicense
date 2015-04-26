@@ -69,7 +69,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:param>
-        <div>
+        <xsl:copy>
             <xsl:copy-of select="@*"/>
             <table>
                 <thead>
@@ -186,7 +186,7 @@
                     </xsl:for-each>
                 </tbody>
             </table>
-        </div>
+        </xsl:copy>
     </xsl:template>
 
     <xsl:template match="@* | node()" mode="markdown">
