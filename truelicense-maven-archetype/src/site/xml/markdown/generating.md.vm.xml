@@ -67,6 +67,5 @@ Note that property values are generally _case sensitive_.
 
 ---
 
-#prev("Prerequisites" "prerequisites.html")
-#next("Example Configurations" "examples.html")
+#nav("Prerequisites" "prerequisites.html" "Example Configurations" "examples.html")
 </body>

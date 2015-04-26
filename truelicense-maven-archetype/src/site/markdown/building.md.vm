@@ -109,5 +109,4 @@ its signature - all other meta data is ignored.
 
 ---
 
-#prev("Setting Up a VCS" "setting-up-vcs.html")
-#next("Using the CLI" "using-cli.html")
+#nav("Setting Up a VCS" "setting-up-vcs.html" "Using the CLI" "using-cli.html")
