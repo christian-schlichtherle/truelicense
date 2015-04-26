@@ -91,7 +91,7 @@
                                  classes from byte code obfuscation.
                                  You should remove this option if you do not
                                  want to use dynamic class loading. -->
-#if($dynamicClassLoading == true)
+#if($customClasspathScope == "runtime")
                             <option>
 #else
                             <!--option>
@@ -102,7 +102,7 @@
 #if($keyMgrLicenseValidationClass != "-")
                                 -keep class $keyMgrLicenseValidationClass
 #end
-#if($dynamicClassLoading == false)
+#if($customClasspathScope != "runtime")
                             <option-->
 #else
                             </option>

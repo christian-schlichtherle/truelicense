@@ -8,7 +8,7 @@
     <artifactName>Kitchen Sink</artifactName>
     <companyName>Company Inc.</companyName>
     <disableLicenseWizard>true</disableLicenseWizard>
-    <dynamicClassLoading>true</dynamicClassLoading>
+    <customClasspathScope>runtime</customClasspathScope>
     <editions>enterprise standard</editions>
     <freeTrialPeriod>30</freeTrialPeriod>
     <ftpKeyStoreFile>ftp.ks</ftpKeyStoreFile>
