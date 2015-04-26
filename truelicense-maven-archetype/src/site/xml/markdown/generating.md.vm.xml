@@ -31,6 +31,7 @@ Please copy the following sample command, customize the property values to
 match your licensing schema and paste the result into a shell:
 
 <a href="../projects/basic/archetype.xml" class="maven-command"/>
+    [...]
 
 Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
 indicates command output, so please don't copy/paste these.

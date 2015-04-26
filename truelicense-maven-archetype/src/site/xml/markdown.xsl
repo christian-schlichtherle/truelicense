@@ -43,7 +43,6 @@
             </xsl:choose>
             <xsl:text>'</xsl:text>
         </xsl:for-each>
-        <xsl:text>&lineSeparator;    [...]</xsl:text>
     </xsl:template>
 
     <xsl:template match="h:a[contains(@class, 'maven-command')]" mode="markdown">
