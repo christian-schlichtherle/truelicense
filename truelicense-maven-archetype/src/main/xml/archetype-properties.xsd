@@ -25,6 +25,42 @@
         </xs:annotation>
         <xs:restriction base="xs:NCName"/>
     </xs:simpleType>
+    <xs:simpleType name="CustomClasspathScope">
+        <xs:annotation>
+            <xs:documentation>
+                Select
+                <code>compile</code>
+                to declare that custom classes are available on the class path
+                at compile time.
+                The generated code will instantiate the classes using the
+                <code>new</code>
+                operator.
+                The advantage is that the classes can be safely included in the
+                byte code obfuscation process.
+                The disadvantage is that the classes need to be known at compile
+                time and so the generated POM files for the Key Generator or
+                Key Manager module need to be manually edited.
+                Select
+                <code>runtime</code>
+                to declare that custom classes are available on the class path
+                at runtime only.
+                The generated code will instantiate the classes using the Java
+                Reflection API.
+                The advantage is that the classes don't need to be known at
+                compile time so that manual editing of the generated POM files
+                for the Key Generator or Key Manager module is not necessary.
+                The disadvantage is that the classes need to be generally
+                excluded from the byte code obfuscation process, e.g. for the
+                Key Manager module.
+                This is considered to be a security leak and therefore should
+                be generally avoided.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="compile"/>
+            <xs:enumeration value="runtime"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="GroupId">
         <xs:annotation>
             <xs:documentation>
@@ -119,6 +155,19 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element type="p:CustomClasspathScope"
+                        name="customClasspathScope"
+                        minOccurs="0"
+                        default="compile">
+                <xs:annotation>
+                    <xs:documentation>
+                        Declares the scope of the class path for the custom
+                        classes referenced by the properties with the name
+                        pattern
+                        <code>*Class</code>.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element type="xs:boolean" name="disableLicenseWizard"
                         minOccurs="0"
                         default="false">
@@ -130,37 +179,6 @@
                         <code>true</code>
                         to cut the dependency on the TrueLicense Swing module
                         and reduce the code size.
-                    </xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element type="xs:boolean" name="dynamicClassLoading"
-                        minOccurs="0"
-                        default="false">
-                <xs:annotation>
-                    <xs:documentation>
-                        Whether or not the classes referenced by the properties
-                        with the name pattern
-                        <code>*Class</code>
-                        should get dynamically loaded at runtime.
-                        Select
-                        <code>false</code>
-                        to statically
-                        <code>new</code>
-                        the classes in the generated code.
-                        The advantage is that the classes can be safely included
-                        in the byte code obfuscation process.
-                        However, the classes need to be present on the class
-                        path of the respective module at compile time.
-                        Select
-                        <code>true</code>
-                        to dynamically load the classes at runtime.
-                        The advantage is that the classes only need to be
-                        present on the class path of the respective module at
-                        runtime.
-                        However, the classes need to be excluded from the byte
-                        code obfuscation process, which is a security leak if
-                        any dynamic class loading is done in the Key Manager
-                        module.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>

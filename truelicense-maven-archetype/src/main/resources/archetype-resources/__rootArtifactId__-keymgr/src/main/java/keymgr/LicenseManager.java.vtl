@@ -115,7 +115,7 @@ public enum LicenseManager implements LicenseConsumerManager {
         private static final String KEY_STORE_TYPE = "$ftpKeyStoreType";
 
 #end
-#if($dynamicClassLoading == true)
+#if($customClasspathScope == "runtime")
         @Obfuscate
         private static final String SECRET_MARKER_CLASS = "$ftpSecretMarkerClass";
 
@@ -137,7 +137,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
                         .inject()
                     .parent(LicenseManager.$parentEdition)
-#if($dynamicClassLoading == true)
+#if($customClasspathScope == "runtime")
                     .storeIn${preferencesType}Node(classForName(SECRET_MARKER_CLASS))
 #else
                     .storeIn${preferencesType}Node(${ftpSecretMarkerClass.replace('$', '.')}.class)
@@ -146,7 +146,7 @@ public enum LicenseManager implements LicenseConsumerManager {
         }
     };
 #end
-#if($dynamicClassLoading == true && $keyMgrClockClass != "-")
+#if($customClasspathScope == "runtime" && $keyMgrClockClass != "-")
 
     @Obfuscate
     private static final String CLOCK_CLASS = "$keyMgrClockClass";
@@ -160,7 +160,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     @Obfuscate
     private static final String KEY_STORE_TYPE = "$publicKeyStoreType";
 #end
-#if($dynamicClassLoading == true && $keyMgrLicenseValidationClass != "-")
+#if($customClasspathScope == "runtime" && $keyMgrLicenseValidationClass != "-")
 
     @Obfuscate
     private static final String LICENSE_VALIDATION_CLASS = "$keyMgrLicenseValidationClass";
@@ -187,7 +187,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 
                 @SuppressWarnings("unchecked")
                 final Clock clock =
-#if($dynamicClassLoading == true)
+#if($customClasspathScope == "runtime")
                         newInstance((Class<Clock>) classForName(CLOCK_CLASS));
 #else
                         new ${keyMgrClockClass.replace('$', '.')}();
@@ -204,7 +204,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                     return new LicenseValidation() {
                         @SuppressWarnings("unchecked")
                         final LicenseValidation custom =
-#if($dynamicClassLoading == true)
+#if($customClasspathScope == "runtime")
                                 newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
 #else
                                 new ${keyMgrLicenseValidationClass.replace('$', '.')}();
@@ -222,7 +222,7 @@ public enum LicenseManager implements LicenseConsumerManager {
             }.consumer();
 
     private volatile LicenseConsumerManager _manager;
-#if($dynamicClassLoading == true)
+#if($customClasspathScope == "runtime")
 #if($keyMgrLicenseValidationClass != "-")
 
     private static <T> T newInstance(Class<T> clazz) {
