@@ -6,7 +6,7 @@
 $(function () {
     $('.left.carousel-control').attr('data-slide', 'prev');
     $('.right.carousel-control').attr('data-slide', 'next');
-    $('.carousel').each(function (index) {
+    $('.carousel').each(function () {
         var carousel = $(this);
         var i = 0;
         carousel.find('.carousel-indicators li')
