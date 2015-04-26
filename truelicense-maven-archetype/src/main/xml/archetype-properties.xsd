@@ -450,7 +450,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="xs:token" name="package" minOccurs="0"
-                        default="${groupId}">
+                        default="${dollar}{groupId}">
                 <xs:annotation>
                     <xs:documentation>
                         The base package name of the generated project.
