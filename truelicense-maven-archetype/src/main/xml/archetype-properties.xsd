@@ -13,14 +13,34 @@
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element type="p:Properties" name="properties"/>
+    <xs:simpleType name="ArtifactId">
+        <xs:annotation>
+            <xs:documentation>
+                A Maven artifact ID must not contain spaces and should consist
+                of only lower-case characters - see
+                <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
+                    Maven - POM Reference - Maven Coordinates
+                </a>.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NCName"/>
+    </xs:simpleType>
+    <xs:simpleType name="GroupId">
+        <xs:annotation>
+            <xs:documentation>
+                A Maven group ID must not contain spaces and should consist
+                of only lower-case characters - see
+                <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
+                    Maven - POM Reference - Maven Coordinates
+                </a>.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NCName"/>
+    </xs:simpleType>
     <xs:simpleType name="JavaIdentifier">
-        <xs:restriction>
-            <xs:simpleType>
-                <xs:restriction base="xs:token">
-                    <!-- Not exactly, but good enough for this purpose. -->
-                    <xs:pattern value="[A-Za-z_$][A-Za-z0-9_$]*"/>
-                </xs:restriction>
-            </xs:simpleType>
+        <xs:restriction base="xs:token">
+            <!-- Not exactly, but good enough for this purpose. -->
+            <xs:pattern value="[A-Za-z_$][A-Za-z0-9_$]*"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="JavaIdentifierList">
@@ -65,10 +85,10 @@
     </xs:simpleType>
     <xs:complexType name="Properties">
         <xs:all>
-            <xs:element type="xs:token" name="artifactId">
+            <xs:element type="p:ArtifactId" name="artifactId">
                 <xs:annotation>
                     <xs:documentation>
-                        The root artifact ID of the
+                        The Maven artifact ID of the root
                         <a href="http://maven.apache.org/guides/introduction/introduction-to-the-pom.html">
                             <abbr title="Project Object Model">POM</abbr>
                         </a>
@@ -76,12 +96,6 @@
                         This could match the name of your software product, e.g.
                         <code>product</code>, or be generic, e.g.
                         <code>license</code>.
-                        Whatever it is, it should be a lower-case string and
-                        must not contain spaces.
-                        See
-                        <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
-                            Maven - POM Reference - Maven Coordinates
-                        </a>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -228,16 +242,12 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="groupId">
+            <xs:element type="p:GroupId" name="groupId">
                 <xs:annotation>
                     <xs:documentation>
-                        The group ID of the generated project.
+                        The Maven group ID for the generated project.
                         This could be the reversed domain name for your company
                         plus the name of the software product.
-                        See
-                        <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
-                            Maven - POM Reference - Maven Coordinates
-                        </a>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -570,20 +580,11 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="version">
+            <xs:element type="p:Version" name="version">
                 <xs:annotation>
                     <xs:documentation>
-                        The version of the generated project.
-                        This should be the version of your software product.
-                        Whatever it is, it needs to match the
-                        <a href="http://books.sonatype.com/mvnref-book/reference/pom-relationships-sect-pom-syntax.html#pom-reationships-sect-versions">
-                            Maven version number
-                        </a>
-                        requirements.
-                        See
-                        <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
-                            Maven - POM Reference - Maven Coordinates
-                        </a>.
+                        The Maven version for the generated project.
+                        This should match the version of your software product.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -656,5 +657,21 @@
             <xs:enumeration value="decorate"/>
             <xs:enumeration value="override"/>
         </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Version">
+        <xs:annotation>
+            <xs:documentation>
+                A Maven version must conform to the
+                <a href="http://books.sonatype.com/mvnref-book/reference/pom-relationships-sect-pom-syntax.html#pom-reationships-sect-versions">
+                    Maven version number
+                </a>
+                requirements.
+                See also
+                <a href="http://maven.apache.org/pom.html#Maven_Coordinates">
+                    Maven - POM Reference - Maven Coordinates
+                </a>.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token"/>
     </xs:simpleType>
 </xs:schema>
