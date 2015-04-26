@@ -3,9 +3,9 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<body   xml:lang="en"
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:p="${project.url}/xml/archetype-properties">
+<html   xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml">
+<body>
 #parse("_stddef.md.vm")
 #title("Generating Your Project")
 
@@ -69,3 +69,4 @@ Note that property values are generally _case sensitive_.
 
 #nav("Prerequisites" "prerequisites.html" "Example Configurations" "examples.html")
 </body>
+</html>

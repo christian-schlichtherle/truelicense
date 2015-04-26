@@ -3,8 +3,9 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<body   xml:lang="en"
+<html   xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml">
+<body>
 #parse("_stddef.md.vm")
 #title("Example Configurations")
 
@@ -85,3 +86,4 @@ Jackson JSON Processor from the generated code.
 
 #nav("Generating Your Project" "generating.html" "Exploring Your Project" "exploring.html")
 </body>
+</html>

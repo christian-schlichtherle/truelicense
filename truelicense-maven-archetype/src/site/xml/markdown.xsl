@@ -21,7 +21,14 @@
 
     <xsl:output omit-xml-declaration="yes"/>
 
-    <xsl:template match="h:html | h:body">
+    <xsl:template match="h:head">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates mode="markdown"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="h:body">
         <xsl:apply-templates mode="markdown"/>
     </xsl:template>
 
