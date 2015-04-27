@@ -152,7 +152,6 @@ public enum LicenseManager implements LicenseVendorManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
-                        @SuppressWarnings("unchecked")
                         final LicenseValidation custom = #new($keyGenLicenseValidationClass, "LicenseValidation");
 
                         @Override

@@ -198,7 +198,6 @@ public enum LicenseManager implements LicenseConsumerManager {
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyMgrClockClass != "-")
 
-                @SuppressWarnings("unchecked")
                 final Clock clock = #new($keyMgrClockClass, "Clock");
 
                 @Override public Date now() { return clock.now(); }
@@ -210,7 +209,6 @@ public enum LicenseManager implements LicenseConsumerManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
-                        @SuppressWarnings("unchecked")
                         final LicenseValidation custom = #new($keyMgrLicenseValidationClass, "LicenseValidation");
 
                         public void validate(final License bean) throws LicenseValidationException {
