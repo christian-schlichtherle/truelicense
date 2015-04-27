@@ -33,7 +33,7 @@ window.startSiteTour = function () {
                 content: "This is a set of links to external resources, e.g. the project's road map and change log. External links are not specific to a module."
             },
             {
-                target: $('.breadcrumb')[0],
+                target: "breadcrumbs",
                 placement: "left",
                 title: "Breadcrumbs",
                 content: "The breadcrumbs show you were you are and provide quick links to the parent project(s)."
