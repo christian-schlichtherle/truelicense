@@ -94,6 +94,7 @@ public enum LicenseManager implements LicenseConsumerManager {
         @Override
         LicenseConsumerManager newManager() {
             return _context.manager()
+#if($editionPbePassword != $parentEditionPbePassword)
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
@@ -114,7 +115,6 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if(0 < $foreach.index)
                     .parent(LicenseManager.$parentEdition)
 #end
-#if($editionPbePassword != $parentEditionPbePassword)
                     .storeIn${preferencesType}Node(Main.class) // must be a non-obfuscated class!
                     .build();
         }
