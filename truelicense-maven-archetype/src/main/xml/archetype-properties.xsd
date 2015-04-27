@@ -240,7 +240,7 @@
                         default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which defines the
+                        A fully qualified binary class name which declares the
                         user or system preferences node to use for storing the
                         auto-generated FTP license key.
                         This property is ignored if the property
