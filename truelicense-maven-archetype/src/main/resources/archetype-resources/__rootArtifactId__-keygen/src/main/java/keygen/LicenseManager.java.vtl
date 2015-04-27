@@ -19,6 +19,23 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
+#macro(new $class $interface)
+#if($customClasspathScope == "runtime")
+new Object() {
+    $interface newInstance() {
+        try {
+            return ($interface) Class.forName("$class").newInstance();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+}.newInstance()
+#else
+new ${class.replace('$', '.')}()
+#end
+#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
@@ -65,20 +82,20 @@ public enum LicenseManager implements LicenseVendorManager {
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
-#end
+                        #end
                         .password(#obfuscate($editionPbePassword))
-                        .inject()
+                    .inject()
                     .keyStore()
-                        .alias($editionKeyEntryAlias)
-#if($editionKeyEntryPassword != $privateKeyStorePassword)
+            .alias($editionKeyEntryAlias)
+                #if($editionKeyEntryPassword != $privateKeyStorePassword)
                         .keyPassword(#obfuscate($editionKeyEntryPassword))
-#end
+                        #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($privateKeyStorePassword))
-#if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
+            .storePassword(#obfuscate($privateKeyStorePassword))
+                #if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
-#end
+                        #end
                         .inject()
                     .build();
         }
@@ -96,11 +113,6 @@ public enum LicenseManager implements LicenseVendorManager {
 
     @Obfuscate
     private static final String KEY_STORE_TYPE = "$privateKeyStoreType";
-#end
-#if($customClasspathScope == "runtime" && $keyGenLicenseValidationClass != "-")
-
-    @Obfuscate
-    private static final String LICENSE_VALIDATION_CLASS = "$keyGenLicenseValidationClass";
 #end
 
     @Obfuscate
@@ -141,14 +153,7 @@ public enum LicenseManager implements LicenseVendorManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
-#if($customClasspathScope == "runtime")
-                        @SuppressWarnings("unchecked")
-                        final LicenseValidation custom =
-                                newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
-#else
-                        final LicenseValidation custom =
-                                new ${keyGenLicenseValidationClass.replace('$', '.')}();
-#end
+                        final LicenseValidation custom = #new($keyGenLicenseValidationClass, "LicenseValidation");
 
                         @Override
                         public void validate(final License bean) throws LicenseValidationException {
@@ -163,26 +168,6 @@ public enum LicenseManager implements LicenseVendorManager {
             }.vendor();
 
     private volatile LicenseVendorManager _manager;
-#if($customClasspathScope == "runtime" && $keyGenLicenseValidationClass != "-")
-
-    private static <T> T newInstance(Class<T> clazz) {
-        try {
-            return clazz.newInstance();
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    private static Class<?> classForName(String className) {
-        try {
-            return Class.forName(className, false, LicenseManager.class.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-#end
 
     private LicenseVendorManager manager() {
         // No need to synchronize because managers are virtually stateless.

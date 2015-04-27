@@ -38,8 +38,9 @@
                 The advantage is that the classes can be safely included in the
                 byte code obfuscation process.
                 The disadvantage is that the classes need to be known at compile
-                time and so the generated POM files for the Key Generator or
-                Key Manager module need to be manually edited.
+                time so that manual editing of the dependencies in the generated
+                POM files for the Key Generator or Key Manager module may be
+                necessary.
                 Select
                 <code>runtime</code>
                 to declare that custom classes are available on the class path
@@ -48,12 +49,17 @@
                 Reflection API.
                 The advantage is that the classes don't need to be known at
                 compile time so that manual editing of the generated POM files
-                is not necessary.
+                should not be necessary.
                 The disadvantage is that the classes need to be generally
                 excluded from the byte code obfuscation process, e.g. for the
                 Key Manager module.
-                This is considered to be a security leak and therefore should
-                be generally avoided.
+                This is considered to be a security leak and therefore should be
+                generally avoided.
+                However, this is not true for
+                <a href="http://proguard.sourceforge.net">ProGuard</a>:
+                TrueLicense generates code for dynamic class loading which is
+                correctly recognized and obfuscated by ProGuard so that it's
+                safe to use this option with ProGuard.
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:token">
@@ -240,7 +246,7 @@
                         default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which defines the
+                        A fully qualified binary class name which declares the
                         user or system preferences node to use for storing the
                         auto-generated FTP license key.
                         This property is ignored if the property

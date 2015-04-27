@@ -72,9 +72,8 @@
 
                             <!-- This option excludes the secret FTP marker
                                  class from byte code obfuscation.
-                                 You should remove this option if you do not
-                                 want to provide auto-generated FTP license
-                                 keys. -->
+                                 You can remove this option if you do not want
+                                 to provide auto-generated FTP license keys. -->
 #if($freeTrialPeriod != 0)
                             <option>
 #else
@@ -82,27 +81,6 @@
 #end
                                 -keep class $ftpSecretMarkerClass
 #if($freeTrialPeriod == 0)
-                            <option-->
-#else
-                            </option>
-#end
-
-                            <!-- This option excludes some dynamically loaded
-                                 classes from byte code obfuscation.
-                                 You should remove this option if you do not
-                                 want to use dynamic class loading. -->
-#if($customClasspathScope == "runtime")
-                            <option>
-#else
-                            <!--option>
-#end
-#if($keyMgrClockClass != "-")
-                                -keep class $keyMgrClockClass
-#end
-#if($keyMgrLicenseValidationClass != "-")
-                                -keep class $keyMgrLicenseValidationClass
-#end
-#if($customClasspathScope != "runtime")
                             <option-->
 #else
                             </option>
@@ -265,7 +243,7 @@
         </profile>
         <!-- This profile generates the keystore for use with auto-generated
              free trial period (FTP) license keys.
-             You should remove this profile or skip the plugin if you do not
+             You can remove this profile or skip the plugin if you do not
              want to provide auto-generated FTP license keys. -->
         <profile>
             <id>generate-ftp-key-store</id>
