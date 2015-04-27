@@ -18,7 +18,7 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(password $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
@@ -66,15 +66,15 @@ public enum LicenseManager implements LicenseVendorManager {
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .password(#password($editionPbePassword))
+                        .password(#obfuscate($editionPbePassword))
                         .inject()
                     .keyStore()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
-                        .keyPassword(#password($editionKeyEntryPassword))
+                        .keyPassword(#obfuscate($editionKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#password($privateKeyStorePassword))
+                        .storePassword(#obfuscate($privateKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)

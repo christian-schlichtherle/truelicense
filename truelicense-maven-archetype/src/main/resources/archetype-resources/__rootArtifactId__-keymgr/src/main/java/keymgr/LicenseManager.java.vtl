@@ -19,7 +19,7 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
-#macro(password $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
+#macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
@@ -69,13 +69,13 @@ public enum LicenseManager implements LicenseConsumerManager {
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .password(#password($editionPbePassword))
+                        .password(#obfuscate($editionPbePassword))
                         .inject()
 #end
                     .keyStore()
                         .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#password($publicKeyStorePassword))
+                        .storePassword(#obfuscate($publicKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $publicKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $publicKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -128,10 +128,10 @@ public enum LicenseManager implements LicenseConsumerManager {
                     .keyStore()
                         .alias($ftpKeyEntryAlias)
 #if($ftpKeyEntryPassword && $ftpKeyEntryPassword != $ftpKeyStorePassword)
-                        .keyProtection(#password($ftpKeyEntryPassword))
+                        .keyPassword(#obfuscate($ftpKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#password($ftpKeyStorePassword))
+                        .storePassword(#obfuscate($ftpKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $ftpKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $ftpKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
