@@ -19,6 +19,38 @@
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
 #macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "")#end
+#macro(new $class $interface)
+#if($customClasspathScope == "runtime")
+new Object() {
+    $interface newInstance() {
+        try {
+            return ($interface) Class.forName("$class").newInstance();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+}.newInstance()
+#else
+new ${class.replace('$', '.')}()
+#end
+#end
+#macro(class $class)
+#if($customClasspathScope == "runtime")
+new Object() {
+    Class<?> classForName() {
+        try {
+            return Class.forName("$class");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+}.classForName()
+#else
+${class.replace('$', '.')}.class
+#end
+#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
@@ -115,11 +147,6 @@ public enum LicenseManager implements LicenseConsumerManager {
         private static final String KEY_STORE_TYPE = "$ftpKeyStoreType";
 
 #end
-#if($customClasspathScope == "runtime")
-        @Obfuscate
-        private static final String SECRET_MARKER_CLASS = "$ftpSecretMarkerClass";
-
-#end
         @Override
         LicenseConsumerManager newManager() {
             return _context.manager()
@@ -137,19 +164,10 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
                         .inject()
                     .parent(LicenseManager.$parentEdition)
-#if($customClasspathScope == "runtime")
-                    .storeIn${preferencesType}Node(classForName(SECRET_MARKER_CLASS))
-#else
-                    .storeIn${preferencesType}Node(${ftpSecretMarkerClass.replace('$', '.')}.class)
-#end
+                    .storeIn${preferencesType}Node(#class($ftpSecretMarkerClass))
                     .build();
         }
     };
-#end
-#if($customClasspathScope == "runtime" && $keyMgrClockClass != "-")
-
-    @Obfuscate
-    private static final String CLOCK_CLASS = "$keyMgrClockClass";
 #end
 
     @Obfuscate
@@ -159,11 +177,6 @@ public enum LicenseManager implements LicenseConsumerManager {
 
     @Obfuscate
     private static final String KEY_STORE_TYPE = "$publicKeyStoreType";
-#end
-#if($customClasspathScope == "runtime" && $keyMgrLicenseValidationClass != "-")
-
-    @Obfuscate
-    private static final String LICENSE_VALIDATION_CLASS = "$keyMgrLicenseValidationClass";
 #end
 
     @Obfuscate
@@ -186,12 +199,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if($keyMgrClockClass != "-")
 
                 @SuppressWarnings("unchecked")
-                final Clock clock =
-#if($customClasspathScope == "runtime")
-                        newInstance((Class<Clock>) classForName(CLOCK_CLASS));
-#else
-                        new ${keyMgrClockClass.replace('$', '.')}();
-#end
+                final Clock clock = #new($keyMgrClockClass, "Clock");
 
                 @Override public Date now() { return clock.now(); }
 #end
@@ -203,12 +211,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
                     return new LicenseValidation() {
                         @SuppressWarnings("unchecked")
-                        final LicenseValidation custom =
-#if($customClasspathScope == "runtime")
-                                newInstance((Class<LicenseValidation>) classForName(LICENSE_VALIDATION_CLASS));
-#else
-                                new ${keyMgrLicenseValidationClass.replace('$', '.')}();
-#end
+                        final LicenseValidation custom = #new($keyMgrLicenseValidationClass, "LicenseValidation");
 
                         public void validate(final License bean) throws LicenseValidationException {
                             custom.validate(bean);
@@ -222,30 +225,6 @@ public enum LicenseManager implements LicenseConsumerManager {
             }.consumer();
 
     private volatile LicenseConsumerManager _manager;
-#if($customClasspathScope == "runtime")
-#if($keyMgrLicenseValidationClass != "-")
-
-    private static <T> T newInstance(Class<T> clazz) {
-        try {
-            return clazz.newInstance();
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
-        } catch (InstantiationException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-#end
-#if($keyMgrLicenseValidationClass != "-" || $freeTrialPeriod != 0)
-
-    private static Class<?> classForName(final String className) {
-        try {
-            return Class.forName(className, false, LicenseManager.class.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-#end
-#end
 
 #if($freeTrialPeriod != 0)
 #set($firstEdition = "ftp")
