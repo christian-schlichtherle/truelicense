@@ -20,7 +20,7 @@
         <breadcrumbs>
             <item name="Home" href="index.html"/>
         </breadcrumbs>
-        <menu name="Submodules" ref="modules"/>
+        <menu name="Modules" ref="modules"/>
         <menu name="Documentation">
             <item name="Welcome!" href="index.html"/>
             <item name="Getting Started" href="truelicense-maven-archetype/index.html"/>
