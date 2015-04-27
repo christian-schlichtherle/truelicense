@@ -24,35 +24,35 @@
                         <div class="hero-unit">
                             <h1>Code Generator</h1>
                             <p>The TrueLicense Maven Archetype generates a custom licensing schema for your software product.</p>
-                            <p><a class="btn btn-large btn-success pull-right" href="truelicense-maven-archetype/index.html">Start now</a></p>
+                            <a class="btn btn-large btn-success pull-right" href="truelicense-maven-archetype/index.html">Start now</a>
                         </div>
                     </div>
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Security By Design</h1>
                             <p>TrueLicense effectively protects your intellectual property and the privacy of your customers.</p>
-                            <p><a class="btn btn-large btn-info pull-right" href="security.html">Learn more</a></p>
+                            <a class="btn btn-large btn-info pull-right" href="security.html">Learn more</a>
                         </div>
                     </div>
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Dual Licensing</h1>
                             <p>TrueLicense is commercial open source software covered by two licenses.</p>
-                            <p><a class="btn btn-large btn-info pull-right" href="licensing.html">Learn more</a></p>
+                            <a class="btn btn-large btn-info pull-right" href="licensing.html">Learn more</a>
                         </div>
                     </div>
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Affordable Pricing</h1>
                             <p>A TrueLicense certificate costs <strong>only 299 EUR per annum</strong>, plus VAT where applicable.</p>
-                            <p><a class="btn btn-large btn-info pull-right" href="pricing.html">Learn more</a></p>
+                            <a class="btn btn-large btn-info pull-right" href="pricing.html">Learn more</a>
                         </div>
                     </div>
                     <div class="item">
                         <div class="hero-unit">
                             <h1>Do You Need Help?</h1>
                             <p>Explore the web site, FAQ, Javadoc, mailing lists, issue tracker or ask for professional services.</p>
-                            <p><a class="btn btn-large btn-info pull-right" href="help.html">Learn more</a></p>
+                            <a class="btn btn-large btn-info pull-right" href="help.html">Learn more</a>
                         </div>
                     </div>
                 </div>
