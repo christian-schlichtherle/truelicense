@@ -100,18 +100,18 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
-                        #end
+#end
                         .password(#obfuscate($editionPbePassword))
-        .inject()
+                        .inject()
 #end
                     .keyStore()
-                    .alias($editionCertEntryAlias)
+                        .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
                         .storePassword(#obfuscate($publicKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $publicKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $publicKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
-                        #end
+#end
                         .inject()
 #if(0 < $foreach.index)
                     .parent(LicenseManager.$parentEdition)
@@ -156,15 +156,15 @@ public enum LicenseManager implements LicenseConsumerManager {
                         .alias($ftpKeyEntryAlias)
 #if($ftpKeyEntryPassword && $ftpKeyEntryPassword != $ftpKeyStorePassword)
                         .keyPassword(#obfuscate($ftpKeyEntryPassword))
-                        #end
+#end
                         .loadFromResource(KEY_STORE_FILE)
-    .storePassword(#obfuscate($ftpKeyStorePassword))
+                        .storePassword(#obfuscate($ftpKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $ftpKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $ftpKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
-                        #end
+#end
                         .inject()
-    .parent(LicenseManager.$parentEdition)
+                    .parent(LicenseManager.$parentEdition)
                     .storeIn${preferencesType}Preferences(#class($ftpSecretMarkerClass))
                     .build();
         }
