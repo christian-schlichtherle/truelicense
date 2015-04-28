@@ -48,7 +48,11 @@ extends LicenseApplicationContext {
      * @return A license consumer manager for use with regular license keys.
      * @throws IllegalArgumentException if the authentication parameters define
      *         a private key password.
+     * @deprecated since TrueLicense 2.5.0.
+     *             This method will be removed from the public API in
+     *             TrueLicense 3.0.0.
      */
+    @Deprecated
     LicenseConsumerManager manager(Authentication authentication, Encryption encryption, Store store);
 
     /**
@@ -81,7 +85,11 @@ extends LicenseApplicationContext {
      * @return A license consumer manager for use with FTP license keys.
      * @throws IllegalArgumentException if the authentication parameters define
      *         no private key password or if the FTP is less than one day.
+     * @deprecated since TrueLicense 2.5.0.
+     *             This method will be removed from the public API in
+     *             TrueLicense 3.0.0.
      */
+    @Deprecated
     LicenseConsumerManager ftpManager(LicenseConsumerManager parent, Authentication authentication, @CheckForNull Encryption encryption, Store secret, int days);
 
     /**
@@ -111,7 +119,11 @@ extends LicenseApplicationContext {
      * @return A license consumer manager for use with FTP license keys.
      * @throws IllegalArgumentException if the authentication parameters define
      *         a private key password.
+     * @deprecated since TrueLicense 2.5.0.
+     *             This method will be removed from the public API in
+     *             TrueLicense 3.0.0.
      */
+    @Deprecated
     LicenseConsumerManager chainedManager(LicenseConsumerManager parent, Authentication authentication, @CheckForNull Encryption encryption, Store store);
 
     /**
@@ -141,7 +153,11 @@ extends LicenseApplicationContext {
      *        store.
      * @return A key store based authentication
      *         for use with regular license keys.
+     * @deprecated since TrueLicense 2.5.0.
+     *             This method will be removed from the public API in
+     *             TrueLicense 3.0.0.
      */
+    @Deprecated
     Authentication keyStore(@CheckForNull Source source, @CheckForNull String storeType, ObfuscatedString storePassword, String alias);
 
     /**
@@ -177,7 +193,11 @@ extends LicenseApplicationContext {
      *         for use with FTP license keys.
      * @throws IllegalArgumentException if a password is considered to be too
      *         weak.
+     * @deprecated since TrueLicense 2.5.0.
+     *             This method will be removed from the public API in
+     *             TrueLicense 3.0.0.
      */
+    @Deprecated
     Authentication ftpKeyStore(@CheckForNull Source source, @CheckForNull String storeType, ObfuscatedString storePassword, String alias, @CheckForNull ObfuscatedString keyPassword);
 
     /**
