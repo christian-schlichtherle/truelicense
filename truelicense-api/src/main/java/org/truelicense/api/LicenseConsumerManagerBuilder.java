@@ -86,8 +86,8 @@ extends Builder<LicenseConsumerManager>,
     LicenseConsumerManagerBuilder<PasswordSpecification> storeInPath(Path path);
 
     /**
-     * Store the license key in the system preferences node for the
-     * package of the given class.
+     * Store the license key in the system preferences node for the package
+     * of the given class.
      * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
      * configured, then the store will be used for the auto-generated FTP
      * license key and MUST BE KEPT SECRET!
@@ -97,8 +97,8 @@ extends Builder<LicenseConsumerManager>,
     LicenseConsumerManagerBuilder<PasswordSpecification> storeInSystemPreferences(Class<?> classInPackage);
 
     /**
-     * Store the license key in the user preferences node for the
-     * package of the given class.
+     * Store the license key in the user preferences node for the package
+     * of the given class.
      * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
      * configured, then the store will be used for the auto-generated FTP
      * license key and MUST BE KEPT SECRET!
