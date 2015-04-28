@@ -19,7 +19,7 @@ import org.truelicense.api.misc.ContextProvider;
  * However, you can work around this constraint by using a
  * {@linkplain LicenseConsumerContext license consumer context}
  * to configure a license consumer manager which uses a transient
- * {@link org.truelicense.spi.io.MemoryStore} instead of a persistent
+ * {@link org.truelicense.api.io.BIOS#memoryStore()} instead of a persistent
  * store - see {@link LicenseConsumerManagerBuilder#storeIn}.
  * Once configured, you can {@linkplain #install install} the license key to
  * the transient memory store and {@linkplain #view view} its encoded license
