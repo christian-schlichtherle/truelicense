@@ -153,7 +153,7 @@ public enum LicenseManager implements LicenseVendorManager {
                     final LicenseValidation basic = super.validation();
 #end
                     return new LicenseValidation() {
-                        final LicenseValidation custom = #new($keyGenLicenseValidationClass, "LicenseValidation");
+                        final LicenseValidation custom = #new($keyGenLicenseValidationClass "LicenseValidation");
 
                         @Override
                         public void validate(final License bean) throws LicenseValidationException {
