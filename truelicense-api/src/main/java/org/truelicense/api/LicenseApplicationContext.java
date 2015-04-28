@@ -71,5 +71,4 @@ public interface LicenseApplicationContext {
      * collision with third party software.
      */
     Store userPreferencesStore(Class<?> classInPackage);
-
 }
