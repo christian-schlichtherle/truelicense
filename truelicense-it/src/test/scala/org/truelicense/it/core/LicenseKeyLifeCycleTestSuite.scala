@@ -36,11 +36,11 @@ extends WordSpec { this: TestContext =>
     "work for regular license keys" in {
       val vs = store
 
-      val created = {
+      val generated = {
         val vm = vendorManager
-        val created = vm create (managementContext.license, vs)
-        check(created)
-        created
+        val generated = (vm generator managementContext.license writeTo vs).license()
+        check(generated)
+        generated
       }
 
       vs match {
@@ -59,8 +59,8 @@ extends WordSpec { this: TestContext =>
       cm install vs // reinstall
       cm verify ()
       val viewed = cm view ()
-      viewed should equal (created)
-      viewed should not be theSameInstanceAs (created)
+      viewed should equal (generated)
+      viewed should not be theSameInstanceAs (generated)
       cm uninstall ()
       intercept[LicenseManagementException] { cm view () }
       intercept[LicenseManagementException] { cm verify () }
@@ -107,11 +107,11 @@ extends WordSpec { this: TestContext =>
       intercept[LicenseManagementException] { ccm view () }
 
       ;{
-        val created = {
+        val generated = {
           val vm = vendorManager
-          val created = vm create (managementContext.license, vs)
-          check(created)
-          created
+          val generated = (vm generator managementContext.license writeTo vs).license()
+          check(generated)
+          generated
         }
 
         ccm install vs // delegates to cm!
@@ -119,8 +119,8 @@ extends WordSpec { this: TestContext =>
         ccs exists () should equal (false)
         ccm verify ()
         val viewed = ccm view ()
-        viewed should equal (created)
-        viewed should not be theSameInstanceAs (created)
+        viewed should equal (generated)
+        viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // delegates to cm!
       }
 
@@ -128,11 +128,11 @@ extends WordSpec { this: TestContext =>
       ccs exists () should equal (false)
 
       ;{
-        val created = {
+        val generated = {
           val vm = chainedVendorManager
-          val created = vm create (managementContext.license, vs)
-          check(created)
-          created
+          val generated = (vm generator managementContext.license writeTo vs).license()
+          check(generated)
+          generated
         }
 
         ccm install vs // installs in ccm!
@@ -140,8 +140,8 @@ extends WordSpec { this: TestContext =>
         ccs exists () should equal (true)
         ccm verify ()
         val viewed = ccm view ()
-        viewed should equal (created)
-        viewed should not be theSameInstanceAs (created)
+        viewed should equal (generated)
+        viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // uninstalls from ccm!
       }
 

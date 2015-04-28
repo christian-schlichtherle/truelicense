@@ -178,8 +178,8 @@ public enum LicenseManager implements LicenseVendorManager {
     abstract LicenseVendorManager newManager();
 
     @Override
-    public License create(License bean, Sink sink) throws LicenseManagementException {
-        return manager().create(bean, sink);
+    public LicenseKeyGenerator generator(License bean) throws LicenseManagementException {
+        return manager().generator(bean);
     }
 
     @Override

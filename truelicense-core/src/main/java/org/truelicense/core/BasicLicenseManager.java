@@ -32,12 +32,35 @@ import java.util.concurrent.Callable;
 abstract class BasicLicenseManager
 implements BiosProvider, LicenseParametersProvider {
 
-    public License create(final License bean, final Sink sink)
+    public LicenseKeyGenerator generator(final License bean)
     throws LicenseManagementException {
-        return wrap(new Callable<License>() {
-            @Override public License call() throws Exception {
+        return wrap(new Callable<LicenseKeyGenerator>() {
+            @Override public LicenseKeyGenerator call() throws Exception {
                 authorization().clearCreate(parameters());
-                return encrypt(bean, sink);
+                final LicenseAndRepositoryProvider larp = encodeAndSign(bean);
+                return new LicenseKeyGenerator() {
+
+                    @Override
+                    public License license() throws LicenseManagementException {
+                        return wrap(new Callable<License>() {
+                            @Override
+                            public License call() throws Exception {
+                                return duplicate(larp.license());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
+                        wrap(new Callable<Void>() {
+                            @Override public Void call() throws Exception {
+                                encrypt(larp, sink);
+                                return null;
+                            }
+                        });
+                        return this;
+                    }
+                };
             }
         });
     }
@@ -114,17 +137,18 @@ implements BiosProvider, LicenseParametersProvider {
     // License vendor functions:
     //
 
-    License encrypt(final License bean, final Sink sink) throws Exception {
-        return compress(bean, encryption().apply(sink));
-    }
-
-    License compress(final License bean, final Sink sink) throws Exception {
-        return encodeRepository(bean, compression().apply(sink));
-    }
-
-    License encodeRepository(final License bean, final Sink sink)
+    License encrypt(LicenseAndRepositoryProvider larp, Sink sink)
     throws Exception {
-        final LicenseAndRepositoryProvider larp = encodeAndSign(bean);
+        return compress(larp, encryption().apply(sink));
+    }
+
+    License compress(LicenseAndRepositoryProvider larp, Sink sink)
+    throws Exception {
+        return encodeRepository(larp, compression().apply(sink));
+    }
+
+    License encodeRepository(final LicenseAndRepositoryProvider larp, final Sink sink)
+    throws Exception {
         codec().encode(sink, larp.repository());
         return larp.license();
     }

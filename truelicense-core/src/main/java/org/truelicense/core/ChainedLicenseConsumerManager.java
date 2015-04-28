@@ -5,10 +5,7 @@
 
 package org.truelicense.core;
 
-import org.truelicense.api.License;
-import org.truelicense.api.LicenseConsumerManager;
-import org.truelicense.api.LicenseManagementException;
-import org.truelicense.api.LicenseProvider;
+import org.truelicense.api.*;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
@@ -27,25 +24,25 @@ import java.util.concurrent.Callable;
 abstract class ChainedLicenseConsumerManager
 extends CachingLicenseConsumerManager implements LicenseProvider {
 
-    private volatile List<Boolean> canCreateLicenseKeys = Option.none();
+    private volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 
     /** The parent license consumer manager. */
     abstract LicenseConsumerManager parent();
 
-    private boolean canCreateLicenseKeys() {
-        if (canCreateLicenseKeys.isEmpty()) {
+    private boolean canGenerateLicenseKeys() {
+        if (canGenerateLicenseKeys.isEmpty()) {
             synchronized (this) {
-                if (canCreateLicenseKeys.isEmpty()) {
+                if (canGenerateLicenseKeys.isEmpty()) {
                     try {
-                        super.create(license(), bios().memoryStore()); // -> /dev/null
-                        canCreateLicenseKeys = Option.wrap(Boolean.TRUE);
+                        super.generator(license()).writeTo(bios().memoryStore()); // -> /dev/null
+                        canGenerateLicenseKeys = Option.wrap(Boolean.TRUE);
                     } catch (LicenseManagementException ignored) {
-                        canCreateLicenseKeys = Option.wrap(Boolean.FALSE);
+                        canGenerateLicenseKeys = Option.wrap(Boolean.FALSE);
                     }
                 }
             }
         }
-        return canCreateLicenseKeys.get(0);
+        return canGenerateLicenseKeys.get(0);
     }
 
     @Override
@@ -53,7 +50,7 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
         try {
             parent().install(source);
         } catch (final LicenseManagementException primary) {
-            if (canCreateLicenseKeys()) throw primary;
+            if (canGenerateLicenseKeys()) throw primary;
             super.install(source);
         }
     }
@@ -69,7 +66,7 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
                     try {
                         return super.view(); // repeat
                     } catch (final LicenseManagementException ternary) {
-                        return createIffNewFtp(ternary); // uses store(), too
+                        return generateIffNewFtp(ternary).license(); // uses store(), too
                     }
                 }
             }
@@ -87,7 +84,7 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
                     try {
                         super.verify(); // repeat
                     } catch (final LicenseManagementException ternary) {
-                        createIffNewFtp(ternary); // uses store(), too
+                        generateIffNewFtp(ternary); // uses store(), too
                     }
                 }
             }
@@ -98,19 +95,19 @@ extends CachingLicenseConsumerManager implements LicenseProvider {
         try {
             parent().uninstall();
         } catch (final LicenseManagementException primary) {
-            if (canCreateLicenseKeys()) throw primary;
+            if (canGenerateLicenseKeys()) throw primary;
             super.uninstall();
         }
     }
 
-    private License createIffNewFtp(final LicenseManagementException e)
+    private LicenseKeyGenerator generateIffNewFtp(final LicenseManagementException e)
     throws LicenseManagementException {
-        if (!canCreateLicenseKeys())
+        if (!canGenerateLicenseKeys())
             throw e;
         final Store store = store();
         if (exists(store))
             throw e;
-        return super.create(license(), store);
+        return super.generator(license()).writeTo(store);
     }
 
     private static boolean exists(final Store store)

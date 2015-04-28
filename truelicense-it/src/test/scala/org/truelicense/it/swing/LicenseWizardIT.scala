@@ -41,7 +41,7 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
 
   before {
     val store = new MemoryStore
-    license = vendorManager create (newLicense, store)
+    license = (vendorManager generator newLicense writeTo store).license()
     manager = consumerManager
     manager install store
     EventQueue invokeLater new Runnable {
