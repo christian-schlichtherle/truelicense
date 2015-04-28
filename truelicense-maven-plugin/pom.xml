@@ -79,6 +79,9 @@
         <plugins>
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
+                <configuration>
+                    <helpPackageName>org.truelicense.maven.plugin.help</helpPackageName>
+                </configuration>
             </plugin>
             <!-- Replace the regular JAR with an uber-JAR using the
                  maven-shade-plugin as a workaround for a regression in
