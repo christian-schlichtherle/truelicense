@@ -116,7 +116,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if(0 < $foreach.index)
                     .parent(LicenseManager.$parentEdition)
 #end
-                    .storeIn${preferencesType}Node(Main.class) // must be a non-obfuscated class!
+                    .storeIn${preferencesType}Preferences(Main.class) // must be a non-obfuscated class!
                     .build();
         }
     }#if($foreach.count == $editionsSize && $freeTrialPeriod == 0);#{else},#end
@@ -165,7 +165,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
                         .inject()
                     .parent(LicenseManager.$parentEdition)
-                    .storeIn${preferencesType}Node(#class($ftpSecretMarkerClass))
+                    .storeIn${preferencesType}Preferences(#class($ftpSecretMarkerClass))
                     .build();
         }
     };

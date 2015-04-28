@@ -311,6 +311,15 @@ extends LicenseApplicationContext {
         ManagerBuilder storeInFile(File file);
 
         /**
+         * @deprecated since TrueLicense 2.5.0.
+         *             This method will be removed from the public API in
+         *             TrueLicense 3.0.0.
+         *             Use {@link #storeInSystemPreferences(Class)} instead.
+         */
+        @Deprecated
+        ManagerBuilder storeInSystemNode(Class<?> classInPackage);
+
+        /**
          * Store the license key in the system preferences node for the
          * package of the given class.
          * If a non-zero {@linkplain #ftpDays free trial period} (FTP) is
@@ -319,7 +328,16 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeInSystemNode(Class<?> classInPackage);
+        ManagerBuilder storeInSystemPreferences(Class<?> classInPackage);
+
+        /**
+         * @deprecated since TrueLicense 2.5.0.
+         *             This method will be removed from the public API in
+         *             TrueLicense 3.0.0.
+         *             Use {@link #storeInUserPreferences(Class)} instead.
+         */
+        @Deprecated
+        ManagerBuilder storeInUserNode(Class<?> classInPackage);
 
         /**
          * Store the license key in the user preferences node for the
@@ -330,6 +348,6 @@ extends LicenseApplicationContext {
          *
          * @return {@code this}.
          */
-        ManagerBuilder storeInUserNode(Class<?> classInPackage);
+        ManagerBuilder storeInUserPreferences(Class<?> classInPackage);
     }
 }

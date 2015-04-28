@@ -299,13 +299,23 @@ implements LicenseConsumerContext, CachePeriodProvider, LicenseProvider {
             }
 
             @Override
-            public ManagerBuilder storeInSystemNode(final Class<?> classInPackage) {
+            public ManagerBuilder storeInSystemNode(Class<?> classInPackage) {
+                return storeInSystemPreferences(classInPackage);
+            }
+
+            @Override
+            public ManagerBuilder storeInSystemPreferences(final Class<?> classInPackage) {
                 this.store = cc.systemNodeStore(classInPackage);
                 return this;
             }
 
             @Override
-            public ManagerBuilder storeInUserNode(final Class<?> classInPackage) {
+            public ManagerBuilder storeInUserNode(Class<?> classInPackage) {
+                return storeInUserPreferences(classInPackage);
+            }
+
+            @Override
+            public ManagerBuilder storeInUserPreferences(final Class<?> classInPackage) {
                 this.store = cc.userNodeStore(classInPackage);
                 return this;
             }
