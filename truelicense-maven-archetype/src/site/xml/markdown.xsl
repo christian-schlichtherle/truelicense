@@ -5,12 +5,16 @@
   -->
 <xsl:stylesheet
         exclude-result-prefixes="h p xs"
+        extension-element-prefixes="exsl"
         version="1.0"
         xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:exsl="http://exslt.org/common"
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <!--xsl:import href="exsl.xsl"/-->
 
     <xsl:key name="simpleType" match="/xs:schema/xs:simpleType" use="@name"/>
 
@@ -85,7 +89,7 @@
                                     <xsl:value-of select="@name"/>
                                 </code>
                                 <xsl:text>: </xsl:text>
-                                <xsl:copy-of select="$type//h:abbr"/>
+                                <xsl:copy-of select="exsl:node-set($type)//h:abbr"/>
                                 <xsl:if test="@default">
                                     <xsl:text> [</xsl:text>
                                     <code>
