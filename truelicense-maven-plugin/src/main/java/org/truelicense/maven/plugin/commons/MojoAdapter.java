@@ -61,7 +61,7 @@ public abstract class MojoAdapter extends AbstractMojo {
     @Override
     public void setLog(final Log log) {
         super.setLog(log);
-        this.checkedLog = null;
+        checkedLog = null;
     }
 
     @Override
