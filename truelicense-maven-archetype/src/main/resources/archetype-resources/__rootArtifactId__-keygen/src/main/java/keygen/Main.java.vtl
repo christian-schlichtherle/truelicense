@@ -60,14 +60,14 @@ public enum Main {
                 }
 
                 void run() throws Exception {
-                    final License inputLicense = createOrDecodeInputLicense();
-                    final License outputLicense = manager()
-                            .generator(inputLicense)
+                    final License input = createOrDecodeInputLicense();
+                    final License output = manager()
+                            .generator(input)
                             .writeTo(store())
                             .license();
                     if (verbose())
-                        err.println(outputLicense);
-                    maybeEncodeOutputLicense(outputLicense);
+                        err.println(output);
+                    maybeEncodeOutputLicense(output);
                 }
 
                 License createOrDecodeInputLicense() throws Exception {
