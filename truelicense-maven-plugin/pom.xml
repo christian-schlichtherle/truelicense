@@ -99,6 +99,7 @@
                 <configuration>
                     <artifactSet>
                         <includes>
+                            <include>net.java.truelicense:*</include>
                             <include>org.slf4j:slf4j-api</include>
                         </includes>
                     </artifactSet>
