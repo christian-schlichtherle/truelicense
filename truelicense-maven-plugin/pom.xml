@@ -97,12 +97,13 @@
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>net.java.truelicense:*</include>
-                            <include>org.slf4j:slf4j-api</include>
-                        </includes>
-                    </artifactSet>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"/>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+                        <!--transformer implementation="org.apache.maven.plugins.shade.resource.PluginXmlResourceTransformer"/-->
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                    </transformers>
                 </configuration>
                 <executions>
                     <execution>
