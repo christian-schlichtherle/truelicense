@@ -38,7 +38,8 @@ implements BiosProvider, LicenseParametersProvider {
                 authorization().clearGenerator(parameters());
                 return new LicenseKeyGenerator() {
 
-                    final License duplicate = validatedBean();
+                    final Repository repository = repository();
+                    final Artifactory artifactory = authentication().sign(codec(), repository, validatedBean());
 
                     License validatedBean() throws Exception {
                         final License duplicate = initializedBean();
@@ -56,34 +57,12 @@ implements BiosProvider, LicenseParametersProvider {
                         return Codecs.clone(bean, codec());
                     }
 
-                    Repository repository;
-                    Artifactory artifactory;
-                    boolean init;
-
-                    Artifactory artifactory() throws Exception {
-                        init();
-                        return artifactory;
-                    }
-
-                    Repository repository() throws Exception {
-                        init();
-                        return repository;
-                    }
-
-                    void init() throws Exception {
-                        if (init)
-                            return;
-                        repository = BasicLicenseManager.this.repository();
-                        artifactory = authentication().sign(codec(), repository, duplicate);
-                        init = true;
-                    }
-
                     @Override
                     public License license() throws LicenseManagementException {
                         return wrap(new Callable<License>() {
                             @Override
                             public License call() throws Exception {
-                                return artifactory().decode(License.class);
+                                return artifactory.decode(License.class);
                             }
                         });
                     }
@@ -93,7 +72,7 @@ implements BiosProvider, LicenseParametersProvider {
                         wrap(new Callable<Void>() {
 
                             @Override public Void call() throws Exception {
-                                codec().encode(compressedAndEncryptedSink(), repository());
+                                codec().encode(compressedAndEncryptedSink(), repository);
                                 return null;
                             }
 
