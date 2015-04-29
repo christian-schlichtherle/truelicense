@@ -25,11 +25,13 @@ public interface LicenseVendorManager
      * {@linkplain LicenseAuthorization#clearGenerator authorization check}.
      *
      * @param bean the license bean to process.
-     *             The bean is not modified by the returned license key
+     *             This bean is not modified by the returned license key
      *             generator.
+     *             Instead, a protective copy is made which is subsequently
+     *             {@linkplain LicenseInitialization#initialize initialized}
+     *             and
+     *             {@linkplain LicenseValidation#validate validated}.
      * @return A license key generator for the given license bean.
-     * @throws LicenseValidationException if validating the license bean fails,
-     *                                    e.g. if the license has expired.
      */
     LicenseKeyGenerator generator(License bean) throws LicenseManagementException;
 }

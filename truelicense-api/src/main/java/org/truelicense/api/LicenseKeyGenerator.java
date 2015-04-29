@@ -22,11 +22,8 @@ import java.io.IOException;
 public interface LicenseKeyGenerator {
 
     /**
-     * Returns a duplicate of the
-     * {@linkplain LicenseInitialization#initialize initialized}
-     * and
-     * {@linkplain LicenseValidation#validate validated}
-     * license bean which is encoded in the generated license key.
+     * Returns a duplicate of the license bean which is encoded in the
+     * generated license key.
      */
     License license() throws LicenseManagementException;
 
