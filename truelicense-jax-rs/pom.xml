@@ -28,6 +28,7 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-spi</artifactId>
         </dependency>
+
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
