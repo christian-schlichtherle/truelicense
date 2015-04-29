@@ -22,10 +22,11 @@ public interface LicenseVendorManager
      * Returns a license key generator for the given license bean.
      * <p/>
      * Calling this operation performs an initial
-     * {@linkplain LicenseAuthorization#clearCreate authorization check}.
+     * {@linkplain LicenseAuthorization#clearGenerator authorization check}.
      *
      * @param bean the license bean to process.
-     *             The bean is not modified by this method.
+     *             The bean is not modified by the returned license key
+     *             generator.
      * @return A license key generator for the given license bean.
      * @throws LicenseValidationException if validating the license bean fails,
      *                                    e.g. if the license has expired.

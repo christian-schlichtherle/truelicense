@@ -9,7 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.Repository;
-import org.truelicense.api.auth.RepositoryProvider;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.*;
@@ -32,20 +31,59 @@ import java.util.concurrent.Callable;
 abstract class BasicLicenseManager
 implements BiosProvider, LicenseParametersProvider {
 
-    public LicenseKeyGenerator generator(final License bean)
-    throws LicenseManagementException {
+    public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
         return wrap(new Callable<LicenseKeyGenerator>() {
-            @Override public LicenseKeyGenerator call() throws Exception {
-                authorization().clearCreate(parameters());
-                final LicenseAndRepositoryProvider larp = encodeAndSign(bean);
+            @Override
+            public LicenseKeyGenerator call() throws Exception {
+                authorization().clearGenerator(parameters());
                 return new LicenseKeyGenerator() {
+
+                    final License duplicate = validatedBean();
+
+                    License validatedBean() throws Exception {
+                        final License duplicate = initializedBean();
+                        validation().validate(duplicate);
+                        return duplicate;
+                    }
+
+                    License initializedBean() throws Exception {
+                        final License duplicate = duplicatedBean();
+                        initialization().initialize(duplicate);
+                        return duplicate;
+                    }
+
+                    License duplicatedBean() throws Exception {
+                        return Codecs.clone(bean, codec());
+                    }
+
+                    Repository repository;
+                    Artifactory artifactory;
+                    boolean init;
+
+                    Artifactory artifactory() throws Exception {
+                        init();
+                        return artifactory;
+                    }
+
+                    Repository repository() throws Exception {
+                        init();
+                        return repository;
+                    }
+
+                    void init() throws Exception {
+                        if (init)
+                            return;
+                        repository = BasicLicenseManager.this.repository();
+                        artifactory = authentication().sign(codec(), repository, duplicate);
+                        init = true;
+                    }
 
                     @Override
                     public License license() throws LicenseManagementException {
                         return wrap(new Callable<License>() {
                             @Override
                             public License call() throws Exception {
-                                return duplicate(larp.license());
+                                return artifactory().decode(License.class);
                             }
                         });
                     }
@@ -53,9 +91,18 @@ implements BiosProvider, LicenseParametersProvider {
                     @Override
                     public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
                         wrap(new Callable<Void>() {
+
                             @Override public Void call() throws Exception {
-                                encrypt(larp, sink);
+                                codec().encode(compressedAndEncryptedSink(), repository());
                                 return null;
+                            }
+
+                            Sink compressedAndEncryptedSink() {
+                                return compression().apply(encryptedSink());
+                            }
+
+                            Sink encryptedSink() {
+                                return encryption().apply(sink);
                             }
                         });
                         return this;
@@ -132,56 +179,6 @@ implements BiosProvider, LicenseParametersProvider {
         catch (RuntimeException | LicenseManagementException e) { throw e; }
         catch (Exception e) { throw new LicenseManagementException(e); }
     }
-
-    //
-    // License vendor functions:
-    //
-
-    License encrypt(LicenseAndRepositoryProvider larp, Sink sink)
-    throws Exception {
-        return compress(larp, encryption().apply(sink));
-    }
-
-    License compress(LicenseAndRepositoryProvider larp, Sink sink)
-    throws Exception {
-        return encodeRepository(larp, compression().apply(sink));
-    }
-
-    License encodeRepository(final LicenseAndRepositoryProvider larp, final Sink sink)
-    throws Exception {
-        codec().encode(sink, larp.repository());
-        return larp.license();
-    }
-
-    LicenseAndRepositoryProvider encodeAndSign(final License bean)
-    throws Exception {
-        final License duplicate = validate(bean);
-        final Repository repository = repository();
-        authentication().sign(codec(), repository, duplicate);
-        return new LicenseAndRepositoryProvider() {
-            @Override public License license() { return duplicate; }
-            @Override public Repository repository() { return repository; }
-        };
-    }
-
-    License validate(final License bean) throws Exception {
-        final License duplicate = initialize(bean);
-        validation().validate(duplicate);
-        return duplicate;
-    }
-
-    License initialize(final License bean) throws Exception {
-        final License duplicate = duplicate(bean);
-        initialization().initialize(duplicate);
-        return duplicate;
-    }
-
-    <V> V duplicate(V object) throws Exception {
-        return Codecs.clone(object, codec());
-    }
-
-    private interface LicenseAndRepositoryProvider
-    extends LicenseProvider, RepositoryProvider { }
 
     //
     // License consumer functions:

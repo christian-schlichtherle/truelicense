@@ -15,9 +15,9 @@ import org.truelicense.api.LicenseParameters;
  * @author Christian Schlichtherle
  */
 final class BasicLicenseAuthorization implements LicenseAuthorization {
-    @Override public void clearCreate(LicenseParameters lp) { }
-    @Override public void clearInstall(LicenseParameters lp) { }
-    @Override public void clearVerify(LicenseParameters lp) { }
-    @Override public void clearView(LicenseParameters lp) { }
-    @Override public void clearUninstall(LicenseParameters lp) { }
+    @Override public void clearGenerator(LicenseParameters parameters) { }
+    @Override public void clearInstall(LicenseParameters parameters) { }
+    @Override public void clearVerify(LicenseParameters parameters) { }
+    @Override public void clearView(LicenseParameters parameters) { }
+    @Override public void clearUninstall(LicenseParameters parameters) { }
 }

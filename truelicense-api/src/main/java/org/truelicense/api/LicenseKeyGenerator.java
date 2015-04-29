@@ -10,10 +10,12 @@ import org.truelicense.api.io.Sink;
 import java.io.IOException;
 
 /**
- * A service to write a generated license key to a given sink and return a
- * duplicate of its encoded license bean.
+ * Generates a license key and writes it to a given sink or returns a duplicate
+ * of its encoded license bean.
  * License key generators are the product of a call to
  * {@link LicenseVendorManager#generator(License)}.
+ * License key generators are stateful and so they are generally not
+ * thread-safe.
  *
  * @author Christian Schlichtherle
  */
@@ -24,12 +26,7 @@ public interface LicenseKeyGenerator {
      * {@linkplain LicenseInitialization#initialize initialized}
      * and
      * {@linkplain LicenseValidation#validate validated}
-     * license bean which gets encoded in the generated license key.
-     *
-     * @throws LicenseManagementException if duplicating the license bean fails
-     *                                    for some reason, e.g. if the codec
-     *                                    does not supported a custom property
-     *                                    type.
+     * license bean which is encoded in the generated license key.
      */
     License license() throws LicenseManagementException;
 
@@ -38,9 +35,6 @@ public interface LicenseKeyGenerator {
      *
      * @param sink the sink for writing the generated license key to.
      * @return {@code this}
-     * @throws LicenseManagementException if writing the license key fails for
-     *                                    some reason, e.g. if there is an
-     *                                    {@link IOException}.
      */
     LicenseKeyGenerator writeTo(Sink sink) throws LicenseManagementException;
 }
