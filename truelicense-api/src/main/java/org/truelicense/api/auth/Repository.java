@@ -13,9 +13,10 @@ import java.security.Signature;
 
 /**
  * A controller for storing authenticated objects (artifacts).
- * This interface is used by {@linkplain Authentication authentications} to
+ * Repositories are used by {@linkplain Authentication authentications} to
  * {@linkplain Authentication#sign sign} and
  * {@linkplain Authentication#verify verify} artifacts.
+ * Repositories are stateful and so they are generally not thread-safe.
  *
  * @author Christian Schlichtherle
  */
