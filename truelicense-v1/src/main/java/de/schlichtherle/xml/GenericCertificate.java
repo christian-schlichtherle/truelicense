@@ -11,8 +11,6 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.core.auth.BasicRepository;
 import org.truelicense.obfuscate.Obfuscate;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Signature;
 
 /**
@@ -60,15 +58,15 @@ public final class GenericCertificate implements Repository {
     }
 
     @Override
-    public Artifactory sign(final Codec codec, final Signature engine, final PrivateKey key, final Object artifact) throws Exception {
-        final Artifactory a = repository.sign(codec, engine, key, artifact);
+    public Artifactory sign(final Codec codec, final Signature engine, final Object artifact) throws Exception {
+        final Artifactory a = repository.sign(codec, engine, artifact);
         setSignatureEncoding(SIGNATURE_ENCODING);
         return a;
     }
 
     @Override
-    public Artifactory verify(Codec codec, Signature engine, PublicKey key) throws Exception {
-        return repository.verify(codec, engine, key);
+    public Artifactory verify(Codec codec, Signature engine) throws Exception {
+        return repository.verify(codec, engine);
     }
 
     @Override

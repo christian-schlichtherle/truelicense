@@ -78,11 +78,17 @@ public final class Notary implements Authentication {
         KeyStore keyStore;
 
         Artifactory sign(Codec codec, Repository repository, Object artifact) throws Exception {
-            return repository.sign(codec, engine(), privateKey(), artifact);
+            final Signature engine = engine();
+            final PrivateKey key = privateKey();
+            engine.initSign(key);
+            return repository.sign(codec, engine, artifact);
         }
 
         Artifactory verify(Codec codec, Repository repository) throws Exception {
-            return repository.verify(codec, engine(), publicKey());
+            final Signature engine = engine();
+            final PublicKey key = publicKey();
+            engine.initVerify(key);
+            return repository.verify(codec, engine);
         }
 
         Signature engine() throws Exception {

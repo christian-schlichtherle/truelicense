@@ -7,60 +7,54 @@ package org.truelicense.api.auth;
 
 import org.truelicense.api.codec.Codec;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Signature;
 
 /**
- * A controller for storing authenticated objects (artifacts).
- * Repositories are used by {@linkplain Authentication authentications} to
+ * A controller for storing authenticated objects (artifacts) in a generic
+ * repository model.
+ * Repository controllers are used by
+ * {@linkplain Authentication authentications} to
  * {@linkplain Authentication#sign sign} and
- * {@linkplain Authentication#verify verify} artifacts.
- * Repositories are stateful and so they are generally not thread-safe.
+ * {@linkplain Authentication#verify verify} arbitrary artifacts.
+ * A repository controller needs to be configured with a
+ * {@link org.truelicense.api.codec.Codec} for encoding and decoding any
+ * given artifacts.
  *
  * @author Christian Schlichtherle
  */
 public interface Repository {
 
     /**
-     * Encodes and signs the given {@code artifact}
-     * and returns an artifactory for decoding it.
-     * As a side effect, the state of this repository is modified so that a
-     * subsequent {@linkplain #verify verification} can succeed.
+     * Encodes and signs the given {@code artifact}, stores it in the underlying
+     * repository model and returns an artifactory for decoding it.
+     * As a side effect, the state of the underlying repository model is updated
+     * so that a subsequent {@linkplain #verify verification} can succeed.
      *
-     * @param  codec
-     *         the codec for encoding the artifact.
-     * @param  engine
-     *         the signature engine.
-     * @param  key
-     *         the private key.
-     * @param  artifact
-     *         the artifact to sign.
+     * @param codec
+     *        the codec for encoding the artifact.
+     * @param engine
+     *        the signature engine to use.
+     *        The engine must be initialized for signing before calling this
+     *        method.
+     * @param artifact
+     *        the artifact to sign.
      */
-    Artifactory sign(
-            Codec codec,
-            Signature engine,
-            PrivateKey key,
-            Object artifact)
-    throws Exception;
+    Artifactory sign(Codec codec, Signature engine, Object artifact) throws Exception;
 
     /**
-     * Verifies the signature of the encoded artifact
-     * and returns an artifactory for decoding it.
-     * The state of this repository is not modified by this method.
+     * Verifies the signature of the artifact which is encoded in the underlying
+     * repository model and returns an artifactory for decoding it.
+     * The state of the underlying repository model is not modified by this
+     * method.
      *
-     * @param  codec
-     *         the codec for decoding the artifact.
-     * @param  engine
-     *         the signature engine.
-     * @param  key
-     *         the public key.
-     * @throws RepositoryIntegrityException if the integrity of the repository
-     *         with its encoded artifact has been compromised.
+     * @param codec
+     *        the codec for decoding the artifact.
+     * @param engine
+     *        the signature engine to use.
+     *        The engine must be initialized for verifying before calling this
+     *        method.
+     * @throws RepositoryIntegrityException if the integrity of the underlying
+     *         repository model has been compromised.
      */
-    Artifactory verify(
-            Codec codec,
-            Signature engine,
-            PublicKey key)
-    throws Exception;
+    Artifactory verify(Codec codec, Signature engine) throws Exception;
 }

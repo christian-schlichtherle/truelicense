@@ -15,8 +15,6 @@ import org.truelicense.spi.io.MemoryStore;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.nio.charset.Charset;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Signature;
 
 import static org.truelicense.spi.codec.Codecs.charset;
@@ -60,11 +58,10 @@ extends RepositoryModel implements Repository {
     private String encode(byte[] data) { return base64.encodeToString(data); }
 
     @Override
-    public final Artifactory sign(final Codec codec, final Signature engine, final PrivateKey key, final Object artifact) throws Exception {
+    public final Artifactory sign(final Codec codec, final Signature engine, final Object artifact) throws Exception {
         final MemoryStore store = new MemoryStore();
         codec.encode(store, artifact);
         final byte[] artifactData = store.data();
-        engine.initSign(key);
         engine.update(artifactData);
         final byte[] signatureData = engine.sign();
 
@@ -81,10 +78,9 @@ extends RepositoryModel implements Repository {
     }
 
     @Override
-    public final Artifactory verify(final Codec codec, final Signature engine, final PublicKey key) throws Exception {
+    public final Artifactory verify(final Codec codec, final Signature engine) throws Exception {
         if (!engine.getAlgorithm().equalsIgnoreCase(getAlgorithm()))
             throw new IllegalArgumentException();
-        engine.initVerify(key);
         final byte[] artifactData = data(codec, getArtifact());
         engine.update(artifactData);
         if (!engine.verify(decode(getSignature())))
