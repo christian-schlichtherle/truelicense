@@ -8,7 +8,6 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
-import org.truelicense.api.auth.Repository;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.core.auth.Notary;
 import org.truelicense.spi.io.StandardBIOS;
@@ -124,13 +123,6 @@ implements LicenseManagementContext<PasswordSpecification> {
      */
     @Override
     public Date now() { return new Date(); }
-
-    /**
-     * Returns a <em>new</em> repository to use for
-     * {@linkplain #license licenses}.
-     */
-    @Override
-    public abstract Repository repository();
 
     /** Returns the licensing subject. */
     @Override

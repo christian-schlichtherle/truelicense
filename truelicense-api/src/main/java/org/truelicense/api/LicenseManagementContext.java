@@ -7,7 +7,7 @@ package org.truelicense.api;
 
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
-import org.truelicense.api.auth.RepositoryProvider;
+import org.truelicense.api.auth.RepositoryFactory;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.Encryption;
@@ -42,7 +42,7 @@ extends BiosProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<PasswordSpecification>,
-        RepositoryProvider {
+        RepositoryFactory {
 
     /**
      * Returns an authentication for the given key store parameters.

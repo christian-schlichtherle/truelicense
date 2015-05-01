@@ -6,12 +6,12 @@
 package org.truelicense.api.auth;
 
 /**
- * Provides a repository.
+ * Creates a new repository.
  *
  * @author Christian Schlichtherle
  */
-public interface RepositoryProvider {
+public interface RepositoryFactory {
 
-    /** Returns the repository. */
+    /** Returns a new repository. */
     Repository repository();
 }

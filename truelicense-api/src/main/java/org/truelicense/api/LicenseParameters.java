@@ -6,8 +6,7 @@
 package org.truelicense.api;
 
 import org.truelicense.api.auth.AuthenticationProvider;
-import org.truelicense.api.auth.Repository;
-import org.truelicense.api.auth.RepositoryProvider;
+import org.truelicense.api.auth.RepositoryFactory;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.EncryptionProvider;
@@ -35,9 +34,5 @@ extends AuthenticationProvider,
         LicenseAuthorizationProvider,
         LicenseInitializationProvider,
         LicenseValidationProvider,
-        RepositoryProvider {
-
-    /** Returns a <em>new</em> repository. */
-    @Override
-    Repository repository();
+        RepositoryFactory {
 }
