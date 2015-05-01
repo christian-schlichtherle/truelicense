@@ -6,7 +6,7 @@
 package org.truelicense.api.passwd;
 
 /**
- * An immutable factory for consistent {@link Password}s.
+ * A factory for consistent {@link Password}s.
  *
  * @author Christian Schlichtherle
  */

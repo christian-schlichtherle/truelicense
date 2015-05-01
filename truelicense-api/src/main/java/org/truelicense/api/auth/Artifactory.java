@@ -8,7 +8,7 @@ package org.truelicense.api.auth;
 import java.lang.reflect.Type;
 
 /**
- * An immutable factory for authenticated objects (artifacts).
+ * A factory for authenticated objects (artifacts).
  *
  * @author Christian Schlichtherle
  */
