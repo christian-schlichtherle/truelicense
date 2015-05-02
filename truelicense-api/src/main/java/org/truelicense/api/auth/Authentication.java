@@ -10,8 +10,7 @@ package org.truelicense.api.auth;
  *
  * @author Christian Schlichtherle
  */
-// TODO: Remove implements KeyStoreParametersProvider
-public interface Authentication extends KeyStoreParametersProvider {
+public interface Authentication {
 
     /**
      * Encodes and signs the given {@code artifact} in the given repository and
