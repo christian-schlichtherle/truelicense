@@ -6,11 +6,13 @@
 package org.truelicense.v2.commons;
 
 import org.truelicense.api.License;
+import org.truelicense.api.auth.RepositoryContext;
+import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
-import org.truelicense.core.auth.BasicRepository;
+import org.truelicense.v2.commons.auth.V2RepositoryContext;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.comp.V2Compression;
 import org.truelicense.v2.commons.crypto.V2Encryption;
@@ -71,11 +73,12 @@ extends CommonLicenseManagementContext {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V2LicenseManagementContext}
-     * returns a new {@link BasicRepository}.
+     * returns a new {@link V2RepositoryContext}.
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public final BasicRepository repository() {
-        return new BasicRepository();
+    public final RepositoryContext<RepositoryModel> repositoryContext() {
+        return (RepositoryContext) new V2RepositoryContext();
     }
 
     /**

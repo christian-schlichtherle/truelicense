@@ -13,8 +13,10 @@ extends CodecTestSuite { this: TestContext =>
     val c = managementContext.codec
     val p = vendorManager.parameters
     val a = p.authentication
-    val r = p.repository
-    a sign (c, r, l)
-    r
+    val rx = p.repositoryContext
+    val rm = rx.model
+    val rc = rx.controller(rm, c)
+    a sign (rc, l)
+    rm
   }
 }

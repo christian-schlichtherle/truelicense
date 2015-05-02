@@ -14,7 +14,7 @@ import org.truelicense.spi.codec.SerializationCodec
 /**
  * @author Christian Schlichtherle
  */
-class RepositoryTestSuite
+abstract class RepositoryTestSuite
 extends WordSpec with ParallelTestExecution { this: TestContext =>
 
   private val _codec = new SerializationCodec {
@@ -22,15 +22,15 @@ extends WordSpec with ParallelTestExecution { this: TestContext =>
     override def contentTransferEncoding = super.contentTransferEncoding.toUpperCase(ENGLISH)
   }
 
-  private def repo = managementContext.repository()
-
   "A repository" should {
     "sign and verify an object" in {
-      val auth = vendorManager.parameters.authentication
-      val repo = managementContext.repository()
-      val obj = "Hello world!"
-      (auth sign (_codec, repo, obj) decode classOf[String]).asInstanceOf[String] should be (obj)
-      (auth verify (_codec, repo) decode classOf[String]).asInstanceOf[String] should be (obj)
+      val authentication = vendorManager.parameters.authentication
+      val context = managementContext.repositoryContext()
+      val model = context.model()
+      val controller = context.controller(model, _codec)
+      val artifact = "Hello world!"
+      (authentication sign (controller, artifact) decode classOf[String]).asInstanceOf[String] should be (artifact)
+      (authentication verify controller decode classOf[String]).asInstanceOf[String] should be (artifact)
     }
   }
 }

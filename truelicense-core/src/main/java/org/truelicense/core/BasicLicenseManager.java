@@ -6,9 +6,7 @@
 package org.truelicense.core;
 
 import org.truelicense.api.*;
-import org.truelicense.api.auth.Artifactory;
-import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.*;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.*;
@@ -38,8 +36,10 @@ implements BiosProvider, LicenseParametersProvider {
                 authorization().clearGenerator(parameters());
                 return new LicenseKeyGenerator() {
 
-                    final Repository repository = repository();
-                    final Artifactory artifactory = authentication().sign(codec(), repository, validatedBean());
+                    final RepositoryContext<RepositoryModel> context = repositoryContext();
+                    final RepositoryModel model = context.model();
+                    final Artifactory artifactory = authentication()
+                            .sign(context.controller(model, codec()), validatedBean());
 
                     License validatedBean() throws Exception {
                         final License duplicate = initializedBean();
@@ -72,7 +72,7 @@ implements BiosProvider, LicenseParametersProvider {
                         wrap(new Callable<Void>() {
 
                             @Override public Void call() throws Exception {
-                                codec().encode(compressedAndEncryptedSink(), repository);
+                                codec().encode(compressedAndEncryptedSink(), model);
                                 return null;
                             }
 
@@ -88,6 +88,7 @@ implements BiosProvider, LicenseParametersProvider {
                     }
                 };
             }
+
         });
     }
 
@@ -172,11 +173,15 @@ implements BiosProvider, LicenseParametersProvider {
     }
 
     Artifactory authenticate(Source source) throws Exception {
-        return authentication().verify(codec(), decodeRepository(source));
+        return authentication().verify(decodeRepository(source));
     }
 
     Repository decodeRepository(Source source) throws Exception {
-        return codec().decode(decompress(source), Repository.class);
+        return repositoryContext().controller(decodeRepositoryModel(source), codec());
+    }
+
+    RepositoryModel decodeRepositoryModel(Source source) throws Exception {
+        return codec().decode(decompress(source), RepositoryModel.class);
     }
 
     Source decompress(Source source) {
@@ -199,7 +204,9 @@ implements BiosProvider, LicenseParametersProvider {
 
     final LicenseValidation validation() { return parameters().validation(); }
 
-    final Repository repository() { return parameters().repository(); }
+    final RepositoryContext<RepositoryModel> repositoryContext() {
+        return parameters().repositoryContext();
+    }
 
     final Authentication authentication() {
         return parameters().authentication();

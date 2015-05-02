@@ -6,14 +6,18 @@
 package org.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
-import de.schlichtherle.xml.GenericCertificate;
+import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
+import org.truelicense.api.auth.RepositoryContext;
+import org.truelicense.api.auth.RepositoryModel;
+import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
 import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.v1.auth.V1RepositoryContext;
 import org.truelicense.v1.codec.X500PrincipalXmlCodec;
 import org.truelicense.v1.comp.V1Compression;
 import org.truelicense.v1.crypto.V1Encryption;
@@ -86,7 +90,7 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      * returns an {@link X500PrincipalXmlCodec}.
      */
     @Override
-    public X500PrincipalXmlCodec codec() { return codec; }
+    public Codec codec() { return codec; }
 
     /**
      * {@inheritDoc}
@@ -116,7 +120,7 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
     // de.schlichtherle.license and this package.
     // However, this is tolerable.
     @Override
-    public LicenseContent license() { return new LicenseContent(); }
+    public License license() { return new LicenseContent(); }
 
     /**
      * {@inheritDoc}
@@ -133,11 +137,12 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link V1LicenseManagementContext}
-     * returns a new {@link GenericCertificate}.
+     * returns a new {@link V1RepositoryContext}.
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public final GenericCertificate repository() {
-        return new GenericCertificate();
+    public final RepositoryContext<RepositoryModel> repositoryContext() {
+        return (RepositoryContext) new V1RepositoryContext();
     }
 
     /**

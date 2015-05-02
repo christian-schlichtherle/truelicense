@@ -5,42 +5,39 @@
 
 package de.schlichtherle.xml;
 
-import org.truelicense.api.auth.Artifactory;
-import org.truelicense.api.auth.Repository;
-import org.truelicense.api.codec.Codec;
-import org.truelicense.core.auth.BasicRepository;
-import org.truelicense.obfuscate.Obfuscate;
+import org.truelicense.api.auth.RepositoryModel;
+import org.truelicense.core.misc.Strings;
 
-import java.security.Signature;
+import java.util.Objects;
+
+import static java.util.Locale.ENGLISH;
 
 /**
- * Provides compatibility with V1 format license keys.
+ * A repository model for use with V1 format license keys.
  * All properties are set to {@code null} by default.
  *
  * @author Christian Schlichtherle
  */
-public final class GenericCertificate implements Repository {
+public final class GenericCertificate implements RepositoryModel {
 
-    @Obfuscate private static final String SIGNATURE_ENCODING = "US-ASCII/Base64";
+    private String encoded, signature, signatureAlgorithm, signatureEncoding;
 
-    private final BasicRepository repository = new BasicRepository();
+    public String getEncoded() { return encoded; }
 
-    private String signatureEncoding;
-
-    public String getEncoded()   {
-        return repository.getArtifact();
+    public void setEncoded(final String encoded) {
+        this.encoded = encoded;
     }
 
-    public void setEncoded(String encoded) {
-        repository.setArtifact(encoded);
+    public String getSignature() { return signature; }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
-    public String getSignatureAlgorithm()  {
-        return repository.getAlgorithm();
-    }
+    public String getSignatureAlgorithm()  { return signatureAlgorithm; }
 
-    public void setSignatureAlgorithm(String algorithm) {
-        repository.setAlgorithm(algorithm);
+    public void setSignatureAlgorithm(final String algorithm) {
+        this.signatureAlgorithm = algorithm;
     }
 
     public String getSignatureEncoding() { return signatureEncoding; }
@@ -49,37 +46,22 @@ public final class GenericCertificate implements Repository {
         this.signatureEncoding = signatureEncoding;
     }
 
-    public String getSignature() {
-        return repository.getSignature();
-    }
-
-    public void setSignature(String signature) {
-        repository.setSignature(signature);
-    }
-
     @Override
-    public Artifactory sign(final Codec codec, final Signature engine, final Object artifact) throws Exception {
-        final Artifactory a = repository.sign(codec, engine, artifact);
-        setSignatureEncoding(SIGNATURE_ENCODING);
-        return a;
-    }
-
-    @Override
-    public Artifactory verify(Codec codec, Signature engine) throws Exception {
-        return repository.verify(codec, engine);
-    }
-
-    @Override
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof GenericCertificate)) return false;
         final GenericCertificate that = (GenericCertificate) obj;
-        return this.repository.equals(that.repository);
+        return  Objects.equals(this.getEncoded(), that.getEncoded()) &&
+                Objects.equals(this.getSignature(), that.getSignature()) &&
+                Strings.equalsIgnoreCase(this.getSignatureAlgorithm(), that.getSignatureAlgorithm());
     }
 
     @Override
     public int hashCode() {
-        return repository.hashCode();
+        int c = 17;
+        c = 31 * c + Objects.hashCode(getEncoded());
+        c = 31 * c + Objects.hashCode(getSignature());
+        c = 31 * c + Objects.hashCode(Strings.toLowerCase(getSignatureAlgorithm(), ENGLISH));
+        return c;
     }
 }

@@ -430,14 +430,24 @@
 #else
                             </option>
 #end
+#if($licenseKeyFormat.startsWith("V2/"))
+                            <option>
+#else
+                            <!--option>
+#end
+                                -keepclassmembers class org.truelicense.v2.commons.auth.V2RepositoryModel {
+                                    public *** get*();
+                                    public void set*(***);
+                                }
+#if(!$licenseKeyFormat.startsWith("V2/"))
+                            </option-->
+#else
+                            </option>
+#end
 
                             <option>
                                 -adaptresourcefilenames
                                 -keepclassmembers class org.truelicense.api.License {
-                                    public *** get*();
-                                    public void set*(***);
-                                }
-                                -keepclassmembers class org.truelicense.core.auth.BasicRepository {
                                     public *** get*();
                                     public void set*(***);
                                 }

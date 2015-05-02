@@ -8,7 +8,8 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryContext;
+import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
@@ -215,7 +216,9 @@ implements BiosProvider,
             public LicenseInitialization initialization() { return initialization; }
 
             @Override
-            public Repository repository() { return context().repository(); }
+            public RepositoryContext<RepositoryModel> repositoryContext() {
+                return context().repositoryContext();
+            }
 
             @Override
             public LicenseValidation validation() { return context().validation(); }

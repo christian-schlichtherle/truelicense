@@ -8,9 +8,11 @@ package org.truelicense.v2.xml;
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
-import org.truelicense.core.auth.BasicRepository;
+import org.truelicense.api.codec.Codec;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.V2LicenseManagementContext;
+import org.truelicense.v2.commons.auth.V2RepositoryController;
+import org.truelicense.v2.commons.auth.V2RepositoryModel;
 import org.truelicense.v2.xml.codec.JaxbCodec;
 
 import javax.xml.bind.JAXBContext;
@@ -76,7 +78,7 @@ extends V2LicenseManagementContext {
      * returns a {@link JaxbCodec}.
      */
     @Override
-    public JaxbCodec codec() { return new JaxbCodec(context()); }
+    public Codec codec() { return new JaxbCodec(context()); }
 
     /**
      * Returns the JAXB context to use for {@link #codec}.
@@ -91,7 +93,7 @@ extends V2LicenseManagementContext {
 
     /**
      * Returns a new JAXB context for use with {@linkplain #license licenses}
-     * and {@linkplain #repository repositories}.
+     * and {@linkplain #repositoryContext repositories}.
      * This method is normally only called once.
      * In a multi-threaded environment, it may get called more than once, but
      * then each invocation must return an object which behaves equivalent to
@@ -99,11 +101,11 @@ extends V2LicenseManagementContext {
      * <p>
      * The implementation in the class {@link V2XmlLicenseManagementContext}
      * constructs a new {@code JAXBContext} for the root element classes
-     * {@link License} and {@link BasicRepository}.
+     * {@link License} and {@link V2RepositoryController}.
      */
     protected JAXBContext newContext() {
         try {
-            return JAXBContext.newInstance(License.class, BasicRepository.class);
+            return JAXBContext.newInstance(License.class, V2RepositoryModel.class);
         } catch (final JAXBException ex) {
             throw new AssertionError(ex);
         }

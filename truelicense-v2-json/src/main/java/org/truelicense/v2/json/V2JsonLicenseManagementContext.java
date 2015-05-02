@@ -11,9 +11,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
-import org.truelicense.api.auth.Repository;
-import org.truelicense.core.auth.BasicRepository;
+import org.truelicense.api.auth.RepositoryModel;
+import org.truelicense.api.codec.Codec;
 import org.truelicense.v2.commons.V2LicenseManagementContext;
+import org.truelicense.v2.commons.auth.V2RepositoryModel;
 import org.truelicense.v2.json.codec.JsonCodec;
 
 /**
@@ -76,7 +77,7 @@ extends V2LicenseManagementContext {
      * returns a new {@link JsonCodec}.
      */
     @Override
-    public JsonCodec codec() {
+    public Codec codec() {
         return new JsonCodec(mapper());
     }
 
@@ -93,7 +94,7 @@ extends V2LicenseManagementContext {
 
     /**
      * Returns a new object mapper for use with {@linkplain #license licenses}
-     * and {@linkplain #repository repositories}.
+     * and {@linkplain #repositoryContext repositories}.
      * This method is normally only called once.
      * In a multi-threaded environment, it may get called more than once, but
      * then each invocation must return an object which behaves equivalent to
@@ -104,9 +105,8 @@ extends V2LicenseManagementContext {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         mapper.registerModule(new JaxbAnnotationModule());
         final SimpleModule module = new SimpleModule();
-        // Note that this doesn't work with a JaxbAnnotationModule as of
-        // jackson-module-jaxb-annotations 2.1.3.
-        module.addAbstractTypeMapping(Repository.class, BasicRepository.class);
+        // TODO: This doesn't work with a JaxbAnnotationModule as of jackson-module-jaxb-annotations 2.1.3.
+        module.addAbstractTypeMapping(RepositoryModel.class, V2RepositoryModel.class);
         mapper.registerModule(module);
         return mapper;
     }

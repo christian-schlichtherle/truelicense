@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
  *
  * @author Christian Schlichtherle
  */
-final class EncodedArtifact implements Artifactory {
+public final class EncodedArtifact implements Artifactory {
 
     private final Codec codec;
     private final Source source;
@@ -29,7 +29,7 @@ final class EncodedArtifact implements Artifactory {
      * @param codec the codec for decoding the artifact.
      * @param encodedArtifact the encoded representation of the artifact.
      */
-    EncodedArtifact(Codec codec, byte[] encodedArtifact) {
+    public EncodedArtifact(Codec codec, byte[] encodedArtifact) {
         this(codec, source(encodedArtifact));
     }
 
@@ -40,7 +40,7 @@ final class EncodedArtifact implements Artifactory {
      * @param source the source from where to read the encoded object graph
      *        from.
      */
-    EncodedArtifact(final Codec codec, final Source source) {
+    public EncodedArtifact(final Codec codec, final Source source) {
         this.codec = codec;
         this.source = source;
     }

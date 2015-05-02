@@ -3,31 +3,45 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.core.auth;
+package org.truelicense.v2.commons.auth;
 
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.core.misc.Strings;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.util.Objects;
 
 import static java.util.Locale.ENGLISH;
 
 /**
- * A model for storing authenticated objects (artifacts) as encoded strings.
+ * A repository model for use with V2 format license keys.
  * All properties are set to {@code null} by default.
- * The content type and the content transfer encoding of the encoded artifact
- * and encoded signature are defined externally.
- * <p>
- * This class is used by {@linkplain Repository repositories} to store
- * artifacts for {@linkplain Repository#sign signing} and
- * {@linkplain Repository#verify verifying}.
  *
  * @author Christian Schlichtherle
  */
-public class RepositoryModel {
+// #TRUELICENSE-50: The XML element name MUST be explicitly defined!
+// Otherwise, it would get derived from the class name, but this would break
+// if the class name gets obfuscated, e.g. when using the ProGuard
+// configuration from the TrueLicense Maven Archetype.
+@XmlRootElement(name = "repository")
+// #TRUELICENSE-52: Dito for the XML type. This enables objects of this class
+// to participate in larger object graphs which the application wants to
+// encode/decode to/from XML.
+@XmlType(name = "repository")
+public final class V2RepositoryModel implements RepositoryModel {
 
-    private String artifact, signature, algorithm;
+    private String algorithm, artifact, signature;
+
+    /** Returns the signature algorithm. */
+    @XmlElement(required = true)
+    public final String getAlgorithm() { return algorithm; }
+
+    /** Sets the signature algorithm. */
+    public final void setAlgorithm(final String signatureAlgorithm) {
+        this.algorithm = signatureAlgorithm;
+    }
 
     /** Returns the encoded artifact. */
     @XmlElement(required = true)
@@ -47,27 +61,17 @@ public class RepositoryModel {
         this.signature = encodedSignature;
     }
 
-    /** Returns the signature algorithm. */
-    @XmlElement(required = true)
-    public final String getAlgorithm() { return algorithm; }
-
-    /** Sets the signature algorithm. */
-    public final void setAlgorithm(final String signatureAlgorithm) {
-        this.algorithm = signatureAlgorithm;
-    }
-
     /**
      * Returns {@code true} if and only if the given object is an instance of
-     * {@code RepositoryModel} and it's encoded artifact, encoded signature and
-     * signature algorithm compare equal, whereby the case of the signature
-     * algorithm is ignored.
+     * {@link V2RepositoryModel} and it's signature algorithm, encoded
+     * artifact and encoded signature compare equal, whereby the case of the
+     * signature algorithm is ignored.
      */
     @Override
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public boolean equals(final Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof RepositoryModel)) return false;
-        final RepositoryModel that = (RepositoryModel) obj;
+        if (!(obj instanceof V2RepositoryModel)) return false;
+        final V2RepositoryModel that = (V2RepositoryModel) obj;
         return  Objects.equals(this.getArtifact(), that.getArtifact()) &&
                 Objects.equals(this.getSignature(), that.getSignature()) &&
                 Strings.equalsIgnoreCase(this.getAlgorithm(), that.getAlgorithm());
