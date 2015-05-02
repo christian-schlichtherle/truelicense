@@ -13,29 +13,28 @@ package org.truelicense.api.auth;
 public interface Authentication {
 
     /**
-     * Encodes and signs the given {@code artifact} in the given repository and
-     * returns an artifactory for decoding it.
-     * After calling this method, the repository typically gets encoded for
-     * future decoding and verification.
+     * Encodes and signs the given {@code artifact} and returns an artifactory
+     * for decoding it.
+     * As a side effect, the state of the underlying repository model is updated
+     * with the encoded artifact and its signature so that a subsequent
+     * {@linkplain #verify verification} can succeed.
      *
-     * @param  repository the controller for the repository for encoding the
-     *                    artifact to.
-     * @param  artifact the artifact to sign.
+     * @param repository the controller for the repository for encoding the
+     *                   artifact to.
+     * @param artifact the artifact to sign.
      * @return An Artifactory for decoding the signed artifact in the
      *         repository.
      */
     Artifactory sign(RepositoryController repository, Object artifact) throws Exception;
 
     /**
-     * Verifies the signature of the encoded artifact in the given repository
-     * and returns an artifactory for decoding it.
-     * Calling this method generally requires prior initialization of the
-     * repository.
-     * Though initialization is a side effect of calling {@link #sign}, this is
-     * typically done by decoding the repository itself.
+     * Verifies the signature of the encoded artifact in the underlying
+     * repository model and returns an artifactory for decoding it.
+     * The state of the underlying repository model is not modified by this
+     * method.
      *
-     * @param  repository the controller for the repository for decoding the
-     *                    artifact from.
+     * @param repository the controller for the repository for decoding the
+     *                   artifact from.
      * @return An Artifactory for decoding the verified artifact in the
      *         repository.
      * @throws RepositoryIntegrityException if the integrity of the repository

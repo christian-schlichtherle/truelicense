@@ -22,10 +22,11 @@ import java.security.Signature;
 public interface RepositoryController {
 
     /**
-     * Encodes and signs the given {@code artifact}, stores it in the underlying
-     * repository model and returns an artifactory for decoding it.
-     * As a side effect, the state of the underlying repository is updated
-     * so that a subsequent {@linkplain #verify verification} can succeed.
+     * Encodes and signs the given {@code artifact} and returns an artifactory
+     * for decoding it.
+     * As a side effect, the state of the underlying repository model is updated
+     * with the encoded artifact and its signature so that a subsequent
+     * {@linkplain #verify verification} can succeed.
      *
      * @param engine
      *        the signature engine to use.
