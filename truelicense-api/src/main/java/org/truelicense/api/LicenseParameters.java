@@ -11,6 +11,7 @@ import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.EncryptionProvider;
+import org.truelicense.api.io.BiosProvider;
 
 /**
  * Defines license parameters.
@@ -29,6 +30,7 @@ import org.truelicense.api.crypto.EncryptionProvider;
  */
 public interface LicenseParameters
 extends AuthenticationProvider,
+        BiosProvider,
         CodecProvider,
         CompressionProvider,
         EncryptionProvider,

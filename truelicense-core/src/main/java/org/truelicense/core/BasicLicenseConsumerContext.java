@@ -7,7 +7,6 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.CachePeriodProvider;
@@ -40,7 +39,8 @@ implements CachePeriodProvider,
         super(context);
     }
 
-    @Override public long cachePeriodMillis() {
+    @Override
+    public long cachePeriodMillis() {
         return context().cachePeriodMillis();
     }
 
@@ -57,14 +57,25 @@ implements CachePeriodProvider,
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
 
-            @Override public BIOS bios() { return cc.bios(); }
-            @Override public long cachePeriodMillis() { return cachePeriodMillis; }
-            @Override public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
-            @Override public License license() { return cc.license(); }
-            @Override public LicenseParameters parameters() { return parameters; }
-            @Override LicenseConsumerManager parent() { return parent; }
-            @Override public Store store() { return store; }
-            @Override public String subject() { return cc.subject(); }
+            @Override
+            public long cachePeriodMillis() { return cachePeriodMillis; }
+
+            @Override
+            public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
+
+            @Override
+            public License license() { return cc.license(); }
+
+            @Override
+            public LicenseParameters parameters() { return parameters; }
+
+            @Override
+            LicenseConsumerManager parent() { return parent; }
+            @Override
+            public Store store() { return store; }
+
+            @Override
+            public String subject() { return cc.subject(); }
         }
         return new Manager();
     }
@@ -90,9 +101,11 @@ implements CachePeriodProvider,
                 parent, secret);
     }
 
-    @Override public License license() { return context().license(); }
+    @Override
+    public License license() { return context().license(); }
 
-    @Override public ChildLicenseConsumerManagerBuilder manager() {
+    @Override
+    public ChildLicenseConsumerManagerBuilder manager() {
         return new ChildLicenseConsumerManagerBuilder();
     }
 
@@ -108,12 +121,20 @@ implements CachePeriodProvider,
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
 
-            @Override public BIOS bios() { return cc.bios(); }
-            @Override public long cachePeriodMillis() { return cachePeriodMillis; }
-            @Override public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
-            @Override public LicenseParameters parameters() { return parameters; }
-            @Override public Store store() { return store; }
-            @Override public String subject() { return cc.subject(); }
+            @Override
+            public long cachePeriodMillis() { return cachePeriodMillis; }
+
+            @Override
+            public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
+
+            @Override
+            public LicenseParameters parameters() { return parameters; }
+
+            @Override
+            public Store store() { return store; }
+
+            @Override
+            public String subject() { return cc.subject(); }
         }
         return new Manager();
     }
@@ -183,7 +204,8 @@ implements CachePeriodProvider,
         final class ParentLicenseConsumerManagerBuilder
         extends ChildLicenseConsumerManagerBuilder {
 
-            @Override public ChildLicenseConsumerManagerBuilder inject() {
+            @Override
+            public ChildLicenseConsumerManagerBuilder inject() {
                 return ChildLicenseConsumerManagerBuilder.this.parent(build());
             }
         }

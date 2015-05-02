@@ -48,7 +48,6 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
 
-            @Override public BIOS bios() { return vc.bios(); }
             @Override public LicenseVendorContext<PasswordSpecification> context() { return vc; }
             @Override public LicenseParameters parameters() { return parameters; }
             @Override public Store store() { throw new UnsupportedOperationException(); }

@@ -25,8 +25,7 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-abstract class BasicLicenseManager
-implements BiosProvider, LicenseParametersProvider {
+abstract class BasicLicenseManager implements LicenseParametersProvider {
 
     public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
         return wrap(new Callable<LicenseKeyGenerator>() {
@@ -196,6 +195,8 @@ implements BiosProvider, LicenseParametersProvider {
     final LicenseAuthorization authorization() {
         return parameters().authorization();
     }
+
+    final BIOS bios() { return parameters().bios(); }
 
     final LicenseInitialization initialization() {
         return parameters().initialization();
