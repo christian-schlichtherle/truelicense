@@ -7,7 +7,7 @@ package org.truelicense.v2.commons.auth;
 
 import org.apache.commons.codec.binary.Base64;
 import org.truelicense.api.auth.Artifactory;
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.core.auth.EncodedArtifact;
@@ -24,7 +24,7 @@ import static org.truelicense.spi.codec.Codecs.charset;
  *
  * @author Christian Schlichtherle
  */
-public final class V2RepositoryController implements Repository {
+public final class V2RepositoryController implements RepositoryController {
 
     private final Base64 base64 = new Base64();
     private final V2RepositoryModel model;

@@ -3,7 +3,7 @@ package org.truelicense.v1.auth;
 import de.schlichtherle.xml.GenericCertificate;
 import org.apache.commons.codec.binary.Base64;
 import org.truelicense.api.auth.Artifactory;
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.core.auth.EncodedArtifact;
@@ -21,7 +21,7 @@ import static org.truelicense.spi.codec.Codecs.charset;
  *
  * @author Christian Schlichtherle
  */
-public class V1RepositoryController implements Repository {
+public class V1RepositoryController implements RepositoryController {
 
     @Obfuscate
     private static final String SIGNATURE_ENCODING = "US-ASCII/Base64";

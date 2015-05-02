@@ -9,8 +9,7 @@ package org.truelicense.core.auth;
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
-import org.truelicense.api.auth.Repository;
-import org.truelicense.api.codec.Codec;
+import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.i18n.Message;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.Password;
@@ -30,8 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Signs or verifies {@linkplain Repository repositories} with an entry in a
- * key store.
+ * Signs or verifies a generic artifact using the private or public keys in a
+ * key store entry.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
@@ -60,12 +59,12 @@ public final class Notary implements Authentication {
     }
 
     @Override
-    public Artifactory sign(Repository repository, Object artifact) throws Exception {
+    public Artifactory sign(RepositoryController repository, Object artifact) throws Exception {
         return new Cache().sign(repository, artifact);
     }
 
     @Override
-    public Artifactory verify(Repository repository) throws Exception {
+    public Artifactory verify(RepositoryController repository) throws Exception {
         return new Cache().verify(repository);
     }
 
@@ -77,14 +76,14 @@ public final class Notary implements Authentication {
 
         KeyStore keyStore;
 
-        Artifactory sign(Repository repository, Object artifact) throws Exception {
+        Artifactory sign(RepositoryController repository, Object artifact) throws Exception {
             final Signature engine = engine();
             final PrivateKey key = privateKey();
             engine.initSign(key);
             return repository.sign(engine, artifact);
         }
 
-        Artifactory verify(Repository repository) throws Exception {
+        Artifactory verify(RepositoryController repository) throws Exception {
             final Signature engine = engine();
             final PublicKey key = publicKey();
             engine.initVerify(key);

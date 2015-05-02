@@ -5,7 +5,7 @@
 
 package org.truelicense.v2.commons.auth;
 
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.codec.Codec;
 
@@ -23,7 +23,7 @@ implements RepositoryContext<V2RepositoryModel> {
     }
 
     @Override
-    public Repository controller(V2RepositoryModel model, Codec codec) {
+    public RepositoryController controller(V2RepositoryModel model, Codec codec) {
         return new V2RepositoryController(model, codec);
     }
 }

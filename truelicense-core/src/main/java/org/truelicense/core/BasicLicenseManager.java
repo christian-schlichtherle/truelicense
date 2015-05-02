@@ -173,14 +173,14 @@ implements BiosProvider, LicenseParametersProvider {
     }
 
     Artifactory authenticate(Source source) throws Exception {
-        return authentication().verify(decodeRepository(source));
+        return authentication().verify(repositoryController(source));
     }
 
-    Repository decodeRepository(Source source) throws Exception {
-        return repositoryContext().controller(decodeRepositoryModel(source), codec());
+    RepositoryController repositoryController(Source source) throws Exception {
+        return repositoryContext().controller(repositoryModel(source), codec());
     }
 
-    RepositoryModel decodeRepositoryModel(Source source) throws Exception {
+    RepositoryModel repositoryModel(Source source) throws Exception {
         return codec().decode(decompress(source), RepositoryModel.class);
     }
 

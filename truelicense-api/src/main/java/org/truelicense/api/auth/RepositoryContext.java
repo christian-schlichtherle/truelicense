@@ -9,7 +9,7 @@ import org.truelicense.api.codec.Codec;
 
 /**
  * A factory for repository models and their associated
- * {@linkplain Repository repository controllers}.
+ * {@linkplain RepositoryController repository controllers}.
  * A repository context is created by a
  * {@linkplain RepositoryContextProvider repository context provider}.
  *
@@ -24,5 +24,5 @@ public interface RepositoryContext<Model> {
      * Returns a repository controller for the given repository model using the
      * given codec.
      */
-    Repository controller(Model model, Codec codec);
+    RepositoryController controller(Model model, Codec codec);
 }

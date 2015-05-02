@@ -19,7 +19,7 @@ import java.security.Signature;
  *
  * @author Christian Schlichtherle
  */
-public interface Repository {
+public interface RepositoryController {
 
     /**
      * Encodes and signs the given {@code artifact}, stores it in the underlying

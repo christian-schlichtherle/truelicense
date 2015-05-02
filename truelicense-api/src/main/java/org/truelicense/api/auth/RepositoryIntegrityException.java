@@ -8,9 +8,9 @@ package org.truelicense.api.auth;
 import java.security.GeneralSecurityException;
 
 /**
- * Indicates that the integrity of a {@link Repository} with its encoded
- * artifact has probably been compromised because the public key did not match
- * the private key when verifying the data.
+ * Indicates that the integrity of a repository has probably been compromised
+ * because the public key did not match the private key when verifying its
+ * encoded artifact.
  *
  * @author Christian Schlichtherle
  */

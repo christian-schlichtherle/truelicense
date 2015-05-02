@@ -12,8 +12,8 @@ import java.util.List;
 
 /**
  * Defines parameters for accessing a {@link java.security.KeyStore} which
- * holds the public or private keys to sign or verify a {@link Repository}
- * by an {@link Authentication}.
+ * holds the public or private keys to sign or verify an artifact using an
+ * {@link Authentication}.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.

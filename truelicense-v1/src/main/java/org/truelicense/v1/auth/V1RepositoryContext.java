@@ -1,7 +1,7 @@
 package org.truelicense.v1.auth;
 
 import de.schlichtherle.xml.GenericCertificate;
-import org.truelicense.api.auth.Repository;
+import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.codec.Codec;
 
@@ -19,7 +19,7 @@ implements RepositoryContext<GenericCertificate> {
     }
 
     @Override
-    public Repository controller(GenericCertificate model, Codec codec) {
+    public RepositoryController controller(GenericCertificate model, Codec codec) {
         return new V1RepositoryController(model, codec);
     }
 }
