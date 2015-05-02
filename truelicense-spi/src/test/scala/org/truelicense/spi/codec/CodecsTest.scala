@@ -58,6 +58,7 @@ class CodecsTest extends WordSpec {
 /** @author Christian Schlichtherle */
 private case class MockCodec(contentType: String, contentTransferEncoding: String)
   extends Codec {
-  def encode(s: Sink, o: AnyRef) { throw new UnsupportedOperationException }
-  def decode[T](s: Source, t: Type) = throw new UnsupportedOperationException
+
+  def to(sink: Sink) = throw new UnsupportedOperationException
+  def from(source: Source) = throw new UnsupportedOperationException
 }

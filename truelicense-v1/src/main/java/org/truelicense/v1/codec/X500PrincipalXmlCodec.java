@@ -24,7 +24,8 @@ public class X500PrincipalXmlCodec extends XmlCodec {
     private static final PersistenceDelegate pd4xp =
             new DefaultPersistenceDelegate(new String[]{ "name" }); // NOI18N
 
-    @Override protected XMLEncoder encoder(final OutputStream out) {
+    @Override
+    protected XMLEncoder encoder(final OutputStream out) {
         final XMLEncoder enc = super.encoder(out);
         enc.setPersistenceDelegate(X500Principal.class, pd4xp);
         return enc;

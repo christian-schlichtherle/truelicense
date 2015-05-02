@@ -46,29 +46,9 @@ public interface Codec {
      */
     String contentTransferEncoding();
 
-    /**
-     * Encodes an object graph to the given sink.
-     *
-     * @param sink
-     *        the sink to write the encoded object graph to.
-     * @param obj
-     *        the object graph.
-     */
-    void encode(Sink sink, Object obj) throws Exception;
+    /** Returns an encoder for the given sink. */
+    Encoder to(Sink sink);
 
-    /**
-     * Decodes an object graph from the given source.
-     *
-     * @param  <T>
-     *         the expected generic type of the decoded object.
-     * @param  source
-     *         the source from where to read the encoded object graph from.
-     * @param  expected
-     *         the expected generic type of the decoded object graph, e.g.
-     *         {@code String.class}.
-     *         This is just a hint and the implementation may ignore it.
-     * @return A duplicate of the original object graph.
-     *         Its actual type may differ from the expected generic type.
-     */
-    <T> T decode(Source source, Type expected) throws Exception;
+    /** Returns a decoder for the given source. */
+    Decoder from(Source source);
 }

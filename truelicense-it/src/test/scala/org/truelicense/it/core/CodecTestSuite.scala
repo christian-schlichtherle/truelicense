@@ -6,7 +6,6 @@
 package org.truelicense.it.core
 
 import java.io.IOException
-import java.nio.charset.Charset
 
 import org.scalatest.Matchers._
 import org.scalatest._
@@ -30,9 +29,8 @@ abstract class CodecTestSuite extends WordSpec { this: TestContext =>
         store.exists should equal (false)
         intercept[IOException] { store delete () }
         try {
-          codec encode (transformation apply store, orig)
-          val copy: AnyRef = codec decode (transformation unapply store,
-                                           orig.getClass)
+          codec to (transformation apply store) encode orig
+          val duplicate: AnyRef = codec from (transformation unapply store) decode orig.getClass
           store match {
             case ms: MemoryStore =>
               import collection.JavaConverters._
@@ -44,8 +42,8 @@ abstract class CodecTestSuite extends WordSpec { this: TestContext =>
               }
             case _ =>
           }
-          copy should equal (orig)
-          copy should not be theSameInstanceAs (orig)
+          duplicate should equal (orig)
+          duplicate should not be theSameInstanceAs (orig)
           store.exists should equal (true)
         } finally {
           store delete ()

@@ -70,7 +70,7 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
                         wrap(new Callable<Void>() {
 
                             @Override public Void call() throws Exception {
-                                codec().encode(compressedAndEncryptedSink(), model);
+                                codec().to(compressedAndEncryptedSink()).encode(model);
                                 return null;
                             }
 
@@ -179,7 +179,7 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
     }
 
     RepositoryModel repositoryModel(Source source) throws Exception {
-        return codec().decode(decompress(source), RepositoryModel.class);
+        return codec().from(decompress(source)).decode(RepositoryModel.class);
     }
 
     Source decompress(Source source) {

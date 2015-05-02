@@ -54,6 +54,6 @@ public final class EncodedArtifact implements Artifactory {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T decode(Type expected) throws Exception {
-        return codec.decode(source, expected);
+        return codec.from(source).decode(expected);
     }
 }

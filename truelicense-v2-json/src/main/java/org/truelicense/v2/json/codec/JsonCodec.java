@@ -7,6 +7,8 @@ package org.truelicense.v2.json.codec;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.truelicense.api.codec.Codec;
+import org.truelicense.api.codec.Decoder;
+import org.truelicense.api.codec.Encoder;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
@@ -66,16 +68,26 @@ public class JsonCodec implements Codec {
     }
 
     @Override
-    public void encode(final Sink sink, final Object obj) throws Exception {
-        try (OutputStream out = sink.output()) {
-            mapper.writeValue(out, obj);
-        }
+    public Encoder to(final Sink sink) {
+        return new Encoder() {
+            @Override
+            public void encode(final Object obj) throws Exception {
+                try (OutputStream out = sink.output()) {
+                    mapper.writeValue(out, obj);
+                }
+            }
+        };
     }
 
     @Override
-    public <T> T decode(final Source source, final Type expected) throws Exception {
-        try (InputStream in = source.input()) {
-            return mapper.readValue(in, mapper.constructType(expected));
-        }
+    public Decoder from(final Source source) {
+        return new Decoder() {
+            @Override
+            public <T> T decode(final Type expected) throws Exception {
+                try (InputStream in = source.input()) {
+                    return mapper.readValue(in, mapper.constructType(expected));
+                }
+            }
+        };
     }
 }

@@ -6,6 +6,8 @@
 package org.truelicense.v1.codec;
 
 import org.truelicense.api.codec.Codec;
+import org.truelicense.api.codec.Decoder;
+import org.truelicense.api.codec.Encoder;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
@@ -58,13 +60,18 @@ public class XmlCodec implements Codec {
     }
 
     @Override
-    public void encode(final Sink sink, final Object obj) throws Exception {
-        final ZeroToleranceListener ztl = new ZeroToleranceListener();
-        try (XMLEncoder enc = encoder(sink.output())) {
-            enc.setExceptionListener(ztl);
-            enc.writeObject(obj);
-        }
-        ztl.check();
+    public Encoder to(final Sink sink) {
+        return new Encoder() {
+            @Override
+            public void encode(final Object obj) throws Exception {
+                final ZeroToleranceListener ztl = new ZeroToleranceListener();
+                try (XMLEncoder enc = encoder(sink.output())) {
+                    enc.setExceptionListener(ztl);
+                    enc.writeObject(obj);
+                }
+                ztl.check();
+            }
+        };
     }
 
     /** Returns a new XML encoder. */
@@ -73,16 +80,21 @@ public class XmlCodec implements Codec {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> T decode(final Source source, final Type expected) throws Exception {
-        final Object obj;
-        final ZeroToleranceListener ztl = new ZeroToleranceListener();
-        try (XMLDecoder dec = decoder(source.input())) {
-            dec.setExceptionListener(ztl);
-            obj = dec.readObject();
-        }
-        ztl.check();
-        return (T) obj;
+    public Decoder from(final Source source) {
+        return new Decoder() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public <T> T decode(final Type expected) throws Exception {
+                final Object obj;
+                final ZeroToleranceListener ztl = new ZeroToleranceListener();
+                try (XMLDecoder dec = decoder(source.input())) {
+                    dec.setExceptionListener(ztl);
+                    obj = dec.readObject();
+                }
+                ztl.check();
+                return (T) obj;
+            }
+        };
     }
 
     /** Returns a new XML decoder. */

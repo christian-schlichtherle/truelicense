@@ -74,19 +74,16 @@ public enum Main {
                     final String path = options.get(CreateOption.INPUT);
                     return null == path
                             ? context().license()
-                            : (License) codec().decode("-".equals(path)
-                                    ? stdin()
-                                    : pathStore(path),
-                            License.class);
+                            : (License) codec()
+                                .from("-".equals(path) ? stdin() : pathStore(path))
+                                .decode(License.class);
                 }
 
                 void maybeEncodeOutputLicense(final License license) throws Exception {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path)
-                        codec().encode("-".equals(path)
-                                        ? stdout()
-                                        : pathStore(path),
-                                license);
+                        codec() .to("-".equals(path) ? stdout() : pathStore(path))
+                                .encode(license);
                 }
 
                 Codec codec() {

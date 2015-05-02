@@ -56,7 +56,7 @@ public class V1RepositoryController implements RepositoryController {
     @Override
     public final Artifactory sign(final Signature engine, final Object artifact) throws Exception {
         final MemoryStore store = new MemoryStore();
-        codec.encode(store, artifact);
+        codec.to(store).encode(artifact);
         final byte[] artifactData = store.data();
         engine.update(artifactData);
         final byte[] signatureData = engine.sign();

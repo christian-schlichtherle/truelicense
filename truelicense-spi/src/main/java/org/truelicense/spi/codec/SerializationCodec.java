@@ -6,6 +6,8 @@
 package org.truelicense.spi.codec;
 
 import org.truelicense.api.codec.Codec;
+import org.truelicense.api.codec.Decoder;
+import org.truelicense.api.codec.Encoder;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
@@ -54,19 +56,29 @@ public class SerializationCodec implements Codec {
     }
 
     @Override
-    public void encode(final Sink sink, final Object obj) throws Exception {
-        try (OutputStream out = sink.output();
-             ObjectOutputStream oos = new ObjectOutputStream(out)) {
-            oos.writeObject(obj);
-        }
+    public Encoder to(final Sink sink) {
+        return new Encoder() {
+            @Override
+            public void encode(final Object obj) throws Exception {
+                try (OutputStream out = sink.output();
+                     ObjectOutputStream oos = new ObjectOutputStream(out)) {
+                    oos.writeObject(obj);
+                }
+            }
+        };
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> T decode(final Source source, final Type expected) throws Exception {
-        try (InputStream in = source.input();
-             ObjectInputStream oin = new ObjectInputStream(in)) {
-            return (T) oin.readObject();
-        }
+    public Decoder from(final Source source) {
+        return new Decoder() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public <T> T decode(final Type expected) throws Exception {
+                try (InputStream in = source.input();
+                     ObjectInputStream oin = new ObjectInputStream(in)) {
+                    return (T) oin.readObject();
+                }
+            }
+        };
     }
 }
