@@ -12,7 +12,6 @@ import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
@@ -111,7 +110,7 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      * parameters.
      */
     @Override
-    public final Encryption encryption(PbeParameters parameters) {
+    public final Transformation encryption(PbeParameters parameters) {
         return new V1Encryption(parameters);
     }
 

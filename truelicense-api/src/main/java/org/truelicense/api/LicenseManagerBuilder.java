@@ -6,7 +6,7 @@
 package org.truelicense.api;
 
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.crypto.Encryption;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.Injection;
 
 /**
@@ -32,7 +32,7 @@ public interface LicenseManagerBuilder<
      * Call its {@link Injection#inject} method to build and inject the
      * configured encryption into this builder and return it.
      *
-     * @see #encryption(Encryption)
+     * @see #encryption(Transformation)
      */
     PbeInjection<PasswordSpecification, ? extends This> encryption();
 
@@ -41,7 +41,7 @@ public interface LicenseManagerBuilder<
      *
      * @return {@code this}.
      */
-    This encryption(Encryption encryption);
+    This encryption(Transformation encryption);
 
     /**
      * Returns an injection for a key store based authentication (KSBA).

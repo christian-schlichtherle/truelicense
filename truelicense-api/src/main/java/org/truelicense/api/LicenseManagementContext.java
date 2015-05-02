@@ -5,12 +5,15 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.auth.*;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.KeyStoreParameters;
+import org.truelicense.api.auth.RepositoryContextProvider;
+import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.BiosProvider;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
@@ -59,7 +62,7 @@ extends BiosProvider,
      *
      * @param parameters the PBE parameters.
      */
-    Encryption encryption(PbeParameters parameters);
+    Transformation encryption(PbeParameters parameters);
 
     /** Returns a <em>new</em> license. */
     @Override

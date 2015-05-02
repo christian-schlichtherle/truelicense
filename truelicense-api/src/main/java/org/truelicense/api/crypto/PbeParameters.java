@@ -5,7 +5,6 @@
 
 package org.truelicense.api.crypto;
 
-import org.truelicense.api.passwd.Password;
 import org.truelicense.api.passwd.PasswordProtection;
 
 /**
@@ -19,7 +18,7 @@ import org.truelicense.api.passwd.PasswordProtection;
  *
  * @author Christian Schlichtherle
  */
-public interface PbeParameters extends EncryptionParameters {
+public interface PbeParameters {
 
     /** Returns the PBE algorithm. */
     String algorithm();

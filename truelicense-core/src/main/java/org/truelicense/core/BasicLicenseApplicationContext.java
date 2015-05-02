@@ -11,7 +11,6 @@ import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.*;
 import org.truelicense.api.misc.Builder;
@@ -65,7 +64,7 @@ implements BiosProvider,
 
     final LicenseParameters chainedParameters(
             Authentication authentication,
-            List<Encryption> encryption,
+            List<Transformation> encryption,
             LicenseConsumerManager parent) {
         return parameters(authentication, initialization(), encryption,
                 parent);
@@ -90,10 +89,10 @@ implements BiosProvider,
         return context;
     }
 
-    private static Encryption encryption(
-            final List<Encryption> encryption,
+    private static Transformation encryption(
+            final List<Transformation> encryption,
             final LicenseConsumerManager parent) {
-        for (Encryption e : encryption)
+        for (Transformation e : encryption)
             return e;
         return parent.parameters().encryption();
     }
@@ -101,7 +100,7 @@ implements BiosProvider,
     final LicenseParameters ftpParameters(
             final Authentication authentication,
             final int days,
-            final List<Encryption> encryption,
+            final List<Transformation> encryption,
             final LicenseConsumerManager parent) {
         if (0 >= days) throw new IllegalArgumentException();
         final LicenseInitialization initialization = new LicenseInitialization() {
@@ -187,13 +186,13 @@ implements BiosProvider,
 
     final LicenseParameters parameters(
             Authentication authentication,
-            Encryption encryption) {
+            Transformation encryption) {
         return parameters(authentication, encryption, initialization());
     }
 
     private LicenseParameters parameters(
             final Authentication authentication,
-            final Encryption encryption,
+            final Transformation encryption,
             final LicenseInitialization initialization) {
         return new LicenseParameters() {
 
@@ -210,7 +209,7 @@ implements BiosProvider,
             public Transformation compression() { return context().compression(); }
 
             @Override
-            public Encryption encryption() { return encryption; }
+            public Transformation encryption() { return encryption; }
 
             @Override
             public LicenseInitialization initialization() { return initialization; }
@@ -228,7 +227,7 @@ implements BiosProvider,
     private LicenseParameters parameters(
             Authentication authentication,
             LicenseInitialization initialization,
-            List<Encryption> encryption,
+            List<Transformation> encryption,
             LicenseConsumerManager parent) {
         return parameters(authentication,
                 encryption(encryption, parent), initialization);
@@ -237,7 +236,7 @@ implements BiosProvider,
     @Override
     public final Store pathStore(Path path) { return bios().pathStore(path); }
 
-    final Encryption pbe(
+    final Transformation pbe(
             List<String> algorithm,
             PasswordSpecification password) {
         return context().encryption(pbeParameters(algorithm, password));
@@ -303,7 +302,7 @@ implements BiosProvider,
     abstract class BasicLicenseManagerBuilder<This extends BasicLicenseManagerBuilder<This>> {
 
         List<Authentication> authentication = Option.none();
-        List<Encryption> encryption = Option.none();
+        List<Transformation> encryption = Option.none();
 
         public final This authentication(final Authentication authentication) {
             this.authentication = Option.wrap(authentication);
@@ -312,7 +311,7 @@ implements BiosProvider,
 
         public final PbeBuilder encryption() { return new PbeBuilder(); }
 
-        public final This encryption(final Encryption encryption) {
+        public final This encryption(final Transformation encryption) {
             this.encryption = Option.wrap(encryption);
             return (This) this;
         }
@@ -381,7 +380,7 @@ implements BiosProvider,
         }
 
         final class PbeBuilder
-        implements Builder<Encryption>,
+        implements Builder<Transformation>,
                    PbeInjection<PasswordSpecification, This> {
 
             List<String> algorithm = Option.none();
@@ -397,7 +396,7 @@ implements BiosProvider,
             }
 
             @Override
-            public final Encryption build() {
+            public final Transformation build() {
                 return pbe(algorithm, password.get(0));
             }
 

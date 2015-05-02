@@ -5,8 +5,8 @@
 
 package org.truelicense.core.crypto;
 
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.api.passwd.Password;
 import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.api.passwd.PasswordUsage;
@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-public abstract class BasicPbeEncryption implements Encryption {
+public abstract class BasicPbeEncryption implements Transformation {
 
     private final PbeParameters parameters;
 
@@ -32,8 +32,7 @@ public abstract class BasicPbeEncryption implements Encryption {
         this.parameters = Objects.requireNonNull(parameters);
     }
 
-    @Override
-    public final PbeParameters parameters() { return parameters; }
+    private PbeParameters parameters() { return parameters; }
 
     protected final PasswordProtection protection() throws Exception {
         return parameters().protection();

@@ -5,11 +5,10 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.misc.Injection;
 
 /**
- * Injects a Password Based {@link Encryption} (PBE) into some target.
+ * Injects a Password Based Encryption (PBE) into some target.
  *
  * @param <PasswordSpecification> the generic password specification type.
  * @param <Target> the type of the target.

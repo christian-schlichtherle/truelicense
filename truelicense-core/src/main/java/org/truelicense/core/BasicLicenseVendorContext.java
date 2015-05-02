@@ -8,9 +8,9 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
 
 /**
  * A basic context for license vendor applications alias license key tools.
@@ -59,7 +59,7 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     LicenseVendorManager manager(
             Authentication authentication,
-            Encryption encryption) {
+            Transformation encryption) {
         return manager(parameters(authentication, encryption));
     }
 

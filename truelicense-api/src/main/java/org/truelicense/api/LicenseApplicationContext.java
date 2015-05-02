@@ -5,12 +5,9 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
-import org.truelicense.api.misc.Injection;
 
 import java.nio.file.Path;
 

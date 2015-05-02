@@ -5,6 +5,8 @@
 
 package org.truelicense.api.crypto;
 
+import org.truelicense.api.io.Transformation;
+
 /**
  * Provides an encryption.
  *
@@ -12,6 +14,6 @@ package org.truelicense.api.crypto;
  */
 public interface EncryptionProvider {
 
-    /** Returns the encryption. */
-    Encryption encryption();
+    /** Returns an encryption. */
+    Transformation encryption();
 }

@@ -8,7 +8,6 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.*;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.*;
 import org.truelicense.spi.codec.Codecs;
 
@@ -216,7 +215,7 @@ implements BiosProvider, LicenseParametersProvider {
 
     final Transformation compression() { return parameters().compression(); }
 
-    final Encryption encryption() { return parameters().encryption(); }
+    final Transformation encryption() { return parameters().encryption(); }
 
     /**
      * Returns the store for the license key (optional operation).

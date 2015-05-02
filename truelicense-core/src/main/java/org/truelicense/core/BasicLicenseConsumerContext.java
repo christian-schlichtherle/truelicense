@@ -7,9 +7,9 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.crypto.Encryption;
 import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
 
@@ -71,7 +71,7 @@ implements CachePeriodProvider,
 
     LicenseConsumerManager chainedManager(
             Authentication authentication,
-            List<Encryption> encryption,
+            List<Transformation> encryption,
             LicenseConsumerManager parent,
             Store store) {
         return chainedManager(
@@ -82,7 +82,7 @@ implements CachePeriodProvider,
     LicenseConsumerManager ftpManager(
             Authentication authentication,
             int days,
-            List<Encryption> encryption,
+            List<Transformation> encryption,
             LicenseConsumerManager parent,
             Store secret) {
         return chainedManager(
@@ -120,7 +120,7 @@ implements CachePeriodProvider,
 
     LicenseConsumerManager manager(
             Authentication authentication,
-            Encryption encryption,
+            Transformation encryption,
             Store store) {
         return manager(parameters(authentication, encryption), store);
     }
