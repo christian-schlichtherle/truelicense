@@ -14,6 +14,6 @@ import org.truelicense.api.io.Transformation;
  */
 public interface CompressionProvider {
 
-    /** Returns the compression. */
+    /** Returns a compression. */
     Transformation compression();
 }
