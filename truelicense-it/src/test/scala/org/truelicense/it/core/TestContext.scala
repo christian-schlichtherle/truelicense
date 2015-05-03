@@ -11,6 +11,7 @@ import javax.security.auth.x500.X500Principal
 
 import org.truelicense.api._
 import org.truelicense.api.auth.RepositoryContextProvider
+import org.truelicense.api.codec.CodecProvider
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.api.passwd.PasswordProtectionProvider
 import org.truelicense.core.TrueLicenseManagementContext
@@ -19,12 +20,13 @@ import org.truelicense.obfuscate._
 
 /** @author Christian Schlichtherle */
 trait TestContext[Model <: AnyRef]
-  extends PasswordProtectionProvider[ObfuscatedString]
+  extends CodecProvider
+  with PasswordProtectionProvider[ObfuscatedString]
   with RepositoryContextProvider[Model] {
 
   final lazy val consumerContext = managementContext.consumer
 
-  def codec = vendorManager.parameters.codec
+  override final def codec = vendorContext.codec
 
   def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
 
