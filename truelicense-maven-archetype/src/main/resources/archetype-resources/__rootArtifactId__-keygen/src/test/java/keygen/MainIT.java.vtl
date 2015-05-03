@@ -35,8 +35,8 @@ public class MainIT {
 
         for (LicenseManager manager : LicenseManager.values()) {
             final String edition = manager.name();
-            process("create", "-output", inputPath, "-edition", edition, keyPath);
-            process("create", "-key", keyPath, "-input", inputPath, "-output", outputPath, "-edition", edition);
+            process("generate", "-output", inputPath, "-edition", edition, keyPath);
+            process("generate", "-key", keyPath, "-input", inputPath, "-output", outputPath, "-edition", edition);
             assertArrayEquals(read(input), read(output));
         }
     }

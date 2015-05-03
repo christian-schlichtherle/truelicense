@@ -23,7 +23,7 @@ import org.truelicense.v1.crypto.V1Encryption;
 
 /**
  * The root context for the management of Version 1 (V1) format license keys.
- * This class is provided to enable applications to create, install, verify
+ * This class is provided to enable applications to generate, install, verify
  * and uninstall license keys in the format for TrueLicense 1.X applications.
  * Since TrueLicense 2.0, this format is obsolete and should not be used in
  * new applications!

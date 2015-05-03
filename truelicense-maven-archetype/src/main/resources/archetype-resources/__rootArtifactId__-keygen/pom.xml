@@ -38,7 +38,7 @@
 
     <profiles>
         <profile>
-            <id>create-keygen-standalone-jar</id>
+            <id>generate-keygen-standalone-jar</id>
             <activation>
                 <property>
                     <name>skipStandaloneJars</name>

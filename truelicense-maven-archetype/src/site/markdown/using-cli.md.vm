@@ -24,25 +24,25 @@ prints usage instructions:
 
     where <command> is one of (case is ignored):
 
-        help		print usage instructions for a command
-        version		print version information
-        create		creates a license key
+        help        print usage instructions for a command
+        version	    print version information
+        generate    generates a license key
 
 You can get help for a particular command by using the `help` command.
-These are the usage instructions for the `create` command:
+These are the usage instructions for the `generate` command:
 
-    ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar help create
+    ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar help generate
     Usage:
 
-        create [[-key]  <license-key-path>   ] |
-               [-input  <input-license-path> ] |
-               [-output <output-license-path>] |
-               [-edition <edition>] |
-               [-verbose <boolean>]
+        generate [[-key]  <license-key-path>   ] |
+                 [-input  <input-license-path> ] |
+                 [-output <output-license-path>] |
+                 [-edition <edition>] |
+                 [-verbose <boolean>]
 
-    Creates a license key and prints its license bean to standard output. If a
-    <license-key-path> is specified, then the created license key gets saved to the
-    file identified by this path.
+    Generates a license key and prints its license bean to standard output. If a
+    <license-key-path> is specified, then the generated license key gets saved to 
+    the file identified by this path.
 
     If an <input-license-path> is specified, then the license bean gets decoded
     from the file identified by this path and transformed into the license key.
@@ -62,13 +62,13 @@ These are the usage instructions for the `create` command:
     error stream. You can override the default behavior by specifying
     `-verbose true` or `-verbose false`.
 
-$h4 Creating a License Key
+$h4 Generating a License Key
 
 $h5 Using Default Properties
 
-You can create a license key with default properties using:
+You can generate a license key with default properties using:
 
-    ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar create product.lic \
+    ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose true
     org.truelicense.api.License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
 
@@ -85,10 +85,10 @@ $h5 Supporting Multiple Editions
 
 If the project is supporting multiple editions, then you must specify the
 `-edition` option on the command line.
-For example, you can create a license key for an edition named `standard`
+For example, you can generate a license key for an edition named `standard`
 like this:
 
-    ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar create product.lic \
+    ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose true -edition standard
     org.truelicense.api.License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
 
@@ -103,10 +103,10 @@ from a file or the standard input stream.
 The input syntax needs to conform to the configured license key format.
 For example, if the license key format is V2/JSON, then you can decode a
 license bean with the `holder` and `term` properties from the standard input 
-stream in JSON format and create a V2/JSON license key from it like this:
+stream in JSON format and generate a V2/JSON license key from it like this:
 
     ${dollar} echo '{ "holder": "CN=Christian Schlichtherle", "term": 365 }' | \
-        java -jar *-keygen/target/*-keygen-*-standalone.jar create product.lic \
+        java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose true -input -
     org.truelicense.api.License@e195716b[subject="Product 1", holder="CN=Christian Schlichtherle", issuer="CN=Company Inc.", issued=Thu Mar 28 15:11:12 CET 2013, notBefore=Thu Mar 28 15:11:12 CET 2013, notAfter=Fri Mar 28 15:11:12 CET 2014, consumerType="User", consumerAmount=1, info=null]
 
@@ -121,11 +121,11 @@ bean to a file or the standard output stream.
 The output syntax conforms to the configured license key format.
 For example, if the license key format is V2/JSON, then you can decode a
 license bean with the `issuer` property from the standard input stream in JSON 
-format, create a V2/JSON license key from it and print the encoded license bean 
+format, generate a V2/JSON license key from it and print the encoded license bean 
 to the standard output stream like this:
 
     ${dollar} echo '{ "issuer": "CN=Christian Schlichtherle" }' | \
-        java -jar *-keygen/target/*-keygen-*-standalone.jar create product.lic \
+        java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose false -input - -output -
     {"consumerAmount":1,"consumerType":"User","holder":"CN=Anonymous User","issued":1364480121566,"issuer":"CN=Christian Schlichtherle","subject":"Product 1"}
 
@@ -142,7 +142,7 @@ For example, if the license key format is V2/JSON, then you can provide a map
 with the custom properties named `foo` and `bar` like this:
 
     ${dollar} echo '{ "extra": { "foo": 1, "bar": "baz" } }' | \
-        java -jar *-keygen/target/*-keygen-*-standalone.jar create product.lic \
+        java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose false -input - -output -
     {"extra":{"foo":1,"bar":"baz"},"consumerAmount":1,"consumerType":"User","holder":"CN=Anonymous User","issued":1364480121566,"issuer":"CN=Company Inc.","subject":"Product 1"}
 

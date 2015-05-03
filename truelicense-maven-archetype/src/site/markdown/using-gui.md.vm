@@ -37,7 +37,7 @@ your project, then the "Uninstall ..." action is not shown.
 $h3 Install Panel
 
 For license key installation, you can navigate to the license key file that
-you may have created when [using the CLI]:
+you may have generated when [using the CLI]:
 
 <img src="img/install-panel.png" alt="Install Panel" width="636" height="554"/>
 

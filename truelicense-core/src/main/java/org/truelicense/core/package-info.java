@@ -13,7 +13,7 @@
  * {@link org.truelicense.api.LicenseVendorManager} and
  * {@link org.truelicense.api.LicenseConsumerManager}:
  * <ol>
- * <li>{@linkplain org.truelicense.api.LicenseVendorManager#create Creation},
+ * <li>{@linkplain org.truelicense.api.LicenseVendorManager#generator Generation},
  * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#install installation},
  * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#view viewing},
  * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#verify verification} and
@@ -29,10 +29,10 @@
  * {@linkplain org.truelicense.api.LicenseInitialization#initialize initialized}
  * and
  * {@linkplain org.truelicense.api.LicenseValidation#validate validated}
- * whenever a license key gets created.
+ * whenever a license key gets generated.
  * They also get validated whenever a license key gets installed or verified.
  * <p>
- * A license key gets created from a license bean by applying the following
+ * A license key gets generated from a license bean by applying the following
  * function composition:
  * <pre>
  * {@code encrypt(compress(encode(sign(encode(validate(initialize(duplicate(licenseBean))))))))}

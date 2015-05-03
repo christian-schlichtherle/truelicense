@@ -29,7 +29,7 @@ public class MainIT {
             final String edition = manager.name();
             final File licenseKey = folder.newFile(edition + ".lic");
             final String licenseKeyPath = licenseKey.getPath();
-            ${KeyGenMain}.process("create", "-edition", edition, licenseKeyPath);
+            ${KeyGenMain}.process("generate", "-edition", edition, licenseKeyPath);
             process("install", licenseKeyPath);
             try {
                 process("view");

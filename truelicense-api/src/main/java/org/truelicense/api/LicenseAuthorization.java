@@ -22,7 +22,7 @@ public interface LicenseAuthorization {
      * a non-zero FTP is configured and no FTP license key has been generated
      * yet.
      * In this case, the implementation may perform a test if the consumer is
-     * eligible to create a new FTP license key in order to protect against a
+     * eligible to generate a new FTP license key in order to protect against a
      * malicious removal of the auto-generated FTP license key.
      *
      * @param parameters the license parameters.

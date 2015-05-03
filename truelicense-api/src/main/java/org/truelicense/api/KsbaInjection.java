@@ -36,7 +36,7 @@ extends Injection<Target> {
     /**
      * Sets the password for accessing the private key in the key
      * entry (optional).
-     * A private key entry is only required to create license keys, that is
+     * A private key entry is only required to generate license keys, that is
      * for any {@linkplain LicenseVendorManager license vendor manager}
      * and for any
      * {@linkplain LicenseConsumerManager license consumer manager}

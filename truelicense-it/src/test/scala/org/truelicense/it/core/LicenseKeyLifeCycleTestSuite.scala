@@ -45,7 +45,7 @@ extends WordSpec { this: TestContext =>
 
       vs match {
         case ms: MemoryStore =>
-          logger debug ("Created license key with {} bytes size.", ms.data.length)
+          logger debug ("Generated license key with {} bytes size.", ms.data.length)
         case _ =>
       }
 

@@ -38,7 +38,7 @@ abstract class CodecTestSuite extends WordSpec { this: TestContext =>
                 case Seq(charset) if IdentityTransformation == transformation =>
                   logger debug ("\n{}", new String(ms.data, charset))
                 case _ =>
-                  logger debug ("Created BLOB with {} bytes size.", ms.data.length)
+                  logger debug ("Generated BLOB with {} bytes size.", ms.data.length)
               }
             case _ =>
           }

@@ -58,7 +58,7 @@ public class LicenseManagerIT {
             final String edition = manager.name();
             if (!"ftp".equalsIgnoreCase(edition)) {
                 final Path licenseKey = folder.newFile(edition + ".lic").toPath();
-                ${KeyGenMain}.process("create", "-edition", edition, licenseKey.toString());
+                ${KeyGenMain}.process("generate", "-edition", edition, licenseKey.toString());
                 manager.install(manager.context().pathStore(licenseKey));
                 try {
                     test.run(manager);

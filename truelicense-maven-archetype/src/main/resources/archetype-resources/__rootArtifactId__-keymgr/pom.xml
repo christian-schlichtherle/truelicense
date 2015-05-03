@@ -105,7 +105,7 @@
 
     <profiles>
         <profile>
-            <id>create-keymgr-standalone-jar</id>
+            <id>generate-keymgr-standalone-jar</id>
             <activation>
                 <property>
                     <name>skipStandaloneJars</name>
@@ -121,7 +121,7 @@
             </build>
         </profile>
         <profile>
-            <id>create-keymgr-guarded-jar</id>
+            <id>generate-keymgr-guarded-jar</id>
             <activation>
                 <property>
                     <name>skipStandaloneJars</name>

@@ -9,7 +9,7 @@ import java.security.GeneralSecurityException;
 
 /**
  * Indicates an issue when
- * {@linkplain LicenseVendorManager#create creating},
+ * {@linkplain LicenseVendorManager#generator generating},
  * {@linkplain LicenseConsumerManager#install installing},
  * {@linkplain LicenseConsumerManager#view viewing},
  * {@linkplain LicenseConsumerManager#verify verifying} or

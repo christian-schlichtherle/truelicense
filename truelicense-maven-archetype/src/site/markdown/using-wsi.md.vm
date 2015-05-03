@@ -27,7 +27,7 @@ You can start it using the following command:
 $h4 Installing a License Key
 
 Once the server is running, you can install the license key which you may have
-created when [using the CLI] like this:
+generated when [using the CLI] like this:
 
     ${dollar} curl -v http://localhost:9998/license --data-binary @product.lic
     * Hostname was NOT found in DNS cache
@@ -49,7 +49,7 @@ created when [using the CLI] like this:
     * Connection #0 to host localhost left intact
 
 Note that `@product.lic` references the license key file which has been
-previously created.
+previously generated.
 
 The server responds with the status code 204 to indicate that the operation
 succeeded with an empty response entity.

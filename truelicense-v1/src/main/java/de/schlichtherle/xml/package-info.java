@@ -5,7 +5,7 @@
 
 /**
  * Provides compatibility with version 1 (V1) format license keys.
- * This package is provided to enable applications to create, install, verify
+ * This package is provided to enable applications to generate, install, verify
  * and uninstall license keys in the format for TrueLicense 1.X applications.
  * Since TrueLicense 2.0, this format is obsolete and should not get used in
  * new applications.

@@ -17,13 +17,13 @@ $h3 Using the Key Generator API
 
 $h4 Warning
 
-The Key Generator module is used to create license keys for your software 
+The Key Generator module is used to generate license keys for your software 
 product without requiring authorization.
 Therefore, **you should keep this module under lock and key!**
 In particular, do not distribute it to users or the public!
 The same concern applies to any derivative work which includes this module.
 This limits the set of valid use cases for using the Key Generator API.
-For example, you may want to develop a RESTful web service which creates
+For example, you may want to develop a RESTful web service which generates
 license keys once users have paid for them.
 
 $h4 Setting Up the Class Path
@@ -82,7 +82,7 @@ a set of [Apache Velocity] template files - listed in alphabetic order:
     for your software product.
     The managers are named like each configured edition and ordered from 
     superset to subset.
-    Each manager is configured with the algorithms and parameters for creating
+    Each manager is configured with the algorithms and parameters for generating
     license keys for the respective edition.
 
 `${dollar}{package}.keygen.LicensingSchema`
@@ -109,15 +109,15 @@ For the following examples, it's necessary to add the following imports:
     import ${dollar}{package}.keygen.*;
     import org.truelicense.core.*;
 
-$h4 Creating a License Key
+$h4 Generating a License Key
 
-You can create a license key using:
+You can generate a license key using:
 
     LicenseVendorManager manager = LicenseManager.${dollar}{edition};
     LicenseVendorContext context = manager.context();
     License bean = context.license();
     Sink sink = context.pathStore(java.nio.file.Paths.get("${dollar}{license-key-path}"));
-    manager.create(bean, sink);
+    manager.generate(bean, sink);
 
 ... where
 `${dollar}{edition}` references an edition of your software product,
@@ -233,7 +233,7 @@ is thrown.
 
 This design allows you to use the API for installing, viewing, verifying and
 uninstalling license keys without knowing for which edition a license key has
-been created.
+been generated.
 To facilitate this, the `LicenseManager` class provides the `get()` method
 which returns the first manager in the configured chain-of-responsibility.
 
@@ -259,7 +259,7 @@ You can install a license key using:
 According to the chain-of-responsibility pattern, `LicenseManager.install(Source)`
 recursively tries each license consumer manager until the given license key
 fits the respective lock and saves it.
-It's not necessary to know for which edition the license key has been created.
+It's not necessary to know for which edition the license key has been generated.
 
 If the given file does not hold a license key for the lock of any license
 consumer manager, then a
@@ -278,7 +278,7 @@ According to the chain-of-responsibility pattern, `LicenseManager.view()`
 recursively tries each license consumer manager until an installed license key
 is found and returns a duplicate of its encoded license bean.
 It's not necessary to know for which edition the installed license key has been
-created.
+generated.
 Note that this method does not validate the encoded license bean, so for
 example, it's term may have already expired.
 
@@ -320,7 +320,7 @@ $h5 Supporting Multiple Editions
 The use case for verifying a license key is different from the use case for the
 other operations:
 When installing, viewing or uninstalling a license key, it's not relevant for
-which edition a license key has been created.
+which edition a license key has been generated.
 The chain-of-responsibility pattern then ensures that these operations will
 succeed when calling them on `LicenseManager.get()`, which is the first manager 
 in the chain.
@@ -362,7 +362,7 @@ According to the chain-of-responsibility pattern,
 `LicenseManager.uninstall()` recursively tries each license consumer manager 
 until an installed license key is found and deletes it.
 It's not necessary to know for which edition the installed license key has been
-created.
+generated.
 
 If no license key is installed or only an auto-generated FTP license
 key is installed, then a

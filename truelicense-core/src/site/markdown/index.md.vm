@@ -23,7 +23,7 @@ Using the $project.name you can...
 * Manually or automatically start a free trial period (FTP) for users.
 * Sell different types of license keys for different editions.
 * Install license keys to files, preferences nodes or any custom store.
-* Create license keys by duplicating, initializing, validating,
+* Generate license keys by duplicating, initializing, validating,
   encoding, signing, encoding (again), compressing and encrypting
   license beans.
 * Encode arbitrary properties into license keys using XML.

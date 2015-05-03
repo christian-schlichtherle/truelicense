@@ -11,7 +11,7 @@
  * {@link org.truelicense.api.io.Store} interface.
  * License keys pass the following life cycle phases:
  * <ol>
- * <li>{@linkplain org.truelicense.api.LicenseVendorManager#create Creation},
+ * <li>{@linkplain org.truelicense.api.LicenseVendorManager#generator Generation},
  * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#install installation},
  * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#view viewing},
  * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#verify verification} and
@@ -38,10 +38,10 @@
  * {@linkplain org.truelicense.api.LicenseInitialization#initialize initialized}
  * and
  * {@linkplain org.truelicense.api.LicenseValidation#validate validated}
- * whenever a license key gets created.
+ * whenever a license key gets generated.
  * They also get validated whenever a license key gets installed or verified.
  * <p>
- * A license key gets created from an instance of the {@code License} class by
+ * A license key gets generated from an instance of the {@code License} class by
  * applying the following function composition:
  * <pre>
  * {@code encrypt(compress(encode(sign(encode(validate(initialize(duplicate(license))))))))}
