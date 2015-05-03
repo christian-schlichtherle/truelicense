@@ -9,6 +9,7 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.codec.Codec;
+import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
@@ -48,6 +49,9 @@ implements LicenseVendorContext<PasswordSpecification> {
         implements LicenseVendorManager {
 
             final BasicLicenseVendorContext<PasswordSpecification, Model> vc = BasicLicenseVendorContext.this;
+
+            @Override
+            public BIOS bios() { return vc.bios(); }
 
             @Override
             public LicenseVendorContext<PasswordSpecification> context() { return vc; }

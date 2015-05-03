@@ -8,6 +8,7 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.RepositoryContext;
+import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.CachePeriodProvider;
@@ -57,6 +58,9 @@ implements CachePeriodProvider,
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
+
+            @Override
+            public BIOS bios() { return cc.bios(); }
 
             @Override
             public long cachePeriodMillis() { return cachePeriodMillis; }
@@ -124,6 +128,9 @@ implements CachePeriodProvider,
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
+
+            @Override
+            public BIOS bios() { return cc.bios(); }
 
             @Override
             public long cachePeriodMillis() { return cachePeriodMillis; }

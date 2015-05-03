@@ -203,9 +203,6 @@ implements BiosProvider,
             public LicenseAuthorization authorization() { return context().authorization(); }
 
             @Override
-            public BIOS bios() { return context().bios(); }
-
-            @Override
             public Codec codec() { return context().codec(); }
 
             @Override
