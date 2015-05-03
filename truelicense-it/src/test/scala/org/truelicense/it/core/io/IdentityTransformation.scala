@@ -9,6 +9,7 @@ import org.truelicense.api.io.{Sink, Source, Transformation}
 
 /** @author Christian Schlichtherle */
 object IdentityTransformation extends Transformation {
+
   override def apply(sink: Sink) = sink
   override def unapply(source: Source) = source
 }
