@@ -9,10 +9,8 @@ import org.truelicense.it.core.RepositoryTestSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
-/**
- * @author Christian Schlichtherle
- */
+/** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V2JsonRepositoryTest
-extends RepositoryTestSuite
+extends V2RepositoryTestSuite
 with V2JsonTestContext

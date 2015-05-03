@@ -5,14 +5,12 @@
 
 package org.truelicense.it.v2.xml
 
-import org.truelicense.it.core.RepositoryTestSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import org.truelicense.it.v2.json.V2RepositoryTestSuite
 
-/**
- * @author Christian Schlichtherle
- */
+/** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V2XmlRepositoryTest
-extends RepositoryTestSuite
+extends V2RepositoryTestSuite
 with V2XmlTestContext

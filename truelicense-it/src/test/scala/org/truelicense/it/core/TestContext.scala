@@ -11,6 +11,7 @@ import javax.security.auth.x500.X500Principal
 
 import org.truelicense.api._
 import org.truelicense.api.io.{Store, Transformation}
+import org.truelicense.core.passwd.Passwords
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
 
@@ -34,7 +35,7 @@ trait TestContext {
   def license = {
     val now = new Date
     val me = new X500Principal("CN=Christian Schlichtherle")
-    val license = managementContext.license
+    val license = vendorContext.license
     import license._
     setSubject("subject")
     setHolder(me)
@@ -67,7 +68,7 @@ trait TestContext {
   def store: Store = vendorContext.memoryStore
   def codec = vendorManager.parameters.codec
   def transformation: Transformation = IdentityTransformation
-  def protection(password: ObfuscatedString) = managementContext protection password
+  def protection(password: ObfuscatedString) = Passwords newPasswordProtection password
 }
 
 /** @author Christian Schlichtherle */

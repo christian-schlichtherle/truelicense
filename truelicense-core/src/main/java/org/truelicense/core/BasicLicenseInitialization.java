@@ -31,8 +31,8 @@ import static org.truelicense.core.Messages.message;
  * @author Christian Schlichtherle
  */
 final class BasicLicenseInitialization
-implements ContextProvider<LicenseManagementContext>,
-        Clock,
+implements Clock,
+        ContextProvider<BasicLicenseManagementContext<?>>,
         LicenseInitialization,
         LicenseSubjectProvider {
 
@@ -44,13 +44,13 @@ implements ContextProvider<LicenseManagementContext>,
     /** The message key for the canonical name of an unknown user. */
     @Obfuscate static final String UNKNOWN = "unknown";
 
-    private final LicenseManagementContext context;
+    private final BasicLicenseManagementContext<?> context;
 
-    BasicLicenseInitialization(final BasicLicenseManagementContext context) {
+    BasicLicenseInitialization(final BasicLicenseManagementContext<?> context) {
         this.context = context;
     }
 
-    @Override public LicenseManagementContext context() { return context; }
+    @Override public BasicLicenseManagementContext<?> context() { return context; }
 
     @Override public String subject() { return context().subject(); }
 

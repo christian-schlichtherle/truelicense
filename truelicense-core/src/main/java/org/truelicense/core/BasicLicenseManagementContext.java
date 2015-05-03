@@ -8,7 +8,19 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
+import org.truelicense.api.auth.RepositoryContextProvider;
+import org.truelicense.api.auth.RepositoryModel;
+import org.truelicense.api.codec.CodecProvider;
+import org.truelicense.api.comp.CompressionProvider;
+import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.BIOS;
+import org.truelicense.api.io.BiosProvider;
+import org.truelicense.api.io.Transformation;
+import org.truelicense.api.misc.CachePeriodProvider;
+import org.truelicense.api.misc.ClassLoaderProvider;
+import org.truelicense.api.misc.Clock;
+import org.truelicense.api.passwd.PasswordPolicyProvider;
+import org.truelicense.api.passwd.PasswordProtectionProvider;
 import org.truelicense.core.auth.Notary;
 import org.truelicense.spi.io.StandardBIOS;
 import org.truelicense.spi.misc.Option;
@@ -31,7 +43,21 @@ import java.util.Objects;
  * @author Christian Schlichtherle
  */
 public abstract class BasicLicenseManagementContext<PasswordSpecification>
-implements LicenseManagementContext<PasswordSpecification> {
+implements BiosProvider,
+        CachePeriodProvider,
+        ClassLoaderProvider,
+        Clock,
+        CodecProvider,
+        CompressionProvider,
+        LicenseAuthorizationProvider,
+        LicenseInitializationProvider,
+        LicenseFactory,
+        LicenseManagementContext<PasswordSpecification>,
+        LicenseSubjectProvider,
+        LicenseValidationProvider,
+        PasswordPolicyProvider,
+        PasswordProtectionProvider<PasswordSpecification>,
+        RepositoryContextProvider<RepositoryModel> {
 
     private final String subject;
 
@@ -40,14 +66,13 @@ implements LicenseManagementContext<PasswordSpecification> {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns an authentication for the given key store parameters.
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
      * returns a new {@link Notary} for the given key store parameters.
      *
      * @param parameters the key store parameters.
      */
-    @Override
     public Authentication authentication(KeyStoreParameters parameters) {
         return new Notary(parameters);
     }
@@ -99,6 +124,13 @@ implements LicenseManagementContext<PasswordSpecification> {
     }
 
     /**
+     * Returns an encryption for the given PBE parameters.
+     *
+     * @param parameters the PBE parameters.
+     */
+    public abstract Transformation encryption(PbeParameters parameters);
+
+    /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
@@ -116,6 +148,16 @@ implements LicenseManagementContext<PasswordSpecification> {
     }
 
     /**
+     * Returns the name of the default Password Based Encryption (PBE)
+     * algorithm for the license key format.
+     * You can override this default value when configuring the PBE with the
+     * license vendor context or the license consumer context.
+     *
+     * @see PbeInjection#algorithm
+     */
+    public abstract String pbeAlgorithm();
+
+    /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link BasicLicenseManagementContext}
@@ -123,6 +165,15 @@ implements LicenseManagementContext<PasswordSpecification> {
      */
     @Override
     public Date now() { return new Date(); }
+
+    /**
+     * Returns the name of the default key store type,
+     * for example {@code "JCEKS"} or {@code "JKS"}.
+     * You can override this default value when configuring the key store based
+     * authentication with the license vendor context or the license consumer
+     * context.
+     */
+    public abstract String storeType();
 
     /** Returns the licensing subject. */
     @Override

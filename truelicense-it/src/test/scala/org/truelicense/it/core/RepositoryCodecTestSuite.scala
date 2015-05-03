@@ -10,7 +10,7 @@ abstract class RepositoryCodecTestSuite
 extends CodecTestSuite { this: TestContext =>
   override def artifact = {
     val l = license
-    val c = managementContext.codec
+    val c = vendorContext.codec
     val p = vendorManager.parameters
     val a = p.authentication
     val rx = p.repositoryContext

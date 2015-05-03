@@ -27,8 +27,8 @@ import static org.truelicense.core.Messages.message;
  * @author Christian Schlichtherle
  */
 final class BasicLicenseValidation
-implements ContextProvider<LicenseManagementContext>,
-        Clock,
+implements Clock,
+        ContextProvider<BasicLicenseManagementContext<?>>,
         LicenseSubjectProvider,
         LicenseValidation {
 
@@ -56,13 +56,13 @@ implements ContextProvider<LicenseManagementContext>,
     @Obfuscate
     static final String CONSUMER_AMOUNT_IS_NOT_POSITIVE = "consumerAmountIsNotPositive";
 
-    private final LicenseManagementContext context;
+    private final BasicLicenseManagementContext<?> context;
 
-    BasicLicenseValidation(final LicenseManagementContext context) {
+    BasicLicenseValidation(final BasicLicenseManagementContext<?> context) {
         this.context = context;
     }
 
-    @Override public LicenseManagementContext context() { return context; }
+    @Override public BasicLicenseManagementContext<?> context() { return context; }
 
     @Override public String subject() { return context().subject(); }
 

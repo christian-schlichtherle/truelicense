@@ -9,12 +9,13 @@ import java.util.Locale.ENGLISH
 
 import org.scalatest.Matchers._
 import org.scalatest._
+import org.truelicense.api.auth.{RepositoryModel, RepositoryContext}
 import org.truelicense.spi.codec.SerializationCodec
 
 /**
  * @author Christian Schlichtherle
  */
-abstract class RepositoryTestSuite
+abstract class RepositoryTestSuite[Model]
 extends WordSpec with ParallelTestExecution { this: TestContext =>
 
   private val _codec = new SerializationCodec {
@@ -22,10 +23,12 @@ extends WordSpec with ParallelTestExecution { this: TestContext =>
     override def contentTransferEncoding = super.contentTransferEncoding.toUpperCase(ENGLISH)
   }
 
+  def repositoryContext: RepositoryContext[Model]
+
   "A repository" should {
     "sign and verify an object" in {
       val authentication = vendorManager.parameters.authentication
-      val context = managementContext.repositoryContext()
+      val context = repositoryContext
       val model = context.model()
       val controller = context.controller(model, _codec)
       val artifact = "Hello world!"

@@ -46,16 +46,16 @@ abstract class BasicLicenseApplicationContext<PasswordSpecification>
 implements BiosProvider,
            ClassLoaderProvider,
            Clock,
-           ContextProvider<LicenseManagementContext<PasswordSpecification>>,
+           ContextProvider<BasicLicenseManagementContext<PasswordSpecification>>,
            LicenseApplicationContext,
            LicenseInitializationProvider,
            LicenseSubjectProvider,
            PasswordPolicyProvider,
            PasswordProtectionProvider<PasswordSpecification> {
 
-    private final LicenseManagementContext<PasswordSpecification> context;
+    private final BasicLicenseManagementContext<PasswordSpecification> context;
 
-    BasicLicenseApplicationContext(final LicenseManagementContext<PasswordSpecification> context) {
+    BasicLicenseApplicationContext(final BasicLicenseManagementContext<PasswordSpecification> context) {
         this.context = context;
     }
 
@@ -85,7 +85,7 @@ implements BiosProvider,
     }
 
     @Override
-    public final LicenseManagementContext<PasswordSpecification> context() {
+    public final BasicLicenseManagementContext<PasswordSpecification> context() {
         return context;
     }
 
@@ -268,8 +268,7 @@ implements BiosProvider,
     public final PasswordPolicy policy() { return context().policy(); }
 
     @Override
-    public final PasswordProtection protection(
-            PasswordSpecification specification) {
+    public final PasswordProtection protection(PasswordSpecification specification) {
         return context().protection(specification);
     }
 

@@ -29,7 +29,8 @@ extends WordSpec { this: TestContext =>
     getIssuer should not be null
     getNotAfter should be (notAfter)
     getNotBefore should be (notBefore)
-    getSubject should be (managementContext.subject)
+    getSubject should not be null
+    getSubject should not be 'empty
   }
 
   "The license key life cycle" should {
@@ -38,7 +39,7 @@ extends WordSpec { this: TestContext =>
 
       val generated = {
         val vm = vendorManager
-        val generated = (vm generator managementContext.license writeTo vs).license()
+        val generated = (vm generator vendorContext.license writeTo vs).license()
         check(generated)
         generated
       }
@@ -109,7 +110,7 @@ extends WordSpec { this: TestContext =>
       ;{
         val generated = {
           val vm = vendorManager
-          val generated = (vm generator managementContext.license writeTo vs).license()
+          val generated = (vm generator vendorContext.license writeTo vs).license()
           check(generated)
           generated
         }
@@ -130,7 +131,7 @@ extends WordSpec { this: TestContext =>
       ;{
         val generated = {
           val vm = chainedVendorManager
-          val generated = (vm generator managementContext.license writeTo vs).license()
+          val generated = (vm generator vendorContext.license writeTo vs).license()
           check(generated)
           generated
         }
