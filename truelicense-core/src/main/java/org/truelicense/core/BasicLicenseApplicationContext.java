@@ -283,11 +283,6 @@ implements BiosProvider,
     }
 
     @Override
-    public final Sink stdout() {
-        return bios().stdout();
-    }
-
-    @Override
     public final String subject() { return context().subject(); }
 
     @Override

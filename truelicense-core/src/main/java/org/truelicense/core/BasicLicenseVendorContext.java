@@ -8,7 +8,7 @@ package org.truelicense.core;
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.io.BIOS;
+import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 
@@ -61,6 +61,9 @@ implements LicenseVendorContext<PasswordSpecification> {
             Transformation encryption) {
         return manager(parameters(authentication, encryption));
     }
+
+    @Override
+    public final Sink stdout() { return bios().stdout(); }
 
     final class BasicLicenseVendorManagerBuilder
     extends BasicLicenseManagerBuilder<BasicLicenseVendorManagerBuilder>

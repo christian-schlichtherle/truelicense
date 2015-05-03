@@ -6,6 +6,7 @@
 package org.truelicense.api;
 
 import org.truelicense.api.codec.CodecProvider;
+import org.truelicense.api.io.Sink;
 
 /**
  * A derived context for license vendor applications alias license key tools.
@@ -33,4 +34,9 @@ extends CodecProvider,
      * the configured license vendor manager.
      */
     LicenseVendorManagerBuilder<PasswordSpecification> manager();
+
+    /**
+     * Returns a sink which writes to standard output without ever closing it.
+     */
+    Sink stdout();
 }

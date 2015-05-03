@@ -5,7 +5,6 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 
@@ -45,11 +44,6 @@ public interface LicenseApplicationContext {
      * Returns a source which reads from standard input without ever closing it.
      */
     Source stdin();
-
-    /**
-     * Returns a sink which writes to standard output without ever closing it.
-     */
-    Sink stdout();
 
     /**
      * Returns a store for the system preferences node for the package of the
