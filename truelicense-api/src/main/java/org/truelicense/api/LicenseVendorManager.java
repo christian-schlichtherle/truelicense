@@ -15,8 +15,7 @@ import org.truelicense.api.misc.ContextProvider;
  */
 public interface LicenseVendorManager
 extends ContextProvider<LicenseVendorContext<?>>,
-        LicenseParametersProvider,
-        LicenseSubjectProvider {
+        LicenseParametersProvider {
 
     /**
      * Returns a license key generator for the given license bean.

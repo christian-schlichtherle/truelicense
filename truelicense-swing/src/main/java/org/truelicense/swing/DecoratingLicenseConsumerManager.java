@@ -26,8 +26,6 @@ implements LicenseConsumerManager {
         this.manager = Objects.requireNonNull(manager);
     }
 
-    @Override public String subject() { return manager.subject(); }
-
     @Override public LicenseParameters parameters() {
         return manager.parameters();
     }

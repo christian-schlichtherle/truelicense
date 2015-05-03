@@ -43,10 +43,11 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
   }
 
   def assertSubject() {
-    subjectAs(TEXT_PLAIN_TYPE) should be (manager.subject)
-    subjectAs(APPLICATION_JSON_TYPE) should be ('"' + manager.subject + '"')
+    val subject = consumerContext.subject
+    subjectAs(TEXT_PLAIN_TYPE) should be (subject)
+    subjectAs(APPLICATION_JSON_TYPE) should be ('"' + subject + '"')
     subjectAs(APPLICATION_XML_TYPE) should
-      be ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><subject>" + manager.subject + "</subject>")
+      be ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><subject>" + subject + "</subject>")
   }
 
   private def subjectAs(mediaType: MediaType) =

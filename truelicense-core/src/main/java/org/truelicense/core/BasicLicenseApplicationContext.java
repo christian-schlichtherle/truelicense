@@ -49,7 +49,6 @@ implements BiosProvider,
            ContextProvider<BasicLicenseManagementContext<PasswordSpecification>>,
            LicenseApplicationContext,
            LicenseInitializationProvider,
-           LicenseSubjectProvider,
            PasswordPolicyProvider,
            PasswordProtectionProvider<PasswordSpecification> {
 

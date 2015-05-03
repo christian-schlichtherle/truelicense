@@ -95,7 +95,7 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
         }
 
         "have a title which includes the licensing subject" in {
-          dialog.getTitle should include (manager.subject)
+          dialog.getTitle should include (consumerContext.subject)
         }
 
         "have its back button disabled" in {
@@ -156,7 +156,7 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
             waitTextComponent(displayPanel, key).getText
 
           def format(date: Date) =
-            display_dateTimeFormat(manager.subject, date)
+            display_dateTimeFormat(consumerContext.subject, date)
 
           waitText(display_holder) should be (toString(license.getHolder))
           waitText(display_subject) should be (toString(license.getSubject))
@@ -188,9 +188,11 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
 object LicenseWizardIT {
 
   private def managementContext = new V2XmlLicenseManagementContext("subject")
+  private def consumerContext = managementContext.consumer
+  private def vendorContext = managementContext.vendor
 
   private def vendorManager =
-    managementContext.vendor.manager
+    vendorContext.manager
       .encryption
         .password(test1234)
         .inject
@@ -202,7 +204,7 @@ object LicenseWizardIT {
       .build
 
   private def consumerManager =
-    managementContext.consumer.manager
+    consumerContext.manager
       .encryption
         .password(test1234)
         .inject

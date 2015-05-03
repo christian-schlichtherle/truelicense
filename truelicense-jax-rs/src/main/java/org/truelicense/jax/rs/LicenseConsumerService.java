@@ -108,7 +108,7 @@ public final class LicenseConsumerService {
     @GET
     @Path("subject")
     @Produces(TEXT_PLAIN)
-    public String subject() { return manager.subject(); }
+    public String subject() { return manager.context().subject(); }
 
     @POST
     public void install(final byte[] key)

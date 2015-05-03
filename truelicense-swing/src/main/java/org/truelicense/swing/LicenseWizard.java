@@ -75,7 +75,7 @@ public final class LicenseWizard {
             final EnhancedDialog dialog,
             final LicenseConsumerManager manager) {
         dialog.setTitle(LicenseWizardMessage.wizard_title
-                .format(manager.subject()).toString());
+                .format(manager.context().subject()).toString());
         this.manager = manager;
         this.controller = new LicenseWizardController(dialog);
         this.controller.setupPanels(this);

@@ -22,15 +22,15 @@ extends WordSpec { this: TestContext =>
 
       "no license key is installed" should {
         "return its subject" in {
-          service.subject should be (manager.subject)
+          service.subject should be (consumerContext.subject)
         }
 
         "return its subject encoded as JSON" in {
-          service.subjectAsJson should be ('"' + manager.subject + '"')
+          service.subjectAsJson should be ('"' + consumerContext.subject + '"')
         }
 
         "return its subject encoded as XML" in {
-          service.subjectAsXml.getValue should be (manager.subject)
+          service.subjectAsXml.getValue should be (consumerContext.subject)
         }
 
         "fail to view the license key in" in {

@@ -5,6 +5,7 @@
 
 package org.truelicense.swing;
 
+import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.ui.LicenseWizardMessage;
@@ -33,7 +34,9 @@ implements WizardView<LicenseWizardState> {
 
     LicenseConsumerManager manager() { return wizard().manager(); }
 
-    final String subject() { return manager().subject(); }
+    final String subject() { return context().subject(); }
+
+    private LicenseConsumerContext<?> context() { return manager().context(); }
 
     final String format(LicenseWizardMessage key) {
         return key.format(subject()).toString();

@@ -71,11 +71,9 @@ implements CachePeriodProvider,
 
             @Override
             LicenseConsumerManager parent() { return parent; }
-            @Override
-            public Store store() { return store; }
 
             @Override
-            public String subject() { return cc.subject(); }
+            public Store store() { return store; }
         }
         return new Manager();
     }
@@ -132,9 +130,6 @@ implements CachePeriodProvider,
 
             @Override
             public Store store() { return store; }
-
-            @Override
-            public String subject() { return cc.subject(); }
         }
         return new Manager();
     }

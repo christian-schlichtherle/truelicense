@@ -19,7 +19,7 @@ import java.nio.file.Path;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseApplicationContext {
+public interface LicenseApplicationContext extends LicenseSubjectProvider {
 
     /** Returns a new memory store. */
     Store memoryStore();

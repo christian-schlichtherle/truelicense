@@ -29,8 +29,7 @@ import org.truelicense.api.misc.ContextProvider;
  */
 public interface LicenseConsumerManager
 extends ContextProvider<LicenseConsumerContext<?>>,
-        LicenseParametersProvider,
-        LicenseSubjectProvider {
+        LicenseParametersProvider {
 
     /**
      * Verifies the digital signature of the license key and copies it to the

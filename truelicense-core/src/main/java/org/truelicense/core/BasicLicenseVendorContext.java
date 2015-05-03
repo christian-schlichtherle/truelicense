@@ -48,10 +48,14 @@ implements LicenseVendorContext<PasswordSpecification> {
 
             final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
 
-            @Override public LicenseVendorContext<PasswordSpecification> context() { return vc; }
-            @Override public LicenseParameters parameters() { return parameters; }
-            @Override public Store store() { throw new UnsupportedOperationException(); }
-            @Override public String subject() { return vc.subject(); }
+            @Override
+            public LicenseVendorContext<PasswordSpecification> context() { return vc; }
+
+            @Override
+            public LicenseParameters parameters() { return parameters; }
+
+            @Override
+            public Store store() { throw new UnsupportedOperationException(); }
         }
         return new Manager();
     }
