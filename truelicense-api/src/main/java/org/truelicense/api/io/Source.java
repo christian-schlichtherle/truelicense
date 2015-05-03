@@ -15,8 +15,6 @@ import java.io.*;
  */
 public interface Source {
 
-    /**
-     * Returns a new input stream for reading the binary data from this source.
-     */
+    /** Returns a new input stream for reading data from this source. */
     InputStream input() throws IOException;
 }

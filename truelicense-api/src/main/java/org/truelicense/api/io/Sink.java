@@ -16,6 +16,6 @@ import java.io.OutputStream;
  */
 public interface Sink {
 
-    /** Returns a new output stream for writing the binary data to this sink. */
+    /** Returns a new output stream for writing data to this sink. */
     OutputStream output() throws IOException;
 }
