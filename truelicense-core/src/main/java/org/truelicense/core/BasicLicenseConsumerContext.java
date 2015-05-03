@@ -33,7 +33,7 @@ final class BasicLicenseConsumerContext<PasswordSpecification>
 extends BasicLicenseApplicationContext<PasswordSpecification>
 implements CachePeriodProvider,
         LicenseConsumerContext<PasswordSpecification>,
-        LicenseProvider {
+        LicenseFactory {
 
     BasicLicenseConsumerContext(BasicLicenseManagementContext<PasswordSpecification> context) {
         super(context);

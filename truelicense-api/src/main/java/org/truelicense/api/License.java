@@ -51,7 +51,7 @@ import static java.util.Calendar.getInstance;
  * This is because object serialization is not required with the used
  * {@code Codec}s and creates a major obligation for any subclass.
  *
- * @see    LicenseProvider
+ * @see    LicenseFactory
  * @author Christian Schlichtherle
  */
 // #TRUELICENSE-50: The XML root element name MUST be explicitly defined!

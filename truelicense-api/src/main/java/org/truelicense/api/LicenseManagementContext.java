@@ -38,7 +38,7 @@ extends BiosProvider,
         CompressionProvider,
         LicenseAuthorizationProvider,
         LicenseInitializationProvider,
-        LicenseProvider,
+        LicenseFactory,
         LicenseSubjectProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
@@ -63,10 +63,6 @@ extends BiosProvider,
      * @param parameters the PBE parameters.
      */
     Transformation encryption(PbeParameters parameters);
-
-    /** Returns a <em>new</em> license. */
-    @Override
-    License license();
 
     /**
      * Returns the name of the default Password Based Encryption (PBE)

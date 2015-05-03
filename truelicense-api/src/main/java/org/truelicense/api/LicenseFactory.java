@@ -6,12 +6,12 @@
 package org.truelicense.api;
 
 /**
- * Provides a license.
+ * Creates a new license.
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseProvider {
+public interface LicenseFactory {
 
-    /** Returns the license. */
+    /** Returns a new license. */
     License license();
 }

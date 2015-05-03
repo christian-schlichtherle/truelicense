@@ -22,7 +22,8 @@ import java.util.concurrent.Callable;
  * @author Christian Schlichtherle
  */
 abstract class ChainedLicenseConsumerManager
-extends CachingLicenseConsumerManager implements LicenseProvider {
+extends CachingLicenseConsumerManager
+implements LicenseFactory {
 
     private volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 

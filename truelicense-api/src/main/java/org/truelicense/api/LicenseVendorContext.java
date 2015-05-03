@@ -24,7 +24,7 @@ import org.truelicense.api.codec.CodecProvider;
 public interface LicenseVendorContext<PasswordSpecification>
 extends CodecProvider,
         LicenseApplicationContext,
-        LicenseProvider {
+        LicenseFactory {
 
     /**
      * Returns a builder for a
