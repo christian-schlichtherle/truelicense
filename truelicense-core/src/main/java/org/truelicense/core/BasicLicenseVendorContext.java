@@ -7,6 +7,7 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Store;
@@ -25,11 +26,11 @@ import org.truelicense.api.io.Transformation;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-final class BasicLicenseVendorContext<PasswordSpecification>
-extends BasicLicenseApplicationContext<PasswordSpecification>
+final class BasicLicenseVendorContext<PasswordSpecification, Model>
+extends BasicLicenseApplicationContext<PasswordSpecification, Model>
 implements LicenseVendorContext<PasswordSpecification> {
 
-    BasicLicenseVendorContext(BasicLicenseManagementContext<PasswordSpecification> context) {
+    BasicLicenseVendorContext(BasicLicenseManagementContext<PasswordSpecification, Model> context) {
         super(context);
     }
 
@@ -46,13 +47,18 @@ implements LicenseVendorContext<PasswordSpecification> {
         class Manager extends BasicLicenseManager
         implements LicenseVendorManager {
 
-            final BasicLicenseVendorContext<PasswordSpecification> vc = BasicLicenseVendorContext.this;
+            final BasicLicenseVendorContext<PasswordSpecification, Model> vc = BasicLicenseVendorContext.this;
 
             @Override
             public LicenseVendorContext<PasswordSpecification> context() { return vc; }
 
             @Override
             public LicenseParameters parameters() { return parameters; }
+
+            @Override
+            public RepositoryContext<Model> repositoryContext() {
+                return vc.repositoryContext();
+            }
 
             @Override
             public Store store() { throw new UnsupportedOperationException(); }

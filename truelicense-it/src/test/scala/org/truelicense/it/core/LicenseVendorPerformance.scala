@@ -8,7 +8,7 @@ package org.truelicense.it.core
 import java.util.concurrent.Callable
 
 /** @author Christian Schlichtherle */
-trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext =>
+trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext[_] =>
   override def call() {
     for (i <- 1 to 5) {
       val vm = vendorManager

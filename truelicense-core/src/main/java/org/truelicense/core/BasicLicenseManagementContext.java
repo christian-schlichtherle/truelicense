@@ -41,7 +41,7 @@ import java.util.Objects;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public abstract class BasicLicenseManagementContext<PasswordSpecification>
+public abstract class BasicLicenseManagementContext<PasswordSpecification, Model>
 implements BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
@@ -56,7 +56,7 @@ implements BiosProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<PasswordSpecification>,
-        RepositoryContextProvider<Object> {
+        RepositoryContextProvider<Model> {
 
     private final String subject;
 

@@ -10,35 +10,35 @@ import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v2.commons.V2TestContext.prefix
+import org.truelicense.v2.commons.auth.{V2RepositoryContext, V2RepositoryModel}
 
 /** @author Christian Schlichtherle */
-trait V2TestContext extends TestContext {
+trait V2TestContext extends TestContext[V2RepositoryModel] {
 
-  override final def vendorManager = {
-    val vm = vendorContext.manager
-      .encryption
-        .password(test1234)
-        .inject
+  override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+    val cm = consumerContext.manager
       .keyStore
-        .alias("mykey")
-        .loadFromResource(prefix + "private.jceks")
-        .storePassword(test1234)
-        .inject
+      .alias("mykey")
+      .loadFromResource(prefix + "chained-public.jceks")
+      .storePassword(test1234)
+      .inject
+      .parent(parent)
+      .storeIn(store)
       .build
-    require(vm.context eq vendorContext)
-    vm
+    require(cm.context eq consumerContext)
+    cm
   }
 
   override final def chainedVendorManager = {
     val vm = vendorContext.manager
       .encryption
-        .password(test1234)
-        .inject
+      .password(test1234)
+      .inject
       .keyStore
-        .alias("mykey")
-        .loadFromResource(prefix + "chained-private.jceks")
-        .storePassword(test1234)
-        .inject
+      .alias("mykey")
+      .loadFromResource(prefix + "chained-private.jceks")
+      .storePassword(test1234)
+      .inject
       .build
     require(vm.context eq vendorContext)
     vm
@@ -60,20 +60,6 @@ trait V2TestContext extends TestContext {
     cm
   }
 
-  override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
-      .keyStore
-        .alias("mykey")
-        .loadFromResource(prefix + "chained-public.jceks")
-        .storePassword(test1234)
-        .inject
-      .parent(parent)
-      .storeIn(store)
-      .build
-    require(cm.context eq consumerContext)
-    cm
-  }
-
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
     val cm = consumerContext.manager
       .ftpDays(1)
@@ -87,6 +73,21 @@ trait V2TestContext extends TestContext {
       .build
     require(cm.context eq consumerContext)
     cm
+  }
+
+  override final def vendorManager = {
+    val vm = vendorContext.manager
+      .encryption
+      .password(test1234)
+      .inject
+      .keyStore
+      .alias("mykey")
+      .loadFromResource(prefix + "private.jceks")
+      .storePassword(test1234)
+      .inject
+      .build
+    require(vm.context eq vendorContext)
+    vm
   }
 }
 

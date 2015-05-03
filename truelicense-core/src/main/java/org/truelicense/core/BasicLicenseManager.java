@@ -25,7 +25,8 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-abstract class BasicLicenseManager implements LicenseParametersProvider {
+abstract class BasicLicenseManager<Model>
+implements LicenseParametersProvider, RepositoryContextProvider<Model> {
 
     public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
         return wrap(new Callable<LicenseKeyGenerator>() {
@@ -34,8 +35,8 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
                 authorization().clearGenerator(parameters());
                 return new LicenseKeyGenerator() {
 
-                    final RepositoryContext<Object> context = repositoryContext();
-                    final Object model = context.model();
+                    final RepositoryContext<Model> context = repositoryContext();
+                    final Model model = context.model();
                     final Artifactory artifactory = authentication()
                             .sign(context.controller(model, codec()), validatedBean());
 
@@ -178,7 +179,7 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
         return repositoryContext().controller(repositoryModel(source), codec());
     }
 
-    Object repositoryModel(Source source) throws Exception {
+    Model repositoryModel(Source source) throws Exception {
         return codec().from(decompress(source)).decode(repositoryContext().model().getClass());
     }
 
@@ -192,31 +193,25 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
     // Property/factory functions:
     //
 
+    final Authentication authentication() {
+        return parameters().authentication();
+    }
+
     final LicenseAuthorization authorization() {
         return parameters().authorization();
     }
 
     final BIOS bios() { return parameters().bios(); }
 
-    final LicenseInitialization initialization() {
-        return parameters().initialization();
-    }
-
-    final LicenseValidation validation() { return parameters().validation(); }
-
-    final RepositoryContext<Object> repositoryContext() {
-        return parameters().repositoryContext();
-    }
-
-    final Authentication authentication() {
-        return parameters().authentication();
-    }
-
     final Codec codec() { return parameters().codec(); }
 
     final Transformation compression() { return parameters().compression(); }
 
     final Transformation encryption() { return parameters().encryption(); }
+
+    final LicenseInitialization initialization() {
+        return parameters().initialization();
+    }
 
     /**
      * Returns the store for the license key (optional operation).
@@ -225,4 +220,6 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
      *         {@link LicenseVendorManager}.
      */
     public abstract Store store();
+
+    final LicenseValidation validation() { return parameters().validation(); }
 }

@@ -12,7 +12,7 @@ import org.scalatest.WordSpec
 
 /** @author Christian Schlichtherle */
 abstract class LicenseConsumerServiceTestSuite
-extends WordSpec { this: TestContext =>
+extends WordSpec { this: TestContext[_] =>
 
   "A license consumer service" when {
     "using a license consumer manager" when {

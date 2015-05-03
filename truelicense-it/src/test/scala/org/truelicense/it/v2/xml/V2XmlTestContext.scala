@@ -61,5 +61,6 @@ trait V2XmlTestContext extends V2TestContext {
 }
 
 object V2XmlTestContext {
+
   private val logger = LoggerFactory getLogger classOf[V2XmlTestContext]
 }

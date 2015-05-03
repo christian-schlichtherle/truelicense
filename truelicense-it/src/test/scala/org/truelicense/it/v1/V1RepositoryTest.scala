@@ -15,7 +15,4 @@ import org.truelicense.v1.auth.V1RepositoryContext
 @RunWith(classOf[JUnitRunner])
 class V1RepositoryTest
 extends RepositoryTestSuite[GenericCertificate]
-with V1TestContext {
-
-  override def repositoryContext = new V1RepositoryContext
-}
+with V1TestContext

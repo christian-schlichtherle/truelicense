@@ -9,6 +9,7 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.RepositoryContext;
+import org.truelicense.api.auth.RepositoryContextProvider;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.*;
@@ -41,19 +42,20 @@ import static java.util.Calendar.getInstance;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-abstract class BasicLicenseApplicationContext<PasswordSpecification>
+abstract class BasicLicenseApplicationContext<PasswordSpecification, Model>
 implements BiosProvider,
-           ClassLoaderProvider,
-           Clock,
-           ContextProvider<BasicLicenseManagementContext<PasswordSpecification>>,
-           LicenseApplicationContext,
-           LicenseInitializationProvider,
-           PasswordPolicyProvider,
-           PasswordProtectionProvider<PasswordSpecification> {
+        ClassLoaderProvider,
+        Clock,
+        ContextProvider<BasicLicenseManagementContext<PasswordSpecification, Model>>,
+        LicenseApplicationContext,
+        LicenseInitializationProvider,
+        PasswordPolicyProvider,
+        PasswordProtectionProvider<PasswordSpecification>,
+        RepositoryContextProvider<Model> {
 
-    private final BasicLicenseManagementContext<PasswordSpecification> context;
+    private final BasicLicenseManagementContext<PasswordSpecification, Model> context;
 
-    BasicLicenseApplicationContext(final BasicLicenseManagementContext<PasswordSpecification> context) {
+    BasicLicenseApplicationContext(final BasicLicenseManagementContext<PasswordSpecification, Model> context) {
         this.context = context;
     }
 
@@ -83,7 +85,7 @@ implements BiosProvider,
     }
 
     @Override
-    public final BasicLicenseManagementContext<PasswordSpecification> context() {
+    public final BasicLicenseManagementContext<PasswordSpecification, Model> context() {
         return context;
     }
 
@@ -216,11 +218,6 @@ implements BiosProvider,
             public LicenseInitialization initialization() { return initialization; }
 
             @Override
-            public RepositoryContext<Object> repositoryContext() {
-                return context().repositoryContext();
-            }
-
-            @Override
             public LicenseValidation validation() { return context().validation(); }
         };
     }
@@ -268,6 +265,11 @@ implements BiosProvider,
     @Override
     public final PasswordProtection protection(PasswordSpecification specification) {
         return context().protection(specification);
+    }
+
+    @Override
+    public RepositoryContext<Model> repositoryContext() {
+        return context.repositoryContext();
     }
 
     @Override

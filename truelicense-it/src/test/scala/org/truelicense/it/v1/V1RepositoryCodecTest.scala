@@ -5,12 +5,13 @@
 
 package org.truelicense.it.v1
 
-import org.truelicense.it.core.RepositoryCodecTestSuite
+import de.schlichtherle.xml.GenericCertificate
 import org.junit.runner._
 import org.scalatest.junit._
+import org.truelicense.it.core.RepositoryCodecTestSuite
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V1RepositoryCodecTest
-extends RepositoryCodecTestSuite
-   with V1TestContext
+extends RepositoryCodecTestSuite[GenericCertificate]
+with V1TestContext

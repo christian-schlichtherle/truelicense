@@ -6,6 +6,7 @@
 package org.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
+import de.schlichtherle.xml.GenericCertificate;
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
@@ -59,7 +60,8 @@ import org.truelicense.v1.crypto.V1Encryption;
  *
  * @author Christian Schlichtherle
  */
-public class V1LicenseManagementContext extends CommonLicenseManagementContext {
+public class V1LicenseManagementContext
+extends CommonLicenseManagementContext<GenericCertificate> {
 
     @Obfuscate
     private static final String STORE_TYPE = "JKS";
@@ -137,10 +139,9 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      * The implementation in the class {@link V1LicenseManagementContext}
      * returns a new {@link V1RepositoryContext}.
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public final RepositoryContext<Object> repositoryContext() {
-        return (RepositoryContext) new V1RepositoryContext();
+    public final RepositoryContext<GenericCertificate> repositoryContext() {
+        return new V1RepositoryContext();
     }
 
     /**

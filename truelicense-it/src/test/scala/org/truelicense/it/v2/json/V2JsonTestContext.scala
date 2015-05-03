@@ -41,5 +41,6 @@ trait V2JsonTestContext extends V2TestContext {
 }
 
 object V2JsonTestContext {
+
   private val logger = LoggerFactory getLogger classOf[V2JsonTestContext]
 }

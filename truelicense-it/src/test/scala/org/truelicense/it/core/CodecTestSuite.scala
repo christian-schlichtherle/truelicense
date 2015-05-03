@@ -16,7 +16,7 @@ import org.truelicense.spi.codec.Codecs
 import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
-abstract class CodecTestSuite extends WordSpec { this: TestContext =>
+abstract class CodecTestSuite extends WordSpec { this: TestContext[_] =>
 
   def artifact: AnyRef = license
 

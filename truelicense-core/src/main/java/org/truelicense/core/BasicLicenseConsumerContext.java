@@ -7,6 +7,7 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.CachePeriodProvider;
@@ -29,13 +30,13 @@ import java.util.List;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-final class BasicLicenseConsumerContext<PasswordSpecification>
-extends BasicLicenseApplicationContext<PasswordSpecification>
+final class BasicLicenseConsumerContext<PasswordSpecification, Model>
+extends BasicLicenseApplicationContext<PasswordSpecification, Model>
 implements CachePeriodProvider,
         LicenseConsumerContext<PasswordSpecification>,
         LicenseFactory {
 
-    BasicLicenseConsumerContext(BasicLicenseManagementContext<PasswordSpecification> context) {
+    BasicLicenseConsumerContext(BasicLicenseManagementContext<PasswordSpecification, Model> context) {
         super(context);
     }
 
@@ -52,7 +53,7 @@ implements CachePeriodProvider,
         class Manager extends ChainedLicenseConsumerManager
         implements LicenseConsumerManager {
 
-            final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
+            final BasicLicenseConsumerContext<PasswordSpecification, Model> cc = BasicLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
@@ -71,6 +72,11 @@ implements CachePeriodProvider,
 
             @Override
             LicenseConsumerManager parent() { return parent; }
+
+            @Override
+            public RepositoryContext<Model> repositoryContext() {
+                return cc.repositoryContext();
+            }
 
             @Override
             public Store store() { return store; }
@@ -114,7 +120,7 @@ implements CachePeriodProvider,
         class Manager extends CachingLicenseConsumerManager
         implements LicenseConsumerManager {
 
-            final BasicLicenseConsumerContext<PasswordSpecification> cc = BasicLicenseConsumerContext.this;
+            final BasicLicenseConsumerContext<PasswordSpecification, Model> cc = BasicLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
@@ -127,6 +133,11 @@ implements CachePeriodProvider,
 
             @Override
             public LicenseParameters parameters() { return parameters; }
+
+            @Override
+            public RepositoryContext<Model> repositoryContext() {
+                return cc.repositoryContext();
+            }
 
             @Override
             public Store store() { return store; }

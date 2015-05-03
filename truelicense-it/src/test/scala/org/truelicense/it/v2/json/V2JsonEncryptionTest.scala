@@ -8,7 +8,7 @@ package org.truelicense.it.v2.json
 import org.junit.runner._
 import org.scalatest.junit._
 import org.truelicense.it.core.CodecTestSuite
-import org.truelicense.it.v2.commons.crypto.V2EncryptionTestContext
+import org.truelicense.it.v2.commons.V2EncryptionTestContext
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])

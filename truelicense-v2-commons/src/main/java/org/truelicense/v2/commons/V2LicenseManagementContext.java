@@ -12,6 +12,7 @@ import org.truelicense.api.io.Transformation;
 import org.truelicense.core.CommonLicenseManagementContext;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.auth.V2RepositoryContext;
+import org.truelicense.v2.commons.auth.V2RepositoryModel;
 import org.truelicense.v2.commons.comp.V2Compression;
 import org.truelicense.v2.commons.crypto.V2Encryption;
 
@@ -22,7 +23,7 @@ import org.truelicense.v2.commons.crypto.V2Encryption;
  * @author Christian Schlichtherle
  */
 public abstract class V2LicenseManagementContext
-extends CommonLicenseManagementContext {
+extends CommonLicenseManagementContext<V2RepositoryModel> {
 
     @Obfuscate
     private static final String STORE_TYPE = "JCEKS";
@@ -75,8 +76,8 @@ extends CommonLicenseManagementContext {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final RepositoryContext<Object> repositoryContext() {
-        return (RepositoryContext) new V2RepositoryContext();
+    public final RepositoryContext<V2RepositoryModel> repositoryContext() {
+        return new V2RepositoryContext();
     }
 
     /**

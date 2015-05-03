@@ -7,7 +7,7 @@ package org.truelicense.it.v2.xml
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.truelicense.it.v2.json.V2RepositoryTestSuite
+import org.truelicense.it.v2.commons.V2RepositoryTestSuite
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])

@@ -6,7 +6,6 @@
 package org.truelicense.api;
 
 import org.truelicense.api.auth.AuthenticationProvider;
-import org.truelicense.api.auth.RepositoryContextProvider;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.EncryptionProvider;
@@ -29,12 +28,11 @@ import org.truelicense.api.io.BiosProvider;
  */
 public interface LicenseParameters
 extends AuthenticationProvider,
-        BiosProvider,
-        CodecProvider,
-        CompressionProvider,
+        BiosProvider, // TODO: Remove this!
+        CodecProvider, // TODO: Remove this!
+        CompressionProvider, // TODO: Remove this!
         EncryptionProvider,
         LicenseAuthorizationProvider,
         LicenseInitializationProvider,
-        LicenseValidationProvider,
-        RepositoryContextProvider<Object> {
+        LicenseValidationProvider {
 }

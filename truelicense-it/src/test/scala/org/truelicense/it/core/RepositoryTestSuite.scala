@@ -9,21 +9,18 @@ import java.util.Locale.ENGLISH
 
 import org.scalatest.Matchers._
 import org.scalatest._
-import org.truelicense.api.auth.RepositoryContext
 import org.truelicense.spi.codec.SerializationCodec
 
 /**
  * @author Christian Schlichtherle
  */
-abstract class RepositoryTestSuite[Model]
-extends WordSpec with ParallelTestExecution { this: TestContext =>
+abstract class RepositoryTestSuite[Model <: AnyRef]
+extends WordSpec with ParallelTestExecution { this: TestContext[Model] =>
 
   private val _codec = new SerializationCodec {
     override def contentType = super.contentType.toUpperCase(ENGLISH)
     override def contentTransferEncoding = super.contentTransferEncoding.toUpperCase(ENGLISH)
   }
-
-  def repositoryContext: RepositoryContext[Model]
 
   "A repository" should {
     "sign and verify an object" in {

@@ -16,7 +16,7 @@ import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
 abstract class LicenseKeyLifeCycleTestSuite
-extends WordSpec { this: TestContext =>
+extends WordSpec { this: TestContext[_] =>
 
   def check(license: License, notBefore: Date = null, notAfter: Date = null) {
     import license._

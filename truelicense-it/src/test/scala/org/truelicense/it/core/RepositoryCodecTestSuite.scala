@@ -6,14 +6,16 @@
 package org.truelicense.it.core
 
 /** @author Christian Schlichtherle */
-abstract class RepositoryCodecTestSuite
-extends CodecTestSuite { this: TestContext =>
+abstract class RepositoryCodecTestSuite[Model <: AnyRef]
+extends CodecTestSuite
+{ this: TestContext[Model] =>
+
   override def artifact = {
     val l = license
     val c = vendorContext.codec
     val p = vendorManager.parameters
     val a = p.authentication
-    val rx = p.repositoryContext
+    val rx = repositoryContext
     val rm = rx.model
     val rc = rx.controller(rm, c)
     a sign (rc, l)

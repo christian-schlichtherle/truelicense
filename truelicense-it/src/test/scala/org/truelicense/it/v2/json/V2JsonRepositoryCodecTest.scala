@@ -8,8 +8,10 @@ package org.truelicense.it.v2.json
 import org.truelicense.it.core.RepositoryCodecTestSuite
 import org.junit.runner._
 import org.scalatest.junit._
+import org.truelicense.v2.commons.auth.V2RepositoryModel
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V2JsonRepositoryCodecTest
-extends RepositoryCodecTestSuite with V2JsonTestContext
+extends RepositoryCodecTestSuite[V2RepositoryModel]
+with V2JsonTestContext

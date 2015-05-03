@@ -20,7 +20,7 @@ import org.truelicense.it.core.TestContext
 import org.truelicense.jax.rs._
 
 /** @author Christian Schlichtherle */
-class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
+class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext[_] =>
 
   final lazy val manager = consumerManager
   final lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
