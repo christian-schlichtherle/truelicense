@@ -11,6 +11,8 @@ import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.auth.RepositoryContextProvider;
 import org.truelicense.api.codec.Codec;
+import org.truelicense.api.codec.CodecProvider;
+import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.*;
 import org.truelicense.api.misc.Builder;
@@ -392,27 +394,34 @@ implements BiosProvider,
 
     abstract class TrueLicenseParameters
     implements BiosProvider,
+            CodecProvider,
+            CompressionProvider,
+            LicenseAuthorizationProvider,
+            LicenseInitializationProvider,
             LicenseParameters,
+            LicenseValidationProvider,
             RepositoryContextProvider<Model> {
 
-        @Override
-        public final LicenseAuthorization authorization() { return context().authorization(); }
+        final TrueLicenseManagementContext<PasswordSpecification, Model> context = context();
 
         @Override
-        public final BIOS bios() { return context().bios(); }
+        public final LicenseAuthorization authorization() { return context.authorization(); }
 
         @Override
-        public final Codec codec() { return context().codec(); }
+        public final BIOS bios() { return context.bios(); }
 
         @Override
-        public final Transformation compression() { return context().compression(); }
+        public final Codec codec() { return context.codec(); }
+
+        @Override
+        public final Transformation compression() { return context.compression(); }
 
         @Override
         public final RepositoryContext<Model> repositoryContext() {
-            return context().repositoryContext();
+            return context.repositoryContext();
         }
 
         @Override
-        public final LicenseValidation validation() { return context().validation(); }
+        public final LicenseValidation validation() { return context.validation(); }
     }
 }

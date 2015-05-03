@@ -88,7 +88,7 @@ public enum Main {
 
                 Codec codec() {
                     final Codec c = codec;
-                    return null != c ? c : (codec = manager().parameters().codec());
+                    return null != c ? c : (codec = context().codec());
                 }
 
                 Source stdin() { return context().stdin(); }

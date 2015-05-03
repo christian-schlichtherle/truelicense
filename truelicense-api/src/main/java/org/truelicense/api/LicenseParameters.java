@@ -28,10 +28,5 @@ import org.truelicense.api.io.BiosProvider;
  */
 public interface LicenseParameters
 extends AuthenticationProvider,
-        CodecProvider, // TODO: Remove this!
-        CompressionProvider, // TODO: Remove this!
-        EncryptionProvider,
-        LicenseAuthorizationProvider,
-        LicenseInitializationProvider,
-        LicenseValidationProvider {
+        EncryptionProvider {
 }

@@ -60,6 +60,7 @@ implements LicenseVendorContext<PasswordSpecification> {
             @Override
             public Store store() { throw new UnsupportedOperationException(); }
         }
+
         return new Manager();
     }
 
