@@ -7,8 +7,6 @@ package org.truelicense.core;
 
 import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.RepositoryContext;
-import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.CachePeriodProvider;
@@ -47,7 +45,7 @@ implements CachePeriodProvider,
     }
 
     private LicenseConsumerManager chainedManager(
-            final LicenseParameters parameters,
+            final BasicLicenseParameters parameters,
             final LicenseConsumerManager parent,
             final Store store) {
 
@@ -60,9 +58,6 @@ implements CachePeriodProvider,
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
 
             @Override
-            public BIOS bios() { return cc.bios(); }
-
-            @Override
             public long cachePeriodMillis() { return cachePeriodMillis; }
 
             @Override
@@ -72,15 +67,10 @@ implements CachePeriodProvider,
             public License license() { return cc.license(); }
 
             @Override
-            public LicenseParameters parameters() { return parameters; }
+            public BasicLicenseParameters parameters() { return parameters; }
 
             @Override
             LicenseConsumerManager parent() { return parent; }
-
-            @Override
-            public RepositoryContext<Model> repositoryContext() {
-                return cc.repositoryContext();
-            }
 
             @Override
             public Store store() { return store; }
@@ -118,7 +108,7 @@ implements CachePeriodProvider,
     }
 
     private LicenseConsumerManager manager(
-            final LicenseParameters parameters,
+            final BasicLicenseParameters parameters,
             final Store store) {
 
         class Manager extends CachingLicenseConsumerManager
@@ -130,21 +120,13 @@ implements CachePeriodProvider,
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
 
             @Override
-            public BIOS bios() { return cc.bios(); }
-
-            @Override
             public long cachePeriodMillis() { return cachePeriodMillis; }
 
             @Override
             public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
 
             @Override
-            public LicenseParameters parameters() { return parameters; }
-
-            @Override
-            public RepositoryContext<Model> repositoryContext() {
-                return cc.repositoryContext();
-            }
+            public BasicLicenseParameters parameters() { return parameters; }
 
             @Override
             public Store store() { return store; }

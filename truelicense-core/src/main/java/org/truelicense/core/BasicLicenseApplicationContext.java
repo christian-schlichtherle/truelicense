@@ -62,7 +62,7 @@ implements BiosProvider,
     @Override
     public final BIOS bios() { return context().bios(); }
 
-    final LicenseParameters chainedParameters(
+    final BasicLicenseParameters chainedParameters(
             Authentication authentication,
             List<Transformation> encryption,
             LicenseConsumerManager parent) {
@@ -97,7 +97,7 @@ implements BiosProvider,
         return parent.parameters().encryption();
     }
 
-    final LicenseParameters ftpParameters(
+    final BasicLicenseParameters ftpParameters(
             final Authentication authentication,
             final int days,
             final List<Transformation> encryption,
@@ -184,42 +184,30 @@ implements BiosProvider,
         return context().classLoader();
     }
 
-    final LicenseParameters parameters(
+    final BasicLicenseParameters parameters(
             Authentication authentication,
             Transformation encryption) {
         return parameters(authentication, encryption, initialization());
     }
 
-    private LicenseParameters parameters(
+    private BasicLicenseParameters parameters(
             final Authentication authentication,
             final Transformation encryption,
             final LicenseInitialization initialization) {
-        return new LicenseParameters() {
+        return new BasicLicenseParameters() {
 
             @Override
             public Authentication authentication() { return authentication; }
-
-            @Override
-            public LicenseAuthorization authorization() { return context().authorization(); }
-
-            @Override
-            public Codec codec() { return context().codec(); }
-
-            @Override
-            public Transformation compression() { return context().compression(); }
 
             @Override
             public Transformation encryption() { return encryption; }
 
             @Override
             public LicenseInitialization initialization() { return initialization; }
-
-            @Override
-            public LicenseValidation validation() { return context().validation(); }
         };
     }
 
-    private LicenseParameters parameters(
+    private BasicLicenseParameters parameters(
             Authentication authentication,
             LicenseInitialization initialization,
             List<Transformation> encryption,
@@ -400,5 +388,31 @@ implements BiosProvider,
                 return this;
             }
         }
+    }
+
+    abstract class BasicLicenseParameters
+    implements BiosProvider,
+            LicenseParameters,
+            RepositoryContextProvider<Model> {
+
+        @Override
+        public final LicenseAuthorization authorization() { return context().authorization(); }
+
+        @Override
+        public final BIOS bios() { return context().bios(); }
+
+        @Override
+        public final Codec codec() { return context().codec(); }
+
+        @Override
+        public final Transformation compression() { return context().compression(); }
+
+        @Override
+        public final RepositoryContext<Model> repositoryContext() {
+            return context().repositoryContext();
+        }
+
+        @Override
+        public final LicenseValidation validation() { return context().validation(); }
     }
 }

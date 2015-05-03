@@ -203,6 +203,9 @@ implements BiosProvider,
         return parameters().authorization();
     }
 
+    @Override
+    public final BIOS bios() { return parameters().bios(); }
+
     final Codec codec() { return parameters().codec(); }
 
     final Transformation compression() { return parameters().compression(); }
@@ -211,6 +214,14 @@ implements BiosProvider,
 
     final LicenseInitialization initialization() {
         return parameters().initialization();
+    }
+
+    @Override
+    public abstract BasicLicenseApplicationContext<?, Model>.BasicLicenseParameters parameters();
+
+    @Override
+    public final RepositoryContext<Model> repositoryContext() {
+        return parameters().repositoryContext();
     }
 
     /**

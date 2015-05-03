@@ -5,11 +5,12 @@
 
 package org.truelicense.core;
 
-import org.truelicense.api.*;
+import org.truelicense.api.License;
+import org.truelicense.api.LicenseVendorContext;
+import org.truelicense.api.LicenseVendorManager;
+import org.truelicense.api.LicenseVendorManagerBuilder;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
@@ -43,7 +44,7 @@ implements LicenseVendorContext<PasswordSpecification> {
         return new BasicLicenseVendorManagerBuilder();
     }
 
-    private LicenseVendorManager manager(final LicenseParameters parameters) {
+    private LicenseVendorManager manager(final BasicLicenseParameters parameters) {
 
         class Manager extends BasicLicenseManager
         implements LicenseVendorManager {
@@ -51,18 +52,10 @@ implements LicenseVendorContext<PasswordSpecification> {
             final BasicLicenseVendorContext<PasswordSpecification, Model> vc = BasicLicenseVendorContext.this;
 
             @Override
-            public BIOS bios() { return vc.bios(); }
-
-            @Override
             public LicenseVendorContext<PasswordSpecification> context() { return vc; }
 
             @Override
-            public LicenseParameters parameters() { return parameters; }
-
-            @Override
-            public RepositoryContext<Model> repositoryContext() {
-                return vc.repositoryContext();
-            }
+            public BasicLicenseParameters parameters() { return parameters; }
 
             @Override
             public Store store() { throw new UnsupportedOperationException(); }
