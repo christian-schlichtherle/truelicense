@@ -31,17 +31,10 @@ import java.util.List;
 @SuppressWarnings("LoopStatementThatDoesntLoop")
 final class TrueLicenseConsumerContext<PasswordSpecification, Model>
 extends TrueLicenseApplicationContext<PasswordSpecification, Model>
-implements CachePeriodProvider,
-        LicenseConsumerContext<PasswordSpecification>,
-        LicenseFactory {
+implements LicenseConsumerContext<PasswordSpecification> {
 
     TrueLicenseConsumerContext(TrueLicenseManagementContext<PasswordSpecification, Model> context) {
         super(context);
-    }
-
-    @Override
-    public long cachePeriodMillis() {
-        return context().cachePeriodMillis();
     }
 
     private LicenseConsumerManager chainedManager(
@@ -98,9 +91,6 @@ implements CachePeriodProvider,
                 ftpParameters(authentication, days, encryption, parent),
                 parent, secret);
     }
-
-    @Override
-    public License license() { return context().license(); }
 
     @Override
     public ChildLicenseConsumerManagerBuilder manager() {

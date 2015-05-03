@@ -36,10 +36,6 @@ implements LicenseVendorContext<PasswordSpecification> {
         super(context);
     }
 
-    @Override public final Codec codec() { return context().codec(); }
-
-    @Override public License license() { return context().license(); }
-
     @Override public TrueLicenseVendorManagerBuilder manager() {
         return new TrueLicenseVendorManagerBuilder();
     }
@@ -69,9 +65,6 @@ implements LicenseVendorContext<PasswordSpecification> {
             Transformation encryption) {
         return manager(parameters(authentication, encryption));
     }
-
-    @Override
-    public final Sink stdout() { return bios().stdout(); }
 
     final class TrueLicenseVendorManagerBuilder
     extends TrueLicenseManagerBuilder<TrueLicenseVendorManagerBuilder>

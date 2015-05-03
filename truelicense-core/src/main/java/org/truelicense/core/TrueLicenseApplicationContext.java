@@ -15,10 +15,7 @@ import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.*;
-import org.truelicense.api.misc.Builder;
-import org.truelicense.api.misc.ClassLoaderProvider;
-import org.truelicense.api.misc.Clock;
-import org.truelicense.api.misc.ContextProvider;
+import org.truelicense.api.misc.*;
 import org.truelicense.api.passwd.*;
 import org.truelicense.spi.misc.Option;
 
@@ -46,10 +43,12 @@ import static java.util.Calendar.getInstance;
 @SuppressWarnings("LoopStatementThatDoesntLoop")
 abstract class TrueLicenseApplicationContext<PasswordSpecification, Model>
 implements BiosProvider,
+        CachePeriodProvider,
         ClassLoaderProvider,
         Clock,
         ContextProvider<TrueLicenseManagementContext<PasswordSpecification, Model>>,
         LicenseApplicationContext,
+        LicenseFactory,
         LicenseInitializationProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<PasswordSpecification>,
@@ -63,6 +62,11 @@ implements BiosProvider,
 
     @Override
     public final BIOS bios() { return context().bios(); }
+
+    @Override
+    public final long cachePeriodMillis() {
+        return context().cachePeriodMillis();
+    }
 
     final TrueLicenseParameters chainedParameters(
             Authentication authentication,
@@ -85,6 +89,8 @@ implements BiosProvider,
             }
         };
     }
+
+    public final Codec codec() { return context().codec(); }
 
     @Override
     public final TrueLicenseManagementContext<PasswordSpecification, Model> context() {
@@ -120,7 +126,7 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseInitialization initialization() {
+    public final LicenseInitialization initialization() {
         return context().initialization();
     }
 
@@ -185,6 +191,9 @@ implements BiosProvider,
     public final List<ClassLoader> classLoader() {
         return context().classLoader();
     }
+
+    @Override
+    public final License license() { return context().license(); }
 
     final TrueLicenseParameters parameters(
             Authentication authentication,
@@ -255,8 +264,8 @@ implements BiosProvider,
     }
 
     @Override
-    public RepositoryContext<Model> repositoryContext() {
-        return context.repositoryContext();
+    public final RepositoryContext<Model> repositoryContext() {
+        return context().repositoryContext();
     }
 
     @Override
@@ -265,9 +274,9 @@ implements BiosProvider,
     }
 
     @Override
-    public final Source stdin() {
-        return bios().stdin();
-    }
+    public final Source stdin() { return bios().stdin(); }
+
+    public final Sink stdout() { return bios().stdout(); }
 
     @Override
     public final String subject() { return context().subject(); }
