@@ -29,13 +29,13 @@ import java.util.List;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-final class BasicLicenseConsumerContext<PasswordSpecification, Model>
-extends BasicLicenseApplicationContext<PasswordSpecification, Model>
+final class TrueLicenseConsumerContext<PasswordSpecification, Model>
+extends TrueLicenseApplicationContext<PasswordSpecification, Model>
 implements CachePeriodProvider,
         LicenseConsumerContext<PasswordSpecification>,
         LicenseFactory {
 
-    BasicLicenseConsumerContext(BasicLicenseManagementContext<PasswordSpecification, Model> context) {
+    TrueLicenseConsumerContext(TrueLicenseManagementContext<PasswordSpecification, Model> context) {
         super(context);
     }
 
@@ -45,14 +45,14 @@ implements CachePeriodProvider,
     }
 
     private LicenseConsumerManager chainedManager(
-            final BasicLicenseParameters parameters,
+            final TrueLicenseParameters parameters,
             final LicenseConsumerManager parent,
             final Store store) {
 
         class Manager extends ChainedLicenseConsumerManager
         implements LicenseConsumerManager {
 
-            final BasicLicenseConsumerContext<PasswordSpecification, Model> cc = BasicLicenseConsumerContext.this;
+            final TrueLicenseConsumerContext<PasswordSpecification, Model> cc = TrueLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
@@ -67,7 +67,7 @@ implements CachePeriodProvider,
             public License license() { return cc.license(); }
 
             @Override
-            public BasicLicenseParameters parameters() { return parameters; }
+            public TrueLicenseParameters parameters() { return parameters; }
 
             @Override
             LicenseConsumerManager parent() { return parent; }
@@ -108,13 +108,13 @@ implements CachePeriodProvider,
     }
 
     private LicenseConsumerManager manager(
-            final BasicLicenseParameters parameters,
+            final TrueLicenseParameters parameters,
             final Store store) {
 
         class Manager extends CachingLicenseConsumerManager
         implements LicenseConsumerManager {
 
-            final BasicLicenseConsumerContext<PasswordSpecification, Model> cc = BasicLicenseConsumerContext.this;
+            final TrueLicenseConsumerContext<PasswordSpecification, Model> cc = TrueLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
@@ -126,7 +126,7 @@ implements CachePeriodProvider,
             public LicenseConsumerContext<PasswordSpecification> context() { return cc; }
 
             @Override
-            public BasicLicenseParameters parameters() { return parameters; }
+            public TrueLicenseParameters parameters() { return parameters; }
 
             @Override
             public Store store() { return store; }
@@ -142,7 +142,7 @@ implements CachePeriodProvider,
     }
 
     class ChildLicenseConsumerManagerBuilder
-    extends BasicLicenseManagerBuilder<ChildLicenseConsumerManagerBuilder>
+    extends TrueLicenseManagerBuilder<ChildLicenseConsumerManagerBuilder>
     implements LicenseConsumerManagerBuilder<PasswordSpecification> {
 
         int ftpDays;

@@ -19,7 +19,7 @@ import org.truelicense.obfuscate.ObfuscatedString;
  * @author Christian Schlichtherle
  */
 public abstract class CommonLicenseManagementContext<Model>
-extends BasicLicenseManagementContext<ObfuscatedString, Model> {
+extends TrueLicenseManagementContext<ObfuscatedString, Model> {
 
     public CommonLicenseManagementContext(String subject) {
         super(subject);

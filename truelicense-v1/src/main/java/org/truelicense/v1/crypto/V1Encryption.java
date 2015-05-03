@@ -9,7 +9,7 @@ import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordUsage;
-import org.truelicense.core.crypto.BasicPbeEncryption;
+import org.truelicense.core.crypto.TruePbeEncryption;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.crypto.Cipher;
@@ -30,7 +30,7 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-public final class V1Encryption extends BasicPbeEncryption {
+public final class V1Encryption extends TruePbeEncryption {
 
     @Obfuscate private static final String PBE_ALGORITHM = "PBEWithMD5andDES";
 

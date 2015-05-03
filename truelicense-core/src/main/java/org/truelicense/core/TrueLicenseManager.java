@@ -25,7 +25,7 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-abstract class BasicLicenseManager<Model>
+abstract class TrueLicenseManager<Model>
 implements BiosProvider,
         LicenseParametersProvider,
         RepositoryContextProvider<Model> {
@@ -217,7 +217,7 @@ implements BiosProvider,
     }
 
     @Override
-    public abstract BasicLicenseApplicationContext<?, Model>.BasicLicenseParameters parameters();
+    public abstract TrueLicenseApplicationContext.TrueLicenseParameters parameters();
 
     @Override
     public final RepositoryContext<Model> repositoryContext() {

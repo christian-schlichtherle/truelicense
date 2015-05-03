@@ -9,7 +9,7 @@ import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordUsage;
-import org.truelicense.core.crypto.BasicPbeEncryption;
+import org.truelicense.core.crypto.TruePbeEncryption;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -26,7 +26,7 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-public final class V2Encryption extends BasicPbeEncryption {
+public final class V2Encryption extends TruePbeEncryption {
 
     public V2Encryption(PbeParameters pbe) { super(pbe); }
 

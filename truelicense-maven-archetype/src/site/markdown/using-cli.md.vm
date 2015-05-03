@@ -225,8 +225,8 @@ is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar view
     org.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:103)
-        at org.truelicense.core.BasicLicenseManager.view(BasicLicenseManager.java:61)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
+        at org.truelicense.core.TrueLicenseManager.view(BasicLicenseManager.java:61)
         at com.company.product.keymgr.Main${dollar}5.run(Main.java:48)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
@@ -236,18 +236,18 @@ is thrown instead (using the standalone JAR for a readable stack trace):
         at org.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
-        at org.truelicense.core.crypto.BasicPbeEncryption.wrap(BasicPbeEncryption.java:53)
+        at org.truelicense.core.crypto.TruePbeEncryption.wrap(BasicPbeEncryption.java:53)
         at org.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
         at org.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
         at org.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
         at JsonCodec.decode(JsonCodec.java:76)
-        at org.truelicense.core.BasicLicenseManager.decodeRepository(BasicLicenseManager.java:177)
-        at org.truelicense.core.BasicLicenseManager.authenticate(BasicLicenseManager.java:173)
+        at org.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
+        at org.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
         at org.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
-        at org.truelicense.core.BasicLicenseManager.decodeLicense(BasicLicenseManager.java:169)
-        at org.truelicense.core.BasicLicenseManager${dollar}3.call(BasicLicenseManager.java:64)
-        at org.truelicense.core.BasicLicenseManager${dollar}3.call(BasicLicenseManager.java:61)
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:100)
+        at org.truelicense.core.TrueLicenseManager.decodeLicense(BasicLicenseManager.java:169)
+        at org.truelicense.core.TrueLicenseManager${dollar}3.call(BasicLicenseManager.java:64)
+        at org.truelicense.core.TrueLicenseManager${dollar}3.call(BasicLicenseManager.java:61)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
         ... 5 more
 
 $h4 Verifying the License Key
@@ -264,8 +264,8 @@ is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar verify
     org.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:103)
-        at org.truelicense.core.BasicLicenseManager.verify(BasicLicenseManager.java:70)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
+        at org.truelicense.core.TrueLicenseManager.verify(BasicLicenseManager.java:70)
         at com.company.product.keymgr.Main${dollar}6.run(Main.java:54)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
@@ -275,19 +275,19 @@ is thrown instead (using the standalone JAR for a readable stack trace):
         at org.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
-        at org.truelicense.core.crypto.BasicPbeEncryption.wrap(BasicPbeEncryption.java:53)
+        at org.truelicense.core.crypto.TruePbeEncryption.wrap(BasicPbeEncryption.java:53)
         at org.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
         at org.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
         at org.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
         at JsonCodec.decode(JsonCodec.java:76)
-        at org.truelicense.core.BasicLicenseManager.decodeRepository(BasicLicenseManager.java:177)
-        at org.truelicense.core.BasicLicenseManager.authenticate(BasicLicenseManager.java:173)
+        at org.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
+        at org.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
         at org.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
-        at org.truelicense.core.BasicLicenseManager.decodeLicense(BasicLicenseManager.java:169)
+        at org.truelicense.core.TrueLicenseManager.decodeLicense(BasicLicenseManager.java:169)
         at org.truelicense.core.CachingLicenseConsumerManager.validate(CachingLicenseConsumerManager.java:76)
-        at org.truelicense.core.BasicLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
-        at org.truelicense.core.BasicLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:100)
+        at org.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
+        at org.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
         ... 5 more
 
 If a license key is installed, but the encoded license bean is invalid, then a
@@ -296,12 +296,12 @@ is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar verify
     org.truelicense.api.LicenseValidationException: License validity period has expired at Wednesday, February 11, 2015 4:20:20 PM CET.
-        at org.truelicense.core.BasicLicenseValidation.validate(BasicLicenseValidation.java:82)
+        at org.truelicense.core.TrueLicenseValidation.validate(BasicLicenseValidation.java:82)
         at org.truelicense.core.CachingLicenseConsumerManager.validate(CachingLicenseConsumerManager.java:79)
-        at org.truelicense.core.BasicLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
-        at org.truelicense.core.BasicLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:100)
-        at org.truelicense.core.BasicLicenseManager.verify(BasicLicenseManager.java:70)
+        at org.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
+        at org.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
+        at org.truelicense.core.TrueLicenseManager.verify(BasicLicenseManager.java:70)
         at com.company.product.keymgr.Main${dollar}6.run(Main.java:54)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
@@ -322,8 +322,8 @@ is thrown instead:
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar uninstall
     org.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:103)
-        at org.truelicense.core.BasicLicenseManager.uninstall(BasicLicenseManager.java:80)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
+        at org.truelicense.core.TrueLicenseManager.uninstall(BasicLicenseManager.java:80)
         at org.truelicense.core.CachingLicenseConsumerManager.uninstall(CachingLicenseConsumerManager.java:66)
         at com.company.product.keymgr.Main${dollar}7.run(Main.java:60)
         at com.company.product.keymgr.Main.process(Main.java:115)
@@ -334,17 +334,17 @@ is thrown instead:
         at org.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
         at org.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
-        at org.truelicense.core.crypto.BasicPbeEncryption.wrap(BasicPbeEncryption.java:53)
+        at org.truelicense.core.crypto.TruePbeEncryption.wrap(BasicPbeEncryption.java:53)
         at org.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
         at org.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
         at org.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
         at JsonCodec.decode(JsonCodec.java:76)
-        at org.truelicense.core.BasicLicenseManager.decodeRepository(BasicLicenseManager.java:177)
-        at org.truelicense.core.BasicLicenseManager.authenticate(BasicLicenseManager.java:173)
+        at org.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
+        at org.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
         at org.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
-        at org.truelicense.core.BasicLicenseManager${dollar}5.call(BasicLicenseManager.java:87)
-        at org.truelicense.core.BasicLicenseManager${dollar}5.call(BasicLicenseManager.java:80)
-        at org.truelicense.core.BasicLicenseManager.wrap(BasicLicenseManager.java:100)
+        at org.truelicense.core.TrueLicenseManager${dollar}5.call(BasicLicenseManager.java:87)
+        at org.truelicense.core.TrueLicenseManager${dollar}5.call(BasicLicenseManager.java:80)
+        at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
         ... 6 more
 
 ---

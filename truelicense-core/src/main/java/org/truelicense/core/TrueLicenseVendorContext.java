@@ -28,11 +28,11 @@ import org.truelicense.api.io.Transformation;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-final class BasicLicenseVendorContext<PasswordSpecification, Model>
-extends BasicLicenseApplicationContext<PasswordSpecification, Model>
+final class TrueLicenseVendorContext<PasswordSpecification, Model>
+extends TrueLicenseApplicationContext<PasswordSpecification, Model>
 implements LicenseVendorContext<PasswordSpecification> {
 
-    BasicLicenseVendorContext(BasicLicenseManagementContext<PasswordSpecification, Model> context) {
+    TrueLicenseVendorContext(TrueLicenseManagementContext<PasswordSpecification, Model> context) {
         super(context);
     }
 
@@ -40,22 +40,22 @@ implements LicenseVendorContext<PasswordSpecification> {
 
     @Override public License license() { return context().license(); }
 
-    @Override public BasicLicenseVendorManagerBuilder manager() {
-        return new BasicLicenseVendorManagerBuilder();
+    @Override public TrueLicenseVendorManagerBuilder manager() {
+        return new TrueLicenseVendorManagerBuilder();
     }
 
-    private LicenseVendorManager manager(final BasicLicenseParameters parameters) {
+    private LicenseVendorManager manager(final TrueLicenseParameters parameters) {
 
-        class Manager extends BasicLicenseManager
+        class Manager extends TrueLicenseManager
         implements LicenseVendorManager {
 
-            final BasicLicenseVendorContext<PasswordSpecification, Model> vc = BasicLicenseVendorContext.this;
+            final TrueLicenseVendorContext<PasswordSpecification, Model> vc = TrueLicenseVendorContext.this;
 
             @Override
             public LicenseVendorContext<PasswordSpecification> context() { return vc; }
 
             @Override
-            public BasicLicenseParameters parameters() { return parameters; }
+            public TrueLicenseParameters parameters() { return parameters; }
 
             @Override
             public Store store() { throw new UnsupportedOperationException(); }
@@ -72,8 +72,8 @@ implements LicenseVendorContext<PasswordSpecification> {
     @Override
     public final Sink stdout() { return bios().stdout(); }
 
-    final class BasicLicenseVendorManagerBuilder
-    extends BasicLicenseManagerBuilder<BasicLicenseVendorManagerBuilder>
+    final class TrueLicenseVendorManagerBuilder
+    extends TrueLicenseManagerBuilder<TrueLicenseVendorManagerBuilder>
     implements LicenseVendorManagerBuilder<PasswordSpecification> {
 
         @Override

@@ -7,7 +7,6 @@ package org.truelicense.core;
 
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseInitialization;
-import org.truelicense.api.LicenseManagementContext;
 import org.truelicense.api.LicenseSubjectProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
@@ -30,9 +29,9 @@ import static org.truelicense.core.Messages.message;
  *
  * @author Christian Schlichtherle
  */
-final class BasicLicenseInitialization
+final class TrueLicenseInitialization
 implements Clock,
-        ContextProvider<BasicLicenseManagementContext<?, ?>>,
+        ContextProvider<TrueLicenseManagementContext<?, ?>>,
         LicenseInitialization,
         LicenseSubjectProvider {
 
@@ -44,13 +43,13 @@ implements Clock,
     /** The message key for the canonical name of an unknown user. */
     @Obfuscate static final String UNKNOWN = "unknown";
 
-    private final BasicLicenseManagementContext<?, ?> context;
+    private final TrueLicenseManagementContext<?, ?> context;
 
-    BasicLicenseInitialization(final BasicLicenseManagementContext<?, ?> context) {
+    TrueLicenseInitialization(final TrueLicenseManagementContext<?, ?> context) {
         this.context = context;
     }
 
-    @Override public BasicLicenseManagementContext<?, ?> context() { return context; }
+    @Override public TrueLicenseManagementContext<?, ?> context() { return context; }
 
     @Override public String subject() { return context().subject(); }
 

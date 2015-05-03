@@ -13,7 +13,7 @@ import org.truelicense.api._
 import org.truelicense.api.auth.RepositoryContextProvider
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.api.passwd.PasswordProtectionProvider
-import org.truelicense.core.BasicLicenseManagementContext
+import org.truelicense.core.TrueLicenseManagementContext
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
 
@@ -70,7 +70,7 @@ trait TestContext[Model <: AnyRef]
     license
   }
 
-  val managementContext: BasicLicenseManagementContext[ObfuscatedString, Model]
+  val managementContext: TrueLicenseManagementContext[ObfuscatedString, Model]
 
   override final def protection(specification: ObfuscatedString) =
     managementContext protection specification

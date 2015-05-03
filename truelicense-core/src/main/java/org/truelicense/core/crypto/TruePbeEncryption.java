@@ -24,11 +24,11 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-public abstract class BasicPbeEncryption implements Transformation {
+public abstract class TruePbeEncryption implements Transformation {
 
     private final PbeParameters parameters;
 
-    protected BasicPbeEncryption(final PbeParameters parameters) {
+    protected TruePbeEncryption(final PbeParameters parameters) {
         this.parameters = Objects.requireNonNull(parameters);
     }
 

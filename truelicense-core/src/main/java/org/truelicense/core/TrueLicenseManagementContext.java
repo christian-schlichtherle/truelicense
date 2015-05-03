@@ -41,7 +41,7 @@ import java.util.Objects;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public abstract class BasicLicenseManagementContext<PasswordSpecification, Model>
+public abstract class TrueLicenseManagementContext<PasswordSpecification, Model>
 implements BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
@@ -60,14 +60,14 @@ implements BiosProvider,
 
     private final String subject;
 
-    protected BasicLicenseManagementContext(final String subject) {
+    protected TrueLicenseManagementContext(final String subject) {
         this.subject = Objects.requireNonNull(subject);
     }
 
     /**
      * Returns an authentication for the given key store parameters.
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns a new {@link Notary} for the given key store parameters.
      *
      * @param parameters the key store parameters.
@@ -79,18 +79,18 @@ implements BiosProvider,
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns an authorization which clears all operation requests.
      */
     @Override
     public LicenseAuthorization authorization() {
-        return new BasicLicenseAuthorization();
+        return new TrueLicenseAuthorization();
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns a {@link StandardBIOS}.
      */
     @Override
@@ -99,7 +99,7 @@ implements BiosProvider,
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns half an hour (in milliseconds) to account for external changes
      * to the configured store for the license key.
      */
@@ -109,7 +109,7 @@ implements BiosProvider,
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * lists the current thread's context class loader, if not {@code null}.
      */
     @Override
@@ -119,7 +119,7 @@ implements BiosProvider,
 
     @Override
     public final LicenseConsumerContext<PasswordSpecification> consumer() {
-        return new BasicLicenseConsumerContext<>(this);
+        return new TrueLicenseConsumerContext<>(this);
     }
 
     /**
@@ -132,7 +132,7 @@ implements BiosProvider,
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns an initialization which initializes the license
      * {@linkplain License#getConsumerType consumer type},
      * {@linkplain License#getHolder holder},
@@ -143,7 +143,7 @@ implements BiosProvider,
      */
     @Override
     public LicenseInitialization initialization() {
-        return new BasicLicenseInitialization(this);
+        return new TrueLicenseInitialization(this);
     }
 
     /**
@@ -159,7 +159,7 @@ implements BiosProvider,
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns a new {@link Date}.
      */
     @Override
@@ -181,7 +181,7 @@ implements BiosProvider,
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link BasicLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseManagementContext}
      * returns a validation which validates the license
      * {@linkplain License#getConsumerAmount consumer amount},
      * {@linkplain License#getConsumerType consumer type},
@@ -194,11 +194,11 @@ implements BiosProvider,
      */
     @Override
     public LicenseValidation validation() {
-        return new BasicLicenseValidation(this);
+        return new TrueLicenseValidation(this);
     }
 
     @Override
     public final LicenseVendorContext<PasswordSpecification> vendor() {
-        return new BasicLicenseVendorContext<>(this);
+        return new TrueLicenseVendorContext<>(this);
     }
 }

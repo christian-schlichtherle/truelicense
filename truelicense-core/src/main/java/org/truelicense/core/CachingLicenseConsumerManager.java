@@ -25,7 +25,7 @@ import static java.lang.System.currentTimeMillis;
  * @author Christian Schlichtherle
  */
 abstract class CachingLicenseConsumerManager
-extends BasicLicenseManager implements CachePeriodProvider {
+extends TrueLicenseManager implements CachePeriodProvider {
 
     // These volatile fields get initialized by applying a pure function which
     // takes the immutable value of the store() property as its single argument.

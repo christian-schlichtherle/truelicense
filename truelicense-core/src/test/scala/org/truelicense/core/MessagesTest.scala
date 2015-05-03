@@ -19,8 +19,8 @@ class MessagesTest extends WordSpec {
 
   "Messages" should {
     "be binary serializable" in {
-      import BasicLicenseInitialization._
-      import BasicLicenseValidation._
+      import TrueLicenseInitialization._
+      import TrueLicenseValidation._
       val table = Table(
         "key",
         UNKNOWN,

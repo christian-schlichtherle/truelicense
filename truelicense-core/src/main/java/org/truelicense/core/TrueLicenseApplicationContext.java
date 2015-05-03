@@ -42,27 +42,27 @@ import static java.util.Calendar.getInstance;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-abstract class BasicLicenseApplicationContext<PasswordSpecification, Model>
+abstract class TrueLicenseApplicationContext<PasswordSpecification, Model>
 implements BiosProvider,
         ClassLoaderProvider,
         Clock,
-        ContextProvider<BasicLicenseManagementContext<PasswordSpecification, Model>>,
+        ContextProvider<TrueLicenseManagementContext<PasswordSpecification, Model>>,
         LicenseApplicationContext,
         LicenseInitializationProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<PasswordSpecification>,
         RepositoryContextProvider<Model> {
 
-    private final BasicLicenseManagementContext<PasswordSpecification, Model> context;
+    private final TrueLicenseManagementContext<PasswordSpecification, Model> context;
 
-    BasicLicenseApplicationContext(final BasicLicenseManagementContext<PasswordSpecification, Model> context) {
+    TrueLicenseApplicationContext(final TrueLicenseManagementContext<PasswordSpecification, Model> context) {
         this.context = context;
     }
 
     @Override
     public final BIOS bios() { return context().bios(); }
 
-    final BasicLicenseParameters chainedParameters(
+    final TrueLicenseParameters chainedParameters(
             Authentication authentication,
             List<Transformation> encryption,
             LicenseConsumerManager parent) {
@@ -85,7 +85,7 @@ implements BiosProvider,
     }
 
     @Override
-    public final BasicLicenseManagementContext<PasswordSpecification, Model> context() {
+    public final TrueLicenseManagementContext<PasswordSpecification, Model> context() {
         return context;
     }
 
@@ -97,7 +97,7 @@ implements BiosProvider,
         return parent.parameters().encryption();
     }
 
-    final BasicLicenseParameters ftpParameters(
+    final TrueLicenseParameters ftpParameters(
             final Authentication authentication,
             final int days,
             final List<Transformation> encryption,
@@ -184,17 +184,17 @@ implements BiosProvider,
         return context().classLoader();
     }
 
-    final BasicLicenseParameters parameters(
+    final TrueLicenseParameters parameters(
             Authentication authentication,
             Transformation encryption) {
         return parameters(authentication, encryption, initialization());
     }
 
-    private BasicLicenseParameters parameters(
+    private TrueLicenseParameters parameters(
             final Authentication authentication,
             final Transformation encryption,
             final LicenseInitialization initialization) {
-        return new BasicLicenseParameters() {
+        return new TrueLicenseParameters() {
 
             @Override
             public Authentication authentication() { return authentication; }
@@ -207,7 +207,7 @@ implements BiosProvider,
         };
     }
 
-    private BasicLicenseParameters parameters(
+    private TrueLicenseParameters parameters(
             Authentication authentication,
             LicenseInitialization initialization,
             List<Transformation> encryption,
@@ -281,7 +281,7 @@ implements BiosProvider,
     }
 
     @SuppressWarnings("unchecked")
-    abstract class BasicLicenseManagerBuilder<This extends BasicLicenseManagerBuilder<This>> {
+    abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
 
         List<Authentication> authentication = Option.none();
         List<Transformation> encryption = Option.none();
@@ -390,7 +390,7 @@ implements BiosProvider,
         }
     }
 
-    abstract class BasicLicenseParameters
+    abstract class TrueLicenseParameters
     implements BiosProvider,
             LicenseParameters,
             RepositoryContextProvider<Model> {

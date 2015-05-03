@@ -14,7 +14,7 @@ import org.truelicense.api.LicenseParameters;
  *
  * @author Christian Schlichtherle
  */
-final class BasicLicenseAuthorization implements LicenseAuthorization {
+final class TrueLicenseAuthorization implements LicenseAuthorization {
     @Override public void clearGenerator(LicenseParameters parameters) { }
     @Override public void clearInstall(LicenseParameters parameters) { }
     @Override public void clearVerify(LicenseParameters parameters) { }
