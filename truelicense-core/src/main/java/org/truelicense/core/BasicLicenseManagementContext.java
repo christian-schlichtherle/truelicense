@@ -9,7 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.RepositoryContextProvider;
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.PbeParameters;
@@ -57,7 +56,7 @@ implements BiosProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<PasswordSpecification>,
-        RepositoryContextProvider<RepositoryModel> {
+        RepositoryContextProvider<Object> {
 
     private final String subject;
 

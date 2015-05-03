@@ -7,7 +7,6 @@ package org.truelicense.api;
 
 import org.truelicense.api.auth.AuthenticationProvider;
 import org.truelicense.api.auth.RepositoryContextProvider;
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.EncryptionProvider;
@@ -37,5 +36,5 @@ extends AuthenticationProvider,
         LicenseAuthorizationProvider,
         LicenseInitializationProvider,
         LicenseValidationProvider,
-        RepositoryContextProvider<RepositoryModel> {
+        RepositoryContextProvider<Object> {
 }

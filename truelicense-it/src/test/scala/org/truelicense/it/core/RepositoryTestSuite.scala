@@ -9,7 +9,7 @@ import java.util.Locale.ENGLISH
 
 import org.scalatest.Matchers._
 import org.scalatest._
-import org.truelicense.api.auth.{RepositoryModel, RepositoryContext}
+import org.truelicense.api.auth.RepositoryContext
 import org.truelicense.spi.codec.SerializationCodec
 
 /**

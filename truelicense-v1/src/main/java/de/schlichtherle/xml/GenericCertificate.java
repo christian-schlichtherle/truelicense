@@ -5,7 +5,6 @@
 
 package de.schlichtherle.xml;
 
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.core.misc.Strings;
 
 import java.util.Objects;
@@ -18,7 +17,7 @@ import static java.util.Locale.ENGLISH;
  *
  * @author Christian Schlichtherle
  */
-public final class GenericCertificate implements RepositoryModel {
+public final class GenericCertificate {
 
     private String encoded, signature, signatureAlgorithm, signatureEncoding;
 

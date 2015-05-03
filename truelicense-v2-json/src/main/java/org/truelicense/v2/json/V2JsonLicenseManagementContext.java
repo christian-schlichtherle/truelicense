@@ -7,14 +7,11 @@ package org.truelicense.v2.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.v2.commons.V2LicenseManagementContext;
-import org.truelicense.v2.commons.auth.V2RepositoryModel;
 import org.truelicense.v2.json.codec.JsonCodec;
 
 /**
@@ -104,10 +101,6 @@ extends V2LicenseManagementContext {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         mapper.registerModule(new JaxbAnnotationModule());
-        final SimpleModule module = new SimpleModule();
-        // TODO: This doesn't work with a JaxbAnnotationModule as of jackson-module-jaxb-annotations 2.1.3.
-        module.addAbstractTypeMapping(RepositoryModel.class, V2RepositoryModel.class);
-        mapper.registerModule(module);
         return mapper;
     }
 }

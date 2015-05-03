@@ -34,8 +34,8 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
                 authorization().clearGenerator(parameters());
                 return new LicenseKeyGenerator() {
 
-                    final RepositoryContext<RepositoryModel> context = repositoryContext();
-                    final RepositoryModel model = context.model();
+                    final RepositoryContext<Object> context = repositoryContext();
+                    final Object model = context.model();
                     final Artifactory artifactory = authentication()
                             .sign(context.controller(model, codec()), validatedBean());
 
@@ -178,8 +178,8 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
         return repositoryContext().controller(repositoryModel(source), codec());
     }
 
-    RepositoryModel repositoryModel(Source source) throws Exception {
-        return codec().from(decompress(source)).decode(RepositoryModel.class);
+    Object repositoryModel(Source source) throws Exception {
+        return codec().from(decompress(source)).decode(repositoryContext().model().getClass());
     }
 
     Source decompress(Source source) {
@@ -204,7 +204,7 @@ abstract class BasicLicenseManager implements LicenseParametersProvider {
 
     final LicenseValidation validation() { return parameters().validation(); }
 
-    final RepositoryContext<RepositoryModel> repositoryContext() {
+    final RepositoryContext<Object> repositoryContext() {
         return parameters().repositoryContext();
     }
 

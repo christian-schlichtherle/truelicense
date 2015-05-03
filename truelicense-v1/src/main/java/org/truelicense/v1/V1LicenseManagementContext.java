@@ -10,7 +10,6 @@ import org.truelicense.api.License;
 import org.truelicense.api.LicenseConsumerContext;
 import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.api.auth.RepositoryContext;
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
@@ -140,7 +139,7 @@ public class V1LicenseManagementContext extends CommonLicenseManagementContext {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final RepositoryContext<RepositoryModel> repositoryContext() {
+    public final RepositoryContext<Object> repositoryContext() {
         return (RepositoryContext) new V1RepositoryContext();
     }
 

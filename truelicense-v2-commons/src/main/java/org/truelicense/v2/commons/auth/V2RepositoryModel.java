@@ -5,7 +5,6 @@
 
 package org.truelicense.v2.commons.auth;
 
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.core.misc.Strings;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -30,7 +29,7 @@ import static java.util.Locale.ENGLISH;
 // to participate in larger object graphs which the application wants to
 // encode/decode to/from XML.
 @XmlType(name = "repository")
-public final class V2RepositoryModel implements RepositoryModel {
+public final class V2RepositoryModel {
 
     private String algorithm, artifact, signature;
 

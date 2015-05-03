@@ -9,7 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.KeyStoreParameters;
 import org.truelicense.api.auth.RepositoryContext;
-import org.truelicense.api.auth.RepositoryModel;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.*;
@@ -217,7 +216,7 @@ implements BiosProvider,
             public LicenseInitialization initialization() { return initialization; }
 
             @Override
-            public RepositoryContext<RepositoryModel> repositoryContext() {
+            public RepositoryContext<Object> repositoryContext() {
                 return context().repositoryContext();
             }
 
