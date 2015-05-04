@@ -223,6 +223,16 @@ public enum Main {
     }
 
     private enum CreateOption { KEY, INPUT, OUTPUT, EDITION, VERBOSE }
+#if($keyGenLicenseAuthorizationClass == "${package}.keygen.Main${dollar}NoLicenseAuthorization")
+
+    public static final class NoLicenseAuthorization implements LicenseAuthorization {
+        public void clearGenerator(LicenseParameters lp) { }
+        public void clearInstall(LicenseParameters lp) { }
+        public void clearVerify(LicenseParameters lp) { }
+        public void clearView(LicenseParameters lp) { }
+        public void clearUninstall(LicenseParameters lp) { }
+    }
+#end
 #if($keyGenLicenseValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {

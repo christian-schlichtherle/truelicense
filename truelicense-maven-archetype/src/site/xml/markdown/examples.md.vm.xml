@@ -55,14 +55,24 @@ generated code.
 
 <a href="../projects/disableLicenseWizard/archetype.xml" class="maven-command"/>
 
+$h3 Custom License Authorization
+
+This example adds
+`keyGenLicenseAuthorizationClass=com.company.product.keygen.Main$NoLicenseAuthorization` and
+`keyMgrLicenseAuthorizationClass=com.company.product.keymgr.Main$noLicenseAuthorization`
+to the basic configuration example in order to implement a custom license
+authorization.
+
+<a href="../projects/customLicenseAuthorization/archetype.xml" class="maven-command"/>
+
 $h3 Custom License Validation
 
-This example adds 
-`keyGenLicenseValidationClass=com.company.product.keygen.CustomLicenseValidation` and
-`keyMgrLicenseValidationClass=com.company.product.keymgr.CustomLicenseValidation`
-to the basic configuration example in 
-order to decorate the basic license validation function in the Key Generator 
-and Key Manager modules with the named custom class.
+This example adds
+`keyGenLicenseValidationClass=com.company.product.keygen.Main$NoLicenseValidation` and
+`keyMgrLicenseValidationClass=com.company.product.keymgr.Main$NoLicenseValidation`
+to the basic configuration example in order to decorate the basic license
+validation function in the Key Generator and Key Manager modules with the named
+custom class.
 
 <a href="../projects/customLicenseValidation/archetype.xml" class="maven-command"/>
 
