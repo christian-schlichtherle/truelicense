@@ -41,12 +41,12 @@ import static java.util.Calendar.getInstance;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-abstract class TrueLicenseApplicationContext<PasswordSpecification, Model>
+abstract class TrueLicenseApplicationContext<Model, PasswordSpecification>
 implements BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
         Clock,
-        ContextProvider<TrueLicenseManagementContext<PasswordSpecification, Model>>,
+        ContextProvider<TrueLicenseManagementContext<Model, PasswordSpecification>>,
         LicenseApplicationContext,
         LicenseFactory,
         LicenseInitializationProvider,
@@ -54,9 +54,9 @@ implements BiosProvider,
         PasswordProtectionProvider<PasswordSpecification>,
         RepositoryContextProvider<Model> {
 
-    private final TrueLicenseManagementContext<PasswordSpecification, Model> context;
+    private final TrueLicenseManagementContext<Model, PasswordSpecification> context;
 
-    TrueLicenseApplicationContext(final TrueLicenseManagementContext<PasswordSpecification, Model> context) {
+    TrueLicenseApplicationContext(final TrueLicenseManagementContext<Model, PasswordSpecification> context) {
         this.context = context;
     }
 
@@ -93,7 +93,7 @@ implements BiosProvider,
     public final Codec codec() { return context().codec(); }
 
     @Override
-    public final TrueLicenseManagementContext<PasswordSpecification, Model> context() {
+    public final TrueLicenseManagementContext<Model, PasswordSpecification> context() {
         return context;
     }
 
@@ -411,7 +411,7 @@ implements BiosProvider,
             LicenseValidationProvider,
             RepositoryContextProvider<Model> {
 
-        final TrueLicenseManagementContext<PasswordSpecification, Model> context = context();
+        final TrueLicenseManagementContext<Model, PasswordSpecification> context = context();
 
         @Override
         public final LicenseAuthorization authorization() { return context.authorization(); }

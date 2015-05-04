@@ -217,7 +217,7 @@ implements BiosProvider,
     }
 
     @Override
-    public abstract TrueLicenseApplicationContext<?, Model>.TrueLicenseParameters parameters();
+    public abstract TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters();
 
     @Override
     public final RepositoryContext<Model> repositoryContext() {

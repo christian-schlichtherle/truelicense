@@ -41,7 +41,7 @@ import java.util.Objects;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public abstract class TrueLicenseManagementContext<PasswordSpecification, Model>
+public abstract class TrueLicenseManagementContext<Model, PasswordSpecification>
 implements BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,

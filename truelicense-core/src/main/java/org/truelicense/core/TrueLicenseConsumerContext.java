@@ -9,7 +9,6 @@ import org.truelicense.api.*;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
 
 import java.nio.file.Path;
@@ -29,11 +28,11 @@ import java.util.List;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-final class TrueLicenseConsumerContext<PasswordSpecification, Model>
-extends TrueLicenseApplicationContext<PasswordSpecification, Model>
+final class TrueLicenseConsumerContext<Model, PasswordSpecification>
+extends TrueLicenseApplicationContext<Model, PasswordSpecification>
 implements LicenseConsumerContext<PasswordSpecification> {
 
-    TrueLicenseConsumerContext(TrueLicenseManagementContext<PasswordSpecification, Model> context) {
+    TrueLicenseConsumerContext(TrueLicenseManagementContext<Model, PasswordSpecification> context) {
         super(context);
     }
 
@@ -45,7 +44,7 @@ implements LicenseConsumerContext<PasswordSpecification> {
         class Manager extends ChainedLicenseConsumerManager
         implements LicenseConsumerManager {
 
-            final TrueLicenseConsumerContext<PasswordSpecification, Model> cc = TrueLicenseConsumerContext.this;
+            final TrueLicenseConsumerContext<Model, PasswordSpecification> cc = TrueLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }
@@ -104,7 +103,7 @@ implements LicenseConsumerContext<PasswordSpecification> {
         class Manager extends CachingLicenseConsumerManager
         implements LicenseConsumerManager {
 
-            final TrueLicenseConsumerContext<PasswordSpecification, Model> cc = TrueLicenseConsumerContext.this;
+            final TrueLicenseConsumerContext<Model, PasswordSpecification> cc = TrueLicenseConsumerContext.this;
             final long cachePeriodMillis = cc.cachePeriodMillis();
 
             { if (0 > cachePeriodMillis) throw new IllegalArgumentException(); }

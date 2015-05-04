@@ -72,7 +72,7 @@ trait TestContext[Model <: AnyRef]
     license
   }
 
-  val managementContext: TrueLicenseManagementContext[ObfuscatedString, Model]
+  val managementContext: TrueLicenseManagementContext[Model, ObfuscatedString]
 
   override final def protection(specification: ObfuscatedString) =
     managementContext protection specification

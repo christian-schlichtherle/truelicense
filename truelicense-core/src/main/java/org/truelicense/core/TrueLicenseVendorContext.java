@@ -5,13 +5,10 @@
 
 package org.truelicense.core;
 
-import org.truelicense.api.License;
 import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.api.LicenseVendorManager;
 import org.truelicense.api.LicenseVendorManagerBuilder;
 import org.truelicense.api.auth.Authentication;
-import org.truelicense.api.codec.Codec;
-import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 
@@ -28,11 +25,11 @@ import org.truelicense.api.io.Transformation;
  * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-final class TrueLicenseVendorContext<PasswordSpecification, Model>
-extends TrueLicenseApplicationContext<PasswordSpecification, Model>
+final class TrueLicenseVendorContext<Model, PasswordSpecification>
+extends TrueLicenseApplicationContext<Model, PasswordSpecification>
 implements LicenseVendorContext<PasswordSpecification> {
 
-    TrueLicenseVendorContext(TrueLicenseManagementContext<PasswordSpecification, Model> context) {
+    TrueLicenseVendorContext(TrueLicenseManagementContext<Model, PasswordSpecification> context) {
         super(context);
     }
 
@@ -45,7 +42,7 @@ implements LicenseVendorContext<PasswordSpecification> {
         class Manager extends TrueLicenseManager
         implements LicenseVendorManager {
 
-            final TrueLicenseVendorContext<PasswordSpecification, Model> vc = TrueLicenseVendorContext.this;
+            final TrueLicenseVendorContext<Model, PasswordSpecification> vc = TrueLicenseVendorContext.this;
 
             @Override
             public LicenseVendorContext<PasswordSpecification> context() { return vc; }
