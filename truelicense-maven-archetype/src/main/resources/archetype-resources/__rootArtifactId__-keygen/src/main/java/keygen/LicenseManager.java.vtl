@@ -132,6 +132,13 @@ public enum LicenseManager implements LicenseVendorManager {
     // uses the license key format $licenseKeyFormat.
     private static final LicenseVendorContext _context =
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
+#if($keyGenLicenseAuthorizationClass != "-")
+
+                @Override
+                public LicenseAuthorization authorization() {
+                    return #new($keyGenLicenseAuthorizationClass "LicenseAuthorization");
+                }
+#end
 
                 @Override
                 public LicenseInitialization initialization() {

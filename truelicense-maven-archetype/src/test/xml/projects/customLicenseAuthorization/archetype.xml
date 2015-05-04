@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<properties xmlns="${project.url}/xml/archetype-properties">
+    <artifactId>customLicenseAuthorization</artifactId>
+    <companyName>Company Inc.</companyName>
+    <groupId>com.company.product</groupId>
+    <keyGenLicenseAuthorizationClass>
+        com.company.product.keygen.Main$NoLicenseAuthorization
+    </keyGenLicenseAuthorizationClass>
+    <keyMgrLicenseAuthorizationClass>
+        com.company.product.keymgr.Main$NoLicenseAuthorization
+    </keyMgrLicenseAuthorizationClass>
+    <licensingSubject>Product 1</licensingSubject>
+    <password>test1234</password>
+    <version>1.0-SNAPSHOT</version>
+</properties>

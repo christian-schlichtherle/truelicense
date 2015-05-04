@@ -286,6 +286,22 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
+            <xs:element type="xs:token" name="keyGenLicenseAuthorizationClass"
+                        minOccurs="0" default="-">
+                <xs:annotation>
+                    <xs:documentation>
+                        A fully qualified binary class name which implements the
+                        interface
+                        <a href="../apidocs/${apiPackagePath}/LicenseAuthorization.html">
+                            <code>${apiPackage}.LicenseAuthorization</code>
+                        </a>
+                        for use in the Key Generator module.
+                        Select
+                        <code>-</code>
+                        to use no license authorization.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element type="xs:token" name="keyGenLicenseValidationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
@@ -338,6 +354,22 @@
                         Select
                         <code>-</code>
                         to use the system clock.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="keyMgrLicenseAuthorizationClass"
+                        minOccurs="0" default="-">
+                <xs:annotation>
+                    <xs:documentation>
+                        A fully qualified binary class name which implements the
+                        interface
+                        <a href="../apidocs/${apiPackagePath}/LicenseAuthorization.html">
+                            <code>${apiPackage}.LicenseAuthorization</code>
+                        </a>
+                        for use in the Key Manager module.
+                        Select
+                        <code>-</code>
+                        to use no license authorization.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
