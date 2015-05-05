@@ -3,17 +3,31 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<properties xmlns="${project.url}/xml/archetype-properties">
-    <artifactId>customLicenseAuthorization</artifactId>
-    <companyName>Company Inc.</companyName>
-    <groupId>com.company.product</groupId>
-    <keyGenLicenseAuthorizationClass>
+<p:properties
+        name="Custom License Authorization"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:annotation>
+        <p:documentation>
+            This example adds
+            <code>keyGenLicenseAuthorizationClass=com.company.product.keygen.Main$NoLicenseAuthorization</code>
+            and
+            <code>keyMgrLicenseAuthorizationClass=com.company.product.keymgr.Main$noLicenseAuthorization</code>
+            to the Basic Configuration example in order to implement a custom
+            license authorization.
+        </p:documentation>
+    </p:annotation>
+    <p:artifactId>customLicenseAuthorization</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:groupId>com.company.product</p:groupId>
+    <p:keyGenLicenseAuthorizationClass>
         com.company.product.keygen.Main$NoLicenseAuthorization
-    </keyGenLicenseAuthorizationClass>
-    <keyMgrLicenseAuthorizationClass>
+    </p:keyGenLicenseAuthorizationClass>
+    <p:keyMgrLicenseAuthorizationClass>
         com.company.product.keymgr.Main$NoLicenseAuthorization
-    </keyMgrLicenseAuthorizationClass>
-    <licensingSubject>Product 1</licensingSubject>
-    <password>test1234</password>
-    <version>1.0-SNAPSHOT</version>
-</properties>
+    </p:keyMgrLicenseAuthorizationClass>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>

@@ -3,39 +3,48 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<properties xmlns="${project.url}/xml/archetype-properties">
-    <artifactId>kitchenSink</artifactId>
-    <artifactName>Kitchen Sink</artifactName>
-    <companyName>Company Inc.</companyName>
-    <disableLicenseWizard>true</disableLicenseWizard>
-    <customClasspathScope>runtime</customClasspathScope>
-    <editions>enterprise standard</editions>
-    <freeTrialPeriod>30</freeTrialPeriod>
-    <ftpKeyStoreFile>ftp.ks</ftpKeyStoreFile>
-    <ftpSecretMarkerClass>sun.security.provider.Sun</ftpSecretMarkerClass>
-    <groupId>com.company.product</groupId>
-    <hideUninstallAction>false</hideUninstallAction>
-    <keyGenLicenseValidationClass>
+<p:properties
+        name="Kitchen Sink"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:annotation>
+        <p:documentation>
+            This example drags in all features which are possible to combine.
+        </p:documentation>
+    </p:annotation>
+    <p:artifactId>kitchenSink</p:artifactId>
+    <p:artifactName>Kitchen Sink</p:artifactName>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:disableLicenseWizard>true</p:disableLicenseWizard>
+    <p:customClasspathScope>runtime</p:customClasspathScope>
+    <p:editions>enterprise standard</p:editions>
+    <p:freeTrialPeriod>30</p:freeTrialPeriod>
+    <p:ftpKeyStoreFile>ftp.ks</p:ftpKeyStoreFile>
+    <p:ftpSecretMarkerClass>sun.security.provider.Sun</p:ftpSecretMarkerClass>
+    <p:groupId>com.company.product</p:groupId>
+    <p:hideUninstallAction>false</p:hideUninstallAction>
+    <p:keyGenLicenseValidationClass>
         com.company.product.keygen.Main$NoLicenseValidation
-    </keyGenLicenseValidationClass>
-    <keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
-    </keyMgrClockClass>
-    <keyMgrLicenseValidationClass>
+    </p:keyGenLicenseValidationClass>
+    <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
+    </p:keyMgrClockClass>
+    <p:keyMgrLicenseValidationClass>
         com.company.product.keymgr.Main$NoLicenseValidation
-    </keyMgrLicenseValidationClass>
-    <keyPairAlgorithm>RSA</keyPairAlgorithm>
-    <keyPairSize>2048</keyPairSize>
-    <keyStoreType>JKS</keyStoreType>
-    <licenseKeyFormat>V2/XML</licenseKeyFormat>
-    <licensingSubject>Product 1</licensingSubject>
-    <package>com.company.product</package>
-    <password>test1234</password>
-    <pbeAlgorithm>PBEWithMD5AndDES</pbeAlgorithm>
-    <preferencesType>user</preferencesType>
-    <privateKeyStoreFile>private.ks</privateKeyStoreFile>
-    <publicKeyStoreFile>public.ks</publicKeyStoreFile>
-    <signatureAlgorithm>SHA1withRSA</signatureAlgorithm>
-    <trueLicenseVersion>${project.version}</trueLicenseVersion>
-    <verboseCli>true</verboseCli>
-    <version>1.0-SNAPSHOT</version>
-</properties>
+    </p:keyMgrLicenseValidationClass>
+    <p:keyPairAlgorithm>RSA</p:keyPairAlgorithm>
+    <p:keyPairSize>2048</p:keyPairSize>
+    <p:keyStoreType>JKS</p:keyStoreType>
+    <p:licenseKeyFormat>V2/XML</p:licenseKeyFormat>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:package>com.company.product</p:package>
+    <p:password>test1234</p:password>
+    <p:pbeAlgorithm>PBEWithMD5AndDES</p:pbeAlgorithm>
+    <p:preferencesType>user</p:preferencesType>
+    <p:privateKeyStoreFile>private.ks</p:privateKeyStoreFile>
+    <p:publicKeyStoreFile>public.ks</p:publicKeyStoreFile>
+    <p:signatureAlgorithm>SHA1withRSA</p:signatureAlgorithm>
+    <p:trueLicenseVersion>${project.version}</p:trueLicenseVersion>
+    <p:verboseCli>true</p:verboseCli>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>
