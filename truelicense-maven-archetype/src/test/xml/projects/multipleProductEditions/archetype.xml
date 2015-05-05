@@ -3,12 +3,27 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<properties xmlns="${project.url}/xml/archetype-properties">
-    <artifactId>multipleProductEditions</artifactId>
-    <companyName>Company Inc.</companyName>
-    <editions>enterprise standard</editions>
-    <groupId>com.company.product</groupId>
-    <licensingSubject>Product 1</licensingSubject>
-    <password>test1234</password>
-    <version>1.0-SNAPSHOT</version>
-</properties>
+<p:properties
+        name="Multiple Product Editions"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:annotation>
+        <p:documentation>
+            This example adds
+            <code>editions=enterprise standard</code>
+            to the Basic Configuration example in order to manage separate
+            license keys for a Standard Edition and an Enterprise Edition of
+            the software product.
+            Note that due to the ordering of the editions, the Enterprise
+            Edition is a superset of the Standard Edition.
+        </p:documentation>
+    </p:annotation>
+    <p:artifactId>multipleProductEditions</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:editions>enterprise standard</p:editions>
+    <p:groupId>com.company.product</p:groupId>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>

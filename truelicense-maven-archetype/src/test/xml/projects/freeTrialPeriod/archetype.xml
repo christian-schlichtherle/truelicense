@@ -3,13 +3,30 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<properties xmlns="${project.url}/xml/archetype-properties">
-    <artifactId>freeTrialPeriod</artifactId>
-    <companyName>Company Inc.</companyName>
-    <freeTrialPeriod>30</freeTrialPeriod>
-    <ftpSecretMarkerClass>sun.security.provider.Sun</ftpSecretMarkerClass>
-    <groupId>com.company.product</groupId>
-    <licensingSubject>Product 1</licensingSubject>
-    <password>test1234</password>
-    <version>1.0-SNAPSHOT</version>
-</properties>
+<p:properties
+        name="Free Trial Period"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:annotation>
+        <p:documentation>
+            This example adds
+            <code>freeTrialPeriod=30</code>
+            and
+            <code>ftpSecretMarkerClass=sun.security.provider.Sun</code>
+            to the Basic Configuration example in order to configure a free
+            trial period of thirty days.
+            For a production project, please change the value of the property
+            <code>ftpSecretMarkerClass</code>
+            because it's obviously not secret anymore.
+        </p:documentation>
+    </p:annotation>
+    <p:artifactId>freeTrialPeriod</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:freeTrialPeriod>30</p:freeTrialPeriod>
+    <p:ftpSecretMarkerClass>sun.security.provider.Sun</p:ftpSecretMarkerClass>
+    <p:groupId>com.company.product</p:groupId>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>

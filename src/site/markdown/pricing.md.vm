@@ -57,4 +57,4 @@ Please include your billing email, company name, company address, product name,
 product URL and the number of TrueLicense certificates.
 PayPal and wire transfer can be accepted - no credit cards please.
 
-<a id="orderNow" href="#" class="btn btn-primary">Order Now</a>
+<a href="#" id="orderNow" class="btn btn-primary">Order Now</a>

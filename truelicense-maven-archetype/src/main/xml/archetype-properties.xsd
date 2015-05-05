@@ -12,7 +12,14 @@
         xmlns:p="${project.url}/xml/archetype-properties"
         xmlns:h="http://www.w3.org/1999/xhtml"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+               schemaLocation="http://www.w3.org/2001/xml.xsd"/>
     <xs:element type="p:Properties" name="properties"/>
+    <xs:complexType name="Annotation">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element type="p:Documentation" name="documentation"/>
+        </xs:choice>
+    </xs:complexType>
     <xs:simpleType name="ArtifactId">
         <xs:annotation>
             <xs:documentation>
@@ -67,6 +74,14 @@
             <xs:enumeration value="runtime"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:complexType name="Documentation" mixed="true">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:any processContents="lax"/>
+        </xs:sequence>
+        <xs:attribute name="source" type="xs:anyURI"/>
+        <xs:attribute ref="xml:lang"/>
+        <xs:anyAttribute namespace="##other" processContents="lax"/>
+    </xs:complexType>
     <xs:simpleType name="GroupId">
         <xs:annotation>
             <xs:documentation>
@@ -127,6 +142,7 @@
     </xs:simpleType>
     <xs:complexType name="Properties">
         <xs:all>
+            <xs:element type="p:Annotation" name="annotation" minOccurs="0"/>
             <xs:element type="p:ArtifactId" name="artifactId">
                 <xs:annotation>
                     <xs:documentation>
@@ -645,7 +661,9 @@
                 </xs:annotation>
             </xs:element>
         </xs:all>
+        <xs:attribute type="xs:token" name="name" use="optional"/>
         <xs:attribute type="xs:token" name="version" use="optional"/>
+        <xs:attribute ref="xml:lang"/>
     </xs:complexType>
     <xs:simpleType name="Password">
         <xs:annotation>

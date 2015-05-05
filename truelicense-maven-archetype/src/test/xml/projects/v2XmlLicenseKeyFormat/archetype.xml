@@ -3,12 +3,25 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<properties xmlns="${project.url}/xml/archetype-properties">
-    <artifactId>v2XmlLicenseKeyFormat</artifactId>
-    <companyName>Company Inc.</companyName>
-    <groupId>com.company.product</groupId>
-    <licenseKeyFormat>V2/XML</licenseKeyFormat>
-    <licensingSubject>Product 1</licensingSubject>
-    <password>test1234</password>
-    <version>1.0-SNAPSHOT</version>
-</properties>
+<p:properties
+        name="V2/XML License Key Format"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:annotation>
+        <p:documentation>
+            This example adds
+            <code>licenseKeyFormat=V2/XML</code>
+            to the Basic Configuration example in order to use the V2/XML
+            license key format and remove the dependency on the Jackson JSON
+            Processor from the generated code.
+        </p:documentation>
+    </p:annotation>
+    <p:artifactId>v2XmlLicenseKeyFormat</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:groupId>com.company.product</p:groupId>
+    <p:licenseKeyFormat>V2/XML</p:licenseKeyFormat>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>

@@ -14,10 +14,7 @@
         xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
         xmlns:d="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd
-                            http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xsl:template match="/d:archetype-descriptor/d:requiredProperties">
         <xsl:copy>

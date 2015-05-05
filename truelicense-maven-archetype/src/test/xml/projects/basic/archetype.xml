@@ -3,11 +3,22 @@
   ~ Copyright (C) 2005-2015 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<properties xmlns="${project.url}/xml/archetype-properties">
-    <artifactId>basic</artifactId>
-    <companyName>Company Inc.</companyName>
-    <groupId>com.company.product</groupId>
-    <licensingSubject>Product 1</licensingSubject>
-    <password>test1234</password>
-    <version>1.0-SNAPSHOT</version>
-</properties>
+<p:properties
+        name="Basic Configuration"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:annotation>
+        <p:documentation>
+            This is a Basic Configuration example for a software product with
+            only one edition with the name <code>standard</code> and no free
+            trial period.
+        </p:documentation>
+    </p:annotation>
+    <p:artifactId>basic</p:artifactId>
+    <p:companyName>Company Inc.</p:companyName>
+    <p:groupId>com.company.product</p:groupId>
+    <p:licensingSubject>Product 1</p:licensingSubject>
+    <p:password>test1234</p:password>
+    <p:version>1.0-SNAPSHOT</p:version>
+</p:properties>

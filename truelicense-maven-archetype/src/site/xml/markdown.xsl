@@ -32,7 +32,20 @@
     </xsl:template>
 
     <xsl:template match="p:properties" mode="markdown">
-        <xsl:text>    $ mvn archetype:generate -B \
+        <xsl:param name="lang"/>
+        <xsl:for-each select="@name">
+            <xsl:element name="h3">
+                <xsl:value-of select="."/>
+            </xsl:element>
+        </xsl:for-each>
+        <xsl:for-each select="p:annotation/p:documentation[lang($lang)]">
+            <xsl:element name="div">
+                <xsl:apply-templates select="node()" mode="stripped"/>
+            </xsl:element>
+        </xsl:for-each>
+        <xsl:text>
+
+    $ mvn archetype:generate -B \
         -DarchetypeGroupId=${project.groupId} \
         -DarchetypeArtifactId=${project.artifactId} \
         -DarchetypeVersion=${project.version}</xsl:text>
@@ -58,7 +71,11 @@
     <xsl:template match="h:a[contains(@class, 'maven-command')]"
                   mode="markdown">
         <xsl:apply-templates select="document(@href)/p:properties"
-                             mode="markdown"/>
+                             mode="markdown">
+            <xsl:with-param name="lang">
+                <xsl:call-template name="lang"/>
+            </xsl:with-param>
+        </xsl:apply-templates>
     </xsl:template>
 
     <xsl:template match="h:div[contains(@class, 'property-reference')]"
