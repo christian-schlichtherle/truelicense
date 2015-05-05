@@ -13,7 +13,7 @@
         <section name="Welcome!" class="hero-unit">
             <p>
                 $project.description
-                <a href="javascript:startSiteTour()" class="btn pull-right"><span class="icon-play icon-white"></span> Start Site Tour</a>
+                <a href="#" id="startSiteTour" class="btn pull-right"><span class="icon-play icon-white"></span> Start Site Tour</a>
             </p>
         </section>
         <section name="">
