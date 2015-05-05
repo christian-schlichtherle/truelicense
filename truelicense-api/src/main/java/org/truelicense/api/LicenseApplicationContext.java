@@ -5,6 +5,8 @@
 
 package org.truelicense.api;
 
+import org.truelicense.api.codec.CodecProvider;
+import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 
@@ -19,7 +21,10 @@ import java.nio.file.Path;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseApplicationContext extends LicenseSubjectProvider {
+public interface LicenseApplicationContext
+extends CodecProvider,
+        LicenseFactory,
+        LicenseSubjectProvider {
 
     /** Returns a new memory store. */
     Store memoryStore();
@@ -44,6 +49,11 @@ public interface LicenseApplicationContext extends LicenseSubjectProvider {
      * Returns a source which reads from standard input without ever closing it.
      */
     Source stdin();
+
+    /**
+     * Returns a sink which writes to standard output without ever closing it.
+     */
+    Sink stdout();
 
     /**
      * Returns a store for the system preferences node for the package of the

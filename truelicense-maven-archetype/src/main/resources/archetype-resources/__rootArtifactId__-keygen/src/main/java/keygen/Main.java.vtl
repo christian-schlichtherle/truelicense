@@ -110,7 +110,7 @@ public enum Main {
                     return context().pathStore(Paths.get(path));
                 }
 
-                LicenseVendorContext<?> context() { return manager().context(); }
+                LicenseApplicationContext context() { return manager().context(); }
 
                 LicenseVendorManager manager() {
                     final LicenseVendorManager m = manager;

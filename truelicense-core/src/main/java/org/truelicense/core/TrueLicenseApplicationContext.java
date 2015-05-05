@@ -47,9 +47,12 @@ implements BiosProvider,
         ClassLoaderProvider,
         Clock,
         ContextProvider<TrueLicenseManagementContext<Model, PasswordSpecification>>,
+        CompressionProvider,
         LicenseApplicationContext,
+        LicenseAuthorizationProvider,
         LicenseFactory,
         LicenseInitializationProvider,
+        LicenseValidationProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<PasswordSpecification>,
         RepositoryContextProvider<Model> {
@@ -61,19 +64,16 @@ implements BiosProvider,
     }
 
     @Override
+    public LicenseAuthorization authorization() {
+        return context().authorization();
+    }
+
+    @Override
     public final BIOS bios() { return context().bios(); }
 
     @Override
     public final long cachePeriodMillis() {
         return context().cachePeriodMillis();
-    }
-
-    final TrueLicenseParameters chainedParameters(
-            Authentication authentication,
-            List<Transformation> encryption,
-            LicenseConsumerManager parent) {
-        return parameters(authentication, initialization(), encryption,
-                parent);
     }
 
     private PasswordProtection checkedProtection(
@@ -93,36 +93,11 @@ implements BiosProvider,
     public final Codec codec() { return context().codec(); }
 
     @Override
+    public Transformation compression() { return context().compression(); }
+
+    @Override
     public final TrueLicenseManagementContext<Model, PasswordSpecification> context() {
         return context;
-    }
-
-    private static Transformation encryption(
-            final List<Transformation> encryption,
-            final LicenseConsumerManager parent) {
-        for (Transformation e : encryption)
-            return e;
-        return parent.parameters().encryption();
-    }
-
-    final TrueLicenseParameters ftpParameters(
-            final Authentication authentication,
-            final int days,
-            final List<Transformation> encryption,
-            final LicenseConsumerManager parent) {
-        if (0 >= days) throw new IllegalArgumentException();
-        final LicenseInitialization initialization = new LicenseInitialization() {
-
-            @Override public void initialize(final License bean) {
-                initialization().initialize(bean);
-                final Calendar cal = getInstance();
-                cal.setTime(bean.getIssued());
-                bean.setNotBefore(cal.getTime()); // not before issued
-                cal.add(DATE, days); // FTP countdown starts NOW
-                bean.setNotAfter(cal.getTime());
-            }
-        };
-        return parameters(authentication, initialization, encryption, parent);
     }
 
     @Override
@@ -195,38 +170,6 @@ implements BiosProvider,
     @Override
     public final License license() { return context().license(); }
 
-    final TrueLicenseParameters parameters(
-            Authentication authentication,
-            Transformation encryption) {
-        return parameters(authentication, encryption, initialization());
-    }
-
-    private TrueLicenseParameters parameters(
-            final Authentication authentication,
-            final Transformation encryption,
-            final LicenseInitialization initialization) {
-        return new TrueLicenseParameters() {
-
-            @Override
-            public Authentication authentication() { return authentication; }
-
-            @Override
-            public Transformation encryption() { return encryption; }
-
-            @Override
-            public LicenseInitialization initialization() { return initialization; }
-        };
-    }
-
-    private TrueLicenseParameters parameters(
-            Authentication authentication,
-            LicenseInitialization initialization,
-            List<Transformation> encryption,
-            LicenseConsumerManager parent) {
-        return parameters(authentication,
-                encryption(encryption, parent), initialization);
-    }
-
     @Override
     public final Store pathStore(Path path) { return bios().pathStore(path); }
 
@@ -291,11 +234,17 @@ implements BiosProvider,
         return bios().userPreferencesStore(classInPackage, subject());
     }
 
+    @Override
+    public LicenseValidation validation() { return context().validation(); }
+
     @SuppressWarnings("unchecked")
     abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
 
         List<Authentication> authentication = Option.none();
         List<Transformation> encryption = Option.none();
+        int ftpDays;
+        List<LicenseConsumerManager> parent = Option.none();
+        List<Store> store = Option.none();
 
         public final This authentication(final Authentication authentication) {
             this.authentication = Option.wrap(authentication);
@@ -309,7 +258,34 @@ implements BiosProvider,
             return (This) this;
         }
 
+        public final This ftpDays(final int ftpDays) {
+            this.ftpDays = ftpDays;
+            return (This) this;
+        }
+
         public final KsbaBuilder keyStore() { return new KsbaBuilder(); }
+
+        public final This parent(final LicenseConsumerManager parent) {
+            this.parent = Option.wrap(parent);
+            return (This) this;
+        }
+
+        public final This storeIn(final Store store) {
+            this.store = Option.wrap(store);
+            return (This) this;
+        }
+
+        public final This storeInPath(Path path) {
+            return storeIn(pathStore(path));
+        }
+
+        public final This storeInSystemPreferences(Class<?> classInPackage) {
+            return storeIn(systemPreferencesStore(classInPackage));
+        }
+
+        public final This storeInUserPreferences(Class<?> classInPackage) {
+            return storeIn(userPreferencesStore(classInPackage));
+        }
 
         final class KsbaBuilder
         implements Builder<Authentication>,
@@ -326,47 +302,47 @@ implements BiosProvider,
             public This inject() { return authentication(build()); }
 
             @Override
-            public final KsbaBuilder algorithm(final String algorithm) {
+            public KsbaBuilder algorithm(final String algorithm) {
                 this.algorithm = Option.wrap(algorithm);
                 return this;
             }
 
             @Override
-            public final KsbaBuilder alias(final String alias) {
+            public KsbaBuilder alias(final String alias) {
                 this.alias = Option.wrap(alias);
                 return this;
             }
 
             @Override
-            public final Authentication build() {
+            public Authentication build() {
                 return ksba(algorithm, alias.get(0), keyPassword, source, storeType, storePassword.get(0));
             }
 
             @Override
-            public final KsbaBuilder keyPassword(final PasswordSpecification keyPassword) {
+            public KsbaBuilder keyPassword(final PasswordSpecification keyPassword) {
                 this.keyPassword = Option.wrap(keyPassword);
                 return this;
             }
 
             @Override
-            public final KsbaBuilder loadFrom(final Source source) {
+            public KsbaBuilder loadFrom(final Source source) {
                 this.source = Option.wrap(source);
                 return this;
             }
 
             @Override
-            public final KsbaBuilder loadFromResource(String name) {
+            public KsbaBuilder loadFromResource(String name) {
                 return loadFrom(resource(name));
             }
 
             @Override
-            public final KsbaBuilder storePassword(final PasswordSpecification storePassword) {
+            public KsbaBuilder storePassword(final PasswordSpecification storePassword) {
                 this.storePassword = Option.wrap(storePassword);
                 return this;
             }
 
             @Override
-            public final KsbaBuilder storeType(final String storeType) {
+            public KsbaBuilder storeType(final String storeType) {
                 this.storeType = Option.wrap(storeType);
                 return this;
             }
@@ -383,35 +359,56 @@ implements BiosProvider,
             public This inject() { return encryption(build()); }
 
             @Override
-            public final PbeBuilder algorithm(final String algorithm) {
+            public PbeBuilder algorithm(final String algorithm) {
                 this.algorithm = Option.wrap(algorithm);
                 return this;
             }
 
             @Override
-            public final Transformation build() {
+            public Transformation build() {
                 return pbe(algorithm, password.get(0));
             }
 
             @Override
-            public final PbeBuilder password(final PasswordSpecification password) {
+            public PbeBuilder password(final PasswordSpecification password) {
                 this.password = Option.wrap(password);
                 return this;
             }
         }
     }
 
-    abstract class TrueLicenseParameters
-    implements BiosProvider,
+    class TrueLicenseParameters
+    implements
+            BiosProvider,
+            CachePeriodProvider,
             CodecProvider,
             CompressionProvider,
+            ContextProvider<TrueLicenseApplicationContext<Model, PasswordSpecification>>,
             LicenseAuthorizationProvider,
+            LicenseFactory,
             LicenseInitializationProvider,
             LicenseParameters,
             LicenseValidationProvider,
             RepositoryContextProvider<Model> {
 
-        final TrueLicenseManagementContext<Model, PasswordSpecification> context = context();
+        final TrueLicenseApplicationContext<Model, PasswordSpecification> context = TrueLicenseApplicationContext.this;
+
+        final List<Authentication> authentication;
+        final List<Transformation> encryption;
+        final int ftpDays;
+        final List<LicenseConsumerManager> parent;
+        final List<Store> store;
+
+        TrueLicenseParameters(final TrueLicenseManagerBuilder<?> bldr) {
+            this.authentication = bldr.authentication;
+            this.encryption = bldr.encryption;
+            this.ftpDays = bldr.ftpDays;
+            this.parent = bldr.parent;
+            this.store = bldr.store;
+        }
+
+        @Override
+        public Authentication authentication() { return authentication.get(0); }
 
         @Override
         public final LicenseAuthorization authorization() { return context.authorization(); }
@@ -420,15 +417,56 @@ implements BiosProvider,
         public final BIOS bios() { return context.bios(); }
 
         @Override
+        public long cachePeriodMillis() { return context.cachePeriodMillis(); }
+
+        @Override
         public final Codec codec() { return context.codec(); }
 
         @Override
         public final Transformation compression() { return context.compression(); }
 
         @Override
+        public TrueLicenseApplicationContext<Model, PasswordSpecification> context() {
+            return context;
+        }
+
+        @Override
+        public Transformation encryption() {
+            for (Transformation e : encryption)
+                return e;
+            return parent().parameters().encryption();
+        }
+
+        @Override
+        public LicenseInitialization initialization() {
+            final LicenseInitialization initialization = context.initialization();
+            if (0 == ftpDays)
+                return initialization;
+
+            return new LicenseInitialization() {
+
+                @Override public void initialize(final License bean) {
+                    initialization.initialize(bean);
+                    final Calendar cal = getInstance();
+                    cal.setTime(bean.getIssued());
+                    bean.setNotBefore(cal.getTime()); // not before issued
+                    cal.add(DATE, ftpDays); // FTP countdown starts NOW
+                    bean.setNotAfter(cal.getTime());
+                }
+            };
+        }
+
+        @Override
+        public License license() { return context.license(); }
+
+        public LicenseConsumerManager parent() { return parent.get(0); }
+
+        @Override
         public final RepositoryContext<Model> repositoryContext() {
             return context.repositoryContext();
         }
+
+        public Store store() { return store.get(0);}
 
         @Override
         public final LicenseValidation validation() { return context.validation(); }

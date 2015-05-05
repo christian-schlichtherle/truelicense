@@ -30,7 +30,7 @@ implements LicenseConsumerManager {
         return manager.parameters();
     }
 
-    @Override public LicenseConsumerContext context() {
+    @Override public LicenseApplicationContext context() {
         return manager.context();
     }
 

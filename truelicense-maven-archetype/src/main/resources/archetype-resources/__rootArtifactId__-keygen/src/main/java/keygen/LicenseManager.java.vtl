@@ -190,7 +190,7 @@ public enum LicenseManager implements LicenseVendorManager {
     }
 
     @Override
-    public LicenseVendorContext<?> context() {
+    public LicenseApplicationContext context() {
         assert _context == manager().context();
         return _context;
     }

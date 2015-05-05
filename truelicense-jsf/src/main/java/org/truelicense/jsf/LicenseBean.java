@@ -5,7 +5,7 @@
 
 package org.truelicense.jsf;
 
-import org.truelicense.api.LicenseConsumerContext;
+import org.truelicense.api.LicenseApplicationContext;
 import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.spi.i18n.Formattable;
@@ -56,7 +56,7 @@ implements WizardView<LicenseWizardState> {
 
     final String subject() { return context().subject(); }
 
-    private LicenseConsumerContext<?> context() { return manager().context(); }
+    private LicenseApplicationContext context() { return manager().context(); }
 
     private Locale locale() { return viewRoot().getLocale(); }
 

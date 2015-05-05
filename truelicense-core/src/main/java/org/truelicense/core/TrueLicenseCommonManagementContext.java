@@ -18,17 +18,17 @@ import org.truelicense.obfuscate.ObfuscatedString;
  *
  * @author Christian Schlichtherle
  */
-public abstract class CommonLicenseManagementContext<Model>
+public abstract class TrueLicenseCommonManagementContext<Model>
 extends TrueLicenseManagementContext<Model, ObfuscatedString> {
 
-    public CommonLicenseManagementContext(String subject) {
+    public TrueLicenseCommonManagementContext(String subject) {
         super(subject);
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseCommonManagementContext}
      * returns {@link Passwords#newPasswordPolicy()}.
      */
     @Override
@@ -37,7 +37,7 @@ extends TrueLicenseManagementContext<Model, ObfuscatedString> {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link CommonLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseCommonManagementContext}
      * returns
      * {@link Passwords#newPasswordProtection(ObfuscatedString) Passwords.newPasswordProtecetion(os)}.
      */

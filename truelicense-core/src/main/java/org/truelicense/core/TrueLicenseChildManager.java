@@ -21,29 +21,14 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-abstract class ChainedLicenseConsumerManager
-extends CachingLicenseConsumerManager
-implements LicenseFactory {
+class TrueLicenseChildManager<Model>
+extends TrueLicenseCachingManager<Model> {
 
     private volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 
-    /** The parent license consumer manager. */
-    abstract LicenseConsumerManager parent();
-
-    private boolean canGenerateLicenseKeys() {
-        if (canGenerateLicenseKeys.isEmpty()) {
-            synchronized (this) {
-                if (canGenerateLicenseKeys.isEmpty()) {
-                    try {
-                        super.generator(license()).writeTo(bios().memoryStore()); // -> /dev/null
-                        canGenerateLicenseKeys = Option.wrap(Boolean.TRUE);
-                    } catch (LicenseManagementException ignored) {
-                        canGenerateLicenseKeys = Option.wrap(Boolean.FALSE);
-                    }
-                }
-            }
-        }
-        return canGenerateLicenseKeys.get(0);
+    TrueLicenseChildManager(
+            TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters) {
+        super(parameters);
     }
 
     @Override
@@ -56,7 +41,8 @@ implements LicenseFactory {
         }
     }
 
-    @Override public License view() throws LicenseManagementException {
+    @Override
+    public License view() throws LicenseManagementException {
         try {
             return parent().view();
         } catch (final LicenseManagementException primary) {
@@ -74,7 +60,8 @@ implements LicenseFactory {
         }
     }
 
-    @Override public void verify() throws LicenseManagementException {
+    @Override
+    public void verify() throws LicenseManagementException {
         try {
             parent().verify();
         } catch (final LicenseManagementException primary) {
@@ -92,7 +79,8 @@ implements LicenseFactory {
         }
     }
 
-    @Override public void uninstall() throws LicenseManagementException {
+    @Override
+    public void uninstall() throws LicenseManagementException {
         try {
             parent().uninstall();
         } catch (final LicenseManagementException primary) {
@@ -101,8 +89,34 @@ implements LicenseFactory {
         }
     }
 
+    private boolean canGenerateLicenseKeys() {
+        if (canGenerateLicenseKeys.isEmpty()) {
+            synchronized (this) {
+                if (canGenerateLicenseKeys.isEmpty()) {
+                    try {
+                        // Test encoding a new license key to /dev/null .
+                        super.generator(license()).writeTo(bios().memoryStore());
+                        canGenerateLicenseKeys = Option.wrap(Boolean.TRUE);
+                    } catch (LicenseManagementException ignored) {
+                        canGenerateLicenseKeys = Option.wrap(Boolean.FALSE);
+                    }
+                }
+            }
+        }
+        return canGenerateLicenseKeys.get(0);
+    }
+
+    private static boolean exists(final Store store) throws LicenseManagementException {
+        return wrap(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return store.exists();
+            }
+        });
+    }
+
     private LicenseKeyGenerator generateIffNewFtp(final LicenseManagementException e)
-    throws LicenseManagementException {
+            throws LicenseManagementException {
         if (!canGenerateLicenseKeys())
             throw e;
         final Store store = store();
@@ -111,13 +125,7 @@ implements LicenseFactory {
         return super.generator(license()).writeTo(store);
     }
 
-    private static boolean exists(final Store store)
-    throws LicenseManagementException {
-        return wrap(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return store.exists();
-            }
-        });
-    }
+    final License license() { return parameters().license(); }
+
+    final LicenseConsumerManager parent() { return parameters().parent(); }
 }

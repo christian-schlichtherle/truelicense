@@ -10,7 +10,6 @@ import org.truelicense.api.LicenseManagementException;
 import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
-import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.spi.misc.Option;
 
 import java.util.List;
@@ -24,8 +23,8 @@ import static java.lang.System.currentTimeMillis;
  *
  * @author Christian Schlichtherle
  */
-abstract class CachingLicenseConsumerManager
-extends TrueLicenseManager implements CachePeriodProvider {
+class TrueLicenseCachingManager<Model>
+extends TrueLicenseManager<Model> {
 
     // These volatile fields get initialized by applying a pure function which
     // takes the immutable value of the store() property as its single argument.
@@ -34,6 +33,11 @@ extends TrueLicenseManager implements CachePeriodProvider {
     // required to synchronize access to them.
     private volatile Cache<Source, Artifactory> cachedArtifactory = new Cache<>();
     private volatile Cache<Source, License> cachedLicense = new Cache<>();
+
+    TrueLicenseCachingManager(
+            TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters) {
+        super(parameters);
+    }
 
     @Override
     public void install(final Source source)
@@ -95,6 +99,16 @@ extends TrueLicenseManager implements CachePeriodProvider {
             cachedArtifactory = new Cache<>(optSource, optArtifactory, cachePeriodMillis());
         }
         return optArtifactory.get(0);
+    }
+
+    final long cachePeriodMillis() {
+        return requireNonNegative(parameters().cachePeriodMillis());
+    }
+
+    private static long requireNonNegative(final long l) {
+        if (0 > l)
+            throw new IllegalArgumentException();
+        return l;
     }
 }
 

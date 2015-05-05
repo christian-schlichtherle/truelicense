@@ -5,9 +5,6 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.codec.CodecProvider;
-import org.truelicense.api.io.Sink;
-
 /**
  * A derived context for license vendor applications alias license key tools.
  * Use this context to configure a {@link LicenseVendorManager} with the
@@ -23,9 +20,7 @@ import org.truelicense.api.io.Sink;
  * @author Christian Schlichtherle
  */
 public interface LicenseVendorContext<PasswordSpecification>
-extends CodecProvider,
-        LicenseApplicationContext,
-        LicenseFactory {
+extends LicenseApplicationContext {
 
     /**
      * Returns a builder for a
@@ -34,9 +29,4 @@ extends CodecProvider,
      * the configured license vendor manager.
      */
     LicenseVendorManagerBuilder<PasswordSpecification> manager();
-
-    /**
-     * Returns a sink which writes to standard output without ever closing it.
-     */
-    Sink stdout();
 }

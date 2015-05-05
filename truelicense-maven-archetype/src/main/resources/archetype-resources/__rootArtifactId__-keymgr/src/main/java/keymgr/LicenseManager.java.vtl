@@ -278,7 +278,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     }
 
     @Override
-    public LicenseConsumerContext<?> context() {
+    public LicenseApplicationContext context() {
         assert _context == manager().context();
         return _context;
     }

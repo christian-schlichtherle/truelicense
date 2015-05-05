@@ -6,7 +6,10 @@
 package org.truelicense.core;
 
 import org.truelicense.api.*;
-import org.truelicense.api.auth.*;
+import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.auth.Authentication;
+import org.truelicense.api.auth.RepositoryContext;
+import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.*;
 import org.truelicense.spi.codec.Codecs;
@@ -25,11 +28,17 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-abstract class TrueLicenseManager<Model>
-implements BiosProvider,
-        LicenseParametersProvider,
-        RepositoryContextProvider<Model> {
+class TrueLicenseManager<Model>
+implements LicenseConsumerManager, LicenseVendorManager {
 
+    private final TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters;
+
+    TrueLicenseManager(
+            final TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters) {
+        this.parameters = parameters;
+    }
+
+    @Override
     public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
         return wrap(new Callable<LicenseKeyGenerator>() {
             @Override
@@ -93,6 +102,7 @@ implements BiosProvider,
         });
     }
 
+    @Override
     public void install(final Source source)
     throws LicenseManagementException {
         wrap(new Callable<Void>() {
@@ -105,6 +115,7 @@ implements BiosProvider,
         });
     }
 
+    @Override
     public License view() throws LicenseManagementException {
         return wrap(new Callable<License>() {
             @Override public License call() throws Exception {
@@ -114,6 +125,7 @@ implements BiosProvider,
         });
     }
 
+    @Override
     public void verify() throws LicenseManagementException {
         wrap(new Callable<Void>() {
             @Override public Void call() throws Exception {
@@ -124,6 +136,7 @@ implements BiosProvider,
         });
     }
 
+    @Override
     public void uninstall() throws LicenseManagementException {
         wrap(new Callable<Void>() {
             @Override public Void call() throws Exception {
@@ -203,12 +216,16 @@ implements BiosProvider,
         return parameters().authorization();
     }
 
-    @Override
-    public final BIOS bios() { return parameters().bios(); }
+    final BIOS bios() { return parameters().bios(); }
 
     final Codec codec() { return parameters().codec(); }
 
     final Transformation compression() { return parameters().compression(); }
+
+    @Override
+    public final LicenseApplicationContext context() {
+        return parameters().context();
+    }
 
     final Transformation encryption() { return parameters().encryption(); }
 
@@ -217,20 +234,15 @@ implements BiosProvider,
     }
 
     @Override
-    public abstract TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters();
+    public final TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters() {
+        return parameters;
+    }
 
-    @Override
-    public final RepositoryContext<Model> repositoryContext() {
+    final RepositoryContext<Model> repositoryContext() {
         return parameters().repositoryContext();
     }
 
-    /**
-     * Returns the store for the license key (optional operation).
-     *
-     * @throws UnsupportedOperationException If this method is called on a
-     *         {@link LicenseVendorManager}.
-     */
-    public abstract Store store();
+    final Store store() { return parameters().store(); }
 
     final LicenseValidation validation() { return parameters().validation(); }
 }
