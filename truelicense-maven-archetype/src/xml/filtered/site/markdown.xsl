@@ -91,7 +91,7 @@
             <xsl:copy-of select="@*"/>
             <div class="accordion" id="{ generate-id() }">
                 <xsl:for-each
-                        select="document('archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
+                        select="document('../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
                     <xsl:sort select="@name"/>
                     <xsl:variable name="type">
                         <xsl:call-template name="type">
