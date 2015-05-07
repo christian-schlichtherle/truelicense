@@ -157,8 +157,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="artifactName" minOccurs="0"
-                        default="-">
+            <xs:element type="xs:token" name="artifactName"
+                        minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
                         The display name of the parent POM for the generated
@@ -179,8 +179,7 @@
             </xs:element>
             <xs:element type="p:CustomClasspathScope"
                         name="customClasspathScope"
-                        minOccurs="0"
-                        default="compile">
+                        minOccurs="0" default="compile">
                 <xs:annotation>
                     <xs:documentation>
                         Declares the scope of the class path for the custom
@@ -191,8 +190,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="xs:boolean" name="disableLicenseWizard"
-                        minOccurs="0"
-                        default="false">
+                        minOccurs="0" default="false">
                 <xs:annotation>
                     <xs:documentation>
                         Whether or not the Swing wizard dialog in the Key
@@ -205,8 +203,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="p:JavaIdentifierList" name="editions"
-                        minOccurs="0"
-                        default="standard">
+                        minOccurs="0" default="standard">
                 <xs:annotation>
                     <xs:documentation>
                         A space separated list of edition names, ordered from
@@ -237,8 +234,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="ftpKeyStoreFile" minOccurs="0"
-                        default="-">
+            <xs:element type="xs:token" name="ftpKeyStoreFile"
+                        minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
                         The path of the FTP key store file in the Key Manager
@@ -258,8 +255,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="xs:token" name="ftpSecretMarkerClass"
-                        minOccurs="0"
-                        default="-">
+                        minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
                         A fully qualified binary class name which declares the
@@ -292,8 +288,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="xs:boolean" name="hideUninstallAction"
-                        minOccurs="0"
-                        default="false">
+                        minOccurs="0" default="false">
                 <xs:annotation>
                     <xs:documentation>
                         Whether or not the Swing wizard dialog in the Key
@@ -335,8 +330,8 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="p:ValidationFunction"
-                        name="keyGenLicenseValidationFunction" minOccurs="0"
-                        default="decorate">
+                        name="keyGenLicenseValidationFunction"
+                        minOccurs="0" default="decorate">
                 <xs:annotation>
                     <xs:documentation>
                         Selects the function for license validation in the Key
@@ -357,8 +352,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrClockClass" minOccurs="0"
-                        default="-">
+            <xs:element type="xs:token" name="keyMgrClockClass"
+                        minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
                         A fully qualified binary class name which implements the
@@ -406,8 +401,8 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="p:ValidationFunction"
-                        name="keyMgrLicenseValidationFunction" minOccurs="0"
-                        default="decorate">
+                        name="keyMgrLicenseValidationFunction"
+                        minOccurs="0" default="decorate">
                 <xs:annotation>
                     <xs:documentation>
                         Selects the function for license validation in the Key
@@ -442,8 +437,7 @@
                 </xs:annotation>
             </xs:element>
             <xs:element type="xs:nonNegativeInteger" name="keyPairSize"
-                        minOccurs="0"
-                        default="0">
+                        minOccurs="0" default="0">
                 <xs:annotation>
                     <xs:documentation>
                         The key size in bits when generating key pairs in the
@@ -460,8 +454,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="p:KeyStoreType" name="keyStoreType" minOccurs="0"
-                        default="auto">
+            <xs:element type="p:KeyStoreType" name="keyStoreType"
+                        minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
                         The default key store type.
@@ -531,8 +525,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="package" minOccurs="0"
-                        default="${dollar}{groupId}">
+            <xs:element type="xs:token" name="package"
+                        minOccurs="0" default="${dollar}{groupId}">
                 <xs:annotation>
                     <xs:documentation>
                         The base package name of the generated project.
@@ -552,8 +546,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="p:PbeAlgorithm" name="pbeAlgorithm" minOccurs="0"
-                        default="auto">
+            <xs:element type="p:PbeAlgorithm" name="pbeAlgorithm"
+                        minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
                         The algorithm for the password based encryption.
@@ -590,8 +584,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="privateKeyStoreFile" minOccurs="0"
-                        default="private.ks">
+            <xs:element type="xs:token" name="privateKeyStoreFile"
+                        minOccurs="0" default="private.ks">
                 <xs:annotation>
                     <xs:documentation>
                         The path of the private key store file in the Key
@@ -602,8 +596,8 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="publicKeyStoreFile" minOccurs="0"
-                        default="public.ks">
+            <xs:element type="xs:token" name="publicKeyStoreFile"
+                        minOccurs="0" default="public.ks">
                 <xs:annotation>
                     <xs:documentation>
                         The path of the public key store file in the Key
@@ -633,16 +627,16 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="trueLicenseVersion" minOccurs="0"
-                        default="${project.version}">
+            <xs:element type="xs:token" name="trueLicenseVersion"
+                        minOccurs="0" default="${project.version}">
                 <xs:annotation>
                     <xs:documentation>
                         The TrueLicense version to depend upon.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:boolean" name="verboseCli" minOccurs="0"
-                        default="false">
+            <xs:element type="xs:boolean" name="verboseCli"
+                        minOccurs="0" default="false">
                 <xs:annotation>
                     <xs:documentation>
                         Whether or not the
