@@ -12,7 +12,7 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>104</version>
+        <version>105</version>
     </parent>
 
     <groupId>org.truelicense</groupId>
@@ -39,11 +39,9 @@
                 available upon request.
                 Please contact sales AT schlichtherle DOT de .
             </comments>
-            <distribution>manual</distribution>
-            <name>Commercial License</name>
+            <name>TrueLicense Commercial License</name>
         </license>
         <license>
-            <distribution>repo</distribution>
             <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007</name>
             <url>http://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
         </license>
@@ -371,12 +369,19 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- Version 2.7 of the Maven Resources Plugin doesn't copy
-                     .gitignore files - see http://jira.codehaus.org/browse/MRESOURCES-190 .
-                     This regression affects the TrueLicense Maven Archetype. -->
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.6</version>
+                    <dependencies>
+                        <!-- Plexus Utils 3.0.1 doesn't copy .gitattributes and
+                             .gitignore files - see https://issues.apache.org/jira/browse/MRESOURCES-190
+                             and http://jira.codehaus.org/browse/PLXUTILS-140 .
+                             This regression affects the TrueLicense Maven Archetype. -->
+                        <dependency>
+                            <groupId>org.codehaus.plexus</groupId>
+                            <artifactId>plexus-utils</artifactId>
+                            <version>3.0</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
