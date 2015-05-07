@@ -7,7 +7,7 @@ package org.truelicense.core;
 
 import org.truelicense.api.License;
 import org.truelicense.api.LicenseManagementException;
-import org.truelicense.api.auth.Artifactory;
+import org.truelicense.api.codec.Decoder;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.spi.misc.Option;
@@ -31,7 +31,7 @@ extends TrueLicenseManager<Model> {
     // So some concurrent threads may safely interleave when initializing these
     // fields without creating a racing condition and thus it's not generally
     // required to synchronize access to them.
-    private volatile Cache<Source, Artifactory> cachedArtifactory = new Cache<>();
+    private volatile Cache<Source, Decoder> cachedDecoder = new Cache<>();
     private volatile Cache<Source, License> cachedLicense = new Cache<>();
 
     TrueLicenseCachingManager(
@@ -54,27 +54,27 @@ extends TrueLicenseManager<Model> {
             // is a re-installation from an equal source or the cached objects
             // have already been obsoleted by a time-out, that is, if the cache
             // period is equal or close to zero.
-            assert cachedArtifactory.hasKey(optSource) ||
-                    cachedArtifactory.hasKey(optStore) ||
-                    cachedArtifactory.obsolete();
+            assert cachedDecoder.hasKey(optSource) ||
+                    cachedDecoder.hasKey(optStore) ||
+                    cachedDecoder.obsolete();
             assert cachedLicense.hasKey(optSource) ||
                     cachedLicense.hasKey(optStore) ||
                     cachedLicense.obsolete();
 
             // Update the association of the cached artifactory and license to
             // the store.
-            cachedArtifactory = cachedArtifactory.key(optStore);
+            cachedDecoder = cachedDecoder.key(optStore);
             cachedLicense = cachedLicense.key(optStore);
         }
     }
 
     @Override
     public void uninstall() throws LicenseManagementException {
-        final Cache<Source, Artifactory> cachedArtifactory = new Cache<>();
+        final Cache<Source, Decoder> cachedDecoder = new Cache<>();
         final Cache<Source, License> cachedLicense = new Cache<>();
         synchronized (store()) {
             super.uninstall();
-            this.cachedArtifactory = cachedArtifactory;
+            this.cachedDecoder = cachedDecoder;
             this.cachedLicense = cachedLicense;
         }
     }
@@ -91,14 +91,14 @@ extends TrueLicenseManager<Model> {
     }
 
     @Override
-    Artifactory authenticate(final Source source) throws Exception {
+    Decoder authenticate(final Source source) throws Exception {
         final List<Source> optSource = Option.wrap(source);
-        List<Artifactory> optArtifactory = cachedArtifactory.map(optSource);
-        if (optArtifactory.isEmpty()) {
-            optArtifactory = Option.wrap(super.authenticate(source));
-            cachedArtifactory = new Cache<>(optSource, optArtifactory, cachePeriodMillis());
+        List<Decoder> optDecoder = cachedDecoder.map(optSource);
+        if (optDecoder.isEmpty()) {
+            optDecoder = Option.wrap(super.authenticate(source));
+            cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
         }
-        return optArtifactory.get(0);
+        return optDecoder.get(0);
     }
 
     final long cachePeriodMillis() {

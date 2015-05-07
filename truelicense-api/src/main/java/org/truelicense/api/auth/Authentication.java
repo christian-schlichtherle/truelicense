@@ -5,6 +5,8 @@
 
 package org.truelicense.api.auth;
 
+import org.truelicense.api.codec.Decoder;
+
 /**
  * Provides authentication services.
  *
@@ -13,8 +15,8 @@ package org.truelicense.api.auth;
 public interface Authentication {
 
     /**
-     * Encodes and signs the given {@code artifact} and returns an artifactory
-     * for decoding it.
+     * Encodes and signs the given {@code artifact} and returns a decoder for
+     * it.
      * As a side effect, the state of the underlying repository model is updated
      * with the encoded artifact and its signature so that a subsequent
      * {@linkplain #verify verification} can succeed.
@@ -25,11 +27,11 @@ public interface Authentication {
      * @return An Artifactory for decoding the signed artifact in the
      *         repository.
      */
-    Artifactory sign(RepositoryController repository, Object artifact) throws Exception;
+    Decoder sign(RepositoryController repository, Object artifact) throws Exception;
 
     /**
      * Verifies the signature of the encoded artifact in the underlying
-     * repository model and returns an artifactory for decoding it.
+     * repository model and returns a decoder for it.
      * The state of the underlying repository model is not modified by this
      * method.
      *
@@ -40,5 +42,5 @@ public interface Authentication {
      * @throws RepositoryIntegrityException if the integrity of the repository
      *         with its encoded artifact has been compromised.
      */
-    Artifactory verify(RepositoryController repository) throws Exception;
+    Decoder verify(RepositoryController repository) throws Exception;
 }

@@ -2,11 +2,11 @@ package org.truelicense.v1.auth;
 
 import de.schlichtherle.xml.GenericCertificate;
 import org.apache.commons.codec.binary.Base64;
-import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
-import org.truelicense.core.auth.EncodedArtifact;
+import org.truelicense.api.codec.Decoder;
+import org.truelicense.api.io.Source;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.spi.io.MemoryStore;
 
@@ -54,7 +54,7 @@ public class V1RepositoryController implements RepositoryController {
     private String encode(byte[] data) { return base64.encodeToString(data); }
 
     @Override
-    public final Artifactory sign(final Signature engine, final Object artifact) throws Exception {
+    public final Decoder sign(final Signature engine, final Object artifact) throws Exception {
         final MemoryStore store = new MemoryStore();
         codec.to(store).encode(artifact);
         final byte[] artifactData = store.data();
@@ -64,24 +64,29 @@ public class V1RepositoryController implements RepositoryController {
         final String encodedArtifact = body(codec, artifactData);
         final String encodedSignature = encode(signatureData);
         final String signatureAlgorithm = engine.getAlgorithm();
-        final Artifactory artifactory = new EncodedArtifact(codec, store);
 
         model.setEncoded(encodedArtifact);
         model.setSignature(encodedSignature);
         model.setSignatureAlgorithm(signatureAlgorithm);
         model.setSignatureEncoding(SIGNATURE_ENCODING);
 
-        return artifactory;
+        return codec.from(store);
     }
 
     @Override
-    public final Artifactory verify(final Signature engine) throws Exception {
+    public final Decoder verify(final Signature engine) throws Exception {
         if (!engine.getAlgorithm().equalsIgnoreCase(model.getSignatureAlgorithm()))
             throw new IllegalArgumentException();
         final byte[] artifactData = data(codec, model.getEncoded());
         engine.update(artifactData);
         if (!engine.verify(decode(model.getSignature())))
             throw new RepositoryIntegrityException();
-        return new EncodedArtifact(codec, artifactData);
+        return codec.from(source(artifactData));
+    }
+
+    private static Source source(final byte[] encodedArtifact) {
+        final MemoryStore store = new MemoryStore();
+        store.data(encodedArtifact);
+        return store;
     }
 }

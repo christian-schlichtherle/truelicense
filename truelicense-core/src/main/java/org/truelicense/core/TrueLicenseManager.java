@@ -6,11 +6,11 @@
 package org.truelicense.core;
 
 import org.truelicense.api.*;
-import org.truelicense.api.auth.Artifactory;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.codec.Codec;
+import org.truelicense.api.codec.Decoder;
 import org.truelicense.api.io.*;
 import org.truelicense.spi.codec.Codecs;
 
@@ -48,7 +48,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
 
                     final RepositoryContext<Model> context = repositoryContext();
                     final Model model = context.model();
-                    final Artifactory artifactory = authentication()
+                    final Decoder artifactory = authentication()
                             .sign(context.controller(model, codec()), validatedBean());
 
                     License validatedBean() throws Exception {
@@ -186,7 +186,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
         return authenticate(source).decode(License.class);
     }
 
-    Artifactory authenticate(Source source) throws Exception {
+    Decoder authenticate(Source source) throws Exception {
         return authentication().verify(repositoryController(source));
     }
 

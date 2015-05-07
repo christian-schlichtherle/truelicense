@@ -5,6 +5,8 @@
 
 package org.truelicense.api.auth;
 
+import org.truelicense.api.codec.Decoder;
+
 import java.security.Signature;
 
 /**
@@ -22,8 +24,8 @@ import java.security.Signature;
 public interface RepositoryController {
 
     /**
-     * Encodes and signs the given {@code artifact} and returns an artifactory
-     * for decoding it.
+     * Encodes and signs the given {@code artifact} and returns a decoder for
+     * it.
      * As a side effect, the state of the underlying repository model is updated
      * with the encoded artifact and its signature so that a subsequent
      * {@linkplain #verify verification} can succeed.
@@ -35,11 +37,11 @@ public interface RepositoryController {
      * @param artifact
      *        the artifact to sign.
      */
-    Artifactory sign(Signature engine, Object artifact) throws Exception;
+    Decoder sign(Signature engine, Object artifact) throws Exception;
 
     /**
      * Verifies the signature of the encoded artifact in the underlying
-     * repository model and returns an artifactory for decoding it.
+     * repository model and returns a decoder for it.
      * The state of the underlying repository model is not modified by this
      * method.
      *
@@ -50,5 +52,5 @@ public interface RepositoryController {
      * @throws RepositoryIntegrityException if the integrity of the underlying
      *         repository model has been compromised.
      */
-    Artifactory verify(Signature engine) throws Exception;
+    Decoder verify(Signature engine) throws Exception;
 }
