@@ -355,12 +355,19 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- Version 2.7 of the Maven Resources Plugin doesn't copy
-                     .gitignore files - see http://jira.codehaus.org/browse/MRESOURCES-190 .
-                     This regression affects the TrueLicense Maven Archetype. -->
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.6</version>
+                    <dependencies>
+                        <!-- Plexus Utils 3.0.1 doesn't copy .gitattributes and
+                             .gitignore files - see https://issues.apache.org/jira/browse/MRESOURCES-190
+                             and http://jira.codehaus.org/browse/PLXUTILS-140 .
+                             This regression affects the TrueLicense Maven Archetype. -->
+                        <dependency>
+                            <groupId>org.codehaus.plexus</groupId>
+                            <artifactId>plexus-utils</artifactId>
+                            <version>3.0</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
