@@ -19,16 +19,18 @@
             modules with the named custom class.
         </p:documentation>
     </p:annotation>
-    <p:artifactId>customLicenseValidation</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:keyGenLicenseValidationClass>
-        com.company.product.keygen.Main$NoLicenseValidation
-    </p:keyGenLicenseValidationClass>
-    <p:keyMgrLicenseValidationClass>
-        com.company.product.keymgr.Main$NoLicenseValidation
-    </p:keyMgrLicenseValidationClass>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:list>
+        <p:artifactId>customLicenseValidation</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:keyGenLicenseValidationClass>
+            com.company.product.keygen.Main$NoLicenseValidation
+        </p:keyGenLicenseValidationClass>
+        <p:keyMgrLicenseValidationClass>
+            com.company.product.keymgr.Main$NoLicenseValidation
+        </p:keyMgrLicenseValidationClass>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>

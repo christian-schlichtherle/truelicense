@@ -49,7 +49,7 @@
         -DarchetypeGroupId=${project.groupId} \
         -DarchetypeArtifactId=${project.artifactId} \
         -DarchetypeVersion=${project.version}</xsl:text>
-        <xsl:for-each select="*">
+        <xsl:for-each select="p:list/*">
             <xsl:variable name="name" select="local-name()"/>
             <xsl:variable name="value" select="text()"/>
             <xsl:text> \

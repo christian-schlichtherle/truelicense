@@ -17,11 +17,13 @@
             action from the license wizard dialog.
         </p:documentation>
     </p:annotation>
-    <p:artifactId>hideUninstallAction</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:hideUninstallAction>true</p:hideUninstallAction>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:list>
+        <p:artifactId>hideUninstallAction</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:hideUninstallAction>true</p:hideUninstallAction>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>

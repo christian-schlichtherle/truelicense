@@ -17,11 +17,13 @@
             Processor in the generated code.
         </p:documentation>
     </p:annotation>
-    <p:artifactId>v2JsonLicenseKeyFormat</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:licenseKeyFormat>V2/JSON</p:licenseKeyFormat>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:list>
+        <p:artifactId>v2JsonLicenseKeyFormat</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:licenseKeyFormat>V2/JSON</p:licenseKeyFormat>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>

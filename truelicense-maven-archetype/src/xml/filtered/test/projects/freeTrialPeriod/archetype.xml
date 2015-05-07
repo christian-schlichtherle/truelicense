@@ -21,12 +21,14 @@
             because it's obviously not secret anymore.
         </p:documentation>
     </p:annotation>
-    <p:artifactId>freeTrialPeriod</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:freeTrialPeriod>30</p:freeTrialPeriod>
-    <p:ftpSecretMarkerClass>sun.security.provider.Sun</p:ftpSecretMarkerClass>
-    <p:groupId>com.company.product</p:groupId>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:list>
+        <p:artifactId>freeTrialPeriod</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:freeTrialPeriod>30</p:freeTrialPeriod>
+        <p:ftpSecretMarkerClass>sun.security.provider.Sun</p:ftpSecretMarkerClass>
+        <p:groupId>com.company.product</p:groupId>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>

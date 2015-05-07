@@ -19,7 +19,7 @@
     <xsl:output method="text"/>
 
     <xsl:template match="/p:properties">
-        <xsl:variable name="properties" select="*"/>
+        <xsl:variable name="properties" select="p:list/*"/>
         <xsl:for-each
                 select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
             <xsl:variable name="name" select="@name"/>

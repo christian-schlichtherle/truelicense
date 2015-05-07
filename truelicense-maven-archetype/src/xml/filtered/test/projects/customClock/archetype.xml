@@ -16,12 +16,14 @@
             clock with a custom implementation.
         </p:documentation>
     </p:annotation>
-    <p:artifactId>customClock</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
-    </p:keyMgrClockClass>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:list>
+        <p:artifactId>customClock</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
+        </p:keyMgrClockClass>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>
