@@ -117,6 +117,26 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>initialize-xml-for-site</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${xml-directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/xml/filtered</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>src/xml/resources</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>generate-site-sources</id>
                         <phase>pre-site</phase>
                         <goals>

@@ -12,23 +12,23 @@
 This page shows some example configurations which you can use when
 [generating your project]. 
 
-<a href="../projects/basic/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/basic/archetype.xml" class="maven-command"/>
 
-<a href="../projects/freeTrialPeriod/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/freeTrialPeriod/archetype.xml" class="maven-command"/>
 
-<a href="../projects/multipleProductEditions/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/multipleProductEditions/archetype.xml" class="maven-command"/>
 
-<a href="../projects/hideUninstallAction/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/hideUninstallAction/archetype.xml" class="maven-command"/>
 
-<a href="../projects/disableLicenseWizard/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/disableLicenseWizard/archetype.xml" class="maven-command"/>
 
-<a href="../projects/customLicenseAuthorization/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/customLicenseAuthorization/archetype.xml" class="maven-command"/>
 
-<a href="../projects/customLicenseValidation/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/customLicenseValidation/archetype.xml" class="maven-command"/>
 
-<a href="../projects/customCLock/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/customCLock/archetype.xml" class="maven-command"/>
 
-<a href="../projects/v2XmlLicenseKeyFormat/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/v2XmlLicenseKeyFormat/archetype.xml" class="maven-command"/>
 
 ---
 
