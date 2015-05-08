@@ -17,7 +17,7 @@
 
     <groupId>net.java.truelicense</groupId>
     <artifactId>truelicense</artifactId>
-    <version>2.6.1</version>
+    <version>2.6.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TrueLicense</name>
@@ -69,7 +69,7 @@
         <connection>scm:git:https://bitbucket.org/christian_schlichtherle/truelicense3.git</connection>
         <developerConnection>scm:git:git@bitbucket.org:christian_schlichtherle/truelicense3.git</developerConnection>
         <url>https://bitbucket.org/christian_schlichtherle/truelicense3</url>
-        <tag>truelicense-2.6.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
@@ -148,37 +148,37 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-jax-rs</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-json</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-obfuscate</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-swing</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-ui</artifactId>
-                <version>2.6.1</version>
+                <version>2.6.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
@@ -325,7 +325,7 @@
                 <plugin>
                     <groupId>${project.groupId}</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
-                    <version>2.6.1</version>
+                    <version>2.6.2-SNAPSHOT</version>
                 </plugin>
 
                 <plugin>
