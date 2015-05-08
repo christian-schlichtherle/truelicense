@@ -33,7 +33,6 @@ $h3 Important Notes
 
 For customization, please copy the preceding sample command, edit the property
 values to match your licensing schema and paste the result into a shell.
-
 Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
 indicates command output, so please don't copy/paste these.
 The properties `archetypeArtifactId`, `archetypeGroupId` and `archetypeVersion`
@@ -41,9 +40,9 @@ reference the $project.name itself, so you shouldn't change their values.
 All other property values are customizable as explained in the following
 reference.
 
-You may sometimes read an expression starting with a `$`, followed by a name in
-braces.
-Such an expression is a reference to the value of the equal named property.
+Occasionally you may also see an expression starting with a `$`, followed by a
+name in braces.
+This is a reference to the value of the equal named property.
 For example, assuming that the project is generated as shown above, the
 expression `${dollar}{package}` is a reference to the value
 `com.company.product`.
