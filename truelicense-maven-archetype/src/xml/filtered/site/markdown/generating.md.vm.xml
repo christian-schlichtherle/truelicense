@@ -28,13 +28,11 @@ $h3 Important Notes
     * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
     * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.
 
-$h3 Generation Action
-
-Please copy the following sample command, customize the property values to
-match your licensing schema and paste the result into a shell:
-
 <a href="../../test/projects/basic/archetype.xml" class="maven-command"/>
     [...]
+
+For customization, please copy the preceding sample command, edit the property
+values to match your licensing schema and paste the result into a shell.
 
 Throughout this tutorial, a leading `$ ` indicates a shell prompt and a `[...]`
 indicates command output, so please don't copy/paste these.
@@ -43,8 +41,8 @@ reference the $project.name itself, so you shouldn't change their values.
 All other property values are customizable as explained in the following
 reference.
 
-Furthermore, you may sometimes see an expression starting with a `$`, followed
-by a name in braces.
+You may sometimes read an expression starting with a `$`, followed by a name in
+braces.
 Such an expression is a reference to the value of the equal named property.
 For example, assuming that the project is generated as shown above, the
 expression `${dollar}{package}` is a reference to the value
