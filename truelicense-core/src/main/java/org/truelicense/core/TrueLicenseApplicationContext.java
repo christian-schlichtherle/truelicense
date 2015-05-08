@@ -377,7 +377,7 @@ implements BiosProvider,
         }
     }
 
-    class TrueLicenseParameters
+    final class TrueLicenseParameters
     implements
             BiosProvider,
             CachePeriodProvider,

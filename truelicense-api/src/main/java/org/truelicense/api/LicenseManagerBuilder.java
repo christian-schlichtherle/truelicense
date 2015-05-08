@@ -16,8 +16,7 @@ import org.truelicense.api.misc.Injection;
  * @param <This> the specialized type for fluent programming.
  * @author Christian Schlichtherle
  */
-public interface LicenseManagerBuilder<
-        PasswordSpecification,
+public interface LicenseManagerBuilder<PasswordSpecification,
         This extends LicenseManagerBuilder<PasswordSpecification, This>> {
 
     /**

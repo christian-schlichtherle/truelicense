@@ -18,5 +18,5 @@ import org.truelicense.api.misc.Builder;
 public interface LicenseVendorManagerBuilder<PasswordSpecification>
 extends Builder<LicenseVendorManager>,
         LicenseManagerBuilder<PasswordSpecification,
-        LicenseVendorManagerBuilder<PasswordSpecification>> {
+                LicenseVendorManagerBuilder<PasswordSpecification>> {
 }

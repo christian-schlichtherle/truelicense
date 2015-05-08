@@ -23,7 +23,7 @@ public interface LicenseConsumerManagerBuilder<PasswordSpecification>
 extends Builder<LicenseConsumerManager>,
         Injection<LicenseConsumerManagerBuilder<PasswordSpecification>>,
         LicenseManagerBuilder<PasswordSpecification,
-        LicenseConsumerManagerBuilder<PasswordSpecification>> {
+                LicenseConsumerManagerBuilder<PasswordSpecification>> {
 
     /**
      * Sets the free trial period (FTP) in days (the 24 hour equivalent).
