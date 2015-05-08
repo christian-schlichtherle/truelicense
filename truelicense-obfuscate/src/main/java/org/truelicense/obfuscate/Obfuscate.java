@@ -17,6 +17,4 @@ import java.lang.annotation.Target;
  * @author Christian Schlichtherle
  */
 @Target(FIELD)
-public @interface Obfuscate {
-    //String value() default "";
-}
+public @interface Obfuscate { }
