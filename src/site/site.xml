@@ -46,7 +46,7 @@
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.4</version>
     </skin>
     <version position="bottom"/>
 </project>
