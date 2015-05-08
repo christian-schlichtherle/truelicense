@@ -56,7 +56,7 @@ public final class V2RepositoryController implements RepositoryController {
     @Override
     public final Decoder sign(final Signature engine, final Object artifact) throws Exception {
         final MemoryStore store = new MemoryStore();
-        codec.to(store).encode(artifact);
+        codec.encoder(store).encode(artifact);
         final byte[] artifactData = store.data();
         engine.update(artifactData);
         final byte[] signatureData = engine.sign();
@@ -69,7 +69,7 @@ public final class V2RepositoryController implements RepositoryController {
         model.setSignature(encodedSignature);
         model.setAlgorithm(signatureAlgorithm);
 
-        return codec.from(store);
+        return codec.decoder(store);
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class V2RepositoryController implements RepositoryController {
         engine.update(artifactData);
         if (!engine.verify(decode(model.getSignature())))
             throw new RepositoryIntegrityException();
-        return codec.from(source(artifactData));
+        return codec.decoder(source(artifactData));
     }
 
     private static Source source(final byte[] encodedArtifact) {

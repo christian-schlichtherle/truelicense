@@ -68,7 +68,7 @@ public class JsonCodec implements Codec {
     }
 
     @Override
-    public Encoder to(final Sink sink) {
+    public Encoder encoder(final Sink sink) {
         return new Encoder() {
             @Override
             public void encode(final Object obj) throws Exception {
@@ -80,7 +80,7 @@ public class JsonCodec implements Codec {
     }
 
     @Override
-    public Decoder from(final Source source) {
+    public Decoder decoder(final Source source) {
         return new Decoder() {
             @Override
             public <T> T decode(final Type expected) throws Exception {

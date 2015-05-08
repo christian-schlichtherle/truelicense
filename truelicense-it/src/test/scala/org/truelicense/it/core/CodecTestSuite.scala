@@ -29,8 +29,8 @@ abstract class CodecTestSuite extends WordSpec { this: TestContext[_] =>
         store.exists should equal (false)
         intercept[IOException] { store delete () }
         try {
-          codec to (transformation apply store) encode orig
-          val duplicate: AnyRef = codec from (transformation unapply store) decode orig.getClass
+          codec encoder (transformation apply store) encode orig
+          val duplicate: AnyRef = codec decoder (transformation unapply store) decode orig.getClass
           store match {
             case ms: MemoryStore =>
               import collection.JavaConverters._

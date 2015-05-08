@@ -47,8 +47,8 @@ public interface Codec {
     String contentTransferEncoding();
 
     /** Returns an encoder for the given sink. */
-    Encoder to(Sink sink);
+    Encoder encoder(Sink sink);
 
     /** Returns a decoder for the given source. */
-    Decoder from(Source source);
+    Decoder decoder(Source source);
 }

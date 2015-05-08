@@ -82,7 +82,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
                         wrap(new Callable<Void>() {
 
                             @Override public Void call() throws Exception {
-                                codec().to(compressedAndEncryptedSink()).encode(model);
+                                codec().encoder(compressedAndEncryptedSink()).encode(model);
                                 return null;
                             }
 
@@ -195,7 +195,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     }
 
     Model repositoryModel(Source source) throws Exception {
-        return codec().from(decompress(source)).decode(repositoryContext().model().getClass());
+        return codec().decoder(decompress(source)).decode(repositoryContext().model().getClass());
     }
 
     Source decompress(Source source) {

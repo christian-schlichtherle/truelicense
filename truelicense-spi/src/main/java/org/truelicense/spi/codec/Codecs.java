@@ -126,8 +126,8 @@ public class Codecs {
      */
     public static <T> T clone(final T object, final Codec codec) throws Exception {
         final Store store = new MemoryStore();
-        codec.to(store).encode(object);
-        return codec.from(store).decode(object.getClass());
+        codec.encoder(store).encode(object);
+        return codec.decoder(store).decode(object.getClass());
     }
 
     private Codecs() { }

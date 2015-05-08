@@ -60,7 +60,7 @@ public class XmlCodec implements Codec {
     }
 
     @Override
-    public Encoder to(final Sink sink) {
+    public Encoder encoder(final Sink sink) {
         return new Encoder() {
             @Override
             public void encode(final Object obj) throws Exception {
@@ -80,7 +80,7 @@ public class XmlCodec implements Codec {
     }
 
     @Override
-    public Decoder from(final Source source) {
+    public Decoder decoder(final Source source) {
         return new Decoder() {
             @SuppressWarnings("unchecked")
             @Override
