@@ -14,11 +14,12 @@
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace"
                schemaLocation="http://www.w3.org/2001/xml.xsd"/>
-    <xs:element type="p:Root" name="properties"/>
+    <xs:element type="p:Properties" name="properties"/>
     <xs:complexType name="Annotation">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element type="p:Documentation" name="documentation"/>
         </xs:choice>
+        <xs:attribute ref="xml:lang"/>
     </xs:complexType>
     <xs:simpleType name="ArtifactId">
         <xs:annotation>
@@ -140,7 +141,7 @@
             <xs:enumeration value="V2/XML"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="Properties">
+    <xs:complexType name="List">
         <xs:all>
             <xs:element type="p:ArtifactId" name="artifactId">
                 <xs:annotation>
@@ -694,11 +695,11 @@
             <xs:enumeration value="user"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="Root">
-        <xs:all>
+    <xs:complexType name="Properties">
+        <xs:sequence>
             <xs:element type="p:Annotation" name="annotation" minOccurs="0"/>
-            <xs:element type="p:Properties" name="list"/>
-        </xs:all>
+            <xs:element type="p:List" name="list"/>
+        </xs:sequence>
         <xs:attribute type="xs:token" name="name" use="optional"/>
         <xs:attribute type="xs:token" name="version" use="optional"/>
         <xs:attribute ref="xml:lang"/>

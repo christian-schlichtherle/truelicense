@@ -21,7 +21,7 @@
     <xsl:template match="/p:properties">
         <xsl:variable name="properties" select="p:list/*"/>
         <xsl:for-each
-                select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element">
+                select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element">
             <xsl:variable name="name" select="@name"/>
             <xsl:variable name="value"
                           select="$properties[local-name() = $name]"/>
