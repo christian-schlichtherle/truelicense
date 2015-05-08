@@ -20,10 +20,10 @@ trait V1TestContext extends TestContext[GenericCertificate] {
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
     val cm = consumerContext.manager
       .keyStore
-      .alias("mykey")
-      .loadFromResource(prefix + "chained-public.jks")
-      .storePassword(test1234)
-      .inject
+        .alias("mykey")
+        .loadFromResource(prefix + "chained-public.jks")
+        .storePassword(test1234)
+        .inject
       .parent(parent)
       .storeIn(store)
       .build
@@ -105,13 +105,13 @@ trait V1TestContext extends TestContext[GenericCertificate] {
   override final def vendorManager = {
     val vm = vendorContext.manager
       .encryption
-      .password(test1234)
-      .inject
+        .password(test1234)
+        .inject
       .keyStore
-      .alias("mykey")
-      .loadFromResource(prefix + "private.jks")
-      .storePassword(test1234)
-      .inject
+        .alias("mykey")
+        .loadFromResource(prefix + "private.jks")
+        .storePassword(test1234)
+        .inject
       .build
     require(vm.context eq vendorContext)
     vm

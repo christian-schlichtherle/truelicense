@@ -18,10 +18,10 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
     val cm = consumerContext.manager
       .keyStore
-      .alias("mykey")
-      .loadFromResource(prefix + "chained-public.jceks")
-      .storePassword(test1234)
-      .inject
+        .alias("mykey")
+        .loadFromResource(prefix + "chained-public.jceks")
+        .storePassword(test1234)
+        .inject
       .parent(parent)
       .storeIn(store)
       .build
@@ -32,13 +32,13 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def chainedVendorManager = {
     val vm = vendorContext.manager
       .encryption
-      .password(test1234)
-      .inject
+        .password(test1234)
+        .inject
       .keyStore
-      .alias("mykey")
-      .loadFromResource(prefix + "chained-private.jceks")
-      .storePassword(test1234)
-      .inject
+        .alias("mykey")
+        .loadFromResource(prefix + "chained-private.jceks")
+        .storePassword(test1234)
+        .inject
       .build
     require(vm.context eq vendorContext)
     vm
@@ -78,13 +78,13 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def vendorManager = {
     val vm = vendorContext.manager
       .encryption
-      .password(test1234)
-      .inject
+        .password(test1234)
+        .inject
       .keyStore
-      .alias("mykey")
-      .loadFromResource(prefix + "private.jceks")
-      .storePassword(test1234)
-      .inject
+        .alias("mykey")
+        .loadFromResource(prefix + "private.jceks")
+        .storePassword(test1234)
+        .inject
       .build
     require(vm.context eq vendorContext)
     vm
