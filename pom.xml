@@ -309,22 +309,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <!-- Only used to resolve
-             org.apache.maven.skins:maven-fluido-skin:1.4-SNAPSHOT. -->
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>apache.snapshots.https</id>
-            <name>Apache Development Snapshot Repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
-
     <build>
         <extensions>
             <extension>
