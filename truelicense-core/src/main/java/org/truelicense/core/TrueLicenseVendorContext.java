@@ -30,7 +30,8 @@ implements LicenseVendorContext<PasswordSpecification> {
         super(context);
     }
 
-    @Override public TrueLicenseVendorManagerBuilder manager() {
+    @Override
+    public LicenseVendorManagerBuilder<PasswordSpecification> manager() {
         return new TrueLicenseVendorManagerBuilder();
     }
 

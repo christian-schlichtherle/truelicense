@@ -31,7 +31,7 @@ implements LicenseConsumerContext<PasswordSpecification> {
     }
 
     @Override
-    public TrueLicenseConsumerManagerBuilder manager() {
+    public LicenseConsumerManagerBuilder<PasswordSpecification> manager() {
         return new TrueLicenseConsumerManagerBuilder();
     }
 
