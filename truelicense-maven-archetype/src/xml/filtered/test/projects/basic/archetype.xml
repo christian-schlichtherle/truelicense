@@ -8,17 +8,22 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This is a Basic Configuration example for a software product with
-            only one edition with the name <code>standard</code> and no free
-            trial period.
-        </p:documentation>
-    </p:annotation>
-    <p:artifactId>basic</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:documentation>
+        This is a basic configuration example for a software product with
+        only one edition with the name <code>standard</code> and no free
+        trial period.
+    </p:documentation>
+    <p:documentation xml:lang="de">
+        Dies ist ein einfaches Konfigurationsbeispiel für ein Softwareprodukt
+        mit nur einer Edition namens <code>standard</code> und ohne
+        Testlizensierung.
+    </p:documentation>
+    <p:list>
+        <p:artifactId>basic</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>

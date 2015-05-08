@@ -8,27 +8,27 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example adds
-            <code>keyGenLicenseValidationClass=com.company.product.keygen.Main$NoLicenseValidation</code>
-            and
-            <code>keyMgrLicenseValidationClass=com.company.product.keymgr.Main$NoLicenseValidation</code>
-            to the Basic Configuration example in order to decorate the basic
-            license validation function in the Key Generator and Key Manager
-            modules with the named custom class.
-        </p:documentation>
-    </p:annotation>
-    <p:artifactId>customLicenseValidation</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:keyGenLicenseValidationClass>
-        com.company.product.keygen.Main$NoLicenseValidation
-    </p:keyGenLicenseValidationClass>
-    <p:keyMgrLicenseValidationClass>
-        com.company.product.keymgr.Main$NoLicenseValidation
-    </p:keyMgrLicenseValidationClass>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:documentation>
+        This example adds
+        <code>keyGenLicenseValidationClass=com.company.product.keygen.Main$NoLicenseValidation</code>
+        and
+        <code>keyMgrLicenseValidationClass=com.company.product.keymgr.Main$NoLicenseValidation</code>
+        to the Basic Configuration example in order to decorate the basic
+        license validation function in the Key Generator and Key Manager
+        modules with the named custom class.
+    </p:documentation>
+    <p:list>
+        <p:artifactId>customLicenseValidation</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:keyGenLicenseValidationClass>
+            com.company.product.keygen.Main$NoLicenseValidation
+        </p:keyGenLicenseValidationClass>
+        <p:keyMgrLicenseValidationClass>
+            com.company.product.keymgr.Main$NoLicenseValidation
+        </p:keyMgrLicenseValidationClass>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>

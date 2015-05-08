@@ -38,7 +38,7 @@
                 <xsl:value-of select="."/>
             </xsl:element>
         </xsl:for-each>
-        <xsl:for-each select="p:annotation/p:documentation[lang($lang)]">
+        <xsl:for-each select="p:documentation[lang($lang)]">
             <xsl:element name="div">
                 <xsl:apply-templates select="node()" mode="stripped"/>
             </xsl:element>
@@ -49,7 +49,7 @@
         -DarchetypeGroupId=${project.groupId} \
         -DarchetypeArtifactId=${project.artifactId} \
         -DarchetypeVersion=${project.version}</xsl:text>
-        <xsl:for-each select="*">
+        <xsl:for-each select="p:list/*">
             <xsl:variable name="name" select="local-name()"/>
             <xsl:variable name="value" select="text()"/>
             <xsl:text> \
@@ -91,7 +91,7 @@
             <xsl:copy-of select="@*"/>
             <div class="accordion" id="{ generate-id() }">
                 <xsl:for-each
-                        select="document('../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'Properties']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
+                        select="document('../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
                     <xsl:sort select="@name"/>
                     <xsl:variable name="type">
                         <xsl:call-template name="type">

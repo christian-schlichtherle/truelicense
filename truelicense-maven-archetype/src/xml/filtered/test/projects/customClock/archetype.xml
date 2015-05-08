@@ -8,20 +8,20 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example adds
-            <code>keyMgrClockClass=com.company.product.keymgr.CustomClock</code>
-            to the Basic Configuration example in order to replace the system
-            clock with a custom implementation.
-        </p:documentation>
-    </p:annotation>
-    <p:artifactId>customClock</p:artifactId>
-    <p:companyName>Company Inc.</p:companyName>
-    <p:groupId>com.company.product</p:groupId>
-    <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
-    </p:keyMgrClockClass>
-    <p:licensingSubject>Product 1</p:licensingSubject>
-    <p:password>test1234</p:password>
-    <p:version>1.0-SNAPSHOT</p:version>
+    <p:documentation>
+        This example adds
+        <code>keyMgrClockClass=com.company.product.keymgr.CustomClock</code>
+        to the Basic Configuration example in order to replace the system
+        clock with a custom implementation.
+    </p:documentation>
+    <p:list>
+        <p:artifactId>customClock</p:artifactId>
+        <p:companyName>Company Inc.</p:companyName>
+        <p:groupId>com.company.product</p:groupId>
+        <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
+        </p:keyMgrClockClass>
+        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:password>test1234</p:password>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
 </p:properties>
