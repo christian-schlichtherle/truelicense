@@ -15,12 +15,6 @@
     <xs:import namespace="http://www.w3.org/XML/1998/namespace"
                schemaLocation="http://www.w3.org/2001/xml.xsd"/>
     <xs:element type="p:Properties" name="properties"/>
-    <xs:complexType name="Annotation">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element type="p:Documentation" name="documentation"/>
-        </xs:choice>
-        <xs:attribute ref="xml:lang"/>
-    </xs:complexType>
     <xs:simpleType name="ArtifactId">
         <xs:annotation>
             <xs:documentation>
@@ -79,7 +73,6 @@
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:any processContents="lax"/>
         </xs:sequence>
-        <xs:attribute name="source" type="xs:anyURI"/>
         <xs:attribute ref="xml:lang"/>
         <xs:anyAttribute namespace="##other" processContents="lax"/>
     </xs:complexType>
@@ -697,7 +690,10 @@
     </xs:simpleType>
     <xs:complexType name="Properties">
         <xs:sequence>
-            <xs:element type="p:Annotation" name="annotation" minOccurs="0"/>
+            <!--xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element type="p:Documentation" name="documentation"/>
+            </xs:choice-->
+            <xs:element type="p:Documentation" name="documentation" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="p:List" name="list"/>
         </xs:sequence>
         <xs:attribute type="xs:token" name="name" use="optional"/>

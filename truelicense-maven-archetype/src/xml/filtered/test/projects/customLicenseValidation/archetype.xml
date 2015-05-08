@@ -8,17 +8,15 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example adds
-            <code>keyGenLicenseValidationClass=com.company.product.keygen.Main$NoLicenseValidation</code>
-            and
-            <code>keyMgrLicenseValidationClass=com.company.product.keymgr.Main$NoLicenseValidation</code>
-            to the Basic Configuration example in order to decorate the basic
-            license validation function in the Key Generator and Key Manager
-            modules with the named custom class.
-        </p:documentation>
-    </p:annotation>
+    <p:documentation>
+        This example adds
+        <code>keyGenLicenseValidationClass=com.company.product.keygen.Main$NoLicenseValidation</code>
+        and
+        <code>keyMgrLicenseValidationClass=com.company.product.keymgr.Main$NoLicenseValidation</code>
+        to the Basic Configuration example in order to decorate the basic
+        license validation function in the Key Generator and Key Manager
+        modules with the named custom class.
+    </p:documentation>
     <p:list>
         <p:artifactId>customLicenseValidation</p:artifactId>
         <p:companyName>Company Inc.</p:companyName>

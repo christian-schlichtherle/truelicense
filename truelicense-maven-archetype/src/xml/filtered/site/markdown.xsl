@@ -38,7 +38,7 @@
                 <xsl:value-of select="."/>
             </xsl:element>
         </xsl:for-each>
-        <xsl:for-each select="p:annotation/p:documentation[lang($lang)]">
+        <xsl:for-each select="p:documentation[lang($lang)]">
             <xsl:element name="div">
                 <xsl:apply-templates select="node()" mode="stripped"/>
             </xsl:element>

@@ -8,15 +8,13 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example adds
-            <code>licenseKeyFormat=V1</code>
-            to the Basic Configuration example in order to use the V1
-            license key format and remove the dependency on the Jackson JSON
-            Processor from the generated code.
-        </p:documentation>
-    </p:annotation>
+    <p:documentation>
+        This example adds
+        <code>licenseKeyFormat=V1</code>
+        to the Basic Configuration example in order to use the V1
+        license key format and remove the dependency on the Jackson JSON
+        Processor from the generated code.
+    </p:documentation>
     <p:list>
         <p:artifactId>v1LicenseKeyFormat</p:artifactId>
         <p:companyName>Company Inc.</p:companyName>

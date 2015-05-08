@@ -8,15 +8,13 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example adds
-            <code>licenseKeyFormat=V2/JSON</code>
-            to the Basic Configuration example in order to use the V2/JSON
-            license key format and use the dependency on the Jackson JSON
-            Processor in the generated code.
-        </p:documentation>
-    </p:annotation>
+    <p:documentation>
+        This example adds
+        <code>licenseKeyFormat=V2/JSON</code>
+        to the Basic Configuration example in order to use the V2/JSON
+        license key format and use the dependency on the Jackson JSON
+        Processor in the generated code.
+    </p:documentation>
     <p:list>
         <p:artifactId>v2JsonLicenseKeyFormat</p:artifactId>
         <p:companyName>Company Inc.</p:companyName>

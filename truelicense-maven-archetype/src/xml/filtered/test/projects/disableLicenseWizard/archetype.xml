@@ -8,14 +8,12 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example adds
-            <code>disableLicenseWizard=true</code>
-            to the Basic Configuration example in order to completely remove
-            the license wizard dialog from the generated code.
-        </p:documentation>
-    </p:annotation>
+    <p:documentation>
+        This example adds
+        <code>disableLicenseWizard=true</code>
+        to the Basic Configuration example in order to completely remove
+        the license wizard dialog from the generated code.
+    </p:documentation>
     <p:list>
         <p:artifactId>disableLicenseWizard</p:artifactId>
         <p:companyName>Company Inc.</p:companyName>

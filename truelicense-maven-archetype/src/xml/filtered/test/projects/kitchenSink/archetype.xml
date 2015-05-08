@@ -8,11 +8,9 @@
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
-    <p:annotation>
-        <p:documentation>
-            This example drags in all features which are possible to combine.
-        </p:documentation>
-    </p:annotation>
+    <p:documentation>
+        This example drags in all features which are possible to combine.
+    </p:documentation>
     <p:list>
         <p:artifactId>kitchenSink</p:artifactId>
         <p:artifactName>Kitchen Sink</p:artifactName>
