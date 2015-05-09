@@ -35,13 +35,16 @@ implements Clock,
         LicenseInitialization,
         LicenseSubjectProvider {
 
-    @Obfuscate private static final String DEFAULT_CONSUMER_TYPE = "User";
+    @Obfuscate
+    private static final String DEFAULT_CONSUMER_TYPE = "User";
 
     /** The canonical name prefix for X.500 principals. */
-    @Obfuscate private static final String CN_PREFIX = "CN=";
+    @Obfuscate
+    private static final String CN_PREFIX = "CN=";
 
     /** The message key for the canonical name of an unknown user. */
-    @Obfuscate static final String UNKNOWN = "unknown";
+    @Obfuscate
+    static final String UNKNOWN = "unknown";
 
     private final TrueLicenseManagementContext<?, ?> context;
 
@@ -49,11 +52,14 @@ implements Clock,
         this.context = context;
     }
 
-    @Override public TrueLicenseManagementContext<?, ?> context() { return context; }
+    @Override
+    public TrueLicenseManagementContext<?, ?> context() { return context; }
 
-    @Override public String subject() { return context().subject(); }
+    @Override
+    public String subject() { return context().subject(); }
 
-    @Override public Date now() { return context().now(); }
+    @Override
+    public Date now() { return context().now(); }
 
     /**
      * Initializes undefined properties of the given license bean with default

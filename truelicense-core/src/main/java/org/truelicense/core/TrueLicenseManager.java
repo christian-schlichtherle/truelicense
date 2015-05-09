@@ -223,7 +223,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     final Transformation compression() { return parameters().compression(); }
 
     @Override
-    public final LicenseManagementContext context() {
+    public final LicenseManagementContext<?> context() {
         return parameters().context();
     }
 

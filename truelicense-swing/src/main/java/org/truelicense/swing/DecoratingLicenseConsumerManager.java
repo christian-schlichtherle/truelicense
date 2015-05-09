@@ -26,12 +26,14 @@ implements LicenseConsumerManager {
         this.manager = Objects.requireNonNull(manager);
     }
 
-    @Override public LicenseParameters parameters() {
-        return manager.parameters();
+    @Override
+    public LicenseManagementContext<?> context() {
+        return manager.context();
     }
 
-    @Override public LicenseManagementContext context() {
-        return manager.context();
+    @Override
+    public LicenseParameters parameters() {
+        return manager.parameters();
     }
 
     @Override
@@ -39,15 +41,18 @@ implements LicenseConsumerManager {
         manager.install(source);
     }
 
-    @Override public License view() throws LicenseManagementException {
+    @Override
+    public License view() throws LicenseManagementException {
         return manager.view();
     }
 
-    @Override public void verify() throws LicenseManagementException {
+    @Override
+    public void verify() throws LicenseManagementException {
         manager.verify();
     }
 
-    @Override public void uninstall() throws LicenseManagementException {
+    @Override
+    public void uninstall() throws LicenseManagementException {
         manager.uninstall();
     }
 }
