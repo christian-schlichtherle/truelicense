@@ -77,7 +77,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
         @Override
         LicenseVendorManager newManager() {
-            return _context.manager()
+            return _context.vendor()
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
@@ -130,7 +130,7 @@ public enum LicenseManager implements LicenseVendorManager {
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final LicenseVendorContext<ObfuscatedString> _context =
+    private static final LicenseManagementContext<ObfuscatedString> _context =
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyGenLicenseAuthorizationClass != "-")
 
@@ -172,7 +172,7 @@ public enum LicenseManager implements LicenseVendorManager {
                     };
                 }
 #end
-            }.vendor();
+            };
 
     private volatile LicenseVendorManager _manager;
 
@@ -190,7 +190,7 @@ public enum LicenseManager implements LicenseVendorManager {
     }
 
     @Override
-    public LicenseApplicationContext context() {
+    public LicenseManagementContext context() {
         assert _context == manager().context();
         return _context;
     }

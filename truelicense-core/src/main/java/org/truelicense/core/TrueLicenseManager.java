@@ -31,10 +31,10 @@ import java.util.concurrent.Callable;
 class TrueLicenseManager<Model>
 implements LicenseConsumerManager, LicenseVendorManager {
 
-    private final TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters;
+    private final TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters;
 
     TrueLicenseManager(
-            final TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters) {
+            final TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters) {
         this.parameters = parameters;
     }
 
@@ -223,7 +223,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     final Transformation compression() { return parameters().compression(); }
 
     @Override
-    public final LicenseApplicationContext context() {
+    public final LicenseManagementContext context() {
         return parameters().context();
     }
 
@@ -234,7 +234,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     }
 
     @Override
-    public final TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters() {
+    public final TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters() {
         return parameters;
     }
 

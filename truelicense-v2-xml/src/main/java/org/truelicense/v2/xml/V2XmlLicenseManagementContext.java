@@ -6,8 +6,6 @@
 package org.truelicense.v2.xml;
 
 import org.truelicense.api.License;
-import org.truelicense.api.LicenseConsumerContext;
-import org.truelicense.api.LicenseVendorContext;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.V2LicenseManagementContext;
@@ -22,35 +20,8 @@ import javax.xml.bind.JAXBException;
  * The root context for the management of Version-2-with-XML (V2/XML) format
  * license keys.
  * Note that there is no compatibility between different format license keys.
+ * <p>
  * This class is immutable.
- * <p>
- * Use this context to create a {@link LicenseVendorContext} or a
- * {@link LicenseConsumerContext}.
- * Here's an example for verifying the installed license key in a consumer
- * application:
- * <pre><code>
- * LicenseConsumerManager manager = new V2XmlLicenseManagementContext("MyApp 1")
- *         .consumer()
- *         .manager()
- *         ...
- *         .build();
- * manager.verify();
- * </code></pre>
- * <p>
- * DO NOT COPY-PASTE THIS CODE!
- * Instead, use the TrueLicense Maven Archetype to generate a sample project
- * for you.
- * <p>
- * Where required, you should subclass this class to customize its properties,
- * e.g. its {@linkplain #codec encoding}, {@linkplain #now clock},
- * {@linkplain #classLoader optional class loader} etc.
- * <p>
- * Note that this class is immutable.
- * Unless stated otherwise, all no-argument methods need to return consistent
- * objects so that caching them is not required.
- * A returned object is considered to be consistent if it compares
- * {@linkplain Object#equals(Object) equal} or at least behaves identical to
- * any previously returned object.
  *
  * @author Christian Schlichtherle
  */

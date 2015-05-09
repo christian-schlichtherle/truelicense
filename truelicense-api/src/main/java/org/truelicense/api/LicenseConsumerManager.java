@@ -17,7 +17,7 @@ import org.truelicense.api.misc.ContextProvider;
  * This interface lacks a method to preview the license bean which is encoded
  * in a license key.
  * However, you can work around this constraint by using a
- * {@linkplain LicenseConsumerContext license consumer context}
+ * {@linkplain LicenseManagementContext license management context}
  * to configure a license consumer manager which uses a transient
  * {@link org.truelicense.api.io.BIOS#memoryStore()} instead of a persistent
  * store - see {@link LicenseConsumerManagerBuilder#storeIn}.
@@ -28,7 +28,7 @@ import org.truelicense.api.misc.ContextProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseConsumerManager
-extends ContextProvider<LicenseApplicationContext>,
+extends ContextProvider<LicenseManagementContext>,
         LicenseParametersProvider {
 
     /**

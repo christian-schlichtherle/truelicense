@@ -24,13 +24,11 @@ trait TestContext[Model <: AnyRef]
   with PasswordProtectionProvider[ObfuscatedString]
   with RepositoryContextProvider[Model] {
 
-  final lazy val consumerContext = managementContext.consumer
-
-  override final def codec = vendorContext.codec
-
   def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
 
   def chainedVendorManager: LicenseVendorManager
+
+  override final def codec = managementContext.codec
 
   final def consumerManager(): LicenseConsumerManager = consumerManager(store)
 
@@ -60,7 +58,7 @@ trait TestContext[Model <: AnyRef]
   def license = {
     val now = new Date
     val me = new X500Principal("CN=Christian Schlichtherle")
-    val license = vendorContext.license
+    val license = managementContext.license
     import license._
     setSubject("subject")
     setHolder(me)
@@ -79,11 +77,9 @@ trait TestContext[Model <: AnyRef]
 
   override final def repositoryContext = managementContext.repositoryContext
 
-  def store = vendorContext.memoryStore
+  def store = managementContext.memoryStore
 
   def transformation: Transformation = IdentityTransformation
-
-  final lazy val vendorContext = managementContext.vendor
 
   def vendorManager: LicenseVendorManager
 }

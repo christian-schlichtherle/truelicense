@@ -94,7 +94,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
         @Override
         LicenseConsumerManager newManager() {
-            return _context.manager()
+            return _context.consumer()
 #if($editionPbePassword != $parentEditionPbePassword)
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
@@ -150,7 +150,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
         @Override
         LicenseConsumerManager newManager() {
-            return _context.manager()
+            return _context.consumer()
                     .ftpDays($freeTrialPeriod)
                     .keyStore()
                         .alias($ftpKeyEntryAlias)
@@ -195,7 +195,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final LicenseConsumerContext<ObfuscatedString> _context =
+    private static final LicenseManagementContext<ObfuscatedString> _context =
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyMgrClockClass != "-")
 
@@ -229,7 +229,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                     };
                 }
 #end
-            }.consumer();
+            };
 
     private volatile LicenseConsumerManager _manager;
 
@@ -279,7 +279,7 @@ public enum LicenseManager implements LicenseConsumerManager {
     }
 
     @Override
-    public LicenseApplicationContext context() {
+    public LicenseManagementContext context() {
         assert _context == manager().context();
         return _context;
     }

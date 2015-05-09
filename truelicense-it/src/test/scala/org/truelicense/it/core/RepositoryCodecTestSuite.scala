@@ -12,7 +12,7 @@ extends CodecTestSuite
 
   override def artifact = {
     val l = license
-    val c = vendorContext.codec
+    val c = managementContext.codec
     val p = vendorManager.parameters
     val a = p.authentication
     val rx = repositoryContext

@@ -39,7 +39,7 @@ extends WordSpec { this: TestContext[_] =>
 
       val generated = {
         val vm = vendorManager
-        val generated = (vm generator vendorContext.license writeTo vs).license()
+        val generated = (vm generator managementContext.license writeTo vs).license()
         check(generated)
         generated
       }
@@ -110,7 +110,7 @@ extends WordSpec { this: TestContext[_] =>
       ;{
         val generated = {
           val vm = vendorManager
-          val generated = (vm generator vendorContext.license writeTo vs).license()
+          val generated = (vm generator managementContext.license writeTo vs).license()
           check(generated)
           generated
         }
@@ -131,7 +131,7 @@ extends WordSpec { this: TestContext[_] =>
       ;{
         val generated = {
           val vm = chainedVendorManager
-          val generated = (vm generator vendorContext.license writeTo vs).license()
+          val generated = (vm generator managementContext.license writeTo vs).license()
           check(generated)
           generated
         }

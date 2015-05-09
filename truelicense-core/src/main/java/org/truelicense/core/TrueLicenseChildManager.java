@@ -27,7 +27,7 @@ extends TrueLicenseCachingManager<Model> {
     private volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 
     TrueLicenseChildManager(
-            TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters) {
+            TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters) {
         super(parameters);
     }
 

@@ -10,13 +10,13 @@ import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v2.commons.V2TestContext.prefix
-import org.truelicense.v2.commons.auth.{V2RepositoryContext, V2RepositoryModel}
+import org.truelicense.v2.commons.auth.V2RepositoryModel
 
 /** @author Christian Schlichtherle */
 trait V2TestContext extends TestContext[V2RepositoryModel] {
 
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = managementContext.consumer
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jceks")
@@ -25,12 +25,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .parent(parent)
       .storeIn(store)
       .build
-    require(cm.context eq consumerContext)
+    require(cm.context eq managementContext)
     cm
   }
 
   override final def chainedVendorManager = {
-    val vm = vendorContext.manager
+    val vm = managementContext.vendor
       .encryption
         .password(test1234)
         .inject
@@ -40,12 +40,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
         .storePassword(test1234)
         .inject
       .build
-    require(vm.context eq vendorContext)
+    require(vm.context eq managementContext)
     vm
   }
 
   override final def consumerManager(store: Store) = {
-    val cm = consumerContext.manager
+    val cm = managementContext.consumer
       .encryption
         .password(test1234)
         .inject
@@ -56,12 +56,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
         .inject
       .storeIn(store)
       .build
-    require(cm.context eq consumerContext)
+    require(cm.context eq managementContext)
     cm
   }
 
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = managementContext.consumer
       .ftpDays(1)
       .keyStore
         .alias("mykey")
@@ -71,12 +71,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .parent(parent)
       .storeIn(store)
       .build
-    require(cm.context eq consumerContext)
+    require(cm.context eq managementContext)
     cm
   }
 
   override final def vendorManager = {
-    val vm = vendorContext.manager
+    val vm = managementContext.vendor
       .encryption
         .password(test1234)
         .inject
@@ -86,7 +86,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
         .storePassword(test1234)
         .inject
       .build
-    require(vm.context eq vendorContext)
+    require(vm.context eq managementContext)
     vm
   }
 }

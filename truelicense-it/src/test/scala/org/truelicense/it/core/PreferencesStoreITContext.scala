@@ -7,5 +7,5 @@ package org.truelicense.it.core
 
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext[_] =>
-  override final def store = vendorContext userPreferencesStore getClass
+  override final def store = managementContext userPreferencesStore getClass
 }

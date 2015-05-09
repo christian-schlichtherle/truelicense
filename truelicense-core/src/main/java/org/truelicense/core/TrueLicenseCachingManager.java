@@ -35,7 +35,7 @@ extends TrueLicenseManager<Model> {
     private volatile Cache<Source, License> cachedLicense = new Cache<>();
 
     TrueLicenseCachingManager(
-            TrueLicenseApplicationContext<Model, ?>.TrueLicenseParameters parameters) {
+            TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters) {
         super(parameters);
     }
 

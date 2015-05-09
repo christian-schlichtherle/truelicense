@@ -5,10 +5,10 @@
 
 package org.truelicense.it.jax.rs
 
-import org.truelicense.it.core.TestContext
-import org.truelicense.jax.rs.{LicenseConsumerService, LicenseConsumerServiceException}
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
+import org.truelicense.it.core.TestContext
+import org.truelicense.jax.rs.{LicenseConsumerService, LicenseConsumerServiceException}
 
 /** @author Christian Schlichtherle */
 abstract class LicenseConsumerServiceTestSuite
@@ -16,21 +16,21 @@ extends WordSpec { this: TestContext[_] =>
 
   "A license consumer service" when {
     "using a license consumer manager" when {
-      lazy val manager = consumerManager
+      lazy val manager = consumerManager // TODO: Why lazy val?
       lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
       lazy val service = new LicenseConsumerService(manager)
 
       "no license key is installed" should {
         "return its subject" in {
-          service.subject should be (consumerContext.subject)
+          service.subject should be (managementContext.subject)
         }
 
         "return its subject encoded as JSON" in {
-          service.subjectAsJson should be ('"' + consumerContext.subject + '"')
+          service.subjectAsJson should be ('"' + managementContext.subject + '"')
         }
 
         "return its subject encoded as XML" in {
-          service.subjectAsXml.getValue should be (consumerContext.subject)
+          service.subjectAsXml.getValue should be (managementContext.subject)
         }
 
         "fail to view the license key in" in {

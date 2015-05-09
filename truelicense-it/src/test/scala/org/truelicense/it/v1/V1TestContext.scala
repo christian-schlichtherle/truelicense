@@ -18,7 +18,7 @@ import org.truelicense.v1.V1LicenseManagementContext
 trait V1TestContext extends TestContext[GenericCertificate] {
 
   override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = managementContext.consumer
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jks")
@@ -27,12 +27,12 @@ trait V1TestContext extends TestContext[GenericCertificate] {
       .parent(parent)
       .storeIn(store)
       .build
-    require(cm.context eq consumerContext)
+    require(cm.context eq managementContext)
     cm
   }
 
   override final def chainedVendorManager = {
-    val vm = vendorContext.manager
+    val vm = managementContext.vendor
       .encryption
         .password(test1234)
         .inject
@@ -42,12 +42,12 @@ trait V1TestContext extends TestContext[GenericCertificate] {
         .storePassword(test1234)
         .inject
       .build
-    require(vm.context eq vendorContext)
+    require(vm.context eq managementContext)
     vm
   }
 
   override final def consumerManager(store: Store) = {
-    val cm = consumerContext.manager
+    val cm = managementContext.consumer
       .encryption
         .password(test1234)
         .inject
@@ -58,12 +58,12 @@ trait V1TestContext extends TestContext[GenericCertificate] {
         .inject
       .storeIn(store)
       .build
-    require(cm.context eq consumerContext)
+    require(cm.context eq managementContext)
     cm
   }
 
   override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
-    val cm = consumerContext.manager
+    val cm = managementContext.consumer
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jks")
@@ -73,7 +73,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
       .storeIn(store)
       .ftpDays(1)
       .build
-    require(cm.context eq consumerContext)
+    require(cm.context eq managementContext)
     cm
   }
 
@@ -103,7 +103,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     }
 
   override final def vendorManager = {
-    val vm = vendorContext.manager
+    val vm = managementContext.vendor
       .encryption
         .password(test1234)
         .inject
@@ -113,7 +113,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
         .storePassword(test1234)
         .inject
       .build
-    require(vm.context eq vendorContext)
+    require(vm.context eq managementContext)
     vm
   }
 }

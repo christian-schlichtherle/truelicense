@@ -43,7 +43,7 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext[_] =>
   }
 
   def assertSubject() {
-    val subject = consumerContext.subject
+    val subject = managementContext.subject
     subjectAs(TEXT_PLAIN_TYPE) should be (subject)
     subjectAs(APPLICATION_JSON_TYPE) should be ('"' + subject + '"')
     subjectAs(APPLICATION_XML_TYPE) should

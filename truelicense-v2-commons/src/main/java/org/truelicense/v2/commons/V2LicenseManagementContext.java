@@ -18,6 +18,7 @@ import org.truelicense.v2.commons.crypto.V2Encryption;
 
 /**
  * The root context for the management of V2 format license keys.
+ * <p>
  * This class is immutable.
  *
  * @author Christian Schlichtherle

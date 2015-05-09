@@ -12,6 +12,6 @@ trait PathStoreITContext { this: TestContext[_] =>
   override final def store = {
     val path = Files.createTempFile("truelicense", ".tmp")
     Files delete path
-    vendorContext.pathStore(path)
+    managementContext.pathStore(path)
   }
 }
