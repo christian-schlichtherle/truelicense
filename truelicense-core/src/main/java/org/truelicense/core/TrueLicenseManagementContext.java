@@ -18,6 +18,8 @@ import org.truelicense.api.io.*;
 import org.truelicense.api.misc.*;
 import org.truelicense.api.passwd.*;
 import org.truelicense.core.auth.Notary;
+import org.truelicense.core.passwd.Passwords;
+import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.io.StandardBIOS;
 import org.truelicense.spi.misc.Option;
 
@@ -41,11 +43,10 @@ import static java.util.Calendar.getInstance;
  * any previously returned object.
  *
  * @param <Model> the type of the repository model.
- * @param <PasswordSpecification> the type of the password specification.
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-public abstract class TrueLicenseManagementContext<Model, PasswordSpecification>
+public abstract class TrueLicenseManagementContext<Model>
 implements BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
@@ -55,11 +56,11 @@ implements BiosProvider,
         LicenseManagementAuthorizationProvider,
         LicenseFactory,
         LicenseInitializationProvider,
-        LicenseManagementContext<PasswordSpecification>,
+        LicenseManagementContext<ObfuscatedString>,
         LicenseSubjectProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
-        PasswordProtectionProvider<PasswordSpecification>,
+        PasswordProtectionProvider<ObfuscatedString>,
         RepositoryContextProvider<Model> {
 
     private final String subject;
@@ -111,7 +112,7 @@ implements BiosProvider,
     public long cachePeriodMillis() { return 30 * 60 * 1000; }
 
     final PasswordProtection checkedProtection(
-            final PasswordSpecification password) {
+            final ObfuscatedString password) {
         return new PasswordProtection() {
 
             @Override
@@ -136,7 +137,7 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseConsumerManagerBuilder<PasswordSpecification> consumer() {
+    public LicenseConsumerManagerBuilder<ObfuscatedString> consumer() {
         return new TrueLicenseConsumerManagerBuilder();
     }
 
@@ -167,10 +168,10 @@ implements BiosProvider,
     final Authentication ksba(
             List<String> algorithm,
             String alias,
-            List<PasswordSpecification> keyPassword,
+            List<ObfuscatedString> keyPassword,
             List<Source> source,
             List<String> storeType,
-            PasswordSpecification storePassword) {
+            ObfuscatedString storePassword) {
         return authentication(ksbaParameters(
                 algorithm, alias, keyPassword,
                 source, storePassword, storeType));
@@ -179,22 +180,22 @@ implements BiosProvider,
     private KeyStoreParameters ksbaParameters(
             final List<String> algorithm,
             final String alias,
-            final List<PasswordSpecification> keyPassword,
+            final List<ObfuscatedString> keyPassword,
             final List<Source> source,
-            final PasswordSpecification storePassword,
+            final ObfuscatedString storePassword,
             final List<String> storeType) {
         return new KeyStoreParameters() {
 
             @Override
             public String alias() { return alias; }
 
-            final TrueLicenseManagementContext<Model, PasswordSpecification> context() {
+            final TrueLicenseManagementContext<Model> context() {
                 return TrueLicenseManagementContext.this;
             }
 
             @Override
             public PasswordProtection keyProtection() {
-                for (PasswordSpecification kp : keyPassword)
+                for (ObfuscatedString kp : keyPassword)
                     return context().checkedProtection(kp);
                 return context().checkedProtection(storePassword);
             }
@@ -236,7 +237,7 @@ implements BiosProvider,
 
     final Transformation pbe(
             List<String> algorithm,
-            PasswordSpecification password) {
+            ObfuscatedString password) {
         return encryption(pbeParameters(algorithm, password));
     }
 
@@ -252,7 +253,7 @@ implements BiosProvider,
 
     private PbeParameters pbeParameters(
             final List<String> algorithm,
-            final PasswordSpecification password) {
+            final ObfuscatedString password) {
         return new PbeParameters() {
 
             @Override
@@ -262,7 +263,7 @@ implements BiosProvider,
                 return context().pbeAlgorithm();
             }
 
-            final TrueLicenseManagementContext<Model, PasswordSpecification> context() {
+            final TrueLicenseManagementContext<Model> context() {
                 return TrueLicenseManagementContext.this;
             }
 
@@ -271,6 +272,27 @@ implements BiosProvider,
                 return context().checkedProtection(password);
             }
         };
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link TrueLicenseManagementContext}
+     * returns {@link Passwords#newPasswordPolicy()}.
+     */
+    @Override
+    public PasswordPolicy policy() { return Passwords.newPasswordPolicy(); }
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The implementation in the class {@link TrueLicenseManagementContext}
+     * returns
+     * {@link Passwords#newPasswordProtection(ObfuscatedString) Passwords.newPasswordProtecetion(os)}.
+     */
+    @Override
+    public PasswordProtection protection(ObfuscatedString os) {
+        return Passwords.newPasswordProtection(os);
     }
 
     @Override
@@ -327,13 +349,13 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseVendorManagerBuilder<PasswordSpecification> vendor() {
+    public LicenseVendorManagerBuilder<ObfuscatedString> vendor() {
         return new TrueLicenseVendorManagerBuilder();
     }
 
     class TrueLicenseConsumerManagerBuilder
     extends TrueLicenseManagerBuilder<TrueLicenseConsumerManagerBuilder>
-    implements LicenseConsumerManagerBuilder<PasswordSpecification> {
+    implements LicenseConsumerManagerBuilder<ObfuscatedString> {
 
         @Override
         public LicenseConsumerManager build() {
@@ -366,7 +388,7 @@ implements BiosProvider,
 
     final class TrueLicenseVendorManagerBuilder
     extends TrueLicenseManagerBuilder<TrueLicenseVendorManagerBuilder>
-    implements LicenseVendorManagerBuilder<PasswordSpecification> {
+    implements LicenseVendorManagerBuilder<ObfuscatedString> {
 
         @Override
         public LicenseVendorManager build() {
@@ -377,7 +399,7 @@ implements BiosProvider,
 
     @SuppressWarnings("unchecked")
     abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>>
-    implements ContextProvider<TrueLicenseManagementContext<Model, PasswordSpecification>> {
+    implements ContextProvider<TrueLicenseManagementContext<Model>> {
 
         List<Authentication> authentication = Option.none();
         List<Transformation> encryption = Option.none();
@@ -391,7 +413,7 @@ implements BiosProvider,
         }
 
         @Override
-        public final TrueLicenseManagementContext<Model, PasswordSpecification> context() {
+        public final TrueLicenseManagementContext<Model> context() {
             return TrueLicenseManagementContext.this;
         }
 
@@ -433,13 +455,13 @@ implements BiosProvider,
 
         final class KsbaBuilder
         implements Builder<Authentication>,
-                KsbaInjection<PasswordSpecification, This> {
+                KsbaInjection<ObfuscatedString, This> {
 
             List<String> algorithm = Option.none();
             List<String> alias = Option.none();
-            List<PasswordSpecification> keyPassword = Option.none();
+            List<ObfuscatedString> keyPassword = Option.none();
             List<Source> source = Option.none();
-            List<PasswordSpecification> storePassword = Option.none();
+            List<ObfuscatedString> storePassword = Option.none();
             List<String> storeType = Option.none();
 
             @Override
@@ -463,7 +485,7 @@ implements BiosProvider,
             }
 
             @Override
-            public KsbaBuilder keyPassword(final PasswordSpecification keyPassword) {
+            public KsbaBuilder keyPassword(final ObfuscatedString keyPassword) {
                 this.keyPassword = Option.wrap(keyPassword);
                 return this;
             }
@@ -480,7 +502,7 @@ implements BiosProvider,
             }
 
             @Override
-            public KsbaBuilder storePassword(final PasswordSpecification storePassword) {
+            public KsbaBuilder storePassword(final ObfuscatedString storePassword) {
                 this.storePassword = Option.wrap(storePassword);
                 return this;
             }
@@ -494,10 +516,10 @@ implements BiosProvider,
 
         final class PbeBuilder
         implements Builder<Transformation>,
-                PbeInjection<PasswordSpecification, This> {
+                PbeInjection<ObfuscatedString, This> {
 
             List<String> algorithm = Option.none();
-            List<PasswordSpecification> password = Option.none();
+            List<ObfuscatedString> password = Option.none();
 
             @Override
             public This inject() { return encryption(build()); }
@@ -514,7 +536,7 @@ implements BiosProvider,
             }
 
             @Override
-            public PbeBuilder password(final PasswordSpecification password) {
+            public PbeBuilder password(final ObfuscatedString password) {
                 this.password = Option.wrap(password);
                 return this;
             }
@@ -527,7 +549,7 @@ implements BiosProvider,
             CachePeriodProvider,
             CodecProvider,
             CompressionProvider,
-            ContextProvider<TrueLicenseManagementContext<Model, PasswordSpecification>>,
+            ContextProvider<TrueLicenseManagementContext<Model>>,
             LicenseManagementAuthorizationProvider,
             LicenseFactory,
             LicenseInitializationProvider,
@@ -568,7 +590,7 @@ implements BiosProvider,
         public final Transformation compression() { return context().compression(); }
 
         @Override
-        public TrueLicenseManagementContext<Model, PasswordSpecification> context() {
+        public TrueLicenseManagementContext<Model> context() {
             return TrueLicenseManagementContext.this;
         }
 
