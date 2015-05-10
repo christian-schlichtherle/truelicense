@@ -219,6 +219,7 @@ public enum LicenseManager implements LicenseConsumerManager {
                     return new LicenseValidation() {
                         final LicenseValidation custom = #new($keyMgrLicenseValidationClass "LicenseValidation");
 
+                        @Override
                         public void validate(final License bean) throws LicenseValidationException {
                             custom.validate(bean);
 #if($keyMgrLicenseValidationFunction != "override")
