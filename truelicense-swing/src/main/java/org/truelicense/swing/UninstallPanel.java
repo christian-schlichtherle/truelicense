@@ -26,7 +26,7 @@ final class UninstallPanel extends LicenseWorkerPanel {
 
     private final LicenseConsumerManager manager;
 
-    UninstallPanel(final LicenseWizard wizard) {
+    UninstallPanel(final LicenseManagementWizard wizard) {
         super(wizard);
         final Enabler uninstallButtonProxy = new ComponentEnabler() {
             static final long serialVersionUID = 0L;

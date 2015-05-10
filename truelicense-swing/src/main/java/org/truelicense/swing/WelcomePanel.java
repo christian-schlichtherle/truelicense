@@ -23,7 +23,7 @@ final class WelcomePanel extends LicensePanel {
 
     private static final long serialVersionUID = 1L;
 
-    WelcomePanel(final LicenseWizard wizard) {
+    WelcomePanel(final LicenseManagementWizard wizard) {
         super(wizard);
         initComponents();
         uninstallButton.setVisible(false);

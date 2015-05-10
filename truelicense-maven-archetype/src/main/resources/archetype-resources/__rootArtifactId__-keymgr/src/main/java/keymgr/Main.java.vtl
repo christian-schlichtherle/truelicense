@@ -13,7 +13,7 @@ import java.util.*;
 import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
 #if($disableLicenseWizard == false)
-import org.truelicense.swing.LicenseWizard;
+import org.truelicense.swing.LicenseManagementWizard;
 import javax.swing.*;
 #end
 
@@ -78,7 +78,7 @@ public enum Main {
                     } catch (Exception ex) {
                         throw new AssertionError(ex);
                     }
-                    final LicenseWizard wizard = new LicenseWizard(manager());
+                    final LicenseManagementWizard wizard = new LicenseManagementWizard(manager());
 #if($hideUninstallAction == false)
                     wizard.setUninstallButtonVisible(true);
 #end

@@ -30,7 +30,7 @@ final class InstallPanel extends LicenseWorkerPanel {
 
     private final LicenseConsumerManager manager;
 
-    InstallPanel(final LicenseWizard wizard) {
+    InstallPanel(final LicenseManagementWizard wizard) {
         super(wizard);
         final Enabler installButtonProxy = new ComponentEnabler() {
             static final long serialVersionUID = 0L;

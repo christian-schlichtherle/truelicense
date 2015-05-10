@@ -28,7 +28,7 @@ abstract class LicenseWorkerPanel extends LicensePanel {
         @Override public String toString(Locale locale) { return ""; }
     };
 
-    LicenseWorkerPanel(LicenseWizard wizard) { super(wizard); }
+    LicenseWorkerPanel(LicenseManagementWizard wizard) { super(wizard); }
 
     abstract void setStatusMessage(Message message);
 

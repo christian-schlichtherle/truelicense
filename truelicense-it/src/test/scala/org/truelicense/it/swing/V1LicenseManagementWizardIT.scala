@@ -7,10 +7,10 @@ package org.truelicense.it.swing
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.truelicense.it.v2.xml.V2XmlTestContext
+import org.truelicense.it.v1.V1TestContext
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
-class V2XmlLicenseWizardIT
-  extends LicenseWizardITSuite
-  with V2XmlTestContext
+class V1LicenseManagementWizardIT
+  extends LicenseManagementWizardITSuite
+  with V1TestContext

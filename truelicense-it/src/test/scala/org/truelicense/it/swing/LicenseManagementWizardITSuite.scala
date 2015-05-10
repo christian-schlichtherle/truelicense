@@ -16,7 +16,7 @@ import org.scalatest.Matchers._
 import org.scalatest._
 import org.truelicense.api._
 import org.truelicense.it.core.TestContext
-import org.truelicense.it.swing.LicenseWizardITSuite._
+import org.truelicense.it.swing.LicenseManagementWizardITSuite._
 import org.truelicense.spi.io.MemoryStore
 import org.truelicense.swing._
 import org.truelicense.ui.LicenseWizardMessage
@@ -24,7 +24,7 @@ import org.truelicense.ui.LicenseWizardMessage._
 import org.truelicense.ui.wizard.WizardMessage._
 
 /** @author Christian Schlichtherle */
-abstract class LicenseWizardITSuite
+abstract class LicenseManagementWizardITSuite
   extends WordSpec
   with BeforeAndAfter
 { this: TestContext[_] =>
@@ -32,7 +32,7 @@ abstract class LicenseWizardITSuite
   val laf = UIManager.getLookAndFeel
   var outputLicense: License = _
   var manager: LicenseConsumerManager = _
-  var wizard: LicenseWizard = _
+  var wizard: LicenseManagementWizard = _
   var dialog: JDialogOperator = _
   var cancelButton, backButton, nextButton: AbstractButtonOperator = _
 
@@ -46,7 +46,7 @@ abstract class LicenseWizardITSuite
     EventQueue invokeLater new Runnable {
       override def run() {
         UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
-        wizard = newLicenseWizard(manager)
+        wizard = newLicenseManagementWizard(manager)
         wizard.showModalDialog
       }
     }
@@ -69,7 +69,7 @@ abstract class LicenseWizardITSuite
   after {
     cancelButton doClick ()
     dialog.isVisible should equal (false)
-    wizard.getReturnCode should be (LicenseWizard.CANCEL_RETURN_CODE)
+    wizard.getReturnCode should be (LicenseManagementWizard.CANCEL_RETURN_CODE)
     UIManager setLookAndFeel laf
   }
 
@@ -191,10 +191,10 @@ abstract class LicenseWizardITSuite
 }
 
 /** @author Christian Schlichtherle */
-object LicenseWizardITSuite {
+object LicenseManagementWizardITSuite {
 
-  private def newLicenseWizard(manager: LicenseConsumerManager) = {
-    val wizard = new LicenseWizard(manager)
+  private def newLicenseManagementWizard(manager: LicenseConsumerManager) = {
+    val wizard = new LicenseManagementWizard(manager)
     wizard.isUninstallButtonVisible should equal (false)
     wizard.setUninstallButtonVisible(true)
     wizard.isUninstallButtonVisible should equal (true)

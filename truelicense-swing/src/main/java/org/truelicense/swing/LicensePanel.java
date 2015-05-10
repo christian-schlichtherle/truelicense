@@ -24,13 +24,13 @@ abstract class LicensePanel
 extends JPanel
 implements WizardView<LicenseWizardState> {
 
-    private final LicenseWizard wizard;
+    private final LicenseManagementWizard wizard;
 
-    LicensePanel(final LicenseWizard wizard) {
+    LicensePanel(final LicenseManagementWizard wizard) {
         this.wizard = Objects.requireNonNull(wizard);
     }
 
-    final LicenseWizard wizard() { return wizard; }
+    final LicenseManagementWizard wizard() { return wizard; }
 
     LicenseConsumerManager manager() { return wizard().manager(); }
 

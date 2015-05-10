@@ -24,7 +24,7 @@ import static org.truelicense.ui.LicenseWizardState.*;
  *
  * @author Christian Schlichtherle
  */
-public final class LicenseWizard {
+public final class LicenseManagementWizard {
 
     /** Indicates that the "Finish" component was pressed to close the dialog. */
     public static final int FINISH_RETURN_CODE =
@@ -42,7 +42,7 @@ public final class LicenseWizard {
      *
      * @param manager the license consumer manager.
      */
-    public LicenseWizard(LicenseConsumerManager manager) {
+    public LicenseManagementWizard(LicenseConsumerManager manager) {
         this(manager, (Frame) null);
     }
 
@@ -52,7 +52,7 @@ public final class LicenseWizard {
      * @param manager the license consumer manager.
      * @param owner the owner dialog.
      */
-    public LicenseWizard(
+    public LicenseManagementWizard(
             LicenseConsumerManager manager,
             Dialog owner) {
         this(new EnhancedDialog(owner), manager);
@@ -64,14 +64,14 @@ public final class LicenseWizard {
      * @param manager the license consumer manager.
      * @param owner the owner frame.
      */
-    public LicenseWizard(
+    public LicenseManagementWizard(
             LicenseConsumerManager manager,
             Frame owner) {
         this(new EnhancedDialog(owner), manager);
     }
 
     @SuppressWarnings("LeakingThisInConstructor")
-    private LicenseWizard(
+    private LicenseManagementWizard(
             final EnhancedDialog dialog,
             final LicenseConsumerManager manager) {
         dialog.setTitle(LicenseWizardMessage.wizard_title
@@ -136,7 +136,7 @@ public final class LicenseWizard {
             return super.nextButtonProxy();
         }
 
-        void setupPanels(final LicenseWizard wizard) {
+        void setupPanels(final LicenseManagementWizard wizard) {
             view(welcome, new WelcomePanel(wizard));
             view(install, new InstallPanel(wizard));
             view(display, new DisplayPanel(wizard));

@@ -22,7 +22,7 @@ final class DisplayPanel extends LicensePanel {
 
     private License license;
 
-    DisplayPanel(final LicenseWizard wizard) {
+    DisplayPanel(final LicenseManagementWizard wizard) {
         super(wizard);
         initComponents();
     }
