@@ -22,7 +22,7 @@ This page shows some example configurations which you can use when
 
 <a href="../../test/projects/disableLicenseWizard/archetype.xml" class="maven-command"/>
 
-<a href="../../test/projects/customLicenseAuthorization/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/customLicenseManagementAuthorization/archetype.xml" class="maven-command"/>
 
 <a href="../../test/projects/customLicenseValidation/archetype.xml" class="maven-command"/>
 

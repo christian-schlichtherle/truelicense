@@ -5,7 +5,7 @@
 
 package org.truelicense.core;
 
-import org.truelicense.api.LicenseAuthorization;
+import org.truelicense.api.LicenseManagementAuthorization;
 import org.truelicense.api.LicenseManagementSchema;
 
 /**
@@ -14,7 +14,7 @@ import org.truelicense.api.LicenseManagementSchema;
  *
  * @author Christian Schlichtherle
  */
-public final class TrueLicenseAuthorization implements LicenseAuthorization {
+public final class TrueLicenseManagementAuthorization implements LicenseManagementAuthorization {
     @Override public void clearGenerator(LicenseManagementSchema schema) { }
     @Override public void clearInstall(LicenseManagementSchema schema) { }
     @Override public void clearVerify(LicenseManagementSchema schema) { }

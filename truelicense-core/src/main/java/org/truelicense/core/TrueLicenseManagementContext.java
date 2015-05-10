@@ -52,7 +52,7 @@ implements BiosProvider,
         Clock,
         CodecProvider,
         CompressionProvider,
-        LicenseAuthorizationProvider,
+        LicenseManagementAuthorizationProvider,
         LicenseFactory,
         LicenseInitializationProvider,
         LicenseManagementContext<PasswordSpecification>,
@@ -87,8 +87,8 @@ implements BiosProvider,
      * returns an authorization which clears all operation requests.
      */
     @Override
-    public LicenseAuthorization authorization() {
-        return new TrueLicenseAuthorization();
+    public LicenseManagementAuthorization authorization() {
+        return new TrueLicenseManagementAuthorization();
     }
 
     /**
@@ -526,7 +526,7 @@ implements BiosProvider,
             CodecProvider,
             CompressionProvider,
             ContextProvider<TrueLicenseManagementContext<Model, PasswordSpecification>>,
-            LicenseAuthorizationProvider,
+            LicenseManagementAuthorizationProvider,
             LicenseFactory,
             LicenseInitializationProvider,
             LicenseManagementParameters,
@@ -551,7 +551,7 @@ implements BiosProvider,
         public Authentication authentication() { return authentication.get(0); }
 
         @Override
-        public final LicenseAuthorization authorization() { return context().authorization(); }
+        public final LicenseManagementAuthorization authorization() { return context().authorization(); }
 
         @Override
         public final BIOS bios() { return context().bios(); }

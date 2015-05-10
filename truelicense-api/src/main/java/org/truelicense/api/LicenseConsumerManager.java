@@ -39,7 +39,7 @@ public interface LicenseConsumerManager extends LicenseManagementSchema {
      * TrueLicense 2.4 where license validation was mandatory.
      * <p>
      * Calling this operation performs an initial
-     * {@linkplain LicenseAuthorization#clearInstall authorization check}.
+     * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
      *
      * @param  source the source for loading the license key.
      */
@@ -56,7 +56,7 @@ public interface LicenseConsumerManager extends LicenseManagementSchema {
      * if its validation would fail, e.g. if the license has expired.
      * <p>
      * Calling this operation performs an initial
-     * {@linkplain LicenseAuthorization#clearView authorization check}.
+     * {@linkplain LicenseManagementAuthorization#clearView authorization check}.
      *
      * @return An unvalidated duplicate of the license bean which is encoded in
      *         the installed license key.
@@ -70,7 +70,7 @@ public interface LicenseConsumerManager extends LicenseManagementSchema {
      * Execution needs to be fast in order to support frequent calling.
      * <p>
      * Calling this operation performs an initial
-     * {@linkplain LicenseAuthorization#clearVerify authorization check}.
+     * {@linkplain LicenseManagementAuthorization#clearVerify authorization check}.
      *
      * @throws LicenseValidationException if validating the license bean fails,
      *         e.g. if the license has expired.
@@ -81,7 +81,7 @@ public interface LicenseConsumerManager extends LicenseManagementSchema {
      * Uninstalls the installed license key.
      * <p>
      * Calling this operation performs an initial
-     * {@linkplain LicenseAuthorization#clearUninstall authorization check}.
+     * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
      */
     void uninstall() throws LicenseManagementException;
 }

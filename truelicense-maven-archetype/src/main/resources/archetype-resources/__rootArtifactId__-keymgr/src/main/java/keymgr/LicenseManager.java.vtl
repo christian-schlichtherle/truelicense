@@ -203,11 +203,11 @@ public enum LicenseManager implements LicenseConsumerManager {
 
                 @Override public Date now() { return clock.now(); }
 #end
-#if($keyMgrLicenseAuthorizationClass != "-")
+#if($keyMgrLicenseManagementAuthorizationClass != "-")
 
                 @Override
-                public LicenseAuthorization authorization() {
-                    return #new($keyMgrLicenseAuthorizationClass "LicenseAuthorization");
+                public LicenseManagementAuthorization authorization() {
+                    return #new($keyMgrLicenseManagementAuthorizationClass "LicenseManagementAuthorization");
                 }
 #end
 #if($keyMgrLicenseValidationClass != "-")

@@ -11,7 +11,7 @@ package org.truelicense.api;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseAuthorization {
+public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if creating a

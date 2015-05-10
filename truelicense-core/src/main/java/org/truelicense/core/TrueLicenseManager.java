@@ -212,7 +212,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
         return parameters().authentication();
     }
 
-    final LicenseAuthorization authorization() {
+    final LicenseManagementAuthorization authorization() {
         return parameters().authorization();
     }
 

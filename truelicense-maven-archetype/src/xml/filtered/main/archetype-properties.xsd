@@ -290,14 +290,14 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyGenLicenseAuthorizationClass"
+            <xs:element type="xs:token" name="keyGenLicenseManagementAuthorizationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
                         A fully qualified binary class name which implements the
                         interface
-                        <a href="../apidocs/${apiPackagePath}/LicenseAuthorization.html">
-                            <code>${apiPackage}.LicenseAuthorization</code>
+                        <a href="../apidocs/${apiPackagePath}/LicenseManagementAuthorization.html">
+                            <code>${apiPackage}.LicenseManagementAuthorization</code>
                         </a>
                         for use in the Key Generator module.
                         Select
@@ -361,14 +361,14 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrLicenseAuthorizationClass"
+            <xs:element type="xs:token" name="keyMgrLicenseManagementAuthorizationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
                         A fully qualified binary class name which implements the
                         interface
-                        <a href="../apidocs/${apiPackagePath}/LicenseAuthorization.html">
-                            <code>${apiPackage}.LicenseAuthorization</code>
+                        <a href="../apidocs/${apiPackagePath}/LicenseManagementAuthorization.html">
+                            <code>${apiPackage}.LicenseManagementAuthorization</code>
                         </a>
                         for use in the Key Manager module.
                         Select

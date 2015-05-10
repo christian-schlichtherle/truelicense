@@ -10,8 +10,8 @@ package org.truelicense.api;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseAuthorizationProvider {
+public interface LicenseManagementAuthorizationProvider {
 
     /** Returns the license authorization. */
-    LicenseAuthorization authorization();
+    LicenseManagementAuthorization authorization();
 }
