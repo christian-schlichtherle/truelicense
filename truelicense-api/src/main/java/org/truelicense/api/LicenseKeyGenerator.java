@@ -7,8 +7,6 @@ package org.truelicense.api;
 
 import org.truelicense.api.io.Sink;
 
-import java.io.IOException;
-
 /**
  * Generates a license key and writes it to a given sink or returns a duplicate
  * of its encoded license bean.
