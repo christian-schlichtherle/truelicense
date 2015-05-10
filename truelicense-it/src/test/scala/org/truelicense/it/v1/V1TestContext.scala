@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
-import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v1.V1TestContext._
 import org.truelicense.v1.V1LicenseManagementContext
 

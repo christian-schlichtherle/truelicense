@@ -13,7 +13,6 @@ import org.truelicense.api._
 import org.truelicense.api.auth.RepositoryContextProvider
 import org.truelicense.api.codec.CodecProvider
 import org.truelicense.api.io.{Store, Transformation}
-import org.truelicense.api.passwd.PasswordProtectionProvider
 import org.truelicense.core.TrueLicenseManagementContext
 import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.obfuscate._
@@ -21,7 +20,6 @@ import org.truelicense.obfuscate._
 /** @author Christian Schlichtherle */
 trait TestContext[Model <: AnyRef]
   extends CodecProvider
-  with PasswordProtectionProvider[ObfuscatedString]
   with RepositoryContextProvider[Model] {
 
   def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
@@ -70,22 +68,16 @@ trait TestContext[Model <: AnyRef]
     license
   }
 
-  val managementContext: TrueLicenseManagementContext[Model, ObfuscatedString]
-
-  override final def protection(specification: ObfuscatedString) =
-    managementContext protection specification
+  val managementContext: TrueLicenseManagementContext[Model]
 
   override final def repositoryContext = managementContext.repositoryContext
 
   def store = managementContext.memoryStore
 
+  def test1234 = managementContext protection
+    new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
+
   def transformation: Transformation = IdentityTransformation
 
   def vendorManager: LicenseVendorManager
-}
-
-/** @author Christian Schlichtherle */
-object TestContext {
-
-  def test1234 = new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
 }

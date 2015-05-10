@@ -9,29 +9,28 @@ import java.awt.{Component, EventQueue}
 import java.util.Date
 import javax.swing._
 
-import org.junit.runner._
 import org.netbeans.jemmy._
 import org.netbeans.jemmy.operators._
 import org.netbeans.jemmy.util._
 import org.scalatest.Matchers._
 import org.scalatest._
-import org.scalatest.junit._
 import org.truelicense.api._
-import org.truelicense.it.core.TestContext.test1234
-import org.truelicense.it.swing.LicenseWizardIT._
+import org.truelicense.it.core.TestContext
+import org.truelicense.it.swing.LicenseWizardITSuite._
 import org.truelicense.spi.io.MemoryStore
 import org.truelicense.swing._
 import org.truelicense.ui.LicenseWizardMessage
 import org.truelicense.ui.LicenseWizardMessage._
 import org.truelicense.ui.wizard.WizardMessage._
-import org.truelicense.v2.xml.V2XmlLicenseManagementContext
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
-class LicenseWizardIT extends WordSpec with BeforeAndAfter {
+abstract class LicenseWizardITSuite
+  extends WordSpec
+  with BeforeAndAfter
+{ this: TestContext[_] =>
 
   val laf = UIManager.getLookAndFeel
-  var license: License = _
+  var outputLicense: License = _
   var manager: LicenseConsumerManager = _
   var wizard: LicenseWizard = _
   var dialog: JDialogOperator = _
@@ -41,8 +40,8 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
 
   before {
     val store = new MemoryStore
-    license = (vendorManager generator newLicense writeTo store).license()
-    manager = consumerManager
+    outputLicense = (vendorManager generator inputLicense writeTo store).license
+    manager = consumerManager()
     manager install store
     EventQueue invokeLater new Runnable {
       override def run() {
@@ -60,32 +59,19 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
     Thread sleep 100
   }
 
+  private def inputLicense = {
+    // Don't subclass - wouldn't work with XML serialization
+    val l = managementContext.license
+    l.setInfo("Hello world!")
+    l
+  }
+
   after {
     cancelButton doClick ()
     dialog.isVisible should equal (false)
     wizard.getReturnCode should be (LicenseWizard.CANCEL_RETURN_CODE)
     UIManager setLookAndFeel laf
   }
-
-  def welcomePanel = waitPanel("WelcomePanel")
-  def installPanel = waitPanel("InstallPanel")
-  def displayPanel = waitPanel("DisplayPanel")
-  def uninstallPanel = waitPanel("UninstallPanel")
-
-  def waitPanel(name: String) =
-    new JComponentOperator(dialog, new ComponentChooser {
-      val delegate = new NameComponentChooser(name)
-
-      def checkComponent(comp: Component) =
-        comp match {
-          case panel: JPanel => delegate.checkComponent(panel)
-          case _ => false
-        }
-
-      def getDescription = "Chooses a JPanel by its name."
-    })
-
-  def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 
   "A license wizard" when {
     "using a license consumer manager with an installed license key" when {
@@ -158,14 +144,14 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
           def format(date: Date) =
             display_dateTimeFormat(managementContext.subject, date)
 
-          waitText(display_holder) should be (toString(license.getHolder))
-          waitText(display_subject) should be (toString(license.getSubject))
-          waitText(display_consumer) should be (toString(license.getConsumerType) + " / " + license.getConsumerAmount)
-          waitText(display_notBefore) should be (format(license.getNotBefore))
-          waitText(display_notAfter) should be (format(license.getNotAfter))
-          waitText(display_issuer) should be (toString(license.getIssuer))
-          waitText(display_issued) should be (format(license.getIssued))
-          waitText(display_info) should be (toString(license.getInfo))
+          waitText(display_holder) should be (toString(outputLicense.getHolder))
+          waitText(display_subject) should be (toString(outputLicense.getSubject))
+          waitText(display_consumer) should be (toString(outputLicense.getConsumerType) + " / " + outputLicense.getConsumerAmount)
+          waitText(display_notBefore) should be (format(outputLicense.getNotBefore))
+          waitText(display_notAfter) should be (format(outputLicense.getNotAfter))
+          waitText(display_issuer) should be (toString(outputLicense.getIssuer))
+          waitText(display_issued) should be (format(outputLicense.getIssued))
+          waitText(display_info) should be (toString(outputLicense.getInfo))
         }
 
         "switch to the uninstall panel when requested" in {
@@ -182,45 +168,30 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
       }
     }
   }
+
+  def welcomePanel = waitPanel("WelcomePanel")
+  def installPanel = waitPanel("InstallPanel")
+  def displayPanel = waitPanel("DisplayPanel")
+  def uninstallPanel = waitPanel("UninstallPanel")
+
+  def waitPanel(name: String) =
+    new JComponentOperator(dialog, new ComponentChooser {
+      val delegate = new NameComponentChooser(name)
+
+      def checkComponent(comp: Component) =
+        comp match {
+          case panel: JPanel => delegate.checkComponent(panel)
+          case _ => false
+        }
+
+      def getDescription = "Chooses a JPanel by its name."
+    })
+
+  def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 }
 
 /** @author Christian Schlichtherle */
-object LicenseWizardIT {
-
-  private def managementContext = new V2XmlLicenseManagementContext("subject")
-
-  private def vendorManager =
-    managementContext.vendor
-      .encryption
-        .password(test1234)
-        .inject
-      .keyStore
-        .alias("mykey")
-        .loadFromResource(prefix + "private.ks")
-        .storePassword(test1234)
-        .inject
-      .build
-
-  private def consumerManager =
-    managementContext.consumer
-      .encryption
-        .password(test1234)
-        .inject
-      .keyStore
-        .alias("mykey")
-        .loadFromResource(prefix + "public.ks")
-        .storePassword(test1234)
-        .inject
-      .storeIn(new MemoryStore)
-      .build()
-
-  private def newLicense = {
-    // Don't subclass - wouldn't work with XML serialization
-    val l = new License
-    import l._
-    setInfo("Hello world!")
-    l
-  }
+object LicenseWizardITSuite {
 
   private def newLicenseWizard(manager: LicenseConsumerManager) = {
     val wizard = new LicenseWizard(manager)
@@ -235,6 +206,4 @@ object LicenseWizardIT {
 
   private def waitTextComponent(cont: ContainerOperator, key: Enum[_]) =
     new JTextComponentOperator(cont, new NameComponentChooser(key.name))
-
-  private def prefix = classOf[LicenseWizardIT].getPackage.getName.replace('.', '/') + '/'
 }

@@ -27,7 +27,7 @@ implements LicenseConsumerManager {
     }
 
     @Override
-    public LicenseManagementContext<?> context() {
+    public LicenseManagementContext context() {
         return manager.context();
     }
 

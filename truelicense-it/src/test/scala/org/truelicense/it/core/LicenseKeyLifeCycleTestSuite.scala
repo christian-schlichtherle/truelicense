@@ -16,7 +16,8 @@ import org.truelicense.spi.io.MemoryStore
 
 /** @author Christian Schlichtherle */
 abstract class LicenseKeyLifeCycleTestSuite
-extends WordSpec { this: TestContext[_] =>
+  extends WordSpec
+{ this: TestContext[_] =>
 
   def check(license: License, notBefore: Date = null, notAfter: Date = null) {
     import license._
@@ -39,7 +40,7 @@ extends WordSpec { this: TestContext[_] =>
 
       val generated = {
         val vm = vendorManager
-        val generated = (vm generator managementContext.license writeTo vs).license()
+        val generated = (vm generator managementContext.license writeTo vs).license
         check(generated)
         generated
       }
@@ -110,7 +111,7 @@ extends WordSpec { this: TestContext[_] =>
       ;{
         val generated = {
           val vm = vendorManager
-          val generated = (vm generator managementContext.license writeTo vs).license()
+          val generated = (vm generator managementContext.license writeTo vs).license
           check(generated)
           generated
         }
@@ -131,7 +132,7 @@ extends WordSpec { this: TestContext[_] =>
       ;{
         val generated = {
           val vm = chainedVendorManager
-          val generated = (vm generator managementContext.license writeTo vs).license()
+          val generated = (vm generator managementContext.license writeTo vs).license
           check(generated)
           generated
         }

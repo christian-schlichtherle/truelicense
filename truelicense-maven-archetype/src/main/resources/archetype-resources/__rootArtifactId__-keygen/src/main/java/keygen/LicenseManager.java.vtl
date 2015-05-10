@@ -18,7 +18,7 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(obfuscate $string)$java.obfuscatedString($string).replace("org.truelicense.obfuscate.", "")#end
+#macro(obfuscate $string)password($java.obfuscatedString($string).replace("org.truelicense.obfuscate.", ""))#end
 #macro(new $class $interface)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -43,6 +43,7 @@ import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Sink;
+import org.truelicense.api.passwd.PasswordProtection;
 import $licenseManagementContextPackage.$licenseManagementContextClass;
 import org.truelicense.obfuscate.*;
 
@@ -130,7 +131,7 @@ public enum LicenseManager implements LicenseVendorManager {
     // The implementation class
     // $licenseManagementContextPackage.$licenseManagementContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final LicenseManagementContext<ObfuscatedString> _context =
+    private static final $licenseManagementContextClass _context =
             new $licenseManagementContextClass(LICENSING_SUBJECT) {
 #if($keyGenLicenseManagementAuthorizationClass != "-")
 
@@ -183,6 +184,10 @@ public enum LicenseManager implements LicenseVendorManager {
     }
 
     abstract LicenseVendorManager newManager();
+
+    final PasswordProtection password(ObfuscatedString os) {
+        return _context.protection(os);
+    }
 
     @Override
     public LicenseKeyGenerator generator(License bean) throws LicenseManagementException {

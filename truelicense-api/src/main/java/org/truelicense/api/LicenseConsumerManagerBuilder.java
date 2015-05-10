@@ -16,14 +16,12 @@ import java.nio.file.Path;
  * Call its {@link #build} method to obtain the configured license consumer
  * manager.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseConsumerManagerBuilder<PasswordSpecification>
+public interface LicenseConsumerManagerBuilder
 extends Builder<LicenseConsumerManager>,
-        Injection<LicenseConsumerManagerBuilder<PasswordSpecification>>,
-        LicenseManagerBuilder<PasswordSpecification,
-                LicenseConsumerManagerBuilder<PasswordSpecification>> {
+        Injection<LicenseConsumerManagerBuilder>,
+        LicenseManagerBuilder<LicenseConsumerManagerBuilder> {
 
     /**
      * Sets the free trial period (FTP) in days (the 24 hour equivalent).
@@ -35,7 +33,7 @@ extends Builder<LicenseConsumerManager>,
      *
      * @return {@code this}.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> ftpDays(int ftpDays);
+    LicenseConsumerManagerBuilder ftpDays(int ftpDays);
 
     /**
      * Returns a builder for the parent license consumer manager.
@@ -51,7 +49,7 @@ extends Builder<LicenseConsumerManager>,
      *
      * @see #parent(LicenseConsumerManager)
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> parent();
+    LicenseConsumerManagerBuilder parent();
 
     /**
      * Sets the parent license consumer manager.
@@ -63,7 +61,7 @@ extends Builder<LicenseConsumerManager>,
      *
      * @return {@code this}.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> parent(LicenseConsumerManager parent);
+    LicenseConsumerManagerBuilder parent(LicenseConsumerManager parent);
 
     /**
      * Store the license key in the given store.
@@ -73,7 +71,7 @@ extends Builder<LicenseConsumerManager>,
      *
      * @return {@code this}.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> storeIn(Store store);
+    LicenseConsumerManagerBuilder storeIn(Store store);
 
     /**
      * Store the license key in the given path.
@@ -83,7 +81,7 @@ extends Builder<LicenseConsumerManager>,
      *
      * @return {@code this}.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> storeInPath(Path path);
+    LicenseConsumerManagerBuilder storeInPath(Path path);
 
     /**
      * Store the license key in the system preferences node for the package
@@ -94,7 +92,7 @@ extends Builder<LicenseConsumerManager>,
      *
      * @return {@code this}.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> storeInSystemPreferences(Class<?> classInPackage);
+    LicenseConsumerManagerBuilder storeInSystemPreferences(Class<?> classInPackage);
 
     /**
      * Store the license key in the user preferences node for the package
@@ -105,5 +103,5 @@ extends Builder<LicenseConsumerManager>,
      *
      * @return {@code this}.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> storeInUserPreferences(Class<?> classInPackage);
+    LicenseConsumerManagerBuilder storeInUserPreferences(Class<?> classInPackage);
 }

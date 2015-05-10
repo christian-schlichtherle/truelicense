@@ -12,5 +12,5 @@ import org.scalatest.junit._
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V1LicenseKeyLifeCycleTest
-extends LicenseKeyLifeCycleTestSuite
-with V1TestContext
+  extends LicenseKeyLifeCycleTestSuite
+  with V1TestContext

@@ -8,7 +8,6 @@ package org.truelicense.it.v2.commons
 import org.truelicense.api._
 import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
-import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.it.v2.commons.V2TestContext.prefix
 import org.truelicense.v2.commons.auth.V2RepositoryModel
 

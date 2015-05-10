@@ -56,7 +56,7 @@ implements BiosProvider,
         LicenseManagementAuthorizationProvider,
         LicenseFactory,
         LicenseInitializationProvider,
-        LicenseManagementContext<ObfuscatedString>,
+        LicenseManagementContext,
         LicenseSubjectProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
@@ -112,15 +112,14 @@ implements BiosProvider,
     public long cachePeriodMillis() { return 30 * 60 * 1000; }
 
     final PasswordProtection checkedProtection(
-            final ObfuscatedString password) {
+            final PasswordProtection password) {
         return new PasswordProtection() {
 
             @Override
             public Password password(final PasswordUsage usage) throws Exception {
-                final PasswordProtection protection = protection(password);
                 if (usage.equals(PasswordUsage.WRITE)) // check null
-                    policy().check(protection);
-                return protection.password(usage);
+                    policy().check(password);
+                return password.password(usage);
             }
         };
     }
@@ -137,7 +136,7 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseConsumerManagerBuilder<ObfuscatedString> consumer() {
+    public LicenseConsumerManagerBuilder consumer() {
         return new TrueLicenseConsumerManagerBuilder();
     }
 
@@ -168,10 +167,10 @@ implements BiosProvider,
     final Authentication ksba(
             List<String> algorithm,
             String alias,
-            List<ObfuscatedString> keyPassword,
+            List<PasswordProtection> keyPassword,
             List<Source> source,
             List<String> storeType,
-            ObfuscatedString storePassword) {
+            PasswordProtection storePassword) {
         return authentication(ksbaParameters(
                 algorithm, alias, keyPassword,
                 source, storePassword, storeType));
@@ -180,9 +179,9 @@ implements BiosProvider,
     private KeyStoreParameters ksbaParameters(
             final List<String> algorithm,
             final String alias,
-            final List<ObfuscatedString> keyPassword,
+            final List<PasswordProtection> keyPassword,
             final List<Source> source,
-            final ObfuscatedString storePassword,
+            final PasswordProtection storePassword,
             final List<String> storeType) {
         return new KeyStoreParameters() {
 
@@ -195,7 +194,7 @@ implements BiosProvider,
 
             @Override
             public PasswordProtection keyProtection() {
-                for (ObfuscatedString kp : keyPassword)
+                for (PasswordProtection kp : keyPassword)
                     return context().checkedProtection(kp);
                 return context().checkedProtection(storePassword);
             }
@@ -237,7 +236,7 @@ implements BiosProvider,
 
     final Transformation pbe(
             List<String> algorithm,
-            ObfuscatedString password) {
+            PasswordProtection password) {
         return encryption(pbeParameters(algorithm, password));
     }
 
@@ -253,7 +252,7 @@ implements BiosProvider,
 
     private PbeParameters pbeParameters(
             final List<String> algorithm,
-            final ObfuscatedString password) {
+            final PasswordProtection password) {
         return new PbeParameters() {
 
             @Override
@@ -349,13 +348,13 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseVendorManagerBuilder<ObfuscatedString> vendor() {
+    public LicenseVendorManagerBuilder vendor() {
         return new TrueLicenseVendorManagerBuilder();
     }
 
     class TrueLicenseConsumerManagerBuilder
     extends TrueLicenseManagerBuilder<TrueLicenseConsumerManagerBuilder>
-    implements LicenseConsumerManagerBuilder<ObfuscatedString> {
+    implements LicenseConsumerManagerBuilder {
 
         @Override
         public LicenseConsumerManager build() {
@@ -388,7 +387,7 @@ implements BiosProvider,
 
     final class TrueLicenseVendorManagerBuilder
     extends TrueLicenseManagerBuilder<TrueLicenseVendorManagerBuilder>
-    implements LicenseVendorManagerBuilder<ObfuscatedString> {
+    implements LicenseVendorManagerBuilder {
 
         @Override
         public LicenseVendorManager build() {
@@ -455,13 +454,13 @@ implements BiosProvider,
 
         final class KsbaBuilder
         implements Builder<Authentication>,
-                KsbaInjection<ObfuscatedString, This> {
+                KsbaInjection<This> {
 
             List<String> algorithm = Option.none();
             List<String> alias = Option.none();
-            List<ObfuscatedString> keyPassword = Option.none();
+            List<PasswordProtection> keyPassword = Option.none();
             List<Source> source = Option.none();
-            List<ObfuscatedString> storePassword = Option.none();
+            List<PasswordProtection> storePassword = Option.none();
             List<String> storeType = Option.none();
 
             @Override
@@ -485,7 +484,7 @@ implements BiosProvider,
             }
 
             @Override
-            public KsbaBuilder keyPassword(final ObfuscatedString keyPassword) {
+            public KsbaBuilder keyPassword(final PasswordProtection keyPassword) {
                 this.keyPassword = Option.wrap(keyPassword);
                 return this;
             }
@@ -502,7 +501,7 @@ implements BiosProvider,
             }
 
             @Override
-            public KsbaBuilder storePassword(final ObfuscatedString storePassword) {
+            public KsbaBuilder storePassword(final PasswordProtection storePassword) {
                 this.storePassword = Option.wrap(storePassword);
                 return this;
             }
@@ -516,10 +515,10 @@ implements BiosProvider,
 
         final class PbeBuilder
         implements Builder<Transformation>,
-                PbeInjection<ObfuscatedString, This> {
+                PbeInjection<This> {
 
             List<String> algorithm = Option.none();
-            List<ObfuscatedString> password = Option.none();
+            List<PasswordProtection> password = Option.none();
 
             @Override
             public This inject() { return encryption(build()); }
@@ -536,7 +535,7 @@ implements BiosProvider,
             }
 
             @Override
-            public PbeBuilder password(final ObfuscatedString password) {
+            public PbeBuilder password(final PasswordProtection password) {
                 this.password = Option.wrap(password);
                 return this;
             }

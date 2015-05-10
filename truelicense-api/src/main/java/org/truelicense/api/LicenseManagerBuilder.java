@@ -12,12 +12,10 @@ import org.truelicense.api.misc.Injection;
 /**
  * A generic builder for license managers.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @param <This> the specialized type for fluent programming.
  * @author Christian Schlichtherle
  */
-public interface LicenseManagerBuilder<PasswordSpecification,
-        This extends LicenseManagerBuilder<PasswordSpecification, This>> {
+public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>> {
 
     /**
      * Sets the authentication.
@@ -33,7 +31,7 @@ public interface LicenseManagerBuilder<PasswordSpecification,
      *
      * @see #encryption(Transformation)
      */
-    PbeInjection<PasswordSpecification, ? extends This> encryption();
+    PbeInjection<? extends This> encryption();
 
     /**
      * Sets the encryption.
@@ -49,5 +47,5 @@ public interface LicenseManagerBuilder<PasswordSpecification,
      *
      * @see #authentication(Authentication)
      */
-    KsbaInjection<PasswordSpecification, ? extends This> keyStore();
+    KsbaInjection<? extends This> keyStore();
 }

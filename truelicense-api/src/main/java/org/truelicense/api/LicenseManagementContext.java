@@ -18,10 +18,9 @@ import java.nio.file.Path;
  * {@linkplain #vendor() license vendor manager} or a
  * {@linkplain #consumer() license consumer manager}.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseManagementContext<PasswordSpecification>
+public interface LicenseManagementContext
 extends CodecProvider,
         LicenseFactory,
         LicenseSubjectProvider {
@@ -32,7 +31,7 @@ extends CodecProvider,
      * Call its {@link LicenseConsumerManagerBuilder#build} method to build
      * the configured license consumer manager.
      */
-    LicenseConsumerManagerBuilder<PasswordSpecification> consumer();
+    LicenseConsumerManagerBuilder consumer();
 
     /** Returns a new memory store. */
     Store memoryStore();
@@ -87,5 +86,5 @@ extends CodecProvider,
      * Call its {@link LicenseVendorManagerBuilder#build} method to build
      * the configured license vendor manager.
      */
-    LicenseVendorManagerBuilder<PasswordSpecification> vendor();
+    LicenseVendorManagerBuilder vendor();
 }

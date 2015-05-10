@@ -8,15 +8,15 @@ package org.truelicense.api;
 import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.misc.Injection;
+import org.truelicense.api.passwd.PasswordProtection;
 
 /**
  * Injects a Key Store Based {@link Authentication} (KSBA) into some target.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @param <Target> the type of the target.
  * @author Christian Schlichtherle
  */
-public interface KsbaInjection<PasswordSpecification, Target>
+public interface KsbaInjection<Target>
 extends Injection<Target> {
 
     /**
@@ -24,14 +24,14 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> algorithm(String algorithm);
+    KsbaInjection<Target> algorithm(String algorithm);
 
     /**
      * Sets the alias name of the key entry.
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> alias(String alias);
+    KsbaInjection<Target> alias(String alias);
 
     /**
      * Sets the password for accessing the private key in the key
@@ -42,26 +42,26 @@ extends Injection<Target> {
      * {@linkplain LicenseConsumerManager license consumer manager}
      * for a free trial period.
      * If this method is not called then the
-     * {@linkplain #storePassword(PasswordSpecification) key store
+     * {@linkplain #storePassword(PasswordProtection) key store
      * password} is used instead.
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> keyPassword(PasswordSpecification keyPassword);
+    KsbaInjection<Target> keyPassword(PasswordProtection keyPassword);
 
     /**
      * Sets the source for the key store (optional).
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> loadFrom(Source source);
+    KsbaInjection<Target> loadFrom(Source source);
 
     /**
      * Sets the resource name of the key store (optional).
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> loadFromResource(String name);
+    KsbaInjection<Target> loadFromResource(String name);
 
     /**
      * Sets the password protection for verifying the integrity of the key
@@ -69,7 +69,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> storePassword(PasswordSpecification storePassword);
+    KsbaInjection<Target> storePassword(PasswordProtection storePassword);
 
     /**
      * Sets the type of the key store,
@@ -77,5 +77,5 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    KsbaInjection<PasswordSpecification, Target> storeType(String storeType);
+    KsbaInjection<Target> storeType(String storeType);
 }

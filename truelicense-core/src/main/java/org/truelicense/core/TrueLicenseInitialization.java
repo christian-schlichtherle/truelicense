@@ -31,7 +31,7 @@ import static org.truelicense.core.Messages.message;
  */
 final class TrueLicenseInitialization
 implements Clock,
-        ContextProvider<TrueLicenseManagementContext<?, ?>>,
+        ContextProvider<TrueLicenseManagementContext<?>>,
         LicenseInitialization,
         LicenseSubjectProvider {
 
@@ -46,14 +46,14 @@ implements Clock,
     @Obfuscate
     static final String UNKNOWN = "unknown";
 
-    private final TrueLicenseManagementContext<?, ?> context;
+    private final TrueLicenseManagementContext<?> context;
 
-    TrueLicenseInitialization(final TrueLicenseManagementContext<?, ?> context) {
+    TrueLicenseInitialization(final TrueLicenseManagementContext<?> context) {
         this.context = context;
     }
 
     @Override
-    public TrueLicenseManagementContext<?, ?> context() { return context; }
+    public TrueLicenseManagementContext<?> context() { return context; }
 
     @Override
     public String subject() { return context().subject(); }

@@ -12,11 +12,9 @@ import org.truelicense.api.misc.Builder;
  * Call its {@link #build} method to obtain the configured license vendor
  * manager.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @author Christian Schlichtherle
  */
-public interface LicenseVendorManagerBuilder<PasswordSpecification>
+public interface LicenseVendorManagerBuilder
 extends Builder<LicenseVendorManager>,
-        LicenseManagerBuilder<PasswordSpecification,
-                LicenseVendorManagerBuilder<PasswordSpecification>> {
+        LicenseManagerBuilder<LicenseVendorManagerBuilder> {
 }

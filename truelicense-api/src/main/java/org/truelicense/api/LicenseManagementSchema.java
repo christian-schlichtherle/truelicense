@@ -9,6 +9,6 @@ import org.truelicense.api.misc.ContextProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementSchema
-extends ContextProvider<LicenseManagementContext<?>>,
+extends ContextProvider<LicenseManagementContext>,
         LicenseManagementParametersProvider {
 }

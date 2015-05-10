@@ -7,13 +7,12 @@ package org.truelicense.it.v1
 
 import org.truelicense.api.crypto.PbeParameters
 import org.truelicense.it.core.TestContext
-import org.truelicense.it.core.TestContext.test1234
 import org.truelicense.v1.crypto.V1Encryption
 
 /** @author Christian Schlichtherle */
 trait V1EncryptionTestContext { context: TestContext[_] =>
   final override def transformation = new V1Encryption(new PbeParameters {
       def algorithm = "PBEwithMD5andDES"
-      def protection = context.protection(test1234)
+      def protection = test1234
   })
 }

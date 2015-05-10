@@ -6,15 +6,15 @@
 package org.truelicense.api;
 
 import org.truelicense.api.misc.Injection;
+import org.truelicense.api.passwd.PasswordProtection;
 
 /**
  * Injects a Password Based Encryption (PBE) into some target.
  *
- * @param <PasswordSpecification> the generic password specification type.
  * @param <Target> the type of the target.
  * @author Christian Schlichtherle
  */
-public interface PbeInjection<PasswordSpecification, Target>
+public interface PbeInjection<Target>
 extends Injection<Target> {
 
     /**
@@ -22,7 +22,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    PbeInjection<PasswordSpecification, Target> algorithm(String algorithm);
+    PbeInjection<Target> algorithm(String algorithm);
 
     /**
      * Sets the password for generating a secret key for
@@ -30,5 +30,5 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    PbeInjection<PasswordSpecification, Target> password(PasswordSpecification password);
+    PbeInjection<Target> password(PasswordProtection password);
 }
