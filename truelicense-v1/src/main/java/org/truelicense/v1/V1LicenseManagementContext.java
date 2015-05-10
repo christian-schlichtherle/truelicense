@@ -12,7 +12,7 @@ import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.codec.Codec;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.core.TrueLicenseCommonManagementContext;
+import org.truelicense.core.ObfuscatedLicenseManagementContext;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v1.auth.V1RepositoryContext;
 import org.truelicense.v1.codec.X500PrincipalXmlCodec;
@@ -32,7 +32,7 @@ import org.truelicense.v1.crypto.V1Encryption;
  * @author Christian Schlichtherle
  */
 public class V1LicenseManagementContext
-extends TrueLicenseCommonManagementContext<GenericCertificate> {
+extends ObfuscatedLicenseManagementContext<GenericCertificate> {
 
     @Obfuscate
     private static final String STORE_TYPE = "JKS";

@@ -11,24 +11,23 @@ import org.truelicense.core.passwd.Passwords;
 import org.truelicense.obfuscate.ObfuscatedString;
 
 /**
- * A common license management context.
- * This class uses the class {@link ObfuscatedString} class as the password
- * specification type.
+ * A license management context which uses the {@link ObfuscatedString} class
+ * as its password specification type.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-public abstract class TrueLicenseCommonManagementContext<Model>
+public abstract class ObfuscatedLicenseManagementContext<Model>
 extends TrueLicenseManagementContext<Model, ObfuscatedString> {
 
-    public TrueLicenseCommonManagementContext(String subject) {
+    protected ObfuscatedLicenseManagementContext(String subject) {
         super(subject);
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link TrueLicenseCommonManagementContext}
+     * The implementation in the class {@link ObfuscatedLicenseManagementContext}
      * returns {@link Passwords#newPasswordPolicy()}.
      */
     @Override
@@ -37,7 +36,7 @@ extends TrueLicenseManagementContext<Model, ObfuscatedString> {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link TrueLicenseCommonManagementContext}
+     * The implementation in the class {@link ObfuscatedLicenseManagementContext}
      * returns
      * {@link Passwords#newPasswordProtection(ObfuscatedString) Passwords.newPasswordProtecetion(os)}.
      */

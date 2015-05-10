@@ -9,7 +9,7 @@ import org.truelicense.api.License;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.core.TrueLicenseCommonManagementContext;
+import org.truelicense.core.ObfuscatedLicenseManagementContext;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.auth.V2RepositoryContext;
 import org.truelicense.v2.commons.auth.V2RepositoryModel;
@@ -24,7 +24,7 @@ import org.truelicense.v2.commons.crypto.V2Encryption;
  * @author Christian Schlichtherle
  */
 public abstract class V2LicenseManagementContext
-extends TrueLicenseCommonManagementContext<V2RepositoryModel> {
+extends ObfuscatedLicenseManagementContext<V2RepositoryModel> {
 
     @Obfuscate
     private static final String STORE_TYPE = "JCEKS";

@@ -337,10 +337,11 @@ implements BiosProvider,
 
         @Override
         public LicenseConsumerManager build() {
-            final TrueLicenseManagementParameters lp = new TrueLicenseManagementParameters(this);
+            final TrueLicenseManagementParameters
+                    lp = new TrueLicenseManagementParameters(this);
             return parent.isEmpty()
-                    ? new TrueLicenseCachingManager<>(lp)
-                    : new TrueLicenseChildManager<>(lp);
+                    ? new CachingTrueLicenseManager<>(lp)
+                    : new ChainedTrueLicenseManager<>(lp);
         }
 
         @Override
@@ -369,7 +370,8 @@ implements BiosProvider,
 
         @Override
         public LicenseVendorManager build() {
-            return new TrueLicenseManager<>(new TrueLicenseManagementParameters(this));
+            return new TrueLicenseManager<>(
+                    new TrueLicenseManagementParameters(this));
         }
     }
 

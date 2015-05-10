@@ -23,7 +23,7 @@ import static java.lang.System.currentTimeMillis;
  *
  * @author Christian Schlichtherle
  */
-class TrueLicenseCachingManager<Model>
+class CachingTrueLicenseManager<Model>
 extends TrueLicenseManager<Model> {
 
     // These volatile fields get initialized by applying a pure function which
@@ -34,7 +34,7 @@ extends TrueLicenseManager<Model> {
     private volatile Cache<Source, Decoder> cachedDecoder = new Cache<>();
     private volatile Cache<Source, License> cachedLicense = new Cache<>();
 
-    TrueLicenseCachingManager(
+    CachingTrueLicenseManager(
             TrueLicenseManagementContext<Model, ?>.TrueLicenseManagementParameters parameters) {
         super(parameters);
     }

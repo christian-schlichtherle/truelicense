@@ -21,12 +21,12 @@ import java.util.concurrent.Callable;
  *
  * @author Christian Schlichtherle
  */
-class TrueLicenseChildManager<Model>
-extends TrueLicenseCachingManager<Model> {
+class ChainedTrueLicenseManager<Model>
+extends CachingTrueLicenseManager<Model> {
 
     private volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 
-    TrueLicenseChildManager(
+    ChainedTrueLicenseManager(
             TrueLicenseManagementContext<Model, ?>.TrueLicenseManagementParameters parameters) {
         super(parameters);
     }
