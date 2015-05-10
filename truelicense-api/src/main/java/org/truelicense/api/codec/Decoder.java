@@ -15,16 +15,16 @@ import java.lang.reflect.Type;
 public interface Decoder {
 
     /**
-     * Decodes an object graph of the expected generic type.
+     * Decodes an object graph of the expected type.
      *
      * @param  <T>
-     *         the expected generic type of the decoded object.
+     *         the expected type of the decoded object.
      * @param  expected
-     *         the expected generic type of the decoded object graph, e.g.
+     *         the expected type of the decoded object graph, e.g.
      *         {@code String.class}.
      *         This is just a hint and the implementation may ignore it.
      * @return A duplicate of the original object graph.
-     *         Its actual type may differ from the expected generic type.
+     *         Its actual type may differ from the expected type.
      */
     <T> T decode(Type expected) throws Exception;
 }

@@ -11,7 +11,7 @@ import org.truelicense.api.io.Source;
 import java.lang.reflect.Type;
 
 /**
- * Defines an object graph encoding/decoding (alias serialization).
+ * Provides encoders and decoders for generic object graphs.
  *
  * @author Christian Schlichtherle
  */
