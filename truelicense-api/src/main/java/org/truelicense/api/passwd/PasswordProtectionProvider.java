@@ -8,6 +8,6 @@ package org.truelicense.api.passwd;
  */
 public interface PasswordProtectionProvider<PasswordSpecification> {
 
-    /** Returns the password protection for the given password specification. */
+    /** Returns a password protection for the given password specification. */
     PasswordProtection protection(PasswordSpecification specification);
 }
