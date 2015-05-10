@@ -47,7 +47,7 @@ public enum Main {
 
                 final Map<CreateOption, String>
                         options = Main.parse(params, CreateOption.class);
-                LicenseVendorManager manager;
+                VendorLicenseManager manager;
                 Codec codec;
 
                 {
@@ -112,8 +112,8 @@ public enum Main {
 
                 LicenseManagementContext context() { return manager().context(); }
 
-                LicenseVendorManager manager() {
-                    final LicenseVendorManager m = manager;
+                VendorLicenseManager manager() {
+                    final VendorLicenseManager m = manager;
                     return null != m ? m : (manager = LicenseManager.valueOf(editionName()));
                 }
 

@@ -15,7 +15,7 @@ import com.sun.jersey.api.core._
 import com.sun.jersey.test.framework._
 import org.junit.Test
 import org.scalatest.Matchers._
-import org.truelicense.api.LicenseConsumerManager
+import org.truelicense.api.ConsumerLicenseManager
 import org.truelicense.it.core.TestContext
 import org.truelicense.jax.rs._
 
@@ -113,7 +113,7 @@ extends JerseyTest { this: TestContext[_] =>
   }
 
   private final class LicenseConsumerManagerResolver
-  extends ContextResolver[LicenseConsumerManager] {
+  extends ContextResolver[ConsumerLicenseManager] {
     override def getContext(ignored: Class[_]) = manager
   }
 }

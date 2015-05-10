@@ -5,7 +5,7 @@
 
 package org.truelicense.jsf;
 
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.LicenseManagementContext;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.spi.i18n.Formattable;
@@ -32,20 +32,20 @@ public abstract class LicenseBean
 extends UINamingContainer
 implements WizardView<LicenseWizardState> {
 
-    private LicenseConsumerManager manager;
+    private ConsumerLicenseManager manager;
 
     LicenseBean() { }
 
-    final LicenseConsumerManager manager() {
-        final LicenseConsumerManager m = manager;
+    final ConsumerLicenseManager manager() {
+        final ConsumerLicenseManager m = manager;
         return null != m ? m : (manager = resolveManager());
     }
 
-    private LicenseConsumerManager resolveManager() {
+    private ConsumerLicenseManager resolveManager() {
         final Object manager = getAttributes().get("manager");
-        if (!(manager instanceof LicenseConsumerManager))
-            throw new IllegalStateException("Missing license consumer manager in attributes map.");
-        return (LicenseConsumerManager) manager;
+        if (!(manager instanceof ConsumerLicenseManager))
+            throw new IllegalStateException("Missing consumer license manager in attributes map.");
+        return (ConsumerLicenseManager) manager;
     }
 
     final String message(Formattable key) { return message(key, subject()); }

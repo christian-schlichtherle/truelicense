@@ -67,7 +67,7 @@ import java.util.Date;
 #end
 
 /**
- * The enumeration of the license consumer managers for $licensingSubject
+ * The enumeration of the consumer license managers for $licensingSubject
  * license keys.
  * The managers are named like each configured edition and ordered from
  * superset to subset, including an optional free trial period (FTP).
@@ -77,7 +77,7 @@ import java.util.Date;
  * @author Christian Schlichtherle
  */
 @Immutable
-public enum LicenseManager implements LicenseConsumerManager {
+public enum LicenseManager implements ConsumerLicenseManager {
 #foreach($edition in $editions)
 #set($editionCertEntryAlias = $edition)
 #evaluate("${hash}set (${dollar}editionCertEntryAlias = ${dollar}${edition}KeyEntryAlias)")
@@ -94,7 +94,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #set($editionCertEntryAlias = "CERT_ENTRY_ALIAS")
 #end
         @Override
-        LicenseConsumerManager newManager() {
+        ConsumerLicenseManager newManager() {
             return _context.consumer()
 #if($editionPbePassword != $parentEditionPbePassword)
                     .encryption()
@@ -150,7 +150,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 
 #end
         @Override
-        LicenseConsumerManager newManager() {
+        ConsumerLicenseManager newManager() {
             return _context.consumer()
                     .ftpDays($freeTrialPeriod)
                     .keyStore()
@@ -232,7 +232,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
             };
 
-    private volatile LicenseConsumerManager _manager;
+    private volatile ConsumerLicenseManager _manager;
 
 #if($freeTrialPeriod != 0)
 #set($firstEdition = "ftp")
@@ -251,13 +251,13 @@ public enum LicenseManager implements LicenseConsumerManager {
      */
     public static LicenseManager get() { return $firstEdition; }
 
-    private LicenseConsumerManager manager() {
+    private ConsumerLicenseManager manager() {
         // No need to synchronize because managers are virtually stateless.
-        final LicenseConsumerManager m = _manager;
+        final ConsumerLicenseManager m = _manager;
         return null != m ? m : (_manager = newManager());
     }
 
-    abstract LicenseConsumerManager newManager();
+    abstract ConsumerLicenseManager newManager();
 
     final PasswordProtection protection(long[] l) {
         return _context.protection(new ObfuscatedString(l));

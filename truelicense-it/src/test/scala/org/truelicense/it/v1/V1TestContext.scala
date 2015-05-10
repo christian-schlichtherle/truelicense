@@ -16,7 +16,7 @@ import org.truelicense.v1.V1LicenseManagementContext
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext[GenericCertificate] {
 
-  override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
       .keyStore
         .alias("mykey")
@@ -61,7 +61,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     cm
   }
 
-  override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
       .keyStore
         .alias("mykey")

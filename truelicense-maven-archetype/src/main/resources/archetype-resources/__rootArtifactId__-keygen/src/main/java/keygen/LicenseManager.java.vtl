@@ -48,7 +48,7 @@ import $licenseManagementContextPackage.$licenseManagementContextClass;
 import org.truelicense.obfuscate.*;
 
 /**
- * The enumeration of the license vendor managers for $licensingSubject
+ * The enumeration of the vendor license managers for $licensingSubject
  * license keys.
  * The managers are named like each configured edition and ordered from
  * superset to subset.
@@ -58,7 +58,7 @@ import org.truelicense.obfuscate.*;
  * @author Christian Schlichtherle
  */
 @Immutable
-public enum LicenseManager implements LicenseVendorManager {
+public enum LicenseManager implements VendorLicenseManager {
 #foreach($edition in $editions)
 #set($editionKeyEntryAlias = $edition)
 #evaluate("${hash}set (${dollar}editionKeyEntryAlias = ${dollar}${edition}KeyEntryAlias)")
@@ -77,7 +77,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #set($editionKeyEntryAlias = "KEY_ENTRY_ALIAS")
 #end
         @Override
-        LicenseVendorManager newManager() {
+        VendorLicenseManager newManager() {
             return _context.vendor()
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
@@ -175,15 +175,15 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
             };
 
-    private volatile LicenseVendorManager _manager;
+    private volatile VendorLicenseManager _manager;
 
-    private LicenseVendorManager manager() {
+    private VendorLicenseManager manager() {
         // No need to synchronize because managers are virtually stateless.
-        final LicenseVendorManager m = _manager;
+        final VendorLicenseManager m = _manager;
         return null != m ? m : (_manager = newManager());
     }
 
-    abstract LicenseVendorManager newManager();
+    abstract VendorLicenseManager newManager();
 
     final PasswordProtection protection(long[] l) {
         return _context.protection(new ObfuscatedString(l));

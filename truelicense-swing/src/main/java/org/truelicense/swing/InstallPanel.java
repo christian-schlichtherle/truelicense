@@ -5,7 +5,7 @@
 
 package org.truelicense.swing;
 
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.i18n.Message;
 import org.truelicense.swing.util.ComponentEnabler;
 import org.truelicense.swing.util.Enabler;
@@ -28,7 +28,7 @@ final class InstallPanel extends LicenseWorkerPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private final LicenseConsumerManager manager;
+    private final ConsumerLicenseManager manager;
 
     InstallPanel(final LicenseManagementWizard wizard) {
         super(wizard);
@@ -37,8 +37,8 @@ final class InstallPanel extends LicenseWorkerPanel {
 
             @Override protected JButton component() { return installButton; }
         };
-        this.manager = new EnablingLicenseConsumerManager(wizard.nextButtonProxy(),
-                new DisablingLicenseConsumerManager(installButtonProxy,
+        this.manager = new EnablingConsumerLicenseManager(wizard.nextButtonProxy(),
+                new DisablingConsumerLicenseManager(installButtonProxy,
                         wizard.manager()));
         initComponents();
         final DocumentListener listener = new DocumentListener() {
@@ -57,7 +57,8 @@ final class InstallPanel extends LicenseWorkerPanel {
         fileField.getDocument().addDocumentListener(listener);
     }
 
-    @Override LicenseConsumerManager manager() { return manager; }
+    @Override
+    ConsumerLicenseManager manager() { return manager; }
 
     private void onFileFieldChange() {
         final boolean valid = fileFieldContainsValidFilePath();

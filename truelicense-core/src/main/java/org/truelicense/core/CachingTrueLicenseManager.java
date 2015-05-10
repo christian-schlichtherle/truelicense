@@ -17,7 +17,7 @@ import java.util.List;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * A basic license consumer manager which caches some computed objects to speed
+ * A basic consumer license manager which caches some computed objects to speed
  * up subsequent requests.
  * This class is thread-safe.
  *

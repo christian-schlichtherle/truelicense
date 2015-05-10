@@ -42,7 +42,7 @@ dependency using:
     package [...];
 
     import javax.ws.rs.ext.*;
-    import org.truelicense.api.LicenseConsumerManager;
+    import org.truelicense.api.ConsumerLicenseManager;
 
     @Provider
     public class LicenseConsumerManagerResolver
@@ -67,20 +67,20 @@ class in the KeyMgr module like this:
 
     import javax.enterprise.context.ApplicationScoped;
     import javax.enterprise.inject.Produces;
-    import org.truelicense.api.LicenseConsumerManager;
+    import org.truelicense.api.ConsumerLicenseManager;
     [...]
 
     public class LicensingSchema {
 
         [...]
 
-        /** Returns the first license consumer manager in the configured chain-of-responsibility. [...] */
+        /** Returns the first consumer license manager in the configured chain-of-responsibility. [...] */
         @Produces @ApplicationScoped
         public static LicenseConsumerManager manager() { [...] }
     }
 
 The `@Produces` annotation tells the container that it should call the
-`manager()` method to obtain the license consumer manager.
+`manager()` method to obtain the consumer license manager.
 The returned object is a singleton which is typically not serializable, so the
 `@ApplicationScoped` annotation is used to wrap it in a serializable proxy with
 application scope.

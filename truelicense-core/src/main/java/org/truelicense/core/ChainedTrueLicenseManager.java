@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
- * A caching license consumer manager which establishes a Chain Of
- * Responsibility with its parent license consumer manager.
- * On each operation, the parent license consumer manager is tried first.
+ * A caching consumer license manager which establishes a Chain Of
+ * Responsibility with its parent consumer license manager.
+ * On each operation, the parent consumer license manager is tried first.
  * This class is thread-safe.
  *
  * @author Christian Schlichtherle
@@ -127,5 +127,5 @@ extends CachingTrueLicenseManager<Model> {
 
     final License license() { return parameters().license(); }
 
-    final LicenseConsumerManager parent() { return parameters().parent(); }
+    final ConsumerLicenseManager parent() { return parameters().parent(); }
 }

@@ -15,7 +15,7 @@ abstract class LicenseConsumerServiceTestSuite
 extends WordSpec { this: TestContext[_] =>
 
   "A license consumer service" when {
-    "using a license consumer manager" when {
+    "using a consumer license manager" when {
       lazy val manager = consumerManager // TODO: Why lazy val?
       lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
       lazy val service = new LicenseConsumerService(manager)

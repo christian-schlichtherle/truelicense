@@ -11,7 +11,7 @@ package org.truelicense.api;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseVendorManager extends LicenseManagementSchema {
+public interface VendorLicenseManager extends LicenseManagementSchema {
 
     /**
      * Returns a license key generator for the given license bean.

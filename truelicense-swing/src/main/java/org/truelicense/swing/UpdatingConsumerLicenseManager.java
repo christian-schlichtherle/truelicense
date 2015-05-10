@@ -5,7 +5,7 @@
 
 package org.truelicense.swing;
 
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.swing.util.Enabler;
 
 import javax.swing.*;
@@ -13,19 +13,19 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * A decorating license consumer manager which hosts an {@link Enabler}.
+ * A decorating consumer license manager which hosts an {@link Enabler}.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-abstract class UpdatingLicenseConsumerManager
-extends DecoratingLicenseConsumerManager
+abstract class UpdatingConsumerLicenseManager
+extends DecoratingConsumerLicenseManager
 implements Serializable {
 
     private final Enabler enabler;
 
-    UpdatingLicenseConsumerManager(
-            final LicenseConsumerManager manager,
+    UpdatingConsumerLicenseManager(
+            final ConsumerLicenseManager manager,
             final Enabler enabler) {
         super(manager);
         assert null != enabler;

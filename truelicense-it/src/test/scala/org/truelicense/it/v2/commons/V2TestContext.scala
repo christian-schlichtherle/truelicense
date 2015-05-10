@@ -14,7 +14,7 @@ import org.truelicense.v2.commons.auth.V2RepositoryModel
 /** @author Christian Schlichtherle */
 trait V2TestContext extends TestContext[V2RepositoryModel] {
 
-  override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
       .keyStore
         .alias("mykey")
@@ -59,7 +59,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     cm
   }
 
-  override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
       .ftpDays(1)
       .keyStore

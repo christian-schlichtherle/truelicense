@@ -17,16 +17,16 @@ import org.truelicense.api.io.Source;
  * in a license key.
  * However, you can work around this constraint by using a
  * {@linkplain LicenseManagementContext license management context}
- * to configure a license consumer manager which uses a transient
+ * to configure a consumer license manager which uses a transient
  * {@link org.truelicense.api.io.BIOS#memoryStore()} instead of a persistent
- * store - see {@link LicenseConsumerManagerBuilder#storeIn}.
+ * store - see {@link ConsumerLicenseManagerBuilder#storeIn}.
  * Once configured, you can {@linkplain #install install} the license key to
  * the transient memory store and {@linkplain #view view} its encoded license
  * bean.
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseConsumerManager extends LicenseManagementSchema {
+public interface ConsumerLicenseManager extends LicenseManagementSchema {
 
     /**
      * Verifies the digital signature of the license key and copies it to the

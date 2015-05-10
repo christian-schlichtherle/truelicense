@@ -29,7 +29,7 @@ import java.util.concurrent.Callable;
  * @author Christian Schlichtherle
  */
 class TrueLicenseManager<Model>
-implements LicenseConsumerManager, LicenseVendorManager {
+implements ConsumerLicenseManager, VendorLicenseManager {
 
     private final TrueLicenseManagementContext<Model>.TrueLicenseManagementParameters parameters;
 
@@ -142,7 +142,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
             @Override public Void call() throws Exception {
                 authorization().clearUninstall(TrueLicenseManager.this);
                 final Store store = store();
-                // #TRUELICENSE-81: A license consumer manager must
+                // #TRUELICENSE-81: A consumer license manager must
                 // authenticate the installed license key before uninstalling
                 // it.
                 authenticate(store);

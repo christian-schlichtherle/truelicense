@@ -136,8 +136,8 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseConsumerManagerBuilder consumer() {
-        return new TrueLicenseConsumerManagerBuilder();
+    public ConsumerLicenseManagerBuilder consumer() {
+        return new ConsumerTrueLicenseManagerBuilder();
     }
 
     /**
@@ -243,8 +243,7 @@ implements BiosProvider,
     /**
      * Returns the name of the default Password Based Encryption (PBE)
      * algorithm for the license key format.
-     * You can override this default value when configuring the PBE with the
-     * license vendor context or the license consumer context.
+     * You can override this default value when configuring the PBE.
      *
      * @see PbeInjection#algorithm
      */
@@ -309,8 +308,7 @@ implements BiosProvider,
      * Returns the name of the default key store type,
      * for example {@code "JCEKS"} or {@code "JKS"}.
      * You can override this default value when configuring the key store based
-     * authentication with the license vendor context or the license consumer
-     * context.
+     * authentication.
      */
     public abstract String storeType();
 
@@ -348,16 +346,16 @@ implements BiosProvider,
     }
 
     @Override
-    public LicenseVendorManagerBuilder vendor() {
-        return new TrueLicenseVendorManagerBuilder();
+    public VendorLicenseManagerBuilder vendor() {
+        return new VendorTrueLicenseManagerBuilder();
     }
 
-    class TrueLicenseConsumerManagerBuilder
-    extends TrueLicenseManagerBuilder<TrueLicenseConsumerManagerBuilder>
-    implements LicenseConsumerManagerBuilder {
+    class ConsumerTrueLicenseManagerBuilder
+    extends TrueLicenseManagerBuilder<ConsumerTrueLicenseManagerBuilder>
+    implements ConsumerLicenseManagerBuilder {
 
         @Override
-        public LicenseConsumerManager build() {
+        public ConsumerLicenseManager build() {
             final TrueLicenseManagementParameters
                     lp = new TrueLicenseManagementParameters(this);
             return parent.isEmpty()
@@ -366,31 +364,31 @@ implements BiosProvider,
         }
 
         @Override
-        public TrueLicenseConsumerManagerBuilder inject() {
+        public ConsumerTrueLicenseManagerBuilder inject() {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public ParentTrueLicenseConsumerManagerBuilder parent() {
-            return new ParentTrueLicenseConsumerManagerBuilder();
+        public ParentConsumerTrueLicenseManagerBuilder parent() {
+            return new ParentConsumerTrueLicenseManagerBuilder();
         }
 
-        final class ParentTrueLicenseConsumerManagerBuilder
-        extends TrueLicenseConsumerManagerBuilder {
+        final class ParentConsumerTrueLicenseManagerBuilder
+        extends ConsumerTrueLicenseManagerBuilder {
 
             @Override
-            public TrueLicenseConsumerManagerBuilder inject() {
-                return TrueLicenseConsumerManagerBuilder.this.parent(build());
+            public ConsumerTrueLicenseManagerBuilder inject() {
+                return ConsumerTrueLicenseManagerBuilder.this.parent(build());
             }
         }
     }
 
-    final class TrueLicenseVendorManagerBuilder
-    extends TrueLicenseManagerBuilder<TrueLicenseVendorManagerBuilder>
-    implements LicenseVendorManagerBuilder {
+    final class VendorTrueLicenseManagerBuilder
+    extends TrueLicenseManagerBuilder<VendorTrueLicenseManagerBuilder>
+    implements VendorLicenseManagerBuilder {
 
         @Override
-        public LicenseVendorManager build() {
+        public VendorLicenseManager build() {
             return new TrueLicenseManager<>(
                     new TrueLicenseManagementParameters(this));
         }
@@ -403,7 +401,7 @@ implements BiosProvider,
         List<Authentication> authentication = Option.none();
         List<Transformation> encryption = Option.none();
         int ftpDays;
-        List<LicenseConsumerManager> parent = Option.none();
+        List<ConsumerLicenseManager> parent = Option.none();
         List<Store> store = Option.none();
 
         public final This authentication(final Authentication authentication) {
@@ -430,7 +428,7 @@ implements BiosProvider,
 
         public final KsbaBuilder keyStore() { return new KsbaBuilder(); }
 
-        public final This parent(final LicenseConsumerManager parent) {
+        public final This parent(final ConsumerLicenseManager parent) {
             this.parent = Option.wrap(parent);
             return (This) this;
         }
@@ -559,7 +557,7 @@ implements BiosProvider,
         final List<Authentication> authentication;
         final List<Transformation> encryption;
         final int ftpDays;
-        final List<LicenseConsumerManager> parent;
+        final List<ConsumerLicenseManager> parent;
         final List<Store> store;
 
         TrueLicenseManagementParameters(final TrueLicenseManagerBuilder<?> bldr) {
@@ -622,7 +620,7 @@ implements BiosProvider,
         @Override
         public License license() { return context().license(); }
 
-        public LicenseConsumerManager parent() { return parent.get(0); }
+        public ConsumerLicenseManager parent() { return parent.get(0); }
 
         @Override
         public final RepositoryContext<Model> repositoryContext() {

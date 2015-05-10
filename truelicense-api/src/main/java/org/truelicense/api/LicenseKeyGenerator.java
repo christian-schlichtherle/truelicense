@@ -11,7 +11,7 @@ import org.truelicense.api.io.Sink;
  * Generates a license key and writes it to a given sink or returns a duplicate
  * of its encoded license bean.
  * License key generators are the product of a call to
- * {@link LicenseVendorManager#generator(License)}.
+ * {@link VendorLicenseManager#generator(License)}.
  * License key generators are stateful and so they are generally not
  * thread-safe.
  *

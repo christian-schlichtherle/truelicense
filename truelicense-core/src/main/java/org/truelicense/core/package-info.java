@@ -10,14 +10,14 @@
  * {@link org.truelicense.api.io.Store} interface.
  * License keys pass the following life cycle phases, as defined by the
  * interfaces
- * {@link org.truelicense.api.LicenseVendorManager} and
- * {@link org.truelicense.api.LicenseConsumerManager}:
+ * {@link org.truelicense.api.VendorLicenseManager} and
+ * {@link org.truelicense.api.ConsumerLicenseManager}:
  * <ol>
- * <li>{@linkplain org.truelicense.api.LicenseVendorManager#generator Generation},
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#install installation},
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#view viewing},
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#verify verification} and
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#uninstall uninstallation}
+ * <li>{@linkplain org.truelicense.api.VendorLicenseManager#generator Generation},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#install installation},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#view viewing},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#verify verification} and
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#uninstall uninstallation}
  * </ol>
  * <p>
  * A license bean is an instance of the

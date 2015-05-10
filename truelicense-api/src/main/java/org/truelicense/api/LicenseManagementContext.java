@@ -15,8 +15,8 @@ import java.nio.file.Path;
 /**
  * A context for license management.
  * Use this context to configure and build a
- * {@linkplain #vendor() license vendor manager} or a
- * {@linkplain #consumer() license consumer manager}.
+ * {@linkplain #vendor() vendor license manager} or a
+ * {@linkplain #consumer() consumer license manager}.
  *
  * @author Christian Schlichtherle
  */
@@ -27,11 +27,11 @@ extends CodecProvider,
 
     /**
      * Returns a builder for a
-     * {@linkplain LicenseConsumerManager license consumer manager}.
-     * Call its {@link LicenseConsumerManagerBuilder#build} method to build
-     * the configured license consumer manager.
+     * {@linkplain ConsumerLicenseManager consumer license manager}.
+     * Call its {@link ConsumerLicenseManagerBuilder#build} method to build
+     * the configured consumer license manager.
      */
-    LicenseConsumerManagerBuilder consumer();
+    ConsumerLicenseManagerBuilder consumer();
 
     /** Returns a new memory store. */
     Store memoryStore();
@@ -82,9 +82,9 @@ extends CodecProvider,
 
     /**
      * Returns a builder for a
-     * {@linkplain LicenseVendorManager license vendor manager}.
-     * Call its {@link LicenseVendorManagerBuilder#build} method to build
-     * the configured license vendor manager.
+     * {@linkplain VendorLicenseManager vendor license manager}.
+     * Call its {@link VendorLicenseManagerBuilder#build} method to build
+     * the configured vendor license manager.
      */
-    LicenseVendorManagerBuilder vendor();
+    VendorLicenseManagerBuilder vendor();
 }

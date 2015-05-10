@@ -21,7 +21,7 @@ public class Main {
         final ResourceConfig rc = new DefaultResourceConfig();
         rc.getClasses().add(LicenseConsumerService.class);
         rc.getClasses().add(LicenseConsumerServiceExceptionMapper.class);
-        rc.getSingletons().add(new LicenseConsumerManagerResolver());
+        rc.getSingletons().add(new ConsumerLicenseManagerResolver());
         rc.getSingletons().add(new JacksonJaxbJsonProvider());
         final HttpServer server = HttpServerFactory.create("http://localhost:9998/", rc);
         server.start();

@@ -5,7 +5,7 @@
 
 package org.truelicense.ui;
 
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.i18n.Message;
 import org.truelicense.spi.i18n.Formattable;
 
@@ -45,7 +45,7 @@ public enum LicenseWizardMessage implements Formattable {
      * @param args the formatting arguments.
      *             The first argument needs to be the licensing subject as
      *             returned by
-     *             {@link LicenseConsumerManager#subject()}.
+     *             {@link ConsumerLicenseManager#subject()}.
      */
     @Override public Message format(Object... args) {
         return Messages.message(name(), args);

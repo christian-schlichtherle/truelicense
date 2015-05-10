@@ -5,13 +5,13 @@
 
 package org.truelicense.swing;
 
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.api.io.Source;
 import org.truelicense.swing.util.Enabler;
 
 /**
- * A decorating license consumer manager which enables a component after it has
+ * A decorating consumer license manager which enables a component after it has
  * successfully called {@link #install} or {@link #uninstall} on the delegate
  * manager.
  * If the operation fails, the component's state remains unchanged.
@@ -19,14 +19,14 @@ import org.truelicense.swing.util.Enabler;
  *
  * @author Christian Schlichtherle
  */
-final class EnablingLicenseConsumerManager
-extends UpdatingLicenseConsumerManager {
+final class EnablingConsumerLicenseManager
+extends UpdatingConsumerLicenseManager {
 
     private static final long serialVersionUID = 0L;
 
-    EnablingLicenseConsumerManager(
+    EnablingConsumerLicenseManager(
             Enabler enabler,
-            LicenseConsumerManager manager) {
+            ConsumerLicenseManager manager) {
         super(manager, enabler);
     }
 

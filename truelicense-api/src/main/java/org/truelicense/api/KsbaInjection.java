@@ -37,9 +37,9 @@ extends Injection<Target> {
      * Sets the password protection which is used for accessing the private key
      * in the key entry (optional).
      * A private key entry is only required to generate license keys, that is
-     * for any {@linkplain LicenseVendorManager license vendor manager}
+     * for any {@linkplain VendorLicenseManager vendor license manager}
      * and for any
-     * {@linkplain LicenseConsumerManager license consumer manager}
+     * {@linkplain ConsumerLicenseManager consumer license manager}
      * for a free trial period.
      * If this method is not called then the
      * {@linkplain #storeProtection(PasswordProtection) key store protection} is

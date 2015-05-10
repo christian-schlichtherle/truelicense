@@ -22,15 +22,15 @@ trait TestContext[Model <: AnyRef]
   extends CodecProvider
   with RepositoryContextProvider[Model] {
 
-  def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
+  def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
-  def chainedVendorManager: LicenseVendorManager
+  def chainedVendorManager: VendorLicenseManager
 
   override final def codec = managementContext.codec
 
-  final def consumerManager(): LicenseConsumerManager = consumerManager(store)
+  final def consumerManager(): ConsumerLicenseManager = consumerManager(store)
 
-  def consumerManager(store: Store): LicenseConsumerManager
+  def consumerManager(store: Store): ConsumerLicenseManager
 
   final def datePlusDays(date: Date, days: Int) = {
     val cal = getInstance
@@ -51,7 +51,7 @@ trait TestContext[Model <: AnyRef]
     map
   }
 
-  def ftpConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
+  def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
   def license = {
     val now = new Date
@@ -79,5 +79,5 @@ trait TestContext[Model <: AnyRef]
 
   def transformation: Transformation = IdentityTransformation
 
-  def vendorManager: LicenseVendorManager
+  def vendorManager: VendorLicenseManager
 }

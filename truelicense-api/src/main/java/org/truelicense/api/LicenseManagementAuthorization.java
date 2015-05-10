@@ -15,7 +15,7 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if creating a
-     * {@linkplain LicenseVendorManager#generator license key generator}
+     * {@linkplain VendorLicenseManager#generator license key generator}
      * is authorized.
      * This method is normally only called in a license vendor application.
      * However, in a license consumer application, this method gets called if
@@ -31,7 +31,7 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if
-     * {@linkplain LicenseConsumerManager#install installing}
+     * {@linkplain ConsumerLicenseManager#install installing}
      * a license key is authorized.
      *
      * @param schema the licensing schema.
@@ -40,7 +40,7 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if
-     * {@linkplain LicenseConsumerManager#verify verifying}
+     * {@linkplain ConsumerLicenseManager#verify verifying}
      * a license key is authorized.
      *
      * @param schema the licensing schema.
@@ -49,7 +49,7 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if
-     * {@linkplain LicenseConsumerManager#view viewing}
+     * {@linkplain ConsumerLicenseManager#view viewing}
      * a license key is authorized.
      *
      * @param schema the licensing schema.
@@ -58,7 +58,7 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if
-     * {@linkplain LicenseConsumerManager#uninstall uninstalling}
+     * {@linkplain ConsumerLicenseManager#uninstall uninstalling}
      * a license key is authorized.
      *
      * @param schema the licensing schema.

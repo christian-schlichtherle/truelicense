@@ -12,8 +12,8 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <composite:interface componentType="welcomeBean" expert="true"
                          shortDescription="Welcomes the user.">
-        <composite:attribute name="manager" type="org.truelicense.api.LicenseConsumerManager" required="true"
-                             shortDescription="The license consumer manager."/>
+        <composite:attribute name="manager" type="org.truelicense.api.ConsumerLicenseManager" required="true"
+                             shortDescription="The consumer license manager."/>
         <composite:attribute name="uninstallable" type="java.lang.Boolean" default="false"
                              shortDescription="Whether or not the license key shall be uninstallable. Defaults to false."/>
     </composite:interface>

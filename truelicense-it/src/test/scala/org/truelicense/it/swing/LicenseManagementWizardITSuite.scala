@@ -31,7 +31,7 @@ abstract class LicenseManagementWizardITSuite
 
   val laf = UIManager.getLookAndFeel
   var outputLicense: License = _
-  var manager: LicenseConsumerManager = _
+  var manager: ConsumerLicenseManager = _
   var wizard: LicenseManagementWizard = _
   var dialog: JDialogOperator = _
   var cancelButton, backButton, nextButton: AbstractButtonOperator = _
@@ -74,7 +74,7 @@ abstract class LicenseManagementWizardITSuite
   }
 
   "A license wizard" when {
-    "using a license consumer manager with an installed license key" when {
+    "using a consumer license manager with an installed license key" when {
       "showing" should {
         "be modal" in {
           dialog.isModal should equal (true)
@@ -193,7 +193,7 @@ abstract class LicenseManagementWizardITSuite
 /** @author Christian Schlichtherle */
 object LicenseManagementWizardITSuite {
 
-  private def newLicenseManagementWizard(manager: LicenseConsumerManager) = {
+  private def newLicenseManagementWizard(manager: ConsumerLicenseManager) = {
     val wizard = new LicenseManagementWizard(manager)
     wizard.isUninstallButtonVisible should equal (false)
     wizard.setUninstallButtonVisible(true)

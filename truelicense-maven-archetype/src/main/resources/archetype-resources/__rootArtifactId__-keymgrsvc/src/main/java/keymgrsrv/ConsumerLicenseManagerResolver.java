@@ -6,15 +6,15 @@ package ${package}.keymgrsvc;
 
 import ${package}.keymgr.LicenseManager;
 import javax.ws.rs.ext.*;
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 
 /**
  * @author Christian Schlichtherle
  */
 @Provider
-public final class LicenseConsumerManagerResolver
-implements ContextResolver<LicenseConsumerManager> {
-    @Override public LicenseConsumerManager getContext(Class<?> ignored) {
+public final class ConsumerLicenseManagerResolver
+implements ContextResolver<ConsumerLicenseManager> {
+    @Override public ConsumerLicenseManager getContext(Class<?> ignored) {
         return LicenseManager.get();
     }
 }

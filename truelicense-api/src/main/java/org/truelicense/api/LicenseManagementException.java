@@ -9,11 +9,11 @@ import java.security.GeneralSecurityException;
 
 /**
  * Indicates an issue when
- * {@linkplain LicenseVendorManager#generator generating},
- * {@linkplain LicenseConsumerManager#install installing},
- * {@linkplain LicenseConsumerManager#view viewing},
- * {@linkplain LicenseConsumerManager#verify verifying} or
- * {@linkplain LicenseConsumerManager#uninstall uninstalling} a license key.
+ * {@linkplain VendorLicenseManager#generator generating},
+ * {@linkplain ConsumerLicenseManager#install installing},
+ * {@linkplain ConsumerLicenseManager#view viewing},
+ * {@linkplain ConsumerLicenseManager#verify verifying} or
+ * {@linkplain ConsumerLicenseManager#uninstall uninstalling} a license key.
  *
  * @author Christian Schlichtherle
  */

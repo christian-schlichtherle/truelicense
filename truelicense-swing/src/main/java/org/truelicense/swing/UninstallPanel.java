@@ -7,7 +7,8 @@ package org.truelicense.swing;
 
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
-import org.truelicense.api.LicenseConsumerManager;
+
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.i18n.Message;
 import org.truelicense.swing.util.ComponentEnabler;
 import org.truelicense.swing.util.Enabler;
@@ -24,7 +25,7 @@ final class UninstallPanel extends LicenseWorkerPanel {
 
     private static final long serialVersionUID = 1L;
 
-    private final LicenseConsumerManager manager;
+    private final ConsumerLicenseManager manager;
 
     UninstallPanel(final LicenseManagementWizard wizard) {
         super(wizard);
@@ -33,14 +34,14 @@ final class UninstallPanel extends LicenseWorkerPanel {
 
             @Override protected JButton component() { return uninstallButton; }
         };
-        this.manager = new EnablingLicenseConsumerManager(wizard.nextButtonProxy(),
-                new DisablingLicenseConsumerManager(uninstallButtonProxy,
+        this.manager = new EnablingConsumerLicenseManager(wizard.nextButtonProxy(),
+                new DisablingConsumerLicenseManager(uninstallButtonProxy,
                         wizard.manager()));
         initComponents();
     }
 
     @Override
-    LicenseConsumerManager manager() { return manager; }
+    ConsumerLicenseManager manager() { return manager; }
 
     @Override
     public LicenseWizardState nextState() {

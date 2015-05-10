@@ -5,8 +5,8 @@
 
 package org.truelicense.jax.rs;
 
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.License;
-import org.truelicense.api.LicenseConsumerManager;
 import org.truelicense.api.LicenseManagementException;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.spi.io.MemoryStore;
@@ -41,24 +41,24 @@ public final class LicenseConsumerService {
 
     private static final QName subject = new QName(SUBJECT);
 
-    private final LicenseConsumerManager manager;
+    private final ConsumerLicenseManager manager;
 
     /**
      * Constructs a license consumer service.
-     * This constructor immediately resolves the license consumer manager by
-     * looking up a {@code ContextResolver<LicenseConsumerManager>} in the
+     * This constructor immediately resolves the consumer license manager by
+     * looking up a {@code ContextResolver<ConsumerLicenseManager>} in the
      * given providers.
      * You can provide a context resolver for this class like this:
      * <pre>{@code
      * package ...;
      *
      * import javax.jax.rs.ext.*;
-     * import org.truelicense.api.LicenseConsumerManager;
+     * import org.truelicense.api.ConsumerLicenseManager;
      *
      * &#64;Provider
      * public class LicenseConsumerManagerResolver
-     * implements ContextResolver<LicenseConsumerManager> {
-     *     &#64;Override public LicenseConsumerManager getContext(Class<?> type) {
+     * implements ContextResolver<ConsumerLicenseManager> {
+     *     &#64;Override public ConsumerLicenseManager getContext(Class<?> type) {
      *         return LicenseManager.get();
      *     }
      * }
@@ -73,12 +73,12 @@ public final class LicenseConsumerService {
         this(manager(providers));
     }
 
-    private static LicenseConsumerManager manager(final Providers providers) {
-        final ContextResolver<LicenseConsumerManager>
-                resolver = providers.getContextResolver(LicenseConsumerManager.class, WILDCARD_TYPE);
+    private static ConsumerLicenseManager manager(final Providers providers) {
+        final ContextResolver<ConsumerLicenseManager>
+                resolver = providers.getContextResolver(ConsumerLicenseManager.class, WILDCARD_TYPE);
         if (null == resolver)
-            throw new IllegalArgumentException("No @Provider annotated ContextResolver<LicenseConsumerManager> available.");
-        return resolver.getContext(LicenseConsumerManager.class);
+            throw new IllegalArgumentException("No @Provider annotated ContextResolver<ConsumerLicenseManager> available.");
+        return resolver.getContext(ConsumerLicenseManager.class);
     }
 
     /**
@@ -86,10 +86,10 @@ public final class LicenseConsumerService {
      * This is the preferable constructor with Dependency Injection frameworks,
      * e.g. CDI, Spring or Guice.
      *
-     * @param manager the license consumer manager.
+     * @param manager the consumer license manager.
      */
     @Inject
-    public LicenseConsumerService(final LicenseConsumerManager manager) {
+    public LicenseConsumerService(final ConsumerLicenseManager manager) {
         this.manager = Objects.requireNonNull(manager);
     }
 

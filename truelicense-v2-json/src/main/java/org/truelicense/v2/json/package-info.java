@@ -11,23 +11,20 @@
  * {@link org.truelicense.api.io.Store} interface.
  * License keys pass the following life cycle phases:
  * <ol>
- * <li>{@linkplain org.truelicense.api.LicenseVendorManager#generator Generation},
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#install installation},
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#view viewing},
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#verify verification} and
- * <li>{@linkplain org.truelicense.api.LicenseConsumerManager#uninstall uninstallation}
+ * <li>{@linkplain org.truelicense.api.VendorLicenseManager#generator Generation},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#install installation},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#view viewing},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#verify verification} and
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#uninstall uninstallation}
  * </ol>
  * <p>
  * ... as defined by the
- * {@link org.truelicense.api.LicenseVendorManager} and the
- * {@link org.truelicense.api.LicenseConsumerManager} interfaces.
- * A Free Trial Period (FTP) is
- * {@linkplain org.truelicense.api.LicenseConsumerContext#ftpManager configurable}
- * with a license consumer manager in order to ease the conversion of prospects
- * to customers.
- * License consumer managers can also get
- * {@linkplain org.truelicense.api.LicenseConsumerContext#chainedManager chained}
- * in order to unlock application features based on the purchased license keys.
+ * {@link org.truelicense.api.VendorLicenseManager} and the
+ * {@link org.truelicense.api.ConsumerLicenseManager} interfaces.
+ * A Free Trial Period (FTP) is configurable with a consumer license manager in
+ * order to ease the conversion of prospects to customers.
+ * Consumer license managers can also get chained in order to unlock application
+ * features based on the type of the purchased license key.
  * <p>
  * A license is an instance of the {@link org.truelicense.api.License}
  * class.
@@ -65,7 +62,7 @@
  * <p>
  * Applications use the
  * {@link org.truelicense.v2.json.V2JsonLicenseManagementContext} class as
- * their starting point for configuring a license vendor or consumer manager.
+ * their starting point for configuring a vendor or consumer license manager.
  * This class can get subclassed to customize special aspects, such as
  * performing additional license validation steps, providing an authoritative
  * clock et al.

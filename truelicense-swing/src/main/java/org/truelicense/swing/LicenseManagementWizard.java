@@ -5,7 +5,7 @@
 
 package org.truelicense.swing;
 
-import org.truelicense.api.LicenseConsumerManager;
+import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.swing.util.ComponentEnabler;
 import org.truelicense.swing.util.EnhancedDialog;
 import org.truelicense.swing.wizard.SwingWizardController;
@@ -35,25 +35,25 @@ public final class LicenseManagementWizard {
             SwingWizardController.ReturnCode.cancel.ordinal();
 
     private final LicenseWizardController controller;
-    private final LicenseConsumerManager manager;
+    private final ConsumerLicenseManager manager;
 
     /**
      * Constructs a license wizard.
      *
-     * @param manager the license consumer manager.
+     * @param manager the consumer license manager.
      */
-    public LicenseManagementWizard(LicenseConsumerManager manager) {
+    public LicenseManagementWizard(ConsumerLicenseManager manager) {
         this(manager, (Frame) null);
     }
 
     /**
      * Constructs a license wizard for the given owner dialog.
      *
-     * @param manager the license consumer manager.
+     * @param manager the consumer license manager.
      * @param owner the owner dialog.
      */
     public LicenseManagementWizard(
-            LicenseConsumerManager manager,
+            ConsumerLicenseManager manager,
             Dialog owner) {
         this(new EnhancedDialog(owner), manager);
     }
@@ -61,11 +61,11 @@ public final class LicenseManagementWizard {
     /**
      * Constructs a license wizard for the given owner frame.
      *
-     * @param manager the license consumer manager.
+     * @param manager the consumer license manager.
      * @param owner the owner frame.
      */
     public LicenseManagementWizard(
-            LicenseConsumerManager manager,
+            ConsumerLicenseManager manager,
             Frame owner) {
         this(new EnhancedDialog(owner), manager);
     }
@@ -73,7 +73,7 @@ public final class LicenseManagementWizard {
     @SuppressWarnings("LeakingThisInConstructor")
     private LicenseManagementWizard(
             final EnhancedDialog dialog,
-            final LicenseConsumerManager manager) {
+            final ConsumerLicenseManager manager) {
         dialog.setTitle(LicenseWizardMessage.wizard_title
                 .format(manager.context().subject()).toString());
         this.manager = manager;
@@ -86,7 +86,7 @@ public final class LicenseManagementWizard {
 
     ComponentEnabler nextButtonProxy() { return controller.nextButtonProxy(); }
 
-    LicenseConsumerManager manager() { return manager; }
+    ConsumerLicenseManager manager() { return manager; }
 
     /**
      * Returns {@code true} if and only if the uninstall-button is visible on

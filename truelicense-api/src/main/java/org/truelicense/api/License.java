@@ -25,9 +25,9 @@ import static java.util.Calendar.getInstance;
  * All properties are set to {@code null} by default.
  * However, {@linkplain LicenseValidation#validate license validation} may fail
  * if some properties are {@code null} when
- * {@linkplain LicenseVendorManager#generator generating},
- * {@linkplain LicenseConsumerManager#install installing} or
- * {@linkplain LicenseConsumerManager#verify verifying}
+ * {@linkplain VendorLicenseManager#generator generating},
+ * {@linkplain ConsumerLicenseManager#install installing} or
+ * {@linkplain ConsumerLicenseManager#verify verifying}
  * license keys.
  * <p>
  * There are two options for extending a license with custom properties:
@@ -237,7 +237,7 @@ public class License {
      * Note that this computation depends on the system clock unless the
      * property {@code issued} is set.
      * This is not a security issue because this method is neither used for
-     * license initialization nor validation by a license consumer manager.
+     * license initialization nor validation by a consumer license manager.
      *
      * @param days the validity period in (24 hour) days from now.
      */

@@ -11,18 +11,18 @@ import org.truelicense.api.io.Source;
 import java.util.Objects;
 
 /**
- * A decorator for a license consumer manager.
+ * A decorator for a consumer license manager.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-abstract class DecoratingLicenseConsumerManager
-implements LicenseConsumerManager {
+abstract class DecoratingConsumerLicenseManager
+implements ConsumerLicenseManager {
 
     @SuppressWarnings({"PackageVisibleField"})
-    protected final LicenseConsumerManager manager;
+    protected final ConsumerLicenseManager manager;
 
-    protected DecoratingLicenseConsumerManager(final LicenseConsumerManager manager) {
+    protected DecoratingConsumerLicenseManager(final ConsumerLicenseManager manager) {
         this.manager = Objects.requireNonNull(manager);
     }
 
