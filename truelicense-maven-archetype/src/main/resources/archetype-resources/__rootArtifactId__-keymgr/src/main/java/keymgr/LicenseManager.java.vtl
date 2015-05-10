@@ -259,8 +259,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
 
     abstract ConsumerLicenseManager newManager();
 
-    final PasswordProtection protection(long[] l) {
-        return _context.protection(new ObfuscatedString(l));
+    final PasswordProtection protection(long[] obfuscated) {
+        return _context.protection(obfuscated);
     }
 
     @Override

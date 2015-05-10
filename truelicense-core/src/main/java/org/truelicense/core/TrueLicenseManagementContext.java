@@ -282,6 +282,16 @@ implements BiosProvider,
     public PasswordPolicy policy() { return Passwords.newPasswordPolicy(); }
 
     /**
+     * Returns a password protection for the given representation of an
+     * obfuscated string.
+     * Calling this method creates a new {@link ObfuscatedString} from the given
+     * array and forwards the call to {@link #protection(ObfuscatedString)}.
+     */
+    public final PasswordProtection protection(long[] obfuscated) {
+        return protection(new ObfuscatedString(obfuscated));
+    }
+
+    /**
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link TrueLicenseManagementContext}
@@ -289,7 +299,7 @@ implements BiosProvider,
      * {@link Passwords#newPasswordProtection(ObfuscatedString) Passwords.newPasswordProtecetion(os)}.
      */
     @Override
-    public PasswordProtection protection(ObfuscatedString os) {
+    public final PasswordProtection protection(ObfuscatedString os) {
         return Passwords.newPasswordProtection(os);
     }
 
