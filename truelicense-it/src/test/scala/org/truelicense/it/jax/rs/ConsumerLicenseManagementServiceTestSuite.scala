@@ -8,17 +8,20 @@ package org.truelicense.it.jax.rs
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 import org.truelicense.it.core.TestContext
-import org.truelicense.jax.rs.{LicenseConsumerService, LicenseConsumerServiceException}
+import org.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceException}
 
 /** @author Christian Schlichtherle */
-abstract class LicenseConsumerServiceTestSuite
+abstract class ConsumerLicenseManagementServiceTestSuite
 extends WordSpec { this: TestContext[_] =>
 
-  "A license consumer service" when {
+  "A consumer license management service" when {
     "using a consumer license manager" when {
-      lazy val manager = consumerManager // TODO: Why lazy val?
+      // These must be `lazy vals` or otherwise you will get a
+      // `NullPointerException` from the `store` method of the mixed in
+      // `TestContext` class.
+      lazy val manager = consumerManager()
       lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
-      lazy val service = new LicenseConsumerService(manager)
+      lazy val service = new ConsumerLicenseManagementService(manager)
 
       "no license key is installed" should {
         "return its subject" in {
@@ -34,11 +37,11 @@ extends WordSpec { this: TestContext[_] =>
         }
 
         "fail to view the license key in" in {
-          intercept[LicenseConsumerServiceException] (service view false)
+          intercept[ConsumerLicenseManagementServiceException] (service view false)
         }
 
         "fail to verify and view the license key in" in {
-          intercept[LicenseConsumerServiceException] (service view true)
+          intercept[ConsumerLicenseManagementServiceException] (service view true)
         }
       }
 
@@ -62,11 +65,11 @@ extends WordSpec { this: TestContext[_] =>
         }
 
         "fail to view the license key in" in {
-          intercept[LicenseConsumerServiceException] (service view false)
+          intercept[ConsumerLicenseManagementServiceException] (service view false)
         }
 
         "fail to verify and view the license key in" in {
-          intercept[LicenseConsumerServiceException] (service view true)
+          intercept[ConsumerLicenseManagementServiceException] (service view true)
         }
       }
     }

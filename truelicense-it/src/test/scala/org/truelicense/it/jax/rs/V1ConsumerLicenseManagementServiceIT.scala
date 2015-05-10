@@ -5,11 +5,11 @@
 
 package org.truelicense.it.jax.rs
 
-import org.truelicense.it.v2.xml.V2XmlTestContext
+import org.truelicense.it.v1.V1TestContext
 
 /** @author Christian Schlichtherle */
-class V2XmlLicenseConsumerServiceIT
-extends LicenseConsumerServiceITSuite
-with V2XmlTestContext {
+class V1ConsumerLicenseManagementServiceIT
+extends ConsumerLicenseManagementServiceITSuite
+with V1TestContext {
   override def extraData = null
 }

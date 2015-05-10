@@ -17,7 +17,7 @@ import java.security.GeneralSecurityException;
  * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
  */
-public final class LicenseConsumerServiceException
+public final class ConsumerLicenseManagementServiceException
 extends GeneralSecurityException {
 
     private static final long serialVersionUID = 0L;
@@ -25,14 +25,14 @@ extends GeneralSecurityException {
     private final int status;
 
     /**
-     * Constructs a license consumer service exception with the given HTTP
+     * Constructs a consumer license management service exception with the given HTTP
      * status code and its causing license management exception.
      *
      * @param status the HTTP status code.
      * @param nullableCause the nullable causing license management exception.
      * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a>
      */
-    LicenseConsumerServiceException(
+    ConsumerLicenseManagementServiceException(
             final int status,
             final LicenseManagementException nullableCause) {
         super(null == nullableCause ? null : nullableCause.getMessage(), nullableCause);

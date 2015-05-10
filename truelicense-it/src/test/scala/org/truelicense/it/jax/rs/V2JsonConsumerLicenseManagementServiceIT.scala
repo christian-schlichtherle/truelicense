@@ -6,11 +6,10 @@
 package org.truelicense.it.jax.rs
 
 import org.truelicense.it.v2.json.V2JsonTestContext
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
-class V2JsonLicenseConsumerServiceTest
-extends LicenseConsumerServiceTestSuite
-with V2JsonTestContext
+class V2JsonConsumerLicenseManagementServiceIT
+extends ConsumerLicenseManagementServiceITSuite
+with V2JsonTestContext {
+  override def extraData = null
+}

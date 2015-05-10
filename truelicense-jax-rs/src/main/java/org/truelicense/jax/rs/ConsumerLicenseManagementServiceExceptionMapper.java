@@ -22,7 +22,7 @@ import java.util.Objects;
 import static javax.ws.rs.core.MediaType.*;
 
 /**
- * Maps a license consumer service exception to an HTTP response.
+ * Maps a consumer license management service exception to an HTTP response.
  * This class is immutable.
  *
  * @since  TrueLicense 2.3
@@ -30,8 +30,8 @@ import static javax.ws.rs.core.MediaType.*;
  */
 @Provider
 @Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML, TEXT_PLAIN })
-public final class LicenseConsumerServiceExceptionMapper
-implements ExceptionMapper<LicenseConsumerServiceException> {
+public final class ConsumerLicenseManagementServiceExceptionMapper
+implements ExceptionMapper<ConsumerLicenseManagementServiceException> {
 
     @Obfuscate private static final String MESSAGE = "message";
 
@@ -39,11 +39,11 @@ implements ExceptionMapper<LicenseConsumerServiceException> {
 
     private final HttpHeaders headers;
 
-    public LicenseConsumerServiceExceptionMapper(final @Context HttpHeaders headers) {
+    public ConsumerLicenseManagementServiceExceptionMapper(final @Context HttpHeaders headers) {
         this.headers = Objects.requireNonNull(headers);
     }
 
-    @Override public Response toResponse(final LicenseConsumerServiceException ex) {
+    @Override public Response toResponse(final ConsumerLicenseManagementServiceException ex) {
         final String msg = ex.getMessage();
         final MediaType mt = headers.getMediaType();
         final ResponseBuilder rb = Response.status(ex.getStatus());

@@ -19,8 +19,8 @@ public class Main {
 
     public static void main(final String[] args) throws IOException {
         final ResourceConfig rc = new DefaultResourceConfig();
-        rc.getClasses().add(LicenseConsumerService.class);
-        rc.getClasses().add(LicenseConsumerServiceExceptionMapper.class);
+        rc.getClasses().add(ConsumerLicenseManagementService.class);
+        rc.getClasses().add(ConsumerLicenseManagementServiceExceptionMapper.class);
         rc.getSingletons().add(new ConsumerLicenseManagerResolver());
         rc.getSingletons().add(new JacksonJaxbJsonProvider());
         final HttpServer server = HttpServerFactory.create("http://localhost:9998/", rc);

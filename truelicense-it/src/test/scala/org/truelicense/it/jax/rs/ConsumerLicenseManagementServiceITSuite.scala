@@ -20,7 +20,7 @@ import org.truelicense.it.core.TestContext
 import org.truelicense.jax.rs._
 
 /** @author Christian Schlichtherle */
-abstract class LicenseConsumerServiceITSuite
+abstract class ConsumerLicenseManagementServiceITSuite
 extends JerseyTest { this: TestContext[_] =>
 
   final lazy val manager = consumerManager
@@ -105,8 +105,8 @@ extends JerseyTest { this: TestContext[_] =>
 
   private def resourceConfig: ResourceConfig = {
     val rc = new DefaultResourceConfig
-    rc.getClasses.add(classOf[LicenseConsumerService])
-    rc.getClasses.add(classOf[LicenseConsumerServiceExceptionMapper])
+    rc.getClasses.add(classOf[ConsumerLicenseManagementService])
+    rc.getClasses.add(classOf[ConsumerLicenseManagementServiceExceptionMapper])
     rc.getSingletons.add(new LicenseConsumerManagerResolver)
     rc.getSingletons.add(new JacksonJaxbJsonProvider())
     rc

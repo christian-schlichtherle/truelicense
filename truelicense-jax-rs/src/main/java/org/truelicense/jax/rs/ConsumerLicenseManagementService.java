@@ -31,7 +31,7 @@ import static javax.ws.rs.core.MediaType.*;
  */
 @Path("license")
 @Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML })
-public final class LicenseConsumerService {
+public final class ConsumerLicenseManagementService {
 
     private static final int BAD_REQUEST_STATUS_CODE = 400;
     private static final int PAYMENT_REQUIRED_STATUS_CODE = 402;
@@ -44,7 +44,7 @@ public final class LicenseConsumerService {
     private final ConsumerLicenseManager manager;
 
     /**
-     * Constructs a license consumer service.
+     * Constructs a consumer license management service.
      * This constructor immediately resolves the consumer license manager by
      * looking up a {@code ContextResolver<ConsumerLicenseManager>} in the
      * given providers.
@@ -69,7 +69,7 @@ public final class LicenseConsumerService {
      *
      * @param providers the providers.
      */
-    public LicenseConsumerService(@Context Providers providers) {
+    public ConsumerLicenseManagementService(@Context Providers providers) {
         this(manager(providers));
     }
 
@@ -82,14 +82,14 @@ public final class LicenseConsumerService {
     }
 
     /**
-     * Constructs a license consumer service.
+     * Constructs a consumer license management service.
      * This is the preferable constructor with Dependency Injection frameworks,
      * e.g. CDI, Spring or Guice.
      *
      * @param manager the consumer license manager.
      */
     @Inject
-    public LicenseConsumerService(final ConsumerLicenseManager manager) {
+    public ConsumerLicenseManagementService(final ConsumerLicenseManager manager) {
         this.manager = Objects.requireNonNull(manager);
     }
 
@@ -112,42 +112,42 @@ public final class LicenseConsumerService {
 
     @POST
     public void install(final byte[] key)
-    throws LicenseConsumerServiceException {
+    throws ConsumerLicenseManagementServiceException {
         final MemoryStore store = new MemoryStore();
         store.data(key);
         try {
             manager.install(store);
         } catch (LicenseManagementException ex) {
-            throw new LicenseConsumerServiceException(BAD_REQUEST_STATUS_CODE, ex);
+            throw new ConsumerLicenseManagementServiceException(BAD_REQUEST_STATUS_CODE, ex);
         }
     }
 
     @GET
     public License view(
             final @QueryParam("verify") @DefaultValue("false") boolean verify)
-    throws LicenseConsumerServiceException {
+    throws ConsumerLicenseManagementServiceException {
         final License license;
         try {
             license = manager.view();
         } catch (LicenseManagementException ex) {
-            throw new LicenseConsumerServiceException(NOT_FOUND_STATUS_CODE, ex);
+            throw new ConsumerLicenseManagementServiceException(NOT_FOUND_STATUS_CODE, ex);
         }
         if (verify) {
             try {
                 manager.verify();
             } catch (LicenseManagementException ex) {
-                throw new LicenseConsumerServiceException(PAYMENT_REQUIRED_STATUS_CODE, ex);
+                throw new ConsumerLicenseManagementServiceException(PAYMENT_REQUIRED_STATUS_CODE, ex);
             }
         }
         return license;
     }
 
     @DELETE
-    public void uninstall() throws LicenseConsumerServiceException {
+    public void uninstall() throws ConsumerLicenseManagementServiceException {
         try {
             manager.uninstall();
         } catch (LicenseManagementException ex) {
-            throw new LicenseConsumerServiceException(NOT_FOUND_STATUS_CODE, ex);
+            throw new ConsumerLicenseManagementServiceException(NOT_FOUND_STATUS_CODE, ex);
         }
     }
 }
