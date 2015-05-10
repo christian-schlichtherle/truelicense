@@ -19,7 +19,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jceks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .parent(parent)
       .storeIn(store)
@@ -31,12 +31,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def chainedVendorManager = {
     val vm = managementContext.vendor
       .encryption
-        .password(test1234)
+        .protection(test1234)
         .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jceks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .build
     require(vm.context eq managementContext)
@@ -46,12 +46,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def consumerManager(store: Store) = {
     val cm = managementContext.consumer
       .encryption
-        .password(test1234)
+        .protection(test1234)
         .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "public.jceks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .storeIn(store)
       .build
@@ -65,7 +65,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jceks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .parent(parent)
       .storeIn(store)
@@ -77,12 +77,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def vendorManager = {
     val vm = managementContext.vendor
       .encryption
-        .password(test1234)
+        .protection(test1234)
         .inject
       .keyStore
         .alias("mykey")
         .loadFromResource(prefix + "private.jceks")
-        .storePassword(test1234)
+        .storeProtection(test1234)
         .inject
       .build
     require(vm.context eq managementContext)

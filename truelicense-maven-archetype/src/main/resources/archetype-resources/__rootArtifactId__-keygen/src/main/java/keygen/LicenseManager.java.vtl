@@ -18,7 +18,7 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(obfuscate $string)password($java.obfuscatedString($string).replace("org.truelicense.obfuscate.", ""))#end
+#macro(protection $string)$java.obfuscatedString($string).replaceAll("new org.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
 #macro(new $class $interface)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -84,15 +84,15 @@ public enum LicenseManager implements LicenseVendorManager {
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .password(#obfuscate($editionPbePassword))
+                        .protection(#protection($editionPbePassword))
                         .inject()
                     .keyStore()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
-                        .keyPassword(#obfuscate($editionKeyEntryPassword))
+                        .keyProtection(#protection($editionKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($privateKeyStorePassword))
+                        .storeProtection(#protection($privateKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -185,8 +185,8 @@ public enum LicenseManager implements LicenseVendorManager {
 
     abstract LicenseVendorManager newManager();
 
-    final PasswordProtection password(ObfuscatedString os) {
-        return _context.protection(os);
+    final PasswordProtection protection(long[] l) {
+        return _context.protection(new ObfuscatedString(l));
     }
 
     @Override

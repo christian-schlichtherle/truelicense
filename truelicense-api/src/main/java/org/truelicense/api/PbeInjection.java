@@ -25,10 +25,10 @@ extends Injection<Target> {
     PbeInjection<Target> algorithm(String algorithm);
 
     /**
-     * Sets the password for generating a secret key for
-     * encryption/decryption.
+     * Sets the password protection which is used for generating a secret key
+     * for encryption/decryption.
      *
      * @return {@code this}
      */
-    PbeInjection<Target> password(PasswordProtection password);
+    PbeInjection<Target> protection(PasswordProtection protection);
 }

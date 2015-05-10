@@ -34,20 +34,20 @@ extends Injection<Target> {
     KsbaInjection<Target> alias(String alias);
 
     /**
-     * Sets the password for accessing the private key in the key
-     * entry (optional).
+     * Sets the password protection which is used for accessing the private key
+     * in the key entry (optional).
      * A private key entry is only required to generate license keys, that is
      * for any {@linkplain LicenseVendorManager license vendor manager}
      * and for any
      * {@linkplain LicenseConsumerManager license consumer manager}
      * for a free trial period.
      * If this method is not called then the
-     * {@linkplain #storePassword(PasswordProtection) key store
-     * password} is used instead.
+     * {@linkplain #storeProtection(PasswordProtection) key store protection} is
+     * used instead.
      *
      * @return {@code this}
      */
-    KsbaInjection<Target> keyPassword(PasswordProtection keyPassword);
+    KsbaInjection<Target> keyProtection(PasswordProtection keyProtection);
 
     /**
      * Sets the source for the key store (optional).
@@ -64,12 +64,12 @@ extends Injection<Target> {
     KsbaInjection<Target> loadFromResource(String name);
 
     /**
-     * Sets the password protection for verifying the integrity of the key
-     * store.
+     * Sets the password protection which is used for verifying the integrity
+     * of the key store.
      *
      * @return {@code this}
      */
-    KsbaInjection<Target> storePassword(PasswordProtection storePassword);
+    KsbaInjection<Target> storeProtection(PasswordProtection storeProtection);
 
     /**
      * Sets the type of the key store,

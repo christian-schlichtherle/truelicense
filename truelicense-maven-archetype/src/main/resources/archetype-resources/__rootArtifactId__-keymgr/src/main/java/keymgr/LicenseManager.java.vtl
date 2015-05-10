@@ -19,7 +19,7 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
-#macro(obfuscate $string)password($java.obfuscatedString($string).replace("org.truelicense.obfuscate.", ""))#end
+#macro(protection $string)$java.obfuscatedString($string).replaceAll("new org.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
 #macro(new $class $interface)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -101,21 +101,21 @@ public enum LicenseManager implements LicenseConsumerManager {
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
-                        #end
-        .password(#obfuscate($editionPbePassword))
-        .inject()
+#end
+                        .protection(#protection($editionPbePassword))
+                        .inject()
 #end
                     .keyStore()
                         .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($publicKeyStorePassword))
+                        .storeProtection(#protection($publicKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $publicKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $publicKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
 #end
                         .inject()
-                #if(0 < $foreach.index)
-                        .parent(LicenseManager.$parentEdition)
+#if(0 < $foreach.index)
+                    .parent(LicenseManager.$parentEdition)
 #end
                     .storeIn${preferencesType}Preferences(Main.class) // must be a non-obfuscated class!
                     .build();
@@ -156,10 +156,10 @@ public enum LicenseManager implements LicenseConsumerManager {
                     .keyStore()
                         .alias($ftpKeyEntryAlias)
 #if($ftpKeyEntryPassword && $ftpKeyEntryPassword != $ftpKeyStorePassword)
-        .keyPassword(#obfuscate($ftpKeyEntryPassword))
-        #end
-                    .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($ftpKeyStorePassword))
+                        .keyProtection(#protection($ftpKeyEntryPassword))
+#end
+                        .loadFromResource(KEY_STORE_FILE)
+                        .storeProtection(#protection($ftpKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $ftpKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $ftpKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -259,8 +259,8 @@ public enum LicenseManager implements LicenseConsumerManager {
 
     abstract LicenseConsumerManager newManager();
 
-    final PasswordProtection password(ObfuscatedString os) {
-        return _context.protection(os);
+    final PasswordProtection protection(long[] l) {
+        return _context.protection(new ObfuscatedString(l));
     }
 
     @Override

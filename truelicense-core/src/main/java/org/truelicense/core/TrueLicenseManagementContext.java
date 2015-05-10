@@ -458,9 +458,9 @@ implements BiosProvider,
 
             List<String> algorithm = Option.none();
             List<String> alias = Option.none();
-            List<PasswordProtection> keyPassword = Option.none();
+            List<PasswordProtection> keyProtection = Option.none();
             List<Source> source = Option.none();
-            List<PasswordProtection> storePassword = Option.none();
+            List<PasswordProtection> storeProtection = Option.none();
             List<String> storeType = Option.none();
 
             @Override
@@ -480,12 +480,12 @@ implements BiosProvider,
 
             @Override
             public Authentication build() {
-                return ksba(algorithm, alias.get(0), keyPassword, source, storeType, storePassword.get(0));
+                return ksba(algorithm, alias.get(0), keyProtection, source, storeType, storeProtection.get(0));
             }
 
             @Override
-            public KsbaBuilder keyPassword(final PasswordProtection keyPassword) {
-                this.keyPassword = Option.wrap(keyPassword);
+            public KsbaBuilder keyProtection(final PasswordProtection keyProtection) {
+                this.keyProtection = Option.wrap(keyProtection);
                 return this;
             }
 
@@ -501,8 +501,8 @@ implements BiosProvider,
             }
 
             @Override
-            public KsbaBuilder storePassword(final PasswordProtection storePassword) {
-                this.storePassword = Option.wrap(storePassword);
+            public KsbaBuilder storeProtection(final PasswordProtection storeProtection) {
+                this.storeProtection = Option.wrap(storeProtection);
                 return this;
             }
 
@@ -518,7 +518,7 @@ implements BiosProvider,
                 PbeInjection<This> {
 
             List<String> algorithm = Option.none();
-            List<PasswordProtection> password = Option.none();
+            List<PasswordProtection> protection = Option.none();
 
             @Override
             public This inject() { return encryption(build()); }
@@ -531,12 +531,12 @@ implements BiosProvider,
 
             @Override
             public Transformation build() {
-                return pbe(algorithm, password.get(0));
+                return pbe(algorithm, protection.get(0));
             }
 
             @Override
-            public PbeBuilder password(final PasswordProtection password) {
-                this.password = Option.wrap(password);
+            public PbeBuilder protection(final PasswordProtection protection) {
+                this.protection = Option.wrap(protection);
                 return this;
             }
         }
