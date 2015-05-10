@@ -337,7 +337,7 @@ implements BiosProvider,
 
         @Override
         public LicenseConsumerManager build() {
-            final TrueLicenseParameters lp = new TrueLicenseParameters(this);
+            final TrueLicenseManagementParameters lp = new TrueLicenseManagementParameters(this);
             return parent.isEmpty()
                     ? new TrueLicenseCachingManager<>(lp)
                     : new TrueLicenseChildManager<>(lp);
@@ -369,7 +369,7 @@ implements BiosProvider,
 
         @Override
         public LicenseVendorManager build() {
-            return new TrueLicenseManager<>(new TrueLicenseParameters(this));
+            return new TrueLicenseManager<>(new TrueLicenseManagementParameters(this));
         }
     }
 
@@ -519,7 +519,7 @@ implements BiosProvider,
         }
     }
 
-    final class TrueLicenseParameters
+    final class TrueLicenseManagementParameters
             implements
             BiosProvider,
             CachePeriodProvider,
@@ -529,7 +529,7 @@ implements BiosProvider,
             LicenseAuthorizationProvider,
             LicenseFactory,
             LicenseInitializationProvider,
-            LicenseParameters,
+            LicenseManagementParameters,
             LicenseValidationProvider,
             RepositoryContextProvider<Model> {
 
@@ -539,7 +539,7 @@ implements BiosProvider,
         final List<LicenseConsumerManager> parent;
         final List<Store> store;
 
-        TrueLicenseParameters(final TrueLicenseManagerBuilder<?> bldr) {
+        TrueLicenseManagementParameters(final TrueLicenseManagerBuilder<?> bldr) {
             this.authentication = bldr.authentication;
             this.encryption = bldr.encryption;
             this.ftpDays = bldr.ftpDays;

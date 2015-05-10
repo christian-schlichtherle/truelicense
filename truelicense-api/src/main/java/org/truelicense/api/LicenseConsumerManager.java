@@ -6,7 +6,6 @@
 package org.truelicense.api;
 
 import org.truelicense.api.io.Source;
-import org.truelicense.api.misc.ContextProvider;
 
 /**
  * Defines the life cycle management operations for license keys in consumer
@@ -27,9 +26,7 @@ import org.truelicense.api.misc.ContextProvider;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseConsumerManager
-extends ContextProvider<LicenseManagementContext<?>>,
-        LicenseParametersProvider {
+public interface LicenseConsumerManager extends LicenseManagementSchema {
 
     /**
      * Verifies the digital signature of the license key and copies it to the

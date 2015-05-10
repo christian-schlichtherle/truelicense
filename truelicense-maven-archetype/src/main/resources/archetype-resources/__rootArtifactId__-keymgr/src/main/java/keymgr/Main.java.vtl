@@ -155,16 +155,6 @@ public enum Main {
                 .getBundle(Main.class.getName())
                 .getString(name() + "." + key);
     }
-#if($keyMgrLicenseAuthorizationClass == "${package}.keymgr.Main${dollar}NoLicenseAuthorization")
-
-    public static final class NoLicenseAuthorization implements LicenseAuthorization {
-        public void clearGenerator(LicenseParameters lp) { }
-        public void clearInstall(LicenseParameters lp) { }
-        public void clearVerify(LicenseParameters lp) { }
-        public void clearView(LicenseParameters lp) { }
-        public void clearUninstall(LicenseParameters lp) { }
-    }
-#end
 #if($keyMgrLicenseValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {

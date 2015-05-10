@@ -31,10 +31,10 @@ import java.util.concurrent.Callable;
 class TrueLicenseManager<Model>
 implements LicenseConsumerManager, LicenseVendorManager {
 
-    private final TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters;
+    private final TrueLicenseManagementContext<Model, ?>.TrueLicenseManagementParameters parameters;
 
     TrueLicenseManager(
-            final TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters) {
+            final TrueLicenseManagementContext<Model, ?>.TrueLicenseManagementParameters parameters) {
         this.parameters = parameters;
     }
 
@@ -43,7 +43,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
         return wrap(new Callable<LicenseKeyGenerator>() {
             @Override
             public LicenseKeyGenerator call() throws Exception {
-                authorization().clearGenerator(parameters());
+                authorization().clearGenerator(TrueLicenseManager.this);
                 return new LicenseKeyGenerator() {
 
                     final RepositoryContext<Model> context = repositoryContext();
@@ -107,7 +107,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     throws LicenseManagementException {
         wrap(new Callable<Void>() {
             @Override public Void call() throws Exception {
-                authorization().clearInstall(parameters());
+                authorization().clearInstall(TrueLicenseManager.this);
                 decodeLicense(source); // checks digital signature
                 bios().copy(source, store());
                 return null;
@@ -119,7 +119,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     public License view() throws LicenseManagementException {
         return wrap(new Callable<License>() {
             @Override public License call() throws Exception {
-                authorization().clearView(parameters());
+                authorization().clearView(TrueLicenseManager.this);
                 return decodeLicense(store());
             }
         });
@@ -129,7 +129,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     public void verify() throws LicenseManagementException {
         wrap(new Callable<Void>() {
             @Override public Void call() throws Exception {
-                authorization().clearVerify(parameters());
+                authorization().clearVerify(TrueLicenseManager.this);
                 validate(store());
                 return null;
             }
@@ -140,7 +140,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     public void uninstall() throws LicenseManagementException {
         wrap(new Callable<Void>() {
             @Override public Void call() throws Exception {
-                authorization().clearUninstall(parameters());
+                authorization().clearUninstall(TrueLicenseManager.this);
                 final Store store = store();
                 // #TRUELICENSE-81: A license consumer manager must
                 // authenticate the installed license key before uninstalling
@@ -234,7 +234,7 @@ implements LicenseConsumerManager, LicenseVendorManager {
     }
 
     @Override
-    public final TrueLicenseManagementContext<Model, ?>.TrueLicenseParameters parameters() {
+    public final TrueLicenseManagementContext<Model, ?>.TrueLicenseManagementParameters parameters() {
         return parameters;
     }
 

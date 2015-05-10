@@ -21,10 +21,10 @@
         <p:companyName>Company Inc.</p:companyName>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenLicenseAuthorizationClass>
-            com.company.product.keygen.Main$NoLicenseAuthorization
+            org.truelicense.core.TrueLicenseAuthorization
         </p:keyGenLicenseAuthorizationClass>
         <p:keyMgrLicenseAuthorizationClass>
-            com.company.product.keymgr.Main$NoLicenseAuthorization
+            org.truelicense.core.TrueLicenseAuthorization
         </p:keyMgrLicenseAuthorizationClass>
         <p:licensingSubject>Product 1</p:licensingSubject>
         <p:password>test1234</p:password>

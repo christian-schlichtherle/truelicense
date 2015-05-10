@@ -32,7 +32,7 @@ implements LicenseConsumerManager {
     }
 
     @Override
-    public LicenseParameters parameters() {
+    public LicenseManagementParameters parameters() {
         return manager.parameters();
     }
 

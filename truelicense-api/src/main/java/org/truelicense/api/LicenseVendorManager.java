@@ -5,17 +5,13 @@
 
 package org.truelicense.api;
 
-import org.truelicense.api.misc.ContextProvider;
-
 /**
  * Defines the life cycle management operations for license keys in vendor
  * applications alias key generators.
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseVendorManager
-extends ContextProvider<LicenseManagementContext<?>>,
-        LicenseParametersProvider {
+public interface LicenseVendorManager extends LicenseManagementSchema {
 
     /**
      * Returns a license key generator for the given license bean.

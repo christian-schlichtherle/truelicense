@@ -25,43 +25,43 @@ public interface LicenseAuthorization {
      * eligible to generate a new FTP license key in order to protect against a
      * malicious removal of the auto-generated FTP license key.
      *
-     * @param parameters the license parameters.
+     * @param schema the licensing schema.
      */
-    void clearGenerator(LicenseParameters parameters) throws Exception;
+    void clearGenerator(LicenseManagementSchema schema) throws Exception;
 
     /**
      * Returns if and only if
      * {@linkplain LicenseConsumerManager#install installing}
      * a license key is authorized.
      *
-     * @param parameters the license parameters.
+     * @param schema the licensing schema.
      */
-    void clearInstall(LicenseParameters parameters) throws Exception;
+    void clearInstall(LicenseManagementSchema schema) throws Exception;
 
     /**
      * Returns if and only if
      * {@linkplain LicenseConsumerManager#verify verifying}
      * a license key is authorized.
      *
-     * @param parameters the license parameters.
+     * @param schema the licensing schema.
      */
-    void clearVerify(LicenseParameters parameters) throws Exception;
+    void clearVerify(LicenseManagementSchema schema) throws Exception;
 
     /**
      * Returns if and only if
      * {@linkplain LicenseConsumerManager#view viewing}
      * a license key is authorized.
      *
-     * @param parameters the license parameters.
+     * @param schema the licensing schema.
      */
-    void clearView(LicenseParameters parameters) throws Exception;
+    void clearView(LicenseManagementSchema schema) throws Exception;
 
     /**
      * Returns if and only if
      * {@linkplain LicenseConsumerManager#uninstall uninstalling}
      * a license key is authorized.
      *
-     * @param parameters the license parameters.
+     * @param schema the licensing schema.
      */
-    void clearUninstall(LicenseParameters parameters) throws Exception;
+    void clearUninstall(LicenseManagementSchema schema) throws Exception;
 }
