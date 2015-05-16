@@ -12,7 +12,7 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>105</version>
+        <version>106</version>
     </parent>
 
     <groupId>org.truelicense</groupId>
