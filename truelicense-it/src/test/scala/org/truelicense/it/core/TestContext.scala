@@ -15,7 +15,6 @@ import org.truelicense.api.codec.CodecProvider
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.core.TrueLicenseManagementContext
 import org.truelicense.it.core.io.IdentityTransformation
-import org.truelicense.obfuscate._
 
 /** @author Christian Schlichtherle */
 trait TestContext[Model <: AnyRef]
@@ -75,7 +74,7 @@ trait TestContext[Model <: AnyRef]
   def store = managementContext.memoryStore
 
   def test1234 = managementContext protection
-    new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
+    Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
 
   def transformation: Transformation = IdentityTransformation
 

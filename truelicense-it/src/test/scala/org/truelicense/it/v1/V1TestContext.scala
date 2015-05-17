@@ -119,6 +119,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
 
 /** @author Christian Schlichtherle */
 object V1TestContext {
+
   private val logger = LoggerFactory getLogger classOf[V1TestContext]
   private def prefix = classOf[V1TestContext].getPackage.getName.replace('.', '/') + '/'
 }
