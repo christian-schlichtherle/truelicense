@@ -77,7 +77,7 @@ trait TestContext[Model <: AnyRef]
         .subject("subject")
         .validation(new LicenseValidation {
             override def validate(bean: License) {
-              logger debug ("Validated {}.", bean)
+              logger debug ("Validating license bean: {}", bean)
             }
           })
         .build

@@ -353,10 +353,10 @@ implements BiosProvider,
 
         @Override
         public LicenseInitialization initialization() {
-            final LicenseInitialization secondary = new TrueLicenseInitialization();
-            for (LicenseInitialization primary : initialization)
-                return initializationComposition.compose(primary, secondary);
-            return secondary;
+            final LicenseInitialization second = new TrueLicenseInitialization();
+            for (LicenseInitialization first : initialization)
+                return initializationComposition.compose(first, second);
+            return second;
         }
 
         Authentication ksba(
@@ -471,10 +471,10 @@ implements BiosProvider,
 
         @Override
         public LicenseValidation validation() {
-            final LicenseValidation secondary = new TrueLicenseValidation();
-            for (LicenseValidation primary : validation)
-                return validationComposition.compose(primary, secondary);
-            return secondary;
+            final LicenseValidation second = new TrueLicenseValidation();
+            for (LicenseValidation first : validation)
+                return validationComposition.compose(first, second);
+            return second;
         }
 
         @Override
@@ -1115,9 +1115,9 @@ implements BiosProvider,
          * {@linkplain License#getHolder holder},
          * {@linkplain License#getIssued issue date/time},
          * {@linkplain License#getIssuer issuer},
-         * {@linkplain License#getSubject subject},
-         * {@linkplain License#getNotAfter not after date/time} (if set) and
-         * {@linkplain License#getNotBefore not before date/time} (if set).
+         * {@linkplain License#getNotAfter not after date/time} (if set),
+         * {@linkplain License#getNotBefore not before date/time} (if set) and
+         * {@linkplain License#getSubject subject}.
          * <p>
          * Unless stated otherwise, all no-argument methods need to return consistent
          * objects so that caching them is not required.
