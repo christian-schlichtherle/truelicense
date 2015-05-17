@@ -40,7 +40,6 @@ trait V2XmlTestContext extends V2TestContext {
           }
         })
       .build
-      .asInstanceOf[TrueLicenseManagementContext[V2RepositoryModel]]
 
   override def extraData = {
     val bean = new ExtraData

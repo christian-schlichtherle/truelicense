@@ -26,7 +26,6 @@ trait V2JsonTestContext extends V2TestContext {
           }
         })
       .build
-      .asInstanceOf[TrueLicenseManagementContext[V2RepositoryModel]]
 }
 
 object V2JsonTestContext {

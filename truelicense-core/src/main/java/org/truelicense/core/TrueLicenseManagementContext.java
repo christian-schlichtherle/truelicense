@@ -67,7 +67,7 @@ implements BiosProvider,
         PasswordProtectionProvider<ObfuscatedString>,
         RepositoryContextProvider<Model> {
 
-    static <Model> LicenseManagementContext create(final TrueLicenseApplicationContext<Model>.TrueLicenseManagementContextBuilder builder) {
+    static <Model> TrueLicenseManagementContext<Model> create(final TrueLicenseApplicationContext<Model>.TrueLicenseManagementContextBuilder builder) {
         return new TrueLicenseManagementContext<Model>(builder.subject) {
 
             LicenseManagementAuthorization authorization = builder.authorization;

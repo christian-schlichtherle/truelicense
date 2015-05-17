@@ -112,7 +112,7 @@ implements BiosProvider,
     }
 
     @Override
-    public final LicenseManagementContextBuilder context() {
+    public final TrueLicenseManagementContextBuilder context() {
         return new TrueLicenseManagementContextBuilder();
     }
 
@@ -182,7 +182,7 @@ implements BiosProvider,
      */
     public abstract String storeType();
 
-    final class TrueLicenseManagementContextBuilder
+    public final class TrueLicenseManagementContextBuilder
     implements ContextProvider<TrueLicenseApplicationContext>,
                LicenseManagementContextBuilder {
 
@@ -195,13 +195,13 @@ implements BiosProvider,
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
         @Override
-        public LicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
+        public TrueLicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
             this.authorization = requireNonNull(authorization);
             return this;
         }
 
         @Override
-        public LicenseManagementContextBuilder clock(final Clock clock) {
+        public TrueLicenseManagementContextBuilder clock(final Clock clock) {
             this.clock = requireNonNull(clock);
             return this;
         }
@@ -212,37 +212,37 @@ implements BiosProvider,
         }
 
         @Override
-        public LicenseManagementContextBuilder initialization(final LicenseInitialization initialization) {
+        public TrueLicenseManagementContextBuilder initialization(final LicenseInitialization initialization) {
             this.initialization = Option.wrap(initialization);
             return this;
         }
 
         @Override
-        public LicenseManagementContextBuilder initializationComposition(final LicenseFunctionComposition composition) {
+        public TrueLicenseManagementContextBuilder initializationComposition(final LicenseFunctionComposition composition) {
             this.initializationComposition = requireNonNull(composition);
             return this;
         }
 
         @Override
-        public LicenseManagementContextBuilder subject(final String subject) {
+        public TrueLicenseManagementContextBuilder subject(final String subject) {
             this.subject = requireNonNull(subject);
             return this;
         }
 
         @Override
-        public LicenseManagementContextBuilder validation(final LicenseValidation validation) {
+        public TrueLicenseManagementContextBuilder validation(final LicenseValidation validation) {
             this.validation = Option.wrap(validation);
             return this;
         }
 
         @Override
-        public LicenseManagementContextBuilder validationComposition(final LicenseFunctionComposition composition) {
+        public TrueLicenseManagementContextBuilder validationComposition(final LicenseFunctionComposition composition) {
             this.validationComposition = requireNonNull(composition);
             return this;
         }
 
         @Override
-        public LicenseManagementContext build() {
+        public TrueLicenseManagementContext<Model> build() {
             return TrueLicenseManagementContext.create(this);
         }
     }

@@ -87,7 +87,6 @@ trait V1TestContext extends TestContext[GenericCertificate] {
             }
           })
         .build
-        .asInstanceOf[TrueLicenseManagementContext[GenericCertificate]]
 
   override final def vendorManager = {
     val vm = managementContext.vendor
