@@ -8,14 +8,14 @@ package org.truelicense.api.misc;
 import java.util.Date;
 
 /**
- * Provides the current date/time.
+ * A factory for representations of the current date/time.
  *
  * @author Christian Schlichtherle
  */
 public interface Clock {
 
     /**
-     * Returns the current date/time.
+     * Returns a new representation of the current date/time.
      * A basic implementation could just return a new {@code Date}.
      * However, in order to protect against date/time forgery, a more
      * sophisticated implementation should use an authoritative time source,
@@ -24,8 +24,6 @@ public interface Clock {
      * If resolving the current date/time from an authoritative resource fails
      * for any reason, the implementation should simply fallback to return a
      * new {@code Date}.
-     *
-     * @return The current date/time.
      */
     Date now();
 }
