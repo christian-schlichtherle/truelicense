@@ -9,6 +9,7 @@ import org.truelicense.api.License;
 import org.truelicense.api.auth.RepositoryContext;
 import org.truelicense.api.crypto.PbeParameters;
 import org.truelicense.api.io.Transformation;
+import org.truelicense.core.TrueLicenseApplicationContext;
 import org.truelicense.core.TrueLicenseManagementContext;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.v2.commons.auth.V2RepositoryContext;
@@ -17,14 +18,15 @@ import org.truelicense.v2.commons.comp.V2Compression;
 import org.truelicense.v2.commons.crypto.V2Encryption;
 
 /**
- * The root context for the management of V2 format license keys.
+ * The root context for applications which need to manage V2/* format license
+ * keys.
  * <p>
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-public abstract class V2LicenseManagementContext
-extends TrueLicenseManagementContext<V2RepositoryModel> {
+public abstract class V2LicenseApplicationContext
+extends TrueLicenseApplicationContext<V2RepositoryModel> {
 
     @Obfuscate
     private static final String STORE_TYPE = "JCEKS";
@@ -32,12 +34,10 @@ extends TrueLicenseManagementContext<V2RepositoryModel> {
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithSHA1AndDESede";
 
-    protected V2LicenseManagementContext(String subject) { super(subject); }
-
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseApplicationContext}
      * returns a compression for V2 format license keys.
      */
     @Override
@@ -48,7 +48,7 @@ extends TrueLicenseManagementContext<V2RepositoryModel> {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseApplicationContext}
      * returns an encryption for V2 format license keys with the given PBE
      * parameters.
      */
@@ -63,7 +63,7 @@ extends TrueLicenseManagementContext<V2RepositoryModel> {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseApplicationContext}
      * returns {@code "PBEWithSHA1AndDESede"}.
      */
     @Override
@@ -72,7 +72,7 @@ extends TrueLicenseManagementContext<V2RepositoryModel> {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseApplicationContext}
      * returns a new {@link V2RepositoryContext}.
      */
     @Override
@@ -83,7 +83,7 @@ extends TrueLicenseManagementContext<V2RepositoryModel> {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link V2LicenseManagementContext}
+     * The implementation in the class {@link V2LicenseApplicationContext}
      * returns {@code "JCEKS"}.
      */
     @Override

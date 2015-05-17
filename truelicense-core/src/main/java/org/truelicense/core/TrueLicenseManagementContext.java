@@ -14,7 +14,10 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.comp.CompressionProvider;
 import org.truelicense.api.crypto.PbeParameters;
-import org.truelicense.api.io.*;
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.*;
 import org.truelicense.api.passwd.*;
 import org.truelicense.core.auth.Notary;
@@ -63,6 +66,108 @@ implements BiosProvider,
         PasswordPolicyProvider,
         PasswordProtectionProvider<ObfuscatedString>,
         RepositoryContextProvider<Model> {
+
+    static <Model> LicenseManagementContext create(final TrueLicenseApplicationContext<Model>.TrueLicenseManagementContextBuilder builder) {
+        return new TrueLicenseManagementContext<Model>(builder.subject) {
+
+            LicenseManagementAuthorization authorization = builder.authorization;
+            Clock clock = builder.clock;
+            List<LicenseInitialization> initialization = builder.initialization;
+            LicenseFunctionComposition initializationComposition = builder.initializationComposition;
+            List<LicenseValidation> validation = builder.validation;
+            LicenseFunctionComposition validationComposition = builder.validationComposition;
+
+            @Override
+            public Authentication authentication(KeyStoreParameters parameters) {
+                return context().authentication(parameters);
+            }
+
+            @Override
+            public LicenseManagementAuthorization authorization() {
+                return authorization;
+            }
+
+            @Override
+            public BIOS bios() {
+                return context().bios();
+            }
+
+            @Override
+            public long cachePeriodMillis() {
+                return context().cachePeriodMillis();
+            }
+
+            @Override
+            public List<ClassLoader> classLoader() {
+                return context().classLoader();
+            }
+
+            @Override
+            public Codec codec() {
+                return context().codec();
+            }
+
+            @Override
+            public Transformation compression() {
+                return context().compression();
+            }
+
+            public TrueLicenseApplicationContext<Model> context() {
+                return builder.context();
+            }
+
+            @Override
+            public Transformation encryption(PbeParameters parameters) {
+                return context().encryption(parameters);
+            }
+
+            @Override
+            public LicenseInitialization initialization() {
+                final LicenseInitialization secondary = super.initialization();
+                for (LicenseInitialization primary : initialization)
+                    return initializationComposition.compose(primary, secondary);
+                return secondary;
+            }
+
+            @Override
+            public License license() {
+                return context().license();
+            }
+
+            @Override
+            public Date now() {
+                return clock.now();
+            }
+
+            @Override
+            public String pbeAlgorithm() {
+                return context().pbeAlgorithm();
+            }
+
+            @Override
+            public PasswordPolicy policy() {
+                return context().policy();
+            }
+
+            @Override
+            public RepositoryContext<Model> repositoryContext() {
+                return context().repositoryContext();
+            }
+
+            @Override
+            public String storeType() {
+                return context().storeType();
+            }
+
+            @Override
+            public LicenseValidation validation() {
+                final LicenseValidation secondary = super.validation();
+                for (LicenseValidation primary : validation)
+                    return validationComposition.compose(primary, secondary);
+                return secondary;
+            }
+        };
+    }
 
     private final String subject;
 
