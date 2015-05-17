@@ -300,13 +300,13 @@ implements BiosProvider,
             LicenseSubjectProvider,
             LicenseValidationProvider {
 
-        private final LicenseManagementAuthorization authorization;
-        private final Clock clock;
-        private final List<LicenseInitialization> initialization;
-        private final LicenseFunctionComposition initializationComposition;
-        private final String subject;
-        private final List<LicenseValidation> validation;
-        private final LicenseFunctionComposition validationComposition;
+        final LicenseManagementAuthorization authorization;
+        final Clock clock;
+        final List<LicenseInitialization> initialization;
+        final LicenseFunctionComposition initializationComposition;
+        final String subject;
+        final List<LicenseValidation> validation;
+        final LicenseFunctionComposition validationComposition;
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
             this.authorization = b.authorization;
@@ -359,57 +359,6 @@ implements BiosProvider,
             return second;
         }
 
-        Authentication ksba(
-                List<String> algorithm,
-                String alias,
-                List<PasswordProtection> keyProtection,
-                List<Source> source,
-                List<String> storeType,
-                PasswordProtection storeProtection) {
-            return authentication(ksbaParameters(
-                    algorithm, alias, keyProtection,
-                    source, storeProtection, storeType));
-        }
-
-        private KeyStoreParameters ksbaParameters(
-                final List<String> algorithm,
-                final String alias,
-                final List<PasswordProtection> keyProtection,
-                final List<Source> source,
-                final PasswordProtection storeProtection,
-                final List<String> storeType) {
-            return new KeyStoreParameters() {
-
-                @Override
-                public String alias() { return alias; }
-
-                @Override
-                public PasswordProtection keyProtection() {
-                    for (PasswordProtection kp : keyProtection)
-                        return checkedProtection(kp);
-                    return checkedProtection(storeProtection);
-                }
-
-                @Override
-                public List<String> algorithm() { return algorithm; }
-
-                @Override
-                public List<Source> source() { return source; }
-
-                @Override
-                public PasswordProtection storeProtection() {
-                    return checkedProtection(storeProtection);
-                }
-
-                @Override
-                public String storeType() {
-                    for (String st : storeType)
-                        return st;
-                    return context().storeType();
-                }
-            };
-        }
-
         @Override
         public License license() { return context().license(); }
 
@@ -421,29 +370,6 @@ implements BiosProvider,
 
         @Override
         public Store pathStore(Path path) { return bios().pathStore(path); }
-
-        Transformation pbe(List<String> algorithm, PasswordProtection protection) {
-            return encryption(pbeParameters(algorithm, protection));
-        }
-
-        private PbeParameters pbeParameters(
-                final List<String> algorithm,
-                final PasswordProtection protection) {
-            return new PbeParameters() {
-
-                @Override
-                public String algorithm() {
-                    for (String a : algorithm)
-                        return a;
-                    return pbeAlgorithm();
-                }
-
-                @Override
-                public PasswordProtection protection() {
-                    return checkedProtection(protection);
-                }
-            };
-        }
 
         @Override
         public Source resource(String name) {
@@ -577,8 +503,7 @@ implements BiosProvider,
             }
 
             final class KsbaBuilder
-            implements Builder<Authentication>,
-                    KsbaInjection<This> {
+            implements Builder<Authentication>, KsbaInjection<This> {
 
                 List<String> algorithm = Option.none();
                 List<String> alias = Option.none();
@@ -604,7 +529,7 @@ implements BiosProvider,
 
                 @Override
                 public Authentication build() {
-                    return ksba(algorithm, alias.get(0), keyProtection, source, storeType, storeProtection.get(0));
+                    return context().authentication(new TrueKeyStoreParameters(this));
                 }
 
                 @Override
@@ -638,8 +563,7 @@ implements BiosProvider,
             }
 
             final class PbeBuilder
-            implements Builder<Transformation>,
-                    PbeInjection<This> {
+            implements Builder<Transformation>, PbeInjection<This> {
 
                 List<String> algorithm = Option.none();
                 List<PasswordProtection> protection = Option.none();
@@ -655,7 +579,7 @@ implements BiosProvider,
 
                 @Override
                 public Transformation build() {
-                    return pbe(algorithm, protection.get(0));
+                    return context().encryption(new TruePbeParameters(this));
                 }
 
                 @Override
@@ -663,6 +587,76 @@ implements BiosProvider,
                     this.protection = Option.wrap(protection);
                     return this;
                 }
+            }
+        }
+
+        final class TrueKeyStoreParameters implements KeyStoreParameters {
+
+            final List<String> algorithm;
+            final String alias;
+            final List<PasswordProtection> keyProtection;
+            final List<Source> source;
+            final PasswordProtection storeProtection;
+            final List<String> storeType;
+
+            TrueKeyStoreParameters(final TrueLicenseManagerBuilder<?>.KsbaBuilder b) {
+                this.algorithm = b.algorithm;
+                this.alias = b.alias.get(0);
+                this.keyProtection = b.keyProtection;
+                this.source = b.source;
+                this.storeProtection = b.storeProtection.get(0);
+                this.storeType = b.storeType;
+            }
+
+            @Override
+            public String alias() { return alias; }
+
+            @Override
+            public PasswordProtection keyProtection() {
+                for (PasswordProtection kp : keyProtection)
+                    return checkedProtection(kp);
+                return checkedProtection(storeProtection);
+            }
+
+            @Override
+            public List<String> algorithm() { return algorithm; }
+
+            @Override
+            public List<Source> source() { return source; }
+
+            @Override
+            public PasswordProtection storeProtection() {
+                return checkedProtection(storeProtection);
+            }
+
+            @Override
+            public String storeType() {
+                for (String st : storeType)
+                    return st;
+                return context().storeType();
+            }
+        }
+
+        final class TruePbeParameters implements PbeParameters {
+
+            final List<String> algorithm;
+            final PasswordProtection protection;
+
+            TruePbeParameters(final TrueLicenseManagerBuilder<?>.PbeBuilder b) {
+                this.algorithm = b.algorithm;
+                this.protection = b.protection.get(0);
+            }
+
+            @Override
+            public String algorithm() {
+                for (String a : algorithm)
+                    return a;
+                return pbeAlgorithm();
+            }
+
+            @Override
+            public PasswordProtection protection() {
+                return checkedProtection(protection);
             }
         }
 
