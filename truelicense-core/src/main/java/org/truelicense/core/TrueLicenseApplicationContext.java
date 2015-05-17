@@ -543,8 +543,8 @@ implements BiosProvider,
                 final TrueLicenseManagementParameters
                         lp = new TrueLicenseManagementParameters(this);
                 return parent.isEmpty()
-                        ? new CachingTrueLicenseManager(lp)
-                        : new ChainedTrueLicenseManager(lp);
+                        ? lp.new CachingTrueLicenseManager()
+                        : lp.new ChainedTrueLicenseManager();
             }
 
             @Override
@@ -573,8 +573,8 @@ implements BiosProvider,
 
             @Override
             public VendorLicenseManager build() {
-                return new TrueLicenseManager(
-                        new TrueLicenseManagementParameters(this));
+                return new TrueLicenseManagementParameters(this)
+                        .new TrueLicenseManager();
             }
         }
 
@@ -725,8 +725,7 @@ implements BiosProvider,
         }
 
         final class TrueLicenseManagementParameters
-                implements
-                BiosProvider,
+        implements BiosProvider,
                 CachePeriodProvider,
                 CodecProvider,
                 CompressionProvider,
@@ -815,6 +814,393 @@ implements BiosProvider,
 
             @Override
             public LicenseValidation validation() { return context().validation(); }
+
+            /**
+             * A caching consumer license manager which establishes a Chain Of
+             * Responsibility with its parent consumer license manager.
+             * On each operation, the parent consumer license manager is tried first.
+             * This class is thread-safe.
+             *
+             * @author Christian Schlichtherle
+             */
+            final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
+
+                volatile List<Boolean> canGenerateLicenseKeys = Option.none();
+
+                @Override
+                public void install(Source source) throws LicenseManagementException {
+                    try {
+                        parent().install(source);
+                    } catch (final LicenseManagementException primary) {
+                        if (canGenerateLicenseKeys())
+                            throw primary;
+                        super.install(source);
+                    }
+                }
+
+                @Override
+                public License view() throws LicenseManagementException {
+                    try {
+                        return parent().view();
+                    } catch (final LicenseManagementException primary) {
+                        try {
+                            return super.view(); // uses store()
+                        } catch (final LicenseManagementException secondary) {
+                            synchronized (store()) {
+                                try {
+                                    return super.view(); // repeat
+                                } catch (final LicenseManagementException ternary) {
+                                    return generateIffNewFtp(ternary).license(); // uses store(), too
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void verify() throws LicenseManagementException {
+                    try {
+                        parent().verify();
+                    } catch (final LicenseManagementException primary) {
+                        try {
+                            super.verify(); // uses store()
+                        } catch (final LicenseManagementException secondary) {
+                            synchronized (store()) {
+                                try {
+                                    super.verify(); // repeat
+                                } catch (final LicenseManagementException ternary) {
+                                    generateIffNewFtp(ternary); // uses store(), too
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void uninstall() throws LicenseManagementException {
+                    try {
+                        parent().uninstall();
+                    } catch (final LicenseManagementException primary) {
+                        if (canGenerateLicenseKeys()) throw primary;
+                        super.uninstall();
+                    }
+                }
+
+                boolean canGenerateLicenseKeys() {
+                    if (canGenerateLicenseKeys.isEmpty()) {
+                        synchronized (this) {
+                            if (canGenerateLicenseKeys.isEmpty()) {
+                                try {
+                                    // Test encoding a new license key to /dev/null .
+                                    super.generator(license()).writeTo(bios().memoryStore());
+                                    canGenerateLicenseKeys = Option.wrap(Boolean.TRUE);
+                                } catch (LicenseManagementException ignored) {
+                                    canGenerateLicenseKeys = Option.wrap(Boolean.FALSE);
+                                }
+                            }
+                        }
+                    }
+                    return canGenerateLicenseKeys.get(0);
+                }
+
+                LicenseKeyGenerator generateIffNewFtp(final LicenseManagementException e) throws LicenseManagementException {
+                    if (!canGenerateLicenseKeys())
+                        throw e;
+                    final Store store = store();
+                    if (exists(store))
+                        throw e;
+                    return super.generator(license()).writeTo(store);
+                }
+
+                License license() { return parameters().license(); }
+
+                ConsumerLicenseManager parent() { return parameters().parent(); }
+            }
+
+            /**
+             * A basic consumer license manager which caches some computed objects to speed
+             * up subsequent requests.
+             * This class is thread-safe.
+             *
+             * @author Christian Schlichtherle
+             */
+            class CachingTrueLicenseManager extends TrueLicenseManager {
+
+                // These volatile fields get initialized by applying a pure function which
+                // takes the immutable value of the store() property as its single argument.
+                // So some concurrent threads may safely interleave when initializing these
+                // fields without creating a racing condition and thus it's not generally
+                // required to synchronize access to them.
+                volatile Cache<Source, Decoder> cachedDecoder = new Cache<>();
+                volatile Cache<Source, License> cachedLicense = new Cache<>();
+
+                @Override
+                public void install(final Source source) throws LicenseManagementException {
+                    final Store store = store();
+                    synchronized (store) {
+                        super.install(source);
+
+                        final List<Source> optSource = Option.wrap(source);
+                        final List<Source> optStore = Option.<Source>wrap(store);
+
+                        // As a side effect of the license key installation, the cached
+                        // artifactory and license get associated to the source unless this
+                        // is a re-installation from an equal source or the cached objects
+                        // have already been obsoleted by a time-out, that is, if the cache
+                        // period is equal or close to zero.
+                        assert cachedDecoder.hasKey(optSource) ||
+                                cachedDecoder.hasKey(optStore) ||
+                                cachedDecoder.obsolete();
+                        assert cachedLicense.hasKey(optSource) ||
+                                cachedLicense.hasKey(optStore) ||
+                                cachedLicense.obsolete();
+
+                        // Update the association of the cached artifactory and license to
+                        // the store.
+                        cachedDecoder = cachedDecoder.key(optStore);
+                        cachedLicense = cachedLicense.key(optStore);
+                    }
+                }
+
+                @Override
+                public void uninstall() throws LicenseManagementException {
+                    final Cache<Source, Decoder> cachedDecoder = new Cache<>();
+                    final Cache<Source, License> cachedLicense = new Cache<>();
+                    synchronized (store()) {
+                        super.uninstall();
+                        this.cachedDecoder = cachedDecoder;
+                        this.cachedLicense = cachedLicense;
+                    }
+                }
+
+                @Override
+                void validate(final Source source) throws Exception {
+                    final List<Source> optSource = Option.wrap(source);
+                    List<License> optLicense = cachedLicense.map(optSource);
+                    if (optLicense.isEmpty()) {
+                        optLicense = Option.wrap(decodeLicense(source));
+                        cachedLicense = new Cache<>(optSource, optLicense, cachePeriodMillis());
+                    }
+                    validation().validate(optLicense.get(0));
+                }
+
+                @Override
+                Decoder authenticate(final Source source) throws Exception {
+                    final List<Source> optSource = Option.wrap(source);
+                    List<Decoder> optDecoder = cachedDecoder.map(optSource);
+                    if (optDecoder.isEmpty()) {
+                        optDecoder = Option.wrap(super.authenticate(source));
+                        cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
+                    }
+                    return optDecoder.get(0);
+                }
+
+                final long cachePeriodMillis() {
+                    return requireNonNegative(parameters().cachePeriodMillis());
+                }
+            }
+
+            /**
+             * A basic license manager.
+             * This class is immutable.
+             * <p>
+             * Unless stated otherwise, all no-argument methods need to return consistent
+             * objects so that caching them is not required.
+             * A returned object is considered to be consistent if it compares
+             * {@linkplain Object#equals(Object) equal} or at least behaves identical to
+             * any previously returned object.
+             *
+             * @author Christian Schlichtherle
+             */
+            class TrueLicenseManager
+            implements ConsumerLicenseManager, VendorLicenseManager {
+
+                @Override
+                public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
+                    return wrap(new Callable<LicenseKeyGenerator>() {
+                        @Override
+                        public LicenseKeyGenerator call() throws Exception {
+                            authorization().clearGenerator(TrueLicenseManager.this);
+                            return new LicenseKeyGenerator() {
+
+                                final RepositoryContext<Model> context = repositoryContext();
+                                final Model model = context.model();
+                                final Decoder artifactory = authentication()
+                                        .sign(context.controller(model, codec()), validatedBean());
+
+                                License validatedBean() throws Exception {
+                                    final License duplicate = initializedBean();
+                                    validation().validate(duplicate);
+                                    return duplicate;
+                                }
+
+                                License initializedBean() throws Exception {
+                                    final License duplicate = duplicatedBean();
+                                    initialization().initialize(duplicate);
+                                    return duplicate;
+                                }
+
+                                License duplicatedBean() throws Exception {
+                                    return Codecs.clone(bean, codec());
+                                }
+
+                                @Override
+                                public License license() throws LicenseManagementException {
+                                    return wrap(new Callable<License>() {
+                                        @Override
+                                        public License call() throws Exception {
+                                            return artifactory.decode(License.class);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
+                                    wrap(new Callable<Void>() {
+
+                                        @Override public Void call() throws Exception {
+                                            codec().encoder(compressedAndEncryptedSink()).encode(model);
+                                            return null;
+                                        }
+
+                                        Sink compressedAndEncryptedSink() {
+                                            return compression().apply(encryptedSink());
+                                        }
+
+                                        Sink encryptedSink() {
+                                            return encryption().apply(sink);
+                                        }
+                                    });
+                                    return this;
+                                }
+                            };
+                        }
+
+                    });
+                }
+
+                @Override
+                public void install(final Source source)
+                        throws LicenseManagementException {
+                    wrap(new Callable<Void>() {
+                        @Override public Void call() throws Exception {
+                            authorization().clearInstall(TrueLicenseManager.this);
+                            decodeLicense(source); // checks digital signature
+                            bios().copy(source, store());
+                            return null;
+                        }
+                    });
+                }
+
+                @Override
+                public License view() throws LicenseManagementException {
+                    return wrap(new Callable<License>() {
+                        @Override public License call() throws Exception {
+                            authorization().clearView(TrueLicenseManager.this);
+                            return decodeLicense(store());
+                        }
+                    });
+                }
+
+                @Override
+                public void verify() throws LicenseManagementException {
+                    wrap(new Callable<Void>() {
+                        @Override public Void call() throws Exception {
+                            authorization().clearVerify(TrueLicenseManager.this);
+                            validate(store());
+                            return null;
+                        }
+                    });
+                }
+
+                @Override
+                public void uninstall() throws LicenseManagementException {
+                    wrap(new Callable<Void>() {
+                        @Override public Void call() throws Exception {
+                            authorization().clearUninstall(TrueLicenseManager.this);
+                            final Store store = store();
+                            // #TRUELICENSE-81: A consumer license manager must
+                            // authenticate the installed license key before uninstalling
+                            // it.
+                            authenticate(store);
+                            store.delete();
+                            return null;
+                        }
+                    });
+                }
+
+                //
+                // License consumer functions:
+                //
+
+                void validate(Source source) throws Exception {
+                    validation().validate(decodeLicense(source));
+                }
+
+                License decodeLicense(Source source) throws Exception {
+                    return authenticate(source).decode(License.class);
+                }
+
+                Decoder authenticate(Source source) throws Exception {
+                    return authentication().verify(repositoryController(source));
+                }
+
+                RepositoryController repositoryController(Source source) throws Exception {
+                    return repositoryContext().controller(repositoryModel(source), codec());
+                }
+
+                Model repositoryModel(Source source) throws Exception {
+                    return codec().decoder(decompress(source)).decode(repositoryContext().model().getClass());
+                }
+
+                Source decompress(Source source) {
+                    return compression().unapply(decrypt(source));
+                }
+
+                Source decrypt(Source source) { return encryption().unapply(source); }
+
+                //
+                // Property/factory functions:
+                //
+
+                final Authentication authentication() {
+                    return parameters().authentication();
+                }
+
+                final LicenseManagementAuthorization authorization() {
+                    return parameters().authorization();
+                }
+
+                final BIOS bios() { return parameters().bios(); }
+
+                final Codec codec() { return parameters().codec(); }
+
+                final Transformation compression() { return parameters().compression(); }
+
+                @Override
+                public final LicenseManagementContext context() {
+                    return parameters().context();
+                }
+
+                final Transformation encryption() { return parameters().encryption(); }
+
+                final LicenseInitialization initialization() {
+                    return parameters().initialization();
+                }
+
+                @Override
+                public final TrueLicenseManagementParameters parameters() {
+                    return TrueLicenseManagementParameters.this;
+                }
+
+                final RepositoryContext<Model> repositoryContext() {
+                    return parameters().repositoryContext();
+                }
+
+                final Store store() { return parameters().store(); }
+
+                final LicenseValidation validation() { return parameters().validation(); }
+            }
         }
 
         /**
@@ -939,407 +1325,6 @@ implements BiosProvider,
                 if (!subject().equals(bean.getSubject()))
                     throw new LicenseValidationException(message(INVALID_SUBJECT, bean.getSubject(), subject()));
             }
-        }
-
-        /**
-         * A caching consumer license manager which establishes a Chain Of
-         * Responsibility with its parent consumer license manager.
-         * On each operation, the parent consumer license manager is tried first.
-         * This class is thread-safe.
-         *
-         * @author Christian Schlichtherle
-         */
-        final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
-
-            volatile List<Boolean> canGenerateLicenseKeys = Option.none();
-
-            ChainedTrueLicenseManager(TrueLicenseManagementParameters parameters) {
-                super(parameters);
-            }
-
-            @Override
-            public void install(Source source) throws LicenseManagementException {
-                try {
-                    parent().install(source);
-                } catch (final LicenseManagementException primary) {
-                    if (canGenerateLicenseKeys())
-                        throw primary;
-                    super.install(source);
-                }
-            }
-
-            @Override
-            public License view() throws LicenseManagementException {
-                try {
-                    return parent().view();
-                } catch (final LicenseManagementException primary) {
-                    try {
-                        return super.view(); // uses store()
-                    } catch (final LicenseManagementException secondary) {
-                        synchronized (store()) {
-                            try {
-                                return super.view(); // repeat
-                            } catch (final LicenseManagementException ternary) {
-                                return generateIffNewFtp(ternary).license(); // uses store(), too
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void verify() throws LicenseManagementException {
-                try {
-                    parent().verify();
-                } catch (final LicenseManagementException primary) {
-                    try {
-                        super.verify(); // uses store()
-                    } catch (final LicenseManagementException secondary) {
-                        synchronized (store()) {
-                            try {
-                                super.verify(); // repeat
-                            } catch (final LicenseManagementException ternary) {
-                                generateIffNewFtp(ternary); // uses store(), too
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void uninstall() throws LicenseManagementException {
-                try {
-                    parent().uninstall();
-                } catch (final LicenseManagementException primary) {
-                    if (canGenerateLicenseKeys()) throw primary;
-                    super.uninstall();
-                }
-            }
-
-            boolean canGenerateLicenseKeys() {
-                if (canGenerateLicenseKeys.isEmpty()) {
-                    synchronized (this) {
-                        if (canGenerateLicenseKeys.isEmpty()) {
-                            try {
-                                // Test encoding a new license key to /dev/null .
-                                super.generator(license()).writeTo(bios().memoryStore());
-                                canGenerateLicenseKeys = Option.wrap(Boolean.TRUE);
-                            } catch (LicenseManagementException ignored) {
-                                canGenerateLicenseKeys = Option.wrap(Boolean.FALSE);
-                            }
-                        }
-                    }
-                }
-                return canGenerateLicenseKeys.get(0);
-            }
-
-            LicenseKeyGenerator generateIffNewFtp(final LicenseManagementException e) throws LicenseManagementException {
-                if (!canGenerateLicenseKeys())
-                    throw e;
-                final Store store = store();
-                if (exists(store))
-                    throw e;
-                return super.generator(license()).writeTo(store);
-            }
-
-            License license() { return parameters().license(); }
-
-            ConsumerLicenseManager parent() { return parameters().parent(); }
-        }
-
-        /**
-         * A basic consumer license manager which caches some computed objects to speed
-         * up subsequent requests.
-         * This class is thread-safe.
-         *
-         * @author Christian Schlichtherle
-         */
-        class CachingTrueLicenseManager extends TrueLicenseManager {
-
-            // These volatile fields get initialized by applying a pure function which
-            // takes the immutable value of the store() property as its single argument.
-            // So some concurrent threads may safely interleave when initializing these
-            // fields without creating a racing condition and thus it's not generally
-            // required to synchronize access to them.
-            volatile Cache<Source, Decoder> cachedDecoder = new Cache<>();
-            volatile Cache<Source, License> cachedLicense = new Cache<>();
-
-            CachingTrueLicenseManager(TrueLicenseManagementParameters parameters) {
-                super(parameters);
-            }
-
-            @Override
-            public void install(final Source source) throws LicenseManagementException {
-                final Store store = store();
-                synchronized (store) {
-                    super.install(source);
-
-                    final List<Source> optSource = Option.wrap(source);
-                    final List<Source> optStore = Option.<Source>wrap(store);
-
-                    // As a side effect of the license key installation, the cached
-                    // artifactory and license get associated to the source unless this
-                    // is a re-installation from an equal source or the cached objects
-                    // have already been obsoleted by a time-out, that is, if the cache
-                    // period is equal or close to zero.
-                    assert cachedDecoder.hasKey(optSource) ||
-                            cachedDecoder.hasKey(optStore) ||
-                            cachedDecoder.obsolete();
-                    assert cachedLicense.hasKey(optSource) ||
-                            cachedLicense.hasKey(optStore) ||
-                            cachedLicense.obsolete();
-
-                    // Update the association of the cached artifactory and license to
-                    // the store.
-                    cachedDecoder = cachedDecoder.key(optStore);
-                    cachedLicense = cachedLicense.key(optStore);
-                }
-            }
-
-            @Override
-            public void uninstall() throws LicenseManagementException {
-                final Cache<Source, Decoder> cachedDecoder = new Cache<>();
-                final Cache<Source, License> cachedLicense = new Cache<>();
-                synchronized (store()) {
-                    super.uninstall();
-                    this.cachedDecoder = cachedDecoder;
-                    this.cachedLicense = cachedLicense;
-                }
-            }
-
-            @Override
-            void validate(final Source source) throws Exception {
-                final List<Source> optSource = Option.wrap(source);
-                List<License> optLicense = cachedLicense.map(optSource);
-                if (optLicense.isEmpty()) {
-                    optLicense = Option.wrap(decodeLicense(source));
-                    cachedLicense = new Cache<>(optSource, optLicense, cachePeriodMillis());
-                }
-                validation().validate(optLicense.get(0));
-            }
-
-            @Override
-            Decoder authenticate(final Source source) throws Exception {
-                final List<Source> optSource = Option.wrap(source);
-                List<Decoder> optDecoder = cachedDecoder.map(optSource);
-                if (optDecoder.isEmpty()) {
-                    optDecoder = Option.wrap(super.authenticate(source));
-                    cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
-                }
-                return optDecoder.get(0);
-            }
-
-            final long cachePeriodMillis() {
-                return requireNonNegative(parameters().cachePeriodMillis());
-            }
-        }
-
-        /**
-         * A basic license manager.
-         * This class is immutable.
-         * <p>
-         * Unless stated otherwise, all no-argument methods need to return consistent
-         * objects so that caching them is not required.
-         * A returned object is considered to be consistent if it compares
-         * {@linkplain Object#equals(Object) equal} or at least behaves identical to
-         * any previously returned object.
-         *
-         * @author Christian Schlichtherle
-         */
-        class TrueLicenseManager
-        implements ConsumerLicenseManager, VendorLicenseManager {
-
-            final TrueLicenseManagementParameters parameters;
-
-            TrueLicenseManager(final TrueLicenseManagementParameters parameters) {
-                this.parameters = parameters;
-            }
-
-            @Override
-            public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
-                return wrap(new Callable<LicenseKeyGenerator>() {
-                    @Override
-                    public LicenseKeyGenerator call() throws Exception {
-                        authorization().clearGenerator(TrueLicenseManager.this);
-                        return new LicenseKeyGenerator() {
-
-                            final RepositoryContext<Model> context = repositoryContext();
-                            final Model model = context.model();
-                            final Decoder artifactory = authentication()
-                                    .sign(context.controller(model, codec()), validatedBean());
-
-                            License validatedBean() throws Exception {
-                                final License duplicate = initializedBean();
-                                validation().validate(duplicate);
-                                return duplicate;
-                            }
-
-                            License initializedBean() throws Exception {
-                                final License duplicate = duplicatedBean();
-                                initialization().initialize(duplicate);
-                                return duplicate;
-                            }
-
-                            License duplicatedBean() throws Exception {
-                                return Codecs.clone(bean, codec());
-                            }
-
-                            @Override
-                            public License license() throws LicenseManagementException {
-                                return wrap(new Callable<License>() {
-                                    @Override
-                                    public License call() throws Exception {
-                                        return artifactory.decode(License.class);
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
-                                wrap(new Callable<Void>() {
-
-                                    @Override public Void call() throws Exception {
-                                        codec().encoder(compressedAndEncryptedSink()).encode(model);
-                                        return null;
-                                    }
-
-                                    Sink compressedAndEncryptedSink() {
-                                        return compression().apply(encryptedSink());
-                                    }
-
-                                    Sink encryptedSink() {
-                                        return encryption().apply(sink);
-                                    }
-                                });
-                                return this;
-                            }
-                        };
-                    }
-
-                });
-            }
-
-            @Override
-            public void install(final Source source)
-                    throws LicenseManagementException {
-                wrap(new Callable<Void>() {
-                    @Override public Void call() throws Exception {
-                        authorization().clearInstall(TrueLicenseManager.this);
-                        decodeLicense(source); // checks digital signature
-                        bios().copy(source, store());
-                        return null;
-                    }
-                });
-            }
-
-            @Override
-            public License view() throws LicenseManagementException {
-                return wrap(new Callable<License>() {
-                    @Override public License call() throws Exception {
-                        authorization().clearView(TrueLicenseManager.this);
-                        return decodeLicense(store());
-                    }
-                });
-            }
-
-            @Override
-            public void verify() throws LicenseManagementException {
-                wrap(new Callable<Void>() {
-                    @Override public Void call() throws Exception {
-                        authorization().clearVerify(TrueLicenseManager.this);
-                        validate(store());
-                        return null;
-                    }
-                });
-            }
-
-            @Override
-            public void uninstall() throws LicenseManagementException {
-                wrap(new Callable<Void>() {
-                    @Override public Void call() throws Exception {
-                        authorization().clearUninstall(TrueLicenseManager.this);
-                        final Store store = store();
-                        // #TRUELICENSE-81: A consumer license manager must
-                        // authenticate the installed license key before uninstalling
-                        // it.
-                        authenticate(store);
-                        store.delete();
-                        return null;
-                    }
-                });
-            }
-
-            //
-            // License consumer functions:
-            //
-
-            void validate(Source source) throws Exception {
-                validation().validate(decodeLicense(source));
-            }
-
-            License decodeLicense(Source source) throws Exception {
-                return authenticate(source).decode(License.class);
-            }
-
-            Decoder authenticate(Source source) throws Exception {
-                return authentication().verify(repositoryController(source));
-            }
-
-            RepositoryController repositoryController(Source source) throws Exception {
-                return repositoryContext().controller(repositoryModel(source), codec());
-            }
-
-            Model repositoryModel(Source source) throws Exception {
-                return codec().decoder(decompress(source)).decode(repositoryContext().model().getClass());
-            }
-
-            Source decompress(Source source) {
-                return compression().unapply(decrypt(source));
-            }
-
-            Source decrypt(Source source) { return encryption().unapply(source); }
-
-            //
-            // Property/factory functions:
-            //
-
-            final Authentication authentication() {
-                return parameters().authentication();
-            }
-
-            final LicenseManagementAuthorization authorization() {
-                return parameters().authorization();
-            }
-
-            final BIOS bios() { return parameters().bios(); }
-
-            final Codec codec() { return parameters().codec(); }
-
-            final Transformation compression() { return parameters().compression(); }
-
-            @Override
-            public final LicenseManagementContext context() {
-                return parameters().context();
-            }
-
-            final Transformation encryption() { return parameters().encryption(); }
-
-            final LicenseInitialization initialization() {
-                return parameters().initialization();
-            }
-
-            @Override
-            public final TrueLicenseManagementParameters parameters() {
-                return parameters;
-            }
-
-            final RepositoryContext<Model> repositoryContext() {
-                return parameters().repositoryContext();
-            }
-
-            final Store store() { return parameters().store(); }
-
-            final LicenseValidation validation() { return parameters().validation(); }
         }
     }
 }
