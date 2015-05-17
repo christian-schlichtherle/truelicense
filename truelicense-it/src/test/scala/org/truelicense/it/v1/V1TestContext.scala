@@ -9,9 +9,10 @@ import de.schlichtherle.xml.GenericCertificate
 import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.api.io.Store
+import org.truelicense.core.TrueLicenseManagementContext
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.v1.V1TestContext._
-import org.truelicense.v1.V1LicenseManagementContext
+import org.truelicense.v1.V1LicenseApplicationContext
 
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext[GenericCertificate] {
@@ -77,29 +78,16 @@ trait V1TestContext extends TestContext[GenericCertificate] {
   }
 
   override final val managementContext =
-    new V1LicenseManagementContext("subject") {
-      override def license = super.license
-      override def now = super.now
-      override def initialization = {
-        val initialization = super.initialization
-        new LicenseInitialization {
-          override def initialize(bean: License) {
-            initialization.initialize(bean)
-          }
-        }
-      }
-      override def validation = {
-        val validation = super.validation
-        new LicenseValidation {
-          override def validate(bean: License) {
-            validation.validate(bean)
-            logger debug ("Validated {}.", bean)
-          }
-        }
-      }
-      override def codec = super.codec
-      override def policy = super.policy
-    }
+    new V1LicenseApplicationContext()
+      .context
+        .subject("subject")
+        .validation(new LicenseValidation {
+            override def validate(bean: License) {
+              logger debug ("Validated {}.", bean)
+            }
+          })
+        .build
+        .asInstanceOf[TrueLicenseManagementContext[GenericCertificate]]
 
   override final def vendorManager = {
     val vm = managementContext.vendor
