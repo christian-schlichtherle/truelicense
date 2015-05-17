@@ -42,7 +42,7 @@
         <p:keyPairSize>2048</p:keyPairSize>
         <p:keyStoreType>JKS</p:keyStoreType>
         <p:licenseKeyFormat>V2/XML</p:licenseKeyFormat>
-        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:licenseManagementSubject>Product 1</p:licenseManagementSubject>
         <p:package>com.company.product</p:package>
         <p:password>test1234</p:password>
         <p:pbeAlgorithm>PBEWithMD5AndDES</p:pbeAlgorithm>

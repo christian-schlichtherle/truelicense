@@ -48,8 +48,8 @@ import $licenseApplicationContextPackage.$licenseApplicationContextClass;
 import org.truelicense.obfuscate.*;
 
 /**
- * The enumeration of the vendor license managers for $licensingSubject
- * license keys.
+ * The enumeration of the vendor license managers for
+ * $licenseManagementSubject license keys.
  * The managers are named like each configured edition and ordered from
  * superset to subset.
  * Each manager is configured with the algorithms and parameters for generating
@@ -117,7 +117,7 @@ public enum LicenseManager implements VendorLicenseManager {
 #end
 
     @Obfuscate
-    private static final String LICENSE_SUBJECT = "$licensingSubject";
+    private static final String LICENSE_MANAGEMENT_SUBJECT = "$licenseManagementSubject";
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
 
@@ -147,7 +147,7 @@ public enum LicenseManager implements VendorLicenseManager {
                                     bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
                             }
                         })
-                    .subject(LICENSE_SUBJECT)
+                    .subject(LICENSE_MANAGEMENT_SUBJECT)
 #if($keyGenLicenseValidationClass != "-")
                     .validation(#new($keyGenLicenseValidationClass "LicenseValidation"))
 #if($keyGenLicenseValidationFunction != "decorate")

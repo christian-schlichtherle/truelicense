@@ -80,7 +80,7 @@ abstract class LicenseManagementWizardITSuite
           dialog.isModal should equal (true)
         }
 
-        "have a title which includes the licensing subject" in {
+        "have a title which includes the license management subject" in {
           dialog.getTitle should include (managementContext.subject)
         }
 

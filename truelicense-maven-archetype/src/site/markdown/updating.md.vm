@@ -28,7 +28,8 @@ Its contents are a list of <abbr title="eXtensible Markup Language">XML</abbr>
 elements in the form `<name>value</name>`.
 Each element defines a property name and value.
 These properties are used for code generation, e.g. there is a property named
-`licensingSubject` whose value defines the licensing subject - see below.
+`licenseManagementSubject` whose value defines the subject of the license 
+management - see below.
 Their values have been computed from the property values you have provided to
 the $project.name when generating your project.
 
@@ -48,15 +49,15 @@ Let's assume you want to limit the validity of the license keys for your
 software product to a particular version number range, e.g. the same major
 version number.
 Then you should include this version number range, e.g. the major version
-number 1, in the value of the property named `licensingSubject`:
+number 1, in the value of the property named `licenseManagementSubject`:
 
-    <licensingSubject>Product 1</licensingSubject>
+    <licenseManagementSubject>Product 1</licenseManagementSubject>
 
 Later, when you want to transition to a new version number range, e.g. from
 major version number 1 to 2, then all you have to do in order to invalidate all
 previously generated license keys is to update the property value accordingly:
 
-    <licensingSubject>Product 2</licensingSubject>
+    <licenseManagementSubject>Product 2</licenseManagementSubject>
 
 It does not matter how you format the version number range in the licensing
 subject because the validation function simply checks the equality of the
@@ -209,7 +210,7 @@ you need to define the values of the following properties as follows:
             <li>For <code>new V2JsonLicenseManagementContext(SUBJECT)</code>, 
                 enter <code>V2/JSON</code> (default).</li>
         </ul></dd>
-    <dt><code>licensingSubject</code></dt>
+    <dt><code>licenseManagementSubject</code></dt>
     <dd>Enter the value of the field <code>SUBJECT</code> in the same class.</dd>
     <dt><code>package</code></dt>
     <dd>Enter the part of the package name before the <code>keymgr</code>
@@ -239,7 +240,7 @@ equal:
 * `ftpKeyStoreFile`
 * `ftpSecretMarkerClass`
 * `licenseKeyFormat`
-* `licensingSubject`
+* `licenseManagementSubject`
 * `package`
 * `password`
 * `preferencesType`

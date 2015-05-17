@@ -488,10 +488,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="licensingSubject">
+            <xs:element type="xs:token" name="licenseManagementSubject">
                 <xs:annotation>
                     <xs:documentation>
-                        The licensing subject.
+                        The subject of the license management.
                         The value of this property gets stored in the generated
                         license keys and is used for validation.
                         A

@@ -77,8 +77,8 @@ public class License {
     private String subject;
 
     /**
-     * Returns the amount of consumers which are allowed to use the licensing
-     * subject.
+     * Returns the amount of consumers which are allowed to use the
+     * {@linkplain #getSubject() license management subject}.
      * The default value is one in order to retain compatibility with V1
      * format license keys and to reduce the size of the XML encoded form
      * (default values don't need to get encoded).
@@ -87,8 +87,8 @@ public class License {
     public final int getConsumerAmount() { return consumerAmount; }
 
     /**
-     * Sets the amount of consumers which are allowed to use the licensing
-     * subject.
+     * Sets the amount of consumers which are allowed to use the
+     * {@linkplain #getSubject() license management subject}.
      */
     public final void setConsumerAmount(final int consumerAmount) {
         this.consumerAmount = consumerAmount;
@@ -96,7 +96,8 @@ public class License {
 
     /**
      * Returns the description of the type of the entity or object which
-     * allocates (consumes) the license for using the licensing subject.
+     * allocates (consumes) the license for using the
+     * {@linkplain #getSubject() license management subject}.
      * This could describe a computer or a user or anything else, e.g.
      * {@code "User"}.
      */
@@ -105,7 +106,8 @@ public class License {
 
     /**
      * Sets the description of the type of the entity or object which
-     * allocates (consumes) the license for using the licensing subject.
+     * allocates (consumes) the license for using the
+     * {@linkplain #getSubject() license management subject}.
      */
     public final void setConsumerType(final String consumerType) {
         this.consumerType = consumerType;
@@ -116,7 +118,8 @@ public class License {
      * Unlike the other properties of this class, this property is supposed to
      * hold private information which should never be shared with the customer.
      * It is typically used by applications in order to provide some extra data
-     * for custom {@linkplain LicenseManagementContext#validation validation}.
+     * for
+     * {@linkplain LicenseManagementContextBuilder#validation custom license validation}.
      */
     public final Object getExtra() { return extra; }
 
@@ -255,7 +258,7 @@ public class License {
     }
 
     /**
-     * Returns the description of the product which requires licensing.
+     * Returns the subject of the license management.
      * This could be any string, but is recommended to contain the canonical
      * name of the application and some information for which version number
      * range this license is applicable, e.g. {@code "MyApp 1.X"}.
@@ -263,7 +266,9 @@ public class License {
     @XmlElement(required = true)
     public final String getSubject() { return subject; }
 
-    /** Sets the description of the product which requires licensing. */
+    /**
+     * Sets the subject of the license management.
+     */
     public final void setSubject(final String subject) {
         this.subject = subject;
     }

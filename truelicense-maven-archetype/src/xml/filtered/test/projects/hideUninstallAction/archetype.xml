@@ -12,7 +12,7 @@
         This example adds
         <code>hideUninstallAction=true</code>
         to the Basic Configuration example in order to remove the
-        <i>Uninstall ${dollar}{licensingSubject} license key</i>
+        <i>Uninstall ${dollar}{licenseManagementSubject} license key</i>
         action from the license wizard dialog.
     </p:documentation>
     <p:list>
@@ -20,7 +20,7 @@
         <p:companyName>Company Inc.</p:companyName>
         <p:groupId>com.company.product</p:groupId>
         <p:hideUninstallAction>true</p:hideUninstallAction>
-        <p:licensingSubject>Product 1</p:licensingSubject>
+        <p:licenseManagementSubject>Product 1</p:licenseManagementSubject>
         <p:password>test1234</p:password>
         <p:version>1.0-SNAPSHOT</p:version>
     </p:list>

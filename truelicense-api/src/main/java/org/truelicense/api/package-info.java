@@ -8,9 +8,8 @@
  * License keys are small binary objects which can be stored in a file, a
  * preferences node, the heap or any custom implementation of the
  * {@link org.truelicense.api.io.Store} interface.
- * License keys pass the following life cycle phases, as defined by the
- * interfaces
- * {@link org.truelicense.api.VendorLicenseManager} and
+ * License keys pass the following life cycle phases as defined by the
+ * interfaces {@link org.truelicense.api.VendorLicenseManager} and
  * {@link org.truelicense.api.ConsumerLicenseManager}:
  * <ol>
  * <li>{@linkplain org.truelicense.api.VendorLicenseManager#generator Generation},
@@ -23,8 +22,8 @@
  * A license bean is an instance of the
  * {@link org.truelicense.api.License} class.
  * This class follows the Java Bean pattern and defines common properties for
- * the licensing subject, issue date, issuer, holder, consumer type/amount,
- * validity period and custom data.
+ * the license management subject, issue date, issuer, holder, consumer
+ * type/amount, validity period and custom data.
  * These properties get
  * {@linkplain org.truelicense.api.LicenseInitialization#initialize initialized}
  * and
@@ -35,7 +34,7 @@
  * A license key gets generated from a license bean by applying the following
  * function composition:
  * <pre>
- * {@code encrypt(compress(encode(sign(encode(validate(initialize(duplicate(licenseBean))))))))}
+ * {@code encrypt(compress(encode(sign(encode(validate(initialize(duplicate(bean))))))))}
  * </pre>
  * <p>
  * When installing or verifying a license key, a duplicate of the original
@@ -43,7 +42,7 @@
  * inverse) function composition (note that there is no initialization and
  * hence no duplication required):
  * <pre>
- * {@code validate(decode(authenticate(decode(decompress(decrypt(licenseKey))))))}
+ * {@code validate(decode(authenticate(decode(decompress(decrypt(key))))))}
  * </pre>
  * <p>
  * The validation step is skipped when a license key is just viewed.
@@ -54,9 +53,9 @@
  * Encoding is done with {@link java.beans.XMLEncoder} for simple,
  * schema-less, yet resilient long term archival.
  * <p>
- * TrueLicense 2 retains full compatibility with TrueLicense 1 (V1) format
- * license keys plus defines a new V2 format for enhanced encryption and
- * compression.
+ * TrueLicense 3 retains full compatibility with TrueLicense 1 ({@code V1}) and
+ * TrueLicense 2 ({@code V2/*}) format license keys.
+ * <p>
  * Applications use an instance of the interface
  * {@link org.truelicense.api.LicenseApplicationContext} as their starting point
  * for configuring a {@link org.truelicense.api.LicenseManagementContext} and
@@ -65,7 +64,7 @@
  * <p>
  * For security, passwords are represented as an instance of the
  * {@link org.truelicense.api.passwd.PasswordProtection} interface.
- * Other security critical string (algorithms, paths, etc.) are annotatable
+ * Other security critical strings (algorithms, paths, etc.) are annotatable
  * with {@literal @}{@link org.truelicense.obfuscate.Obfuscate} and
  * processible with the TrueLicense Maven Plugin for simple, reliable
  * obfuscation of constant string values in the byte code for license

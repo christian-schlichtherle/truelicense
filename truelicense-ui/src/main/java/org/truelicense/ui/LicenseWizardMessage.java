@@ -43,11 +43,12 @@ public enum LicenseWizardMessage implements Formattable {
 
     /**
      * @param args the formatting arguments.
-     *             The first argument needs to be the licensing subject as
-     *             returned by
-     *             {@link ConsumerLicenseManager#subject()}.
+     *             The first argument needs to be the license management subject
+     *             as returned by
+     *             {@link org.truelicense.api.LicenseManagementContext#subject()}.
      */
-    @Override public Message format(Object... args) {
+    @Override
+    public Message format(Object... args) {
         return Messages.message(name(), args);
     }
 
