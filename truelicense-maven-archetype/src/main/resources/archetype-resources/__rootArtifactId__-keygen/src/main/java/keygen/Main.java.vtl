@@ -10,6 +10,7 @@ package ${package}.keygen;
 import static java.lang.System.*;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.*;
 import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
 import org.truelicense.api.codec.Codec;
@@ -226,7 +227,10 @@ public enum Main {
 #if($keyGenLicenseValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {
-        public void validate(License bean) { }
+        public void validate(License bean) {
+            Logger  .getLogger(NoLicenseValidation.class.getName())
+                    .log(Level.INFO, "Validating license bean: {0}", bean);
+        }
     }
 #end
 }
