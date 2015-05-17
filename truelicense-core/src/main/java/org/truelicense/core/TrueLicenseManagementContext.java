@@ -137,7 +137,7 @@ implements BiosProvider,
     }
 
     @Override
-    public ConsumerLicenseManagerBuilder consumer() {
+    public final ConsumerLicenseManagerBuilder consumer() {
         return new ConsumerTrueLicenseManagerBuilder();
     }
 
@@ -357,7 +357,7 @@ implements BiosProvider,
     }
 
     @Override
-    public VendorLicenseManagerBuilder vendor() {
+    public final VendorLicenseManagerBuilder vendor() {
         return new VendorTrueLicenseManagerBuilder();
     }
 
