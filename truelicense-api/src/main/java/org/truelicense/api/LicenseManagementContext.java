@@ -65,7 +65,7 @@ extends CodecProvider,
     /**
      * Returns a store for the system preferences node for the package of the
      * given class.
-     * Note that the class should be exempt from byte code obfuscation or
+     * Note that the class should be excluded from byte code obfuscation or
      * otherwise you might use an unintended store location and risk a
      * collision with third party software.
      */
@@ -74,7 +74,7 @@ extends CodecProvider,
     /**
      * Returns a store for the user preferences node for the package of the
      * given class.
-     * Note that the class should be exempt from byte code obfuscation or
+     * Note that the class should be excluded from byte code obfuscation or
      * otherwise you might use an unintended store location and risk a
      * collision with third party software.
      */
