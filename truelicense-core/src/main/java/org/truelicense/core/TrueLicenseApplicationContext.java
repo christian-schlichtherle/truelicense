@@ -32,7 +32,7 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 
 /**
- * A basic license management context.
+ * A basic license application context.
  * This class is immutable.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
@@ -61,7 +61,7 @@ implements BiosProvider,
     /**
      * Returns an authentication for the given key store parameters.
      * <p>
-     * The implementation in the class {@link TrueLicenseManagementContext}
+     * The implementation in the class {@link TrueLicenseApplicationContext}
      * returns a new {@link Notary} for the given key store parameters.
      *
      * @param parameters the key store parameters.
