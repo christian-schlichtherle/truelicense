@@ -20,6 +20,8 @@ import org.truelicense.api.passwd.*;
 import org.truelicense.core.auth.Notary;
 import org.truelicense.core.passwd.Passwords;
 import org.truelicense.obfuscate.ObfuscatedString;
+import org.truelicense.spi.io.BIOS;
+import org.truelicense.spi.io.BiosProvider;
 import org.truelicense.spi.io.StandardBIOS;
 import org.truelicense.spi.misc.Option;
 

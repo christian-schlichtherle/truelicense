@@ -5,7 +5,6 @@
 
 package org.truelicense.spi.io;
 
-import org.truelicense.api.io.BIOS;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;

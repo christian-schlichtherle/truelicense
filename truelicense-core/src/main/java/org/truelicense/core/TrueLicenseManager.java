@@ -13,6 +13,7 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.api.codec.Decoder;
 import org.truelicense.api.io.*;
 import org.truelicense.spi.codec.Codecs;
+import org.truelicense.spi.io.BIOS;
 
 import java.util.concurrent.Callable;
 

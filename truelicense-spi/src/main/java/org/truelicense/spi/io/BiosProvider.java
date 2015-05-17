@@ -1,4 +1,4 @@
-package org.truelicense.api.io;
+package org.truelicense.spi.io;
 
 /**
  * Provides a Basic Input/Output System (BIOS).

@@ -3,7 +3,11 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.api.io;
+package org.truelicense.spi.io;
+
+import org.truelicense.api.io.Sink;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
 
 import java.io.IOException;
 import java.nio.file.Path;
