@@ -9,6 +9,7 @@ import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
+import org.truelicense.api.misc.ClassLoaderProvider;
 
 import java.nio.file.Path;
 
@@ -22,6 +23,7 @@ import java.nio.file.Path;
  */
 public interface LicenseManagementContext
 extends CodecProvider,
+        ClassLoaderProvider,
         LicenseFactory,
         LicenseSubjectProvider {
 
@@ -44,8 +46,8 @@ extends CodecProvider,
      * The provided string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.
      * <p>
-     * The resource will get loaded using the class loader as defined by the
-     * root license management context.
+     * The resource will get loaded using the class loader as defined by
+     * {@link #classLoader()}.
      *
      * @param  name the name of the resource to load.
      * @return A source which loads the resource with the given {@code name}.

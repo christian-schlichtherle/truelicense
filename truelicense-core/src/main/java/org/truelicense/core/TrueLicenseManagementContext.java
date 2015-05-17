@@ -49,7 +49,6 @@ import static java.util.Calendar.getInstance;
 public abstract class TrueLicenseManagementContext<Model>
 implements BiosProvider,
         CachePeriodProvider,
-        ClassLoaderProvider,
         Clock,
         CodecProvider,
         CompressionProvider,
