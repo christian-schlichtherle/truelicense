@@ -46,8 +46,8 @@ extends CodecProvider,
      * The provided string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.
      * <p>
-     * The resource will get loaded using the class loader as defined by
-     * {@link #classLoader()}.
+     * The resource will get loaded using the class loader which is returned by
+     * the method {@link #classLoader()}.
      *
      * @param  name the name of the resource to load.
      * @return A source which loads the resource with the given {@code name}.
@@ -70,6 +70,9 @@ extends CodecProvider,
      * Note that the class should be excluded from byte code obfuscation or
      * otherwise you might use an unintended store location and risk a
      * collision with third party software.
+     * <p>
+     * The store will use the {@linkplain #subject() license subject} as its
+     * key in the preferences node.
      */
     Store systemPreferencesStore(Class<?> classInPackage);
 
@@ -79,6 +82,9 @@ extends CodecProvider,
      * Note that the class should be excluded from byte code obfuscation or
      * otherwise you might use an unintended store location and risk a
      * collision with third party software.
+     * <p>
+     * The store will use the {@linkplain #subject() license subject} as its
+     * key in the preferences node.
      */
     Store userPreferencesStore(Class<?> classInPackage);
 

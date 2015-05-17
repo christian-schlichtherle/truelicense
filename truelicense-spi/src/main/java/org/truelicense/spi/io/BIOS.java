@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * A Basic Input/Output System (BIOS).
+ * Implementations need to be stateless.
  *
  * @author Christian Schlichtherle
  */

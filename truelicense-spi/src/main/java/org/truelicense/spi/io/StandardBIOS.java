@@ -26,8 +26,8 @@ public class StandardBIOS implements BIOS {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in this method is suitable for only small amounts of
-     * data, say a few kilobytes.
+     * The implementation in the class {@link StandardBIOS} is suitable for only
+     * small amounts of data, say a few kilobytes.
      */
     @Override
     public void copy(final Source source, final Sink sink) throws IOException {
