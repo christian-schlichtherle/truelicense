@@ -323,14 +323,14 @@ implements BiosProvider,
             return authorization;
         }
 
-        PasswordProtection checkedProtection(final PasswordProtection password) {
+        PasswordProtection checkedProtection(final PasswordProtection protection) {
             return new PasswordProtection() {
 
                 @Override
                 public Password password(final PasswordUsage usage) throws Exception {
                     if (usage.equals(PasswordUsage.WRITE)) // check null
-                        policy().check(password);
-                    return password.password(usage);
+                        policy().check(protection);
+                    return protection.password(usage);
                 }
             };
         }
@@ -362,21 +362,21 @@ implements BiosProvider,
         Authentication ksba(
                 List<String> algorithm,
                 String alias,
-                List<PasswordProtection> keyPassword,
+                List<PasswordProtection> keyProtection,
                 List<Source> source,
                 List<String> storeType,
-                PasswordProtection storePassword) {
+                PasswordProtection storeProtection) {
             return authentication(ksbaParameters(
-                    algorithm, alias, keyPassword,
-                    source, storePassword, storeType));
+                    algorithm, alias, keyProtection,
+                    source, storeProtection, storeType));
         }
 
         private KeyStoreParameters ksbaParameters(
                 final List<String> algorithm,
                 final String alias,
-                final List<PasswordProtection> keyPassword,
+                final List<PasswordProtection> keyProtection,
                 final List<Source> source,
-                final PasswordProtection storePassword,
+                final PasswordProtection storeProtection,
                 final List<String> storeType) {
             return new KeyStoreParameters() {
 
@@ -385,9 +385,9 @@ implements BiosProvider,
 
                 @Override
                 public PasswordProtection keyProtection() {
-                    for (PasswordProtection kp : keyPassword)
+                    for (PasswordProtection kp : keyProtection)
                         return checkedProtection(kp);
-                    return checkedProtection(storePassword);
+                    return checkedProtection(storeProtection);
                 }
 
                 @Override
@@ -398,7 +398,7 @@ implements BiosProvider,
 
                 @Override
                 public PasswordProtection storeProtection() {
-                    return checkedProtection(storePassword);
+                    return checkedProtection(storeProtection);
                 }
 
                 @Override
@@ -422,15 +422,13 @@ implements BiosProvider,
         @Override
         public Store pathStore(Path path) { return bios().pathStore(path); }
 
-        Transformation pbe(
-                List<String> algorithm,
-                PasswordProtection password) {
-            return encryption(pbeParameters(algorithm, password));
+        Transformation pbe(List<String> algorithm, PasswordProtection protection) {
+            return encryption(pbeParameters(algorithm, protection));
         }
 
         private PbeParameters pbeParameters(
                 final List<String> algorithm,
-                final PasswordProtection password) {
+                final PasswordProtection protection) {
             return new PbeParameters() {
 
                 @Override
@@ -442,7 +440,7 @@ implements BiosProvider,
 
                 @Override
                 public PasswordProtection protection() {
-                    return checkedProtection(password);
+                    return checkedProtection(protection);
                 }
             };
         }
