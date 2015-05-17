@@ -4,14 +4,14 @@
  */
 
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseManagementContextPackage = "org.truelicense.v2.json")
-#set($licenseManagementContextClass = "V2JsonLicenseManagementContext")
+#set($licenseApplicationContextPackage = "org.truelicense.v2.json")
+#set($licenseApplicationContextClass = "V2JsonLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseManagementContextPackage = "org.truelicense.v2.xml")
-#set($licenseManagementContextClass = "V2XmlLicenseManagementContext")
+#set($licenseApplicationContextPackage = "org.truelicense.v2.xml")
+#set($licenseApplicationContextClass = "V2XmlLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseManagementContextPackage = "org.truelicense.v1")
-#set($licenseManagementContextClass = "V1LicenseManagementContext")
+#set($licenseApplicationContextPackage = "org.truelicense.v1")
+#set($licenseApplicationContextClass = "V1LicenseApplicationContext")
 #end
 #set($editions = $editions.split($delimiter))
 #set($editionsSize = $editions.size())
@@ -59,7 +59,8 @@ import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordProtection;
-import $licenseManagementContextPackage.$licenseManagementContextClass;
+import org.truelicense.core.TrueLicenseManagementContext;
+import $licenseApplicationContextPackage.$licenseApplicationContextClass;
 import org.truelicense.obfuscate.*;
 #if($keyMgrClockClass != "-")
 import org.truelicense.api.misc.Clock;
@@ -182,7 +183,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #end
 
     @Obfuscate
-    private static final String LICENSING_SUBJECT = "$licensingSubject";
+    private static final String LICENSE_SUBJECT = "$licensingSubject";
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
 
@@ -194,43 +195,25 @@ public enum LicenseManager implements ConsumerLicenseManager {
     // org.truelicense.api.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
-    // $licenseManagementContextPackage.$licenseManagementContextClass
+    // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final $licenseManagementContextClass _context =
-            new $licenseManagementContextClass(LICENSING_SUBJECT) {
-#if($keyMgrClockClass != "-")
-
-                final Clock clock = #new($keyMgrClockClass "Clock");
-
-                @Override public Date now() { return clock.now(); }
-#end
+    private static final TrueLicenseManagementContext<?> _context =
+            new $licenseApplicationContextClass()
+                .context()
 #if($keyMgrLicenseManagementAuthorizationClass != "-")
-
-                @Override
-                public LicenseManagementAuthorization authorization() {
-                    return #new($keyMgrLicenseManagementAuthorizationClass "LicenseManagementAuthorization");
-                }
+                    .authorization(#new($keyMgrLicenseManagementAuthorizationClass "LicenseManagementAuthorization"))
 #end
+#if($keyMgrClockClass != "-")
+                    .clock(#new($keyMgrClockClass "Clock"))
+#end
+                    .subject(LICENSE_SUBJECT)
 #if($keyMgrLicenseValidationClass != "-")
-
-                @Override public LicenseValidation validation() {
-#if($keyMgrLicenseValidationFunction != "override")
-                    final LicenseValidation basic = super.validation();
+                    .validation(#new($keyMgrLicenseValidationClass "LicenseValidation"))
+#if($keyMgrLicenseValidationFunction != "decorate")
+                    .validationComposition(LicenseFunctionComposition.$keyMgrLicenseValidationFunction)
 #end
-                    return new LicenseValidation() {
-                        final LicenseValidation custom = #new($keyMgrLicenseValidationClass "LicenseValidation");
-
-                        @Override
-                        public void validate(final License bean) throws LicenseValidationException {
-                            custom.validate(bean);
-#if($keyMgrLicenseValidationFunction != "override")
-                            basic.validate(bean);
 #end
-                        }
-                    };
-                }
-#end
-            };
+                    .build();
 
     private volatile ConsumerLicenseManager _manager;
 
