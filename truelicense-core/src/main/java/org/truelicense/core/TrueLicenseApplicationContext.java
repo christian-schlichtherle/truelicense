@@ -508,7 +508,7 @@ implements BiosProvider,
             }
 
             final class ParentConsumerTrueLicenseManagerBuilder
-                    extends ConsumerTrueLicenseManagerBuilder {
+            extends ConsumerTrueLicenseManagerBuilder {
 
                 @Override
                 public ConsumerTrueLicenseManagerBuilder inject() {
@@ -912,8 +912,9 @@ implements BiosProvider,
 
                                 final RepositoryContext<Model> context = repositoryContext();
                                 final Model model = context.model();
-                                final Decoder artifactory = authentication()
-                                        .sign(context.controller(model, codec()), validatedBean());
+                                final Decoder decoder = authentication().sign(
+                                        context.controller(model, codec()),
+                                        validatedBean());
 
                                 License validatedBean() throws Exception {
                                     final License duplicate = initializedBean();
@@ -936,7 +937,7 @@ implements BiosProvider,
                                     return wrap(new Callable<License>() {
                                         @Override
                                         public License call() throws Exception {
-                                            return artifactory.decode(License.class);
+                                            return decoder.decode(License.class);
                                         }
                                     });
                                 }
