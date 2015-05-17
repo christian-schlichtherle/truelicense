@@ -292,20 +292,13 @@ implements BiosProvider,
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     final class TrueLicenseManagementContext
-    implements BiosProvider,
-            CachePeriodProvider,
-            Clock,
-            CodecProvider,
-            CompressionProvider,
+    implements Clock,
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementAuthorizationProvider,
-            LicenseFactory,
             LicenseInitializationProvider,
             LicenseManagementContext,
             LicenseSubjectProvider,
-            LicenseValidationProvider,
-            PasswordPolicyProvider,
-            RepositoryContextProvider<Model> {
+            LicenseValidationProvider {
 
         private final LicenseManagementAuthorization authorization;
         private final Clock clock;
@@ -325,20 +318,10 @@ implements BiosProvider,
             this.validationComposition = b.validationComposition;
         }
 
-        Authentication authentication(KeyStoreParameters parameters) {
-            return context().authentication(parameters);
-        }
-
         @Override
         public LicenseManagementAuthorization authorization() {
             return authorization;
         }
-
-        @Override
-        public BIOS bios() { return context().bios(); }
-
-        @Override
-        public long cachePeriodMillis() { return context().cachePeriodMillis(); }
 
         PasswordProtection checkedProtection(final PasswordProtection password) {
             return new PasswordProtection() {
@@ -359,9 +342,6 @@ implements BiosProvider,
         public Codec codec() { return context().codec(); }
 
         @Override
-        public Transformation compression() { return context().compression(); }
-
-        @Override
         public ConsumerLicenseManagerBuilder consumer() {
             return new ConsumerTrueLicenseManagerBuilder();
         }
@@ -369,10 +349,6 @@ implements BiosProvider,
         @Override
         public TrueLicenseApplicationContext<Model> context() {
             return TrueLicenseApplicationContext.this;
-        }
-
-        Transformation encryption(PbeParameters parameters) {
-            return context().encryption(parameters);
         }
 
         @Override
@@ -407,15 +383,11 @@ implements BiosProvider,
                 @Override
                 public String alias() { return alias; }
 
-                TrueLicenseManagementContext context() {
-                    return TrueLicenseManagementContext.this;
-                }
-
                 @Override
                 public PasswordProtection keyProtection() {
                     for (PasswordProtection kp : keyPassword)
-                        return context().checkedProtection(kp);
-                    return context().checkedProtection(storePassword);
+                        return checkedProtection(kp);
+                    return checkedProtection(storePassword);
                 }
 
                 @Override
@@ -426,7 +398,7 @@ implements BiosProvider,
 
                 @Override
                 public PasswordProtection storeProtection() {
-                    return context().checkedProtection(storePassword);
+                    return checkedProtection(storePassword);
                 }
 
                 @Override
@@ -456,8 +428,6 @@ implements BiosProvider,
             return encryption(pbeParameters(algorithm, password));
         }
 
-        String pbeAlgorithm() { return context().pbeAlgorithm(); }
-
         private PbeParameters pbeParameters(
                 final List<String> algorithm,
                 final PasswordProtection password) {
@@ -467,26 +437,14 @@ implements BiosProvider,
                 public String algorithm() {
                     for (String a : algorithm)
                         return a;
-                    return context().pbeAlgorithm();
-                }
-
-                TrueLicenseManagementContext context() {
-                    return TrueLicenseManagementContext.this;
+                    return pbeAlgorithm();
                 }
 
                 @Override
                 public PasswordProtection protection() {
-                    return context().checkedProtection(password);
+                    return checkedProtection(password);
                 }
             };
-        }
-
-        @Override
-        public PasswordPolicy policy() { return context().policy(); }
-
-        @Override
-        public RepositoryContext<Model> repositoryContext() {
-            return context().repositoryContext();
         }
 
         @Override
@@ -499,8 +457,6 @@ implements BiosProvider,
 
         @Override
         public Sink stdout() { return bios().stdout(); }
-
-        String storeType() { return context().storeType(); }
 
         @Override
         public String subject() { return subject; }
@@ -573,8 +529,7 @@ implements BiosProvider,
         }
 
         @SuppressWarnings("unchecked")
-        abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>>
-        implements ContextProvider<TrueLicenseManagementContext> {
+        abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
 
             List<Authentication> authentication = Option.none();
             List<Transformation> encryption = Option.none();
@@ -585,11 +540,6 @@ implements BiosProvider,
             public final This authentication(final Authentication authentication) {
                 this.authentication = Option.wrap(authentication);
                 return (This) this;
-            }
-
-            @Override
-            public final TrueLicenseManagementContext context() {
-                return TrueLicenseManagementContext.this;
             }
 
             public final PbeBuilder encryption() { return new PbeBuilder(); }
@@ -617,19 +567,19 @@ implements BiosProvider,
             }
 
             public final This storeInPath(Path path) {
-                return storeIn(context().pathStore(path));
+                return storeIn(pathStore(path));
             }
 
             public final This storeInSystemPreferences(Class<?> classInPackage) {
-                return storeIn(context().systemPreferencesStore(classInPackage));
+                return storeIn(systemPreferencesStore(classInPackage));
             }
 
             public final This storeInUserPreferences(Class<?> classInPackage) {
-                return storeIn(context().userPreferencesStore(classInPackage));
+                return storeIn(userPreferencesStore(classInPackage));
             }
 
             final class KsbaBuilder
-                    implements Builder<Authentication>,
+            implements Builder<Authentication>,
                     KsbaInjection<This> {
 
                 List<String> algorithm = Option.none();
@@ -690,7 +640,7 @@ implements BiosProvider,
             }
 
             final class PbeBuilder
-                    implements Builder<Transformation>,
+            implements Builder<Transformation>,
                     PbeInjection<This> {
 
                 List<String> algorithm = Option.none();
@@ -719,17 +669,9 @@ implements BiosProvider,
         }
 
         final class TrueLicenseManagementParameters
-        implements BiosProvider,
-                CachePeriodProvider,
-                CodecProvider,
-                CompressionProvider,
-                ContextProvider<TrueLicenseManagementContext>,
-                LicenseManagementAuthorizationProvider,
-                LicenseFactory,
+        implements ContextProvider<TrueLicenseManagementContext>,
                 LicenseInitializationProvider,
-                LicenseManagementParameters,
-                LicenseValidationProvider,
-                RepositoryContextProvider<Model> {
+                LicenseManagementParameters {
 
             final List<Authentication> authentication;
             final List<Transformation> encryption;
@@ -747,21 +689,6 @@ implements BiosProvider,
 
             @Override
             public Authentication authentication() { return authentication.get(0); }
-
-            @Override
-            public LicenseManagementAuthorization authorization() { return context().authorization(); }
-
-            @Override
-            public BIOS bios() { return context().bios(); }
-
-            @Override
-            public long cachePeriodMillis() { return context().cachePeriodMillis(); }
-
-            @Override
-            public Codec codec() { return context().codec(); }
-
-            @Override
-            public Transformation compression() { return context().compression(); }
 
             @Override
             public TrueLicenseManagementContext context() {
@@ -794,20 +721,9 @@ implements BiosProvider,
                 };
             }
 
-            @Override
-            public License license() { return context().license(); }
-
             public ConsumerLicenseManager parent() { return parent.get(0); }
 
-            @Override
-            public RepositoryContext<Model> repositoryContext() {
-                return context().repositoryContext();
-            }
-
             public Store store() { return store.get(0);}
-
-            @Override
-            public LicenseValidation validation() { return context().validation(); }
 
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
@@ -1164,14 +1080,8 @@ implements BiosProvider,
          * A returned object is considered to be consistent if it compares
          * {@linkplain Object#equals(Object) equal} or at least behaves identical to
          * any previously returned object.
-         *
-         * @author Christian Schlichtherle
          */
-        final class TrueLicenseInitialization
-        implements Clock,
-                ContextProvider<TrueLicenseManagementContext>,
-                LicenseInitialization,
-                LicenseSubjectProvider {
+        final class TrueLicenseInitialization implements LicenseInitialization {
 
             @Obfuscate
             static final String DEFAULT_CONSUMER_TYPE = "User";
@@ -1179,11 +1089,6 @@ implements BiosProvider,
             /** The canonical name prefix for X.500 principals. */
             @Obfuscate
             static final String CN_PREFIX = "CN=";
-
-            @Override
-            public TrueLicenseManagementContext context() {
-                return TrueLicenseManagementContext.this;
-            }
 
             @Override
             public void initialize(final License bean) {
@@ -1198,12 +1103,6 @@ implements BiosProvider,
                 if (null == bean.getSubject())
                     bean.setSubject(subject());
             }
-
-            @Override
-            public Date now() { return context().now(); }
-
-            @Override
-            public String subject() { return context().subject(); }
         }
 
         /**
@@ -1226,25 +1125,8 @@ implements BiosProvider,
          * A returned object is considered to be consistent if it compares
          * {@linkplain Object#equals(Object) equal} or at least behaves identical to
          * any previously returned object.
-         *
-         * @author Christian Schlichtherle
          */
-        final class TrueLicenseValidation
-        implements Clock,
-                ContextProvider<TrueLicenseManagementContext>,
-                LicenseSubjectProvider,
-                LicenseValidation {
-
-            @Override
-            public TrueLicenseManagementContext context() {
-                return TrueLicenseManagementContext.this;
-            }
-
-            @Override
-            public Date now() { return context().now(); }
-
-            @Override
-            public String subject() { return context().subject(); }
+        final class TrueLicenseValidation implements LicenseValidation {
 
             @Override
             public void validate(final License bean) throws LicenseValidationException {
