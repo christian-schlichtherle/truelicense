@@ -18,6 +18,17 @@ import static org.truelicense.core.Messages.message;
  * A basic license validation.
  * This class is immutable.
  * <p>
+ * This implementation of the {@link LicenseValidation} interface validates the
+ * license
+ * {@linkplain License#getConsumerAmount consumer amount},
+ * {@linkplain License#getConsumerType consumer type},
+ * {@linkplain License#getHolder holder},
+ * {@linkplain License#getIssued issue date/time},
+ * {@linkplain License#getIssuer issuer},
+ * {@linkplain License#getSubject subject},
+ * {@linkplain License#getNotAfter not after date/time} (if set) and
+ * {@linkplain License#getNotBefore not before date/time} (if set).
+ * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
  * A returned object is considered to be consistent if it compares

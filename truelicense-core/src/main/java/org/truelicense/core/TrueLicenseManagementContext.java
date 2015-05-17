@@ -23,7 +23,6 @@ import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
-import org.truelicense.core.passwd.Passwords;
 import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.io.BIOS;
 import org.truelicense.spi.io.BiosProvider;
@@ -88,7 +87,7 @@ implements BiosProvider,
         this.validationComposition = b.validationComposition;
     }
 
-    final Authentication authentication(KeyStoreParameters parameters) {
+    Authentication authentication(KeyStoreParameters parameters) {
         return context().authentication(parameters);
     }
 
@@ -103,7 +102,7 @@ implements BiosProvider,
     @Override
     public long cachePeriodMillis() { return context().cachePeriodMillis(); }
 
-    final PasswordProtection checkedProtection(
+    PasswordProtection checkedProtection(
             final PasswordProtection password) {
         return new PasswordProtection() {
 
@@ -126,29 +125,17 @@ implements BiosProvider,
     public Transformation compression() { return context().compression(); }
 
     @Override
-    public final ConsumerLicenseManagerBuilder consumer() {
+    public ConsumerLicenseManagerBuilder consumer() {
         return new ConsumerTrueLicenseManagerBuilder();
     }
 
     @Override
     public TrueLicenseApplicationContext<Model> context() { return context; }
 
-    final Transformation encryption(PbeParameters parameters) {
+    Transformation encryption(PbeParameters parameters) {
         return context().encryption(parameters);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseManagementContext}
-     * returns an initialization which initializes the license
-     * {@linkplain License#getConsumerType consumer type},
-     * {@linkplain License#getHolder holder},
-     * {@linkplain License#getIssued issue date/time},
-     * {@linkplain License#getIssuer issuer} and
-     * {@linkplain License#getSubject subject}
-     * unless these properties are respectively set already.
-     */
     @Override
     public LicenseInitialization initialization() {
         final LicenseInitialization secondary = new TrueLicenseInitialization(this);
@@ -157,7 +144,7 @@ implements BiosProvider,
         return secondary;
     }
 
-    final Authentication ksba(
+    Authentication ksba(
             List<String> algorithm,
             String alias,
             List<PasswordProtection> keyPassword,
@@ -181,7 +168,7 @@ implements BiosProvider,
             @Override
             public String alias() { return alias; }
 
-            final TrueLicenseManagementContext<Model> context() {
+            TrueLicenseManagementContext<Model> context() {
                 return TrueLicenseManagementContext.this;
             }
 
@@ -216,7 +203,7 @@ implements BiosProvider,
     public License license() { return context().license(); }
 
     @Override
-    public final Store memoryStore() { return bios().memoryStore(); }
+    public Store memoryStore() { return bios().memoryStore(); }
 
     /**
      * {@inheritDoc}
@@ -228,15 +215,15 @@ implements BiosProvider,
     public Date now() { return clock.now(); }
 
     @Override
-    public final Store pathStore(Path path) { return bios().pathStore(path); }
+    public Store pathStore(Path path) { return bios().pathStore(path); }
 
-    final Transformation pbe(
+    Transformation pbe(
             List<String> algorithm,
             PasswordProtection password) {
         return encryption(pbeParameters(algorithm, password));
     }
 
-    final String pbeAlgorithm() { return context().pbeAlgorithm(); }
+    String pbeAlgorithm() { return context().pbeAlgorithm(); }
 
     private PbeParameters pbeParameters(
             final List<String> algorithm,
@@ -250,7 +237,7 @@ implements BiosProvider,
                 return context().pbeAlgorithm();
             }
 
-            final TrueLicenseManagementContext<Model> context() {
+            TrueLicenseManagementContext<Model> context() {
                 return TrueLicenseManagementContext.this;
             }
 
@@ -270,20 +257,13 @@ implements BiosProvider,
      * Calling this method creates a new {@link ObfuscatedString} from the given
      * array and forwards the call to {@link #protection(ObfuscatedString)}.
      */
-    public final PasswordProtection protection(long[] obfuscated) {
+    public PasswordProtection protection(long[] obfuscated) {
         return protection(new ObfuscatedString(obfuscated));
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseManagementContext}
-     * returns
-     * {@link Passwords#newPasswordProtection(ObfuscatedString) Passwords.newPasswordProtecetion(os)}.
-     */
     @Override
-    public final PasswordProtection protection(ObfuscatedString os) {
-        return Passwords.newPasswordProtection(os);
+    public PasswordProtection protection(ObfuscatedString os) {
+        return context().protection(os);
     }
 
     @Override
@@ -292,46 +272,32 @@ implements BiosProvider,
     }
 
     @Override
-    public final Source resource(String name) {
+    public Source resource(String name) {
         return bios().resource(name, classLoader());
     }
 
     @Override
-    public final Source stdin() { return bios().stdin(); }
+    public Source stdin() { return bios().stdin(); }
 
     @Override
-    public final Sink stdout() { return bios().stdout(); }
+    public Sink stdout() { return bios().stdout(); }
 
-    final String storeType() { return context().storeType(); }
+    String storeType() { return context().storeType(); }
 
     /** Returns the licensing subject. */
     @Override
-    public final String subject() { return subject; }
+    public String subject() { return subject; }
 
     @Override
-    public final Store systemPreferencesStore(Class<?> classInPackage) {
+    public Store systemPreferencesStore(Class<?> classInPackage) {
         return bios().systemPreferencesStore(classInPackage, subject());
     }
 
     @Override
-    public final Store userPreferencesStore(Class<?> classInPackage) {
+    public Store userPreferencesStore(Class<?> classInPackage) {
         return bios().userPreferencesStore(classInPackage, subject());
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseManagementContext}
-     * returns a validation which validates the license
-     * {@linkplain License#getConsumerAmount consumer amount},
-     * {@linkplain License#getConsumerType consumer type},
-     * {@linkplain License#getHolder holder},
-     * {@linkplain License#getIssued issue date/time},
-     * {@linkplain License#getIssuer issuer},
-     * {@linkplain License#getSubject subject},
-     * {@linkplain License#getNotAfter not after date/time} (if set) and
-     * {@linkplain License#getNotBefore not before date/time} (if set).
-     */
     @Override
     public LicenseValidation validation() {
         final LicenseValidation secondary = new TrueLicenseValidation(this);
@@ -341,7 +307,7 @@ implements BiosProvider,
     }
 
     @Override
-    public final VendorLicenseManagerBuilder vendor() {
+    public VendorLicenseManagerBuilder vendor() {
         return new VendorTrueLicenseManagerBuilder();
     }
 
@@ -567,19 +533,19 @@ implements BiosProvider,
         public Authentication authentication() { return authentication.get(0); }
 
         @Override
-        public final LicenseManagementAuthorization authorization() { return context().authorization(); }
+        public LicenseManagementAuthorization authorization() { return context().authorization(); }
 
         @Override
-        public final BIOS bios() { return context().bios(); }
+        public BIOS bios() { return context().bios(); }
 
         @Override
         public long cachePeriodMillis() { return context().cachePeriodMillis(); }
 
         @Override
-        public final Codec codec() { return context().codec(); }
+        public Codec codec() { return context().codec(); }
 
         @Override
-        public final Transformation compression() { return context().compression(); }
+        public Transformation compression() { return context().compression(); }
 
         @Override
         public TrueLicenseManagementContext<Model> context() {
@@ -618,13 +584,13 @@ implements BiosProvider,
         public ConsumerLicenseManager parent() { return parent.get(0); }
 
         @Override
-        public final RepositoryContext<Model> repositoryContext() {
+        public RepositoryContext<Model> repositoryContext() {
             return context().repositoryContext();
         }
 
         public Store store() { return store.get(0);}
 
         @Override
-        public final LicenseValidation validation() { return context().validation(); }
+        public LicenseValidation validation() { return context().validation(); }
     }
 }

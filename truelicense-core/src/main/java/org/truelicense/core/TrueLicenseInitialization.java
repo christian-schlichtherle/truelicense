@@ -21,6 +21,15 @@ import static org.truelicense.core.Messages.message;
  * A basic license initialization.
  * This class is immutable.
  * <p>
+ * This implementation of the {@link LicenseInitialization} interface
+ * initializes the license
+ * {@linkplain License#getConsumerType consumer type},
+ * {@linkplain License#getHolder holder},
+ * {@linkplain License#getIssued issue date/time},
+ * {@linkplain License#getIssuer issuer} and
+ * {@linkplain License#getSubject subject}
+ * unless these properties are respectively set already.
+ * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
  * A returned object is considered to be consistent if it compares
