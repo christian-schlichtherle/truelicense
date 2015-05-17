@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
+import Messages._
 
 /**
  * @author Christian Schlichtherle
@@ -19,19 +20,17 @@ class MessagesTest extends WordSpec {
 
   "Messages" should {
     "be binary serializable" in {
-      import TrueLicenseInitialization._
-      import TrueLicenseValidation._
       val table = Table(
         "key",
-        UNKNOWN,
-        INVALID_SUBJECT,
-        HOLDER_IS_NULL,
-        ISSUER_IS_NULL,
-        ISSUED_IS_NULL,
-        LICENSE_IS_NOT_YET_VALID,
-        LICENSE_HAS_EXPIRED,
+        CONSUMER_AMOUNT_IS_NOT_POSITIVE,
         CONSUMER_TYPE_IS_NULL,
-        CONSUMER_AMOUNT_IS_NOT_POSITIVE
+        HOLDER_IS_NULL,
+        INVALID_SUBJECT,
+        ISSUED_IS_NULL,
+        ISSUER_IS_NULL,
+        LICENSE_HAS_EXPIRED,
+        LICENSE_IS_NOT_YET_VALID,
+        UNKNOWN
       )
       forAll (table) { key => testSerialization(Messages message key) }
     }
