@@ -9,17 +9,21 @@ import java.util.Calendar._
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
+import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.api.auth.RepositoryContextProvider
 import org.truelicense.api.codec.CodecProvider
 import org.truelicense.api.io.{Store, Transformation}
-import org.truelicense.core.TrueLicenseManagementContext
+import org.truelicense.core.TrueLicenseApplicationContext
+import org.truelicense.it.core.TestContext._
 import org.truelicense.it.core.io.IdentityTransformation
 
 /** @author Christian Schlichtherle */
 trait TestContext[Model <: AnyRef]
   extends CodecProvider
   with RepositoryContextProvider[Model] {
+
+  val applicationContext: TrueLicenseApplicationContext[Model]
 
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
@@ -67,16 +71,31 @@ trait TestContext[Model <: AnyRef]
     license
   }
 
-  val managementContext: TrueLicenseManagementContext[Model]
+  final lazy val managementContext =
+    applicationContext
+      .context
+        .subject("subject")
+        .validation(new LicenseValidation {
+            override def validate(bean: License) {
+              logger debug ("Validated {}.", bean)
+            }
+          })
+        .build
 
-  override final def repositoryContext = managementContext.repositoryContext
+  override final def repositoryContext = applicationContext.repositoryContext
 
   def store = managementContext.memoryStore
 
-  def test1234 = managementContext protection
+  def test1234 = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
 
   def transformation: Transformation = IdentityTransformation
 
   def vendorManager: VendorLicenseManager
+}
+
+/** @author Christian Schlichtherle */
+object TestContext {
+
+  private val logger = LoggerFactory getLogger classOf[TestContext[_]]
 }

@@ -50,7 +50,7 @@ import static java.util.Calendar.getInstance;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings("LoopStatementThatDoesntLoop")
-public final class TrueLicenseManagementContext<Model>
+final class TrueLicenseManagementContext<Model>
 implements BiosProvider,
         CachePeriodProvider,
         Clock,

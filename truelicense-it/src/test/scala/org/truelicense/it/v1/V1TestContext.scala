@@ -6,16 +6,16 @@
 package org.truelicense.it.v1
 
 import de.schlichtherle.xml.GenericCertificate
-import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.api.io.Store
-import org.truelicense.core.TrueLicenseManagementContext
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.v1.V1TestContext._
 import org.truelicense.v1.V1LicenseApplicationContext
 
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext[GenericCertificate] {
+
+  override final val applicationContext = new V1LicenseApplicationContext
 
   override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
@@ -77,17 +77,6 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     cm
   }
 
-  override final val managementContext =
-    new V1LicenseApplicationContext()
-      .context
-        .subject("subject")
-        .validation(new LicenseValidation {
-            override def validate(bean: License) {
-              logger debug ("Validated {}.", bean)
-            }
-          })
-        .build
-
   override final def vendorManager = {
     val vm = managementContext.vendor
       .encryption
@@ -107,6 +96,5 @@ trait V1TestContext extends TestContext[GenericCertificate] {
 /** @author Christian Schlichtherle */
 object V1TestContext {
 
-  private val logger = LoggerFactory getLogger classOf[V1TestContext]
   private def prefix = classOf[V1TestContext].getPackage.getName.replace('.', '/') + '/'
 }

@@ -59,7 +59,6 @@ import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordProtection;
-import org.truelicense.core.TrueLicenseManagementContext;
 import $licenseApplicationContextPackage.$licenseApplicationContextClass;
 import org.truelicense.obfuscate.*;
 #if($keyMgrClockClass != "-")
@@ -96,7 +95,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #end
         @Override
         ConsumerLicenseManager newManager() {
-            return _context.consumer()
+            return _managementContext.consumer()
 #if($editionPbePassword != $parentEditionPbePassword)
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
@@ -152,7 +151,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #end
         @Override
         ConsumerLicenseManager newManager() {
-            return _context.consumer()
+            return _managementContext.consumer()
                     .ftpDays($freeTrialPeriod)
                     .keyStore()
                         .alias($ftpKeyEntryAlias)
@@ -197,8 +196,11 @@ public enum LicenseManager implements ConsumerLicenseManager {
     // The implementation class
     // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final TrueLicenseManagementContext<?> _context =
-            new $licenseApplicationContextClass()
+    private static final $licenseApplicationContextClass _applicationContext =
+            new $licenseApplicationContextClass();
+
+    private static final LicenseManagementContext _managementContext =
+            _applicationContext
                 .context()
 #if($keyMgrLicenseManagementAuthorizationClass != "-")
                     .authorization(#new($keyMgrLicenseManagementAuthorizationClass "LicenseManagementAuthorization"))
@@ -243,7 +245,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
     abstract ConsumerLicenseManager newManager();
 
     final PasswordProtection protection(long[] obfuscated) {
-        return _context.protection(obfuscated);
+        return _applicationContext.protection(obfuscated);
     }
 
     @Override
@@ -268,8 +270,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
 
     @Override
     public LicenseManagementContext context() {
-        assert _context == manager().context();
-        return _context;
+        assert _managementContext == manager().context();
+        return _managementContext;
     }
 
     @Override

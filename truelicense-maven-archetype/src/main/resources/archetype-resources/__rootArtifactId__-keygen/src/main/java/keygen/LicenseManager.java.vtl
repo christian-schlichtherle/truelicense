@@ -44,7 +44,6 @@ import javax.security.auth.x500.X500Principal;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.passwd.PasswordProtection;
-import org.truelicense.core.TrueLicenseManagementContext;
 import $licenseApplicationContextPackage.$licenseApplicationContextClass;
 import org.truelicense.obfuscate.*;
 
@@ -79,7 +78,7 @@ public enum LicenseManager implements VendorLicenseManager {
 #end
         @Override
         VendorLicenseManager newManager() {
-            return _context.vendor()
+            return _managementContext.vendor()
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
@@ -132,8 +131,11 @@ public enum LicenseManager implements VendorLicenseManager {
     // The implementation class
     // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final TrueLicenseManagementContext<?> _context =
-            new $licenseApplicationContextClass()
+    private static final $licenseApplicationContextClass _applicationContext =
+            new $licenseApplicationContextClass();
+
+    private static final LicenseManagementContext _managementContext =
+            _applicationContext
                 .context()
 #if($keyGenLicenseManagementAuthorizationClass != "-")
                     .authorization(#new($keyGenLicenseManagementAuthorizationClass "LicenseManagementAuthorization"))
@@ -165,7 +167,7 @@ public enum LicenseManager implements VendorLicenseManager {
     abstract VendorLicenseManager newManager();
 
     final PasswordProtection protection(long[] obfuscated) {
-        return _context.protection(obfuscated);
+        return _applicationContext.protection(obfuscated);
     }
 
     @Override
@@ -175,8 +177,8 @@ public enum LicenseManager implements VendorLicenseManager {
 
     @Override
     public LicenseManagementContext context() {
-        assert _context == manager().context();
-        return _context;
+        assert _managementContext == manager().context();
+        return _managementContext;
     }
 
     @Override
