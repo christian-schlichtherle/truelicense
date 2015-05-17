@@ -243,7 +243,7 @@ implements BiosProvider,
 
         @Override
         public TrueLicenseManagementContext<Model> build() {
-            return TrueLicenseManagementContext.create(this);
+            return new TrueLicenseManagementContext<>(this);
         }
     }
 }

@@ -57,16 +57,11 @@
  * TrueLicense 2 retains full compatibility with TrueLicense 1 (V1) format
  * license keys plus defines a new V2 format for enhanced encryption and
  * compression.
- * Applications select the class
- * {@link org.truelicense.v1.V1LicenseManagementContext},
- * {@link org.truelicense.v2.json.V2JsonLicenseManagementContext} or
- * {@link org.truelicense.v2.xml.V2XmlLicenseManagementContext} as
- * their starting point for configuring a vendor or consumer license manager.
- * These classes can get subclassed to customize special aspects, such as
- * performing additional license validation steps, providing an authoritative
- * clock et al.
- * However, TrueLicense 2 has been designed so that typical applications don't
- * need to subclass or implement any class or interface of its API.
+ * Applications use an instance of the interface
+ * {@link org.truelicense.api.LicenseApplicationContext} as their starting point
+ * for configuring a {@link org.truelicense.api.LicenseManagementContext} and
+ * subsequently one or more {@link org.truelicense.api.ConsumerLicenseManager}
+ * or {@link org.truelicense.api.VendorLicenseManager} instances.
  * <p>
  * For security, passwords are represented as an instance of the
  * {@link org.truelicense.api.passwd.PasswordProtection} interface.
