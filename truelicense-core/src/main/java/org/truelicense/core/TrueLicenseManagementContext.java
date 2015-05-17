@@ -23,7 +23,6 @@ import org.truelicense.api.misc.CachePeriodProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.misc.ContextProvider;
 import org.truelicense.api.passwd.*;
-import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.io.BIOS;
 import org.truelicense.spi.io.BiosProvider;
 import org.truelicense.spi.misc.Option;
@@ -64,7 +63,6 @@ implements BiosProvider,
         LicenseSubjectProvider,
         LicenseValidationProvider,
         PasswordPolicyProvider,
-        PasswordProtectionProvider<ObfuscatedString>,
         RepositoryContextProvider<Model> {
 
     private final LicenseManagementAuthorization authorization;
@@ -205,12 +203,6 @@ implements BiosProvider,
     @Override
     public Store memoryStore() { return bios().memoryStore(); }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseManagementContext}
-     * returns a new {@link Date}.
-     */
     @Override
     public Date now() { return clock.now(); }
 
@@ -251,21 +243,6 @@ implements BiosProvider,
     @Override
     public PasswordPolicy policy() { return context().policy(); }
 
-    /**
-     * Returns a password protection for the given representation of an
-     * obfuscated string.
-     * Calling this method creates a new {@link ObfuscatedString} from the given
-     * array and forwards the call to {@link #protection(ObfuscatedString)}.
-     */
-    public PasswordProtection protection(long[] obfuscated) {
-        return protection(new ObfuscatedString(obfuscated));
-    }
-
-    @Override
-    public PasswordProtection protection(ObfuscatedString os) {
-        return context().protection(os);
-    }
-
     @Override
     public RepositoryContext<Model> repositoryContext() {
         return context().repositoryContext();
@@ -284,7 +261,6 @@ implements BiosProvider,
 
     String storeType() { return context().storeType(); }
 
-    /** Returns the licensing subject. */
     @Override
     public String subject() { return subject; }
 
