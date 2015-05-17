@@ -68,14 +68,14 @@ implements BiosProvider,
         PasswordProtectionProvider<ObfuscatedString>,
         RepositoryContextProvider<Model> {
 
-    final LicenseManagementAuthorization authorization;
-    final Clock clock;
-    final TrueLicenseApplicationContext<Model> context;
-    final List<LicenseInitialization> initialization;
-    final LicenseFunctionComposition initializationComposition;
-    final String subject;
-    final List<LicenseValidation> validation;
-    final LicenseFunctionComposition validationComposition;
+    private final LicenseManagementAuthorization authorization;
+    private final Clock clock;
+    private final TrueLicenseApplicationContext<Model> context;
+    private final List<LicenseInitialization> initialization;
+    private final LicenseFunctionComposition initializationComposition;
+    private final String subject;
+    private final List<LicenseValidation> validation;
+    private final LicenseFunctionComposition validationComposition;
 
     TrueLicenseManagementContext(final TrueLicenseApplicationContext<Model>.TrueLicenseManagementContextBuilder b) {
         this.authorization = b.authorization;
