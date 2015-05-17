@@ -204,12 +204,6 @@ implements BiosProvider,
         });
     }
 
-    static long requireNonNegative(final long l) {
-        if (0 > l)
-            throw new IllegalArgumentException();
-        return l;
-    }
-
     /**
      * Executes the given {@code task} and wraps any
      * non-{@link RuntimeException} and non-{@link LicenseManagementException}
@@ -815,14 +809,6 @@ implements BiosProvider,
             @Override
             public LicenseValidation validation() { return context().validation(); }
 
-            /**
-             * A caching consumer license manager which establishes a Chain Of
-             * Responsibility with its parent consumer license manager.
-             * On each operation, the parent consumer license manager is tried first.
-             * This class is thread-safe.
-             *
-             * @author Christian Schlichtherle
-             */
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
                 volatile List<Boolean> canGenerateLicenseKeys = Option.none();
@@ -911,19 +897,8 @@ implements BiosProvider,
                         throw e;
                     return super.generator(license()).writeTo(store);
                 }
-
-                License license() { return parameters().license(); }
-
-                ConsumerLicenseManager parent() { return parameters().parent(); }
             }
 
-            /**
-             * A basic consumer license manager which caches some computed objects to speed
-             * up subsequent requests.
-             * This class is thread-safe.
-             *
-             * @author Christian Schlichtherle
-             */
             class CachingTrueLicenseManager extends TrueLicenseManager {
 
                 // These volatile fields get initialized by applying a pure function which
@@ -993,10 +968,6 @@ implements BiosProvider,
                         cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
                     }
                     return optDecoder.get(0);
-                }
-
-                final long cachePeriodMillis() {
-                    return requireNonNegative(parameters().cachePeriodMillis());
                 }
             }
 
@@ -1163,43 +1134,15 @@ implements BiosProvider,
                 // Property/factory functions:
                 //
 
-                final Authentication authentication() {
-                    return parameters().authentication();
-                }
-
-                final LicenseManagementAuthorization authorization() {
-                    return parameters().authorization();
-                }
-
-                final BIOS bios() { return parameters().bios(); }
-
-                final Codec codec() { return parameters().codec(); }
-
-                final Transformation compression() { return parameters().compression(); }
-
                 @Override
                 public final LicenseManagementContext context() {
-                    return parameters().context();
-                }
-
-                final Transformation encryption() { return parameters().encryption(); }
-
-                final LicenseInitialization initialization() {
-                    return parameters().initialization();
+                    return TrueLicenseManagementContext.this;
                 }
 
                 @Override
                 public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
                 }
-
-                final RepositoryContext<Model> repositoryContext() {
-                    return parameters().repositoryContext();
-                }
-
-                final Store store() { return parameters().store(); }
-
-                final LicenseValidation validation() { return parameters().validation(); }
             }
         }
 
