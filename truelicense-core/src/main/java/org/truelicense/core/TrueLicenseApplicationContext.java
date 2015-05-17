@@ -192,7 +192,7 @@ implements BiosProvider,
     public abstract String storeType();
 
     final class TrueLicenseManagementContextBuilder
-    implements ContextProvider<TrueLicenseApplicationContext<Model>>,
+    implements ContextProvider<TrueLicenseApplicationContext>,
                LicenseManagementContextBuilder {
 
         LicenseManagementAuthorization authorization = context().authorization();
@@ -216,7 +216,7 @@ implements BiosProvider,
         }
 
         @Override
-        public TrueLicenseApplicationContext<Model> context() {
+        public TrueLicenseApplicationContext context() {
             return TrueLicenseApplicationContext.this;
         }
 
@@ -263,7 +263,7 @@ implements BiosProvider,
             Clock,
             CodecProvider,
             CompressionProvider,
-            ContextProvider<TrueLicenseApplicationContext<Model>>,
+            ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementAuthorizationProvider,
             LicenseFactory,
             LicenseInitializationProvider,
@@ -281,7 +281,7 @@ implements BiosProvider,
         private final List<LicenseValidation> validation;
         private final LicenseFunctionComposition validationComposition;
 
-        TrueLicenseManagementContext(final TrueLicenseApplicationContext<Model>.TrueLicenseManagementContextBuilder b) {
+        TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
             this.authorization = b.authorization;
             this.clock = b.clock;
             this.initialization = b.initialization;
