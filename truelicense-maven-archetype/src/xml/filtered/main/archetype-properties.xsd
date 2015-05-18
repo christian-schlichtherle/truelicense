@@ -127,6 +127,23 @@
             <xs:enumeration value="PKCS12"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="LicenseFunctionComposition">
+        <xs:annotation>
+            <xs:documentation>
+                Select
+                <code>override</code>
+                to apply only the custom function.
+                Select
+                <code>decorate</code>
+                instead to apply both the custom function and the built-in
+                function.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="decorate"/>
+            <xs:enumeration value="override"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="LicenseKeyFormat">
         <xs:restriction base="xs:token">
             <xs:enumeration value="V1"/>
@@ -327,8 +344,8 @@
                         minOccurs="0" default="decorate">
                 <xs:annotation>
                     <xs:documentation>
-                        Selects the composition of license validation functions
-                        in the Key Generator module.
+                        Selects the composition strategy for license validation
+                        functions in the Key Generator module.
                         This property is ignored if the property
                         <code>keyGenValidationClass</code>
                         is set to
@@ -389,21 +406,12 @@
                         minOccurs="0" default="decorate">
                 <xs:annotation>
                     <xs:documentation>
-                        Selects the function for license validation in the Key
-                        Manager module.
+                        Selects the composition strategy for license validation
+                        functions in the Key Manager module.
                         This property is ignored if the property
                         <code>keyMgrValidationClass</code>
                         is set to
                         <code>-</code>.
-                        Otherwise, select
-                        <code>override</code>
-                        to apply only the the custom license validation function
-                        which is implemented by the
-                        <code>${dollar}{keyMgrValidationClass}</code>.
-                        Select
-                        <code>decorate</code>
-                        instead to apply both the custom license validation
-                        function and the built-in license validation function.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -711,23 +719,6 @@
             <xs:enumeration value="SHA256withRSA"/>
             <xs:enumeration value="SHA384withRSA"/>
             <xs:enumeration value="SHA512withRSA"/>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="LicenseFunctionComposition">
-        <xs:annotation>
-            <xs:documentation>
-                Select
-                <code>override</code>
-                to apply only the the custom function.
-                Select
-                <code>decorate</code>
-                instead to apply both the custom function and the built-in
-                function.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:token">
-            <xs:enumeration value="decorate"/>
-            <xs:enumeration value="override"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="Version">
