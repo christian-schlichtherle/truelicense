@@ -135,8 +135,7 @@
                 to apply only the custom function.
                 Select
                 <code>decorate</code>
-                instead to apply both the custom function and the built-in
-                function.
+                to apply both the custom function and the built-in function.
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:token">
