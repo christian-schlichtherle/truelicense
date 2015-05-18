@@ -20,12 +20,12 @@
         <p:artifactId>customLicenseAuthorization</p:artifactId>
         <p:companyName>Company Inc.</p:companyName>
         <p:groupId>com.company.product</p:groupId>
-        <p:keyGenLicenseManagementAuthorizationClass>
+        <p:keyGenAuthorizationClass>
             org.truelicense.core.TrueLicenseManagementAuthorization
-        </p:keyGenLicenseManagementAuthorizationClass>
-        <p:keyMgrLicenseManagementAuthorizationClass>
+        </p:keyGenAuthorizationClass>
+        <p:keyMgrAuthorizationClass>
             org.truelicense.core.TrueLicenseManagementAuthorization
-        </p:keyMgrLicenseManagementAuthorizationClass>
+        </p:keyMgrAuthorizationClass>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>

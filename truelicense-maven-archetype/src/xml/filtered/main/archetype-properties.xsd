@@ -290,7 +290,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyGenLicenseManagementAuthorizationClass"
+            <xs:element type="xs:token" name="keyGenAuthorizationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
@@ -306,7 +306,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyGenLicenseValidationClass"
+            <xs:element type="xs:token" name="keyGenValidationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
@@ -322,26 +322,17 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="p:ValidationFunction"
-                        name="keyGenLicenseValidationFunction"
+            <xs:element type="p:LicenseFunctionComposition"
+                        name="keyGenValidationComposition"
                         minOccurs="0" default="decorate">
                 <xs:annotation>
                     <xs:documentation>
-                        Selects the function for license validation in the Key
-                        Generator module.
+                        Selects the composition of license validation functions
+                        in the Key Generator module.
                         This property is ignored if the property
-                        <code>keyGenLicenseValidationClass</code>
+                        <code>keyGenValidationClass</code>
                         is set to
                         <code>-</code>.
-                        Otherwise, select
-                        <code>override</code>
-                        to apply only the the custom license validation function
-                        which is implemented by the
-                        <code>${dollar}{keyGenLicenseValidationClass}</code>.
-                        Select
-                        <code>decorate</code>
-                        instead to apply both the custom license validation
-                        function and the built-in license validation function.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -361,7 +352,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrLicenseManagementAuthorizationClass"
+            <xs:element type="xs:token" name="keyMgrAuthorizationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
@@ -377,7 +368,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrLicenseValidationClass"
+            <xs:element type="xs:token" name="keyMgrValidationClass"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
@@ -393,22 +384,22 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="p:ValidationFunction"
-                        name="keyMgrLicenseValidationFunction"
+            <xs:element type="p:LicenseFunctionComposition"
+                        name="keyMgrValidationComposition"
                         minOccurs="0" default="decorate">
                 <xs:annotation>
                     <xs:documentation>
                         Selects the function for license validation in the Key
                         Manager module.
                         This property is ignored if the property
-                        <code>keyMgrLicenseValidationClass</code>
+                        <code>keyMgrValidationClass</code>
                         is set to
                         <code>-</code>.
                         Otherwise, select
                         <code>override</code>
                         to apply only the the custom license validation function
                         which is implemented by the
-                        <code>${dollar}{keyMgrLicenseValidationClass}</code>.
+                        <code>${dollar}{keyMgrValidationClass}</code>.
                         Select
                         <code>decorate</code>
                         instead to apply both the custom license validation
@@ -722,7 +713,18 @@
             <xs:enumeration value="SHA512withRSA"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="ValidationFunction">
+    <xs:simpleType name="LicenseFunctionComposition">
+        <xs:annotation>
+            <xs:documentation>
+                Select
+                <code>override</code>
+                to apply only the the custom function.
+                Select
+                <code>decorate</code>
+                instead to apply both the custom function and the built-in
+                function.
+            </xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:token">
             <xs:enumeration value="decorate"/>
             <xs:enumeration value="override"/>

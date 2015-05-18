@@ -224,7 +224,7 @@ public enum Main {
     }
 
     private enum CreateOption { KEY, INPUT, OUTPUT, EDITION, VERBOSE }
-#if($keyGenLicenseValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
+#if($keyGenValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {
         public void validate(License bean) {

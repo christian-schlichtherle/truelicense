@@ -201,17 +201,17 @@ public enum LicenseManager implements ConsumerLicenseManager {
     private static final LicenseManagementContext _managementContext =
             _applicationContext
                 .context()
-#if($keyMgrLicenseManagementAuthorizationClass != "-")
-                    .authorization(#new($keyMgrLicenseManagementAuthorizationClass "LicenseManagementAuthorization"))
+#if($keyMgrAuthorizationClass != "-")
+                    .authorization(#new($keyMgrAuthorizationClass "LicenseManagementAuthorization"))
 #end
 #if($keyMgrClockClass != "-")
                     .clock(#new($keyMgrClockClass "Clock"))
 #end
                     .subject(SUBJECT)
-#if($keyMgrLicenseValidationClass != "-")
-                    .validation(#new($keyMgrLicenseValidationClass "LicenseValidation"))
-#if($keyMgrLicenseValidationFunction != "decorate")
-                    .validationComposition(LicenseFunctionComposition.$keyMgrLicenseValidationFunction)
+#if($keyMgrValidationClass != "-")
+                    .validation(#new($keyMgrValidationClass "LicenseValidation"))
+#if($keyMgrValidationComposition != "decorate")
+                    .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
 #end
 #end
                     .build();

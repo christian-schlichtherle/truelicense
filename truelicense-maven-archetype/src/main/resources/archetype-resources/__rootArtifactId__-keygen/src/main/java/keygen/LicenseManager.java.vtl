@@ -136,8 +136,8 @@ public enum LicenseManager implements VendorLicenseManager {
     private static final LicenseManagementContext _managementContext =
             _applicationContext
                 .context()
-#if($keyGenLicenseManagementAuthorizationClass != "-")
-                    .authorization(#new($keyGenLicenseManagementAuthorizationClass "LicenseManagementAuthorization"))
+#if($keyGenAuthorizationClass != "-")
+                    .authorization(#new($keyGenAuthorizationClass "LicenseManagementAuthorization"))
 #end
                     .initialization(new LicenseInitialization() {
                             @Override
@@ -147,10 +147,10 @@ public enum LicenseManager implements VendorLicenseManager {
                             }
                         })
                     .subject(SUBJECT)
-#if($keyGenLicenseValidationClass != "-")
-                    .validation(#new($keyGenLicenseValidationClass "LicenseValidation"))
-#if($keyGenLicenseValidationFunction != "decorate")
-                    .validationComposition(LicenseFunctionComposition.$keyGenLicenseValidationFunction)
+#if($keyGenValidationClass != "-")
+                    .validation(#new($keyGenValidationClass "LicenseValidation"))
+#if($keyGenValidationComposition != "decorate")
+                    .validationComposition(LicenseFunctionComposition.$keyGenValidationComposition)
 #end
 #end
                     .build();

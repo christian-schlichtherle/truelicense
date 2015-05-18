@@ -156,7 +156,7 @@ public enum Main {
                 .getBundle(Main.class.getName())
                 .getString(name() + "." + key);
     }
-#if($keyMgrLicenseValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation")
+#if($keyMgrValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {
         public void validate(License bean) {
