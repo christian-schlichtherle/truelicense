@@ -6,12 +6,12 @@
 package org.truelicense.api;
 
 /**
- * Provides license parameters.
+ * Provides the license management parameters.
  *
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementParametersProvider {
 
-    /** Returns the license parameters. */
+    /** Returns the license management parameters. */
     LicenseManagementParameters parameters();
 }
