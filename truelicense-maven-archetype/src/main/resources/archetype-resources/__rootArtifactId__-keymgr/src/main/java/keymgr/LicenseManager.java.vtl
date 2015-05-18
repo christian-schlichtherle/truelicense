@@ -67,8 +67,7 @@ import java.util.Date;
 #end
 
 /**
- * The enumeration of the consumer license managers for
- * $licenseManagementSubject license keys.
+ * The enumeration of the consumer license managers for $subject license keys.
  * The managers are named like each configured edition and ordered from
  * superset to subset, including an optional free trial period (FTP).
  * Each manager is configured with the algorithms and parameters for installing,
@@ -182,7 +181,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #end
 
     @Obfuscate
-    private static final String LICENSE_MANAGEMENT_SUBJECT = "$licenseManagementSubject";
+    private static final String SUBJECT = "$subject";
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
 
@@ -208,7 +207,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #if($keyMgrClockClass != "-")
                     .clock(#new($keyMgrClockClass "Clock"))
 #end
-                    .subject(LICENSE_MANAGEMENT_SUBJECT)
+                    .subject(SUBJECT)
 #if($keyMgrLicenseValidationClass != "-")
                     .validation(#new($keyMgrLicenseValidationClass "LicenseValidation"))
 #if($keyMgrLicenseValidationFunction != "decorate")

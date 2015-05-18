@@ -26,8 +26,8 @@
         <p:keyMgrLicenseManagementAuthorizationClass>
             org.truelicense.core.TrueLicenseManagementAuthorization
         </p:keyMgrLicenseManagementAuthorizationClass>
-        <p:licenseManagementSubject>Product 1</p:licenseManagementSubject>
         <p:password>test1234</p:password>
+        <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>
     </p:list>
 </p:properties>

@@ -42,7 +42,6 @@
         <p:keyPairSize>2048</p:keyPairSize>
         <p:keyStoreType>JKS</p:keyStoreType>
         <p:licenseKeyFormat>V2/XML</p:licenseKeyFormat>
-        <p:licenseManagementSubject>Product 1</p:licenseManagementSubject>
         <p:package>com.company.product</p:package>
         <p:password>test1234</p:password>
         <p:pbeAlgorithm>PBEWithMD5AndDES</p:pbeAlgorithm>
@@ -50,6 +49,7 @@
         <p:privateKeyStoreFile>private.ks</p:privateKeyStoreFile>
         <p:publicKeyStoreFile>public.ks</p:publicKeyStoreFile>
         <p:signatureAlgorithm>SHA1withRSA</p:signatureAlgorithm>
+        <p:subject>Product 1</p:subject>
         <p:trueLicenseVersion>${project.version}</p:trueLicenseVersion>
         <p:verboseCli>true</p:verboseCli>
         <p:version>1.0-SNAPSHOT</p:version>

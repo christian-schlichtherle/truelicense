@@ -488,36 +488,6 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="licenseManagementSubject">
-                <xs:annotation>
-                    <xs:documentation>
-                        The subject of the license management.
-                        The value of this property gets stored in the generated
-                        license keys and is used for validation.
-                        A
-                        <a href="../apidocs/${apiPackagePath}/LicenseValidationException.html">
-                            <code>
-                                ${apiPackage}.LicenseValidationException
-                            </code>
-                        </a>
-                        is thrown if the validation fails.
-                        It's best practice to include the name of your software
-                        product and a version number range for which the license
-                        keys are valid, e.g.
-                        <code>Product 1</code>
-                        or
-                        <code>Product 1.X</code>.
-                        The license validation step compares the entire string,
-                        so the version number format doesn't matter.
-                        If you want to obsolete existing license keys in a
-                        future release then all you need to do is to change the
-                        value, e.g. to
-                        <code>Product 2</code>
-                        or
-                        <code>Product 2.X</code>.
-                    </xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element type="xs:token" name="package"
                         minOccurs="0" default="${dollar}{groupId}">
                 <xs:annotation>
@@ -617,6 +587,36 @@
                         <code>${dollar}{keyPairAlgorithm}</code>
                         and be supported by one of the security providers which
                         are installed in the JRE/JDK.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="xs:token" name="subject">
+                <xs:annotation>
+                    <xs:documentation>
+                        The license management subject.
+                        The value of this property gets stored in the generated
+                        license keys and is used for validation.
+                        A
+                        <a href="../apidocs/${apiPackagePath}/LicenseValidationException.html">
+                            <code>
+                                ${apiPackage}.LicenseValidationException
+                            </code>
+                        </a>
+                        is thrown if the validation fails.
+                        It's best practice to include the name of your software
+                        product and a version number range for which the license
+                        keys are valid, e.g.
+                        <code>Product 1</code>
+                        or
+                        <code>Product 1.X</code>.
+                        The license validation step compares the entire string,
+                        so the version number format doesn't matter.
+                        If you want to obsolete existing license keys in a
+                        future release then all you need to do is to change the
+                        value, e.g. to
+                        <code>Product 2</code>
+                        or
+                        <code>Product 2.X</code>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
