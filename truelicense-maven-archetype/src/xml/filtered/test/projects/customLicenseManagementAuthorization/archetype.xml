@@ -18,7 +18,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>customLicenseAuthorization</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenAuthorizationClass>
             org.truelicense.core.TrueLicenseManagementAuthorization

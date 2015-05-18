@@ -179,7 +179,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="companyName">
+            <xs:element type="xs:token" name="company">
                 <xs:annotation>
                     <xs:documentation>
                         The display name of your company, e.g.

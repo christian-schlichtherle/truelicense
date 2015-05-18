@@ -14,7 +14,7 @@
     <p:list>
         <p:artifactId>kitchenSink</p:artifactId>
         <p:artifactName>Kitchen Sink</p:artifactName>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:disableLicenseWizard>true</p:disableLicenseWizard>
         <p:customClasspathScope>runtime</p:customClasspathScope>
         <p:editions>enterprise standard</p:editions>

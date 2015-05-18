@@ -19,7 +19,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>customLicenseValidation</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenValidationClass>
             com.company.product.keygen.Main$NoLicenseValidation

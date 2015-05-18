@@ -16,7 +16,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>disableLicenseWizard</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:disableLicenseWizard>true</p:disableLicenseWizard>
         <p:groupId>com.company.product</p:groupId>
         <p:password>test1234</p:password>

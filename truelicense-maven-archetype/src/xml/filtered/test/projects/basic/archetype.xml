@@ -20,7 +20,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>basic</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>

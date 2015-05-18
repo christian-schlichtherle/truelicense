@@ -17,7 +17,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>v2JsonLicenseKeyFormat</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:licenseKeyFormat>V2/JSON</p:licenseKeyFormat>
         <p:password>test1234</p:password>

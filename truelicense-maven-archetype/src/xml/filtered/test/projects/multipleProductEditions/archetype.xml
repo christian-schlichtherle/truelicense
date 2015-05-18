@@ -19,7 +19,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>multipleProductEditions</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:editions>enterprise standard</p:editions>
         <p:groupId>com.company.product</p:groupId>
         <p:password>test1234</p:password>

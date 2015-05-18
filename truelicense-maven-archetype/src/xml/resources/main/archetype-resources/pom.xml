@@ -52,7 +52,7 @@
         <!-- TO DO: Fill in the gaps. -->
     </licenses>
     <organization>
-        <name>${dollar}{companyName}</name>
+        <name>${dollar}{company}</name>
         <!-- TO DO: Fill in the gaps. -->
     </organization>
     <developers>
@@ -84,7 +84,7 @@
 
         <!-- The distinguished name to use when generating private key entries
              in key stores and initializing the issuer in license beans. -->
-        <distinguishedName>CN=${dollar}{companyName}</distinguishedName>
+        <distinguishedName>CN=${dollar}{company}</distinguishedName>
 
         <!-- The alias of the entry with the private key for the edition
              "ftp" in the FTP key store file ${dollar}{ftpKeyStoreFile} in the

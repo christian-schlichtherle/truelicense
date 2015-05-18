@@ -16,7 +16,7 @@
     </p:documentation>
     <p:list>
         <p:artifactId>customClock</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
         </p:keyMgrClockClass>
