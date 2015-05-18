@@ -297,7 +297,7 @@ implements BiosProvider,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
-            LicenseSubjectProvider,
+            LicenseManagementSubjectProvider,
             LicenseValidationProvider {
 
         final LicenseManagementAuthorization authorization;

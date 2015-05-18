@@ -10,7 +10,6 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.misc.ClassLoaderProvider;
-import org.truelicense.api.misc.ContextProvider;
 
 import java.nio.file.Path;
 
@@ -26,7 +25,7 @@ public interface LicenseManagementContext
 extends ClassLoaderProvider,
         CodecProvider,
         LicenseFactory,
-        LicenseSubjectProvider {
+        LicenseManagementSubjectProvider {
 
     /**
      * Returns a builder for a
