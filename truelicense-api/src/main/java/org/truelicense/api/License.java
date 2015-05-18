@@ -258,7 +258,7 @@ public class License {
     }
 
     /**
-     * Returns the subject of the license management.
+     * Returns the license management subject.
      * This could be any string, but is recommended to contain the canonical
      * name of the application and some information for which version number
      * range this license is applicable, e.g. {@code "MyApp 1.X"}.
@@ -267,7 +267,7 @@ public class License {
     public final String getSubject() { return subject; }
 
     /**
-     * Sets the subject of the license management.
+     * Sets the license management subject.
      */
     public final void setSubject(final String subject) {
         this.subject = subject;
