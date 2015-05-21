@@ -6,32 +6,44 @@
 package org.truelicense.api.io;
 
 /**
- * A transformation for the I/O streams provided by {@linkplain Sink sinks} and
- * {@linkplain Source sources}.
+ * A transformation decorates the {@link java.io.OutputStream}s and
+ * {@link java.io.InputStream}s which are provided by {@linkplain Sink sinks}
+ * and {@linkplain Source sources}.
+ * <p>
+ * For example, in an encryption transformation, the method {@link #apply}
+ * could decorate the output streams provided by the given sink with a new
+ * {@link javax.crypto.CipherOutputStream} in order to encrypt the data before
+ * writing it to the underlying output stream.
+ * Likewise, the method {@link #unapply} could decorate the input streams
+ * provided by the given source with a new
+ * {@link javax.crypto.CipherInputStream} in order to decrypt the data after
+ * reading it from the underlying input stream.
+ * <p>
+ * As another example, in a compression transformation, the apply method could
+ * decorate the output streams provided by the given sink with a new
+ * {@link java.util.zip.DeflaterOutputStream} in order to compress the data
+ * before writing it to the underlying output stream.
+ * Likewise, the unapply method could decorate the input streams provided by the
+ * given source with a new {@link java.util.zip.InflaterInputStream} in order to
+ * decompress the data after reading it from the underlying input stream.
  *
  * @author Christian Schlichtherle
  */
 public interface Transformation {
 
     /**
-     * Returns a sink which applies the effect of this transformation to
-     * the output streams provided by the given sink.
+     * Returns a sink which decorates the output streams provided by the given
+     * sink.
      *
-     * @param  sink the sink with the output streams to which the effect
-     *         of this I/O transformation shall get applied.
-     * @return A sink which applies the effect of this transformation to
-     *         the output streams provided by the given sink.
+     * @param  sink the sink which provides the output streams to decorate.
      */
     Sink apply(Sink sink);
 
     /**
-     * Returns a source which unapplies the effect of this transformation from
-     * the input streams provided by the given source.
+     * Returns a source which decorates the input streams provided by the given
+     * source.
      *
-     * @param  source the source with the input streams from which the effect
-     *         of this I/O transformation shall get removed.
-     * @return A source which unapplies the effect of this transformation from
-     *         the input streams provided by the given source.
+     * @param  source the source which provides the input streams to decorate.
      */
     Source unapply(Source source);
 }
