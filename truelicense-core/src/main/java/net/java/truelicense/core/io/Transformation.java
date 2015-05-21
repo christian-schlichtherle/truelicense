@@ -26,6 +26,29 @@ package net.java.truelicense.core.io;
  * Likewise, the unapply method could decorate the input streams provided by the
  * given source with a new {@link java.util.zip.InflaterInputStream} in order to
  * decompress the data after reading it from the underlying input stream.
+ * <p>
+ * The benefit of this interface is that you can easily chain the apply and
+ * unapply methods in order to create rich decorators for the underlying sinks
+ * and sources without needing to know anything about the implementation of the
+ * transformations.
+ * <p>
+ * For example, depending on the previous examples, the following test code
+ * would assert the round-trip processing of the string {@code "Hello world!"}
+ * using the composition of some compression and encryption transformations on
+ * some store:
+ * <pre>{@code
+ * Transformation compression = ...;
+ * Transformation encryption = ...;
+ * Store store = ...;
+ * Sink compressAndEncryptData = compression.apply(encryption.apply(store));
+ * Source decryptAndDecompressData = compression.unapply(encryption.unapply(store));
+ * try (PrintWriter writer = new PrintWriter(compressAndEncryptData.output())) {
+ *     writer.println("Hello world!");
+ * }
+ * try (BufferedReader reader = new BufferedReader(new InputStreamReader(decryptAndDecompressData.input()))) {
+ *     assertTrue("Hello world!".equals(reader.readLine()));
+ * }
+ * }</pre>
  *
  * @author Christian Schlichtherle
  */
