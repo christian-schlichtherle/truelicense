@@ -195,6 +195,12 @@ implements BiosProvider,
     // Utility functions:
     //
 
+    static String requireNonEmpty(final String s) {
+        if (s.isEmpty())
+            throw new IllegalArgumentException();
+        return s;
+    }
+
     static boolean exists(final Store store) throws LicenseManagementException {
         return wrap(new Callable<Boolean>() {
             @Override
@@ -249,7 +255,7 @@ implements BiosProvider,
         Clock clock = context();
         List<LicenseInitialization> initialization = Option.none();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
-        String subject;
+        String subject = "";
         List<LicenseValidation> validation = Option.none();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
@@ -284,7 +290,7 @@ implements BiosProvider,
 
         @Override
         public LicenseManagementContextBuilder subject(final String subject) {
-            this.subject = requireNonNull(subject);
+            this.subject = requireNonEmpty(subject);
             return this;
         }
 
@@ -329,7 +335,7 @@ implements BiosProvider,
             this.clock = b.clock;
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
-            this.subject = b.subject;
+            this.subject = requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
         }
