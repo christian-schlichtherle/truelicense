@@ -476,7 +476,7 @@ implements BiosProvider,
                 return (This) this;
             }
 
-            public final PbeBuilder encryption() { return new PbeBuilder(); }
+            public final TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
 
             public final This encryption(final Transformation encryption) {
                 this.encryption = Option.wrap(encryption);
@@ -488,7 +488,7 @@ implements BiosProvider,
                 return (This) this;
             }
 
-            public final KsbaBuilder keyStore() { return new KsbaBuilder(); }
+            public final TrueAuthenticationBuilder keyStore() { return new TrueAuthenticationBuilder(); }
 
             public final This parent(final ConsumerLicenseManager parent) {
                 this.parent = Option.wrap(parent);
@@ -512,7 +512,7 @@ implements BiosProvider,
                 return storeIn(userPreferencesStore(classInPackage));
             }
 
-            final class KsbaBuilder
+            final class TrueAuthenticationBuilder
             implements Builder<Authentication>, KsbaInjection<This> {
 
                 List<String> algorithm = Option.none();
@@ -526,13 +526,13 @@ implements BiosProvider,
                 public This inject() { return authentication(build()); }
 
                 @Override
-                public KsbaBuilder algorithm(final String algorithm) {
+                public TrueAuthenticationBuilder algorithm(final String algorithm) {
                     this.algorithm = Option.wrap(algorithm);
                     return this;
                 }
 
                 @Override
-                public KsbaBuilder alias(final String alias) {
+                public TrueAuthenticationBuilder alias(final String alias) {
                     this.alias = Option.wrap(alias);
                     return this;
                 }
@@ -543,36 +543,36 @@ implements BiosProvider,
                 }
 
                 @Override
-                public KsbaBuilder keyProtection(final PasswordProtection keyProtection) {
+                public TrueAuthenticationBuilder keyProtection(final PasswordProtection keyProtection) {
                     this.keyProtection = Option.wrap(keyProtection);
                     return this;
                 }
 
                 @Override
-                public KsbaBuilder loadFrom(final Source source) {
+                public TrueAuthenticationBuilder loadFrom(final Source source) {
                     this.source = Option.wrap(source);
                     return this;
                 }
 
                 @Override
-                public KsbaBuilder loadFromResource(String name) {
+                public TrueAuthenticationBuilder loadFromResource(String name) {
                     return loadFrom(resource(name));
                 }
 
                 @Override
-                public KsbaBuilder storeProtection(final PasswordProtection storeProtection) {
+                public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
                     this.storeProtection = Option.wrap(storeProtection);
                     return this;
                 }
 
                 @Override
-                public KsbaBuilder storeType(final String storeType) {
+                public TrueAuthenticationBuilder storeType(final String storeType) {
                     this.storeType = Option.wrap(storeType);
                     return this;
                 }
             }
 
-            final class PbeBuilder
+            final class TrueEncryptionBuilder
             implements Builder<Transformation>, PbeInjection<This> {
 
                 List<String> algorithm = Option.none();
@@ -582,18 +582,18 @@ implements BiosProvider,
                 public This inject() { return encryption(build()); }
 
                 @Override
-                public PbeBuilder algorithm(final String algorithm) {
+                public TrueEncryptionBuilder algorithm(final String algorithm) {
                     this.algorithm = Option.wrap(algorithm);
                     return this;
                 }
 
                 @Override
                 public Transformation build() {
-                    return context().encryption(new TruePbeParameters(this));
+                    return context().encryption(new TrueEncryptionParameters(this));
                 }
 
                 @Override
-                public PbeBuilder protection(final PasswordProtection protection) {
+                public TrueEncryptionBuilder protection(final PasswordProtection protection) {
                     this.protection = Option.wrap(protection);
                     return this;
                 }
@@ -609,7 +609,7 @@ implements BiosProvider,
             final PasswordProtection storeProtection;
             final List<String> storeType;
 
-            TrueKeyStoreParameters(final TrueLicenseManagerBuilder<?>.KsbaBuilder b) {
+            TrueKeyStoreParameters(final TrueLicenseManagerBuilder<?>.TrueAuthenticationBuilder b) {
                 this.algorithm = b.algorithm;
                 this.alias = b.alias.get(0);
                 this.keyProtection = b.keyProtection;
@@ -647,12 +647,12 @@ implements BiosProvider,
             }
         }
 
-        final class TruePbeParameters implements PbeParameters {
+        final class TrueEncryptionParameters implements PbeParameters {
 
             final List<String> algorithm;
             final PasswordProtection protection;
 
-            TruePbeParameters(final TrueLicenseManagerBuilder<?>.PbeBuilder b) {
+            TrueEncryptionParameters(final TrueLicenseManagerBuilder<?>.TrueEncryptionBuilder b) {
                 this.algorithm = b.algorithm;
                 this.protection = b.protection.get(0);
             }
