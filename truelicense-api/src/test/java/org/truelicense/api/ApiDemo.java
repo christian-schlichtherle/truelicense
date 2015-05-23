@@ -83,8 +83,8 @@ public class ApiDemo {
                 //.parent(parent())
                 //.storeIn(someStore())
                 //.storeInPath(somePath())
-                //.storeInSystemPreferences(someClazzInPackage())
-                .storeInUserPreferences(someClazzInPackage())
+                //.storeInSystemPreferences(someClassInPackage())
+                .storeInUserPreferences(someClassInPackage())
                 .build();
     }
 
@@ -92,5 +92,5 @@ public class ApiDemo {
         return Mockito.mock(PasswordProtection.class);
     }
 
-    static Class<?> someClazzInPackage() { return ApiDemo.class; }
+    static Class<?> someClassInPackage() { return ApiDemo.class; }
 }
