@@ -19,7 +19,8 @@ import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.*;
 import org.truelicense.api.passwd.*;
 import org.truelicense.core.auth.Notary;
-import org.truelicense.core.passwd.Passwords;
+import org.truelicense.core.passwd.MinimumPasswordPolicy;
+import org.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.obfuscate.ObfuscatedString;
 import org.truelicense.spi.codec.Codecs;
@@ -156,10 +157,10 @@ implements BiosProvider,
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns {@link Passwords#newPasswordPolicy()}.
+     * returns a new {@link MinimumPasswordPolicy}.
      */
     @Override
-    public PasswordPolicy policy() { return Passwords.newPasswordPolicy(); }
+    public PasswordPolicy policy() { return new MinimumPasswordPolicy(); }
 
     /**
      * Returns a password protection for the given representation of an
@@ -175,12 +176,11 @@ implements BiosProvider,
      * {@inheritDoc}
      * <p>
      * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns
-     * {@link Passwords#newPasswordProtection(ObfuscatedString) Passwords.newPasswordProtecetion(os)}.
+     * returns a new {@link ObfuscatedPasswordProtection}.
      */
     @Override
     public final PasswordProtection protection(ObfuscatedString os) {
-        return Passwords.newPasswordProtection(os);
+        return new ObfuscatedPasswordProtection(os);
     }
 
     /**
@@ -224,6 +224,22 @@ implements BiosProvider,
     //
     // Inner classes:
     //
+
+    final class CheckedPasswordProtection implements PasswordProtection {
+
+        final PasswordProtection protection;
+
+        CheckedPasswordProtection(final PasswordProtection protection) {
+            this.protection = protection;
+        }
+
+        @Override
+        public Password password(final PasswordUsage usage) throws Exception {
+            if (usage.equals(PasswordUsage.WRITE)) // check null
+                policy().check(protection);
+            return protection.password(usage);
+        }
+    }
 
     final class TrueLicenseManagementContextBuilder
     implements ContextProvider<TrueLicenseApplicationContext>,
@@ -321,18 +337,6 @@ implements BiosProvider,
         @Override
         public LicenseManagementAuthorization authorization() {
             return authorization;
-        }
-
-        PasswordProtection checkedProtection(final PasswordProtection protection) {
-            return new PasswordProtection() {
-
-                @Override
-                public Password password(final PasswordUsage usage) throws Exception {
-                    if (usage.equals(PasswordUsage.WRITE)) // check null
-                        policy().check(protection);
-                    return protection.password(usage);
-                }
-            };
         }
 
         @Override
@@ -614,8 +618,8 @@ implements BiosProvider,
             @Override
             public PasswordProtection keyProtection() {
                 for (PasswordProtection kp : keyProtection)
-                    return checkedProtection(kp);
-                return checkedProtection(storeProtection);
+                    return new CheckedPasswordProtection(kp);
+                return new CheckedPasswordProtection(storeProtection);
             }
 
             @Override
@@ -626,7 +630,7 @@ implements BiosProvider,
 
             @Override
             public PasswordProtection storeProtection() {
-                return checkedProtection(storeProtection);
+                return new CheckedPasswordProtection(storeProtection);
             }
 
             @Override
@@ -656,7 +660,7 @@ implements BiosProvider,
 
             @Override
             public PasswordProtection protection() {
-                return checkedProtection(protection);
+                return new CheckedPasswordProtection(protection);
             }
         }
 
