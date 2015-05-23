@@ -13,6 +13,9 @@ import org.truelicense.api.misc.Clock;
  * {@linkplain LicenseManagementContext license management contexts}.
  * Call its {@link #build} method to obtain the configured license management
  * context.
+ * <p>
+ * Clients should not implement this interface because it's subject to expansion
+ * in future minor version updates.
  *
  * @author Christian Schlichtherle
  */

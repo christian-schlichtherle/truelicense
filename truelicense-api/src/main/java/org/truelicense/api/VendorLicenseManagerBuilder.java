@@ -11,6 +11,9 @@ import org.truelicense.api.misc.Builder;
  * A builder for {@linkplain VendorLicenseManager vendor license managers}.
  * Call its {@link #build} method to obtain the configured vendor license
  * manager.
+ * <p>
+ * Clients should not implement this interface because it's subject to expansion
+ * in future minor version updates.
  *
  * @author Christian Schlichtherle
  */

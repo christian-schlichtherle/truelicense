@@ -15,6 +15,9 @@ import java.nio.file.Path;
  * A builder for {@linkplain ConsumerLicenseManager consumer license managers}.
  * Call its {@link #build} method to obtain the configured license consumer
  * manager.
+ * <p>
+ * Clients should not implement this interface because it's subject to expansion
+ * in future minor version updates.
  *
  * @author Christian Schlichtherle
  */
