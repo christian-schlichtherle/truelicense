@@ -425,10 +425,10 @@ implements BiosProvider,
             @Override
             public ConsumerLicenseManager build() {
                 final TrueLicenseManagementParameters
-                        lp = new TrueLicenseManagementParameters(this);
+                        p = new TrueLicenseManagementParameters(this);
                 return parent.isEmpty()
-                        ? lp.new CachingTrueLicenseManager()
-                        : lp.new ChainedTrueLicenseManager();
+                        ? p.new CachingTrueLicenseManager()
+                        : p.new ChainedTrueLicenseManager();
             }
 
             @Override
