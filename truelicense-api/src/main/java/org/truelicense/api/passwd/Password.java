@@ -7,9 +7,8 @@ package org.truelicense.api.passwd;
 
 /**
  * A container for a destroyable password.
- * Use this with the try-with-resources statement to ensure that the password
- * gets destroyed after use.
  *
+ * @see PasswordProtection
  * @author Christian Schlichtherle
  */
 public interface Password extends AutoCloseable {
