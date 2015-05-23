@@ -8,7 +8,7 @@ package org.truelicense.api.crypto;
 import org.truelicense.api.passwd.PasswordProtection;
 
 /**
- * Defines parameters for Password Based Encryption (PBE).
+ * Defines parameters for a password based encryption.
  * <p>
  * Unless stated otherwise, all no-argument methods need to return consistent
  * objects so that caching them is not required.
@@ -18,14 +18,14 @@ import org.truelicense.api.passwd.PasswordProtection;
  *
  * @author Christian Schlichtherle
  */
-public interface PbeParameters {
+public interface EncryptionParameters {
 
-    /** Returns the PBE algorithm. */
+    /** Returns the password based encryption algorithm. */
     String algorithm();
 
     /**
      * Returns a password protection for generating the secret key for
      * encryption/decryption.
      */
-    PasswordProtection protection() throws Exception;
+    PasswordProtection protection();
 }

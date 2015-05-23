@@ -5,11 +5,11 @@
 
 package org.truelicense.v2.commons.crypto;
 
-import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.crypto.EncryptionParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordUsage;
-import org.truelicense.core.crypto.TruePbeEncryption;
+import org.truelicense.core.crypto.BasicEncryption;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -26,9 +26,9 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-public final class V2Encryption extends TruePbeEncryption {
+public final class V2Encryption extends BasicEncryption {
 
-    public V2Encryption(PbeParameters pbe) { super(pbe); }
+    public V2Encryption(EncryptionParameters parameters) { super(parameters); }
 
     @Override
     public Sink apply(final Sink sink) {

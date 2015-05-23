@@ -5,11 +5,11 @@
 
 package org.truelicense.v1.crypto;
 
-import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.crypto.EncryptionParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordUsage;
-import org.truelicense.core.crypto.TruePbeEncryption;
+import org.truelicense.core.crypto.BasicEncryption;
 import org.truelicense.obfuscate.Obfuscate;
 
 import javax.crypto.Cipher;
@@ -30,7 +30,7 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-public final class V1Encryption extends TruePbeEncryption {
+public final class V1Encryption extends BasicEncryption {
 
     @Obfuscate private static final String PBE_ALGORITHM = "PBEWithMD5andDES";
 
@@ -38,9 +38,9 @@ public final class V1Encryption extends TruePbeEncryption {
     private static final String
             ILLEGAL_PBE_ALGORITHM = "V1 format license keys require the " + PBE_ALGORITHM + " algorithm.";
 
-    public V1Encryption(final PbeParameters pbe) {
-        super(pbe);
-        if (!PBE_ALGORITHM.equalsIgnoreCase(pbe.algorithm()))
+    public V1Encryption(final EncryptionParameters parameters) {
+        super(parameters);
+        if (!PBE_ALGORITHM.equalsIgnoreCase(parameters.algorithm()))
             throw new IllegalArgumentException(ILLEGAL_PBE_ALGORITHM);
     }
 

@@ -5,7 +5,7 @@
 
 package org.truelicense.core.crypto;
 
-import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.crypto.EncryptionParameters;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.api.passwd.Password;
 import org.truelicense.api.passwd.PasswordProtection;
@@ -19,26 +19,22 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
- * A basic Password Based Encryption (PBE).
+ * A basic password based encryption.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-public abstract class TruePbeEncryption implements Transformation {
+public abstract class BasicEncryption implements Transformation {
 
-    private final PbeParameters parameters;
+    private final EncryptionParameters parameters;
 
-    protected TruePbeEncryption(final PbeParameters parameters) {
+    protected BasicEncryption(final EncryptionParameters parameters) {
         this.parameters = Objects.requireNonNull(parameters);
     }
 
-    private PbeParameters parameters() { return parameters; }
+    private PasswordProtection protection() { return parameters.protection(); }
 
-    protected final PasswordProtection protection() throws Exception {
-        return parameters().protection();
-    }
-
-    protected final String algorithm() { return parameters().algorithm(); }
+    protected final String algorithm() { return parameters.algorithm(); }
 
     protected final SecretKey secretKey(final PasswordUsage usage) throws Exception {
         try (Password password = protection().password(usage)) {

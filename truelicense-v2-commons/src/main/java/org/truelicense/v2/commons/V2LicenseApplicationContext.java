@@ -7,7 +7,7 @@ package org.truelicense.v2.commons;
 
 import org.truelicense.api.License;
 import org.truelicense.api.auth.RepositoryContext;
-import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.crypto.EncryptionParameters;
 import org.truelicense.api.io.Transformation;
 import org.truelicense.core.TrueLicenseApplicationContext;
 import org.truelicense.obfuscate.Obfuscate;
@@ -52,7 +52,7 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
      * parameters.
      */
     @Override
-    public final Transformation encryption(PbeParameters parameters) {
+    public final Transformation encryption(EncryptionParameters parameters) {
         return new V2Encryption(parameters);
     }
 

@@ -11,7 +11,7 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.api.codec.CodecProvider;
 import org.truelicense.api.codec.Decoder;
 import org.truelicense.api.comp.CompressionProvider;
-import org.truelicense.api.crypto.PbeParameters;
+import org.truelicense.api.crypto.EncryptionParameters;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
@@ -127,11 +127,11 @@ implements BiosProvider,
     }
 
     /**
-     * Returns an encryption for the given PBE parameters.
+     * Returns a password based encryption using the given parameters.
      *
-     * @param parameters the PBE parameters.
+     * @param parameters the password based encryption parameters.
      */
-    public abstract Transformation encryption(PbeParameters parameters);
+    public abstract Transformation encryption(EncryptionParameters parameters);
 
     /**
      * {@inheritDoc}
@@ -647,7 +647,7 @@ implements BiosProvider,
             }
         }
 
-        final class TrueEncryptionParameters implements PbeParameters {
+        final class TrueEncryptionParameters implements EncryptionParameters {
 
             final List<String> algorithm;
             final PasswordProtection protection;
@@ -690,7 +690,9 @@ implements BiosProvider,
             }
 
             @Override
-            public Authentication authentication() { return authentication.get(0); }
+            public Authentication authentication() {
+                return authentication.get(0);
+            }
 
             @Override
             public TrueLicenseManagementContext context() {
