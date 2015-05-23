@@ -15,7 +15,7 @@
         <p:artifactId>kitchenSink</p:artifactId>
         <p:artifactName>Kitchen Sink</p:artifactName>
         <p:company>Company Inc.</p:company>
-        <p:disableLicenseWizard>true</p:disableLicenseWizard>
+        <p:disableWizard>true</p:disableWizard>
         <p:customClasspathScope>runtime</p:customClasspathScope>
         <p:editions>enterprise standard</p:editions>
         <p:freeTrialPeriod>30</p:freeTrialPeriod>

@@ -20,11 +20,11 @@ This page shows some example configurations which you can use when
 
 <a href="../../test/projects/hideUninstallAction/archetype.xml" class="maven-command"/>
 
-<a href="../../test/projects/disableLicenseWizard/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/disableWizard/archetype.xml" class="maven-command"/>
 
-<a href="../../test/projects/customLicenseManagementAuthorization/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/customAuthorization/archetype.xml" class="maven-command"/>
 
-<a href="../../test/projects/customLicenseValidation/archetype.xml" class="maven-command"/>
+<a href="../../test/projects/customValidation/archetype.xml" class="maven-command"/>
 
 <a href="../../test/projects/customCLock/archetype.xml" class="maven-command"/>
 

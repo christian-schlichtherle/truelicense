@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.logging.*;
 import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
-#if($disableLicenseWizard == false)
+#if($disableWizard == false)
 import org.truelicense.swing.LicenseManagementWizard;
 import javax.swing.*;
 #end
@@ -66,9 +66,9 @@ public enum Main {
         @Override void run(Deque<String> params) throws Exception {
             manager().uninstall();
         }
-    }#if($disableLicenseWizard == true);#{else},#end
+    }#if($disableWizard == true);#{else},#end
 
-#if($disableLicenseWizard == false)
+#if($disableWizard == false)
 
     WIZARD {
         @Override void run(Deque<String> params) throws Exception {

@@ -18,7 +18,7 @@
         modules with the named custom class.
     </p:documentation>
     <p:list>
-        <p:artifactId>customLicenseValidation</p:artifactId>
+        <p:artifactId>customValidation</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenValidationClass>

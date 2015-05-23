@@ -7,7 +7,7 @@
 
 This page shows you how to use the internationalized Graphical User Interface 
 of your project, or more specifically, its Key Manager module.
-**However, if the value of the property `disableLicenseWizard` has been set to 
+**However, if the value of the property `disableWizard` has been set to 
 `true` when [generating your project], then the GUI is not available and this 
 page does not apply to your project!**
 

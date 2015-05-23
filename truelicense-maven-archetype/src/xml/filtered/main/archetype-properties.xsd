@@ -198,7 +198,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:boolean" name="disableLicenseWizard"
+            <xs:element type="xs:boolean" name="disableWizard"
                         minOccurs="0" default="false">
                 <xs:annotation>
                     <xs:documentation>

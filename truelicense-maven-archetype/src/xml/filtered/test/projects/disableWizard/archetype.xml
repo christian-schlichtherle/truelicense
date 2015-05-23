@@ -10,14 +10,14 @@
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>disableLicenseWizard=true</code>
+        <code>disableWizard=true</code>
         to the Basic Configuration example in order to completely remove
         the license wizard dialog from the generated code.
     </p:documentation>
     <p:list>
-        <p:artifactId>disableLicenseWizard</p:artifactId>
+        <p:artifactId>disableWizard</p:artifactId>
         <p:company>Company Inc.</p:company>
-        <p:disableLicenseWizard>true</p:disableLicenseWizard>
+        <p:disableWizard>true</p:disableWizard>
         <p:groupId>com.company.product</p:groupId>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>

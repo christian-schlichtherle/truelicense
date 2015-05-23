@@ -4,20 +4,20 @@
   ~ All rights reserved. Use is subject to license terms.
   -->
 <p:properties
-        name="Custom License Authorization"
+        name="Custom License Management Authorization"
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>keyGenLicenseAuthorizationClass=com.company.product.keygen.Main$NoLicenseAuthorization</code>
+        <code>keyGenAuthorizationClass=org.truelicense.core.TrueLicenseManagementAuthorization</code>
         and
-        <code>keyMgrLicenseAuthorizationClass=com.company.product.keymgr.Main$noLicenseAuthorization</code>
+        <code>keyMgrAuthorizationClass=org.truelicense.core.TrueLicenseManagementAuthorization</code>
         to the Basic Configuration example in order to implement a custom
         license authorization.
     </p:documentation>
     <p:list>
-        <p:artifactId>customLicenseAuthorization</p:artifactId>
+        <p:artifactId>customAuthorization</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenAuthorizationClass>
