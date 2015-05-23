@@ -675,14 +675,14 @@ implements BiosProvider,
                 LicenseInitializationProvider,
                 LicenseManagementParameters {
 
-            final List<Authentication> authentication;
+            final Authentication authentication;
             final List<Transformation> encryption;
             final int ftpDays;
             final List<ConsumerLicenseManager> parent;
             final List<Store> store;
 
             TrueLicenseManagementParameters(final TrueLicenseManagerBuilder<?> b) {
-                this.authentication = b.authentication;
+                this.authentication = b.authentication.get(0);
                 this.encryption = b.encryption;
                 this.ftpDays = b.ftpDays;
                 this.parent = b.parent;
@@ -690,9 +690,7 @@ implements BiosProvider,
             }
 
             @Override
-            public Authentication authentication() {
-                return authentication.get(0);
-            }
+            public Authentication authentication() { return authentication; }
 
             @Override
             public TrueLicenseManagementContext context() {
