@@ -212,9 +212,7 @@ public final class Notary implements Authentication {
             return parameters().keyProtection();
         }
 
-        List<String> configuredAlgorithm() {
-            return parameters().algorithm();
-        }
+        List<String> configuredAlgorithm() { return parameters().algorithm(); }
 
         List<Source> source() { return parameters().source(); }
 
