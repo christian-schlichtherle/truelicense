@@ -29,7 +29,7 @@ extends Builder<ConsumerLicenseManager>,
     /**
      * Sets the free trial period (FTP) in days (the 24 hour equivalent).
      * If this is zero, then no FTP is configured.
-     * Otherwise, the {@linkplain #keyStore key store} needs to have a
+     * Otherwise, the {@linkplain #authentication key store} needs to have a
      * password configured for the private key entry and a
      * {@linkplain #parent parent consumer license manager}
      * needs to be configured for the regular license keys.

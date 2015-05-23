@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Christian Schlichtherle
  */
-public interface KeyStoreParameters {
+public interface AuthenticationParameters {
 
     /**
      * Returns the optional signature algorithm.

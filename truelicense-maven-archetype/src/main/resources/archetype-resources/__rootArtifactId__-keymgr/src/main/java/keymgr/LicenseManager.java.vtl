@@ -104,7 +104,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
                         .protection(#protection($editionPbePassword))
                         .inject()
 #end
-                    .keyStore()
+                    .authentication()
                         .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
                         .storeProtection(#protection($publicKeyStorePassword))
@@ -152,7 +152,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
         ConsumerLicenseManager newManager() {
             return _managementContext.consumer()
                     .ftpDays($freeTrialPeriod)
-                    .keyStore()
+                    .authentication()
                         .alias($ftpKeyEntryAlias)
 #if($ftpKeyEntryPassword && $ftpKeyEntryPassword != $ftpKeyStorePassword)
                         .keyProtection(#protection($ftpKeyEntryPassword))

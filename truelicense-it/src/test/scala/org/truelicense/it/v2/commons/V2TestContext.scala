@@ -16,7 +16,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
 
   override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jceks")
         .storeProtection(test1234)
@@ -33,7 +33,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .encryption
         .protection(test1234)
         .inject
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jceks")
         .storeProtection(test1234)
@@ -48,7 +48,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .encryption
         .protection(test1234)
         .inject
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "public.jceks")
         .storeProtection(test1234)
@@ -62,7 +62,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
   override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
       .ftpDays(1)
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jceks")
         .storeProtection(test1234)
@@ -79,7 +79,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .encryption
         .protection(test1234)
         .inject
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "private.jceks")
         .storeProtection(test1234)

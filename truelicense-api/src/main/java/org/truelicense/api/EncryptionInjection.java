@@ -9,12 +9,12 @@ import org.truelicense.api.misc.Injection;
 import org.truelicense.api.passwd.PasswordProtection;
 
 /**
- * Injects a Password Based Encryption (PBE) into some target.
+ * Injects a password based encryption into some target.
  *
  * @param <Target> the type of the target.
  * @author Christian Schlichtherle
  */
-public interface PbeInjection<Target>
+public interface EncryptionInjection<Target>
 extends Injection<Target> {
 
     /**
@@ -24,7 +24,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    PbeInjection<Target> algorithm(String algorithm);
+    EncryptionInjection<Target> algorithm(String algorithm);
 
     /**
      * Sets the password protection which is used for generating a secret key
@@ -32,5 +32,5 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    PbeInjection<Target> protection(PasswordProtection protection);
+    EncryptionInjection<Target> protection(PasswordProtection protection);
 }

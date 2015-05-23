@@ -18,6 +18,15 @@ import org.truelicense.api.misc.Injection;
 public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>> {
 
     /**
+     * Returns an injection for a key store based authentication.
+     * Call its {@link Injection#inject} method to build and inject the
+     * configured authentication into this builder and return it.
+     *
+     * @see #authentication(Authentication)
+     */
+    AuthenticationInjection<? extends This> authentication();
+
+    /**
      * Sets the authentication.
      *
      * @return {@code this}.
@@ -25,13 +34,13 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
     This authentication(Authentication authentication);
 
     /**
-     * Returns an injection for a password based encryption (PBE).
+     * Returns an injection for a password based encryption.
      * Call its {@link Injection#inject} method to build and inject the
      * configured encryption into this builder and return it.
      *
      * @see #encryption(Transformation)
      */
-    PbeInjection<? extends This> encryption();
+    EncryptionInjection<? extends This> encryption();
 
     /**
      * Sets the encryption.
@@ -39,13 +48,4 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
      * @return {@code this}.
      */
     This encryption(Transformation encryption);
-
-    /**
-     * Returns an injection for a key store based authentication (KSBA).
-     * Call its {@link Injection#inject} method to build and inject the
-     * configured authentication into this builder and return it.
-     *
-     * @see #authentication(Authentication)
-     */
-    KsbaInjection<? extends This> keyStore();
 }

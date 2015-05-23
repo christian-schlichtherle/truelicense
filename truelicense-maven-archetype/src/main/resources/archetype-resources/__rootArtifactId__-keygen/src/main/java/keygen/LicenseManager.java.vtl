@@ -85,7 +85,7 @@ public enum LicenseManager implements VendorLicenseManager {
 #end
                         .protection(#protection($editionPbePassword))
                         .inject()
-                    .keyStore()
+                    .authentication()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
                         .keyProtection(#protection($editionKeyEntryPassword))

@@ -76,7 +76,7 @@ implements BiosProvider,
      *
      * @param parameters the key store parameters.
      */
-    public Authentication authentication(KeyStoreParameters parameters) {
+    public Authentication authentication(AuthenticationParameters parameters) {
         return new Notary(parameters);
     }
 
@@ -149,7 +149,7 @@ implements BiosProvider,
      * algorithm for the license key format.
      * You can override this default value when configuring the PBE.
      *
-     * @see PbeInjection#algorithm
+     * @see EncryptionInjection#algorithm
      */
     public abstract String pbeAlgorithm();
 
@@ -488,7 +488,7 @@ implements BiosProvider,
                 return (This) this;
             }
 
-            public final TrueAuthenticationBuilder keyStore() { return new TrueAuthenticationBuilder(); }
+            public final TrueAuthenticationBuilder authentication() { return new TrueAuthenticationBuilder(); }
 
             public final This parent(final ConsumerLicenseManager parent) {
                 this.parent = Option.wrap(parent);
@@ -513,7 +513,7 @@ implements BiosProvider,
             }
 
             final class TrueAuthenticationBuilder
-            implements Builder<Authentication>, KsbaInjection<This> {
+            implements Builder<Authentication>, AuthenticationInjection<This> {
 
                 List<String> algorithm = Option.none();
                 List<String> alias = Option.none();
@@ -539,7 +539,7 @@ implements BiosProvider,
 
                 @Override
                 public Authentication build() {
-                    return context().authentication(new TrueKeyStoreParameters(this));
+                    return context().authentication(new TrueAuthenticationParameters(this));
                 }
 
                 @Override
@@ -573,7 +573,7 @@ implements BiosProvider,
             }
 
             final class TrueEncryptionBuilder
-            implements Builder<Transformation>, PbeInjection<This> {
+            implements Builder<Transformation>, EncryptionInjection<This> {
 
                 List<String> algorithm = Option.none();
                 List<PasswordProtection> protection = Option.none();
@@ -600,7 +600,7 @@ implements BiosProvider,
             }
         }
 
-        final class TrueKeyStoreParameters implements KeyStoreParameters {
+        final class TrueAuthenticationParameters implements AuthenticationParameters {
 
             final List<String> algorithm;
             final String alias;
@@ -609,7 +609,7 @@ implements BiosProvider,
             final PasswordProtection storeProtection;
             final List<String> storeType;
 
-            TrueKeyStoreParameters(final TrueLicenseManagerBuilder<?>.TrueAuthenticationBuilder b) {
+            TrueAuthenticationParameters(final TrueLicenseManagerBuilder<?>.TrueAuthenticationBuilder b) {
                 this.algorithm = b.algorithm;
                 this.alias = b.alias.get(0);
                 this.keyProtection = b.keyProtection;

@@ -19,7 +19,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
 
   override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jks")
         .storeProtection(test1234)
@@ -36,7 +36,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
       .encryption
         .protection(test1234)
         .inject
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jks")
         .storeProtection(test1234)
@@ -51,7 +51,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
       .encryption
         .protection(test1234)
         .inject
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "public.jks")
         .storeProtection(test1234)
@@ -64,7 +64,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
 
   override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
     val cm = managementContext.consumer
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jks")
         .storeProtection(test1234)
@@ -82,7 +82,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
       .encryption
         .protection(test1234)
         .inject
-      .keyStore
+      .authentication
         .alias("mykey")
         .loadFromResource(prefix + "private.jks")
         .storeProtection(test1234)
