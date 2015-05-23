@@ -20,7 +20,9 @@ public interface KsbaInjection<Target>
 extends Injection<Target> {
 
     /**
-     * Sets the algorithm name (optional).
+     * Sets the name of the signature algorithm (optional).
+     * If this method is not called, then the same algorithm is used which has
+     * been used to sign the public key in the entry.
      *
      * @return {@code this}
      */
@@ -43,7 +45,7 @@ extends Injection<Target> {
      * for a free trial period.
      * If this method is not called then the
      * {@linkplain #storeProtection(PasswordProtection) key store protection} is
-     * used instead.
+     * used.
      *
      * @return {@code this}
      */
@@ -51,6 +53,7 @@ extends Injection<Target> {
 
     /**
      * Sets the source for the key store (optional).
+     * Either this method or {@link #loadFromResource(String)} must be called.
      *
      * @return {@code this}
      */
@@ -58,6 +61,7 @@ extends Injection<Target> {
 
     /**
      * Sets the resource name of the key store (optional).
+     * Either this method or {@link #loadFrom(Source)} must be called.
      *
      * @return {@code this}
      */

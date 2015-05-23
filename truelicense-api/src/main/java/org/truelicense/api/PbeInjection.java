@@ -19,6 +19,8 @@ extends Injection<Target> {
 
     /**
      * Sets the algorithm name (optional).
+     * If this method is not called, then the default algorithm for the license
+     * key format is used.
      *
      * @return {@code this}
      */
