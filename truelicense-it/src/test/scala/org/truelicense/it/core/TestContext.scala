@@ -13,11 +13,9 @@ import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.api.auth.RepositoryContextProvider
 import org.truelicense.api.codec.CodecProvider
-import org.truelicense.api.crypto.EncryptionParameters
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.core.TrueLicenseApplicationContext
 import org.truelicense.it.core.TestContext._
-import org.truelicense.it.core.io.IdentityTransformation
 import org.truelicense.spi.io.TransformationBuilder
 
 /** @author Christian Schlichtherle */

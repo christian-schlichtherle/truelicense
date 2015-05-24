@@ -21,7 +21,7 @@ abstract class TransformationTestSuite extends WordSpec { this: TestContext[_] =
         val codec = this.codec
         val original = license
         codec encoder store encode original
-        val duplicate: License = codec decoder store decode classOf[License]
+        val duplicate: AnyRef = codec decoder store decode original.getClass
         duplicate should not be theSameInstanceAs (original)
         duplicate should equal (original)
       }
