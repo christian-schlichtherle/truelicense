@@ -14,4 +14,3 @@ import org.truelicense.it.core.CodecTestSuite
 class V1EncryptionTest
 extends CodecTestSuite
    with V1TestContext
-   with V1EncryptionTestContext

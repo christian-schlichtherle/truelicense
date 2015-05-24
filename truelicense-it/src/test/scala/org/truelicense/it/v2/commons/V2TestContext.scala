@@ -6,6 +6,7 @@
 package org.truelicense.it.v2.commons
 
 import org.truelicense.api._
+import org.truelicense.api.crypto.EncryptionParameters
 import org.truelicense.api.io.Store
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.v2.commons.V2TestContext.prefix
@@ -57,6 +58,11 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .build
     require(cm.context eq managementContext)
     cm
+  }
+
+  final override def encryption = applicationContext encryption new EncryptionParameters {
+    def algorithm = "PBEWithSHA1AndDESede"
+    def protection = test1234
   }
 
   override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {

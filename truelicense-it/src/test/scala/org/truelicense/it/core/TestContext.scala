@@ -18,6 +18,7 @@ import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.core.TrueLicenseApplicationContext
 import org.truelicense.it.core.TestContext._
 import org.truelicense.it.core.io.IdentityTransformation
+import org.truelicense.spi.io.TransformationBuilder
 
 /** @author Christian Schlichtherle */
 trait TestContext[Model <: AnyRef]
@@ -47,10 +48,7 @@ trait TestContext[Model <: AnyRef]
     getTime
   }
 
-  final def encryption = applicationContext encryption new EncryptionParameters {
-    def algorithm = "PBEwithMD5andDES"
-    def protection = test1234
-  }
+  def encryption: Transformation
 
   def extraData: AnyRef = { // must be AnyRef to enable overriding and returning a bean instead.
 
@@ -96,7 +94,7 @@ trait TestContext[Model <: AnyRef]
   final def test1234 = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
 
-  def transformation: Transformation = IdentityTransformation
+  final def transformation = TransformationBuilder apply compression `then` encryption build ()
 
   def vendorManager: VendorLicenseManager
 }

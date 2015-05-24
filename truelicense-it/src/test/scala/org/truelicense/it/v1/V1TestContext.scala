@@ -7,7 +7,8 @@ package org.truelicense.it.v1
 
 import de.schlichtherle.xml.GenericCertificate
 import org.truelicense.api._
-import org.truelicense.api.io.Store
+import org.truelicense.api.crypto.EncryptionParameters
+import org.truelicense.api.io.{Transformation, Store}
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.v1.V1TestContext._
 import org.truelicense.v1.V1LicenseApplicationContext
@@ -60,6 +61,11 @@ trait V1TestContext extends TestContext[GenericCertificate] {
       .build
     require(cm.context eq managementContext)
     cm
+  }
+
+  final override def encryption = applicationContext encryption new EncryptionParameters {
+    def algorithm = "PBEWithMD5AndDES"
+    def protection = test1234
   }
 
   override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
