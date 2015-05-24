@@ -24,6 +24,7 @@ final class V2Compression implements Transformation {
                 return new DeflaterOutputStream(sink.output(),
                         new Deflater(Deflater.BEST_COMPRESSION, false),
                         Store.BUFSIZE) {
+
                     private boolean closed;
 
                     @Override public void close() throws IOException {
@@ -48,6 +49,7 @@ final class V2Compression implements Transformation {
                 return new InflaterInputStream(source.input(),
                         new Inflater(false),
                         Store.BUFSIZE) {
+
                     private boolean closed;
 
                     @Override public void close() throws IOException {
