@@ -22,7 +22,7 @@ final class V2Compression implements Transformation {
         return new Sink() {
             @Override public OutputStream output() throws IOException {
                 return new DeflaterOutputStream(sink.output(),
-                        new Deflater(Deflater.BEST_COMPRESSION, false),
+                        new Deflater(Deflater.BEST_COMPRESSION),
                         Store.BUFSIZE) {
 
                     boolean closed;
@@ -48,7 +48,7 @@ final class V2Compression implements Transformation {
         return new Source() {
             @Override public InputStream input() throws IOException {
                 return new InflaterInputStream(source.input(),
-                        new Inflater(false),
+                        new Inflater(),
                         Store.BUFSIZE) {
 
                     boolean closed;
