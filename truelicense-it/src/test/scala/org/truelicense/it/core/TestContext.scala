@@ -72,15 +72,14 @@ trait TestContext[Model <: AnyRef]
   }
 
   final lazy val managementContext =
-    applicationContext
-      .context
-        .subject("subject")
-        .validation(new LicenseValidation {
-            override def validate(bean: License) {
-              logger debug ("Validating license bean: {}", bean)
-            }
-          })
-        .build
+    applicationContext.context
+      .subject("subject")
+      .validation(new LicenseValidation {
+          override def validate(bean: License) {
+            logger debug ("Validating license bean: {}", bean)
+          }
+        })
+      .build
 
   override final def repositoryContext = applicationContext.repositoryContext
 
