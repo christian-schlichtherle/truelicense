@@ -25,9 +25,10 @@ final class V2Compression implements Transformation {
                         new Deflater(Deflater.BEST_COMPRESSION, false),
                         Store.BUFSIZE) {
 
-                    private boolean closed;
+                    boolean closed;
 
-                    @Override public void close() throws IOException {
+                    @Override
+                    public void close() throws IOException {
                         if (!closed) {
                             closed = true;
                             try {
@@ -50,9 +51,10 @@ final class V2Compression implements Transformation {
                         new Inflater(false),
                         Store.BUFSIZE) {
 
-                    private boolean closed;
+                    boolean closed;
 
-                    @Override public void close() throws IOException {
+                    @Override
+                    public void close() throws IOException {
                         if (!closed) {
                             closed = true;
                             try { inf.end(); }
