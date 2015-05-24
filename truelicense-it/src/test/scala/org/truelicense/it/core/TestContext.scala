@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
 import org.truelicense.api._
 import org.truelicense.api.auth.RepositoryContextProvider
 import org.truelicense.api.codec.CodecProvider
+import org.truelicense.api.crypto.EncryptionParameters
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.core.TrueLicenseApplicationContext
 import org.truelicense.it.core.TestContext._
@@ -29,7 +30,9 @@ trait TestContext[Model <: AnyRef]
 
   def chainedVendorManager: VendorLicenseManager
 
-  override final def codec = managementContext.codec
+  final override def codec = managementContext.codec
+
+  final def compression = applicationContext.compression
 
   final def consumerManager(): ConsumerLicenseManager = consumerManager(store)
 
@@ -44,6 +47,11 @@ trait TestContext[Model <: AnyRef]
     getTime
   }
 
+  final def encryption = applicationContext encryption new EncryptionParameters {
+    def algorithm = "PBEwithMD5andDES"
+    def protection = test1234
+  }
+
   def extraData: AnyRef = { // must be AnyRef to enable overriding and returning a bean instead.
 
     // The XmlEncoder used with V1 format license keys supports only standard
@@ -56,7 +64,7 @@ trait TestContext[Model <: AnyRef]
 
   def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
-  def license = {
+  final def license = {
     val now = new Date
     val me = new X500Principal("CN=Christian Schlichtherle")
     val license = managementContext.license
@@ -81,11 +89,11 @@ trait TestContext[Model <: AnyRef]
         })
       .build
 
-  override final def repositoryContext = applicationContext.repositoryContext
+  final override def repositoryContext = applicationContext.repositoryContext
 
   def store = managementContext.memoryStore
 
-  def test1234 = applicationContext protection
+  final def test1234 = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
 
   def transformation: Transformation = IdentityTransformation
