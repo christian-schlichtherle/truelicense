@@ -5,14 +5,15 @@
 
 package net.java.truelicense.core.codec
 
-import org.junit.runner.RunWith
-import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.Matchers._
-import org.scalatest.prop.PropertyChecks._
-import net.java.truelicense.core.io._
 import java.lang.reflect.Type
 import java.nio.charset.Charset
+
+import net.java.truelicense.core.io._
+import org.junit.runner.RunWith
+import org.scalatest.Matchers._
+import org.scalatest.WordSpec
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.prop.PropertyChecks._
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
@@ -56,6 +57,7 @@ class CodecsTest extends WordSpec {
 /** @author Christian Schlichtherle */
 private case class MockCodec(contentType: String, contentTransferEncoding: String)
   extends Codec {
+
   def encode(s: Sink, o: AnyRef) { throw new UnsupportedOperationException }
   def decode[T](s: Source, t: Type) = throw new UnsupportedOperationException
 }
