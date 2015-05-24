@@ -5,7 +5,6 @@
 
 package org.truelicense.spi.codec
 
-import java.lang.reflect.Type
 import java.nio.charset.Charset
 
 import org.junit.runner.RunWith
