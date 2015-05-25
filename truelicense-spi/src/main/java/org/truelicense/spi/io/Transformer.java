@@ -79,32 +79,52 @@ public final class Transformer {
     }
 
     /**
+     * Returns a new sink which applies the composed transformation to the
+     * given sink.
+     */
+    public Sink to(Sink sink) {
+        return store(sink);
+    }
+
+    /**
+     * Returns a new source which applies the composed transformation to the
+     * given source.
+     */
+    public Source to(Source source) {
+        return store(source);
+    }
+
+    /**
      * Returns a new store which applies the composed transformation to the
      * given store.
      */
-    public Store to(final Store store) {
+    public Store to(Store store) {
+        return store(store);
+    }
+
+    private Store store(final Object sinkOrSourceOrStore) {
         return new Store() {
 
             final Transformation transformation = get();
 
             @Override
             public void delete() throws IOException {
-                store.delete();
+                ((Store) sinkOrSourceOrStore).delete();
             }
 
             @Override
             public boolean exists() throws IOException {
-                return store.exists();
+                return ((Store) sinkOrSourceOrStore).exists();
             }
 
             @Override
             public InputStream input() throws IOException {
-                return transformation.unapply(store).input();
+                return transformation.unapply((Source) sinkOrSourceOrStore).input();
             }
 
             @Override
             public OutputStream output() throws IOException {
-                return transformation.apply(store).output();
+                return transformation.apply((Sink) sinkOrSourceOrStore).output();
             }
         };
     }
