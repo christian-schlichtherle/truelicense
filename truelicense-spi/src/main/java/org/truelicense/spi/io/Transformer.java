@@ -61,20 +61,7 @@ public final class Transformer {
      * @return {@code this}
      */
     public Transformer then(final Transformation next) {
-        current = new Transformation() {
-
-            final Transformation previous = get();
-
-            @Override
-            public Sink apply(Sink sink) {
-                return previous.apply(next.apply(sink));
-            }
-
-            @Override
-            public Source unapply(Source source) {
-                return previous.unapply(next.unapply(source));
-            }
-        };
+        current = new ComposedTransformation(get(), next);
         return this;
     }
 
@@ -102,30 +89,60 @@ public final class Transformer {
         return store(store);
     }
 
-    private Store store(final Object sinkOrSourceOrStore) {
-        return new Store() {
+    private Store store(Object sinkOrSourceOrStore) {
+        return new TransformedStore(sinkOrSourceOrStore, get());
+    }
 
-            final Transformation transformation = get();
+    private final static class ComposedTransformation implements Transformation {
 
-            @Override
-            public void delete() throws IOException {
-                ((Store) sinkOrSourceOrStore).delete();
-            }
+        final Transformation previous, next;
 
-            @Override
-            public boolean exists() throws IOException {
-                return ((Store) sinkOrSourceOrStore).exists();
-            }
+        ComposedTransformation(final Transformation previous,
+                               final Transformation next) {
+            this.previous = previous;
+            this.next = next;
+        }
 
-            @Override
-            public InputStream input() throws IOException {
-                return transformation.unapply((Source) sinkOrSourceOrStore).input();
-            }
+        @Override
+        public Sink apply(Sink sink) {
+            return previous.apply(next.apply(sink));
+        }
 
-            @Override
-            public OutputStream output() throws IOException {
-                return transformation.apply((Sink) sinkOrSourceOrStore).output();
-            }
-        };
+        @Override
+        public Source unapply(Source source) {
+            return previous.unapply(next.unapply(source));
+        }
+    }
+
+    private final static class TransformedStore implements Store {
+
+        final Object sinkOrSourceOrStore;
+        final Transformation transformation;
+
+        TransformedStore(final Object sinkOrSourceOrStore,
+                         final Transformation transformation) {
+            this.sinkOrSourceOrStore = sinkOrSourceOrStore;
+            this.transformation = transformation;
+        }
+
+        @Override
+        public void delete() throws IOException {
+            ((Store) sinkOrSourceOrStore).delete();
+        }
+
+        @Override
+        public boolean exists() throws IOException {
+            return ((Store) sinkOrSourceOrStore).exists();
+        }
+
+        @Override
+        public InputStream input() throws IOException {
+            return transformation.unapply((Source) sinkOrSourceOrStore).input();
+        }
+
+        @Override
+        public OutputStream output() throws IOException {
+            return transformation.apply((Sink) sinkOrSourceOrStore).output();
+        }
     }
 }
