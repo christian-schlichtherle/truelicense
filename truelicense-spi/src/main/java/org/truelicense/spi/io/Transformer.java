@@ -16,8 +16,8 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * Composes multiple transformations into one and optionally applies it to a
- * {@link Store}.
+ * Composes multiple transformations into one and optionally applies/un-applies
+ * it to {@link Sink}s, {@link Source}s or {@link Store}s.
  * Usage example:
  * <pre>{@code
  *  Transformation compression = ...;
@@ -36,22 +36,22 @@ import java.util.Objects;
  */
 public final class Transformer {
 
-    private Transformation current;
+    private Transformation composed;
 
     /**
      * Returns a transformation builder with the given transformation as its
      * initial composed transformation.
      */
-    public static Transformer apply(Transformation initial) {
-        return new Transformer(initial);
+    public static Transformer apply(Transformation t) {
+        return new Transformer(t);
     }
 
-    private Transformer(final Transformation transformation) {
-        this.current = Objects.requireNonNull(transformation);
+    private Transformer(final Transformation t) {
+        this.composed = Objects.requireNonNull(t);
     }
 
     /** Returns the composed transformation. */
-    public Transformation get() { return current; }
+    public Transformation get() { return composed; }
 
     /**
      * Creates a new transformation which applies the given transformation
@@ -61,7 +61,7 @@ public final class Transformer {
      * @return {@code this}
      */
     public Transformer then(final Transformation next) {
-        current = new ComposedTransformation(get(), next);
+        composed = new ComposedTransformation(get(), next);
         return this;
     }
 
@@ -69,29 +69,19 @@ public final class Transformer {
      * Returns a new sink which applies the composed transformation to the
      * given sink.
      */
-    public Sink to(Sink sink) {
-        return store(sink);
-    }
+    public Sink to(Sink sink) { return get().apply(sink); }
 
     /**
-     * Returns a new source which applies the composed transformation to the
+     * Returns a new source which un-applies the composed transformation to the
      * given source.
      */
-    public Source to(Source source) {
-        return store(source);
-    }
+    public Source to(Source source) { return get().unapply(source); }
 
     /**
-     * Returns a new store which applies the composed transformation to the
-     * given store.
+     * Returns a new store which applies/un-applies the composed transformation
+     * to the given store.
      */
-    public Store to(Store store) {
-        return store(store);
-    }
-
-    private Store store(Object sinkOrSourceOrStore) {
-        return new TransformedStore(sinkOrSourceOrStore, get());
-    }
+    public Store to(Store store) { return new TransformedStore(get(), store); }
 
     private final static class ComposedTransformation implements Transformation {
 
@@ -116,33 +106,26 @@ public final class Transformer {
 
     private final static class TransformedStore implements Store {
 
-        final Object sinkOrSourceOrStore;
-        final Transformation transformation;
+        final Sink sink;
+        final Source source;
+        final Store store;
 
-        TransformedStore(final Object sinkOrSourceOrStore,
-                         final Transformation transformation) {
-            this.sinkOrSourceOrStore = sinkOrSourceOrStore;
-            this.transformation = transformation;
+        TransformedStore(final Transformation t, final Store s) {
+            this.sink = t.apply(s);
+            this.source = t.unapply(s);
+            this.store = s;
         }
 
         @Override
-        public void delete() throws IOException {
-            ((Store) sinkOrSourceOrStore).delete();
-        }
+        public void delete() throws IOException { store.delete(); }
 
         @Override
-        public boolean exists() throws IOException {
-            return ((Store) sinkOrSourceOrStore).exists();
-        }
+        public boolean exists() throws IOException { return store.exists(); }
 
         @Override
-        public InputStream input() throws IOException {
-            return transformation.unapply((Source) sinkOrSourceOrStore).input();
-        }
+        public InputStream input() throws IOException { return source.input(); }
 
         @Override
-        public OutputStream output() throws IOException {
-            return transformation.apply((Sink) sinkOrSourceOrStore).output();
-        }
+        public OutputStream output() throws IOException { return sink.output(); }
     }
 }
