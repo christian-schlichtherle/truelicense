@@ -971,8 +971,7 @@ implements BiosProvider,
                 }
 
                 @Override
-                public void install(final Source source)
-                        throws LicenseManagementException {
+                public void install(final Source source) throws LicenseManagementException {
                     wrap(new Callable<Void>() {
                         @Override public Void call() throws Exception {
                             authorization().clearInstall(TrueLicenseManager.this);
