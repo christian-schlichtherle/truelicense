@@ -9,18 +9,23 @@ import java.io.IOException
 
 import org.scalatest.Matchers._
 import org.scalatest._
+import org.truelicense.api.codec.Codec
+import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.spi.io.Transformer
 
 /** @author Christian Schlichtherle */
-abstract class CodecTestSuite extends WordSpec { this: TestContext[_] =>
+abstract class CodecTestSuite extends WordSpec {
 
-  def artifact: AnyRef = license
+  def artifact: AnyRef
+  def codec: Codec
+  def store: Store
+  def transformation: Transformation
 
   "A codec" when {
     "combined with a transformation" should {
       "support round trip I/O" in {
-        val codec = this.codec
         val artifact = this.artifact
+        val codec = this.codec
         val store = Transformer apply transformation to this.store
         store.exists should equal (false)
         intercept[IOException] { store delete () }

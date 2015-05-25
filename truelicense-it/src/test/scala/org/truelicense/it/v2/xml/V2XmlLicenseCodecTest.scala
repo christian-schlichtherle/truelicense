@@ -3,14 +3,14 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.it.v1
+package org.truelicense.it.v2.xml
 
+import org.truelicense.it.core.LicenseCodecTestSuite
 import org.junit.runner._
 import org.scalatest.junit._
-import org.truelicense.it.core.CodecTestSuite
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
-class V1CodecTest
-  extends CodecTestSuite
-  with V1TestContext
+class V2XmlLicenseCodecTest
+  extends LicenseCodecTestSuite
+  with V2XmlTestContext

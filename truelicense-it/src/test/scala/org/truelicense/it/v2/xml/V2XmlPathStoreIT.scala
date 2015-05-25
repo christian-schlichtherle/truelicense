@@ -5,13 +5,12 @@
 
 package org.truelicense.it.v2.xml
 
-import org.truelicense.it.core.{CodecTestSuite, PathStoreITContext}
+import org.truelicense.it.core.PathStoreITContext
 import org.junit.runner._
 import org.scalatest.junit._
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V2XmlPathStoreIT
-extends CodecTestSuite
-   with V2XmlTestContext
-   with PathStoreITContext
+  extends V2XmlLicenseCodecTest
+  with PathStoreITContext

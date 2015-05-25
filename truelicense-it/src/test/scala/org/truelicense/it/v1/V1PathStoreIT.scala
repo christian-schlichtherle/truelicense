@@ -5,13 +5,12 @@
 
 package org.truelicense.it.v1
 
-import org.truelicense.it.core.{CodecTestSuite, PathStoreITContext}
+import org.truelicense.it.core.PathStoreITContext
 import org.junit.runner._
 import org.scalatest.junit._
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class V1PathStoreIT
-extends CodecTestSuite
-   with V1TestContext
-   with PathStoreITContext
+  extends V1LicenseCodecTest
+  with PathStoreITContext
