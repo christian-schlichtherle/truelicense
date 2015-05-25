@@ -3,14 +3,14 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package org.truelicense.it.v1
+package org.truelicense.it.v2.json
 
-import org.truelicense.it.core.CodecTestSuite
 import org.junit.runner._
 import org.scalatest.junit._
+import org.truelicense.it.core.CodecTestSuite
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
-class V1LicenseCodecTest
-extends CodecTestSuite
-   with V1TestContext
+class V2JsonCodecTest
+  extends CodecTestSuite
+  with V2JsonTestContext

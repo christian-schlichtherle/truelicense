@@ -11,6 +11,6 @@ import org.truelicense.it.core.CodecTestSuite
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
-class V1CompressionTest
-extends CodecTestSuite
-   with V1TestContext
+class V1CodecTest
+  extends CodecTestSuite
+  with V1TestContext
