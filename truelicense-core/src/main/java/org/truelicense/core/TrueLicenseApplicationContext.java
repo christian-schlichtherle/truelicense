@@ -88,7 +88,7 @@ implements BiosProvider,
      * returns an authorization which clears all operation requests.
      */
     @Override
-    final public LicenseManagementAuthorization authorization() {
+    public final LicenseManagementAuthorization authorization() {
         return new TrueLicenseManagementAuthorization();
     }
 
@@ -118,12 +118,12 @@ implements BiosProvider,
      * lists the current thread's context class loader, if not {@code null}.
      */
     @Override
-    final public List<ClassLoader> classLoader() {
+    public final List<ClassLoader> classLoader() {
         return Option.wrap(Thread.currentThread().getContextClassLoader());
     }
 
     @Override
-    final public LicenseManagementContextBuilder context() {
+    public final LicenseManagementContextBuilder context() {
         return new TrueLicenseManagementContextBuilder();
     }
 
@@ -141,7 +141,7 @@ implements BiosProvider,
      * returns a new {@link Date}.
      */
     @Override
-    final public Date now() {
+    public final Date now() {
         return new Date();
     }
 
@@ -169,7 +169,7 @@ implements BiosProvider,
      * Calling this method creates a new {@link ObfuscatedString} from the given
      * array and forwards the call to {@link #protection(ObfuscatedString)}.
      */
-    final public PasswordProtection protection(long[] obfuscated) {
+    public final PasswordProtection protection(long[] obfuscated) {
         return protection(new ObfuscatedString(obfuscated));
     }
 
@@ -180,7 +180,7 @@ implements BiosProvider,
      * returns a new {@link ObfuscatedPasswordProtection}.
      */
     @Override
-    final public PasswordProtection protection(ObfuscatedString os) {
+    public final PasswordProtection protection(ObfuscatedString os) {
         return new ObfuscatedPasswordProtection(os);
     }
 
@@ -472,44 +472,44 @@ implements BiosProvider,
             List<ConsumerLicenseManager> parent = Option.none();
             List<Store> store = Option.none();
 
-            final public This authentication(final Authentication authentication) {
+            public final This authentication(final Authentication authentication) {
                 this.authentication = Option.wrap(authentication);
                 return (This) this;
             }
 
-            final public TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
+            public final TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
 
-            final public This encryption(final Transformation encryption) {
+            public final This encryption(final Transformation encryption) {
                 this.encryption = Option.wrap(encryption);
                 return (This) this;
             }
 
-            final public This ftpDays(final int ftpDays) {
+            public final This ftpDays(final int ftpDays) {
                 this.ftpDays = ftpDays;
                 return (This) this;
             }
 
-            final public TrueAuthenticationBuilder authentication() { return new TrueAuthenticationBuilder(); }
+            public final TrueAuthenticationBuilder authentication() { return new TrueAuthenticationBuilder(); }
 
-            final public This parent(final ConsumerLicenseManager parent) {
+            public final This parent(final ConsumerLicenseManager parent) {
                 this.parent = Option.wrap(parent);
                 return (This) this;
             }
 
-            final public This storeIn(final Store store) {
+            public final This storeIn(final Store store) {
                 this.store = Option.wrap(store);
                 return (This) this;
             }
 
-            final public This storeInPath(Path path) {
+            public final This storeInPath(Path path) {
                 return storeIn(pathStore(path));
             }
 
-            final public This storeInSystemPreferences(Class<?> classInPackage) {
+            public final This storeInSystemPreferences(Class<?> classInPackage) {
                 return storeIn(systemPreferencesStore(classInPackage));
             }
 
-            final public This storeInUserPreferences(Class<?> classInPackage) {
+            public final This storeInUserPreferences(Class<?> classInPackage) {
                 return storeIn(userPreferencesStore(classInPackage));
             }
 
@@ -1053,12 +1053,12 @@ implements BiosProvider,
                 //
 
                 @Override
-                final public LicenseManagementContext context() {
+                public final LicenseManagementContext context() {
                     return TrueLicenseManagementContext.this;
                 }
 
                 @Override
-                final public TrueLicenseManagementParameters parameters() {
+                public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
                 }
             }
