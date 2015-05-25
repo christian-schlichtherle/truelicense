@@ -10,9 +10,6 @@ import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Objects;
 
 /**
@@ -82,50 +79,4 @@ public final class Transformer {
      * to the given store.
      */
     public Store to(Store store) { return new TransformedStore(get(), store); }
-
-    private final static class ComposedTransformation implements Transformation {
-
-        final Transformation previous, next;
-
-        ComposedTransformation(final Transformation previous,
-                               final Transformation next) {
-            this.previous = previous;
-            this.next = next;
-        }
-
-        @Override
-        public Sink apply(Sink sink) {
-            return previous.apply(next.apply(sink));
-        }
-
-        @Override
-        public Source unapply(Source source) {
-            return previous.unapply(next.unapply(source));
-        }
-    }
-
-    private final static class TransformedStore implements Store {
-
-        final Sink sink;
-        final Source source;
-        final Store store;
-
-        TransformedStore(final Transformation t, final Store s) {
-            this.sink = t.apply(s);
-            this.source = t.unapply(s);
-            this.store = s;
-        }
-
-        @Override
-        public void delete() throws IOException { store.delete(); }
-
-        @Override
-        public boolean exists() throws IOException { return store.exists(); }
-
-        @Override
-        public InputStream input() throws IOException { return source.input(); }
-
-        @Override
-        public OutputStream output() throws IOException { return sink.output(); }
-    }
 }
