@@ -16,7 +16,7 @@ import org.truelicense.api.codec.CodecProvider
 import org.truelicense.api.io.{Store, Transformation}
 import org.truelicense.core.TrueLicenseApplicationContext
 import org.truelicense.it.core.TestContext._
-import org.truelicense.spi.io.TransformationBuilder
+import org.truelicense.spi.io.Transformer
 
 /** @author Christian Schlichtherle */
 trait TestContext[Model <: AnyRef]
@@ -92,7 +92,7 @@ trait TestContext[Model <: AnyRef]
   final def test1234 = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
 
-  final def transformation = TransformationBuilder apply compression `then` encryption build ()
+  final def transformation = Transformer apply compression `then` encryption get ()
 
   def vendorManager: VendorLicenseManager
 }

@@ -9,7 +9,6 @@ import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
 import org.truelicense.api.io.Transformation;
-import org.truelicense.api.misc.Builder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,19 +23,18 @@ import java.util.Objects;
  *  Transformation compression = ...;
  *  Transformation encryption = ...;
  *  Store store = ...;
- *  Store storeWithTransformationsApplied = TransformationBuilder.apply(compression).then(encryption).to(store);
+ *  Store storeWithTransformationsApplied = Transformer.apply(compression).then(encryption).to(store);
  * }</pre>
  * <p>
- * You can also call it's {@link #build()} method if you just want the composed
- * transformation.
- * Usage example:
+ * You can also call it's {@link #get()} method if you just want the composed
+ * transformation:
  * <pre>{@code
  *  Transformation compression = ...;
  *  Transformation encryption = ...;
- *  Transformation composed = TransformationBuilder.apply(compression).then(encryption).build();
+ *  Transformation composed = Transformer.apply(compression).then(encryption).get();
  * }</pre>
  */
-public final class TransformationBuilder implements Builder<Transformation> {
+public final class Transformer {
 
     private Transformation current;
 
@@ -44,17 +42,16 @@ public final class TransformationBuilder implements Builder<Transformation> {
      * Returns a transformation builder with the given transformation as its
      * initial composed transformation.
      */
-    public static TransformationBuilder apply(Transformation initial) {
-        return new TransformationBuilder(initial);
+    public static Transformer apply(Transformation initial) {
+        return new Transformer(initial);
     }
 
-    private TransformationBuilder(final Transformation transformation) {
+    private Transformer(final Transformation transformation) {
         this.current = Objects.requireNonNull(transformation);
     }
 
     /** Returns the composed transformation. */
-    @Override
-    public Transformation build() { return current; }
+    public Transformation get() { return current; }
 
     /**
      * Creates a new transformation which applies the given transformation
@@ -63,10 +60,10 @@ public final class TransformationBuilder implements Builder<Transformation> {
      *
      * @return {@code this}
      */
-    public TransformationBuilder then(final Transformation next) {
+    public Transformer then(final Transformation next) {
         current = new Transformation() {
 
-            final Transformation previous = build();
+            final Transformation previous = get();
 
             @Override
             public Sink apply(Sink sink) {
@@ -88,7 +85,7 @@ public final class TransformationBuilder implements Builder<Transformation> {
     public Store to(final Store store) {
         return new Store() {
 
-            final Transformation transformation = build();
+            final Transformation transformation = get();
 
             @Override
             public void delete() throws IOException {
