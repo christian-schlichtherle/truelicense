@@ -723,9 +723,9 @@ implements BiosProvider,
                 };
             }
 
-            public ConsumerLicenseManager parent() { return parent.get(0); }
+            ConsumerLicenseManager parent() { return parent.get(0); }
 
-            public Store store() { return store.get(0);}
+            Store store() { return store.get(0);}
 
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
