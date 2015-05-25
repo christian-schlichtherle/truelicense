@@ -27,6 +27,7 @@ import org.truelicense.spi.codec.Codecs;
 import org.truelicense.spi.io.BIOS;
 import org.truelicense.spi.io.BiosProvider;
 import org.truelicense.spi.io.StandardBIOS;
+import org.truelicense.spi.io.Transformer;
 import org.truelicense.spi.misc.Option;
 
 import javax.security.auth.x500.X500Principal;
@@ -727,6 +728,10 @@ implements BiosProvider,
 
             Store store() { return store.get(0);}
 
+            Transformation compressionThenEncryption() {
+                return Transformer.apply(compression()).then(encryption()).get();
+            }
+
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
                 volatile List<Boolean> canGenerateLicenseKeys = Option.none();
@@ -954,11 +959,7 @@ implements BiosProvider,
                                         }
 
                                         Sink compressedAndEncryptedSink() {
-                                            return compression().apply(encryptedSink());
-                                        }
-
-                                        Sink encryptedSink() {
-                                            return encryption().apply(sink);
+                                            return compressionThenEncryption().apply(sink);
                                         }
                                     });
                                     return this;
@@ -1040,14 +1041,12 @@ implements BiosProvider,
                 }
 
                 Model repositoryModel(Source source) throws Exception {
-                    return codec().decoder(decompress(source)).decode(repositoryContext().model().getClass());
+                    return codec().decoder(decryptedAndDecompressedSource(source)).decode(repositoryContext().model().getClass());
                 }
 
-                Source decompress(Source source) {
-                    return compression().unapply(decrypt(source));
+                Source decryptedAndDecompressedSource(Source source) {
+                    return compressionThenEncryption().unapply(source);
                 }
-
-                Source decrypt(Source source) { return encryption().unapply(source); }
 
                 //
                 // Property/factory functions:
