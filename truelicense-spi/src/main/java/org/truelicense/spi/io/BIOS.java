@@ -33,9 +33,9 @@ public interface BIOS {
     /**
      * Returns a source which loads the resource with the given {@code name}.
      * If the given class loader list is empty, then the resource gets loaded
-     * as described in {@link ClassLoader#getResourceAsStream(String)}.
+     * as described in {@link ClassLoader#getSystemResourceAsStream(String)}.
      * Otherwise, the resource gets loaded as described in
-     * {@link ClassLoader#getSystemResourceAsStream(String)} using the first
+     * {@link ClassLoader#getResourceAsStream(String)} using the first
      * class loader in the list.
      *
      * @param  name the name of the resource to load.
