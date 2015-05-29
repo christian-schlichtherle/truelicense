@@ -58,7 +58,7 @@ extends UpdatingConsumerLicenseManager {
         disable();
         try {
             return action.call();
-        } catch (LicenseManagementException | RuntimeException | Error e) {
+        } catch (final Throwable e) {
             enabled(enabled);
             throw e;
         }
