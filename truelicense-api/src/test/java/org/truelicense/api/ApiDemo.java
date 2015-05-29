@@ -24,6 +24,7 @@ public class ApiDemo {
         return applicationContext
                 .context() // returns a LicenseManagementContextBuilder
                 //.authorization(new CustomLicenseAuthorization())
+                //.classLoaderProvider(new CustomClassLoaderProvider())
                 //.clock(new CustomClock())
                 //.initialization(new CustomLicenseInitialization())
                 //.initializationComposition(LicenseFunctionComposition.decorate)

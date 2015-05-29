@@ -253,6 +253,7 @@ implements BiosProvider,
                LicenseManagementContextBuilder {
 
         LicenseManagementAuthorization authorization = context().authorization();
+        ClassLoaderProvider classLoaderProvider = context();
         Clock clock = context();
         List<LicenseInitialization> initialization = Option.none();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
@@ -264,6 +265,12 @@ implements BiosProvider,
         public LicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
             this.authorization = requireNonNull(authorization);
             return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder classLoaderProvider(final ClassLoaderProvider classLoaderProvider) {
+            this.classLoaderProvider = requireNonNull(classLoaderProvider);
+            return null;
         }
 
         @Override
@@ -324,6 +331,7 @@ implements BiosProvider,
             LicenseValidationProvider {
 
         final LicenseManagementAuthorization authorization;
+        final ClassLoaderProvider classLoaderProvider;
         final Clock clock;
         final List<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
@@ -333,6 +341,7 @@ implements BiosProvider,
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
             this.authorization = b.authorization;
+            this.classLoaderProvider = b.classLoaderProvider;
             this.clock = b.clock;
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
@@ -347,7 +356,9 @@ implements BiosProvider,
         }
 
         @Override
-        public List<ClassLoader> classLoader() { return context().classLoader(); }
+        public List<ClassLoader> classLoader() {
+            return classLoaderProvider.classLoader();
+        }
 
         @Override
         public Codec codec() { return context().codec(); }
