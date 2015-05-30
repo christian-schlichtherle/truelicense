@@ -56,7 +56,7 @@ implements WizardView<LicenseWizardState> {
 
     final String subject() { return context().subject(); }
 
-    private LicenseManagementContext context() { return manager().context(); }
+    final LicenseManagementContext context() { return manager().context(); }
 
     private Locale locale() { return viewRoot().getLocale(); }
 
@@ -101,11 +101,13 @@ implements WizardView<LicenseWizardState> {
         externalContext().log(message, exception);
     }
 
-    @Override public LicenseWizardState backState() {
+    @Override
+    public LicenseWizardState backState() {
         return LicenseWizardState.welcome;
     }
 
-    @Override public LicenseWizardState nextState() {
+    @Override
+    public LicenseWizardState nextState() {
         try {
             manager().verify();
             return LicenseWizardState.display;
@@ -123,6 +125,9 @@ implements WizardView<LicenseWizardState> {
         }
     }
 
-    @Override public final void onBeforeStateSwitch() { }
-    @Override public final void onAfterStateSwitch() { }
+    @Override
+    public final void onBeforeStateSwitch() { }
+
+    @Override
+    public final void onAfterStateSwitch() { }
 }

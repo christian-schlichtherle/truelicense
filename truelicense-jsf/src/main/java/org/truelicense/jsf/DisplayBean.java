@@ -6,7 +6,6 @@
 package org.truelicense.jsf;
 
 import org.truelicense.api.License;
-import org.truelicense.api.LicenseManagementContext;
 import org.truelicense.api.LicenseManagementException;
 
 import javax.faces.component.FacesComponent;
@@ -68,22 +67,14 @@ public final class DisplayBean extends LicenseBean {
 
     private License license() {
         final License l = license;
-        return null != l ? l : (license = defaultLicense());
+        return null != l ? l : (license = newLicense());
     }
 
-    private License defaultLicense() {
+    private License newLicense() {
         try {
-            return installedLicense();
-        } catch (LicenseManagementException ex) {
-            return new License(); // TODO: Can we do without this?
+            return manager().view();
+        } catch (LicenseManagementException e) {
+            return context().license();
         }
-    }
-
-    private License installedLicense() throws LicenseManagementException {
-        return manager().view();
-    }
-
-    private LicenseManagementContext consumerContext() {
-        return manager().context();
     }
 }
