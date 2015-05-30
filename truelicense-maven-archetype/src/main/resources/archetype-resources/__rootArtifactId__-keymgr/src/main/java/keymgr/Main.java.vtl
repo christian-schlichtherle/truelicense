@@ -27,43 +27,50 @@ import javax.swing.*;
 public enum Main {
 
     USAGE {
-        @Override void run(final Deque<String> params) {
+        @Override
+        void run(final Deque<String> params) {
             throw new IllegalArgumentException();
         }
     },
 
     HELP {
-        @Override void run(final Deque<String> params) {
+        @Override
+        void run(final Deque<String> params) {
             out.printf(Main.valueOf(params.pop().toUpperCase(Locale.ROOT)).help());
         }
     },
 
     VERSION {
-        @Override void run(final Deque<String> params) {
+        @Override
+        void run(final Deque<String> params) {
             out.printf(message("version"), Main.class.getSimpleName());
         }
     },
 
     INSTALL {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override
+        void run(Deque<String> params) throws Exception {
             manager().install(context().pathStore(Paths.get(params.pop())));
         }
     },
 
     VIEW {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override
+        void run(Deque<String> params) throws Exception {
             out.println(manager().view());
         }
     },
 
     VERIFY {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override
+        void run(Deque<String> params) throws Exception {
             manager().verify();
         }
     },
 
     UNINSTALL {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override
+        void run(Deque<String> params) throws Exception {
             manager().uninstall();
         }
     }#if($disableWizard == true);#{else},#end

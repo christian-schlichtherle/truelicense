@@ -25,25 +25,29 @@ import org.truelicense.api.io.*;
 public enum Main {
 
     USAGE {
-        @Override void run(final Deque<String> params) {
+        @Override
+        void run(final Deque<String> params) {
             throw new IllegalArgumentException();
         }
     },
 
     HELP {
-        @Override void run(final Deque<String> params) {
+        @Override
+        void run(final Deque<String> params) {
             out.printf(Main.valueOf(params.pop().toUpperCase(Locale.ROOT)).help());
         }
     },
 
     VERSION {
-        @Override void run(final Deque<String> params) {
+        @Override
+        void run(final Deque<String> params) {
             out.printf(message("version"), Main.class.getSimpleName());
         }
     },
 
     GENERATE {
-        @Override void run(final Deque<String> params) throws Exception {
+        @Override
+        void run(final Deque<String> params) throws Exception {
             new Object() {
 
                 final Map<CreateOption, String>
@@ -103,15 +107,15 @@ public enum Main {
                             : pathStore(path);
                 }
 
-                Store memoryStore() {
-                    return context().memoryStore();
-                }
+                Store memoryStore() { return context().memoryStore(); }
 
                 Store pathStore(String path) {
                     return context().pathStore(Paths.get(path));
                 }
 
-                LicenseManagementContext context() { return manager().context(); }
+                LicenseManagementContext context() {
+                    return manager().context();
+                }
 
                 VendorLicenseManager manager() {
                     final VendorLicenseManager m = manager;
