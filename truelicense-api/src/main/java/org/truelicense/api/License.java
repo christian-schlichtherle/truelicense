@@ -286,8 +286,10 @@ public class License {
     @Override
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public boolean equals(final Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof License)) return false;
+        if (this == obj)
+            return true;
+        if (!(obj instanceof License))
+            return false;
         final License that = (License) obj;
         return  this.getConsumerAmount() == that.getConsumerAmount()
                 && Objects.equals(this.getConsumerType(), that.getConsumerType())
@@ -339,7 +341,8 @@ public class License {
     }
 
     private static String literal(final Object obj) {
-        if (null == obj) return null;
+        if (null == obj)
+            return null;
         final String s = obj.toString();
         return '"' +
                 s   .replace("\\", "\\\\")
