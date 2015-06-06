@@ -751,9 +751,9 @@ implements BiosProvider,
                 public void install(Source source) throws LicenseManagementException {
                     try {
                         parent().install(source);
-                    } catch (final LicenseManagementException primary) {
+                    } catch (final LicenseManagementException first) {
                         if (canGenerateLicenseKeys())
-                            throw primary;
+                            throw first;
                         super.install(source);
                     }
                 }
@@ -762,15 +762,15 @@ implements BiosProvider,
                 public License view() throws LicenseManagementException {
                     try {
                         return parent().view();
-                    } catch (final LicenseManagementException primary) {
+                    } catch (final LicenseManagementException first) {
                         try {
                             return super.view(); // uses store()
-                        } catch (final LicenseManagementException secondary) {
+                        } catch (final LicenseManagementException second) {
                             synchronized (store()) {
                                 try {
                                     return super.view(); // repeat
-                                } catch (final LicenseManagementException ternary) {
-                                    return generateIffNewFtp(ternary).license(); // uses store(), too
+                                } catch (final LicenseManagementException third) {
+                                    return generateIffNewFtp(third).license(); // uses store(), too
                                 }
                             }
                         }
@@ -781,15 +781,15 @@ implements BiosProvider,
                 public void verify() throws LicenseManagementException {
                     try {
                         parent().verify();
-                    } catch (final LicenseManagementException primary) {
+                    } catch (final LicenseManagementException first) {
                         try {
                             super.verify(); // uses store()
-                        } catch (final LicenseManagementException secondary) {
+                        } catch (final LicenseManagementException second) {
                             synchronized (store()) {
                                 try {
                                     super.verify(); // repeat
-                                } catch (final LicenseManagementException ternary) {
-                                    generateIffNewFtp(ternary); // uses store(), too
+                                } catch (final LicenseManagementException third) {
+                                    generateIffNewFtp(third); // uses store(), too
                                 }
                             }
                         }
@@ -800,8 +800,9 @@ implements BiosProvider,
                 public void uninstall() throws LicenseManagementException {
                     try {
                         parent().uninstall();
-                    } catch (final LicenseManagementException primary) {
-                        if (canGenerateLicenseKeys()) throw primary;
+                    } catch (final LicenseManagementException first) {
+                        if (canGenerateLicenseKeys())
+                            throw first;
                         super.uninstall();
                     }
                 }
