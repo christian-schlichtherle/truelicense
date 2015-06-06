@@ -5,13 +5,25 @@
 
 package org.truelicense.api;
 
-import org.mockito.Mockito;
+import org.truelicense.api.io.Source;
+import org.truelicense.api.io.Store;
+import org.truelicense.api.misc.ClassLoaderProvider;
+import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.PasswordProtection;
 
+import java.nio.file.Path;
+
+import static org.mockito.Mockito.mock;
+
 /**
+ * A demo which uses as many TrueLicense API calls as possible.
+ * This is not a working demo - do not use this code in production!
+ *
  * @author Christian Schlichtherle
  */
-public class ApiDemo {
+public abstract class ApiDemo {
+
+    public abstract LicenseApplicationContext licenseApplicationContext();
 
     /**
      * Returns a license management context.
@@ -20,17 +32,17 @@ public class ApiDemo {
      * or consumer license managers or create their dependencies, e.g. a store
      * for the license key to generate or install.
      */
-    static LicenseManagementContext licenseManagementContext(LicenseApplicationContext applicationContext) {
-        return applicationContext
+    public LicenseManagementContext licenseManagementContext() {
+        return licenseApplicationContext()
                 .context() // returns a LicenseManagementContextBuilder
-                //.authorization(new CustomLicenseAuthorization())
-                //.classLoaderProvider(new CustomClassLoaderProvider())
-                //.clock(new CustomClock())
-                //.initialization(new CustomLicenseInitialization())
-                //.initializationComposition(LicenseFunctionComposition.decorate)
+                .authorization(mock(LicenseManagementAuthorization.class))
+                .classLoaderProvider(mock(ClassLoaderProvider.class))
+                .clock(mock(Clock.class))
+                .initialization(mock(LicenseInitialization.class))
+                .initializationComposition(LicenseFunctionComposition.decorate)
                 .subject("MyProduct 1") // required call
-                //.validation(new CustomLicenseValidation())
-                //.validationComposition(LicenseFunctionComposition.decorate)
+                .validation(mock(LicenseValidation.class))
+                .validationComposition(LicenseFunctionComposition.decorate)
                 .build();
     }
 
@@ -40,20 +52,21 @@ public class ApiDemo {
      * The returned vendor license manager has been configured using the given
      * license management context and can be used to generate license keys.
      */
-    static VendorLicenseManager vendorLicenseManager(LicenseManagementContext managementContext) {
-        return managementContext
+    public VendorLicenseManager vendorLicenseManager() {
+        return licenseManagementContext()
                 .vendor() // returns a VendorLicenseManagerBuilder
                 .encryption()
-                    //.algorithm("PBEWithSHA1AndDESede")
-                    .protection(somePasswordProtection())
+                    .algorithm("PBEWithSHA1AndDESede")
+                    .protection(mock(PasswordProtection.class))
                     .inject()
                 .authentication()
-                    //.algorithm("RSA")
+                    .algorithm("RSA")
                     .alias("mykey")
-                    //.keyProtection(somePasswordProtection())
+                    .keyProtection(mock(PasswordProtection.class))
+                    .loadFrom(mock(Source.class))
                     .loadFromResource("private.ks")
-                    .storeProtection(somePasswordProtection())
-                    //.storeType("JCEKS")
+                    .storeProtection(mock(PasswordProtection.class))
+                    .storeType("JCEKS")
                     .inject()
                 .build();
     }
@@ -65,33 +78,28 @@ public class ApiDemo {
      * license management context and can be used to install, view, verify and
      * uninstall license keys.
      */
-    static ConsumerLicenseManager consumerLicenseManager(LicenseManagementContext managementContext) {
-        return managementContext
+    public ConsumerLicenseManager consumerLicenseManager() {
+        return licenseManagementContext()
                 .consumer() // returns a ConsumerLicenseManagerBuilder
-                //.ftpDays(30)
+                .ftpDays(30)
                 .encryption()
-                    //.algorithm("PBEWithSHA1AndDESede")
-                    .protection(somePasswordProtection())
+                    .algorithm("PBEWithSHA1AndDESede")
+                    .protection(mock(PasswordProtection.class))
                     .inject()
                 .authentication()
-                    //.algorithm("RSA")
+                    .algorithm("RSA")
                     .alias("mykey")
-                    //.keyProtection(somePasswordProtection())
+                    .keyProtection(mock(PasswordProtection.class))
+                    .loadFrom(mock(Source.class))
                     .loadFromResource("private.ks")
-                    .storeProtection(somePasswordProtection())
-                    //.storeType("JCEKS")
+                    .storeProtection(mock(PasswordProtection.class))
+                    .storeType("JCEKS")
                     .inject()
-                //.parent(parent())
-                //.storeIn(someStore())
-                //.storeInPath(somePath())
-                //.storeInSystemPreferences(someClassInPackage())
-                .storeInUserPreferences(someClassInPackage())
+                .parent(mock(ConsumerLicenseManager.class))
+                .storeIn(mock(Store.class))
+                .storeInPath(mock(Path.class))
+                .storeInSystemPreferences(Class.class)
+                .storeInUserPreferences(Class.class)
                 .build();
     }
-
-    static PasswordProtection somePasswordProtection() {
-        return Mockito.mock(PasswordProtection.class);
-    }
-
-    static Class<?> someClassInPackage() { return ApiDemo.class; }
 }
