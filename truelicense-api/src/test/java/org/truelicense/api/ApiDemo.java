@@ -5,8 +5,10 @@
 
 package org.truelicense.api;
 
+import org.truelicense.api.auth.Authentication;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
+import org.truelicense.api.io.Transformation;
 import org.truelicense.api.misc.ClassLoaderProvider;
 import org.truelicense.api.misc.Clock;
 import org.truelicense.api.passwd.PasswordProtection;
@@ -55,11 +57,12 @@ public abstract class ApiDemo {
     public VendorLicenseManager vendorLicenseManager() {
         return licenseManagementContext()
                 .vendor() // returns a VendorLicenseManagerBuilder
-                .encryption()
+                .encryption() // returns an EncryptionInjection
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
-                    .inject()
-                .authentication()
+                    .inject() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the builder
+                .encryption(mock(Transformation.class))
+                .authentication() // returns an AuthenticationInjection
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
@@ -67,7 +70,8 @@ public abstract class ApiDemo {
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
-                    .inject()
+                    .inject() // builds the authentication, injects it into the VendorLicenseManagerBuilder and returns the builder
+                .authentication(mock(Authentication.class))
                 .build();
     }
 
@@ -82,11 +86,12 @@ public abstract class ApiDemo {
         return licenseManagementContext()
                 .consumer() // returns a ConsumerLicenseManagerBuilder
                 .ftpDays(30)
-                .encryption()
+                .encryption() // returns an EncryptionInjection
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
-                    .inject()
-                .authentication()
+                    .inject() // builds the encryption, injects it into the ConsumerLicenseManagerBuilder and returns the builder
+                .encryption(mock(Transformation.class))
+                .authentication() // returns an AuthenticationInjection
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
@@ -94,7 +99,11 @@ public abstract class ApiDemo {
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
-                    .inject()
+                    .inject() // builds the authentication, injects it into the ConsumerLicenseManagerBuilder and returns the builder
+                .authentication(mock(Authentication.class))
+                .parent() // returns another ConsumerLicenseManagerBuilder
+                    //...
+                    .inject() // builds the consumer license manager, injects it into the child ConsumerLicenseManagerBuilder and returns the child builder
                 .parent(mock(ConsumerLicenseManager.class))
                 .storeIn(mock(Store.class))
                 .storeInPath(mock(Path.class))
