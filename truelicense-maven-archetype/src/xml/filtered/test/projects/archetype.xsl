@@ -20,30 +20,25 @@
 
     <xsl:template match="/p:properties">
         <xsl:variable name="properties" select="p:list/*"/>
-        <xsl:for-each
-                select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element">
+        <xsl:for-each select="document('../../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element">
             <xsl:variable name="name" select="@name"/>
-            <xsl:variable name="value"
-                          select="$properties[local-name() = $name]"/>
+            <xsl:variable name="value" select="$properties[local-name() = $name]"/>
             <xsl:variable name="default" select="@default"/>
             <xsl:value-of select="$name"/>
             <xsl:text>=</xsl:text>
             <xsl:choose>
                 <xsl:when test="$value">
                     <xsl:choose>
-                        <xsl:when
-                                test="substring-after(@type, ':') = 'Password'">
+                        <xsl:when test="substring-after(@type, ':') = 'Password'">
                             <xsl:value-of select="$value"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of
-                                    select="normalize-space($value)"/>
+                            <xsl:value-of select="normalize-space($value)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$name = 'package'">
-                    <xsl:value-of
-                            select="$properties[local-name() = 'groupId']"/>
+                    <xsl:value-of select="$properties[local-name() = 'groupId']"/>
                 </xsl:when>
                 <xsl:when test="$default">
                     <xsl:value-of select="$default"/>
