@@ -68,30 +68,24 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template match="h:a[contains(@class, 'maven-command')]"
-                  mode="markdown">
-        <xsl:apply-templates select="document(@href)/p:properties"
-                             mode="markdown">
+    <xsl:template match="h:a[contains(@class, 'maven-command')]" mode="markdown">
+        <xsl:apply-templates select="document(@href)/p:properties" mode="markdown">
             <xsl:with-param name="lang">
                 <xsl:call-template name="lang"/>
             </xsl:with-param>
         </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="h:div[contains(@class, 'property-reference')]"
-                  mode="markdown">
+    <xsl:template match="h:div[contains(@class, 'property-reference')]" mode="markdown">
         <xsl:param name="lang">
             <xsl:call-template name="lang"/>
         </xsl:param>
-        <xsl:param name="required"
-                   select="not(contains(@class, 'no-required'))"/>
-        <xsl:param name="optional"
-                   select="not(contains(@class, 'no-optional'))"/>
+        <xsl:param name="required" select="not(contains(@class, 'no-required'))"/>
+        <xsl:param name="optional" select="not(contains(@class, 'no-optional'))"/>
         <xsl:copy>
             <xsl:copy-of select="@*"/>
             <div class="accordion" id="{ generate-id() }">
-                <xsl:for-each
-                        select="document('../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
+                <xsl:for-each select="document('../main/archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element[@default and $optional or not(@default) and $required]">
                     <xsl:sort select="@name"/>
                     <xsl:variable name="type">
                         <xsl:call-template name="type">
@@ -125,12 +119,10 @@
                              class="accordion-body collapse{ $optionalIn }">
                             <div class="accordion-inner">
                                 <dl class="dl-horizontal">
-                                    <xsl:for-each
-                                            select="xs:annotation/xs:documentation[lang($lang)]">
+                                    <xsl:for-each select="xs:annotation/xs:documentation[lang($lang)]">
                                         <dt>Description</dt>
                                         <dd>
-                                            <xsl:apply-templates select="node()"
-                                                                 mode="stripped"/>
+                                            <xsl:apply-templates select="node()" mode="stripped"/>
                                         </dd>
                                     </xsl:for-each>
                                     <dt>Type</dt>
@@ -141,8 +133,7 @@
                                         <dt>Default</dt>
                                         <dd>
                                             <code>
-                                                <xsl:value-of
-                                                        select="@default"/>
+                                                <xsl:value-of select="@default"/>
                                             </code>
                                         </dd>
                                     </xsl:if>
@@ -161,8 +152,7 @@
         </xsl:param>
         <xsl:variable name="localName" select="substring-after(@type, ':')"/>
         <xsl:variable name="nsPrefix" select="substring-before(@type, ':')"/>
-        <xsl:variable name="nsUri"
-                      select="namespace::*[local-name() = $nsPrefix]"/>
+        <xsl:variable name="nsUri" select="namespace::*[local-name() = $nsPrefix]"/>
         <xsl:choose>
             <xsl:when test="$nsUri = 'http://www.w3.org/2001/XMLSchema'">
                 <a href="http://www.w3.org/TR/xmlschema-2/#{$localName}">
@@ -190,9 +180,7 @@
                         </xsl:otherwise>
                     </xsl:choose>
                     <xsl:text>: </xsl:text>
-                    <xsl:variable
-                            name="enumerations"
-                            select="xs:restriction/xs:enumeration"/>
+                    <xsl:variable name="enumerations" select="xs:restriction/xs:enumeration"/>
                     <xsl:if test="$enumerations">
                         <xsl:text>One of </xsl:text>
                         <xsl:for-each select="$enumerations">
@@ -210,17 +198,14 @@
                         </xsl:for-each>
                         <xsl:text>. </xsl:text>
                     </xsl:if>
-                    <xsl:apply-templates
-                            select="xs:annotation/xs:documentation[lang($lang)]/node()"
-                            mode="stripped"/>
+                    <xsl:apply-templates select="xs:annotation/xs:documentation[lang($lang)]/node()" mode="stripped"/>
                 </xsl:for-each>
             </xsl:when>
         </xsl:choose>
     </xsl:template>
 
     <xsl:template name="lang">
-        <xsl:variable name="lang"
-                      select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
+        <xsl:variable name="lang" select="ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
         <xsl:choose>
             <xsl:when test="$lang">
                 <xsl:value-of select="$lang"/>
