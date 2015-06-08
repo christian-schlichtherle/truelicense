@@ -486,8 +486,11 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="package"
-                        minOccurs="0" default="${dollar}{groupId}">
+            <!--
+            Do NOT remove the `minOccurs` attribute and do NOT add a
+            `default` attribute - see https://java.net/jira/browse/TRUELICENSE-152 .
+            -->
+            <xs:element type="xs:token" name="package" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>
                         The base package name of the generated project.
@@ -496,6 +499,9 @@
                         or
                         <code>${dollar}{groupId}.${dollar}{artifactId}</code>
                         if this results in a valid package name.
+                        If this property is undefined, then the Maven Archetype
+                        Plugin set's its value to
+                        <code>${dollar}{groupId}</code>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
