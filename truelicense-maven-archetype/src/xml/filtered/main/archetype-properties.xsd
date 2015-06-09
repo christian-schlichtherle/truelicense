@@ -532,7 +532,7 @@
                         <code>${dollar}{groupId}.${dollar}{artifactId}</code>
                         if this results in a valid package name.
                         If this property is undefined, then the Maven Archetype
-                        Plugin set's its value to
+                        Plugin sets its value to
                         <code>${dollar}{groupId}</code>.
                     </xs:documentation>
                 </xs:annotation>
