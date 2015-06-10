@@ -22,8 +22,8 @@
     <description>
         The TrueLicense Maven Archetype is a turn-key solution for designing
         and implementing a custom licensing schema for your software product.
-        The archetype generates a project with tailor-made modules for vending
-        and consuming license keys.
+        The archetype generates a tailor-made project which is composed of
+        ready-made modules for vending and consuming license keys.
         The modules contain code templates which you can easily customize
         without writing code by configuring a set of properties.
     </description>
