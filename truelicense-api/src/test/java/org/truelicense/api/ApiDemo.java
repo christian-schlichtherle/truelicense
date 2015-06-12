@@ -42,15 +42,15 @@ public abstract class ApiDemo {
                 .clock(mock(Clock.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
-                .subject("MyProduct 1") // required call
+                .subject("MyProduct 1")
                 .validation(mock(LicenseValidation.class))
                 .validationComposition(LicenseFunctionComposition.decorate)
                 .build();
     }
 
     /**
-     * Returns a license manager for a vendor application, i.e. your license key
-     * generator.
+     * Returns a license manager for a license vendor application, i.e. your
+     * license key generator.
      * The returned vendor license manager has been configured using the given
      * license management context and can be used to generate license keys.
      */
@@ -76,8 +76,8 @@ public abstract class ApiDemo {
     }
 
     /**
-     * Returns a license manager for a consumer application, i.e. your software
-     * product.
+     * Returns a license manager for a license consumer application, i.e. your
+     * software product.
      * The returned consumer license manager has been configured using the given
      * license management context and can be used to install, view, verify and
      * uninstall license keys.
@@ -107,8 +107,8 @@ public abstract class ApiDemo {
                 .parent(mock(ConsumerLicenseManager.class))
                 .storeIn(mock(Store.class))
                 .storeInPath(mock(Path.class))
-                .storeInSystemPreferences(Class.class)
-                .storeInUserPreferences(Class.class)
+                .storeInSystemPreferences(ApiDemo.class)
+                .storeInUserPreferences(ApiDemo.class)
                 .build();
     }
 }
