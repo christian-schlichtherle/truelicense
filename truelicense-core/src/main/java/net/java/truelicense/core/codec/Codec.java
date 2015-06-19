@@ -24,7 +24,7 @@ public interface Codec {
      * <a href="http://tools.ietf.org/html/rfc2045#section-5.1">Section 5.1</a>
      * "Syntax of the Content-Type Header Field",
      * except that it must not start with "Content-Type:"
-     * and optional spaces, i.e. the field name is stripped.
+     * and optional spaces, i.e. the field name must be stripped.
      */
     String contentType();
 
