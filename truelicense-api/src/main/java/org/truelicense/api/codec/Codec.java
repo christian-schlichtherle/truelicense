@@ -46,9 +46,9 @@ public interface Codec {
      */
     String contentTransferEncoding();
 
-    /** Returns an encoder for the given sink. */
+    /** Returns an encoder which writes object graphs to the given sink. */
     Encoder encoder(Sink sink);
 
-    /** Returns a decoder for the given source. */
+    /** Returns a decoder which reads object graphs from the given source. */
     Decoder decoder(Source source);
 }
