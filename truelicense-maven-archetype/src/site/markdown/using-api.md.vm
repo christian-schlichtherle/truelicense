@@ -97,7 +97,8 @@ For example, if the project defines the property `${dollar}{editions}` to be
 
     package ${dollar}{package}.keygen;
 
-    public enum LicenseManager {
+    public enum LicenseManager implements VendorLicenseManager {
+
         enterprise { [...] },
         standard { [...] };
         
@@ -204,7 +205,8 @@ class is defined as follows:
 
     package ${dollar}{package}.keymgr;
 
-    public enum LicenseManager {
+    public enum LicenseManager implements ConsumerLicenseManager {
+
         enterprise { [...] },
         standard { [...] },
         ftp { [...] };
