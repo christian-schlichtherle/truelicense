@@ -48,6 +48,7 @@ $h2 $title
 [Generating Your Project]: generating.html
 [Getting Started]: index.html
 [Prerequisites]: prerequisites.html
+[Setting Up a VCS]: setting-up-vcs.html
 [Updating Your Project]: updating.html
 [Using the API]: using-api.html
 [Using the CLI]: using-cli.html
