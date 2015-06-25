@@ -55,7 +55,7 @@ $h2 $title
 [Using the WSI]: using-wsi.html
 
 ## Internal links to other pages in alphabetic order:
-[TrueLicense Maven Plugin]: .truelicense-maven-plugin/index.html
+[TrueLicense Maven Plugin]: ../truelicense-maven-plugin/index.html
 
 ## External links in alphabetic order:
 [Apache Maven]: http://maven.apache.org/
