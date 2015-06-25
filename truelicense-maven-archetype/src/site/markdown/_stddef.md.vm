@@ -48,6 +48,7 @@ $h2 $title
 [Generating Your Project]: generating.html
 [Getting Started]: index.html
 [Prerequisites]: prerequisites.html
+[Setting Up a VCS]: setting-up-vcs.html
 [Updating Your Project]: updating.html
 [Using the API]: using-api.html
 [Using the CLI]: using-cli.html
@@ -55,7 +56,7 @@ $h2 $title
 [Using the WSI]: using-wsi.html
 
 ## Internal links to other pages in alphabetic order:
-[TrueLicense Maven Plugin]: .truelicense-maven-plugin/index.html
+[TrueLicense Maven Plugin]: ../truelicense-maven-plugin/index.html
 
 ## External links in alphabetic order:
 [Apache Maven]: http://maven.apache.org/

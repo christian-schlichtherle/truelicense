@@ -17,15 +17,15 @@ use [Apache Maven], version $maven-enforcer-requireMavenVersion or later.
 You are not required to use Maven for using the project in your software
 product however:
 Once you are done [building your project], you can just add the
-standalone JARs or the regular JARs with their dependencies to the class path
+standalone JARs or the regular JARs plus their dependency JARs to the class path
 of your software product - see [using the API].
 
 It's also strongly recommended, but not strictly necessary, to use a source
-code management system, e.g. [Git](http://git-scm.com) or
-[Mercurial](http://mercurial.selenic.com).
+code management system, e.g. [Git] or [Mercurial] - see [setting up a VCS].
 
 $h3 TrueLicense Certificate
 
+TrueLicense is [dual licensed](../licensing.html).
 For **closed source software**, you need to subscribe to the commercial
 licensing program for TrueLicense and buy one or more TrueLicense 
 certificates or **otherwise you are required to open source your software 
