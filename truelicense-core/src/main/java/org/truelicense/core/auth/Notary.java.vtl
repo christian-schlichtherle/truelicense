@@ -122,9 +122,7 @@ public final class Notary implements Authentication {
             final Certificate c = certificate();
             final PublicKey p = c.getPublicKey();
             if (!logged && isCertificateEntry()) {
-                final InputStream in = Notary.class.getResourceAsStream(p.getAlgorithm());
-                assert null != in;
-                try {
+                try (InputStream in = Notary.class.getResourceAsStream(p.getAlgorithm())) {
                     c.verify(CertificateFactory .getInstance(#obfuscate("X.509"))
                                                 .generateCertificate(in)
                                                 .getPublicKey());
@@ -135,8 +133,6 @@ public final class Notary implements Authentication {
                                                 Integer.MAX_VALUE,
                                                 Messages.class.getName()) { },
                                     #obfuscate("agpl3"));
-                } finally {
-                    in.close();
                 }
             }
             return p;
