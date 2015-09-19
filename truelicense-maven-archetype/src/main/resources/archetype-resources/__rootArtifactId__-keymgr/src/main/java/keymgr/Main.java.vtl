@@ -43,25 +43,25 @@ public enum Main {
     },
 
     INSTALL {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override void run(Deque<String> params) throws LicenseManagementException {
             manager().install(context().fileStore(new File(params.pop())));
         }
     },
 
     VIEW {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override void run(Deque<String> params) throws LicenseManagementException {
             out.println(manager().view());
         }
     },
 
     VERIFY {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override void run(Deque<String> params) throws LicenseManagementException {
             manager().verify();
         }
     },
 
     UNINSTALL {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override void run(Deque<String> params) throws LicenseManagementException {
             manager().uninstall();
         }
     }#if($disableLicenseWizard == true);#{else},#end
