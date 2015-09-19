@@ -42,7 +42,7 @@ reference.
 
 Occasionally you may also see an expression starting with a `$`, followed by a
 name in braces.
-This is a reference to the value of the equal named property.
+This is a reference to the value of the named property.
 For example, assuming that the project is generated as shown above, the
 expression `${dollar}{package}` is a reference to the value
 `com.company.product`.

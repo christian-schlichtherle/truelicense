@@ -25,7 +25,7 @@ code management system, e.g. [Git] or [Mercurial] - see [setting up a VCS].
 
 $h3 TrueLicense Certificate
 
-TrueLicense is [dual licensed](../licensing.html).
+TrueLicense is [dual licensed](../licensing.html):
 For **closed source software**, you need to subscribe to the commercial
 licensing program for TrueLicense and buy one or more TrueLicense 
 certificates or **otherwise you are required to open source your software 
