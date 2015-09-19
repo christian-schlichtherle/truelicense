@@ -27,9 +27,7 @@ implements ConsumerLicenseManager {
     }
 
     @Override
-    public LicenseManagementContext context() {
-        return manager.context();
-    }
+    public LicenseManagementContext context() { return manager.context(); }
 
     @Override
     public LicenseManagementParameters parameters() {
