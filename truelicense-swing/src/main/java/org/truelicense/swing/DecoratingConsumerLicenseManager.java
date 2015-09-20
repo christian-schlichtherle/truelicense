@@ -53,12 +53,4 @@ implements ConsumerLicenseManager {
     public void uninstall() throws LicenseManagementException {
         manager.uninstall();
     }
-
-    @Override
-    public ConsumerLicenseManager checked() { return this; }
-
-    @Override
-    public UncheckedConsumerLicenseManager unchecked() {
-        throw new UnsupportedOperationException();
-    }
 }

@@ -56,7 +56,8 @@ import static org.truelicense.core.Messages.*;
  * @author Christian Schlichtherle
  */
 public abstract class TrueLicenseApplicationContext<Model>
-implements BiosProvider,
+implements
+        BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
         Clock,
@@ -203,7 +204,7 @@ implements BiosProvider,
     }
 
     static boolean exists(final Store store) throws LicenseManagementException {
-        return wrapChecked(new Callable<Boolean>() {
+        return wrap(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 return store.exists();
@@ -222,25 +223,10 @@ implements BiosProvider,
      * @throws LicenseManagementException on any other {@link Exception} thrown
      *         by the task.
      */
-    static <V> V wrapChecked(final Callable<V> task)
-    throws LicenseManagementException {
-        try {
-            return task.call();
-        } catch (RuntimeException | LicenseManagementException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new LicenseManagementException(e);
-        }
-    }
-
-    static <V> V wrapUnchecked(final Callable<V> task) {
-        try {
-            return task.call();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new LicenseManagementRuntimeException(e);
-        }
+    static <V> V wrap(final Callable<V> task) throws LicenseManagementException {
+        try { return task.call(); }
+        catch (RuntimeException | LicenseManagementException e) { throw e; }
+        catch (Exception e) { throw new LicenseManagementException(e); }
     }
 
     //
@@ -264,8 +250,9 @@ implements BiosProvider,
     }
 
     final class TrueLicenseManagementContextBuilder
-    implements ContextProvider<TrueLicenseApplicationContext>,
-               LicenseManagementContextBuilder {
+    implements
+            ContextProvider<TrueLicenseApplicationContext>,
+            LicenseManagementContextBuilder {
 
         LicenseManagementAuthorization authorization = context().authorization();
         ClassLoaderProvider classLoaderProvider = context();
@@ -337,7 +324,8 @@ implements BiosProvider,
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     final class TrueLicenseManagementContext
-    implements Clock,
+    implements
+            Clock,
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
@@ -698,7 +686,8 @@ implements BiosProvider,
         }
 
         final class TrueLicenseManagementParameters
-        implements ContextProvider<TrueLicenseManagementContext>,
+        implements
+                ContextProvider<TrueLicenseManagementContext>,
                 LicenseInitializationProvider,
                 LicenseManagementParameters {
 
@@ -758,108 +747,7 @@ implements BiosProvider,
                 return Transformer.apply(compression()).then(encryption()).get();
             }
 
-            class UncheckedTrueLicenseManager
-            implements UncheckedConsumerLicenseManager, UncheckedVendorLicenseManager {
-
-                final TrueLicenseManager manager;
-
-                UncheckedTrueLicenseManager(final TrueLicenseManager manager) {
-                    this.manager = manager;
-                }
-
-                @Override
-                public UncheckedLicenseKeyGenerator generator(final License bean) throws LicenseManagementRuntimeException {
-                    return new UncheckedLicenseKeyGenerator() {
-
-                        final LicenseKeyGenerator generator = manager.generator(bean);
-
-                        @Override
-                        public License license() throws LicenseManagementRuntimeException {
-                            return wrapUnchecked(new Callable<License>() {
-                                @Override
-                                public License call() throws Exception {
-                                    return generator.license();
-                                }
-                            });
-                        }
-
-                        @Override
-                        public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementRuntimeException {
-                            return wrapUnchecked(new Callable<LicenseKeyGenerator>() {
-                                @Override
-                                public LicenseKeyGenerator call() throws Exception {
-                                    return generator.writeTo(sink);
-                                }
-                            });
-                        }
-                    };
-                }
-
-                @Override
-                public void install(final Source source) throws LicenseManagementRuntimeException {
-                    wrapUnchecked(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            manager.install(source);
-                            return null;
-                        }
-                    });
-                }
-
-                @Override
-                public License view() throws LicenseManagementRuntimeException {
-                    return wrapUnchecked(new Callable<License>() {
-                        @Override
-                        public License call() throws Exception {
-                            return manager.view();
-                        }
-                    });
-                }
-
-                @Override
-                public void verify() throws LicenseManagementRuntimeException {
-                    wrapUnchecked(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            manager.verify();
-                            return null;
-                        }
-                    });
-                }
-
-                @Override
-                public void uninstall() throws LicenseManagementRuntimeException {
-                    wrapUnchecked(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            manager.uninstall();
-                            return null;
-                        }
-                    });
-                }
-
-                //
-                // Property/factory functions:
-                //
-
-                @Override
-                public LicenseManagementContext context() {
-                    return manager.context();
-                }
-
-                @Override
-                public LicenseManagementParameters parameters() {
-                    return manager.parameters();
-                }
-
-                @Override
-                public TrueLicenseManager checked() { return manager; }
-
-                @Override
-                public UncheckedTrueLicenseManager unchecked() { return this; }
-            }
-
-            class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
+            final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
                 volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 
@@ -1047,10 +935,9 @@ implements BiosProvider,
 
                         @Override
                         public License license() throws LicenseManagementException {
-                            return wrapChecked(new Callable<License>() {
+                            return wrap(new Callable<License>() {
 
-                                @Override
-                                public License call() throws Exception {
+                                @Override public License call() throws Exception {
                                     return decoder().decode(License.class);
                                 }
                             });
@@ -1058,10 +945,9 @@ implements BiosProvider,
 
                         @Override
                         public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
-                            wrapChecked(new Callable<Void>() {
+                            wrap(new Callable<Void>() {
 
-                                @Override
-                                public Void call() throws Exception {
+                                @Override public Void call() throws Exception {
                                     codec().encoder(compressedAndEncryptedSink()).encode(model());
                                     return null;
                                 }
@@ -1112,7 +998,7 @@ implements BiosProvider,
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    wrapChecked(new Callable<Void>() {
+                    wrap(new Callable<Void>() {
 
                         @Override public Void call() throws Exception {
                             authorization().clearInstall(TrueLicenseManager.this);
@@ -1125,7 +1011,7 @@ implements BiosProvider,
 
                 @Override
                 public License view() throws LicenseManagementException {
-                    return wrapChecked(new Callable<License>() {
+                    return wrap(new Callable<License>() {
 
                         @Override public License call() throws Exception {
                             authorization().clearView(TrueLicenseManager.this);
@@ -1136,7 +1022,7 @@ implements BiosProvider,
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    wrapChecked(new Callable<Void>() {
+                    wrap(new Callable<Void>() {
 
                         @Override public Void call() throws Exception {
                             authorization().clearVerify(TrueLicenseManager.this);
@@ -1148,7 +1034,7 @@ implements BiosProvider,
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    wrapChecked(new Callable<Void>() {
+                    wrap(new Callable<Void>() {
 
                         @Override public Void call() throws Exception {
                             authorization().clearUninstall(TrueLicenseManager.this);
@@ -1203,14 +1089,6 @@ implements BiosProvider,
                 @Override
                 public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
-                }
-
-                @Override
-                public TrueLicenseManager checked() { return this; }
-
-                @Override
-                public UncheckedTrueLicenseManager unchecked() {
-                    return new UncheckedTrueLicenseManager(this);
                 }
             }
         }
