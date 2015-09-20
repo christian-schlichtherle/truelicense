@@ -922,69 +922,80 @@ implements BiosProvider,
             implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
-                public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
-                    return wrap(new Callable<LicenseKeyGenerator>() {
+                public LicenseKeyGenerator generator(final License bean) {
+                    return new LicenseKeyGenerator() {
+
+                        final RepositoryContext<Model> context = repositoryContext();
+                        final Model model = context.model();
+                        Decoder decoder;
+
                         @Override
-                        public LicenseKeyGenerator call() throws Exception {
-                            authorization().clearGenerator(TrueLicenseManager.this);
-                            return new LicenseKeyGenerator() {
+                        public License license() throws LicenseManagementException {
+                            return wrap(new Callable<License>() {
 
-                                final RepositoryContext<Model> context = repositoryContext();
-                                final Model model = context.model();
-                                final Decoder decoder = authentication().sign(
-                                        context.controller(model, codec()),
-                                        validatedBean());
-
-                                License validatedBean() throws Exception {
-                                    final License duplicate = initializedBean();
-                                    validation().validate(duplicate);
-                                    return duplicate;
+                                @Override public License call() throws Exception {
+                                    return decoder().decode(License.class);
                                 }
-
-                                License initializedBean() throws Exception {
-                                    final License duplicate = duplicatedBean();
-                                    initialization().initialize(duplicate);
-                                    return duplicate;
-                                }
-
-                                License duplicatedBean() throws Exception {
-                                    return Codecs.clone(bean, codec());
-                                }
-
-                                @Override
-                                public License license() throws LicenseManagementException {
-                                    return wrap(new Callable<License>() {
-                                        @Override
-                                        public License call() throws Exception {
-                                            return decoder.decode(License.class);
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
-                                    wrap(new Callable<Void>() {
-
-                                        @Override public Void call() throws Exception {
-                                            codec().encoder(compressedAndEncryptedSink()).encode(model);
-                                            return null;
-                                        }
-
-                                        Sink compressedAndEncryptedSink() {
-                                            return compressionThenEncryption().apply(sink);
-                                        }
-                                    });
-                                    return this;
-                                }
-                            };
+                            });
                         }
 
-                    });
+                        @Override
+                        public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
+                            wrap(new Callable<Void>() {
+
+                                @Override public Void call() throws Exception {
+                                    codec().encoder(compressedAndEncryptedSink()).encode(model());
+                                    return null;
+                                }
+
+                                Sink compressedAndEncryptedSink() {
+                                    return compressionThenEncryption().apply(sink);
+                                }
+                            });
+                            return this;
+                        }
+
+                        Decoder decoder() throws Exception {
+                            init();
+                            return decoder;
+                        }
+
+                        Model model() throws Exception {
+                            init();
+                            return model;
+                        }
+
+                        synchronized void init() throws Exception {
+                            if (null == decoder) {
+                                authorization().clearGenerator(TrueLicenseManager.this);
+                                decoder = authentication().sign(
+                                        context.controller(model, codec()),
+                                        validatedBean());
+                            }
+                        }
+
+                        License validatedBean() throws Exception {
+                            final License duplicate = initializedBean();
+                            validation().validate(duplicate);
+                            return duplicate;
+                        }
+
+                        License initializedBean() throws Exception {
+                            final License duplicate = duplicatedBean();
+                            initialization().initialize(duplicate);
+                            return duplicate;
+                        }
+
+                        License duplicatedBean() throws Exception {
+                            return Codecs.clone(bean, codec());
+                        }
+                    };
                 }
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
                     wrap(new Callable<Void>() {
+
                         @Override public Void call() throws Exception {
                             authorization().clearInstall(TrueLicenseManager.this);
                             decodeLicense(source); // checks digital signature
@@ -997,6 +1008,7 @@ implements BiosProvider,
                 @Override
                 public License view() throws LicenseManagementException {
                     return wrap(new Callable<License>() {
+
                         @Override public License call() throws Exception {
                             authorization().clearView(TrueLicenseManager.this);
                             return decodeLicense(store());
@@ -1007,6 +1019,7 @@ implements BiosProvider,
                 @Override
                 public void verify() throws LicenseManagementException {
                     wrap(new Callable<Void>() {
+
                         @Override public Void call() throws Exception {
                             authorization().clearVerify(TrueLicenseManager.this);
                             validate(store());
@@ -1018,6 +1031,7 @@ implements BiosProvider,
                 @Override
                 public void uninstall() throws LicenseManagementException {
                     wrap(new Callable<Void>() {
+
                         @Override public Void call() throws Exception {
                             authorization().clearUninstall(TrueLicenseManager.this);
                             final Store store = store();
