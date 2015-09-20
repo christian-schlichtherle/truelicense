@@ -28,7 +28,7 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      *             {@linkplain LicenseValidation#validate validated}.
      * @return A license key generator for the given license bean.
      */
-    LicenseKeyGenerator generator(License bean) throws LicenseManagementException;
+    LicenseKeyGenerator generator(License bean);
 
     UncheckedVendorLicenseManager unchecked();
 }

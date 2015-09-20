@@ -769,36 +769,30 @@ implements BiosProvider,
 
                 @Override
                 public UncheckedLicenseKeyGenerator generator(final License bean) throws LicenseManagementRuntimeException {
-                    return wrapUnchecked(new Callable<UncheckedLicenseKeyGenerator>() {
+                    return new UncheckedLicenseKeyGenerator() {
+
+                        final LicenseKeyGenerator generator = manager.generator(bean);
 
                         @Override
-                        public UncheckedLicenseKeyGenerator call() throws Exception {
-                            return new UncheckedLicenseKeyGenerator() {
-
-                                final LicenseKeyGenerator generator = manager.generator(bean);
-
+                        public License license() throws LicenseManagementRuntimeException {
+                            return wrapUnchecked(new Callable<License>() {
                                 @Override
-                                public License license() throws LicenseManagementRuntimeException {
-                                    return wrapUnchecked(new Callable<License>() {
-                                        @Override
-                                        public License call() throws Exception {
-                                            return generator.license();
-                                        }
-                                    });
+                                public License call() throws Exception {
+                                    return generator.license();
                                 }
-
-                                @Override
-                                public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementRuntimeException {
-                                    return wrapUnchecked(new Callable<LicenseKeyGenerator>() {
-                                        @Override
-                                        public LicenseKeyGenerator call() throws Exception {
-                                            return generator.writeTo(sink);
-                                        }
-                                    });
-                                }
-                            };
+                            });
                         }
-                    });
+
+                        @Override
+                        public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementRuntimeException {
+                            return wrapUnchecked(new Callable<LicenseKeyGenerator>() {
+                                @Override
+                                public LicenseKeyGenerator call() throws Exception {
+                                    return generator.writeTo(sink);
+                                }
+                            });
+                        }
+                    };
                 }
 
                 @Override
@@ -1041,72 +1035,83 @@ implements BiosProvider,
             implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
-                public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
-                    return wrapChecked(new Callable<LicenseKeyGenerator>() {
+                public LicenseKeyGenerator generator(final License bean) {
+                    return new LicenseKeyGenerator() {
+
+                        final RepositoryContext<Model> context = repositoryContext();
+                        final Model model = context.model();
+                        Decoder decoder;
+
                         @Override
-                        public LicenseKeyGenerator call() throws Exception {
-                            authorization().clearGenerator(TrueLicenseManager.this);
-                            return new LicenseKeyGenerator() {
-
-                                final RepositoryContext<Model> context = repositoryContext();
-                                final Model model = context.model();
-                                final Decoder decoder = authentication().sign(
-                                        context.controller(model, codec()),
-                                        validatedBean());
-
-                                License validatedBean() throws Exception {
-                                    final License duplicate = initializedBean();
-                                    validation().validate(duplicate);
-                                    return duplicate;
-                                }
-
-                                License initializedBean() throws Exception {
-                                    final License duplicate = duplicatedBean();
-                                    initialization().initialize(duplicate);
-                                    return duplicate;
-                                }
-
-                                License duplicatedBean() throws Exception {
-                                    return Codecs.clone(bean, codec());
-                                }
+                        public License license() throws LicenseManagementException {
+                            return wrapChecked(new Callable<License>() {
 
                                 @Override
-                                public License license() throws LicenseManagementException {
-                                    return wrapChecked(new Callable<License>() {
-                                        @Override
-                                        public License call() throws Exception {
-                                            return decoder.decode(License.class);
-                                        }
-                                    });
+                                public License call() throws Exception {
+                                    return decoder().decode(License.class);
                                 }
-
-                                @Override
-                                public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
-                                    wrapChecked(new Callable<Void>() {
-
-                                        @Override
-                                        public Void call() throws Exception {
-                                            codec().encoder(compressedAndEncryptedSink()).encode(model);
-                                            return null;
-                                        }
-
-                                        Sink compressedAndEncryptedSink() {
-                                            return compressionThenEncryption().apply(sink);
-                                        }
-                                    });
-                                    return this;
-                                }
-                            };
+                            });
                         }
 
-                    });
+                        @Override
+                        public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
+                            wrapChecked(new Callable<Void>() {
+
+                                @Override
+                                public Void call() throws Exception {
+                                    codec().encoder(compressedAndEncryptedSink()).encode(model());
+                                    return null;
+                                }
+
+                                Sink compressedAndEncryptedSink() {
+                                    return compressionThenEncryption().apply(sink);
+                                }
+                            });
+                            return this;
+                        }
+
+                        Decoder decoder() throws Exception {
+                            init();
+                            return decoder;
+                        }
+
+                        Model model() throws Exception {
+                            init();
+                            return model;
+                        }
+
+                        synchronized void init() throws Exception {
+                            if (null == decoder) {
+                                authorization().clearGenerator(TrueLicenseManager.this);
+                                decoder = authentication().sign(
+                                        context.controller(model, codec()),
+                                        validatedBean());
+                            }
+                        }
+
+                        License validatedBean() throws Exception {
+                            final License duplicate = initializedBean();
+                            validation().validate(duplicate);
+                            return duplicate;
+                        }
+
+                        License initializedBean() throws Exception {
+                            final License duplicate = duplicatedBean();
+                            initialization().initialize(duplicate);
+                            return duplicate;
+                        }
+
+                        License duplicatedBean() throws Exception {
+                            return Codecs.clone(bean, codec());
+                        }
+                    };
                 }
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
                     wrapChecked(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
+
+                        @Override public Void call() throws Exception {
                             authorization().clearInstall(TrueLicenseManager.this);
                             decodeLicense(source); // checks digital signature
                             bios().copy(source, store());
@@ -1118,8 +1123,8 @@ implements BiosProvider,
                 @Override
                 public License view() throws LicenseManagementException {
                     return wrapChecked(new Callable<License>() {
-                        @Override
-                        public License call() throws Exception {
+
+                        @Override public License call() throws Exception {
                             authorization().clearView(TrueLicenseManager.this);
                             return decodeLicense(store());
                         }
@@ -1129,8 +1134,8 @@ implements BiosProvider,
                 @Override
                 public void verify() throws LicenseManagementException {
                     wrapChecked(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
+
+                        @Override public Void call() throws Exception {
                             authorization().clearVerify(TrueLicenseManager.this);
                             validate(store());
                             return null;
@@ -1141,8 +1146,8 @@ implements BiosProvider,
                 @Override
                 public void uninstall() throws LicenseManagementException {
                     wrapChecked(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
+
+                        @Override public Void call() throws Exception {
                             authorization().clearUninstall(TrueLicenseManager.this);
                             final Store store = store();
                             // #TRUELICENSE-81: A consumer license manager must

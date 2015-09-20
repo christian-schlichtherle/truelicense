@@ -170,7 +170,7 @@ public enum LicenseManager implements VendorLicenseManager {
     }
 
     @Override
-    public LicenseKeyGenerator generator(License bean) throws LicenseManagementException {
+    public LicenseKeyGenerator generator(License bean) {
         return manager().generator(bean);
     }
 
