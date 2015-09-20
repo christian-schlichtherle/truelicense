@@ -55,6 +55,9 @@ implements ConsumerLicenseManager {
     }
 
     @Override
+    public ConsumerLicenseManager checked() { return this; }
+
+    @Override
     public UncheckedConsumerLicenseManager unchecked() {
         throw new UnsupportedOperationException();
     }

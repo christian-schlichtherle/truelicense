@@ -853,6 +853,9 @@ implements BiosProvider,
                 }
 
                 @Override
+                public TrueLicenseManager checked() { return manager; }
+
+                @Override
                 public UncheckedTrueLicenseManager unchecked() { return this; }
             }
 
@@ -1201,6 +1204,9 @@ implements BiosProvider,
                 public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
                 }
+
+                @Override
+                public TrueLicenseManager checked() { return this; }
 
                 @Override
                 public UncheckedTrueLicenseManager unchecked() {

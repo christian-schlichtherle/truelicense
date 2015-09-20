@@ -186,6 +186,9 @@ public enum LicenseManager implements VendorLicenseManager {
     }
 
     @Override
+    public VendorLicenseManager checked() { return manager(); }
+
+    @Override
     public UncheckedVendorLicenseManager unchecked() {
         return manager().unchecked();
     }

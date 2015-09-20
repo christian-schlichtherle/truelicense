@@ -30,5 +30,7 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      */
     LicenseKeyGenerator generator(License bean);
 
+    VendorLicenseManager checked();
+
     UncheckedVendorLicenseManager unchecked();
 }

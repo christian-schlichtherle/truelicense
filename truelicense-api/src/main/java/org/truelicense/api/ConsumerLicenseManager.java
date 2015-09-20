@@ -85,5 +85,7 @@ public interface ConsumerLicenseManager extends LicenseManagementSchema {
      */
     void uninstall() throws LicenseManagementException;
 
+    ConsumerLicenseManager checked();
+
     UncheckedConsumerLicenseManager unchecked();
 }
