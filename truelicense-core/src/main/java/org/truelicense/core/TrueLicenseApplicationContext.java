@@ -203,7 +203,7 @@ implements BiosProvider,
     }
 
     static boolean exists(final Store store) throws LicenseManagementException {
-        return wrap(new Callable<Boolean>() {
+        return wrapChecked(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 return store.exists();
@@ -222,10 +222,25 @@ implements BiosProvider,
      * @throws LicenseManagementException on any other {@link Exception} thrown
      *         by the task.
      */
-    static <V> V wrap(final Callable<V> task) throws LicenseManagementException {
-        try { return task.call(); }
-        catch (RuntimeException | LicenseManagementException e) { throw e; }
-        catch (Exception e) { throw new LicenseManagementException(e); }
+    static <V> V wrapChecked(final Callable<V> task)
+    throws LicenseManagementException {
+        try {
+            return task.call();
+        } catch (RuntimeException | LicenseManagementException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new LicenseManagementException(e);
+        }
+    }
+
+    static <V> V wrapUnchecked(final Callable<V> task) {
+        try {
+            return task.call();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new LicenseManagementRuntimeException(e);
+        }
     }
 
     //
@@ -754,7 +769,7 @@ implements BiosProvider,
 
                 @Override
                 public UncheckedLicenseKeyGenerator generator(final License bean) throws LicenseManagementRuntimeException {
-                    return wrap(new Callable<UncheckedLicenseKeyGenerator>() {
+                    return wrapUnchecked(new Callable<UncheckedLicenseKeyGenerator>() {
 
                         @Override
                         public UncheckedLicenseKeyGenerator call() throws Exception {
@@ -764,7 +779,7 @@ implements BiosProvider,
 
                                 @Override
                                 public License license() throws LicenseManagementRuntimeException {
-                                    return wrap(new Callable<License>() {
+                                    return wrapUnchecked(new Callable<License>() {
                                         @Override
                                         public License call() throws Exception {
                                             return generator.license();
@@ -774,7 +789,7 @@ implements BiosProvider,
 
                                 @Override
                                 public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementRuntimeException {
-                                    return wrap(new Callable<LicenseKeyGenerator>() {
+                                    return wrapUnchecked(new Callable<LicenseKeyGenerator>() {
                                         @Override
                                         public LicenseKeyGenerator call() throws Exception {
                                             return generator.writeTo(sink);
@@ -788,7 +803,7 @@ implements BiosProvider,
 
                 @Override
                 public void install(final Source source) throws LicenseManagementRuntimeException {
-                    wrap(new Callable<Void>() {
+                    wrapUnchecked(new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             manager.install(source);
@@ -799,7 +814,7 @@ implements BiosProvider,
 
                 @Override
                 public License view() throws LicenseManagementRuntimeException {
-                    return wrap(new Callable<License>() {
+                    return wrapUnchecked(new Callable<License>() {
                         @Override
                         public License call() throws Exception {
                             return manager.view();
@@ -809,7 +824,7 @@ implements BiosProvider,
 
                 @Override
                 public void verify() throws LicenseManagementRuntimeException {
-                    wrap(new Callable<Void>() {
+                    wrapUnchecked(new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             manager.verify();
@@ -820,23 +835,13 @@ implements BiosProvider,
 
                 @Override
                 public void uninstall() throws LicenseManagementRuntimeException {
-                    wrap(new Callable<Void>() {
+                    wrapUnchecked(new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             manager.uninstall();
                             return null;
                         }
                     });
-                }
-
-                <T> T wrap(final Callable<T> task) {
-                    try {
-                        return task.call();
-                    } catch (RuntimeException e) {
-                        throw e;
-                    } catch (Exception e) {
-                        throw new LicenseManagementRuntimeException(e);
-                    }
                 }
 
                 //
@@ -1037,7 +1042,7 @@ implements BiosProvider,
 
                 @Override
                 public LicenseKeyGenerator generator(final License bean) throws LicenseManagementException {
-                    return wrap(new Callable<LicenseKeyGenerator>() {
+                    return wrapChecked(new Callable<LicenseKeyGenerator>() {
                         @Override
                         public LicenseKeyGenerator call() throws Exception {
                             authorization().clearGenerator(TrueLicenseManager.this);
@@ -1067,7 +1072,7 @@ implements BiosProvider,
 
                                 @Override
                                 public License license() throws LicenseManagementException {
-                                    return wrap(new Callable<License>() {
+                                    return wrapChecked(new Callable<License>() {
                                         @Override
                                         public License call() throws Exception {
                                             return decoder.decode(License.class);
@@ -1077,9 +1082,10 @@ implements BiosProvider,
 
                                 @Override
                                 public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
-                                    wrap(new Callable<Void>() {
+                                    wrapChecked(new Callable<Void>() {
 
-                                        @Override public Void call() throws Exception {
+                                        @Override
+                                        public Void call() throws Exception {
                                             codec().encoder(compressedAndEncryptedSink()).encode(model);
                                             return null;
                                         }
@@ -1098,8 +1104,9 @@ implements BiosProvider,
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    wrap(new Callable<Void>() {
-                        @Override public Void call() throws Exception {
+                    wrapChecked(new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
                             authorization().clearInstall(TrueLicenseManager.this);
                             decodeLicense(source); // checks digital signature
                             bios().copy(source, store());
@@ -1110,8 +1117,9 @@ implements BiosProvider,
 
                 @Override
                 public License view() throws LicenseManagementException {
-                    return wrap(new Callable<License>() {
-                        @Override public License call() throws Exception {
+                    return wrapChecked(new Callable<License>() {
+                        @Override
+                        public License call() throws Exception {
                             authorization().clearView(TrueLicenseManager.this);
                             return decodeLicense(store());
                         }
@@ -1120,8 +1128,9 @@ implements BiosProvider,
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    wrap(new Callable<Void>() {
-                        @Override public Void call() throws Exception {
+                    wrapChecked(new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
                             authorization().clearVerify(TrueLicenseManager.this);
                             validate(store());
                             return null;
@@ -1131,8 +1140,9 @@ implements BiosProvider,
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    wrap(new Callable<Void>() {
-                        @Override public Void call() throws Exception {
+                    wrapChecked(new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
                             authorization().clearUninstall(TrueLicenseManager.this);
                             final Store store = store();
                             // #TRUELICENSE-81: A consumer license manager must
