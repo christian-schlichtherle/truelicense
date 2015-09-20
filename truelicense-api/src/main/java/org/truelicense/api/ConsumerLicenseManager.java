@@ -84,4 +84,6 @@ public interface ConsumerLicenseManager extends LicenseManagementSchema {
      * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
      */
     void uninstall() throws LicenseManagementException;
+
+    UncheckedConsumerLicenseManager unchecked();
 }

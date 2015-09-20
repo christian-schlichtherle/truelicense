@@ -743,7 +743,121 @@ implements BiosProvider,
                 return Transformer.apply(compression()).then(encryption()).get();
             }
 
-            final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
+            class UncheckedTrueLicenseManager
+            implements UncheckedConsumerLicenseManager, UncheckedVendorLicenseManager {
+
+                final TrueLicenseManager manager;
+
+                UncheckedTrueLicenseManager(final TrueLicenseManager manager) {
+                    this.manager = manager;
+                }
+
+                @Override
+                public UncheckedLicenseKeyGenerator generator(final License bean) throws LicenseManagementRuntimeException {
+                    return wrap(new Callable<UncheckedLicenseKeyGenerator>() {
+
+                        @Override
+                        public UncheckedLicenseKeyGenerator call() throws Exception {
+                            return new UncheckedLicenseKeyGenerator() {
+
+                                final LicenseKeyGenerator generator = manager.generator(bean);
+
+                                @Override
+                                public License license() throws LicenseManagementRuntimeException {
+                                    return wrap(new Callable<License>() {
+                                        @Override
+                                        public License call() throws Exception {
+                                            return generator.license();
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementRuntimeException {
+                                    return wrap(new Callable<LicenseKeyGenerator>() {
+                                        @Override
+                                        public LicenseKeyGenerator call() throws Exception {
+                                            return generator.writeTo(sink);
+                                        }
+                                    });
+                                }
+                            };
+                        }
+                    });
+                }
+
+                @Override
+                public void install(final Source source) throws LicenseManagementRuntimeException {
+                    wrap(new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            manager.install(source);
+                            return null;
+                        }
+                    });
+                }
+
+                @Override
+                public License view() throws LicenseManagementRuntimeException {
+                    return wrap(new Callable<License>() {
+                        @Override
+                        public License call() throws Exception {
+                            return manager.view();
+                        }
+                    });
+                }
+
+                @Override
+                public void verify() throws LicenseManagementRuntimeException {
+                    wrap(new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            manager.verify();
+                            return null;
+                        }
+                    });
+                }
+
+                @Override
+                public void uninstall() throws LicenseManagementRuntimeException {
+                    wrap(new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            manager.uninstall();
+                            return null;
+                        }
+                    });
+                }
+
+                <T> T wrap(final Callable<T> task) {
+                    try {
+                        return task.call();
+                    } catch (RuntimeException e) {
+                        throw e;
+                    } catch (Exception e) {
+                        throw new LicenseManagementRuntimeException(e);
+                    }
+                }
+
+                //
+                // Property/factory functions:
+                //
+
+                @Override
+                public LicenseManagementContext context() {
+                    return manager.context();
+                }
+
+                @Override
+                public LicenseManagementParameters parameters() {
+                    return manager.parameters();
+                }
+
+                @Override
+                public UncheckedTrueLicenseManager unchecked() { return this; }
+            }
+
+            class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
                 volatile List<Boolean> canGenerateLicenseKeys = Option.none();
 
@@ -1071,6 +1185,11 @@ implements BiosProvider,
                 @Override
                 public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
+                }
+
+                @Override
+                public UncheckedTrueLicenseManager unchecked() {
+                    return new UncheckedTrueLicenseManager(this);
                 }
             }
         }
