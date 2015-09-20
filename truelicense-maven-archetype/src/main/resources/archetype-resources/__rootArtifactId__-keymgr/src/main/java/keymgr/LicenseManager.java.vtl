@@ -277,4 +277,9 @@ public enum LicenseManager implements ConsumerLicenseManager {
     public LicenseManagementParameters parameters() {
         return manager().parameters();
     }
+
+    @Override
+    public UncheckedConsumerLicenseManager unchecked() {
+        return manager().unchecked();
+    }
 }
