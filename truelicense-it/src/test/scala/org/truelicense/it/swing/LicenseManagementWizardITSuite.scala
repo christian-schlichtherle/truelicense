@@ -47,7 +47,7 @@ abstract class LicenseManagementWizardITSuite
       override def run() {
         UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
         wizard = newLicenseManagementWizard(manager)
-        wizard.showModalDialog
+        wizard showModalDialog ()
       }
     }
     dialog = new JDialogOperator()
@@ -180,7 +180,7 @@ abstract class LicenseManagementWizardITSuite
 
       def checkComponent(comp: Component) =
         comp match {
-          case panel: JPanel => delegate.checkComponent(panel)
+          case panel: JPanel => delegate checkComponent panel
           case _ => false
         }
 
@@ -196,7 +196,7 @@ object LicenseManagementWizardITSuite {
   private def newLicenseManagementWizard(manager: ConsumerLicenseManager) = {
     val wizard = new LicenseManagementWizard(manager)
     wizard.isUninstallButtonVisible shouldBe false
-    wizard.setUninstallButtonVisible(true)
+    wizard setUninstallButtonVisible true
     wizard.isUninstallButtonVisible shouldBe true
     wizard
   }
