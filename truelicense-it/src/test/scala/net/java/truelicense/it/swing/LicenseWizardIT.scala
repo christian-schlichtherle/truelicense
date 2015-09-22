@@ -156,7 +156,9 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
           nextButton doClick ()
           welcomePanel.isVisible shouldBe false
           uninstallPanel.isVisible shouldBe true
-          waitButton(uninstallPanel, uninstall_uninstall).isEnabled shouldBe true
+          waitButton(uninstallPanel, uninstall_uninstall) doClick ()
+          Thread sleep 100
+          intercept[LicenseManagementException] { manager view () }
         }
       }
     }
