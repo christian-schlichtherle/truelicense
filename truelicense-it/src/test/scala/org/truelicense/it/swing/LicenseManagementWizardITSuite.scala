@@ -40,9 +40,8 @@ abstract class LicenseManagementWizardITSuite
 
   before {
     val store = new MemoryStore
-    outputLicense = (vendorManager generator testLicense writeTo store).license
-    manager = consumerManager()
-    manager install store
+    outputLicense = (vendorManager generator inputLicense writeTo store).license
+    manager = consumerManager(store)
     EventQueue invokeLater new Runnable {
       override def run() {
         UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
@@ -156,13 +155,15 @@ abstract class LicenseManagementWizardITSuite
           nextButton doClick ()
           welcomePanel.isVisible shouldBe false
           uninstallPanel.isVisible shouldBe true
-          waitButton(uninstallPanel, uninstall_uninstall).isEnabled shouldBe true
+          waitButton(uninstallPanel, uninstall_uninstall) doClick ()
+          Thread sleep 100
+          intercept[LicenseManagementException] { manager view () }
         }
       }
     }
   }
 
-  private def testLicense = {
+  private def inputLicense = {
     // Don't subclass - wouldn't work with XML serialization
     val l = managementContext.license
     l.setInfo("Hello world!")
