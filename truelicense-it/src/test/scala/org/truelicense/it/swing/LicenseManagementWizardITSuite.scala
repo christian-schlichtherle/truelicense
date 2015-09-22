@@ -68,7 +68,7 @@ abstract class LicenseManagementWizardITSuite
 
   after {
     cancelButton doClick ()
-    dialog.isVisible should equal (false)
+    dialog.isVisible shouldBe false
     wizard.getReturnCode should be (LicenseManagementWizard.CANCEL_RETURN_CODE)
     UIManager setLookAndFeel laf
   }
@@ -77,7 +77,7 @@ abstract class LicenseManagementWizardITSuite
     "using a consumer license manager with an installed license key" when {
       "showing" should {
         "be modal" in {
-          dialog.isModal should equal (true)
+          dialog.isModal shouldBe true
         }
 
         "have a title which includes the license management subject" in {
@@ -85,58 +85,58 @@ abstract class LicenseManagementWizardITSuite
         }
 
         "have its back button disabled" in {
-          backButton.isEnabled should equal (false)
+          backButton.isEnabled shouldBe false
         }
 
         "have its next button enabled" in {
-          nextButton.isEnabled should equal (true)
+          nextButton.isEnabled shouldBe true
         }
 
         "have its cancel button enabled" in {
-          cancelButton.isEnabled should equal (true)
+          cancelButton.isEnabled shouldBe true
         }
 
         "show its welcome panel and hide the other panels" in {
-          welcomePanel.isVisible should equal (true)
-          installPanel.isVisible should equal (false)
-          displayPanel.isVisible should equal (false)
-          uninstallPanel.isVisible should equal (false)
+          welcomePanel.isVisible shouldBe true
+          installPanel.isVisible shouldBe false
+          displayPanel.isVisible shouldBe false
+          uninstallPanel.isVisible shouldBe false
         }
 
         "have a visible, non-empty prompt on its welcome panel" in {
           dialog.getQueueTool waitEmpty ()
           val prompt = waitTextComponent(welcomePanel, welcome_prompt)
-          prompt.isVisible should equal (true)
+          prompt.isVisible shouldBe true
           prompt.getText should not be 'empty
         }
 
         "have both the install and display buttons enabled" in {
           val installSelector = waitButton(welcomePanel, welcome_install)
           val displaySelector = waitButton(welcomePanel, welcome_display)
-          installSelector.isEnabled should equal (true)
-          displaySelector.isEnabled should equal (true)
+          installSelector.isEnabled shouldBe true
+          displaySelector.isEnabled shouldBe true
         }
 
         "switch to the install panel when requested" in {
           val installSelector = waitButton(welcomePanel, welcome_install)
-          installSelector.isVisible should equal (true)
-          installSelector.isEnabled should equal (true)
-          installSelector.isSelected should equal (false)
+          installSelector.isVisible shouldBe true
+          installSelector.isEnabled shouldBe true
+          installSelector.isSelected shouldBe false
           installSelector doClick ()
           nextButton doClick ()
-          welcomePanel.isVisible should equal (false)
-          installPanel.isVisible should equal (true)
-          waitButton(installPanel, install_install).isEnabled should equal (false)
+          welcomePanel.isVisible shouldBe false
+          installPanel.isVisible shouldBe true
+          waitButton(installPanel, install_install).isEnabled shouldBe false
         }
 
         "switch to the display panel by default and display the license content" in {
           val displaySelector = waitButton(welcomePanel, welcome_display)
-          displaySelector.isVisible should equal (true)
-          displaySelector.isEnabled should equal (true)
-          displaySelector.isSelected should equal (true)
+          displaySelector.isVisible shouldBe true
+          displaySelector.isEnabled shouldBe true
+          displaySelector.isSelected shouldBe true
           nextButton doClick ()
-          welcomePanel.isVisible should equal (false)
-          displayPanel.isVisible should equal (true)
+          welcomePanel.isVisible shouldBe false
+          displayPanel.isVisible shouldBe true
 
           def waitText(key: LicenseWizardMessage) =
             waitTextComponent(displayPanel, key).getText
@@ -156,14 +156,14 @@ abstract class LicenseManagementWizardITSuite
 
         "switch to the uninstall panel when requested" in {
           val uninstallSelector = waitButton(welcomePanel, welcome_uninstall)
-          uninstallSelector.isVisible should equal (true)
-          uninstallSelector.isEnabled should equal (true)
-          uninstallSelector.isSelected should equal (false)
+          uninstallSelector.isVisible shouldBe true
+          uninstallSelector.isEnabled shouldBe true
+          uninstallSelector.isSelected shouldBe false
           uninstallSelector doClick ()
           nextButton doClick ()
-          welcomePanel.isVisible should equal (false)
-          uninstallPanel.isVisible should equal (true)
-          waitButton(uninstallPanel, uninstall_uninstall).isEnabled should equal (true)
+          welcomePanel.isVisible shouldBe false
+          uninstallPanel.isVisible shouldBe true
+          waitButton(uninstallPanel, uninstall_uninstall).isEnabled shouldBe true
         }
       }
     }
@@ -195,9 +195,9 @@ object LicenseManagementWizardITSuite {
 
   private def newLicenseManagementWizard(manager: ConsumerLicenseManager) = {
     val wizard = new LicenseManagementWizard(manager)
-    wizard.isUninstallButtonVisible should equal (false)
+    wizard.isUninstallButtonVisible shouldBe false
     wizard.setUninstallButtonVisible(true)
-    wizard.isUninstallButtonVisible should equal (true)
+    wizard.isUninstallButtonVisible shouldBe true
     wizard
   }
 
