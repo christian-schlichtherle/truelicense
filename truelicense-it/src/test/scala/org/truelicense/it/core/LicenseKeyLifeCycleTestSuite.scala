@@ -19,20 +19,6 @@ abstract class LicenseKeyLifeCycleTestSuite
   extends WordSpec
 { this: TestContext[_] =>
 
-  def check(license: License, notBefore: Date = null, notAfter: Date = null) {
-    import license._
-    getConsumerAmount shouldBe 1
-    getConsumerType shouldBe "User"
-    getExtra shouldBe null
-    getHolder should not be null
-    getInfo shouldBe null
-    getIssued should not be null
-    getIssuer should not be null
-    getNotAfter shouldBe notAfter
-    getNotBefore shouldBe notBefore
-    getSubject shouldBe managementContext.subject
-  }
-
   "The license key life cycle" should {
     "work for regular license keys" in {
       val vs = store
@@ -40,7 +26,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       val generated = {
         val vm = vendorManager
         val generated = (vm generator managementContext.license writeTo vs).license
-        check(generated)
+        assertLicense(generated)
         generated
       }
 
@@ -53,9 +39,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       val cs = store
       val cm = consumerManager(cs)
       cs exists () shouldBe false
-      intercept[LicenseManagementException] { cm view () }
-      intercept[LicenseManagementException] { cm verify () }
-      intercept[LicenseManagementException] { cm uninstall () }
+      assertUninstalled(cm)
       cm install vs
       cm install vs // reinstall
       cm verify ()
@@ -63,9 +47,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       viewed shouldBe generated
       viewed should not be theSameInstanceAs (generated)
       cm uninstall ()
-      intercept[LicenseManagementException] { cm view () }
-      intercept[LicenseManagementException] { cm verify () }
-      intercept[LicenseManagementException] { cm uninstall () }
+      assertUninstalled(cm)
     }
 
     "work for FTP license keys" in {
@@ -79,7 +61,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       val generated = fcm view ()
       cs exists () shouldBe false
       fcs exists () shouldBe true
-      check(generated,
+      assertLicense(generated,
             generated.getIssued,
             datePlusDays(generated.getIssued, 1))
       fcm verify ()
@@ -111,7 +93,7 @@ abstract class LicenseKeyLifeCycleTestSuite
         val generated = {
           val vm = vendorManager
           val generated = (vm generator managementContext.license writeTo vs).license
-          check(generated)
+          assertLicense(generated)
           generated
         }
 
@@ -123,9 +105,7 @@ abstract class LicenseKeyLifeCycleTestSuite
         viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // delegates to cm!
-        intercept[LicenseManagementException] { ccm view () }
-        intercept[LicenseManagementException] { ccm verify () }
-        intercept[LicenseManagementException] { ccm uninstall () }
+        assertUninstalled(ccm)
       }
 
       cs exists () shouldBe false
@@ -135,14 +115,12 @@ abstract class LicenseKeyLifeCycleTestSuite
         val generated = {
           val vm = chainedVendorManager
           val generated = (vm generator managementContext.license writeTo vs).license
-          check(generated)
+          assertLicense(generated)
           generated
         }
 
         ccm install vs // installs in ccm!
-        intercept[LicenseManagementException] { cm view () }
-        intercept[LicenseManagementException] { cm verify () }
-        intercept[LicenseManagementException] { cm uninstall () }
+        assertUninstalled(cm)
         cs exists () shouldBe false
         ccs exists () shouldBe true
         ccm verify ()
@@ -150,14 +128,32 @@ abstract class LicenseKeyLifeCycleTestSuite
         viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // uninstalls from ccm!
-        intercept[LicenseManagementException] { ccm view () }
-        intercept[LicenseManagementException] { ccm verify () }
-        intercept[LicenseManagementException] { ccm uninstall () }
+        assertUninstalled(ccm)
       }
 
       cs exists () shouldBe false
       ccs exists () shouldBe false
     }
+  }
+
+  private def assertLicense(license: License, notBefore: Date = null, notAfter: Date = null) {
+    import license._
+    getConsumerAmount shouldBe 1
+    getConsumerType shouldBe "User"
+    getExtra shouldBe null
+    getHolder should not be null
+    getInfo shouldBe null
+    getIssued should not be null
+    getIssuer should not be null
+    getNotAfter shouldBe notAfter
+    getNotBefore shouldBe notBefore
+    getSubject shouldBe managementContext.subject
+  }
+
+  private def assertUninstalled(cm: ConsumerLicenseManager) = {
+    intercept[LicenseManagementException] { cm view () }
+    intercept[LicenseManagementException] { cm verify () }
+    intercept[LicenseManagementException] { cm uninstall () }
   }
 }
 
