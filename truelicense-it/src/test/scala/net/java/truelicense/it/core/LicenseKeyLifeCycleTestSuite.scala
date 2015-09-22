@@ -18,20 +18,6 @@ import org.slf4j.LoggerFactory
 abstract class LicenseKeyLifeCycleTestSuite
 extends WordSpec { this: TestContext =>
 
-  def check(license: License, notBefore: Date = null, notAfter: Date = null) {
-    import license._
-    getConsumerAmount shouldBe 1
-    getConsumerType shouldBe "User"
-    getExtra shouldBe null
-    getHolder should not be null
-    getInfo shouldBe null
-    getIssued should not be null
-    getIssuer should not be null
-    getNotAfter shouldBe notAfter
-    getNotBefore shouldBe notBefore
-    getSubject shouldBe managementContext.subject
-  }
-
   "The license key life cycle" should {
     "work for regular license keys" in {
       val vs = store
@@ -39,7 +25,7 @@ extends WordSpec { this: TestContext =>
       val created = {
         val vm = vendorManager
         val created = vm create (managementContext.license, vs)
-        check(created)
+        assertLicense(created)
         created
       }
 
@@ -52,9 +38,7 @@ extends WordSpec { this: TestContext =>
       val cs = store
       val cm = consumerManager(cs)
       cs exists () shouldBe false
-      intercept[LicenseManagementException] { cm view () }
-      intercept[LicenseManagementException] { cm verify () }
-      intercept[LicenseManagementException] { cm uninstall () }
+      assertUninstalled(cm)
       val installed = cm install vs
       installed shouldBe created
       installed should not be theSameInstanceAs (created)
@@ -70,9 +54,7 @@ extends WordSpec { this: TestContext =>
       viewed shouldBe installed
       viewed should not be theSameInstanceAs (installed)
       cm uninstall ()
-      intercept[LicenseManagementException] { cm view () }
-      intercept[LicenseManagementException] { cm verify () }
-      intercept[LicenseManagementException] { cm uninstall () }
+      assertUninstalled(cm)
     }
 
     "work for FTP license keys" in {
@@ -86,7 +68,7 @@ extends WordSpec { this: TestContext =>
       val generated = fcm view ()
       cs exists () shouldBe false
       fcs exists () shouldBe true
-      check(generated,
+      assertLicense(generated,
             generated.getIssued,
             datePlusDays(generated.getIssued, 1))
       fcm verify ()
@@ -118,7 +100,7 @@ extends WordSpec { this: TestContext =>
         val created = {
           val vm = vendorManager
           val created = vm create (managementContext.license, vs)
-          check(created)
+          assertLicense(created)
           created
         }
 
@@ -132,6 +114,7 @@ extends WordSpec { this: TestContext =>
         viewed shouldBe created
         viewed should not be theSameInstanceAs (created)
         ccm uninstall () // delegates to cm!
+        assertUninstalled(ccm)
       }
 
       cs exists () shouldBe false
@@ -141,11 +124,12 @@ extends WordSpec { this: TestContext =>
         val created = {
           val vm = chainedVendorManager
           val created = vm create (managementContext.license, vs)
-          check(created)
+          assertLicense(created)
           created
         }
 
         val installed = ccm install vs // installs in ccm!
+        assertUninstalled(cm)
         installed shouldBe created
         installed should not be theSameInstanceAs (created)
         cs exists () shouldBe false
@@ -155,11 +139,32 @@ extends WordSpec { this: TestContext =>
         viewed shouldBe created
         viewed should not be theSameInstanceAs (created)
         ccm uninstall () // uninstalls from ccm!
+        assertUninstalled(ccm)
       }
 
       cs exists () shouldBe false
       ccs exists () shouldBe false
     }
+  }
+
+  private def assertLicense(license: License, notBefore: Date = null, notAfter: Date = null) {
+    import license._
+    getConsumerAmount shouldBe 1
+    getConsumerType shouldBe "User"
+    getExtra shouldBe null
+    getHolder should not be null
+    getInfo shouldBe null
+    getIssued should not be null
+    getIssuer should not be null
+    getNotAfter shouldBe notAfter
+    getNotBefore shouldBe notBefore
+    getSubject shouldBe managementContext.subject
+  }
+
+  private def assertUninstalled(cm: LicenseConsumerManager) {
+    intercept[LicenseManagementException] { cm view () }
+    intercept[LicenseManagementException] { cm verify () }
+    intercept[LicenseManagementException] { cm uninstall () }
   }
 }
 
