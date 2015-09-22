@@ -123,6 +123,9 @@ abstract class LicenseKeyLifeCycleTestSuite
         viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // delegates to cm!
+        intercept[LicenseManagementException] { ccm view () }
+        intercept[LicenseManagementException] { ccm verify () }
+        intercept[LicenseManagementException] { ccm uninstall () }
       }
 
       cs exists () shouldBe false
@@ -137,6 +140,9 @@ abstract class LicenseKeyLifeCycleTestSuite
         }
 
         ccm install vs // installs in ccm!
+        intercept[LicenseManagementException] { cm view () }
+        intercept[LicenseManagementException] { cm verify () }
+        intercept[LicenseManagementException] { cm uninstall () }
         cs exists () shouldBe false
         ccs exists () shouldBe true
         ccm verify ()
@@ -144,6 +150,9 @@ abstract class LicenseKeyLifeCycleTestSuite
         viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // uninstalls from ccm!
+        intercept[LicenseManagementException] { ccm view () }
+        intercept[LicenseManagementException] { ccm verify () }
+        intercept[LicenseManagementException] { ccm uninstall () }
       }
 
       cs exists () shouldBe false
