@@ -21,17 +21,16 @@ abstract class LicenseKeyLifeCycleTestSuite
 
   def check(license: License, notBefore: Date = null, notAfter: Date = null) {
     import license._
-    getConsumerAmount should be (1)
-    getConsumerType should be ("User")
-    getExtra should be (null)
+    getConsumerAmount shouldBe 1
+    getConsumerType shouldBe "User"
+    getExtra shouldBe null
     getHolder should not be null
-    getInfo should be (null)
+    getInfo shouldBe null
     getIssued should not be null
     getIssuer should not be null
-    getNotAfter should be (notAfter)
-    getNotBefore should be (notBefore)
-    getSubject should not be null
-    getSubject should not be 'empty
+    getNotAfter shouldBe notAfter
+    getNotBefore shouldBe notBefore
+    getSubject shouldBe managementContext.subject
   }
 
   "The license key life cycle" should {
@@ -53,7 +52,7 @@ abstract class LicenseKeyLifeCycleTestSuite
 
       val cs = store
       val cm = consumerManager(cs)
-      cs exists () should equal (false)
+      cs exists () shouldBe false
       intercept[LicenseManagementException] { cm view () }
       intercept[LicenseManagementException] { cm verify () }
       intercept[LicenseManagementException] { cm uninstall () }
@@ -72,25 +71,25 @@ abstract class LicenseKeyLifeCycleTestSuite
     "work for FTP license keys" in {
       val cs = store
       val cm = consumerManager(cs)
-      cs exists () should equal (false)
+      cs exists () shouldBe false
       val fcs = store
       val fcm = ftpConsumerManager(cm, fcs)
-      fcs exists () should equal (false)
+      fcs exists () shouldBe false
       fcm verify () // generate
       val generated = fcm view ()
-      cs exists () should equal (false)
-      fcs exists () should equal (true)
+      cs exists () shouldBe false
+      fcs exists () shouldBe true
       check(generated,
             generated.getIssued,
             datePlusDays(generated.getIssued, 1))
       fcm verify ()
       val viewed = fcm view ()
-      viewed should equal (generated)
+      viewed shouldBe generated
       viewed should not be theSameInstanceAs (generated)
       val viewed2 = fcm view ()
-      viewed2 should equal (generated)
+      viewed2 shouldBe generated
       viewed2 should not be theSameInstanceAs (generated)
-      cs exists () should equal (false)
+      cs exists () shouldBe false
     }
 
     "work for chained license keys" in {
@@ -102,8 +101,8 @@ abstract class LicenseKeyLifeCycleTestSuite
       val ccs = store
       val ccm = chainedConsumerManager(cm, ccs)
 
-      cs exists () should equal (false)
-      ccs exists () should equal (false)
+      cs exists () shouldBe false
+      ccs exists () shouldBe false
 
       intercept[LicenseManagementException] { cm view () }
       intercept[LicenseManagementException] { ccm view () }
@@ -126,8 +125,8 @@ abstract class LicenseKeyLifeCycleTestSuite
         ccm uninstall () // delegates to cm!
       }
 
-      cs exists () should equal (false)
-      ccs exists () should equal (false)
+      cs exists () shouldBe false
+      ccs exists () shouldBe false
 
       ;{
         val generated = {
@@ -147,8 +146,8 @@ abstract class LicenseKeyLifeCycleTestSuite
         ccm uninstall () // uninstalls from ccm!
       }
 
-      cs exists () should equal (false)
-      ccs exists () should equal (false)
+      cs exists () shouldBe false
+      ccs exists () shouldBe false
     }
   }
 }
