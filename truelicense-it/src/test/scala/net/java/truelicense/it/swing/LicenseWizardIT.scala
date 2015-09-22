@@ -29,18 +29,18 @@ import org.scalatest.junit._
 @RunWith(classOf[JUnitRunner])
 class LicenseWizardIT extends WordSpec with BeforeAndAfter {
 
-  val laf = UIManager.getLookAndFeel
-  var license: License = _
-  var manager: LicenseConsumerManager = _
-  var wizard: LicenseWizard = _
-  var dialog: JDialogOperator = _
-  var cancelButton, backButton, nextButton: AbstractButtonOperator = _
+  private val laf = UIManager.getLookAndFeel
+  private var license: License = _
+  private var manager: LicenseConsumerManager = _
+  private var wizard: LicenseWizard = _
+  private var dialog: JDialogOperator = _
+  private var cancelButton, backButton, nextButton: AbstractButtonOperator = _
 
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
     val store = new MemoryStore
-    license = vendorManager create (newLicense, store)
+    license = vendorManager create (testLicense, store)
     manager = consumerManager
     manager install store
     EventQueue invokeLater new Runnable {
@@ -65,26 +65,6 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
     wizard.getReturnCode should be (LicenseWizard.CANCEL_RETURN_CODE)
     UIManager setLookAndFeel laf
   }
-
-  def welcomePanel = waitPanel("WelcomePanel")
-  def installPanel = waitPanel("InstallPanel")
-  def displayPanel = waitPanel("DisplayPanel")
-  def uninstallPanel = waitPanel("UninstallPanel")
-
-  def waitPanel(name: String) =
-    new JComponentOperator(dialog, new ComponentChooser {
-      val delegate = new NameComponentChooser(name)
-
-      def checkComponent(comp: Component) =
-        comp match {
-          case panel: JPanel => delegate.checkComponent(panel)
-          case _ => false
-        }
-
-      def getDescription = "Chooses a JPanel by its name."
-    })
-
-  def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 
   "A license wizard" when {
     "using a license consumer manager with an installed license key" when {
@@ -181,6 +161,26 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
       }
     }
   }
+
+  private def welcomePanel = waitPanel("WelcomePanel")
+  private def installPanel = waitPanel("InstallPanel")
+  private def displayPanel = waitPanel("DisplayPanel")
+  private def uninstallPanel = waitPanel("UninstallPanel")
+
+  private def waitPanel(name: String) =
+    new JComponentOperator(dialog, new ComponentChooser {
+      val delegate = new NameComponentChooser(name)
+
+      def checkComponent(comp: Component) =
+        comp match {
+          case panel: JPanel => delegate.checkComponent(panel)
+          case _ => false
+        }
+
+      def getDescription = "Chooses a JPanel by its name."
+    })
+
+  private def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 }
 
 /** @author Christian Schlichtherle */
@@ -204,11 +204,10 @@ object LicenseWizardIT {
       new MemoryStore)
   }
 
-  private def newLicense = {
+  private def testLicense = {
     // Don't subclass - wouldn't work with XML serialization
     val l = new License
-    import l._
-    setInfo("Hello world!")
+    l.setInfo("Hello world!")
     l
   }
 
