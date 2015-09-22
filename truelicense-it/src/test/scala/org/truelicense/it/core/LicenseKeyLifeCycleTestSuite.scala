@@ -60,7 +60,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       cm install vs // reinstall
       cm verify ()
       val viewed = cm view ()
-      viewed should equal (generated)
+      viewed shouldBe generated
       viewed should not be theSameInstanceAs (generated)
       cm uninstall ()
       intercept[LicenseManagementException] { cm view () }
@@ -116,11 +116,11 @@ abstract class LicenseKeyLifeCycleTestSuite
         }
 
         ccm install vs // delegates to cm!
-        cs exists () should equal (true)
-        ccs exists () should equal (false)
+        cs exists () shouldBe true
+        ccs exists () shouldBe false
         ccm verify ()
         val viewed = ccm view ()
-        viewed should equal (generated)
+        viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // delegates to cm!
       }
@@ -137,11 +137,11 @@ abstract class LicenseKeyLifeCycleTestSuite
         }
 
         ccm install vs // installs in ccm!
-        cs exists () should equal (false)
-        ccs exists () should equal (true)
+        cs exists () shouldBe false
+        ccs exists () shouldBe true
         ccm verify ()
         val viewed = ccm view ()
-        viewed should equal (generated)
+        viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // uninstalls from ccm!
       }
