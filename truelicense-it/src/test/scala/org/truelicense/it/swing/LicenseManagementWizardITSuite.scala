@@ -29,18 +29,18 @@ abstract class LicenseManagementWizardITSuite
   with BeforeAndAfter
 { this: TestContext[_] =>
 
-  val laf = UIManager.getLookAndFeel
-  var outputLicense: License = _
-  var manager: ConsumerLicenseManager = _
-  var wizard: LicenseManagementWizard = _
-  var dialog: JDialogOperator = _
-  var cancelButton, backButton, nextButton: AbstractButtonOperator = _
+  private val laf = UIManager.getLookAndFeel
+  private var outputLicense: License = _
+  private var manager: ConsumerLicenseManager = _
+  private var wizard: LicenseManagementWizard = _
+  private var dialog: JDialogOperator = _
+  private var cancelButton, backButton, nextButton: AbstractButtonOperator = _
 
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
     val store = new MemoryStore
-    outputLicense = (vendorManager generator inputLicense writeTo store).license
+    outputLicense = (vendorManager generator testLicense writeTo store).license
     manager = consumerManager()
     manager install store
     EventQueue invokeLater new Runnable {
@@ -57,13 +57,6 @@ abstract class LicenseManagementWizardITSuite
     // Defer test execution to allow asynchronous license certificate
     // verification to complete.
     Thread sleep 100
-  }
-
-  private def inputLicense = {
-    // Don't subclass - wouldn't work with XML serialization
-    val l = managementContext.license
-    l.setInfo("Hello world!")
-    l
   }
 
   after {
@@ -169,12 +162,19 @@ abstract class LicenseManagementWizardITSuite
     }
   }
 
-  def welcomePanel = waitPanel("WelcomePanel")
-  def installPanel = waitPanel("InstallPanel")
-  def displayPanel = waitPanel("DisplayPanel")
-  def uninstallPanel = waitPanel("UninstallPanel")
+  private def testLicense = {
+    // Don't subclass - wouldn't work with XML serialization
+    val l = managementContext.license
+    l.setInfo("Hello world!")
+    l
+  }
 
-  def waitPanel(name: String) =
+  private def welcomePanel = waitPanel("WelcomePanel")
+  private def installPanel = waitPanel("InstallPanel")
+  private def displayPanel = waitPanel("DisplayPanel")
+  private def uninstallPanel = waitPanel("UninstallPanel")
+
+  private def waitPanel(name: String) =
     new JComponentOperator(dialog, new ComponentChooser {
       val delegate = new NameComponentChooser(name)
 
@@ -187,7 +187,7 @@ abstract class LicenseManagementWizardITSuite
       def getDescription = "Chooses a JPanel by its name."
     })
 
-  def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
+  private def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 }
 
 /** @author Christian Schlichtherle */
