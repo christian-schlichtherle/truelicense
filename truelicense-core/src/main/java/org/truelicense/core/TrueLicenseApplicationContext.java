@@ -56,7 +56,8 @@ import static org.truelicense.core.Messages.*;
  * @author Christian Schlichtherle
  */
 public abstract class TrueLicenseApplicationContext<Model>
-implements BiosProvider,
+implements
+        BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
         Clock,
@@ -249,8 +250,9 @@ implements BiosProvider,
     }
 
     final class TrueLicenseManagementContextBuilder
-    implements ContextProvider<TrueLicenseApplicationContext>,
-               LicenseManagementContextBuilder {
+    implements
+            ContextProvider<TrueLicenseApplicationContext>,
+            LicenseManagementContextBuilder {
 
         LicenseManagementAuthorization authorization = context().authorization();
         ClassLoaderProvider classLoaderProvider = context();
@@ -322,7 +324,8 @@ implements BiosProvider,
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     final class TrueLicenseManagementContext
-    implements Clock,
+    implements
+            Clock,
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
@@ -683,7 +686,8 @@ implements BiosProvider,
         }
 
         final class TrueLicenseManagementParameters
-        implements ContextProvider<TrueLicenseManagementContext>,
+        implements
+                ContextProvider<TrueLicenseManagementContext>,
                 LicenseInitializationProvider,
                 LicenseManagementParameters {
 
