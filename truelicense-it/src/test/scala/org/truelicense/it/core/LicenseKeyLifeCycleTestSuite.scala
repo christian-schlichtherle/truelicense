@@ -19,21 +19,6 @@ abstract class LicenseKeyLifeCycleTestSuite
   extends WordSpec
 { this: TestContext[_] =>
 
-  def check(license: License, notBefore: Date = null, notAfter: Date = null) {
-    import license._
-    getConsumerAmount should be (1)
-    getConsumerType should be ("User")
-    getExtra should be (null)
-    getHolder should not be null
-    getInfo should be (null)
-    getIssued should not be null
-    getIssuer should not be null
-    getNotAfter should be (notAfter)
-    getNotBefore should be (notBefore)
-    getSubject should not be null
-    getSubject should not be 'empty
-  }
-
   "The license key life cycle" should {
     "work for regular license keys" in {
       val vs = store
@@ -41,7 +26,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       val generated = {
         val vm = vendorManager
         val generated = (vm generator managementContext.license writeTo vs).license
-        check(generated)
+        assertLicense(generated)
         generated
       }
 
@@ -53,44 +38,40 @@ abstract class LicenseKeyLifeCycleTestSuite
 
       val cs = store
       val cm = consumerManager(cs)
-      cs exists () should equal (false)
-      intercept[LicenseManagementException] { cm view () }
-      intercept[LicenseManagementException] { cm verify () }
-      intercept[LicenseManagementException] { cm uninstall () }
+      cs exists () shouldBe false
+      assertUninstalled(cm)
       cm install vs
       cm install vs // reinstall
       cm verify ()
       val viewed = cm view ()
-      viewed should equal (generated)
+      viewed shouldBe generated
       viewed should not be theSameInstanceAs (generated)
       cm uninstall ()
-      intercept[LicenseManagementException] { cm view () }
-      intercept[LicenseManagementException] { cm verify () }
-      intercept[LicenseManagementException] { cm uninstall () }
+      assertUninstalled(cm)
     }
 
     "work for FTP license keys" in {
       val cs = store
       val cm = consumerManager(cs)
-      cs exists () should equal (false)
+      cs exists () shouldBe false
       val fcs = store
       val fcm = ftpConsumerManager(cm, fcs)
-      fcs exists () should equal (false)
+      fcs exists () shouldBe false
       fcm verify () // generate
       val generated = fcm view ()
-      cs exists () should equal (false)
-      fcs exists () should equal (true)
-      check(generated,
+      cs exists () shouldBe false
+      fcs exists () shouldBe true
+      assertLicense(generated,
             generated.getIssued,
             datePlusDays(generated.getIssued, 1))
       fcm verify ()
       val viewed = fcm view ()
-      viewed should equal (generated)
+      viewed shouldBe generated
       viewed should not be theSameInstanceAs (generated)
       val viewed2 = fcm view ()
-      viewed2 should equal (generated)
+      viewed2 shouldBe generated
       viewed2 should not be theSameInstanceAs (generated)
-      cs exists () should equal (false)
+      cs exists () shouldBe false
     }
 
     "work for chained license keys" in {
@@ -102,8 +83,8 @@ abstract class LicenseKeyLifeCycleTestSuite
       val ccs = store
       val ccm = chainedConsumerManager(cm, ccs)
 
-      cs exists () should equal (false)
-      ccs exists () should equal (false)
+      cs exists () shouldBe false
+      ccs exists () shouldBe false
 
       intercept[LicenseManagementException] { cm view () }
       intercept[LicenseManagementException] { ccm view () }
@@ -112,44 +93,67 @@ abstract class LicenseKeyLifeCycleTestSuite
         val generated = {
           val vm = vendorManager
           val generated = (vm generator managementContext.license writeTo vs).license
-          check(generated)
+          assertLicense(generated)
           generated
         }
 
         ccm install vs // delegates to cm!
-        cs exists () should equal (true)
-        ccs exists () should equal (false)
+        cs exists () shouldBe true
+        ccs exists () shouldBe false
         ccm verify ()
         val viewed = ccm view ()
-        viewed should equal (generated)
+        viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // delegates to cm!
+        assertUninstalled(ccm)
       }
 
-      cs exists () should equal (false)
-      ccs exists () should equal (false)
+      cs exists () shouldBe false
+      ccs exists () shouldBe false
 
       ;{
         val generated = {
           val vm = chainedVendorManager
           val generated = (vm generator managementContext.license writeTo vs).license
-          check(generated)
+          assertLicense(generated)
           generated
         }
 
         ccm install vs // installs in ccm!
-        cs exists () should equal (false)
-        ccs exists () should equal (true)
+        assertUninstalled(cm)
+        cs exists () shouldBe false
+        ccs exists () shouldBe true
         ccm verify ()
         val viewed = ccm view ()
-        viewed should equal (generated)
+        viewed shouldBe generated
         viewed should not be theSameInstanceAs (generated)
         ccm uninstall () // uninstalls from ccm!
+        assertUninstalled(ccm)
       }
 
-      cs exists () should equal (false)
-      ccs exists () should equal (false)
+      cs exists () shouldBe false
+      ccs exists () shouldBe false
     }
+  }
+
+  private def assertLicense(license: License, notBefore: Date = null, notAfter: Date = null) {
+    import license._
+    getConsumerAmount shouldBe 1
+    getConsumerType shouldBe "User"
+    getExtra shouldBe null
+    getHolder should not be null
+    getInfo shouldBe null
+    getIssued should not be null
+    getIssuer should not be null
+    getNotAfter shouldBe notAfter
+    getNotBefore shouldBe notBefore
+    getSubject shouldBe managementContext.subject
+  }
+
+  private def assertUninstalled(cm: ConsumerLicenseManager) = {
+    intercept[LicenseManagementException] { cm view () }
+    intercept[LicenseManagementException] { cm verify () }
+    intercept[LicenseManagementException] { cm uninstall () }
   }
 }
 
