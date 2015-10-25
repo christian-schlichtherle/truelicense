@@ -53,7 +53,7 @@ public final class Unchecked {
         }
 
         @Override
-        public UncheckedLicenseKeyGenerator generator(final License bean) throws UncheckedLicenseManagementException {
+        public UncheckedLicenseKeyGenerator generator(final License bean) {
             return new UncheckedLicenseKeyGenerator() {
 
                 final LicenseKeyGenerator generator = manager.generator(bean);

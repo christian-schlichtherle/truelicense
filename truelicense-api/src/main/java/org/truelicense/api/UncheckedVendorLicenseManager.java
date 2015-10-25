@@ -11,5 +11,5 @@ package org.truelicense.api;
 public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
 
     @Override
-    UncheckedLicenseKeyGenerator generator(License bean) throws UncheckedLicenseManagementException;
+    UncheckedLicenseKeyGenerator generator(License bean);
 }
