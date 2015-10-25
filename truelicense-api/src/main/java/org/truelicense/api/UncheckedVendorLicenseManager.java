@@ -6,7 +6,7 @@
 package org.truelicense.api;
 
 /**
- * A vendor license manager which generally throws an
+ * A vendor license manager which may generally throw an
  * {@link UncheckedLicenseManagementException} rather than a (checked)
  * {@link LicenseManagementException}.
  *

@@ -8,7 +8,7 @@ package org.truelicense.api;
 import org.truelicense.api.io.Source;
 
 /**
- * A consumer license manager which generally throws an
+ * A consumer license manager which may generally throw an
  * {@link UncheckedLicenseManagementException} rather than a (checked)
  * {@link LicenseManagementException}.
  *

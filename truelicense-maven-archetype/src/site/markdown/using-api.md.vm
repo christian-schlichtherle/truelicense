@@ -108,7 +108,7 @@ For example, if the project defines the property `${dollar}{editions}` to be
 For the following examples, it's necessary to add the following imports:
 
     import ${dollar}{package}.keygen.*;
-    import org.truelicense.core.*;
+    import org.truelicense.api.*;
 
 $h4 Generating a License Key
 
@@ -129,6 +129,30 @@ You can generate a license key using:
 `sink` is an instance of the class [`org.truelicense.api.io.Sink`] and
 
 For a fully elaborated example, please have a look at the `Main` class.
+
+$h4 Working with (Unchecked) Runtime Exceptions
+
+The `VendorLicenseManager` interface may generally throw a 
+[`org.truelicense.api.LicenseManagementException`], which is a 
+`GeneralSecurityException`, which is a (checked) `Exception`.
+Working with checked exceptions may be cumbersome in contexts where a method can 
+only throw (unchecked) runtime exceptions, e.g. when implementing
+`Runnable.run()`.
+For these uses cases, there exists a small adapter method named 
+[`org.truelicense.api.UncheckedManager.from(VendorLicenseManager)`](../apidocs/org/truelicense/api/UncheckedManager.html#from%28VendorLicenseManager%29):
+This method adapts a vendor license manager so that it may generally throw 
+an [`org.truelicense.api.UncheckedLicenseManagementException`], which is a 
+`RuntimeException` and wraps the original `LicenseManagementException`.
+Here's the general usage pattern:
+
+    VendorLicenseManager checkedManager = ...;
+    UncheckedVendorLicenseManager uncheckedManager = UncheckedManager.from(checkedManager);
+    uncheckedManager.generator(someLicense).writeTo(someSink); // throws UncheckedLicenseManagementException
+
+You can get back the original (checked) vendor license manager by calling:
+
+    UncheckedVendorLicenseManager uncheckedManager = ...;
+    VendorLicenseManager checkedManager = uncheckedManager.checked();
 
 $h3 Using the Key Manager API
 
@@ -242,7 +266,7 @@ which returns the first manager in the configured chain-of-responsibility.
 For the following examples, it's necessary to add the following imports:
 
     import ${dollar}{package}.keymgr.*;
-    import org.truelicense.core.*;
+    import org.truelicense.api.*;
 
 $h4 Installing a License Key
 
@@ -370,11 +394,36 @@ If no license key is installed or only an auto-generated FTP license
 key is installed, then a
 [`org.truelicense.api.LicenseManagementException`] is thrown instead.
 
+$h4 Working with (Unchecked) Runtime Exceptions
+
+The `ConsumerLicenseManager` interface may generally throw a 
+[`org.truelicense.api.LicenseManagementException`],
+which is a `GeneralSecurityException`, which is a (checked) `Exception`.
+Working with checked exceptions may be cumbersome in contexts where a method can 
+only throw (unchecked) runtime exceptions, e.g. when implementing
+`Runnable.run()`.
+For these uses cases, there exists a small adapter method named 
+[`org.truelicense.api.UncheckedManager.from(ConsumerLicenseManager)`](../apidocs/org/truelicense/api/UncheckedManager.html#from%28ConsumerLicenseManager%29):
+This method adapts a consumer license manager so that it may generally throw 
+an [`org.truelicense.api.UncheckedLicenseManagementException`], which is a 
+`RuntimeException` and wraps the original `LicenseManagementException`.
+Here's the general usage pattern:
+
+    ConsumerLicenseManager checkedManager = ...;
+    UncheckedConsumerLicenseManager uncheckedManager = UncheckedManager.from(checkedManager);
+    uncheckedManager.install(someSource); // throws UncheckedLicenseManagementException
+
+You can get back the original (checked) consumer license manager by calling:
+
+    UncheckedConsumerLicenseManager uncheckedManager = ...;
+    ConsumerLicenseManager checkedManager = uncheckedManager.checked();
+
 [`org.truelicense.api.ConsumerLicenseManager`]: ../apidocs/org/truelicense/api/ConsumerLicenseManager.html
 [`org.truelicense.api.License`]: ../apidocs/org/truelicense/api/License.html
 [`org.truelicense.api.LicenseManagementContext`]: ../apidocs/org/truelicense/api/LicenseManagementContext.html
 [`org.truelicense.api.LicenseManagementException`]: ../apidocs/org/truelicense/api/LicenseManagementException.html
 [`org.truelicense.api.LicenseValidationException`]: ../apidocs/org/truelicense/api/LicenseValidationException.html
+[`org.truelicense.api.UncheckedLicenseManagementException`]: ../apidocs/org/truelicense/api/UncheckedLicenseManagementException.html
 [`org.truelicense.api.VendorLicenseManager`]: ../apidocs/org/truelicense/api/VendorLicenseManager.html
 [`org.truelicense.api.io.Sink`]: ../apidocs/org/truelicense/api/Sink.html
 [`org.truelicense.api.io.Source`]: ../apidocs/org/truelicense/api/Source.html
