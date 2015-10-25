@@ -6,10 +6,9 @@
 package org.truelicense.spi.io;
 
 import org.truelicense.api.io.Store;
-import org.truelicense.spi.misc.Option;
 
 import java.io.*;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * A (heap) memory store.
@@ -20,7 +19,7 @@ public final class MemoryStore implements Store {
 
     private final int bufsize;
 
-    private List<byte[]> optBuffer = Option.none();
+    private Optional<byte[]> optBuffer = Optional.empty();
 
     /**
      * Equivalent to <code>new {@link #MemoryStore(int)
@@ -57,25 +56,24 @@ public final class MemoryStore implements Store {
     @Override
     public void delete() throws IOException {
         checkedData();
-        optBuffer = Option.none();
+        optBuffer = Optional.empty();
     }
 
     @Override
-    public boolean exists() { return !optBuffer.isEmpty(); }
+    public boolean exists() { return optBuffer.isPresent(); }
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     private byte[] checkedData() throws FileNotFoundException {
-        for (byte[] buffer : optBuffer)
-            return buffer;
-        throw new FileNotFoundException();
+        return optBuffer.orElseThrow(FileNotFoundException::new);
     }
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     public byte[] data() {
-        for (byte[] buffer : optBuffer)
-            return buffer.clone();
-        throw new IllegalStateException();
+        return optBuffer
+                .map(byte[]::clone)
+                .orElseThrow(IllegalStateException::new);
     }
 
-    public void data(byte[] buffer) { optBuffer = Option.wrap(buffer.clone()); }
+    public void data(byte[] buffer) {
+        optBuffer = Optional.ofNullable(buffer.clone()); }
 }

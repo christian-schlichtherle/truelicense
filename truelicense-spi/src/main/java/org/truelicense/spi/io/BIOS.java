@@ -12,6 +12,7 @@ import org.truelicense.api.io.Store;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A Basic Input/Output System (BIOS).
@@ -41,12 +42,10 @@ public interface BIOS {
      * @param  name the name of the resource to load.
      * @param  classLoader
      *         The optional class loader to use for loading the resource.
-     *         This is a list of at most one non-null item.
-     *         The list may be empty to indicate that the system class loader
-     *         shall get used.
+     *         If no value is present then the system class loader gets used.
      * @return A source which loads the resource with the given {@code name}.
      */
-    Source resource(String name, List<ClassLoader> classLoader);
+    Source resource(String name, Optional<ClassLoader> classLoader);
 
     /**
      * Returns a source which reads from standard input without ever closing it.

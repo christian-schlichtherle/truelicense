@@ -6,10 +6,9 @@
 package org.truelicense.spi.io;
 
 import org.truelicense.api.io.Store;
-import org.truelicense.spi.misc.Option;
 
 import java.io.*;
-import java.util.List;
+import java.util.Optional;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -53,17 +52,16 @@ final class PreferencesStore implements Store {
     }
 
     @Override
-    public boolean exists() { return !optData().isEmpty(); }
+    public boolean exists() { return optData().isPresent(); }
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     private byte[] data() throws IOException {
-        for (byte[] data : optData())
-            return data;
-        throw new FileNotFoundException(
-                "Cannot locate the key \"" + key + "\" in the " +
-                        (prefs.isUserNode() ? "user" : "system") +
-                        " preferences node for the absolute path \"" +
-                        prefs.absolutePath() + "\".");
+        return optData()
+                .orElseThrow(() -> new FileNotFoundException(
+                        "Cannot locate the key \"" + key + "\" in the " +
+                                (prefs.isUserNode() ? "user" : "system") +
+                                " preferences node for the absolute path \"" +
+                                prefs.absolutePath() + "\"."));
     }
 
     private void data(byte[] data) throws IOException {
@@ -71,8 +69,8 @@ final class PreferencesStore implements Store {
         sync();
     }
 
-    private List<byte[]> optData() {
-        return Option.wrap(prefs.getByteArray(key, null));
+    private Optional<byte[]> optData() {
+        return Optional.ofNullable(prefs.getByteArray(key, null));
     }
 
     private void sync() throws IOException {

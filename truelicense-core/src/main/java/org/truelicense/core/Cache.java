@@ -5,9 +5,7 @@
 
 package org.truelicense.core;
 
-import org.truelicense.spi.misc.Option;
-
-import java.util.List;
+import java.util.Optional;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -19,29 +17,30 @@ import static java.lang.System.currentTimeMillis;
  */
 final class Cache<K, V> {
 
-    private final List<K> optKey;
-    private final List<V> optValue;
+    private final Optional<K> optKey;
+    private final Optional<V> optValue;
     private final long cachePeriodMillis;
     private final long startTimeMillis = currentTimeMillis();
 
-    Cache() { this(Option.<K>none(), Option.<V>none(), 0); } // => obsolete() == true
+    Cache() {
+        this(Optional.empty(), Optional.empty(), 0); } // => obsolete() == true
 
-    Cache(final List<K> optKey, final List<V> optValue, final long cachePeriodMillis) {
+    Cache(final Optional<K> optKey, final Optional<V> optValue, final long cachePeriodMillis) {
         this.optKey = optKey;
         this.optValue = optValue;
         if (0 > (this.cachePeriodMillis = cachePeriodMillis))
             throw new IllegalArgumentException();
     }
 
-    Cache<K, V> key(List<K> optKey) {
+    Cache<K, V> key(Optional<K> optKey) {
         return hasKey(optKey) ? this : new Cache<>(optKey, optValue, cachePeriodMillis);
     }
 
-    List<V> map(List<K> optKey) {
-        return hasKey(optKey) && !obsolete() ? optValue : Option.<V>none();
+    Optional<V> map(Optional<K> optKey) {
+        return hasKey(optKey) && !obsolete() ? optValue : Optional.empty();
     }
 
-    boolean hasKey(List<K> optKey) {
+    boolean hasKey(Optional<K> optKey) {
         return optKey.equals(this.optKey);
     }
 

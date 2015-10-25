@@ -8,11 +8,10 @@ package org.truelicense.spi.io;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.io.Store;
-import org.truelicense.spi.misc.Option;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Optional;
 import java.util.prefs.Preferences;
 
 /**
@@ -54,18 +53,16 @@ public class StandardBIOS implements BIOS {
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     public Source resource(
             final String name,
-            final List<ClassLoader> classLoader) {
+            final Optional<ClassLoader> classLoader) {
         return new Source() {
             @Override public InputStream input() throws IOException {
-                for (InputStream in : inputStream())
-                    return in;
-                throw new FileNotFoundException(name);
+                return inputStream().orElseThrow(() -> new FileNotFoundException(name));
             }
 
-            List<InputStream> inputStream() {
-                for (ClassLoader cl : classLoader)
-                    return Option.wrap(cl.getResourceAsStream(name));
-                return Option.wrap(ClassLoader.getSystemResourceAsStream(name));
+            Optional<InputStream> inputStream() {
+                return classLoader
+                        .map(cl -> Optional.ofNullable(cl.getResourceAsStream(name)))
+                        .orElseGet(() -> Optional.ofNullable(ClassLoader.getSystemResourceAsStream(name)));
             }
         };
     }
@@ -77,23 +74,15 @@ public class StandardBIOS implements BIOS {
     public Sink stdout() { return uncloseable(System.out); }
 
     private static Source uncloseable(final InputStream in) {
-        return new Source() {
-            @Override public InputStream input() {
-                return new FilterInputStream(in) {
-                    @Override public void close() { }
-                };
-            }
+        return () -> new FilterInputStream(in) {
+            @Override public void close() { }
         };
     }
 
     private static Sink uncloseable(final OutputStream out) {
-        return new Sink() {
-            @Override public OutputStream output() {
-                return new FilterOutputStream(out) {
-                    @Override public void close() throws IOException {
-                        out.flush();
-                    }
-                };
+        return () -> new FilterOutputStream(out) {
+            @Override public void close() throws IOException {
+                out.flush();
             }
         };
     }

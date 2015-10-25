@@ -16,15 +16,14 @@ import org.truelicense.api.passwd.Password;
 import org.truelicense.api.passwd.PasswordProtection;
 import org.truelicense.api.passwd.PasswordUsage;
 import org.truelicense.obfuscate.Obfuscate;
-import org.truelicense.spi.misc.Option;
 
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,8 +94,9 @@ public final class Notary implements Authentication {
         }
 
         String algorithm() throws Exception {
-            for (String algorithm : configuredAlgorithm())
-                return algorithm;
+            final Optional<String> configuredAlgorithm = configuredAlgorithm();
+            if (configuredAlgorithm.isPresent())
+                return configuredAlgorithm.get();
             return defaultAlgorithm();
         }
 
@@ -155,13 +155,13 @@ public final class Notary implements Authentication {
                     final KeyStore.PasswordProtection protection =
                             new KeyStore.PasswordProtection(password.characters());
                     try {
-                        return keyStoreEntry(Option.wrap(protection));
+                        return keyStoreEntry(Optional.ofNullable(protection));
                     } finally {
                         protection.destroy();
                     }
                 }
             } else if (isCertificateEntry()) {
-                return keyStoreEntry(Option.<KeyStore.PasswordProtection>none());
+                return keyStoreEntry(Optional.empty());
             } else {
                 assert !keyStore().containsAlias(alias());
                 throw new NotaryException(message(NO_SUCH_ENTRY));
@@ -176,8 +176,8 @@ public final class Notary implements Authentication {
             return keyStore().isCertificateEntry(alias());
         }
 
-        KeyStore.Entry keyStoreEntry(List<KeyStore.PasswordProtection> protection) throws Exception {
-            return keyStore().getEntry(alias(), Option.unwrap(protection));
+        KeyStore.Entry keyStoreEntry(Optional<KeyStore.PasswordProtection> protection) throws Exception {
+            return keyStore().getEntry(alias(), protection.orElse(null));
         }
 
         KeyStore keyStore() throws Exception {
@@ -189,13 +189,13 @@ public final class Notary implements Authentication {
             try (Password password = storeProtection().password(PasswordUsage.READ)) {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
                 final char[] pc = password.characters();
-                for (final Source source : source()) {
-                    try (InputStream in = source.input()) {
+                if (source().isPresent()) {
+                    try (InputStream in = source().get().input()) {
                         keyStore.load(in, pc);
-                        return keyStore;
                     }
+                } else {
+                    keyStore.load(null, pc);
                 }
-                keyStore.load(null, pc);
                 return keyStore;
             }
         }
@@ -208,9 +208,9 @@ public final class Notary implements Authentication {
             return parameters().keyProtection();
         }
 
-        List<String> configuredAlgorithm() { return parameters().algorithm(); }
+        Optional<String> configuredAlgorithm() { return parameters().algorithm(); }
 
-        List<Source> source() { return parameters().source(); }
+        Optional<Source> source() { return parameters().source(); }
 
         PasswordProtection storeProtection() {
             return parameters().storeProtection();

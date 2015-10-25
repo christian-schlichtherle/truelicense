@@ -9,7 +9,6 @@ import org.truelicense.api.codec.Codec;
 import org.truelicense.api.io.Store;
 import org.truelicense.obfuscate.Obfuscate;
 import org.truelicense.spi.io.MemoryStore;
-import org.truelicense.spi.misc.Option;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -17,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,9 +102,9 @@ public class Codecs {
             final Matcher matcher = CHARSET_PATTERN.matcher(codec.contentType());
             if (matcher.find()) {
                 assert 2 == matcher.groupCount();
-                for (String charset : Option.wrap(matcher.group(1)))
-                    return Charset.forName(charset);
-                return Charset.forName(matcher.group(2));
+                return Optional.ofNullable(matcher.group(1))
+                        .map(Charset::forName)
+                        .orElseGet(() -> Charset.forName(matcher.group(2)));
             } else {
                 return StandardCharsets.UTF_8;
             }

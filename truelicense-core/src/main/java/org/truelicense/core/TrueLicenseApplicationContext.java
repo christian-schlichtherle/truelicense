@@ -28,13 +28,12 @@ import org.truelicense.spi.io.BIOS;
 import org.truelicense.spi.io.BiosProvider;
 import org.truelicense.spi.io.StandardBIOS;
 import org.truelicense.spi.io.Transformer;
-import org.truelicense.spi.misc.Option;
 
 import javax.security.auth.x500.X500Principal;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import static java.util.Calendar.DATE;
@@ -119,8 +118,8 @@ implements
      * lists the current thread's context class loader, if not {@code null}.
      */
     @Override
-    public final List<ClassLoader> classLoader() {
-        return Option.wrap(Thread.currentThread().getContextClassLoader());
+    public final Optional<ClassLoader> classLoader() {
+        return Optional.ofNullable(Thread.currentThread().getContextClassLoader());
     }
 
     @Override
@@ -204,12 +203,7 @@ implements
     }
 
     static boolean exists(final Store store) throws LicenseManagementException {
-        return wrap(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return store.exists();
-            }
-        });
+        return wrap(store::exists);
     }
 
     /**
@@ -257,10 +251,10 @@ implements
         LicenseManagementAuthorization authorization = context().authorization();
         ClassLoaderProvider classLoaderProvider = context();
         Clock clock = context();
-        List<LicenseInitialization> initialization = Option.none();
+        Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
         String subject = "";
-        List<LicenseValidation> validation = Option.none();
+        Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
         @Override
@@ -288,7 +282,7 @@ implements
 
         @Override
         public LicenseManagementContextBuilder initialization(final LicenseInitialization initialization) {
-            this.initialization = Option.wrap(initialization);
+            this.initialization = Optional.ofNullable(initialization);
             return this;
         }
 
@@ -306,7 +300,7 @@ implements
 
         @Override
         public LicenseManagementContextBuilder validation(final LicenseValidation validation) {
-            this.validation = Option.wrap(validation);
+            this.validation = Optional.ofNullable(validation);
             return this;
         }
 
@@ -336,10 +330,10 @@ implements
         final LicenseManagementAuthorization authorization;
         final ClassLoaderProvider classLoaderProvider;
         final Clock clock;
-        final List<LicenseInitialization> initialization;
+        final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
         final String subject;
-        final List<LicenseValidation> validation;
+        final Optional<LicenseValidation> validation;
         final LicenseFunctionComposition validationComposition;
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
@@ -359,7 +353,7 @@ implements
         }
 
         @Override
-        public List<ClassLoader> classLoader() {
+        public Optional<ClassLoader> classLoader() {
             return classLoaderProvider.classLoader();
         }
 
@@ -379,9 +373,9 @@ implements
         @Override
         public LicenseInitialization initialization() {
             final LicenseInitialization second = new TrueLicenseInitialization();
-            for (LicenseInitialization first : initialization)
-                return initializationComposition.compose(first, second);
-            return second;
+            return initialization
+                    .map(first -> initializationComposition.compose(first, second))
+                    .orElse(second);
         }
 
         @Override
@@ -423,9 +417,9 @@ implements
         @Override
         public LicenseValidation validation() {
             final LicenseValidation second = new TrueLicenseValidation();
-            for (LicenseValidation first : validation)
-                return validationComposition.compose(first, second);
-            return second;
+            return validation
+                    .map(first -> validationComposition.compose(first, second))
+                    .orElse(second);
         }
 
         @Override
@@ -441,9 +435,9 @@ implements
             public ConsumerLicenseManager build() {
                 final TrueLicenseManagementParameters
                         p = new TrueLicenseManagementParameters(this);
-                return parent.isEmpty()
-                        ? p.new CachingTrueLicenseManager()
-                        : p.new ChainedTrueLicenseManager();
+                return parent.isPresent()
+                        ? p.new ChainedTrueLicenseManager()
+                        : p.new CachingTrueLicenseManager();
             }
 
             @Override
@@ -480,21 +474,21 @@ implements
         @SuppressWarnings("unchecked")
         abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
 
-            List<Authentication> authentication = Option.none();
-            List<Transformation> encryption = Option.none();
+            Optional<Authentication> authentication = Optional.empty();
+            Optional<Transformation> encryption = Optional.empty();
             int ftpDays;
-            List<ConsumerLicenseManager> parent = Option.none();
-            List<Store> store = Option.none();
+            Optional<ConsumerLicenseManager> parent = Optional.empty();
+            Optional<Store> store = Optional.empty();
 
             public final This authentication(final Authentication authentication) {
-                this.authentication = Option.wrap(authentication);
+                this.authentication = Optional.ofNullable(authentication);
                 return (This) this;
             }
 
             public final TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
 
             public final This encryption(final Transformation encryption) {
-                this.encryption = Option.wrap(encryption);
+                this.encryption = Optional.ofNullable(encryption);
                 return (This) this;
             }
 
@@ -506,12 +500,12 @@ implements
             public final TrueAuthenticationBuilder authentication() { return new TrueAuthenticationBuilder(); }
 
             public final This parent(final ConsumerLicenseManager parent) {
-                this.parent = Option.wrap(parent);
+                this.parent = Optional.ofNullable(parent);
                 return (This) this;
             }
 
             public final This storeIn(final Store store) {
-                this.store = Option.wrap(store);
+                this.store = Optional.ofNullable(store);
                 return (This) this;
             }
 
@@ -530,25 +524,25 @@ implements
             final class TrueAuthenticationBuilder
             implements Builder<Authentication>, AuthenticationInjection<This> {
 
-                List<String> algorithm = Option.none();
-                List<String> alias = Option.none();
-                List<PasswordProtection> keyProtection = Option.none();
-                List<Source> source = Option.none();
-                List<PasswordProtection> storeProtection = Option.none();
-                List<String> storeType = Option.none();
+                Optional<String> algorithm = Optional.empty();
+                Optional<String> alias = Optional.empty();
+                Optional<PasswordProtection> keyProtection = Optional.empty();
+                Optional<Source> source = Optional.empty();
+                Optional<PasswordProtection> storeProtection = Optional.empty();
+                Optional<String> storeType = Optional.empty();
 
                 @Override
                 public This inject() { return authentication(build()); }
 
                 @Override
                 public TrueAuthenticationBuilder algorithm(final String algorithm) {
-                    this.algorithm = Option.wrap(algorithm);
+                    this.algorithm = Optional.ofNullable(algorithm);
                     return this;
                 }
 
                 @Override
                 public TrueAuthenticationBuilder alias(final String alias) {
-                    this.alias = Option.wrap(alias);
+                    this.alias = Optional.ofNullable(alias);
                     return this;
                 }
 
@@ -559,13 +553,13 @@ implements
 
                 @Override
                 public TrueAuthenticationBuilder keyProtection(final PasswordProtection keyProtection) {
-                    this.keyProtection = Option.wrap(keyProtection);
+                    this.keyProtection = Optional.ofNullable(keyProtection);
                     return this;
                 }
 
                 @Override
                 public TrueAuthenticationBuilder loadFrom(final Source source) {
-                    this.source = Option.wrap(source);
+                    this.source = Optional.ofNullable(source);
                     return this;
                 }
 
@@ -576,13 +570,13 @@ implements
 
                 @Override
                 public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
-                    this.storeProtection = Option.wrap(storeProtection);
+                    this.storeProtection = Optional.ofNullable(storeProtection);
                     return this;
                 }
 
                 @Override
                 public TrueAuthenticationBuilder storeType(final String storeType) {
-                    this.storeType = Option.wrap(storeType);
+                    this.storeType = Optional.ofNullable(storeType);
                     return this;
                 }
             }
@@ -590,15 +584,15 @@ implements
             final class TrueEncryptionBuilder
             implements Builder<Transformation>, EncryptionInjection<This> {
 
-                List<String> algorithm = Option.none();
-                List<PasswordProtection> protection = Option.none();
+                Optional<String> algorithm = Optional.empty();
+                Optional<PasswordProtection> protection = Optional.empty();
 
                 @Override
                 public This inject() { return encryption(build()); }
 
                 @Override
                 public TrueEncryptionBuilder algorithm(final String algorithm) {
-                    this.algorithm = Option.wrap(algorithm);
+                    this.algorithm = Optional.ofNullable(algorithm);
                     return this;
                 }
 
@@ -609,7 +603,7 @@ implements
 
                 @Override
                 public TrueEncryptionBuilder protection(final PasswordProtection protection) {
-                    this.protection = Option.wrap(protection);
+                    this.protection = Optional.ofNullable(protection);
                     return this;
                 }
             }
@@ -617,19 +611,19 @@ implements
 
         final class TrueAuthenticationParameters implements AuthenticationParameters {
 
-            final List<String> algorithm;
+            final Optional<String> algorithm;
             final String alias;
-            final List<PasswordProtection> keyProtection;
-            final List<Source> source;
+            final Optional<PasswordProtection> keyProtection;
+            final Optional<Source> source;
             final PasswordProtection storeProtection;
-            final List<String> storeType;
+            final Optional<String> storeType;
 
             TrueAuthenticationParameters(final TrueLicenseManagerBuilder<?>.TrueAuthenticationBuilder b) {
                 this.algorithm = b.algorithm;
-                this.alias = b.alias.get(0);
+                this.alias = b.alias.get();
                 this.keyProtection = b.keyProtection;
                 this.source = b.source;
-                this.storeProtection = b.storeProtection.get(0);
+                this.storeProtection = b.storeProtection.get();
                 this.storeType = b.storeType;
             }
 
@@ -638,16 +632,16 @@ implements
 
             @Override
             public PasswordProtection keyProtection() {
-                for (PasswordProtection kp : keyProtection)
-                    return new CheckedPasswordProtection(kp);
-                return new CheckedPasswordProtection(storeProtection);
+                return keyProtection
+                        .map(CheckedPasswordProtection::new)
+                        .orElseGet(() -> new CheckedPasswordProtection(storeProtection));
             }
 
             @Override
-            public List<String> algorithm() { return algorithm; }
+            public Optional<String> algorithm() { return algorithm; }
 
             @Override
-            public List<Source> source() { return source; }
+            public Optional<Source> source() { return source; }
 
             @Override
             public PasswordProtection storeProtection() {
@@ -656,27 +650,23 @@ implements
 
             @Override
             public String storeType() {
-                for (String st : storeType)
-                    return st;
-                return context().storeType();
+                return storeType.orElseGet(() -> context().storeType());
             }
         }
 
         final class TrueEncryptionParameters implements EncryptionParameters {
 
-            final List<String> algorithm;
+            final Optional<String> algorithm;
             final PasswordProtection protection;
 
             TrueEncryptionParameters(final TrueLicenseManagerBuilder<?>.TrueEncryptionBuilder b) {
                 this.algorithm = b.algorithm;
-                this.protection = b.protection.get(0);
+                this.protection = b.protection.get();
             }
 
             @Override
             public String algorithm() {
-                for (String a : algorithm)
-                    return a;
-                return pbeAlgorithm();
+                return algorithm.orElseGet(TrueLicenseApplicationContext.this::pbeAlgorithm);
             }
 
             @Override
@@ -692,13 +682,13 @@ implements
                 LicenseManagementParameters {
 
             final Authentication authentication;
-            final List<Transformation> encryption;
+            final Optional<Transformation> encryption;
             final int ftpDays;
-            final List<ConsumerLicenseManager> parent;
-            final List<Store> store;
+            final Optional<ConsumerLicenseManager> parent;
+            final Optional<Store> store;
 
             TrueLicenseManagementParameters(final TrueLicenseManagerBuilder<?> b) {
-                this.authentication = b.authentication.get(0);
+                this.authentication = b.authentication.get();
                 this.encryption = b.encryption;
                 this.ftpDays = b.ftpDays;
                 this.parent = b.parent;
@@ -715,9 +705,8 @@ implements
 
             @Override
             public Transformation encryption() {
-                for (Transformation e : encryption)
-                    return e;
-                return parent().parameters().encryption();
+                return encryption
+                        .orElseGet(() -> parent().parameters().encryption());
             }
 
             @Override
@@ -739,9 +728,9 @@ implements
                 };
             }
 
-            ConsumerLicenseManager parent() { return parent.get(0); }
+            ConsumerLicenseManager parent() { return parent.get(); }
 
-            Store store() { return store.get(0);}
+            Store store() { return store.get();}
 
             Transformation compressionThenEncryption() {
                 return Transformer.apply(compression()).then(encryption()).get();
@@ -749,7 +738,7 @@ implements
 
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
-                volatile List<Boolean> canGenerateLicenseKeys = Option.none();
+                volatile Optional<Boolean> canGenerateLicenseKeys = Optional.empty();
 
                 @Override
                 public void install(Source source) throws LicenseManagementException {
@@ -812,20 +801,20 @@ implements
                 }
 
                 boolean canGenerateLicenseKeys() {
-                    if (canGenerateLicenseKeys.isEmpty()) {
+                    if (!canGenerateLicenseKeys.isPresent()) {
                         synchronized (this) {
-                            if (canGenerateLicenseKeys.isEmpty()) {
+                            if (!canGenerateLicenseKeys.isPresent()) {
                                 try {
                                     // Test encoding a new license key to /dev/null .
                                     super.generator(license()).writeTo(bios().memoryStore());
-                                    canGenerateLicenseKeys = Option.wrap(Boolean.TRUE);
+                                    canGenerateLicenseKeys = Optional.ofNullable(Boolean.TRUE);
                                 } catch (LicenseManagementException ignored) {
-                                    canGenerateLicenseKeys = Option.wrap(Boolean.FALSE);
+                                    canGenerateLicenseKeys = Optional.ofNullable(Boolean.FALSE);
                                 }
                             }
                         }
                     }
-                    return canGenerateLicenseKeys.get(0);
+                    return canGenerateLicenseKeys.get();
                 }
 
                 LicenseKeyGenerator generateIffNewFtp(final LicenseManagementException e) throws LicenseManagementException {
@@ -854,8 +843,8 @@ implements
                     synchronized (store) {
                         super.install(source);
 
-                        final List<Source> optSource = Option.wrap(source);
-                        final List<Source> optStore = Option.<Source>wrap(store);
+                        final Optional<Source> optSource = Optional.ofNullable(source);
+                        final Optional<Source> optStore = Optional.ofNullable(store);
 
                         // As a side effect of the license key installation, the cached
                         // artifactory and license get associated to the source unless this
@@ -889,24 +878,24 @@ implements
 
                 @Override
                 void validate(final Source source) throws Exception {
-                    final List<Source> optSource = Option.wrap(source);
-                    List<License> optLicense = cachedLicense.map(optSource);
-                    if (optLicense.isEmpty()) {
-                        optLicense = Option.wrap(decodeLicense(source));
+                    final Optional<Source> optSource = Optional.ofNullable(source);
+                    Optional<License> optLicense = cachedLicense.map(optSource);
+                    if (!optLicense.isPresent()) {
+                        optLicense = Optional.ofNullable(decodeLicense(source));
                         cachedLicense = new Cache<>(optSource, optLicense, cachePeriodMillis());
                     }
-                    validation().validate(optLicense.get(0));
+                    validation().validate(optLicense.get());
                 }
 
                 @Override
                 Decoder authenticate(final Source source) throws Exception {
-                    final List<Source> optSource = Option.wrap(source);
-                    List<Decoder> optDecoder = cachedDecoder.map(optSource);
-                    if (optDecoder.isEmpty()) {
-                        optDecoder = Option.wrap(super.authenticate(source));
+                    final Optional<Source> optSource = Optional.ofNullable(source);
+                    Optional<Decoder> optDecoder = cachedDecoder.map(optSource);
+                    if (!optDecoder.isPresent()) {
+                        optDecoder = Optional.ofNullable(super.authenticate(source));
                         cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
                     }
-                    return optDecoder.get(0);
+                    return optDecoder.get();
                 }
             }
 
