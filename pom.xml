@@ -86,7 +86,7 @@
         <!-- clirr-maven-plugin -->
         <comparisonVersion>2.0</comparisonVersion>
 
-        <javase.major>7</javase.major>
+        <javase.major>8</javase.major>
 
         <!-- maven-compiler-plugin -->
         <maven.compiler.debug>false</maven.compiler.debug>
@@ -126,7 +126,7 @@
 
         <!-- dependencies -->
         <jackson.version>2.5.2</jackson.version>
-        <javaee.version>${javase.major}.0</javaee.version>
+        <javaee.version>7.0</javaee.version>
     </properties>
 
     <modules>
