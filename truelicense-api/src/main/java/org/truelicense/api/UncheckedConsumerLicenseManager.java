@@ -13,14 +13,14 @@ import org.truelicense.api.io.Source;
 public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager {
 
     @Override
-    void install(Source source) throws LicenseManagementRuntimeException;
+    void install(Source source) throws UncheckedLicenseManagementException;
 
     @Override
-    License view() throws LicenseManagementRuntimeException;
+    License view() throws UncheckedLicenseManagementException;
 
     @Override
-    void verify() throws LicenseManagementRuntimeException;
+    void verify() throws UncheckedLicenseManagementException;
 
     @Override
-    void uninstall() throws LicenseManagementRuntimeException;
+    void uninstall() throws UncheckedLicenseManagementException;
 }

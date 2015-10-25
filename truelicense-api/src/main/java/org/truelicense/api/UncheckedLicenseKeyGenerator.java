@@ -13,8 +13,8 @@ import org.truelicense.api.io.Sink;
 public interface UncheckedLicenseKeyGenerator extends LicenseKeyGenerator {
 
     @Override
-    License license() throws LicenseManagementRuntimeException;
+    License license() throws UncheckedLicenseManagementException;
 
     @Override
-    LicenseKeyGenerator writeTo(Sink sink) throws LicenseManagementRuntimeException;
+    LicenseKeyGenerator writeTo(Sink sink) throws UncheckedLicenseManagementException;
 }
