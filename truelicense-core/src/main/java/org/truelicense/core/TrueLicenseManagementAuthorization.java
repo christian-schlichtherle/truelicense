@@ -15,6 +15,7 @@ import org.truelicense.api.LicenseManagementSchema;
  * @author Christian Schlichtherle
  */
 public final class TrueLicenseManagementAuthorization implements LicenseManagementAuthorization {
+
     @Override public void clearGenerator(LicenseManagementSchema schema) { }
     @Override public void clearInstall(LicenseManagementSchema schema) { }
     @Override public void clearVerify(LicenseManagementSchema schema) { }

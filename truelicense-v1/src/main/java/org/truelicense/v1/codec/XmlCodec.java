@@ -61,16 +61,13 @@ public class XmlCodec implements Codec {
 
     @Override
     public Encoder encoder(final Sink sink) {
-        return new Encoder() {
-            @Override
-            public void encode(final Object obj) throws Exception {
-                final ZeroToleranceListener ztl = new ZeroToleranceListener();
-                try (XMLEncoder enc = encoder(sink.output())) {
-                    enc.setExceptionListener(ztl);
-                    enc.writeObject(obj);
-                }
-                ztl.check();
+        return obj -> {
+            final ZeroToleranceListener ztl = new ZeroToleranceListener();
+            try (XMLEncoder enc = encoder(sink.output())) {
+                enc.setExceptionListener(ztl);
+                enc.writeObject(obj);
             }
+            ztl.check();
         };
     }
 

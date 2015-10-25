@@ -63,22 +63,12 @@ public final class UncheckedManager {
 
                 @Override
                 public License license() throws UncheckedLicenseManagementException {
-                    return runUnchecked(new CheckedTask<License>() {
-                        @Override
-                        public License run() throws LicenseManagementException {
-                            return generator.license();
-                        }
-                    });
+                    return runUnchecked(generator::license);
                 }
 
                 @Override
                 public LicenseKeyGenerator writeTo(final Sink sink) throws UncheckedLicenseManagementException {
-                    return runUnchecked(new CheckedTask<LicenseKeyGenerator>() {
-                        @Override
-                        public LicenseKeyGenerator run() throws LicenseManagementException {
-                            return generator.writeTo(sink);
-                        }
-                    });
+                    return runUnchecked(() -> generator.writeTo(sink));
                 }
             };
         }
@@ -94,44 +84,30 @@ public final class UncheckedManager {
 
         @Override
         public void install(final Source source) throws UncheckedLicenseManagementException {
-            runUnchecked(new CheckedTask<Void>() {
-                @Override
-                public Void run() throws LicenseManagementException {
-                    manager.install(source);
-                    return null;
-                }
+            runUnchecked(() -> {
+                manager.install(source);
+                return null;
             });
         }
 
         @Override
         public License view() throws UncheckedLicenseManagementException {
-            return runUnchecked(new CheckedTask<License>() {
-                @Override
-                public License run() throws LicenseManagementException {
-                    return manager.view();
-                }
-            });
+            return runUnchecked(manager::view);
         }
 
         @Override
         public void verify() throws UncheckedLicenseManagementException {
-            runUnchecked(new CheckedTask<Void>() {
-                @Override
-                public Void run() throws LicenseManagementException {
-                    manager.verify();
-                    return null;
-                }
+            runUnchecked(() -> {
+                manager.verify();
+                return null;
             });
         }
 
         @Override
         public void uninstall() throws UncheckedLicenseManagementException {
-            runUnchecked(new CheckedTask<Void>() {
-                @Override
-                public Void run() throws LicenseManagementException {
-                    manager.uninstall();
-                    return null;
-                }
+            runUnchecked(() -> {
+                manager.uninstall();
+                return null;
             });
         }
     }

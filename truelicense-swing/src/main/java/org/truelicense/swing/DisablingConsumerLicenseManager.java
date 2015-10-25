@@ -33,34 +33,24 @@ extends UpdatingConsumerLicenseManager {
 
     @Override
     public void install(final Source source) throws LicenseManagementException {
-        run(new Action() {
-            @Override
-            public void run() throws LicenseManagementException {
-                manager.install(source);
-            }
-        });
+        run(() -> manager.install(source));
     }
 
     @Override
     public void uninstall() throws LicenseManagementException {
-        run(new Action() {
-            @Override
-            public void run() throws LicenseManagementException {
-                manager.uninstall();
-            }
-        });
+        run(() -> manager.uninstall());
     }
 
-    private void run(final Action action) throws LicenseManagementException {
+    private void run(final CheckedTask task) throws LicenseManagementException {
         final boolean enabled = enabled();
         disable();
         try {
-            action.run();
+            task.run();
         } catch (final Throwable e) {
             enabled(enabled);
             throw e;
         }
     }
 
-    private interface Action { void run() throws LicenseManagementException; }
+    private interface CheckedTask { void run() throws LicenseManagementException; }
 }

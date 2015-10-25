@@ -715,16 +715,13 @@ implements
                 if (0 == ftpDays)
                     return initialization;
 
-                return new LicenseInitialization() {
-
-                    @Override public void initialize(final License bean) {
-                        initialization.initialize(bean);
-                        final Calendar cal = getInstance();
-                        cal.setTime(bean.getIssued());
-                        bean.setNotBefore(cal.getTime()); // not before issued
-                        cal.add(DATE, ftpDays); // FTP countdown starts NOW
-                        bean.setNotAfter(cal.getTime());
-                    }
+                return bean -> {
+                    initialization.initialize(bean);
+                    final Calendar cal = getInstance();
+                    cal.setTime(bean.getIssued());
+                    bean.setNotBefore(cal.getTime()); // not before issued
+                    cal.add(DATE, ftpDays); // FTP countdown starts NOW
+                    bean.setNotAfter(cal.getTime());
                 };
             }
 
@@ -924,12 +921,7 @@ implements
 
                         @Override
                         public License license() throws LicenseManagementException {
-                            return wrap(new Callable<License>() {
-
-                                @Override public License call() throws Exception {
-                                    return decoder().decode(License.class);
-                                }
-                            });
+                            return wrap(() -> decoder().decode(License.class));
                         }
 
                         @Override
@@ -987,54 +979,42 @@ implements
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    wrap(new Callable<Void>() {
-
-                        @Override public Void call() throws Exception {
-                            authorization().clearInstall(TrueLicenseManager.this);
-                            decodeLicense(source); // checks digital signature
-                            bios().copy(source, store());
-                            return null;
-                        }
+                    wrap(() -> {
+                        authorization().clearInstall(TrueLicenseManager.this);
+                        decodeLicense(source); // checks digital signature
+                        bios().copy(source, store());
+                        return null;
                     });
                 }
 
                 @Override
                 public License view() throws LicenseManagementException {
-                    return wrap(new Callable<License>() {
-
-                        @Override public License call() throws Exception {
-                            authorization().clearView(TrueLicenseManager.this);
-                            return decodeLicense(store());
-                        }
+                    return wrap(() -> {
+                        authorization().clearView(TrueLicenseManager.this);
+                        return decodeLicense(store());
                     });
                 }
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    wrap(new Callable<Void>() {
-
-                        @Override public Void call() throws Exception {
-                            authorization().clearVerify(TrueLicenseManager.this);
-                            validate(store());
-                            return null;
-                        }
+                    wrap(() -> {
+                        authorization().clearVerify(TrueLicenseManager.this);
+                        validate(store());
+                        return null;
                     });
                 }
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    wrap(new Callable<Void>() {
-
-                        @Override public Void call() throws Exception {
-                            authorization().clearUninstall(TrueLicenseManager.this);
-                            final Store store = store();
-                            // #TRUELICENSE-81: A consumer license manager must
-                            // authenticate the installed license key before uninstalling
-                            // it.
-                            authenticate(store);
-                            store.delete();
-                            return null;
-                        }
+                    wrap(() -> {
+                        authorization().clearUninstall(TrueLicenseManager.this);
+                        final Store store1 = store();
+                        // #TRUELICENSE-81: A consumer license manager must
+                        // authenticate the installed license key before uninstalling
+                        // it.
+                        authenticate(store1);
+                        store1.delete();
+                        return null;
                     });
                 }
 

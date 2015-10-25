@@ -30,23 +30,17 @@ public enum LicenseFunctionComposition {
 
         @Override
         public LicenseInitialization compose(final LicenseInitialization first, final LicenseInitialization second) {
-            return new LicenseInitialization() {
-                @Override
-                public void initialize(final License bean) {
-                    first.initialize(bean);
-                    second.initialize(bean);
-                }
+            return bean -> {
+                first.initialize(bean);
+                second.initialize(bean);
             };
         }
 
         @Override
         public LicenseValidation compose(final LicenseValidation first, final LicenseValidation second) {
-            return new LicenseValidation() {
-                @Override
-                public void validate(final License bean) throws LicenseValidationException {
-                    first.validate(bean);
-                    second.validate(bean);
-                }
+            return bean -> {
+                first.validate(bean);
+                second.validate(bean);
             };
         }
     };

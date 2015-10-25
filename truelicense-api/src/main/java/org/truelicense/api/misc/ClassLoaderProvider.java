@@ -5,7 +5,6 @@
 
 package org.truelicense.api.misc;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

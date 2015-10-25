@@ -67,20 +67,15 @@ public class JsonCodec implements Codec {
         return CONTENT_TRANSFER_ENCODING;
     }
 
-    @Override
-    public Encoder encoder(final Sink sink) {
-        return new Encoder() {
-            @Override
-            public void encode(final Object obj) throws Exception {
-                try (OutputStream out = sink.output()) {
-                    mapper.writeValue(out, obj);
-                }
+    @Override public Encoder encoder(final Sink sink) {
+        return obj -> {
+            try (OutputStream out = sink.output()) {
+                mapper.writeValue(out, obj);
             }
         };
     }
 
-    @Override
-    public Decoder decoder(final Source source) {
+    @Override public Decoder decoder(final Source source) {
         return new Decoder() {
             @Override
             public <T> T decode(final Type expected) throws Exception {

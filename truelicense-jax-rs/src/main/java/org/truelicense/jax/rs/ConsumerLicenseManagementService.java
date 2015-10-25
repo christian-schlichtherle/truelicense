@@ -102,7 +102,7 @@ public final class ConsumerLicenseManagementService {
     @Path("subject")
     @Produces({ APPLICATION_XML, TEXT_XML })
     public JAXBElement<String> subjectAsXml() {
-        return new JAXBElement<String>(subject, String.class, subject());
+        return new JAXBElement<>(subject, String.class, subject());
     }
 
     @GET

@@ -17,5 +17,5 @@ package org.truelicense.api.x500;
  */
 public enum X500AttributeTypeKeyword {
     C, CN, DC, DNQ, DNQUALIFIER, EMAILADDRESS, GENERATION, GIVENNAME, INITIALS,
-    L, O, OU, SERIALNUMBER, ST, STREET, SURNAME, T, UID;
+    L, O, OU, SERIALNUMBER, ST, STREET, SURNAME, T, UID
 }

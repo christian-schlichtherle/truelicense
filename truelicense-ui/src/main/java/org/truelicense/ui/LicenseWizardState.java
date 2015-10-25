@@ -13,5 +13,5 @@ package org.truelicense.ui;
  * @author Christian Schlichtherle
  */
 public enum LicenseWizardState {
-    welcome, install, display, uninstall;
+    welcome, install, display, uninstall
 }

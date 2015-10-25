@@ -53,7 +53,7 @@ public final class Processor {
      */
     public static final boolean DEFAULT_INTERN_STRINGS = true;
 
-    private final Set<String> constantStrings = new HashSet<String>();
+    private final Set<String> constantStrings = new HashSet<>();
 
     private final Logger logger;
     private final Path directory;

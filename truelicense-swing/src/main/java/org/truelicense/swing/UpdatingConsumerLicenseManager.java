@@ -48,12 +48,7 @@ implements Serializable {
     }
 
     final void enabled(final boolean value) {
-        runOnEventDispatchThread(new Runnable() {
-            @Override
-            public void run() {
-                enabler.enabled(value);
-            }
-        });
+        runOnEventDispatchThread(() -> enabler.enabled(value));
     }
 
     private <R extends Runnable> R runOnEventDispatchThread(R action) {

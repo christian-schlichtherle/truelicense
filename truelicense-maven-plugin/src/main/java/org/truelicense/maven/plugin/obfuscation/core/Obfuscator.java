@@ -27,8 +27,8 @@ final class Obfuscator extends Visitor {
     private static final String
             OBFUSCATED_STRING_INTERNAL_NAME = Type.getInternalName(ObfuscatedString.class);
 
-    private final Map<String, ConstantStringReference>
-            csrs = new LinkedHashMap<String, ConstantStringReference>();
+    private final Map<String, ConstantStringReference> csrs =
+            new LinkedHashMap<>();
 
     /** Conversion method name. */
     private final String cmn;

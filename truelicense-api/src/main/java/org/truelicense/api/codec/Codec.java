@@ -8,8 +8,6 @@ package org.truelicense.api.codec;
 import org.truelicense.api.io.Sink;
 import org.truelicense.api.io.Source;
 
-import java.lang.reflect.Type;
-
 /**
  * Provides encoders and decoders for generic object graphs.
  *

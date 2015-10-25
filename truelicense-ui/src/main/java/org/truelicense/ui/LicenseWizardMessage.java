@@ -5,7 +5,6 @@
 
 package org.truelicense.ui;
 
-import org.truelicense.api.ConsumerLicenseManager;
 import org.truelicense.api.i18n.Message;
 import org.truelicense.spi.i18n.Formattable;
 

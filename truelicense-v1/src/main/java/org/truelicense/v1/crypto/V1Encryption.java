@@ -16,11 +16,7 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.PBEParameterSpec;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.concurrent.Callable;
 
 import static javax.crypto.Cipher.*;
 
@@ -44,32 +40,18 @@ public final class V1Encryption extends BasicEncryption {
             throw new IllegalArgumentException(ILLEGAL_PBE_ALGORITHM);
     }
 
-    @Override
-    public Sink apply(final Sink sink) {
-        return new Sink() {
-            @Override public OutputStream output() throws IOException {
-                return wrap(new Callable<OutputStream>() {
-                    @Override public OutputStream call() throws Exception {
-                        final Cipher cipher = cipher(PasswordUsage.WRITE);
-                        return new CipherOutputStream(sink.output(), cipher);
-                    }
-                });
-            }
-        };
+    @Override public Sink apply(final Sink sink) {
+        return () -> wrap(() -> {
+            final Cipher cipher = cipher(PasswordUsage.WRITE);
+            return new CipherOutputStream(sink.output(), cipher);
+        });
     }
 
-    @Override
-    public Source unapply(final Source source) {
-        return new Source() {
-            @Override public InputStream input() throws IOException {
-                return wrap(new Callable<InputStream>() {
-                    @Override public InputStream call() throws Exception {
-                        final Cipher cipher = cipher(PasswordUsage.READ);
-                        return new CipherInputStream(source.input(), cipher);
-                    }
-                });
-            }
-        };
+    @Override public Source unapply(final Source source) {
+        return () -> wrap(() -> {
+            final Cipher cipher = cipher(PasswordUsage.READ);
+            return new CipherInputStream(source.input(), cipher);
+        });
     }
 
     private Cipher cipher(final PasswordUsage usage) throws Exception {

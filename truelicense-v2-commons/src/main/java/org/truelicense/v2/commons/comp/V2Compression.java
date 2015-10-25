@@ -26,52 +26,44 @@ import java.util.zip.InflaterInputStream;
  */
 public final class V2Compression implements Transformation {
 
-    @Override
-    public Sink apply(final Sink sink) {
-        return new Sink() {
-            @Override public OutputStream output() throws IOException {
-                return new DeflaterOutputStream(sink.output(),
-                        new Deflater(Deflater.BEST_COMPRESSION),
-                        Store.BUFSIZE) {
+    @Override public Sink apply(final Sink sink) {
+        return () -> new DeflaterOutputStream(
+                sink.output(),
+                new Deflater(Deflater.BEST_COMPRESSION),
+                Store.BUFSIZE) {
 
-                    boolean closed;
+            boolean closed;
 
-                    @Override
-                    public void close() throws IOException {
-                        if (!closed) {
-                            closed = true;
-                            try {
-                                try { finish(); }
-                                finally { def.end(); }
-                            } finally {
-                                super.close();
-                            }
-                        }
+            @Override
+            public void close() throws IOException {
+                if (!closed) {
+                    closed = true;
+                    try {
+                        try { finish(); }
+                        finally { def.end(); }
+                    } finally {
+                        super.close();
                     }
-                };
+                }
             }
         };
     }
 
-    @Override
-    public Source unapply(final Source source) {
-        return new Source() {
-            @Override public InputStream input() throws IOException {
-                return new InflaterInputStream(source.input(),
-                        new Inflater(),
-                        Store.BUFSIZE) {
+    @Override public Source unapply(final Source source) {
+        return () -> new InflaterInputStream(
+                source.input(),
+                new Inflater(),
+                Store.BUFSIZE) {
 
-                    boolean closed;
+            boolean closed;
 
-                    @Override
-                    public void close() throws IOException {
-                        if (!closed) {
-                            closed = true;
-                            try { inf.end(); }
-                            finally { super.close(); }
-                        }
-                    }
-                };
+            @Override
+            public void close() throws IOException {
+                if (!closed) {
+                    closed = true;
+                    try { inf.end(); }
+                    finally { super.close(); }
+                }
             }
         };
     }

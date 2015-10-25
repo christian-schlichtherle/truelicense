@@ -70,15 +70,13 @@ extends BasicWizardController<S, V> {
      * @param dialog the dialog to use.
      */
     protected SwingWizardController(final EnhancedDialog dialog) {
-        final ActionListener listener = new ActionListener() {
-            @Override public void actionPerformed(final ActionEvent e) {
-                final WizardMessage key = WizardMessage.valueOf(e.getActionCommand());
-                if      (wizard_cancel.equals(key)) cancel();
-                else if (wizard_back.equals(key))   switchBack();
-                else if (wizard_next.equals(key))   switchNext();
-                else if (wizard_finish.equals(key)) finish();
-                else                                throw new AssertionError();
-            }
+        final ActionListener listener = e -> {
+            final WizardMessage key = WizardMessage.valueOf(e.getActionCommand());
+            if      (wizard_cancel.equals(key)) cancel();
+            else if (wizard_back.equals(key))   switchBack();
+            else if (wizard_next.equals(key))   switchNext();
+            else if (wizard_finish.equals(key)) finish();
+            else                                throw new AssertionError();
         };
 
         cancelButton = new EnhancedButton();
