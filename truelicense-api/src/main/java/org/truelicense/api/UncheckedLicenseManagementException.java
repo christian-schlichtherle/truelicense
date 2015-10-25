@@ -3,7 +3,7 @@ package org.truelicense.api;
 /**
  * A runtime exception which wraps a (checked)
  * {@link LicenseManagementException}.
- * This is generally thrown by the {@code Unchecked*} interfaces.
+ * This is generally thrown by the {@code UncheckedManager*} interfaces.
  *
  * @author Christian Schlichtherle
  */

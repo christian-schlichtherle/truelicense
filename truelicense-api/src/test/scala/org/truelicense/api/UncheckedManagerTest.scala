@@ -3,18 +3,23 @@ package org.truelicense.api
 import org.junit.runner.RunWith
 import org.mockito.Matchers._
 import org.mockito.Mockito._
+import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar.mock
-import org.truelicense.api.io.{Source, Sink}
+import org.truelicense.api.io.{Sink, Source}
 
 @RunWith(classOf[JUnitRunner])
-class UncheckedTest extends WordSpec {
+class UncheckedManagerTest extends WordSpec {
 
-  "The unchecked vendor license manager returned by Unchecked.wrap(VendorLicenseManager)" should {
+  "The unchecked vendor license manager returned by UncheckedManager.from(VendorLicenseManager)" should {
     val checkedManager = mock[VendorLicenseManager]
 
-    val uncheckedManager = Unchecked wrap checkedManager
+    val uncheckedManager = UncheckedManager from checkedManager
+
+    "return the checked vendor license manager" in {
+      uncheckedManager.checked shouldBe theSameInstanceAs(checkedManager)
+    }
 
     "throw only unchecked exceptions" when {
       "generating license keys" when {
@@ -36,10 +41,14 @@ class UncheckedTest extends WordSpec {
     }
   }
 
-  "The unchecked consumer license manager returned by Unchecked.wrap(ConsumerLicenseManager)" should {
+  "The unchecked consumer license manager returned by UncheckedManager.from(ConsumerLicenseManager)" should {
     val checkedManager = mock[ConsumerLicenseManager]
 
-    val uncheckedManager = Unchecked wrap checkedManager
+    val uncheckedManager = UncheckedManager from checkedManager
+
+    "return the checked consumer license manager" in {
+      uncheckedManager.checked shouldBe theSameInstanceAs(checkedManager)
+    }
 
     "throw only unchecked exceptions" when {
       "installing a license key" in {

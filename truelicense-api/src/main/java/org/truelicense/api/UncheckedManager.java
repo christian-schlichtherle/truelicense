@@ -7,36 +7,39 @@ import org.truelicense.api.misc.ContextProvider;
 import java.util.Objects;
 
 /**
- * Wraps license managers so that they throw unchecked exceptions instead of
- * checked exceptions.
+ * Adapts vendor and consumer license managers so that they generally throw an
+ * {@link UncheckedLicenseManagementException} rather than a (checked)
+ * {@link LicenseManagementException}.
  *
  * @author Christian Schlichtherle
  */
-public final class Unchecked {
+public final class UncheckedManager {
 
-    private Unchecked() { }
+    private UncheckedManager() { }
 
     /**
-     * Returns a vendor license manager which throws unchecked exceptions
-     * instead of checked exceptions.
+     * Returns a vendor license manager which generally throws an
+     * {@link UncheckedLicenseManagementException} rather than a (checked)
+     * {@link LicenseManagementException}.
      *
-     * @param manager the vendor license manager to wrap.
+     * @param manager the vendor license manager to adapt.
      */
-    public static UncheckedVendorLicenseManager wrap(VendorLicenseManager manager) {
+    public static UncheckedVendorLicenseManager from(VendorLicenseManager manager) {
         return new UncheckedVendorTrueLicenseManager(manager);
     }
 
     /**
-     * Returns a consumer license manager which throws unchecked exceptions
-     * instead of checked exceptions.
+     * Returns a consumer license manager which generally throws an
+     * {@link UncheckedLicenseManagementException} rather than a (checked)
+     * {@link LicenseManagementException}.
      *
-     * @param manager the consumer license manager to wrap.
+     * @param manager the consumer license manager to adapt.
      */
-    public static UncheckedConsumerLicenseManager wrap(ConsumerLicenseManager manager) {
+    public static UncheckedConsumerLicenseManager from(ConsumerLicenseManager manager) {
         return new UncheckedConsumerTrueLicenseManager(manager);
     }
 
-    static <V> V wrap(final Task<V> task) {
+    static <V> V runUnchecked(final CheckedTask<V> task) {
         try {
             return task.run();
         } catch (LicenseManagementException e) {
@@ -60,7 +63,7 @@ public final class Unchecked {
 
                 @Override
                 public License license() throws UncheckedLicenseManagementException {
-                    return wrap(new Task<License>() {
+                    return runUnchecked(new CheckedTask<License>() {
                         @Override
                         public License run() throws LicenseManagementException {
                             return generator.license();
@@ -70,7 +73,7 @@ public final class Unchecked {
 
                 @Override
                 public LicenseKeyGenerator writeTo(final Sink sink) throws UncheckedLicenseManagementException {
-                    return wrap(new Task<LicenseKeyGenerator>() {
+                    return runUnchecked(new CheckedTask<LicenseKeyGenerator>() {
                         @Override
                         public LicenseKeyGenerator run() throws LicenseManagementException {
                             return generator.writeTo(sink);
@@ -91,7 +94,7 @@ public final class Unchecked {
 
         @Override
         public void install(final Source source) throws UncheckedLicenseManagementException {
-            wrap(new Task<Void>() {
+            runUnchecked(new CheckedTask<Void>() {
                 @Override
                 public Void run() throws LicenseManagementException {
                     manager.install(source);
@@ -102,7 +105,7 @@ public final class Unchecked {
 
         @Override
         public License view() throws UncheckedLicenseManagementException {
-            return wrap(new Task<License>() {
+            return runUnchecked(new CheckedTask<License>() {
                 @Override
                 public License run() throws LicenseManagementException {
                     return manager.view();
@@ -112,7 +115,7 @@ public final class Unchecked {
 
         @Override
         public void verify() throws UncheckedLicenseManagementException {
-            wrap(new Task<Void>() {
+            runUnchecked(new CheckedTask<Void>() {
                 @Override
                 public Void run() throws LicenseManagementException {
                     manager.verify();
@@ -123,7 +126,7 @@ public final class Unchecked {
 
         @Override
         public void uninstall() throws UncheckedLicenseManagementException {
-            wrap(new Task<Void>() {
+            runUnchecked(new CheckedTask<Void>() {
                 @Override
                 public Void run() throws LicenseManagementException {
                     manager.uninstall();
@@ -145,10 +148,10 @@ public final class Unchecked {
             this.manager = Objects.requireNonNull(manager);
         }
 
+        public M checked() { return manager; }
+
         @Override
-        public LicenseManagementContext context() {
-            return manager.context();
-        }
+        public LicenseManagementContext context() { return manager.context(); }
 
         @Override
         public LicenseManagementParameters parameters() {
@@ -156,7 +159,7 @@ public final class Unchecked {
         }
     }
 
-    private interface Task<V> {
+    private interface CheckedTask<V> {
 
         V run() throws LicenseManagementException;
     }
