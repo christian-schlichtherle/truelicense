@@ -25,17 +25,6 @@
         files.
     </description>
 
-    <properties>
-        <!-- Dependencies with this scope should actually have the provided
-             scope.
-             However, the maven-shade-plugin:2.3 then excludes their transitive
-             dependencies in the generated dependency-reduced-pom.xml file.
-             This results in a compile time error when release:perform goal
-             invokes the maven-site-plugin, which in turn invokes the
-             maven-compile-plugin. -->
-        <virtuallyProvided>compile</virtuallyProvided>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -49,17 +38,14 @@
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <scope>${virtuallyProvided}</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <scope>${virtuallyProvided}</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
-            <scope>${virtuallyProvided}</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -87,29 +73,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
-            </plugin>
-            <!-- Replace the regular JAR with an uber-JAR using the
-                 maven-shade-plugin as a workaround for a regression in
-                 Maven 3.3.1.
-                 See
-                 https://jira.codehaus.org/browse/MNG-5787 and
-                 https://java.net/jira/browse/TRUELICENSE-87 . -->
-            <plugin>
-                <artifactId>maven-shade-plugin</artifactId>
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>org.slf4j:slf4j-api</include>
-                        </includes>
-                    </artifactSet>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
