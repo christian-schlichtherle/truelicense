@@ -39,7 +39,6 @@ new ${class.replace('$', '.')}()
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
-import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Sink;
@@ -53,10 +52,11 @@ import org.truelicense.obfuscate.*;
  * superset to subset.
  * Each manager is configured with the algorithms and parameters for generating
  * license keys for the respective edition.
+ * <p>
+ * This class is immutable and hence trivially thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public enum LicenseManager implements VendorLicenseManager {
 #foreach($edition in $editions)
 #set($editionKeyEntryAlias = $edition)

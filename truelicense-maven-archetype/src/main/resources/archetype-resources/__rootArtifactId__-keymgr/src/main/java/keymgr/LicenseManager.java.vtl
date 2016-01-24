@@ -55,7 +55,6 @@ ${class.replace('$', '.')}.class
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
-import javax.annotation.concurrent.Immutable;
 import org.truelicense.api.*;
 import org.truelicense.api.io.Source;
 import org.truelicense.api.passwd.PasswordProtection;
@@ -72,10 +71,11 @@ import java.util.Date;
  * superset to subset, including an optional free trial period (FTP).
  * Each manager is configured with the algorithms and parameters for installing,
  * viewing, verifying and uninstalling license keys for the respective edition.
+ * <p>
+ * This class is immutable and hence trivially thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public enum LicenseManager implements ConsumerLicenseManager {
 #foreach($edition in $editions)
 #set($editionCertEntryAlias = $edition)
