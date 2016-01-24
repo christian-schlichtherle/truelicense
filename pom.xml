@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>109</version>
+        <version>110</version>
     </parent>
 
     <groupId>net.java.truelicense</groupId>
@@ -190,6 +190,11 @@
                 <version>2.6.3-SNAPSHOT</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>annotations</artifactId>
+                <version>3.0.0</version>
+            </dependency>
             <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm-tree</artifactId>

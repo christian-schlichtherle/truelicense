@@ -536,22 +536,6 @@
 
     <profiles>
         <profile>
-            <id>non-transitive-main-source-dependencies</id>
-            <activation>
-                <file>
-                    <exists>src/main</exists>
-                </file>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.code.findbugs</groupId>
-                    <artifactId>annotations</artifactId>
-                    <scope>compile</scope>
-                    <optional>true</optional>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
             <id>non-transitive-test-source-dependencies</id>
             <activation>
                 <file>
@@ -559,12 +543,6 @@
                 </file>
             </activation>
             <dependencies>
-                <dependency>
-                    <groupId>com.google.code.findbugs</groupId>
-                    <artifactId>annotations</artifactId>
-                    <scope>compile</scope>
-                    <optional>true</optional>
-                </dependency>
                 <dependency>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
