@@ -5,7 +5,6 @@
 
 package org.truelicense.v2.commons.auth;
 
-import org.apache.commons.codec.binary.Base64;
 import org.truelicense.api.auth.RepositoryController;
 import org.truelicense.api.auth.RepositoryIntegrityException;
 import org.truelicense.api.codec.Codec;
@@ -16,6 +15,8 @@ import org.truelicense.spi.io.MemoryStore;
 import java.nio.charset.Charset;
 import java.security.Signature;
 
+import static java.util.Base64.getDecoder;
+import static java.util.Base64.getEncoder;
 import static java.util.Objects.requireNonNull;
 import static org.truelicense.spi.codec.Codecs.charset;
 
@@ -26,7 +27,6 @@ import static org.truelicense.spi.codec.Codecs.charset;
  */
 public final class V2RepositoryController implements RepositoryController {
 
-    private final Base64 base64 = new Base64();
     private final V2RepositoryModel model;
     private final Codec codec;
 
@@ -39,19 +39,15 @@ public final class V2RepositoryController implements RepositoryController {
     private byte[] data(final Codec codec, final String body) {
         for (Charset cs : charset(codec))
             return body.getBytes(cs);
-        return decode(body);
+        return getDecoder().decode(body);
     }
-
-    private byte[] decode(String body) { return base64.decode(body); }
 
     @SuppressWarnings("LoopStatementThatDoesntLoop")
     private String body(final Codec codec, final byte[] artifact) {
         for (Charset cs : charset(codec))
             return new String(artifact, cs);
-        return encode(artifact);
+        return getEncoder().encodeToString(artifact);
     }
-
-    private String encode(byte[] data) { return base64.encodeToString(data); }
 
     @Override
     public final Decoder sign(final Signature engine, final Object artifact) throws Exception {
@@ -62,7 +58,7 @@ public final class V2RepositoryController implements RepositoryController {
         final byte[] signatureData = engine.sign();
 
         final String encodedArtifact = body(codec, artifactData);
-        final String encodedSignature = encode(signatureData);
+        final String encodedSignature = getEncoder().encodeToString(signatureData);
         final String signatureAlgorithm = engine.getAlgorithm();
 
         model.setArtifact(encodedArtifact);
@@ -78,7 +74,7 @@ public final class V2RepositoryController implements RepositoryController {
             throw new IllegalArgumentException();
         final byte[] artifactData = data(codec, model.getArtifact());
         engine.update(artifactData);
-        if (!engine.verify(decode(model.getSignature())))
+        if (!engine.verify(getDecoder().decode(model.getSignature())))
             throw new RepositoryIntegrityException();
         return codec.decoder(source(artifactData));
     }
