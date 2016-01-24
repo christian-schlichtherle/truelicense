@@ -12,7 +12,7 @@
     <parent>
         <groupId>net.java.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>2.6.3-SNAPSHOT</version>
+        <version>2.6.3</version>
     </parent>
 
     <artifactId>truelicense-maven-plugin</artifactId>
