@@ -184,7 +184,7 @@
             <id>generate-public-key-store</id>
             <activation>
                 <file>
-                    <missing>${dollar}{basedir}/src/main/resources/${dollar}{publicKeyStoreFile}</missing>
+                    <missing>${dollar}{basedir}/src/main/resources/${publicKeyStoreFile}</missing>
                 </file>
             </activation>
             <build>
@@ -246,7 +246,7 @@
             <id>generate-ftp-key-store</id>
             <activation>
                 <file>
-                    <missing>${dollar}{basedir}/src/main/resources/${dollar}{ftpKeyStoreFile}</missing>
+                    <missing>${dollar}{basedir}/src/main/resources/${ftpKeyStoreFile}</missing>
                 </file>
             </activation>
             <build>
