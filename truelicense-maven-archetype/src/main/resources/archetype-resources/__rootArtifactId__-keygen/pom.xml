@@ -54,7 +54,7 @@
             <id>generate-private-key-store</id>
             <activation>
                 <file>
-                    <missing>${dollar}{basedir}/src/main/resources/${dollar}{privateKeyStoreFile}</missing>
+                    <missing>${dollar}{basedir}/src/main/resources/${privateKeyStoreFile}</missing>
                 </file>
             </activation>
             <build>
