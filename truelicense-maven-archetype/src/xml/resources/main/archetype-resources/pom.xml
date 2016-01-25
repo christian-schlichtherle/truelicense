@@ -615,7 +615,7 @@
             </build>
         </profile>
         <profile>
-            <id>rt-jar-for-any-jdk-1.7</id>
+            <id>rt-jar-for-oracle-jdk-1.7</id>
             <activation>
                 <file>
                     <exists>${dollar}{java.home}/lib/rt.jar</exists>
