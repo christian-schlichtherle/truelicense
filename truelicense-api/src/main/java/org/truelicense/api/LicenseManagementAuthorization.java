@@ -14,9 +14,9 @@ package org.truelicense.api;
 public interface LicenseManagementAuthorization {
 
     /**
-     * Returns if and only if creating a
-     * {@linkplain VendorLicenseManager#generator license key generator}
-     * is authorized.
+     * Returns if and only if
+     * {@linkplain LicenseKeyGenerator#save saving}
+     * a license key is authorized.
      * This method is normally only called in a license vendor application.
      * However, in a license consumer application, this method gets called if
      * a non-zero FTP is configured and no FTP license key has been generated
@@ -27,7 +27,7 @@ public interface LicenseManagementAuthorization {
      *
      * @param schema the licensing schema.
      */
-    void clearGenerator(LicenseManagementSchema schema) throws Exception;
+    void clearSave(LicenseManagementSchema schema) throws Exception;
 
     /**
      * Returns if and only if
@@ -40,21 +40,21 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if
+     * {@linkplain ConsumerLicenseManager#load loading}
+     * a license key is authorized.
+     *
+     * @param schema the licensing schema.
+     */
+    void clearLoad(LicenseManagementSchema schema) throws Exception;
+
+    /**
+     * Returns if and only if
      * {@linkplain ConsumerLicenseManager#verify verifying}
      * a license key is authorized.
      *
      * @param schema the licensing schema.
      */
     void clearVerify(LicenseManagementSchema schema) throws Exception;
-
-    /**
-     * Returns if and only if
-     * {@linkplain ConsumerLicenseManager#view viewing}
-     * a license key is authorized.
-     *
-     * @param schema the licensing schema.
-     */
-    void clearView(LicenseManagementSchema schema) throws Exception;
 
     /**
      * Returns if and only if

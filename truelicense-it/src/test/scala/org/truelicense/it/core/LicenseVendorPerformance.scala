@@ -14,7 +14,7 @@ trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext[_] =>
       val vm = vendorManager
       val num = 1000
       val start = System.nanoTime
-      for (j <- 1 to num) vm generator license writeTo store
+      for (j <- 1 to num) vm generator license save store
       val time = System.nanoTime - start
       printf("Iteration %d generated %,d license keys per second.\n", i, num * 1000l * 1000l * 1000l / time)
     }

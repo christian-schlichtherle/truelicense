@@ -11,7 +11,7 @@ import java.security.GeneralSecurityException;
  * Indicates an issue when
  * {@linkplain VendorLicenseManager#generator generating},
  * {@linkplain ConsumerLicenseManager#install installing},
- * {@linkplain ConsumerLicenseManager#view viewing},
+ * {@linkplain ConsumerLicenseManager#load loading},
  * {@linkplain ConsumerLicenseManager#verify verifying} or
  * {@linkplain ConsumerLicenseManager#uninstall uninstalling} a license key.
  *

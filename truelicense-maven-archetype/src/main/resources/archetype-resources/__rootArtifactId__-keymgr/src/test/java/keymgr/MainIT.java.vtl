@@ -32,7 +32,7 @@ public class MainIT {
             ${KeyGenMain}.process("generate", "-edition", edition, licenseKeyPath);
             process("install", licenseKeyPath);
             try {
-                process("view");
+                process("load");
                 process("verify");
             } finally {
                 process("uninstall");

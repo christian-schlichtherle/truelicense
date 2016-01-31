@@ -57,7 +57,7 @@ implements WizardView<LicenseWizardState> {
 
     final boolean licenseInstalled() {
         try {
-            manager().view();
+            manager().load();
             return true;
         } catch (LicenseManagementException ex) {
             return false;

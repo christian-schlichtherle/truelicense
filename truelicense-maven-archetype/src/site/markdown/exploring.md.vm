@@ -120,7 +120,7 @@ whereas `*` refers to any substring of any single path name element:
 :   This directory contains the module with the code required to consume
     license keys within your software product.
     This module is supposed to be bundled with your software product as a
-    library that your software product depends upon for installing, viewing,
+    library that your software product depends upon for installing, loading,
     verifying or uninstalling license keys.
 :   **You must obfuscate this module and its dependencies in order to prevent
     your software product from being vulnerable to an attack where the original

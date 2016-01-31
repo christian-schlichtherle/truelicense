@@ -40,7 +40,7 @@ abstract class LicenseManagementWizardITSuite
 
   before {
     val store = new MemoryStore
-    outputLicense = (vendorManager generator inputLicense writeTo store).license
+    outputLicense = (vendorManager generator inputLicense save store).license
     manager = consumerManager(store)
     EventQueue invokeLater new Runnable {
       override def run() {
@@ -157,7 +157,7 @@ abstract class LicenseManagementWizardITSuite
           uninstallPanel.isVisible shouldBe true
           waitButton(uninstallPanel, uninstall_uninstall) doClick ()
           Thread sleep 100
-          intercept[LicenseManagementException] { manager view () }
+          intercept[LicenseManagementException] { manager load () }
         }
       }
     }

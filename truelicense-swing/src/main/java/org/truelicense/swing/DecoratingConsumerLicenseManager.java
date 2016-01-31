@@ -40,8 +40,8 @@ implements ConsumerLicenseManager {
     }
 
     @Override
-    public License view() throws LicenseManagementException {
-        return manager.view();
+    public License load() throws LicenseManagementException {
+        return manager.load();
     }
 
     @Override

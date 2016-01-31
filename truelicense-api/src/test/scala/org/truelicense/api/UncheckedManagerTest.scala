@@ -33,9 +33,9 @@ class UncheckedManagerTest extends WordSpec {
           interceptUncheckedException { uncheckedGenerator.license }
         }
 
-        "calling writeTo(Sink)" in {
-          when(checkedGenerator writeTo any[Sink]) thenThrow checkedException
-          interceptUncheckedException { uncheckedGenerator writeTo mock[Sink] }
+        "calling save(Sink)" in {
+          when(checkedGenerator save any[Sink]) thenThrow checkedException
+          interceptUncheckedException { uncheckedGenerator save mock[Sink] }
         }
       }
     }
@@ -56,9 +56,9 @@ class UncheckedManagerTest extends WordSpec {
         interceptUncheckedException { uncheckedManager install mock[Source] }
       }
 
-      "viewing a license key" in {
-        when(checkedManager view ()) thenThrow checkedException
-        interceptUncheckedException { uncheckedManager view () }
+      "loading a license key" in {
+        when(checkedManager load ()) thenThrow checkedException
+        interceptUncheckedException { uncheckedManager load () }
       }
 
       "verifying a license key" in {

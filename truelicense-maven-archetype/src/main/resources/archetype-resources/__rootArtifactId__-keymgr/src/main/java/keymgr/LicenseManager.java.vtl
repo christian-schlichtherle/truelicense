@@ -70,7 +70,7 @@ import java.util.Date;
  * The managers are named like each configured edition and ordered from
  * superset to subset, including an optional free trial period (FTP).
  * Each manager is configured with the algorithms and parameters for installing,
- * viewing, verifying and uninstalling license keys for the respective edition.
+ * loading, verifying and uninstalling license keys for the respective edition.
  * <p>
  * This class is immutable and hence trivially thread-safe.
  *
@@ -230,7 +230,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
      * chain-of-responsibility, which is {@link #$firstEdition}.
      * <p>
      * By default, this manager should be used to
-     * {@linkplain #install() install}, {@linkplain #view() view} and
+     * {@linkplain #install() install}, {@linkplain #load() load} and
      * {@linkplain #uninstall() uninstall} license keys.
      */
     public static LicenseManager get() { return $firstEdition; }
@@ -253,8 +253,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
     }
 
     @Override
-    public License view() throws LicenseManagementException {
-        return manager().view();
+    public License load() throws LicenseManagementException {
+        return manager().load();
     }
 
     @Override

@@ -52,7 +52,8 @@ public abstract class ApiDemo {
      * Returns a license manager for a license vendor application, i.e. your
      * license key generator.
      * The returned vendor license manager has been configured using the given
-     * license management context and can be used to generate license keys.
+     * license management context and can be used to generate and save license
+     * keys.
      */
     public VendorLicenseManager vendorLicenseManager() {
         return licenseManagementContext()
@@ -79,7 +80,7 @@ public abstract class ApiDemo {
      * Returns a license manager for a license consumer application, i.e. your
      * software product.
      * The returned consumer license manager has been configured using the given
-     * license management context and can be used to install, view, verify and
+     * license management context and can be used to install, load, verify and
      * uninstall license keys.
      */
     public ConsumerLicenseManager consumerLicenseManager() {

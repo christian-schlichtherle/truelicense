@@ -54,9 +54,9 @@ previously generated.
 The server responds with the status code 204 to indicate that the operation
 succeeded with an empty response entity.
 
-$h4 Viewing the License Key
+$h4 Loading the License Key
 
-You can view the installed license key using:
+You can load the installed license key using:
 
     ${dollar} curl -v http://localhost:9998/license
     * Hostname was NOT found in DNS cache

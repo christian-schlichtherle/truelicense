@@ -72,7 +72,7 @@ public final class DisplayBean extends LicenseBean {
 
     private License newLicense() {
         try {
-            return manager().view();
+            return manager().load();
         } catch (LicenseManagementException e) {
             return context().license();
         }

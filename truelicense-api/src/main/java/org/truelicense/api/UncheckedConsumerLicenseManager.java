@@ -24,7 +24,7 @@ public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager 
     void install(Source source) throws UncheckedLicenseManagementException;
 
     @Override
-    License view() throws UncheckedLicenseManagementException;
+    License load() throws UncheckedLicenseManagementException;
 
     @Override
     void verify() throws UncheckedLicenseManagementException;

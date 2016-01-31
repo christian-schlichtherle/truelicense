@@ -14,7 +14,7 @@
  * <ol>
  * <li>{@linkplain org.truelicense.api.VendorLicenseManager#generator Generation},
  * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#install installation},
- * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#view viewing},
+ * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#load loading},
  * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#verify verification} and
  * <li>{@linkplain org.truelicense.api.ConsumerLicenseManager#uninstall uninstallation}
  * </ol>

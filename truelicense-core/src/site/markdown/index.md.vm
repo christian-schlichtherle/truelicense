@@ -48,7 +48,7 @@ Using the $project.name you can...
 * Configure an authoritative clock to prevent against attacks on the
   validity period of installed license keys.
 * Configure caching of intermediate results of the processing chain for super
-  fast license verification and viewing.
+  fast license loading and verification.
 
 $h3 Usage
 

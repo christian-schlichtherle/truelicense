@@ -36,11 +36,11 @@ extends WordSpec { this: TestContext[_] =>
           service.subjectAsXml.getValue should be (managementContext.subject)
         }
 
-        "fail to view the license key in" in {
+        "fail to load the license key in" in {
           intercept[ConsumerLicenseManagementServiceException] (service view false)
         }
 
-        "fail to verify and view the license key in" in {
+        "fail to verify and load the license key in" in {
           intercept[ConsumerLicenseManagementServiceException] (service view true)
         }
       }
@@ -50,11 +50,11 @@ extends WordSpec { this: TestContext[_] =>
           service install reference.key
         }
 
-        "view the license key in" in {
+        "load the license key in" in {
           (service view false) should equal (reference.bean)
         }
 
-        "verify and view the license key in" in {
+        "verify and load the license key in" in {
           (service view true) should equal (reference.bean)
         }
       }
@@ -64,11 +64,11 @@ extends WordSpec { this: TestContext[_] =>
           service uninstall ()
         }
 
-        "fail to view the license key in" in {
+        "fail to load the license key in" in {
           intercept[ConsumerLicenseManagementServiceException] (service view false)
         }
 
-        "fail to verify and view the license key in" in {
+        "fail to verify and load the license key in" in {
           intercept[ConsumerLicenseManagementServiceException] (service view true)
         }
       }

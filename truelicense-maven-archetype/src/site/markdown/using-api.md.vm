@@ -147,7 +147,7 @@ Here's the general usage pattern:
 
     VendorLicenseManager checkedManager = ...;
     UncheckedVendorLicenseManager uncheckedManager = UncheckedManager.from(checkedManager);
-    uncheckedManager.generator(someLicense).writeTo(someSink); // throws UncheckedLicenseManagementException
+    uncheckedManager.generator(someLicense).save(someSink); // throws UncheckedLicenseManagementException
 
 You can get back the original (checked) vendor license manager by calling:
 
@@ -214,7 +214,8 @@ a set of [Apache Velocity] template files - listed in alphabetic order:
     superset to subset, including an optional 
     <abbr title="Free Trial Period">FTP</abbr>.
     Each manager is configured with the algorithms and parameters for 
-    installing, viewing, verifying and uninstalling license keys for the respective edition.   
+    installing, loading, verifying and uninstalling license keys for the
+    respective edition.
 
 `${dollar}{package}.keymgr.LicensingSchema`
 :   Deprecated - provided for compatibility only.
@@ -246,7 +247,7 @@ ordered from feature subset to feature superset (which is the reverse order
 of the items in the enumeration class `LicenseManager`).
 When
 [installing](../apidocs/org/truelicense/core/ConsumerLicenseManager#install),
-[viewing](../apidocs/org/truelicense/core/ConsumerLicenseManager#view),
+[loading](../apidocs/org/truelicense/core/ConsumerLicenseManager#load),
 [verifying](../apidocs/org/truelicense/core/ConsumerLicenseManager#verify) or
 [uninstalling](../apidocs/org/truelicense/core/ConsumerLicenseManager#uninstall)
 a license key, each operation is tried using the parent manager first.
@@ -257,7 +258,7 @@ or no more managers are available, in which case a
 [`org.truelicense.api.LicenseManagementException`]
 is thrown.
 
-This design allows you to use the API for installing, viewing, verifying and
+This design allows you to use the API for installing, loading, verifying and
 uninstalling license keys without knowing for which edition a license key has
 been generated.
 To facilitate this, the `LicenseManager` class provides the `get()` method
@@ -291,16 +292,16 @@ If the given file does not hold a license key for the lock of any license
 consumer manager, then a
 [`org.truelicense.api.LicenseManagementException`] is thrown instead.
 
-$h4 Viewing the License Key
+$h4 Loading the License Key
 
-You can view the installed license key using:
+You can load the installed license key using:
 
-    License bean = LicenseManager.get().view();
+    License bean = LicenseManager.get().load();
 
 ... where `bean` is an instance of the class
 [`org.truelicense.api.License`].
 
-According to the chain-of-responsibility pattern, `LicenseManager.view()`
+According to the chain-of-responsibility pattern, `LicenseManager.load()`
 recursively tries each consumer license manager until an installed license key
 is found and returns a duplicate of its encoded license bean.
 It's not necessary to know for which edition the installed license key has been
@@ -345,7 +346,7 @@ $h5 Supporting Multiple Editions
 
 The use case for verifying a license key is different from the use case for the
 other operations:
-When installing, viewing or uninstalling a license key, it's not relevant for
+When installing, loading or uninstalling a license key, it's not relevant for
 which edition a license key has been generated.
 The chain-of-responsibility pattern then ensures that these operations will
 succeed when calling them on `LicenseManager.get()`, which is the first manager 

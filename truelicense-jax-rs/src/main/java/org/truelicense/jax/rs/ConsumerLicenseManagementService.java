@@ -128,7 +128,7 @@ public final class ConsumerLicenseManagementService {
     throws ConsumerLicenseManagementServiceException {
         final License license;
         try {
-            license = manager.view();
+            license = manager.load();
         } catch (LicenseManagementException ex) {
             throw new ConsumerLicenseManagementServiceException(NOT_FOUND_STATUS_CODE, ex);
         }

@@ -749,16 +749,16 @@ implements
                 }
 
                 @Override
-                public License view() throws LicenseManagementException {
+                public License load() throws LicenseManagementException {
                     try {
-                        return parent().view();
+                        return parent().load();
                     } catch (final LicenseManagementException first) {
                         try {
-                            return super.view(); // uses store()
+                            return super.load(); // uses store()
                         } catch (final LicenseManagementException second) {
                             synchronized (store()) {
                                 try {
-                                    return super.view(); // repeat
+                                    return super.load(); // repeat
                                 } catch (final LicenseManagementException third) {
                                     return generateIffNewFtp(third).license(); // uses store(), too
                                 }
@@ -803,10 +803,10 @@ implements
                             if (!canGenerateLicenseKeys.isPresent()) {
                                 try {
                                     // Test encoding a new license key to /dev/null .
-                                    super.generator(license()).writeTo(bios().memoryStore());
-                                    canGenerateLicenseKeys = Optional.ofNullable(Boolean.TRUE);
+                                    super.generator(license()).save(bios().memoryStore());
+                                    canGenerateLicenseKeys = Optional.of(Boolean.TRUE);
                                 } catch (LicenseManagementException ignored) {
-                                    canGenerateLicenseKeys = Optional.ofNullable(Boolean.FALSE);
+                                    canGenerateLicenseKeys = Optional.of(Boolean.FALSE);
                                 }
                             }
                         }
@@ -820,7 +820,7 @@ implements
                     final Store store = store();
                     if (exists(store))
                         throw e;
-                    return super.generator(license()).writeTo(store);
+                    return super.generator(license()).save(store);
                 }
             }
 
@@ -920,15 +920,11 @@ implements
                         Decoder decoder;
 
                         @Override
-                        public License license() throws LicenseManagementException {
-                            return wrap(() -> decoder().decode(License.class));
-                        }
-
-                        @Override
-                        public LicenseKeyGenerator writeTo(final Sink sink) throws LicenseManagementException {
+                        public LicenseKeyGenerator save(final Sink sink) throws LicenseManagementException {
                             wrap(new Callable<Void>() {
 
                                 @Override public Void call() throws Exception {
+                                    authorization().clearSave(TrueLicenseManager.this);
                                     codec().encoder(compressedAndEncryptedSink()).encode(model());
                                     return null;
                                 }
@@ -938,6 +934,11 @@ implements
                                 }
                             });
                             return this;
+                        }
+
+                        @Override
+                        public License license() throws LicenseManagementException {
+                            return wrap(() -> decoder().decode(License.class));
                         }
 
                         Decoder decoder() throws Exception {
@@ -952,7 +953,6 @@ implements
 
                         synchronized void init() throws Exception {
                             if (null == decoder) {
-                                authorization().clearGenerator(TrueLicenseManager.this);
                                 decoder = authentication().sign(
                                         context.controller(model, codec()),
                                         validatedBean());
@@ -988,9 +988,9 @@ implements
                 }
 
                 @Override
-                public License view() throws LicenseManagementException {
+                public License load() throws LicenseManagementException {
                     return wrap(() -> {
-                        authorization().clearView(TrueLicenseManager.this);
+                        authorization().clearLoad(TrueLicenseManager.this);
                         return decodeLicense(store());
                     });
                 }

@@ -50,9 +50,9 @@ public enum Main {
         }
     },
 
-    VIEW {
+    LOAD {
         @Override void run(Deque<String> params) throws LicenseManagementException {
-            out.println(manager().view());
+            out.println(manager().load());
         }
     },
 

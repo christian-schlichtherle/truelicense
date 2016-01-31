@@ -209,11 +209,11 @@ notice is printed:
 For the remainder of this page, it is assumed that this process has been
 completed so that this notice is not printed.
 
-$h4 Viewing the License Key
+$h4 Loading the License Key
 
-You can view the installed license key using:
+You can load the installed license key using:
 
-    ${dollar} java -jar *-keymgr/target/*-keymgr-*-guarded.jar view
+    ${dollar} java -jar *-keymgr/target/*-keymgr-*-guarded.jar load
     org.truelicense.api.License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
 
 A brief representation of the encoded license bean is written to the standard
@@ -223,7 +223,7 @@ If no license key is installed, then a
 [`org.truelicense.api.LicenseManagementException`](../apidocs/org/truelicense/api/LicenseManagementException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
-    ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar view
+    ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar load
     org.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
         at org.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
         at org.truelicense.core.TrueLicenseManager.view(BasicLicenseManager.java:61)

@@ -32,7 +32,7 @@ final class DisplayPanel extends LicensePanel {
         assert SwingUtilities.isEventDispatchThread();
         assert isVisible();
         try {
-            license = manager().view();
+            license = manager().load();
             onLicenseChange();
             manager().verify();
         } catch (final Exception failure) {

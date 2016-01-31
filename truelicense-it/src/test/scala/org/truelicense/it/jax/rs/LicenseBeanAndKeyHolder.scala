@@ -14,6 +14,6 @@ import org.truelicense.spi.io.MemoryStore
  */
 class LicenseBeanAndKeyHolder(vm: VendorLicenseManager, _bean: License) {
   private val store = new MemoryStore
-  val bean = (vm generator _bean writeTo store).license()
+  val bean = (vm generator _bean save store).license()
   val key = store.data
 }
