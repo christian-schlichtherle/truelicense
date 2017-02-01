@@ -134,7 +134,7 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <jackson.version>2.6.5</jackson.version>
+        <jackson.version>2.6.7</jackson.version>
         <javaee.version>${javase.major}.0</javaee.version>
         <truezip.version>7.7.9</truezip.version>
     </properties>
