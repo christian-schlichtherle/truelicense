@@ -9,7 +9,7 @@ package org.truelicense.api.misc;
  * A builder for some product.
  * Builders are generally <em>not</em> thread-safe.
  *
- * @param  <Product> the type of the product.
+ * @param <Product> the type of the product.
  * @author Christian Schlichtherle
  */
 public interface Builder<Product> {
