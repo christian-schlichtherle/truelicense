@@ -109,6 +109,8 @@
         <threadCount>1</threadCount>
 
         <!-- maven-javadoc-plugin -->
+        <additionalparam>--allow-script-in-comments</additionalparam>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <googleAnalyticsAccountId>UA-28191662-1</googleAnalyticsAccountId>
         <header><![CDATA[
 <!-- Google Analytics -->
@@ -125,6 +127,7 @@
 <!-- Header text -->
 <b>${project.name} ${project.version}</b>
         ]]></header>
+        <quiet>true</quiet>
 
         <!-- maven-release-plugin -->
         <preparationGoals>clean install</preparationGoals>
@@ -361,6 +364,10 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
                 </plugin>
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
