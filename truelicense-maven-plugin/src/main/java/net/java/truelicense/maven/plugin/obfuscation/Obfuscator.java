@@ -201,7 +201,7 @@ final class Obfuscator extends Visitor {
         final String localMethodName;
 
         O9n2ndMethodVisitor(final String name, MethodVisitor mv) {
-            super(ASM4, mv);
+            super(ASM5, mv);
             this.localMethodName = name;
         }
 
