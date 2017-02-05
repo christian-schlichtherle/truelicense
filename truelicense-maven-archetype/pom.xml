@@ -156,7 +156,7 @@
                                 <resource>
                                     <directory>src/site</directory>
                                     <includes>
-                                        <include>markdown/_stddef.md.vm</include>
+                                        <include>markdown/_include.vm</include>
                                     </includes>
                                 </resource>
                             </resources>

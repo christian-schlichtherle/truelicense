@@ -9,7 +9,7 @@
     <script type="text/javascript" src="js/accordion.js"/>
 </head>
 <body>
-#parse("_stddef.md.vm")
+#parse("_include.vm")
 #title("Generating Your Project")
 
 This page shows you how to generate your project from the $project.name.
