@@ -39,7 +39,7 @@ abstract class Visitor extends ClassVisitor {
     private String bcn;
 
     Visitor(final Processor ctx, final ClassVisitor nullableClassVisitor) {
-        super(ASM4, nullableClassVisitor);
+        super(ASM5, nullableClassVisitor);
         this.ctx = ctx;
     }
 
@@ -100,7 +100,7 @@ abstract class Visitor extends ClassVisitor {
                 final String desc,
                 final String nullableSignature,
                 final Object nullableValue) {
-            super(ASM4, access, name, desc, nullableSignature, nullableValue);
+            super(ASM5, access, name, desc, nullableSignature, nullableValue);
             if (nullableValue instanceof String) {
                 final String svalue = (String) nullableValue;
                 this.stringValue = svalue;

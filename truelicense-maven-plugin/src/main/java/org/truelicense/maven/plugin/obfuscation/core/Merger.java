@@ -68,7 +68,7 @@ final class Merger extends Visitor {
 
     private static class O9nInitMethodVisitor extends MethodVisitor {
 
-        O9nInitMethodVisitor(MethodVisitor mv) { super(ASM4, mv); }
+        O9nInitMethodVisitor(MethodVisitor mv) { super(ASM5, mv); }
 
         @Override public final void visitMaxs(int maxStack, int maxLocals) { }
 
