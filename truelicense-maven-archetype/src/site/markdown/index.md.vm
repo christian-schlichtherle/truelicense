@@ -33,7 +33,7 @@ Using the $project.name you can...
   vending and consuming license keys.
 * Obfuscate constant string values with the [TrueLicense Maven Plugin].
 * Bundle all license consumer <abbr title="Java ARchive">JAR</abbr>s and 
-  obfuscate them with [ProGuard] in order to create a standalone JAR for 
+  obfuscate them with [ProGuard] in order to generate a standalone JAR for
   distribution to users.
 
 ---
