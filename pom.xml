@@ -102,7 +102,7 @@
         <maven.enforcer.requireMavenVersion>[3.0,3.3.0),[3.3.9,)</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
-        <maven.version>3.2.5</maven.version>
+        <maven.version>3.3.9</maven.version>
 
         <!-- maven-failsafe-plugin && maven-surefire-plugin -->
         <parallel>classesAndMethods</parallel>
