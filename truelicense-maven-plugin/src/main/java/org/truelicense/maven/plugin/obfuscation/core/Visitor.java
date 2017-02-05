@@ -15,7 +15,7 @@ import org.truelicense.obfuscate.Obfuscate;
 import java.util.Set;
 
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
-import static org.objectweb.asm.Opcodes.ASM4;
+import static org.objectweb.asm.Opcodes.ASM5;
 
 /**
  * Obfuscates constant string values in byte code.
