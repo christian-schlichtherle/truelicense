@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/DECORATION/1.4.0 http://maven.apache.org/xsd/decoration-1.4.0.xsd">
     <bannerLeft>
         <name><![CDATA[<h1 style="color: rgb(51,51,51); font-size: 50px; font-style: oblique; font-variant: small-caps; letter-spacing: 1pt; text-shadow: 5pt 5pt 5pt rgba(0,0,0,.33)">TrueLicen<span style="font-size: 70%">$&euro;</span></h1>]]></name>
-        <href>${project.url}/index.html</href>
+        <href>index.html</href>
     </bannerLeft>
     <body>
         <links>
@@ -46,7 +46,7 @@
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.4</version>
+        <version>1.6</version>
     </skin>
     <version position="bottom"/>
 </project>

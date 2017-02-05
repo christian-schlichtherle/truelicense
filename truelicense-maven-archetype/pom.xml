@@ -93,6 +93,17 @@
                         </catalogs>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>default-resources</id>
+                            <configuration>
+                                <addDefaultExcludes>false</addDefaultExcludes>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -153,7 +164,7 @@
                                 <resource>
                                     <directory>src/site</directory>
                                     <includes>
-                                        <include>markdown/_stddef.md.vm</include>
+                                        <include>markdown/_include.vm</include>
                                     </includes>
                                 </resource>
                             </resources>

@@ -6,7 +6,7 @@
 <html   xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml">
 <body>
-#parse("_stddef.md.vm")
+#parse("_include.vm")
 #title("Example Configurations")
 
 This page shows some example configurations which you can use when
