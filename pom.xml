@@ -102,7 +102,7 @@
         <maven.enforcer.requireMavenVersion>[3.0,3.3.0),[3.3.9,)</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
-        <maven.version>3.2.5</maven.version>
+        <maven.version>3.0</maven.version>
 
         <!-- maven-failsafe-plugin && maven-surefire-plugin -->
         <parallel>classesAndMethods</parallel>
@@ -268,11 +268,6 @@
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>jsr311-api</artifactId>
                 <version>1.1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-artifact</artifactId>
-                <version>${maven.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven</groupId>
