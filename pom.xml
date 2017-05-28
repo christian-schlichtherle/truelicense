@@ -75,7 +75,7 @@
             <name>TrueLicense Website</name>
             <!-- DON'T use ${project.groupId}, ${project.artifactId} here.
                  This would change in sub-modules! -->
-            <url>file://${user.home}/sites/net.java.truelicense/</url>
+            <url>file://${user.home}/sites/christian-schlichtherle.bitbucket.io/truelicense/</url>
         </site>
     </distributionManagement>
 
