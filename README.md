@@ -4,12 +4,12 @@
 
 Welcome to the TrueLicense Project!
 For documentation, please visit the homepage of this project at
-[https://truelicense.java.net](https://truelicense.java.net).
+https://christian-schlichtherle.bitbucket.io/truelicense/ .
 
 ## License
 
 The source code of this project is covered by the
-[GNU AFFERO GENERAL PUBLIC LICENSE, Version 3](https://truelicense.java.net/license.html#GNU_AFFERO_GENERAL_PUBLIC_LICENSE_Version_3_19_November_2007).
+[GNU AFFERO GENERAL PUBLIC LICENSE, Version 3](https://christian-schlichtherle.bitbucket.io/truelicense/license.html#GNU_AFFERO_GENERAL_PUBLIC_LICENSE_Version_3_19_November_2007).
 Commercial licensing for use with closed source software is available upon
 request.
-Please visit the [homepage](https://truelicense.java.net) of this project.
+Please visit the [homepage](https://christian-schlichtherle.bitbucket.io/truelicense/) of this project.
