@@ -12,9 +12,6 @@
     </bannerLeft>
     <body>
         <links>
-            <item name="Change Log" href="https://java.net/jira/browse/TRUELICENSE?selectedTab=com.atlassian.jira.plugin.system.project:changelog-panel"/>
-            <item name="Road Map" href="https://java.net/jira/browse/TRUELICENSE?selectedTab=com.atlassian.jira.plugin.system.project:roadmap-panel"/>
-            <item name="Management Site" href="https://java.net/projects/truelicense"/>
             <item name="Christian's Blog" href="http://illegalexception.schlichtherle.de"/>
         </links>
         <breadcrumbs>

@@ -43,24 +43,9 @@
             <url>http://www.gnu.org/licenses/agpl-3.0-standalone.html</url>
         </license>
     </licenses>
-    <mailingLists>
-        <mailingList>
-            <name>Announce Mailing List</name>
-            <subscribe>mailto:sympa@truelicense.java.net?subject=subscribe%20announce</subscribe>
-            <unsubscribe>mailto:sympa@truelicense.java.net?subject=unsubscribe%20announce</unsubscribe>
-            <archive>http://java.net/projects/truelicense/lists/announce/archive</archive>
-        </mailingList>
-        <mailingList>
-            <name>Users Mailing List</name>
-            <subscribe>mailto:sympa@truelicense.java.net?subject=subscribe%20users</subscribe>
-            <unsubscribe>mailto:sympa@truelicense.java.net?subject=unsubscribe%20users</unsubscribe>
-            <post>users@truelicense.java.net</post>
-            <archive>http://java.net/projects/truelicense/lists/users/archive</archive>
-        </mailingList>
-    </mailingLists>
     <issueManagement>
-        <system>JIRA</system>
-        <url>https://java.net/jira/browse/TRUELICENSE</url>
+        <system>Bitbucket</system>
+        <url>https://bitbucket.org/christian-schlichtherle/truelicense3/issues</url>
     </issueManagement>
     <scm>
         <connection>scm:git:https://bitbucket.org/christian_schlichtherle/truelicense3.git</connection>
