@@ -430,7 +430,6 @@
                             <report>dependency-management</report>
                             <report>distribution-management</report>
                             <report>issue-tracking</report>
-                            <report>mailing-list</report>
                             <report>plugin-management</report>
                             <report>license</report>
                             <report>plugins</report>
