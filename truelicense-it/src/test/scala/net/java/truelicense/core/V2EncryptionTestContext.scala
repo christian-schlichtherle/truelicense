@@ -13,7 +13,7 @@ import net.java.truelicense.it.core.TestContext
 /** @author Christian Schlichtherle */
 trait V2EncryptionTestContext { this: TestContext =>
   final override def transformation = new V2Encryption(new PbeParameters {
-      def password = test1234.toCharArray
-      def algorithm = "PBEwithSHA1andDESede"
+      def password: Array[Char] = test1234.toCharArray
+      def algorithm: String = "PBEwithSHA1andDESede"
     })
 }

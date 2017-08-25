@@ -14,6 +14,6 @@ import net.java.truelicense.core.{License, LicenseVendorManager}
  */
 class LicenseBeanAndKeyHolder(vm: LicenseVendorManager, _bean: License) {
   private val store = new MemoryStore
-  val bean = vm.create(_bean, store)
-  val key = store.data
+  val bean: License = vm.create(_bean, store)
+  val key: Array[Byte] = store.data
 }

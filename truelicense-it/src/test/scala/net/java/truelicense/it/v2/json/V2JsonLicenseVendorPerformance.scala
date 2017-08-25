@@ -10,5 +10,5 @@ import net.java.truelicense.it.core.LicenseVendorPerformance
 /** @author Christian Schlichtherle */
 object V2JsonLicenseVendorPerformance
 extends LicenseVendorPerformance with V2JsonTestContext {
-  def main(args: Array[String]) = call ()
+  def main(args: Array[String]): Unit = call()
 }

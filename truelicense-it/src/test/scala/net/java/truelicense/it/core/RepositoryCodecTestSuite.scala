@@ -5,10 +5,12 @@
 
 package net.java.truelicense.it.core
 
+import net.java.truelicense.core.auth.Repository
+
 /** @author Christian Schlichtherle */
 abstract class RepositoryCodecTestSuite
 extends CodecTestSuite { this: TestContext =>
-  override def artifact = {
+  override def artifact: AnyRef = {
     val l = license
     val c = managementContext.codec
     val p = vendorManager.parameters

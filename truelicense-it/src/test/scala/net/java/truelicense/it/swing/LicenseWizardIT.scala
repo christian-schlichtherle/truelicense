@@ -173,7 +173,7 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
     new JComponentOperator(dialog, new ComponentChooser {
       val delegate = new NameComponentChooser(name)
 
-      def checkComponent(comp: Component) =
+      def checkComponent(comp: Component): Boolean =
         comp match {
           case panel: JPanel => delegate checkComponent panel
           case _ => false

@@ -16,7 +16,7 @@ extends WordSpec { this: TestContext =>
 
   "A license consumer service" when {
     "using a license consumer manager" when {
-      lazy val manager = consumerManager
+      lazy val manager = consumerManager()
       lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
       lazy val service = new LicenseConsumerService(manager)
 

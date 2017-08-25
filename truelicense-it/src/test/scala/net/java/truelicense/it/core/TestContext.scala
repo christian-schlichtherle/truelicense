@@ -9,15 +9,16 @@ import java.util.Calendar._
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
+import net.java.truelicense.core.codec.Codec
 import net.java.truelicense.core.io._
-import net.java.truelicense.core.{BasicLicenseManagementContext, LicenseConsumerManager, LicenseVendorManager}
+import net.java.truelicense.core._
 import net.java.truelicense.it.core.io.IdentityTransformation
 import net.java.truelicense.obfuscate._
 
 /** @author Christian Schlichtherle */
 trait TestContext {
 
-  val managementContext: BasicLicenseManagementContext
+  val managementContext: LicenseManagementContext
 
   final lazy val vendorContext = {
     val vc = managementContext.vendor
@@ -39,7 +40,7 @@ trait TestContext {
   def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
   def ftpConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager
 
-  def license = {
+  def license: License = {
     val now = new Date
     val me = new X500Principal("CN=Christian Schlichtherle")
     val license = managementContext.license
@@ -63,7 +64,7 @@ trait TestContext {
     map
   }
 
-  final def datePlusDays(date: Date, days: Int) = {
+  final def datePlusDays(date: Date, days: Int): Date = {
     val cal = getInstance
     import cal._
     setTime(date)
@@ -73,11 +74,11 @@ trait TestContext {
   }
 
   def store: Store = new MemoryStore
-  def codec = vendorManager.parameters.codec
+  def codec: Codec = vendorManager.parameters.codec
   def transformation: Transformation = IdentityTransformation
 }
 
 /** @author Christian Schlichtherle */
 object TestContext {
-  def test1234 = new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
+  def test1234: ObfuscatedString = new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael)) /* => "test1234" */
 }

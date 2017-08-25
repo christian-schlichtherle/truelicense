@@ -22,9 +22,9 @@ import org.scalatest.Matchers._
 /** @author Christian Schlichtherle */
 class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
 
-  final lazy val manager = consumerManager
+  final lazy val manager = consumerManager()
   final lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
-  final def licenseClass = reference.bean.getClass
+  final def licenseClass: Class[_ <: License] = reference.bean.getClass
 
   @Test def testLifeCycle() {
     assertSubject()
@@ -70,7 +70,7 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
     viewAs(mediaType) should equal (reference.bean)
   }
 
-  final def viewAs(mediaType: MediaType) =
+  final def viewAs(mediaType: MediaType): License =
     resource path "license" accept mediaType get licenseClass
 
   def assertFailVerify() {
@@ -87,7 +87,7 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
     verifyAs(mediaType) should equal (reference.bean)
   }
 
-  final def verifyAs(mediaType: MediaType) =
+  final def verifyAs(mediaType: MediaType): License =
     resource path "license" queryParam ("verify", "true") accept mediaType get licenseClass
 
   def assertFailUninstall() {
@@ -98,7 +98,7 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
     resource path "license" delete ()
   }
 
-  override protected def configure =
+  override protected def configure: LowLevelAppDescriptor =
     new LowLevelAppDescriptor.Builder(resourceConfig).contextPath("").build
 
   private def resourceConfig: ResourceConfig = {
@@ -112,6 +112,6 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
 
   private final class LicenseConsumerManagerResolver
   extends ContextResolver[LicenseConsumerManager] {
-    override def getContext(ignored: Class[_]) = manager
+    def getContext(ignored: Class[_]): LicenseConsumerManager = manager
   }
 }

@@ -5,9 +5,10 @@
 
 package net.java.truelicense.core
 
+import net.java.truelicense.core.io.Transformation
 import net.java.truelicense.it.core.TestContext
 
 /** @author Christian Schlichtherle */
 trait V2CompressionTestContext { this: TestContext =>
-  final override def transformation = new V2Compression
+  final override def transformation: Transformation = new V2Compression
 }

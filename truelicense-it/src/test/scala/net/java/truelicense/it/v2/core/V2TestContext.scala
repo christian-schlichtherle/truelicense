@@ -14,7 +14,7 @@ import net.java.truelicense.it.v2.core.V2TestContext.prefix
 /** @author Christian Schlichtherle */
 trait V2TestContext extends TestContext {
 
-  override final def vendorManager = {
+  final def vendorManager: LicenseVendorManager = {
     import vendorContext._
     val vm = manager(keyStore(resource(prefix + "private.jceks"),
                               null, test1234, "mykey", test1234),
@@ -23,7 +23,7 @@ trait V2TestContext extends TestContext {
     vm
   }
 
-  override final def chainedVendorManager = {
+  final def chainedVendorManager: LicenseVendorManager = {
     import vendorContext._
     val vm = manager(keyStore(resource(prefix + "chained-private.jceks"),
                               null, test1234, "mykey", test1234),
@@ -32,7 +32,7 @@ trait V2TestContext extends TestContext {
     vm
   }
 
-  override final def consumerManager(store: Store) = {
+  final def consumerManager(store: Store): LicenseConsumerManager = {
     import consumerContext._
     val cm = manager(keyStore(resource(prefix + "public.jceks"),
                               null, test1234, "mykey"),
@@ -42,7 +42,7 @@ trait V2TestContext extends TestContext {
     cm
   }
 
-  override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager = {
     import consumerContext._
     val cm = chainedManager(parent,
                    keyStore(resource(prefix + "chained-public.jceks"),
@@ -53,7 +53,7 @@ trait V2TestContext extends TestContext {
     cm
   }
 
-  override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager = {
     import consumerContext._
     val cm = ftpManager(parent,
                ftpKeyStore(resource(prefix + "ftp.jceks"),

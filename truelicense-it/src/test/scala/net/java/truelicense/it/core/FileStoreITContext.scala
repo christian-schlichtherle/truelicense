@@ -7,11 +7,13 @@ package net.java.truelicense.it.core
 
 import java.io.File
 
+import net.java.truelicense.core.io.Store
+
 /** @author Christian Schlichtherle */
 trait FileStoreITContext { this: TestContext =>
-  override final def store = {
+  override final def store: Store = {
     val file = File.createTempFile("truelicense", null)
     file delete ()
-    vendorContext.fileStore(file)
+    vendorContext fileStore file
   }
 }

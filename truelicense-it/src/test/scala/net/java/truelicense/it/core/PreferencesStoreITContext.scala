@@ -7,11 +7,11 @@ package net.java.truelicense.it.core
 
 import java.util.prefs.Preferences
 
-import net.java.truelicense.core.io.PreferencesStore
+import net.java.truelicense.core.io.{PreferencesStore, Store}
 
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext =>
-  override final def store = {
+  override final def store: Store = {
     val prefs = Preferences userNodeForPackage getClass
     new PreferencesStore(prefs)
   }

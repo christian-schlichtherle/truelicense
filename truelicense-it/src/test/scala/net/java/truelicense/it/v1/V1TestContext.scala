@@ -5,8 +5,13 @@
 
 package net.java.truelicense.it.v1
 
+import java.util.Date
+
+import de.schlichtherle.license.LicenseContent
 import net.java.truelicense.core._
+import net.java.truelicense.core.codec.{Codec, X500PrincipalXmlCodec}
 import net.java.truelicense.core.io.Store
+import net.java.truelicense.core.policy.PasswordPolicy
 import net.java.truelicense.it.core.TestContext
 import net.java.truelicense.it.core.TestContext.test1234
 import net.java.truelicense.it.v1.V1TestContext._
@@ -15,32 +20,32 @@ import org.slf4j.LoggerFactory
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext {
 
-  override final val managementContext =
+  final val managementContext: LicenseManagementContext =
     new V1LicenseManagementContext("subject") {
-      override def license = super.license
-      override def now = super.now
-      override def initialization = {
+      override def license: LicenseContent = super.license
+      override def now: Date = super.now
+      override def initialization: LicenseInitialization = {
         val initialization = super.initialization
         new LicenseInitialization {
-          override def initialize(bean: License) {
+          def initialize(bean: License) {
             initialization.initialize(bean)
           }
         }
       }
-      override def validation = {
+      override def validation: LicenseValidation = {
         val validation = super.validation
         new LicenseValidation {
-          override def validate(bean: License) {
+          def validate(bean: License) {
             validation.validate(bean)
             logger debug ("Validated {}.", bean)
           }
         }
       }
-      override def codec = super.codec
-      override def policy = super.policy
+      override def codec: X500PrincipalXmlCodec = super.codec
+      override def policy: PasswordPolicy = super.policy
     }
 
-  override final def vendorManager = {
+  final def vendorManager: LicenseVendorManager = {
     val vm = vendorContext.manager
       .keyStore
         .alias("mykey")
@@ -55,7 +60,7 @@ trait V1TestContext extends TestContext {
     vm
   }
 
-  override final def chainedVendorManager = {
+  final def chainedVendorManager: LicenseVendorManager = {
     val vm = vendorContext.manager
       .keyStore
         .alias("mykey")
@@ -70,7 +75,7 @@ trait V1TestContext extends TestContext {
     vm
   }
 
-  override final def consumerManager(store: Store) = {
+  final def consumerManager(store: Store): LicenseConsumerManager = {
     val cm = consumerContext.manager
       .keyStore
         .alias("mykey")
@@ -86,7 +91,7 @@ trait V1TestContext extends TestContext {
     cm
   }
 
-  override final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  final def chainedConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager = {
     val cm = consumerContext.manager
       .keyStore
         .alias("mykey")
@@ -100,7 +105,7 @@ trait V1TestContext extends TestContext {
     cm
   }
 
-  override final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store) = {
+  final def ftpConsumerManager(parent: LicenseConsumerManager, store: Store): LicenseConsumerManager = {
     val cm = consumerContext.manager
       .keyStore
         .alias("mykey")

@@ -9,6 +9,6 @@ import net.java.truelicense.core.io.{Sink, Source, Transformation}
 
 /** @author Christian Schlichtherle */
 object IdentityTransformation extends Transformation {
-  override def apply(sink: Sink) = sink
-  override def unapply(source: Source) = source
+  override def apply(sink: Sink): Sink = sink
+  override def unapply(source: Source): Source = source
 }

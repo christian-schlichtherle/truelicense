@@ -10,5 +10,5 @@ import net.java.truelicense.it.core.LicenseConsumerPerformance
 /** @author Christian Schlichtherle */
 object V2XmlLicenseConsumerPerformance
 extends LicenseConsumerPerformance with V2XmlTestContext {
-  def main(args: Array[String]) = call ()
+  def main(args: Array[String]): Unit = call()
 }
