@@ -78,13 +78,8 @@
         <maven.compiler.source>1.${javase.major}</maven.compiler.source>
 
         <!-- maven-enforcer-plugin -->
-        <!-- As detected by mvn versions:display-plugin-updates, except versions
-             3.3.1 and 3.3.3, which would fail with a ClassNotFoundException
-             when running the TrueLicense Maven Plugin.
-             See https://jira.codehaus.org/browse/MNG-5787 and
-             https://java.net/jira/browse/TRUELICENSE-87 .
-             -->
-        <maven.enforcer.requireMavenVersion>[3.0,3.3.0),[3.3.9,)</maven.enforcer.requireMavenVersion>
+        <!-- Older versions will fail to build the TrueLicense Maven Archetype. -->
+        <maven.enforcer.requireMavenVersion>3.5.0</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
         <maven.version>3.0</maven.version>

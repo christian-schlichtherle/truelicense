@@ -9,7 +9,7 @@ import java.util.concurrent.Callable
 
 /** @author Christian Schlichtherle */
 trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =>
-  override def call() {
+  def call() {
     val vm = vendorManager
     val vs = store
     vm generator license save vs
@@ -18,7 +18,9 @@ trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =
       cm install vs
       val num = 1000 * 1000
       val start = System.nanoTime
-      for (j <- 1 to num) cm verify ()
+      for (j <- 1 to num) {
+        cm verify ()
+      }
       val time = System.nanoTime - start
       printf("Iteration %d verified the installed license key %,d times per second.\n", i, num * 1000l * 1000l * 1000l / time)
     }

@@ -25,7 +25,7 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
   self: TestContext[_] =>
 
   final lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
-  final def licenseClass = reference.bean.getClass
+  final def licenseClass: Class[_ <: License] = reference.bean.getClass
 
   @Test def testLifeCycle() {
     assertSubject()
@@ -72,7 +72,7 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
     viewAs(mediaType) should equal (reference.bean)
   }
 
-  final def viewAs(mediaType: MediaType) =
+  final def viewAs(mediaType: MediaType): License =
     resource path "license" accept mediaType get licenseClass
 
   def assertFailVerify() {
@@ -89,7 +89,7 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
     verifyAs(mediaType) should equal (reference.bean)
   }
 
-  final def verifyAs(mediaType: MediaType) =
+  final def verifyAs(mediaType: MediaType): License =
     resource path "license" queryParam ("verify", "true") accept mediaType get licenseClass
 
   def assertFailUninstall() {
@@ -100,7 +100,7 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
     resource path "license" delete ()
   }
 
-  override protected def configure =
+  override protected def configure: LowLevelAppDescriptor =
     new LowLevelAppDescriptor.Builder(resourceConfig).contextPath("").build
 
   private def resourceConfig: ResourceConfig = {
@@ -117,6 +117,6 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
 
     lazy val manager = consumerManager()
 
-    override def getContext(ignored: Class[_]) = manager
+    def getContext(ignored: Class[_]) = manager
   }
 }
