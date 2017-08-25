@@ -7,7 +7,8 @@ package org.truelicense.it.v2.commons
 
 import org.truelicense.api._
 import org.truelicense.api.crypto.EncryptionParameters
-import org.truelicense.api.io.Store
+import org.truelicense.api.io.{Store, Transformation}
+import org.truelicense.api.passwd.PasswordProtection
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.v2.commons.V2TestContext.prefix
 import org.truelicense.v2.commons.auth.V2RepositoryModel
@@ -15,7 +16,7 @@ import org.truelicense.v2.commons.auth.V2RepositoryModel
 /** @author Christian Schlichtherle */
 trait V2TestContext extends TestContext[V2RepositoryModel] {
 
-  override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
+  final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
       .authentication
         .alias("mykey")
@@ -29,7 +30,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     cm
   }
 
-  override final def chainedVendorManager = {
+  final def chainedVendorManager: VendorLicenseManager = {
     val vm = managementContext.vendor
       .encryption
         .protection(test1234)
@@ -44,7 +45,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     vm
   }
 
-  override final def consumerManager(store: Store) = {
+  final def consumerManager(store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
       .encryption
         .protection(test1234)
@@ -60,12 +61,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     cm
   }
 
-  final override def encryption = applicationContext encryption new EncryptionParameters {
-    def algorithm = "PBEWithSHA1AndDESede"
-    def protection = test1234
+  final def encryption: Transformation = applicationContext encryption new EncryptionParameters {
+    def algorithm: String = "PBEWithSHA1AndDESede"
+    def protection: PasswordProtection = test1234
   }
 
-  override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
+  final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
       .ftpDays(1)
       .authentication
@@ -80,7 +81,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     cm
   }
 
-  override final def vendorManager = {
+  final def vendorManager: VendorLicenseManager = {
     val vm = managementContext.vendor
       .encryption
         .protection(test1234)

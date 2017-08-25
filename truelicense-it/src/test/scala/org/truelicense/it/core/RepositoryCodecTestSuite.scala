@@ -9,7 +9,7 @@ package org.truelicense.it.core
 abstract class RepositoryCodecTestSuite[Model <: AnyRef]
   extends CodecTestSuite { this: TestContext[Model] =>
 
-  final override def artifact = {
+  final override def artifact: AnyRef = {
     val l = license
     val c = managementContext.codec
     val p = vendorManager.parameters

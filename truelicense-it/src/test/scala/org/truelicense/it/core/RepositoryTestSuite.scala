@@ -18,8 +18,8 @@ abstract class RepositoryTestSuite[Model <: AnyRef]
 extends WordSpec with ParallelTestExecution { this: TestContext[Model] =>
 
   private val _codec = new SerializationCodec {
-    override def contentType = super.contentType.toUpperCase(ENGLISH)
-    override def contentTransferEncoding = super.contentTransferEncoding.toUpperCase(ENGLISH)
+    override def contentType: String = super.contentType.toUpperCase(ENGLISH)
+    override def contentTransferEncoding: String = super.contentTransferEncoding.toUpperCase(ENGLISH)
   }
 
   "A repository" should {

@@ -9,5 +9,5 @@ package org.truelicense.it.core
 abstract class LicenseCodecTestSuite
   extends CodecTestSuite { this: TestContext[_] =>
 
-  final override def artifact = license
+  final def artifact: AnyRef = license
 }

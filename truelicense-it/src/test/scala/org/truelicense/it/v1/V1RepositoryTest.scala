@@ -9,7 +9,6 @@ import de.schlichtherle.xml.GenericCertificate
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.truelicense.it.core.RepositoryTestSuite
-import org.truelicense.v1.auth.V1RepositoryContext
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])

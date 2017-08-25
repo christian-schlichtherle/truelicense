@@ -5,7 +5,9 @@
 
 package org.truelicense.it.core
 
+import org.truelicense.api.io.Store
+
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext[_] =>
-  override final def store = managementContext userPreferencesStore getClass
+  final override def store: Store = managementContext userPreferencesStore getClass
 }

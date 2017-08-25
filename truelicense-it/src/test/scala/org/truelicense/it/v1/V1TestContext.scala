@@ -8,7 +8,8 @@ package org.truelicense.it.v1
 import de.schlichtherle.xml.GenericCertificate
 import org.truelicense.api._
 import org.truelicense.api.crypto.EncryptionParameters
-import org.truelicense.api.io.{Transformation, Store}
+import org.truelicense.api.io.{Store, Transformation}
+import org.truelicense.api.passwd.PasswordProtection
 import org.truelicense.it.core.TestContext
 import org.truelicense.it.v1.V1TestContext._
 import org.truelicense.v1.V1LicenseApplicationContext
@@ -16,9 +17,9 @@ import org.truelicense.v1.V1LicenseApplicationContext
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext[GenericCertificate] {
 
-  override final val applicationContext = new V1LicenseApplicationContext
+  final val applicationContext = new V1LicenseApplicationContext
 
-  override final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
+  final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
       .authentication
         .alias("mykey")
@@ -32,7 +33,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     cm
   }
 
-  override final def chainedVendorManager = {
+  final def chainedVendorManager: VendorLicenseManager = {
     val vm = managementContext.vendor
       .encryption
         .protection(test1234)
@@ -47,7 +48,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     vm
   }
 
-  override final def consumerManager(store: Store) = {
+  final def consumerManager(store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
       .encryption
         .protection(test1234)
@@ -63,12 +64,12 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     cm
   }
 
-  final override def encryption = applicationContext encryption new EncryptionParameters {
-    def algorithm = "PBEWithMD5AndDES"
-    def protection = test1234
+  final def encryption: Transformation = applicationContext encryption new EncryptionParameters {
+    def algorithm: String = "PBEWithMD5AndDES"
+    def protection: PasswordProtection = test1234
   }
 
-  override final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store) = {
+  final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
       .authentication
         .alias("mykey")
@@ -83,7 +84,7 @@ trait V1TestContext extends TestContext[GenericCertificate] {
     cm
   }
 
-  override final def vendorManager = {
+  final def vendorManager: VendorLicenseManager = {
     val vm = managementContext.vendor
       .encryption
         .protection(test1234)

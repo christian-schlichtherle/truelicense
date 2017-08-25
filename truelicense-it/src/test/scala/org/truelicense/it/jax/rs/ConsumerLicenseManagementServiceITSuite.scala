@@ -15,7 +15,7 @@ import com.sun.jersey.api.core._
 import com.sun.jersey.test.framework._
 import org.junit.Test
 import org.scalatest.Matchers._
-import org.truelicense.api.ConsumerLicenseManager
+import org.truelicense.api.{ConsumerLicenseManager, License}
 import org.truelicense.it.core.TestContext
 import org.truelicense.jax.rs._
 
@@ -115,8 +115,8 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
   private final class ConsumerLicenseManagerResolver
   extends ContextResolver[ConsumerLicenseManager] {
 
-    lazy val manager = consumerManager()
+    private lazy val manager: ConsumerLicenseManager = consumerManager()
 
-    def getContext(ignored: Class[_]) = manager
+    def getContext(ignored: Class[_]): ConsumerLicenseManager = manager
   }
 }

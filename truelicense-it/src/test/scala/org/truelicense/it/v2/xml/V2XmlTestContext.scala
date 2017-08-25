@@ -18,7 +18,7 @@ trait V2XmlTestContext extends V2TestContext {
 
   override final val applicationContext =
     new V2XmlLicenseApplicationContext {
-      override def newJaxbContext() = {
+      override def newJaxbContext(): JAXBContext = {
         try {
           JAXBContext newInstance (
             classOf[License],
@@ -30,7 +30,7 @@ trait V2XmlTestContext extends V2TestContext {
       }
     }
 
-  override def extraData = {
+  override def extraData: AnyRef = {
     val bean = new ExtraData
     bean.setMessage("This is some private extra data!")
     bean

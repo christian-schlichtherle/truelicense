@@ -9,7 +9,7 @@ import java.nio.file.Files
 
 /** @author Christian Schlichtherle */
 trait PathStoreITContext { this: TestContext[_] =>
-  override final def store = {
+  final override def store = {
     val path = Files.createTempFile("truelicense", ".tmp")
     Files delete path
     managementContext.pathStore(path)
