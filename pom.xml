@@ -48,9 +48,9 @@
         <url>https://bitbucket.org/christian-schlichtherle/truelicense3/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:https://bitbucket.org/christian_schlichtherle/truelicense3.git</connection>
-        <developerConnection>scm:git:git@bitbucket.org:christian_schlichtherle/truelicense3.git</developerConnection>
-        <url>https://bitbucket.org/christian_schlichtherle/truelicense3</url>
+        <connection>scm:git:https://bitbucket.org/christian-schlichtherle/truelicense3.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:christian-schlichtherle/truelicense3.git</developerConnection>
+        <url>https://bitbucket.org/christian-schlichtherle/truelicense3</url>
         <tag>HEAD</tag>
     </scm>
 
