@@ -33,4 +33,4 @@ $h3 Usage
 For usage information, please have a look at the
 [TrueLicense Maven Archetype](../truelicense-maven-archetype/index.html).
 You can also check the Javadoc for the package
-[`org.truelicense.ui`](../apidocs/org/truelicense/ui/package-summary.html).
+[`net.truelicense.ui`](../apidocs/net/truelicense/ui/package-summary.html).

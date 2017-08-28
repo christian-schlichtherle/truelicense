@@ -5,7 +5,7 @@
 
 package de.schlichtherle.license;
 
-import org.truelicense.api.License;
+import net.truelicense.api.License;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;

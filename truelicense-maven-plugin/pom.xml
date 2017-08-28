@@ -14,7 +14,7 @@
     </prerequisites>
 
     <parent>
-        <groupId>org.truelicense</groupId>
+        <groupId>net.truelicense</groupId>
         <artifactId>truelicense</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
@@ -73,7 +73,7 @@
             <plugin>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <configuration>
-                    <helpPackageName>org.truelicense.maven.plugin.help</helpPackageName>
+                    <helpPackageName>net.truelicense.maven.plugin.help</helpPackageName>
                 </configuration>
             </plugin>
         </plugins>

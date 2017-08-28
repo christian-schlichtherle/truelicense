@@ -28,4 +28,4 @@ $h3 Usage
 For usage information, please have a look at the
 [TrueLicense Maven Archetype](../truelicense-maven-archetype/index.html).
 You can also check the Javadoc for the package
-[`org.truelicense.obfuscate`](../apidocs/org/truelicense/obfuscate/package-summary.html).
+[`net.truelicense.obfuscate`](../apidocs/net/truelicense/obfuscate/package-summary.html).

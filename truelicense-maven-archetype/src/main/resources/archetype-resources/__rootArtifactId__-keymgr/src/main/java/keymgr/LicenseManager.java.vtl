@@ -4,13 +4,13 @@
  */
 
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseApplicationContextPackage = "org.truelicense.v2.json")
+#set($licenseApplicationContextPackage = "net.truelicense.v2.json")
 #set($licenseApplicationContextClass = "V2JsonLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseApplicationContextPackage = "org.truelicense.v2.xml")
+#set($licenseApplicationContextPackage = "net.truelicense.v2.xml")
 #set($licenseApplicationContextClass = "V2XmlLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseApplicationContextPackage = "org.truelicense.v1")
+#set($licenseApplicationContextPackage = "net.truelicense.v1")
 #set($licenseApplicationContextClass = "V1LicenseApplicationContext")
 #end
 #set($editions = $editions.split($delimiter))
@@ -19,7 +19,7 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
-#macro(protection $string)$java.obfuscatedString($string).replaceAll("new org.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
+#macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
 #macro(new $class $interface)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -55,13 +55,13 @@ ${class.replace('$', '.')}.class
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
-import org.truelicense.api.*;
-import org.truelicense.api.io.Source;
-import org.truelicense.api.passwd.PasswordProtection;
+import net.truelicense.api.*;
+import net.truelicense.api.io.Source;
+import net.truelicense.api.passwd.PasswordProtection;
 import $licenseApplicationContextPackage.$licenseApplicationContextClass;
-import org.truelicense.obfuscate.*;
+import net.truelicense.obfuscate.*;
 #if($keyMgrClockClass != "-")
-import org.truelicense.api.misc.Clock;
+import net.truelicense.api.misc.Clock;
 import java.util.Date;
 #end
 
@@ -190,7 +190,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #end
 
     // Note that the class implementing the interface
-    // org.truelicense.api.LicenseManagementContext
+    // net.truelicense.api.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
     // $licenseApplicationContextPackage.$licenseApplicationContextClass

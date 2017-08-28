@@ -10,9 +10,9 @@
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>keyGenAuthorizationClass=org.truelicense.core.TrueLicenseManagementAuthorization</code>
+        <code>keyGenAuthorizationClass=net.truelicense.core.TrueLicenseManagementAuthorization</code>
         and
-        <code>keyMgrAuthorizationClass=org.truelicense.core.TrueLicenseManagementAuthorization</code>
+        <code>keyMgrAuthorizationClass=net.truelicense.core.TrueLicenseManagementAuthorization</code>
         to the Basic Configuration example in order to implement a custom
         license authorization.
     </p:documentation>
@@ -21,10 +21,10 @@
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenAuthorizationClass>
-            org.truelicense.core.TrueLicenseManagementAuthorization
+            net.truelicense.core.TrueLicenseManagementAuthorization
         </p:keyGenAuthorizationClass>
         <p:keyMgrAuthorizationClass>
-            org.truelicense.core.TrueLicenseManagementAuthorization
+            net.truelicense.core.TrueLicenseManagementAuthorization
         </p:keyMgrAuthorizationClass>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>

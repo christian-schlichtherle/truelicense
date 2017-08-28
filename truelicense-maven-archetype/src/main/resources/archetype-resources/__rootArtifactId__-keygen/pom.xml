@@ -28,7 +28,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.truelicense</groupId>
+            <groupId>net.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
         </dependency>
     </dependencies>

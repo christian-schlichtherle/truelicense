@@ -5,7 +5,7 @@
 
 package de.schlichtherle.xml;
 
-import org.truelicense.core.misc.Strings;
+import net.truelicense.core.misc.Strings;
 
 import java.util.Objects;
 

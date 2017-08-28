@@ -11,9 +11,9 @@ import static java.lang.System.*;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.*;
-import org.truelicense.api.*;
+import net.truelicense.api.*;
 #if($disableWizard == false)
-import org.truelicense.swing.LicenseManagementWizard;
+import net.truelicense.swing.LicenseManagementWizard;
 import javax.swing.*;
 #end
 
@@ -167,7 +167,7 @@ public enum Main {
 #end
 #if($keyMgrClockClass == "${package}.keymgr.Main${dollar}SystemClock")
 
-    public static final class SystemClock implements org.truelicense.api.misc.Clock {
+    public static final class SystemClock implements net.truelicense.api.misc.Clock {
         public Date now() { return new Date(); }
     }
 #end

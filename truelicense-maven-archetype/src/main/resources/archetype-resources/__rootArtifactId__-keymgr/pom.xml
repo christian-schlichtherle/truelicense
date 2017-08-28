@@ -37,14 +37,14 @@
         </dependency>
 
         <dependency>
-            <groupId>org.truelicense</groupId>
+            <groupId>net.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
         </dependency>
 #if($disableWizard == false)
         <!-- This dependency is only required for the "wizard" command of the
              Main class. -->
         <dependency>
-            <groupId>org.truelicense</groupId>
+            <groupId>net.truelicense</groupId>
             <artifactId>truelicense-swing</artifactId>
             <optional>true</optional>
         </dependency>

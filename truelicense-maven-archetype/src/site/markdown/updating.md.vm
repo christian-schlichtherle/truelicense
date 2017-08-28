@@ -66,7 +66,7 @@ So if you like, you could also set the property value to `Product 1.x` or
 `Product 2.x` instead of `Product 1` or `Product 2`, respectively.
 If an invalid license key is found by TrueLicense, e.g. because a user hasn't
 bought another license key for your new release, then a
-[`org.truelicense.api.LicenseValidationException`](../apidocs/org/truelicense/api/LicenseValidationException.html)
+[`net.truelicense.api.LicenseValidationException`](../apidocs/net/truelicense/api/LicenseValidationException.html)
 gets thrown.
 
 ---

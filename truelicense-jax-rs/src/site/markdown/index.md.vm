@@ -26,15 +26,15 @@ Using the $project.name you can...
 $h3 Usage
 
 The service is implemented by the class
-[`LicenseConsumerService`](../apidocs/org/truelicense/ws/rs/LicenseConsumerService.html)
+[`LicenseConsumerService`](../apidocs/net/truelicense/ws/rs/LicenseConsumerService.html)
 and accompanied by the exception mapper class
-[`LicenseConsumerServiceExceptionMapper`](../apidocs/org/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
+[`LicenseConsumerServiceExceptionMapper`](../apidocs/net/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
 With a typical container, you should just let it scan the package
-[`org.truelicense.jax.rs`](../apidocs/org/truelicense/jax/rs/package-summary.html)
+[`net.truelicense.jax.rs`](../apidocs/net/truelicense/jax/rs/package-summary.html)
 so that it can find these classes.
 
 The `LicenseConsumerService` needs a
-[`LicenseConsumerManager`](../apidocs/org/truelicense/core/LicenseConsumerManager.html)
+[`LicenseConsumerManager`](../apidocs/net/truelicense/core/LicenseConsumerManager.html)
 as its dependency.
 If no dependency injection framework is available, you can satisfy this
 dependency using:
@@ -42,7 +42,7 @@ dependency using:
     package [...];
 
     import javax.ws.rs.ext.*;
-    import org.truelicense.api.ConsumerLicenseManager;
+    import net.truelicense.api.ConsumerLicenseManager;
 
     @Provider
     public class LicenseConsumerManagerResolver
@@ -67,7 +67,7 @@ class in the KeyMgr module like this:
 
     import javax.enterprise.context.ApplicationScoped;
     import javax.enterprise.inject.Produces;
-    import org.truelicense.api.ConsumerLicenseManager;
+    import net.truelicense.api.ConsumerLicenseManager;
     [...]
 
     public class LicensingSchema {
