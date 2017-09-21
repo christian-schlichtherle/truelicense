@@ -74,10 +74,10 @@ public final class ConsumerLicenseManagementService {
     }
 
     private static ConsumerLicenseManager manager(final Providers providers) {
-        final ContextResolver<ConsumerLicenseManager>
-                resolver = providers.getContextResolver(ConsumerLicenseManager.class, WILDCARD_TYPE);
-        if (null == resolver)
+        final ContextResolver<ConsumerLicenseManager> resolver = providers.getContextResolver(ConsumerLicenseManager.class, WILDCARD_TYPE);
+        if (null == resolver) {
             throw new IllegalArgumentException("No @Provider annotated ContextResolver<ConsumerLicenseManager> available.");
+        }
         return resolver.getContext(ConsumerLicenseManager.class);
     }
 
@@ -123,8 +123,7 @@ public final class ConsumerLicenseManagementService {
     }
 
     @GET
-    public License view(
-            final @QueryParam("verify") @DefaultValue("false") boolean verify)
+    public License view(final @QueryParam("verify") @DefaultValue("false") boolean verify)
     throws ConsumerLicenseManagementServiceException {
         final License license;
         try {

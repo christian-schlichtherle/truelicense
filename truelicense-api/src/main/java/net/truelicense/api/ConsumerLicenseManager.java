@@ -11,18 +11,15 @@ import net.truelicense.api.io.Source;
  * Defines the life cycle management operations for license keys in consumer
  * applications.
  *
- * <h3>How to Preview License Keys?</h3>
+ * <h3>How to Preview License Keys</h3>
  * <p>
- * This interface lacks a method to preview the license bean which is encoded
- * in a license key.
- * However, you can work around this constraint by using a
- * {@linkplain LicenseManagementContext license management context}
- * to configure a consumer license manager which uses a transient
- * {@linkplain LicenseManagementContext#memoryStore() memory store} instead of
- * a persistent store - see {@link ConsumerLicenseManagerBuilder#storeIn}.
- * Once configured, you can {@linkplain #install install} the license key to
- * the transient memory store and {@linkplain #load load} its encoded license
- * bean.
+ * This interface intentionally lacks a method to preview the license bean which is encoded in a license key.
+ * You can work around this constraint by using a {@linkplain LicenseManagementContext license management context} to
+ * configure a consumer license manager which uses a transient
+ * {@linkplain LicenseManagementContext#memoryStore() memory store} instead of a persistent store - see
+ * {@link ConsumerLicenseManagerBuilder#storeIn}.
+ * Once configured, you can {@linkplain #install install} the license key to the transient memory store and
+ * {@linkplain #load load} its encoded license bean.
  *
  * @author Christian Schlichtherle
  */
