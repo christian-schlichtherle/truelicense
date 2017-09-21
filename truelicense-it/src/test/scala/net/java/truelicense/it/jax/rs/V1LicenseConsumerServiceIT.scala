@@ -11,5 +11,5 @@ import net.java.truelicense.it.v1.V1TestContext
 class V1LicenseConsumerServiceIT
 extends LicenseConsumerServiceITSuite
 with V1TestContext {
-  override def extraData = null
+  override def extraData: AnyRef = null
 }

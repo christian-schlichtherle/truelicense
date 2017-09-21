@@ -11,5 +11,5 @@ import net.java.truelicense.it.v2.xml.V2XmlTestContext
 class V2XmlLicenseConsumerServiceIT
 extends LicenseConsumerServiceITSuite
 with V2XmlTestContext {
-  override def extraData = null
+  override def extraData: AnyRef = null
 }

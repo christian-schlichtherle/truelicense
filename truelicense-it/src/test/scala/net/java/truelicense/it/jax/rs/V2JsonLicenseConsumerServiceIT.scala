@@ -11,5 +11,5 @@ import net.java.truelicense.it.v2.json.V2JsonTestContext
 class V2JsonLicenseConsumerServiceIT
 extends LicenseConsumerServiceITSuite
 with V2JsonTestContext {
-  override def extraData = null
+  override def extraData: AnyRef = null
 }
