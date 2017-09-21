@@ -84,10 +84,6 @@
 
         <maven.version>3.0</maven.version>
 
-        <!-- maven-failsafe-plugin && maven-surefire-plugin -->
-        <parallel>classesAndMethods</parallel>
-        <threadCount>1</threadCount>
-
         <!-- maven-javadoc-plugin -->
         <additionalparam>--allow-script-in-comments</additionalparam>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>

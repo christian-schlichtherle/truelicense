@@ -68,12 +68,6 @@
                         <skip>true</skip>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <configuration>
-                        <parallel>none</parallel>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
