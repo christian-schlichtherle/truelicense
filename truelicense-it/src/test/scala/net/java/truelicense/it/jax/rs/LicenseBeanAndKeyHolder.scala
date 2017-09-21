@@ -13,7 +13,8 @@ import net.java.truelicense.core.{License, LicenseVendorManager}
  * Note that the key and the bean get shared with the caller.
  */
 class LicenseBeanAndKeyHolder(vm: LicenseVendorManager, _bean: License) {
-  private val store = new MemoryStore
-  val bean: License = vm.create(_bean, store)
-  val key: Array[Byte] = store.data
+  val (bean: License, key: Array[Byte]) = {
+    val store = new MemoryStore
+    vm.create(_bean, store) -> store.data
+  }
 }
