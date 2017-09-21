@@ -271,7 +271,7 @@
                 <plugin>
                     <groupId>com.soebes.maven.plugins</groupId>
                     <artifactId>iterator-maven-plugin</artifactId>
-                    <version>0.5.0</version>
+                    <version>0.5.1</version>
                     <configuration>
                         <delimiter>${dollar}{delimiter}</delimiter>
                     </configuration>
@@ -282,7 +282,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.7.0</version>
                     <configuration>
                         <compilerArgs>
                             <arg>-Xlint:unchecked</arg>
@@ -304,7 +304,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.19.1</version>
+                    <version>2.20.1</version>
                     <executions>
                         <execution>
                             <id>integration-test</id>
@@ -355,7 +355,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.1.0</version>
                     <configuration>
                         <filters combine.children="append">
                             <filter>
@@ -396,12 +396,12 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.19.1</version>
+                    <version>2.20.1</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.wvengen</groupId>
                     <artifactId>proguard-maven-plugin</artifactId>
-                    <version>2.0.13</version>
+                    <version>2.0.14</version>
                     <configuration>
                         <injar>${dollar}{project.build.finalName}-standalone.jar</injar>
                         <outjar>${dollar}{project.build.finalName}-guarded.jar</outjar>
@@ -491,7 +491,7 @@
                         <dependency>
                             <groupId>net.sf.proguard</groupId>
                             <artifactId>proguard-base</artifactId>
-                            <version>5.3.2</version>
+                            <version>5.3.3</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -569,6 +569,7 @@
                 <dependency>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
+                    <scope>test</scope>
                 </dependency>
             </dependencies>
         </profile>

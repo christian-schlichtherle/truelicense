@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>112</version>
+        <version>116</version>
     </parent>
 
     <groupId>net.truelicense</groupId>
@@ -114,7 +114,7 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <jackson.version>2.8.6</jackson.version>
+        <jackson.version>2.9.1</jackson.version>
         <javaee.version>7.0</javaee.version>
     </properties>
 
@@ -263,7 +263,7 @@
             <dependency>
                 <groupId>com.sun.jersey.jersey-test-framework</groupId>
                 <artifactId>jersey-test-framework-http</artifactId>
-                <version>1.19.3</version>
+                <version>1.19.4</version>
             </dependency>
             <dependency>
                 <groupId>javax.ws.rs</groupId>
@@ -351,6 +351,7 @@
                     <configuration>
                         <args>
                             <arg>-deprecation</arg>
+                            <arg>-explaintypes</arg>
                             <arg>-feature</arg>
                         </args>
                     </configuration>
