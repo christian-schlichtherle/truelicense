@@ -48,17 +48,13 @@ implements ExceptionMapper<ConsumerLicenseManagementServiceException> {
         final MediaType mt = headers.getMediaType();
         final ResponseBuilder rb = Response.status(ex.getStatus());
         if (APPLICATION_JSON_TYPE.equals(mt)) {
-            rb.type(APPLICATION_JSON_TYPE)
-                    .entity('"' + msg + '"');
+            rb.type(APPLICATION_JSON_TYPE).entity('"' + msg + '"');
         } else if (APPLICATION_XML_TYPE.equals(mt)) {
-            rb.type(APPLICATION_XML_TYPE)
-                    .entity(new JAXBElement<String>(message, String.class, msg));
+            rb.type(APPLICATION_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
         } else if (TEXT_XML_TYPE.equals(mt)) {
-            rb.type(TEXT_XML_TYPE)
-                    .entity(new JAXBElement<String>(message, String.class, msg));
+            rb.type(TEXT_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
         } else {
-            rb.type(TEXT_PLAIN_TYPE)
-                    .entity(msg);
+            rb.type(TEXT_PLAIN_TYPE).entity(msg);
         }
         return rb.build();
     }
