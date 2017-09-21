@@ -11,5 +11,5 @@ import net.truelicense.it.v2.xml.V2XmlTestContext
 class V2XmlConsumerLicenseManagementServiceIT
 extends ConsumerLicenseManagementServiceITSuite
 with V2XmlTestContext {
-  override def extraData = null
+  override def extraData: AnyRef = null
 }

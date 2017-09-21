@@ -11,5 +11,5 @@ import net.truelicense.it.v1.V1TestContext
 class V1ConsumerLicenseManagementServiceIT
 extends ConsumerLicenseManagementServiceITSuite
 with V1TestContext {
-  override def extraData = null
+  override def extraData: AnyRef = null
 }
