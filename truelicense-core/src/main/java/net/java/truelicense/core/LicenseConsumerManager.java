@@ -12,18 +12,14 @@ import net.java.truelicense.core.util.ContextProvider;
  * Defines the life cycle management operations for license keys in consumer
  * applications.
  *
- * <h3>How to Preview License Keys?</h3>
+ * <h3>How to Preview License Keys</h3>
  * <p>
- * This interface lacks a method to preview the license bean which is encoded
- * in a license key.
- * However, you can work around this constraint by using a
- * {@linkplain LicenseConsumerContext license consumer context}
- * to configure a license consumer manager which uses a transient
- * {@link net.java.truelicense.core.io.MemoryStore} instead of a persistent
- * store - see {@link LicenseConsumerContext.ManagerBuilder#storeIn}.
- * Once configured, you can {@linkplain #install install} the license key to
- * the transient memory store and {@linkplain #view view} its encoded license
- * bean.
+ * This interface intentionally lacks a method to preview the license bean which is encoded in a license key.
+ * You can work around this constraint by using a {@linkplain LicenseConsumerContext license consumer context} to
+ * configure a license consumer manager which uses a transient {@link net.java.truelicense.core.io.MemoryStore} instead
+ * of a persistent store - see {@link LicenseConsumerContext.ManagerBuilder#storeIn}.
+ * Once configured, you can {@linkplain #install install} the license key to the transient memory store and
+ * {@linkplain #view view} its encoded license bean.
  *
  * @author Christian Schlichtherle
  */
