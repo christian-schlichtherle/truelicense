@@ -130,6 +130,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
             this.templates = templates;
         }
 
+        @SuppressWarnings("unchecked")
         void processDirectory() throws Exception {
             final File templateDirectory = resolveWithBaseDirectory(templateDirectoryPath());
             final List<String> paths = FileUtils.getFileNames(templateDirectory,
