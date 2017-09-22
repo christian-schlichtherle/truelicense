@@ -2,10 +2,15 @@ cache:
   directories:
   - $HOME/.m2/repository
 
+git:
+  depth: 3
+
 jdk:
 - openjdk7
 - oraclejdk8
 
+install: true
+
 language: java
 
-script: mvn verify
+script: mvn install -B -V
