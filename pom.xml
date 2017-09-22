@@ -105,6 +105,9 @@
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
+        <scala.compat.version>2.11</scala.compat.version>
+        <scala.version>2.11.11</scala.version>
+
         <!-- dependencies -->
         <jackson.version>2.9.1</jackson.version>
         <javaee.version>${javase.major}.0</javaee.version>
