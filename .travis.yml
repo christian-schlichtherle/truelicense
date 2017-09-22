@@ -6,11 +6,9 @@ git:
   depth: 3
 
 jdk:
-- openjdk7
+- openjdk8
 - oraclejdk8
-
-install: true
 
 language: java
 
-script: mvn install -B -V
+script: mvn verify -B
