@@ -1,10 +1,10 @@
-#jdk:
+jdk:
 #- openjdk6
 #- openjdk7
 #- openjdk8
-#- oraclejdk7
-#- oraclejdk8
+- oraclejdk7
+- oraclejdk8
 
 language: java
 
-#script: mvn install -Pintegration-test
+script: mvn verify
