@@ -5,61 +5,66 @@
 
 package net.truelicense.it.jax.rs
 
-import javax.ws.rs.core.MediaType
+import javax.ws.rs.WebApplicationException
+import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType._
-import javax.ws.rs.ext.ContextResolver
+import javax.ws.rs.core.{Application, MediaType}
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
-import com.sun.jersey.api.client.UniformInterfaceException
-import com.sun.jersey.api.core._
-import com.sun.jersey.test.framework._
-import net.truelicense.api.{ConsumerLicenseManager, License}
+import net.truelicense.api.License
 import net.truelicense.it.core.TestContext
-import net.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
+import net.truelicense.jax.rs.ConsumerLicenseManagementServiceExceptionMapper
+import org.glassfish.jersey.server.ResourceConfig
+import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
 import org.scalatest.Matchers._
 
 /** @author Christian Schlichtherle */
-abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
-
+abstract class ConsumerLicenseManagementServiceITSuite
+  extends JerseyTest
+    with ConsumerLicenseManagementServiceTestMixin {
   self: TestContext[_] =>
 
-  final lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
-  final def licenseClass: Class[_ <: License] = reference.bean.getClass
+  override protected def configure: Application = {
+    new ResourceConfig(classOf[ConsumerLicenseManagementServiceExceptionMapper]).registerInstances(managementService)
+  }
 
-  @Test def testLifeCycle() {
+  @Test
+  def testLifeCycle() {
     assertSubject()
     assertFailView()
     assertFailVerify()
-    assertFailUninstall()
+    assertUninstallFailure()
     assertInstall()
     assertSubject()
     assertView()
     assertVerify()
-    assertUninstall()
+    assertUninstallSuccess()
     assertSubject()
     assertFailView()
     assertFailVerify()
-    assertFailUninstall()
+    assertUninstallFailure()
   }
 
   def assertSubject() {
     val subject = managementContext.subject
-    subjectAs(TEXT_PLAIN_TYPE) should be (subject)
-    subjectAs(APPLICATION_JSON_TYPE) should be ('"' + subject + '"')
-    subjectAs(APPLICATION_XML_TYPE) should
-      be ("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><subject>" + subject + "</subject>")
+    subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
+    subjectAs(APPLICATION_JSON_TYPE) shouldBe s""""$subject""""
+    subjectAs(APPLICATION_XML_TYPE) shouldBe s"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subject>$subject</subject>"""
   }
 
-  private def subjectAs(mediaType: MediaType) =
-    resource path "license/subject" accept mediaType get classOf[String]
+  private def subjectAs(mediaType: MediaType) = target("license/subject") request mediaType get classOf[String]
 
   def assertInstall() {
-    resource path "license" post reference.key
+    target("license").request.post(
+      Entity.entity(cachedLicenseKey, MediaType.APPLICATION_OCTET_STREAM_TYPE),
+      cachedLicenseClass
+    ) shouldBe cachedLicenseBean
   }
 
   def assertFailView() {
-    intercept[UniformInterfaceException] { assertView() }
+    intercept[WebApplicationException] {
+      assertView()
+    }
   }
 
   def assertView() {
@@ -69,14 +74,15 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
   }
 
   def assertView(mediaType: MediaType) {
-    viewAs(mediaType) should equal (reference.bean)
+    viewAs(mediaType) shouldBe cachedLicenseBean
   }
 
-  final def viewAs(mediaType: MediaType): License =
-    resource path "license" accept mediaType get licenseClass
+  final def viewAs(mediaType: MediaType): License = target("license") request mediaType get cachedLicenseClass
 
   def assertFailVerify() {
-    intercept[UniformInterfaceException] { assertVerify() }
+    intercept[WebApplicationException] {
+      assertVerify()
+    }
   }
 
   def assertVerify() {
@@ -86,37 +92,20 @@ abstract class ConsumerLicenseManagementServiceITSuite extends JerseyTest {
   }
 
   def assertVerify(mediaType: MediaType) {
-    verifyAs(mediaType) should equal (reference.bean)
+    verifyAs(mediaType) shouldBe cachedLicenseBean
   }
 
-  final def verifyAs(mediaType: MediaType): License =
-    resource path "license" queryParam ("verify", "true") accept mediaType get licenseClass
-
-  def assertFailUninstall() {
-    intercept[UniformInterfaceException] { assertUninstall() }
+  final def verifyAs(mediaType: MediaType): License = {
+    target("license") queryParam ("verify", "true") request mediaType get cachedLicenseClass
   }
 
-  def assertUninstall() {
-    resource path "license" delete ()
+  def assertUninstallSuccess() {
+    uninstallStatus() shouldBe 204
   }
 
-  override protected def configure: LowLevelAppDescriptor =
-    new LowLevelAppDescriptor.Builder(resourceConfig).contextPath("").build
-
-  private def resourceConfig: ResourceConfig = {
-    val rc = new DefaultResourceConfig
-    rc.getClasses.add(classOf[ConsumerLicenseManagementService])
-    rc.getClasses.add(classOf[ConsumerLicenseManagementServiceExceptionMapper])
-    rc.getSingletons.add(new ConsumerLicenseManagerResolver)
-    rc.getSingletons.add(new JacksonJaxbJsonProvider())
-    rc
+  def assertUninstallFailure() {
+    uninstallStatus() shouldBe 404
   }
 
-  private final class ConsumerLicenseManagerResolver
-  extends ContextResolver[ConsumerLicenseManager] {
-
-    private lazy val manager: ConsumerLicenseManager = consumerManager()
-
-    def getContext(ignored: Class[_]): ConsumerLicenseManager = manager
-  }
+  private def uninstallStatus() = target("license").request.delete().getStatus
 }

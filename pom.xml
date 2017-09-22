@@ -106,8 +106,8 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <jackson.version>2.9.1</jackson.version>
         <javaee.version>7.0</javaee.version>
+        <jersey.version>2.26</jersey.version>
     </properties>
 
     <modules>
@@ -233,19 +233,9 @@
                 <version>1.2</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.jaxrs</groupId>
-                <artifactId>jackson-jaxrs-json-provider</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-jaxb-annotations</artifactId>
-                <version>${jackson.version}</version>
+                <version>2.9.1</version>
             </dependency>
             <dependency>
                 <groupId>javax</groupId>
@@ -253,14 +243,9 @@
                 <version>${javaee.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.jersey.jersey-test-framework</groupId>
-                <artifactId>jersey-test-framework-http</artifactId>
-                <version>1.19.4</version>
-            </dependency>
-            <dependency>
                 <groupId>javax.ws.rs</groupId>
-                <artifactId>jsr311-api</artifactId>
-                <version>1.1.1</version>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven</groupId>
@@ -289,6 +274,21 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-tools</artifactId>
                 <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+                <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+                <version>${jersey.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

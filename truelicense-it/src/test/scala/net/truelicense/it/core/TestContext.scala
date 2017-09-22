@@ -13,7 +13,7 @@ import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
 import net.truelicense.api.codec.{Codec, CodecProvider}
 import net.truelicense.api.io.{Store, Transformation}
 import net.truelicense.api.passwd.PasswordProtection
-import net.truelicense.api.{ConsumerLicenseManager, License, LicenseValidation, VendorLicenseManager}
+import net.truelicense.api.{ConsumerLicenseManager, License, VendorLicenseManager}
 import net.truelicense.core.TrueLicenseApplicationContext
 import net.truelicense.it.core.TestContext._
 import net.truelicense.spi.io.Transformer
@@ -76,15 +76,13 @@ trait TestContext[Model <: AnyRef]
     license
   }
 
-  final lazy val managementContext =
-    applicationContext.context
+  final lazy val managementContext = {
+    applicationContext
+      .context
       .subject("subject")
-      .validation(new LicenseValidation {
-          override def validate(bean: License) {
-            logger debug ("Validating license bean: {}", bean)
-          }
-        })
+      .validation(logger debug("Validating license bean: {}", _))
       .build
+  }
 
   final override def repositoryContext: RepositoryContext[Model] = applicationContext.repositoryContext
 

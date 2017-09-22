@@ -7,6 +7,7 @@ package net.truelicense.jax.rs;
 
 import net.truelicense.api.LicenseManagementException;
 
+import javax.ws.rs.core.Response.StatusType;
 import java.security.GeneralSecurityException;
 
 /**
@@ -22,7 +23,7 @@ extends GeneralSecurityException {
 
     private static final long serialVersionUID = 0L;
 
-    private final int status;
+    private final StatusType status;
 
     /**
      * Constructs a consumer license management service exception with the given HTTP
@@ -33,12 +34,12 @@ extends GeneralSecurityException {
      * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a>
      */
     ConsumerLicenseManagementServiceException(
-            final int status,
+            final StatusType status,
             final LicenseManagementException nullableCause) {
         super(null == nullableCause ? null : nullableCause.getMessage(), nullableCause);
         this.status = status;
     }
 
-    /** Returns the HTTP status code. */
-    public int getStatus() { return status; }
+    /** Returns the HTTP status type. */
+    public StatusType getStatus() { return status; }
 }
