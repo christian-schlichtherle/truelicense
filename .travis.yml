@@ -1,5 +1,5 @@
-jdk:
-- openjdk6
+#jdk:
+#- openjdk6
 #- openjdk7
 #- openjdk8
 #- oraclejdk7
@@ -7,4 +7,4 @@ jdk:
 
 language: java
 
-script: mvn install -Pintegration-test
+#script: mvn install -Pintegration-test
