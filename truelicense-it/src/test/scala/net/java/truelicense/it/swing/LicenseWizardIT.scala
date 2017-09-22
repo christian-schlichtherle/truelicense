@@ -5,7 +5,7 @@
 
 package net.java.truelicense.it.swing
 
-import java.awt.{Component, EventQueue}
+import java.awt.{Component, EventQueue, GraphicsEnvironment}
 import java.util.Date
 import javax.swing._
 
@@ -21,6 +21,7 @@ import org.junit.runner._
 import org.netbeans.jemmy._
 import org.netbeans.jemmy.operators._
 import org.netbeans.jemmy.util._
+import org.scalactic.source.Position
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.scalatest.junit._
@@ -69,48 +70,48 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
   "A license wizard" when {
     "using a license consumer manager with an installed license key" when {
       "showing" should {
-        "be modal" in {
+        "be modal" ifNotHeadless {
           dialog.isModal shouldBe true
         }
 
-        "have a title which includes the licensing subject" in {
+        "have a title which includes the licensing subject" ifNotHeadless {
           dialog.getTitle should include (manager.subject)
         }
 
-        "have its back button disabled" in {
+        "have its back button disabled" ifNotHeadless {
           backButton.isEnabled shouldBe false
         }
 
-        "have its next button enabled" in {
+        "have its next button enabled" ifNotHeadless {
           nextButton.isEnabled shouldBe true
         }
 
-        "have its cancel button enabled" in {
+        "have its cancel button enabled" ifNotHeadless {
           cancelButton.isEnabled shouldBe true
         }
 
-        "show its welcome panel and hide the other panels" in {
+        "show its welcome panel and hide the other panels" ifNotHeadless {
           welcomePanel.isVisible shouldBe true
           installPanel.isVisible shouldBe false
           displayPanel.isVisible shouldBe false
           uninstallPanel.isVisible shouldBe false
         }
 
-        "have a visible, non-empty prompt on its welcome panel" in {
+        "have a visible, non-empty prompt on its welcome panel" ifNotHeadless {
           dialog.getQueueTool waitEmpty ()
           val prompt = waitTextComponent(welcomePanel, welcome_prompt)
           prompt.isVisible shouldBe true
           prompt.getText should not be 'empty
         }
 
-        "have both the install and display buttons enabled" in {
+        "have both the install and display buttons enabled" ifNotHeadless {
           val installSelector = waitButton(welcomePanel, welcome_install)
           val displaySelector = waitButton(welcomePanel, welcome_display)
           installSelector.isEnabled shouldBe true
           displaySelector.isEnabled shouldBe true
         }
 
-        "switch to the install panel when requested" in {
+        "switch to the install panel when requested" ifNotHeadless {
           val installSelector = waitButton(welcomePanel, welcome_install)
           installSelector.isVisible shouldBe true
           installSelector.isEnabled shouldBe true
@@ -122,7 +123,7 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
           waitButton(installPanel, install_install).isEnabled shouldBe false
         }
 
-        "switch to the display panel by default and display the license content" in {
+        "switch to the display panel by default and display the license content" ifNotHeadless {
           val displaySelector = waitButton(welcomePanel, welcome_display)
           displaySelector.isVisible shouldBe true
           displaySelector.isEnabled shouldBe true
@@ -147,7 +148,7 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
           waitText(display_info) should be (toString(license.getInfo))
         }
 
-        "switch to the uninstall panel when requested" in {
+        "switch to the uninstall panel when requested" ifNotHeadless {
           val uninstallSelector = waitButton(welcomePanel, welcome_uninstall)
           uninstallSelector.isVisible shouldBe true
           uninstallSelector.isEnabled shouldBe true
@@ -160,6 +161,17 @@ class LicenseWizardIT extends WordSpec with BeforeAndAfter {
           Thread sleep 100
           intercept[LicenseManagementException] { manager view () }
         }
+      }
+    }
+  }
+
+  private implicit class WithText(text: String) {
+
+    def ifNotHeadless(block: => Any)(implicit pos: Position): Unit = {
+      if (GraphicsEnvironment.isHeadless) {
+        text ignore block
+      } else {
+        text in block
       }
     }
   }
