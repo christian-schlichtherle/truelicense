@@ -37,9 +37,6 @@
         <!-- For filtering resources. -->
         <dollar>$</dollar>
 
-        <!-- maven-source-plugin -->
-        <source.skip>true</source.skip>
-
         <api>core</api>
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
