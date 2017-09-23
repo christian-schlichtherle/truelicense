@@ -74,7 +74,7 @@ abstract class LicenseManagementWizardITSuite
         }
 
         "have a title which includes the licensing management subject" ifNotHeadless {
-          dialog.getTitle should include (manager.subject)
+          dialog.getTitle should include (managementContext.subject)
         }
 
         "have its back button disabled" ifNotHeadless {
