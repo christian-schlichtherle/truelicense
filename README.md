@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/christian-schlichtherle/truelicense.svg)](https://travis-ci.org/christian-schlichtherle/truelicense)
+
 # TrueLicense
 
 TrueLicense is a commercial open source engine for license management on the Java Virtual Machine.
