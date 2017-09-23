@@ -1,1 +1,1 @@
-verify -Pintegration-test
+verify
