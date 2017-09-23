@@ -73,7 +73,7 @@ alphabetic order:
     for this module.
     You should not distribute this JAR to users without additional obfuscation.
 
-`${dollar}{artifactId}-keymgrsvc/target/${dollar}{artifactId}-keymgrsvc-${dollar}{version}.jar`
+`${dollar}{artifactId}-keymgrsrv/target/${dollar}{artifactId}-keymgrsrv-${dollar}{version}.jar`
 :   This is the regular JAR for the Key Manager Service module.
     This JAR has dependencies on other JARs as specified in the Maven POM
     for this module.
