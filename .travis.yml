@@ -1,3 +1,8 @@
+addons:
+  apt:
+    packages:
+    - openjdk-6-jdk
+
 cache:
   directories:
   - $HOME/.m2/repository
@@ -8,11 +13,9 @@ git:
 jdk:
 - openjdk6
 - openjdk7
-- oraclejdk7
+- openjdk8
 - oraclejdk8
 
 language: java
 
 script: mvn verify -B
-
-sudo: false
