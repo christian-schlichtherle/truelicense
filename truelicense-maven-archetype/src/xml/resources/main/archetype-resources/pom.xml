@@ -607,6 +607,11 @@
         </profile>
         <profile>
             <id>integration-test</id>
+            <activation>
+                <file>
+                    <exists>src/test</exists>
+                </file>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
