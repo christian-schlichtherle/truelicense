@@ -18,19 +18,15 @@ import org.glassfish.jersey.server.ResourceConfig;
  */
 public class Main {
 
+    private static final String BASE_URI = "http://localhost:9998/";
+
     public static void main(final String[] args) throws IOException {
-        final ResourceConfig config = new ResourceConfig(ConsumerLicenseManagementServiceExceptionMapper.class)
+        final ResourceConfig rc = new ResourceConfig(ConsumerLicenseManagementServiceExceptionMapper.class)
                 .register(new ConsumerLicenseManagementService(LicenseManager::get));
-        final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create("http://localhost:9998/"), config);
-        server.start();
+        final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 
-        out.println("Server running.");
-        out.println("Visit: http://localhost:9998/license");
-        out.println("Hit Enter to stop.");
+        out.printf("Server running at %s.\nHit enter to stop it...\n", BASE_URI);
         in.read();
-        out.println("Stopping server...");
         server.shutdownNow();
-
-        out.println("Server stopped.");
     }
 }
