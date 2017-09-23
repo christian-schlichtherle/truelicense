@@ -2,18 +2,17 @@ cache:
   directories:
   - $HOME/.m2/repository
 
-dist: precise
-
 git:
   depth: 3
 
 jdk:
 - openjdk6
 - openjdk7
-- openjdk8
 - oraclejdk7
 - oraclejdk8
 
 language: java
 
 script: mvn verify -B
+
+sudo: false
