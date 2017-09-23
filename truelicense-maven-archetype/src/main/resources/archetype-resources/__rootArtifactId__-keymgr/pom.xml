@@ -58,6 +58,9 @@
                     <groupId>com.github.wvengen</groupId>
                     <artifactId>proguard-maven-plugin</artifactId>
                     <configuration>
+                        <libs>
+                            <lib>${dollar}{java.home}/lib/jsse.jar</lib>
+                        </libs>
                         <!-- The following options should apply to most
                              standalone Java applications. -->
                         <options>
@@ -132,52 +135,6 @@
                         <artifactId>proguard-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>jsse-lib-for-apple-jdk-1.6</id>
-            <activation>
-                <file>
-                    <exists>${dollar}{java.home}/../Classes/jsse.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/../Classes/jsse.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>jsse-lib-for-any-jdk-1.7+</id>
-            <activation>
-                <file>
-                    <exists>${dollar}{java.home}/lib/jsse.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/lib/jsse.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
             </build>
         </profile>
         <profile>
