@@ -289,14 +289,6 @@
     </dependencyManagement>
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.archetype</groupId>
-                <artifactId>archetype-packaging</artifactId>
-                <version>2.4</version>
-            </extension>
-        </extensions>
-
         <pluginManagement>
             <plugins>
                 <plugin>
