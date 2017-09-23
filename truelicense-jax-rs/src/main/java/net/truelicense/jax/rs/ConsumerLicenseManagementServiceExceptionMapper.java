@@ -25,15 +25,16 @@ import static javax.ws.rs.core.MediaType.*;
  * Maps a consumer license management service exception to an HTTP response.
  * This class is immutable.
  *
- * @since  TrueLicense 2.3
  * @author Christian Schlichtherle
+ * @since TrueLicense 2.3
  */
 @Provider
-@Produces({ APPLICATION_JSON, APPLICATION_XML, TEXT_XML, TEXT_PLAIN })
+@Produces({APPLICATION_JSON, APPLICATION_XML, TEXT_XML, TEXT_PLAIN})
 public final class ConsumerLicenseManagementServiceExceptionMapper
-implements ExceptionMapper<ConsumerLicenseManagementServiceException> {
+        implements ExceptionMapper<ConsumerLicenseManagementServiceException> {
 
-    @Obfuscate private static final String MESSAGE = "message";
+    @Obfuscate
+    private static final String MESSAGE = "message";
 
     private static final QName message = new QName(MESSAGE);
 
@@ -43,18 +44,21 @@ implements ExceptionMapper<ConsumerLicenseManagementServiceException> {
         this.headers = Objects.requireNonNull(headers);
     }
 
-    @Override public Response toResponse(final ConsumerLicenseManagementServiceException ex) {
+    @Override
+    public Response toResponse(final ConsumerLicenseManagementServiceException ex) {
         final String msg = ex.getMessage();
-        final MediaType mt = headers.getMediaType();
-        final ResponseBuilder rb = Response.status(ex.getStatus());
-        if (APPLICATION_JSON_TYPE.equals(mt)) {
-            rb.type(APPLICATION_JSON_TYPE).entity('"' + msg + '"');
-        } else if (APPLICATION_XML_TYPE.equals(mt)) {
-            rb.type(APPLICATION_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
-        } else if (TEXT_XML_TYPE.equals(mt)) {
-            rb.type(TEXT_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
-        } else {
-            rb.type(TEXT_PLAIN_TYPE).entity(msg);
+        final ResponseBuilder rb = Response.status(ex.getStatus()).type(TEXT_PLAIN_TYPE).entity(msg);
+        for (final MediaType mt : headers.getAcceptableMediaTypes()) {
+            if (APPLICATION_JSON_TYPE.equals(mt)) {
+                rb.type(APPLICATION_JSON_TYPE).entity(msg);
+                break;
+            } else if (APPLICATION_XML_TYPE.equals(mt)) {
+                rb.type(APPLICATION_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
+                break;
+            } else if (TEXT_XML_TYPE.equals(mt)) {
+                rb.type(TEXT_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
+                break;
+            }
         }
         return rb.build();
     }
