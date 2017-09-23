@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>116</version>
+        <version>117</version>
     </parent>
 
     <groupId>net.truelicense</groupId>
@@ -104,6 +104,9 @@
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
+
+        <scala.compat.version>2.11</scala.compat.version>
+        <scala.version>2.11.11</scala.version>
 
         <!-- dependencies -->
         <javaee.version>7.0</javaee.version>
@@ -294,14 +297,6 @@
     </dependencyManagement>
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.archetype</groupId>
-                <artifactId>archetype-packaging</artifactId>
-                <version>2.4</version>
-            </extension>
-        </extensions>
-
         <pluginManagement>
             <plugins>
                 <plugin>

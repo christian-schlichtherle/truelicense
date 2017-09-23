@@ -37,9 +37,6 @@
         <!-- For filtering resources. -->
         <dollar>$</dollar>
 
-        <!-- maven-source-plugin -->
-        <source.skip>true</source.skip>
-
         <api>api</api>
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
@@ -82,6 +79,14 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.archetype</groupId>
+                <artifactId>archetype-packaging</artifactId>
+                <version>3.0.1</version>
+            </extension>
+        </extensions>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -271,15 +276,20 @@
     <profiles>
         <profile>
             <id>integration-test</id>
+            <activation>
+                <file>
+                    <exists>src/test</exists>
+                </file>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <configuration>
-                            <!-- The maven-archetype-plugin has its own
-                                 integration-test goal which is bound to the
-                                 integration-test phase by the maven-archetype
-                                 packaging, so skip this plugin altogether. -->
+                            <!-- The maven-archetype-plugin has its own integration-test goal which is bound to the
+                                 integration-test phase by the maven-archetype packaging, so this plugin is not
+                                 required.
+                                 Furthermore, this plugin reports false positive errors, so skip it. -->
                             <skip>true</skip>
                         </configuration>
                     </plugin>
