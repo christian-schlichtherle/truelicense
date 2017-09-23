@@ -20,11 +20,28 @@ import org.junit.Test
 import org.scalatest.Matchers._
 
 /** @author Christian Schlichtherle */
-class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
+abstract class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
 
   final lazy val manager = consumerManager()
   final lazy val reference = new LicenseBeanAndKeyHolder(vendorManager, license)
   final def licenseClass: Class[_ <: License] = reference.bean.getClass
+
+  override protected def configure: LowLevelAppDescriptor =
+    new LowLevelAppDescriptor.Builder(resourceConfig).contextPath("").build
+
+  private def resourceConfig: ResourceConfig = {
+    val rc = new DefaultResourceConfig
+    rc.getClasses.add(classOf[LicenseConsumerService])
+    rc.getClasses.add(classOf[LicenseConsumerServiceExceptionMapper])
+    rc.getSingletons.add(new LicenseConsumerManagerResolver)
+    rc.getSingletons.add(new JacksonJaxbJsonProvider())
+    rc
+  }
+
+  private final class LicenseConsumerManagerResolver
+    extends ContextResolver[LicenseConsumerManager] {
+    def getContext(ignored: Class[_]): LicenseConsumerManager = manager
+  }
 
   @Test def testLifeCycle() {
     assertSubject()
@@ -42,7 +59,7 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
     assertFailUninstall()
   }
 
-  def assertSubject() {
+  private def assertSubject() {
     subjectAs(TEXT_PLAIN_TYPE) should be (manager.subject)
     subjectAs(APPLICATION_JSON_TYPE) should be ('"' + manager.subject + '"')
     subjectAs(APPLICATION_XML_TYPE) should
@@ -52,66 +69,53 @@ class LicenseConsumerServiceITSuite extends JerseyTest { this: TestContext =>
   private def subjectAs(mediaType: MediaType) =
     resource path "license/subject" accept mediaType get classOf[String]
 
-  def assertInstall() {
+  private def assertInstall() {
     resource path "license" post reference.key
   }
 
-  def assertFailView() {
-    intercept[UniformInterfaceException] { assertView() }
-  }
+  private def assertFailView() { assertFail(assertView()) }
 
-  def assertView() {
+  private def assertView() {
     assertView(APPLICATION_JSON_TYPE)
     assertView(APPLICATION_XML_TYPE)
     assertView(TEXT_XML_TYPE)
   }
 
-  def assertView(mediaType: MediaType) {
+  private def assertView(mediaType: MediaType) {
     viewAs(mediaType) should equal (reference.bean)
   }
 
-  final def viewAs(mediaType: MediaType): License =
+  private final def viewAs(mediaType: MediaType) = {
     resource path "license" accept mediaType get licenseClass
-
-  def assertFailVerify() {
-    intercept[UniformInterfaceException] { assertVerify() }
   }
 
-  def assertVerify() {
+  private def assertFailVerify() { assertFail(assertVerify()) }
+
+  private def assertFail(block: => Any): Unit = {
+    val response = intercept[UniformInterfaceException](block).getResponse
+    response.getStatus shouldBe 404
+    response.getType shouldBe APPLICATION_JSON_TYPE
+  }
+
+  private def assertVerify() {
     assertVerify(APPLICATION_JSON_TYPE)
     assertVerify(APPLICATION_XML_TYPE)
     assertVerify(TEXT_XML_TYPE)
   }
 
-  def assertVerify(mediaType: MediaType) {
+  private def assertVerify(mediaType: MediaType) {
     verifyAs(mediaType) should equal (reference.bean)
   }
 
-  final def verifyAs(mediaType: MediaType): License =
-    resource path "license" queryParam ("verify", "true") accept mediaType get licenseClass
+  private final def verifyAs(mediaType: MediaType) = {
+    resource path "license" queryParam("verify", "true") accept mediaType get licenseClass
+  }
 
-  def assertFailUninstall() {
+  private def assertFailUninstall() {
     intercept[UniformInterfaceException] { assertUninstall() }
   }
 
-  def assertUninstall() {
+  private def assertUninstall() {
     resource path "license" delete ()
-  }
-
-  override protected def configure: LowLevelAppDescriptor =
-    new LowLevelAppDescriptor.Builder(resourceConfig).contextPath("").build
-
-  private def resourceConfig: ResourceConfig = {
-    val rc = new DefaultResourceConfig
-    rc.getClasses.add(classOf[LicenseConsumerService])
-    rc.getClasses.add(classOf[LicenseConsumerServiceExceptionMapper])
-    rc.getSingletons.add(new LicenseConsumerManagerResolver)
-    rc.getSingletons.add(new JacksonJaxbJsonProvider())
-    rc
-  }
-
-  private final class LicenseConsumerManagerResolver
-  extends ContextResolver[LicenseConsumerManager] {
-    def getContext(ignored: Class[_]): LicenseConsumerManager = manager
   }
 }
