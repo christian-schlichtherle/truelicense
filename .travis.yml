@@ -2,6 +2,8 @@ cache:
   directories:
   - $HOME/.m2/repository
 
+dist: precise
+
 git:
   depth: 3
 
