@@ -49,7 +49,7 @@ abstract class ConsumerLicenseManagementServiceITSuite
   private def assertSubject() {
     val subject = managementContext.subject
     subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
-    subjectAs(APPLICATION_JSON_TYPE) shouldBe s""""$subject""""
+    subjectAs(APPLICATION_JSON_TYPE) shouldBe s"""{"subject":"$subject"}"""
     subjectAs(APPLICATION_XML_TYPE) shouldBe s"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subject>$subject</subject>"""
   }
 
