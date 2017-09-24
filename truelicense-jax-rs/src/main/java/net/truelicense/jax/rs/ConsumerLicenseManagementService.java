@@ -8,6 +8,7 @@ package net.truelicense.jax.rs;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementException;
+import net.truelicense.jax.rs.dto.SubjectDTO;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.spi.io.MemoryStore;
 
@@ -53,8 +54,13 @@ public final class ConsumerLicenseManagementService {
 
     @GET
     @Path(SUBJECT)
+    @Produces(TEXT_PLAIN)
+    public String subject() { return manager().context().subject(); }
+
+    @GET
+    @Path(SUBJECT)
     @Produces(APPLICATION_JSON)
-    public String subjectAsJson() { return '"' + subject() + '"'; }
+    public SubjectDTO subjectAsJson() { return new SubjectDTO(subject()); }
 
     @GET
     @Path(SUBJECT)
@@ -62,11 +68,6 @@ public final class ConsumerLicenseManagementService {
     public JAXBElement<String> subjectAsXml() {
         return new JAXBElement<>(subject, String.class, subject());
     }
-
-    @GET
-    @Path(SUBJECT)
-    @Produces(TEXT_PLAIN)
-    public String subject() { return manager().context().subject(); }
 
     @POST
     public Response install(final byte[] key) throws ConsumerLicenseManagementServiceException {

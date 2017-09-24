@@ -5,6 +5,7 @@
 
 package net.truelicense.jax.rs;
 
+import net.truelicense.jax.rs.dto.ErrorDTO;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.ws.rs.Produces;
@@ -34,9 +35,9 @@ public final class ConsumerLicenseManagementServiceExceptionMapper
         implements ExceptionMapper<ConsumerLicenseManagementServiceException> {
 
     @Obfuscate
-    private static final String MESSAGE = "message";
+    private static final String ERROR = "error";
 
-    private static final QName message = new QName(MESSAGE);
+    private static final QName error = new QName(ERROR);
 
     private final HttpHeaders headers;
 
@@ -46,17 +47,14 @@ public final class ConsumerLicenseManagementServiceExceptionMapper
 
     @Override
     public Response toResponse(final ConsumerLicenseManagementServiceException ex) {
-        final String msg = ex.getMessage();
-        final ResponseBuilder rb = Response.status(ex.getStatus()).type(TEXT_PLAIN_TYPE).entity(msg);
+        final String message = ex.getMessage();
+        final ResponseBuilder rb = Response.status(ex.getStatus()).type(TEXT_PLAIN_TYPE).entity(message);
         for (final MediaType mt : headers.getAcceptableMediaTypes()) {
             if (APPLICATION_JSON_TYPE.equals(mt)) {
-                rb.type(APPLICATION_JSON_TYPE).entity(msg);
+                rb.type(mt).entity(new ErrorDTO(message));
                 break;
-            } else if (APPLICATION_XML_TYPE.equals(mt)) {
-                rb.type(APPLICATION_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
-                break;
-            } else if (TEXT_XML_TYPE.equals(mt)) {
-                rb.type(TEXT_XML_TYPE).entity(new JAXBElement<String>(message, String.class, msg));
+            } else if (APPLICATION_XML_TYPE.equals(mt) || TEXT_XML_TYPE.equals(mt)) {
+                rb.type(mt).entity(new JAXBElement<>(error, String.class, message));
                 break;
             }
         }
