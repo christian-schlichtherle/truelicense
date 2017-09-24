@@ -54,18 +54,18 @@ multi-module Maven project with the following structure:
     │           │           ├── LicensingSchemaIT.java.vtl
     │           │           └── MainIT.java.vtl
     │           └── resources
-    ├── ${dollar}{artifactId}-keymgrsvc
+    ├── ${dollar}{artifactId}-keymgrsrv
     │   ├── pom.xml
     │   └── src
     │       ├── main
     │       │   └── java
     │       │       └── ${dollar}{packageInPathFormat}
-    │       │           └── keymgrsvc
+    │       │           └── keymgrsrv
     │       │               └── LicenseConsumerManagerResolver.java
     │       └── test
     │           └── java
     │               └── ${dollar}{packageInPathFormat}
-    │                   └── keymgrsvc
+    │                   └── keymgrsrv
     │                       └── Main.java
     └── pom.xml
 
@@ -138,7 +138,7 @@ whereas `*` refers to any substring of any single path name element:
     You can ignore this file if you're not upgrading your software product from
     an older version of the $project.name.
 
-`${dollar}{artifactId}-keymgrsvc`
+`${dollar}{artifactId}-keymgrsrv`
 :   This directory contains the module with the code to provide a RESTful web
     service for license management in your software product.
     You can ignore this module if your application is not a server application

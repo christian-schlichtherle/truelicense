@@ -21,8 +21,8 @@ For testing purposes, there is a main class which runs a simple
 WSI.
 You can start it using the following command:
 
-    ${dollar} mvn test-compile exec:java -Dexec.mainClass=${dollar}{package}.keymgrsvc.Main \
-        -Dexec.classpathScope=test -pl *-keymgrsvc
+    ${dollar} mvn compile exec:java -Dexec.mainClass=${dollar}{package}.keymgrsrv.Main \
+        -Dexec.classpathScope=test -pl *-keymgrsrv
 
 $h4 Installing a License Key
 

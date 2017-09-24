@@ -20,15 +20,15 @@ abstract class ConsumerLicenseManagementServiceTestSuite
     "using a consumer license manager" when {
       "no license key is installed" should {
         "return its subject" in {
-          managementService.subject should be(managementContext.subject)
+          managementService.subject shouldBe managementContext.subject
         }
 
         "return its subject encoded as JSON" in {
-          managementService.subjectAsJson should be('"' + managementContext.subject + '"')
+          managementService.subjectAsJson.subject shouldBe managementContext.subject
         }
 
         "return its subject encoded as XML" in {
-          managementService.subjectAsXml.getValue should be(managementContext.subject)
+          managementService.subjectAsXml.getValue shouldBe managementContext.subject
         }
 
         "fail to load the license key in" in {

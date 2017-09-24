@@ -8,6 +8,7 @@ package net.truelicense.it.jax.rs
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType._
+import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
 
 import net.truelicense.api.License
@@ -45,65 +46,63 @@ abstract class ConsumerLicenseManagementServiceITSuite
     assertUninstallFailure()
   }
 
-  def assertSubject() {
+  private def assertSubject() {
     val subject = managementContext.subject
     subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
-    subjectAs(APPLICATION_JSON_TYPE) shouldBe s""""$subject""""
+    subjectAs(APPLICATION_JSON_TYPE) shouldBe s"""{"subject":"$subject"}"""
     subjectAs(APPLICATION_XML_TYPE) shouldBe s"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subject>$subject</subject>"""
   }
 
   private def subjectAs(mediaType: MediaType) = target("license/subject") request mediaType get classOf[String]
 
-  def assertInstall() {
+  private def assertInstall() {
     target("license").request.post(
       Entity.entity(cachedLicenseKey, MediaType.APPLICATION_OCTET_STREAM_TYPE),
       cachedLicenseClass
     ) shouldBe cachedLicenseBean
   }
 
-  def assertFailView() {
-    intercept[WebApplicationException] {
-      assertView()
-    }
-  }
+  private def assertFailView() { assertFail(assertView()) }
 
-  def assertView() {
+  private def assertView() {
     assertView(APPLICATION_JSON_TYPE)
     assertView(APPLICATION_XML_TYPE)
     assertView(TEXT_XML_TYPE)
   }
 
-  def assertView(mediaType: MediaType) {
+  private def assertView(mediaType: MediaType) {
     viewAs(mediaType) shouldBe cachedLicenseBean
   }
 
-  final def viewAs(mediaType: MediaType): License = target("license") request mediaType get cachedLicenseClass
+  private final def viewAs(mediaType: MediaType) = target("license") request mediaType get cachedLicenseClass
 
-  def assertFailVerify() {
-    intercept[WebApplicationException] {
-      assertVerify()
-    }
+  private def assertFailVerify() { assertFail(assertVerify()) }
+
+  private def assertFail(what: => Any) {
+    val response = intercept[WebApplicationException](what).getResponse
+    response.getStatusInfo shouldBe NOT_FOUND
+    response.getMediaType shouldBe APPLICATION_JSON_TYPE
   }
 
-  def assertVerify() {
+  private def assertVerify() {
     assertVerify(APPLICATION_JSON_TYPE)
     assertVerify(APPLICATION_XML_TYPE)
     assertVerify(TEXT_XML_TYPE)
   }
 
-  def assertVerify(mediaType: MediaType) {
+  private def assertVerify(mediaType: MediaType) {
     verifyAs(mediaType) shouldBe cachedLicenseBean
   }
 
-  final def verifyAs(mediaType: MediaType): License = {
+  private final def verifyAs(mediaType: MediaType): License = {
     target("license") queryParam ("verify", "true") request mediaType get cachedLicenseClass
   }
 
-  def assertUninstallSuccess() {
+  private def assertUninstallSuccess() {
     uninstallStatus() shouldBe 204
   }
 
-  def assertUninstallFailure() {
+  private def assertUninstallFailure() {
     uninstallStatus() shouldBe 404
   }
 
