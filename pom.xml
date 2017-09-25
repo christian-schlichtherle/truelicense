@@ -339,14 +339,15 @@
                                 <goal>helpmojo</goal>
                             </goals>
                         </execution>
-                        <execution>
-                            <id>default-descriptor</id>
-                            <phase>process-classes</phase> <!-- required for Maven version < 3.2.2 -->
-                            <goals>
-                                <goal>descriptor</goal>
-                            </goals>
-                        </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.amashchenko.maven.plugin</groupId>
+                    <artifactId>gitflow-maven-plugin</artifactId>
+                    <version>1.7.0</version>
+                    <configuration>
+                        <versionTagPrefix>truelicense-</versionTagPrefix>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>net.alchim31.maven</groupId>
