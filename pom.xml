@@ -14,7 +14,7 @@
 
     <groupId>net.truelicense</groupId>
     <artifactId>truelicense</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>2.6.7-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>TrueLicense</name>
@@ -133,62 +133,62 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-api</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-jax-rs</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-obfuscate</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-spi</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-swing</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-ui</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v1</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-commons</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-json</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-xml</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>2.6.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
