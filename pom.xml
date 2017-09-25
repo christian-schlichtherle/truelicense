@@ -329,6 +329,14 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>com.amashchenko.maven.plugin</groupId>
+                    <artifactId>gitflow-maven-plugin</artifactId>
+                    <version>1.7.0</version>
+                    <configuration>
+                        <versionTagPrefix>truelicense-</versionTagPrefix>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
                     <configuration>
