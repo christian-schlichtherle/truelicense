@@ -11,7 +11,7 @@ import net.truelicense.api.io.Sink;
  * Generates a license key and writes it to a given sink or returns a duplicate
  * of its encoded license bean.
  * License key generators are the product of a call to
- * {@link VendorLicenseManager#generator(License)}.
+ * {@link VendorLicenseManager#keyGeneratorFor(License)}.
  * License key generators are stateful and so they are generally <em>not</em>
  * thread-safe.
  * <p>
@@ -33,7 +33,7 @@ public interface LicenseKeyGenerator {
      * @param sink the sink for writing the generated license key to.
      * @return {@code this}
      */
-    LicenseKeyGenerator save(Sink sink) throws LicenseManagementException;
+    LicenseKeyGenerator saveTo(Sink sink) throws LicenseManagementException;
 
     /**
      * Returns a duplicate of the license bean which is encoded in the generated
@@ -41,7 +41,3 @@ public interface LicenseKeyGenerator {
      */
     License license() throws LicenseManagementException;
 }
-
-/*
-Life cycle: Generate, save, install, load, verify, uninstall.
- */

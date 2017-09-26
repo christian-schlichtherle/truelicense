@@ -17,9 +17,8 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      * Returns a license key generator for the given license bean.
      *
      * @param bean the license bean to process.
-     *             This bean is not modified by the returned license key
-     *             generator.
+     *             This bean is not modified by the returned license key generator.
      * @return A license key generator for the given license bean.
      */
-    LicenseKeyGenerator generator(License bean);
+    LicenseKeyGenerator keyGeneratorFor(License bean);
 }

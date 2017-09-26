@@ -15,7 +15,7 @@ public interface LicenseManagementAuthorization {
 
     /**
      * Returns if and only if
-     * {@linkplain LicenseKeyGenerator#save saving}
+     * {@linkplain LicenseKeyGenerator#saveTo saving}
      * a license key is authorized.
      * This method is normally only called in a license vendor application.
      * However, in a license consumer application, this method gets called if

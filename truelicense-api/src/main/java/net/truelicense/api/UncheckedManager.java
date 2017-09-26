@@ -61,14 +61,14 @@ public final class UncheckedManager {
         }
 
         @Override
-        public UncheckedLicenseKeyGenerator generator(final License bean) {
+        public UncheckedLicenseKeyGenerator keyGeneratorFor(final License bean) {
             return new UncheckedLicenseKeyGenerator() {
 
-                final LicenseKeyGenerator generator = manager.generator(bean);
+                final LicenseKeyGenerator generator = manager.keyGeneratorFor(bean);
 
                 @Override
-                public LicenseKeyGenerator save(final Sink sink) throws UncheckedLicenseManagementException {
-                    return runUnchecked(() -> generator.save(sink));
+                public LicenseKeyGenerator saveTo(final Sink sink) throws UncheckedLicenseManagementException {
+                    return runUnchecked(() -> generator.saveTo(sink));
                 }
 
                 @Override
