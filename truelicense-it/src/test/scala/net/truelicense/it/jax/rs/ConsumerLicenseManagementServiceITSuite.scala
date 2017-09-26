@@ -11,9 +11,9 @@ import javax.ws.rs.core.MediaType._
 import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
 
-import net.truelicense.api.License
 import net.truelicense.it.core.TestContext
 import net.truelicense.jax.rs.ConsumerLicenseManagementServiceExceptionMapper
+import net.truelicense.jax.rs.dto.LicenseDTO
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
@@ -57,24 +57,22 @@ abstract class ConsumerLicenseManagementServiceITSuite
 
   private def assertInstall() {
     target("license").request.post(
-      Entity.entity(cachedLicenseKey, MediaType.APPLICATION_OCTET_STREAM_TYPE),
-      cachedLicenseClass
-    ) shouldBe cachedLicenseBean
+      Entity.entity(cachedLicenseKey, APPLICATION_OCTET_STREAM_TYPE),
+      classOf[LicenseDTO]
+    ).license shouldBe cachedLicenseBean
   }
 
   private def assertFailView() { assertFail(assertView()) }
 
   private def assertView() {
-    assertView(APPLICATION_JSON_TYPE)
-    assertView(APPLICATION_XML_TYPE)
-    assertView(TEXT_XML_TYPE)
+    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
+    viewAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
+    viewAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
   }
 
-  private def assertView(mediaType: MediaType) {
-    viewAs(mediaType) shouldBe cachedLicenseBean
+  private final def viewAs[T](mediaType: MediaType, responseType: Class[T]): T = {
+    target("license") request mediaType get responseType
   }
-
-  private final def viewAs(mediaType: MediaType) = target("license") request mediaType get cachedLicenseClass
 
   private def assertFailVerify() { assertFail(assertVerify()) }
 
@@ -85,17 +83,13 @@ abstract class ConsumerLicenseManagementServiceITSuite
   }
 
   private def assertVerify() {
-    assertVerify(APPLICATION_JSON_TYPE)
-    assertVerify(APPLICATION_XML_TYPE)
-    assertVerify(TEXT_XML_TYPE)
+    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
+    verifyAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
+    verifyAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
   }
 
-  private def assertVerify(mediaType: MediaType) {
-    verifyAs(mediaType) shouldBe cachedLicenseBean
-  }
-
-  private final def verifyAs(mediaType: MediaType): License = {
-    target("license") queryParam ("verify", "true") request mediaType get cachedLicenseClass
+  private final def verifyAs[T](mediaType: MediaType, responseType: Class[T]): T = {
+    target("license") queryParam ("verify", "true") request mediaType get responseType
   }
 
   private def assertUninstallSuccess() {
