@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public interface Store extends Source, Sink {
 
-    /** A reasonable buffer size, which is {@value}. */
+    /** The default buffer size, which is {@value}. */
     int BUFSIZE = 8 * 1024;
 
     /** Deletes the data. */

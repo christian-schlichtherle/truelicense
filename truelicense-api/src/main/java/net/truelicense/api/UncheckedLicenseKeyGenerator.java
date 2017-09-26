@@ -18,8 +18,8 @@ import net.truelicense.api.io.Sink;
 public interface UncheckedLicenseKeyGenerator extends LicenseKeyGenerator {
 
     @Override
-    LicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException;
+    License license() throws UncheckedLicenseManagementException;
 
     @Override
-    License license() throws UncheckedLicenseManagementException;
+    LicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException;
 }

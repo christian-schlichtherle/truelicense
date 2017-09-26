@@ -19,15 +19,17 @@ public final class MemoryStore implements Store {
 
     private final int bufsize;
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<byte[]> optBuffer = Optional.empty();
 
     /**
-     * Equivalent to <code>new {@link #MemoryStore(int)
-     * MemoryStore(BUFSIZE)}</code>.
+     * Equivalent to <code>new {@link #MemoryStore(int) MemoryStore(BUFSIZE)}</code>.
      *
      * @see Store#BUFSIZE
      */
-    public MemoryStore() { this(BUFSIZE); }
+    public MemoryStore() {
+        this(BUFSIZE);
+    }
 
     /**
      * Constructs a memory store with the given data size to use upon
@@ -36,7 +38,9 @@ public final class MemoryStore implements Store {
      * @param bufsize the data size to use upon {@link #output}.
      */
     public MemoryStore(final int bufsize) {
-        if (0 > (this.bufsize = bufsize)) throw new IllegalArgumentException();
+        if (0 > (this.bufsize = bufsize)) {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -47,7 +51,8 @@ public final class MemoryStore implements Store {
     @Override
     public OutputStream output() throws IOException {
         return new ByteArrayOutputStream(bufsize) {
-            @Override public void close() throws IOException {
+            @Override
+            public void close() throws IOException {
                 data(toByteArray());
             }
         };
@@ -60,20 +65,19 @@ public final class MemoryStore implements Store {
     }
 
     @Override
-    public boolean exists() { return optBuffer.isPresent(); }
+    public boolean exists() {
+        return optBuffer.isPresent();
+    }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     private byte[] checkedData() throws FileNotFoundException {
         return optBuffer.orElseThrow(FileNotFoundException::new);
     }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     public byte[] data() {
-        return optBuffer
-                .map(byte[]::clone)
-                .orElseThrow(IllegalStateException::new);
+        return optBuffer.map(byte[]::clone).orElseThrow(IllegalStateException::new);
     }
 
     public void data(byte[] buffer) {
-        optBuffer = Optional.ofNullable(buffer.clone()); }
+        optBuffer = Optional.ofNullable(buffer.clone());
+    }
 }
