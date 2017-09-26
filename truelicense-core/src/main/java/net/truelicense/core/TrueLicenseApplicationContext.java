@@ -924,7 +924,7 @@ implements
                             wrap(new Callable<Void>() {
 
                                 @Override public Void call() throws Exception {
-                                    authorization().clearSave(TrueLicenseManager.this);
+                                    authorization().clearGenerate(TrueLicenseManager.this);
                                     codec().encoder(compressedAndEncryptedSink()).encode(model());
                                     return null;
                                 }
