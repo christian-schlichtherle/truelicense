@@ -6,8 +6,7 @@
 package net.truelicense.api;
 
 /**
- * Defines the life cycle management operations for license keys in vendor
- * applications alias key generators.
+ * Defines the life cycle management operations for license keys in vendor applications alias key generators.
  *
  * @author Christian Schlichtherle
  */
@@ -20,5 +19,5 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      *             This bean is not modified by the returned license key generator.
      * @return A license key generator for the given license bean.
      */
-    LicenseKeyGenerator keyGeneratorFor(License bean);
+    LicenseKeyGenerator generateKeyFrom(License bean);
 }

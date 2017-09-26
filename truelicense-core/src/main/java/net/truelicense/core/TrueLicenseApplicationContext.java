@@ -803,7 +803,7 @@ implements
                             if (!canGenerateLicenseKeys.isPresent()) {
                                 try {
                                     // Test encoding a new license key to /dev/null .
-                                    super.keyGeneratorFor(license()).saveTo(bios().memoryStore());
+                                    super.generateKeyFrom(license()).saveTo(bios().memoryStore());
                                     canGenerateLicenseKeys = Optional.of(Boolean.TRUE);
                                 } catch (LicenseManagementException ignored) {
                                     canGenerateLicenseKeys = Optional.of(Boolean.FALSE);
@@ -820,7 +820,7 @@ implements
                     final Store store = store();
                     if (exists(store))
                         throw e;
-                    return super.keyGeneratorFor(license()).saveTo(store);
+                    return super.generateKeyFrom(license()).saveTo(store);
                 }
             }
 
@@ -912,7 +912,7 @@ implements
             implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
-                public LicenseKeyGenerator keyGeneratorFor(final License bean) {
+                public LicenseKeyGenerator generateKeyFrom(final License bean) {
                     return new LicenseKeyGenerator() {
 
                         final RepositoryContext<Model> context = repositoryContext();

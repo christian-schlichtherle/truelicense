@@ -12,7 +12,7 @@ import net.truelicense.api.io.Sink;
  * {@link UncheckedLicenseManagementException} rather than a (checked)
  * {@link LicenseManagementException}.
  *
- * @see UncheckedVendorLicenseManager#keyGeneratorFor(License)
+ * @see UncheckedVendorLicenseManager#generateKeyFrom(License)
  * @author Christian Schlichtherle
  */
 public interface UncheckedLicenseKeyGenerator extends LicenseKeyGenerator {
