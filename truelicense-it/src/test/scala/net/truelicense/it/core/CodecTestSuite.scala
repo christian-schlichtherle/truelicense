@@ -9,7 +9,6 @@ import java.io.IOException
 
 import net.truelicense.api.codec.Codec
 import net.truelicense.api.io.{Store, Transformation}
-import net.truelicense.spi.io.Transformer
 import org.scalatest.Matchers._
 import org.scalatest._
 
@@ -26,7 +25,7 @@ abstract class CodecTestSuite extends WordSpec {
       "support round trip I/O" in {
         val artifact = this.artifact
         val codec = this.codec
-        val store = Transformer apply transformation to this.store
+        val store = this.store `with` transformation
         store.exists should equal (false)
         intercept[IOException] { store delete () }
         try {

@@ -16,7 +16,6 @@ import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.api.{ConsumerLicenseManager, License, VendorLicenseManager}
 import net.truelicense.core.TrueLicenseApplicationContext
 import net.truelicense.it.core.TestContext._
-import net.truelicense.spi.io.Transformer
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
@@ -91,7 +90,7 @@ trait TestContext[Model <: AnyRef]
   final def test1234: PasswordProtection = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
 
-  final def transformation: Transformation = Transformer apply compression `then` encryption get ()
+  final def transformation: Transformation = compression andThen encryption
 
   def vendorManager: VendorLicenseManager
 }

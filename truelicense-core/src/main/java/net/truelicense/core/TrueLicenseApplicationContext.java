@@ -27,7 +27,6 @@ import net.truelicense.spi.codec.Codecs;
 import net.truelicense.spi.io.BIOS;
 import net.truelicense.spi.io.BiosProvider;
 import net.truelicense.spi.io.StandardBIOS;
-import net.truelicense.spi.io.Transformer;
 
 import javax.security.auth.x500.X500Principal;
 import java.nio.file.Path;
@@ -731,7 +730,7 @@ implements
             Store store() { return store.get();}
 
             Transformation compressionThenEncryption() {
-                return Transformer.apply(compression()).then(encryption()).get();
+                return compression().andThen(encryption());
             }
 
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
