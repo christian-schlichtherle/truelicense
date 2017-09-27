@@ -51,14 +51,13 @@ public final class Transformer {
     public Transformation get() { return composed; }
 
     /**
-     * Creates a new transformation which applies the given transformation
-     * <em>after</em> the composed transformation and replaces the composed
-     * transformation with this new transformation.
+     * Creates a new transformation which applies the given transformation <em>after</em> the composed transformation
+     * and replaces the composed transformation with this new transformation.
      *
      * @return {@code this}
      */
     public Transformer then(final Transformation next) {
-        composed = new ComposedTransformation(get(), next);
+        composed = get().andThen(next);
         return this;
     }
 
