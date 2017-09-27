@@ -16,7 +16,7 @@ import net.truelicense.api.LicenseManagementSchema;
  */
 public final class TrueLicenseManagementAuthorization implements LicenseManagementAuthorization {
 
-    @Override public void clearSave(LicenseManagementSchema schema) { }
+    @Override public void clearGenerate(LicenseManagementSchema schema) { }
     @Override public void clearInstall(LicenseManagementSchema schema) { }
     @Override public void clearLoad(LicenseManagementSchema schema) { }
     @Override public void clearVerify(LicenseManagementSchema schema) { }

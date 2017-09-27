@@ -29,18 +29,18 @@ class UncheckedManagerTest extends WordSpec {
     "throw only unchecked exceptions" when {
       "generating license keys" when {
         val checkedGenerator = mock[LicenseKeyGenerator]
-        when(checkedManager generator any[License]) thenReturn checkedGenerator
+        when(checkedManager generateKeyFrom any[License]) thenReturn checkedGenerator
 
-        val uncheckedGenerator = uncheckedManager generator mock[License]
+        val uncheckedGenerator = uncheckedManager generateKeyFrom mock[License]
 
         "calling license()" in {
           when(checkedGenerator.license) thenThrow checkedException
           interceptUncheckedException { uncheckedGenerator.license }
         }
 
-        "calling save(Sink)" in {
-          when(checkedGenerator save any[Sink]) thenThrow checkedException
-          interceptUncheckedException { uncheckedGenerator save mock[Sink] }
+        "calling saveTo(Sink)" in {
+          when(checkedGenerator saveTo any[Sink]) thenThrow checkedException
+          interceptUncheckedException { uncheckedGenerator saveTo mock[Sink] }
         }
       }
     }

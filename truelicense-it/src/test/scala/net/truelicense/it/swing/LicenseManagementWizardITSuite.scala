@@ -41,7 +41,7 @@ abstract class LicenseManagementWizardITSuite
 
   before {
     val store = new MemoryStore
-    outputLicense = (vendorManager generator inputLicense save store).license
+    outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
     manager = consumerManager(store)
     EventQueue invokeLater new Runnable {
       override def run() {

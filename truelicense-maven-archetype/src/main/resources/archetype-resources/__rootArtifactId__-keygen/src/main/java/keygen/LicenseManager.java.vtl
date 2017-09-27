@@ -170,8 +170,8 @@ public enum LicenseManager implements VendorLicenseManager {
     }
 
     @Override
-    public LicenseKeyGenerator generator(License bean) {
-        return manager().generator(bean);
+    public LicenseKeyGenerator generateKeyFrom(License bean) {
+        return manager().generateKeyFrom(bean);
     }
 
     @Override

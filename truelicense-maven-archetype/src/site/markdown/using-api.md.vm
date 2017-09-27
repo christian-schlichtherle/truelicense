@@ -147,7 +147,7 @@ Here's the general usage pattern:
 
     VendorLicenseManager checkedManager = ...;
     UncheckedVendorLicenseManager uncheckedManager = UncheckedManager.from(checkedManager);
-    uncheckedManager.generator(someLicense).save(someSink); // throws UncheckedLicenseManagementException
+    uncheckedManager.generateKeyFrom(someLicense).saveTo(someSink); // throws UncheckedLicenseManagementException
 
 You can get back the original (checked) vendor license manager by calling:
 

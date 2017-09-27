@@ -25,7 +25,7 @@ abstract class LicenseKeyLifeCycleTestSuite
 
       val generated = {
         val vm = vendorManager
-        val generated = (vm generator managementContext.license save vs).license
+        val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
         assertLicense(generated)
         generated
       }
@@ -92,7 +92,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       ;{
         val generated = {
           val vm = vendorManager
-          val generated = (vm generator managementContext.license save vs).license
+          val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
           assertLicense(generated)
           generated
         }
@@ -114,7 +114,7 @@ abstract class LicenseKeyLifeCycleTestSuite
       ;{
         val generated = {
           val vm = chainedVendorManager
-          val generated = (vm generator managementContext.license save vs).license
+          val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
           assertLicense(generated)
           generated
         }

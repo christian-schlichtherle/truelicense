@@ -12,7 +12,7 @@ trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =
   def call() {
     val vm = vendorManager
     val vs = store
-    vm generator license save vs
+    vm generateKeyFrom license saveTo vs
     for (i <- 1 to 5) {
       val cm = consumerManager()
       cm install vs

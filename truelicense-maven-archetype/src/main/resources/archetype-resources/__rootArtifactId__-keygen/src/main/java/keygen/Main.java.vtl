@@ -63,8 +63,8 @@ public enum Main {
                 void run() throws Exception {
                     final License input = createOrDecodeInputLicense();
                     final License output = manager()
-                            .generator(input)
-                            .save(store())
+                            .generateKeyFrom(input)
+                            .saveTo(store())
                             .license();
                     if (verbose())
                         err.println(output);

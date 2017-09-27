@@ -12,7 +12,7 @@
  * interfaces {@link net.truelicense.api.VendorLicenseManager} and
  * {@link net.truelicense.api.ConsumerLicenseManager}:
  * <ol>
- * <li>{@linkplain net.truelicense.api.VendorLicenseManager#generator Generation},
+ * <li>{@linkplain net.truelicense.api.VendorLicenseManager#generateKeyFrom generation},
  * <li>{@linkplain net.truelicense.api.ConsumerLicenseManager#install installation},
  * <li>{@linkplain net.truelicense.api.ConsumerLicenseManager#load loading},
  * <li>{@linkplain net.truelicense.api.ConsumerLicenseManager#verify verification} and

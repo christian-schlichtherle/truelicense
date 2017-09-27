@@ -54,6 +54,7 @@ import static net.truelicense.core.Messages.*;
  * @param <Model> the type of the repository model.
  * @author Christian Schlichtherle
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public abstract class TrueLicenseApplicationContext<Model>
 implements
         BiosProvider,
@@ -196,13 +197,13 @@ implements
     // Utility functions:
     //
 
-    static String requireNonEmpty(final String s) {
+    private static String requireNonEmpty(final String s) {
         if (s.isEmpty())
             throw new IllegalArgumentException();
         return s;
     }
 
-    static boolean exists(final Store store) throws LicenseManagementException {
+    private static boolean exists(final Store store) throws LicenseManagementException {
         return wrap(store::exists);
     }
 
@@ -217,7 +218,7 @@ implements
      * @throws LicenseManagementException on any other {@link Exception} thrown
      *         by the task.
      */
-    static <V> V wrap(final Callable<V> task) throws LicenseManagementException {
+    private static <V> V wrap(final Callable<V> task) throws LicenseManagementException {
         try { return task.call(); }
         catch (RuntimeException | LicenseManagementException e) { throw e; }
         catch (Exception e) { throw new LicenseManagementException(e); }
@@ -803,7 +804,7 @@ implements
                             if (!canGenerateLicenseKeys.isPresent()) {
                                 try {
                                     // Test encoding a new license key to /dev/null .
-                                    super.generator(license()).save(bios().memoryStore());
+                                    super.generateKeyFrom(license()).saveTo(memoryStore());
                                     canGenerateLicenseKeys = Optional.of(Boolean.TRUE);
                                 } catch (LicenseManagementException ignored) {
                                     canGenerateLicenseKeys = Optional.of(Boolean.FALSE);
@@ -820,7 +821,7 @@ implements
                     final Store store = store();
                     if (exists(store))
                         throw e;
-                    return super.generator(license()).save(store);
+                    return super.generateKeyFrom(license()).saveTo(store);
                 }
             }
 
@@ -912,7 +913,7 @@ implements
             implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
-                public LicenseKeyGenerator generator(final License bean) {
+                public LicenseKeyGenerator generateKeyFrom(final License bean) {
                     return new LicenseKeyGenerator() {
 
                         final RepositoryContext<Model> context = repositoryContext();
@@ -920,11 +921,16 @@ implements
                         Decoder decoder;
 
                         @Override
-                        public LicenseKeyGenerator save(final Sink sink) throws LicenseManagementException {
+                        public License license() throws LicenseManagementException {
+                            return wrap(() -> decoder().decode(License.class));
+                        }
+
+                        @Override
+                        public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
                             wrap(new Callable<Void>() {
 
                                 @Override public Void call() throws Exception {
-                                    authorization().clearSave(TrueLicenseManager.this);
+                                    authorization().clearGenerate(TrueLicenseManager.this);
                                     codec().encoder(compressedAndEncryptedSink()).encode(model());
                                     return null;
                                 }
@@ -934,11 +940,6 @@ implements
                                 }
                             });
                             return this;
-                        }
-
-                        @Override
-                        public License license() throws LicenseManagementException {
-                            return wrap(() -> decoder().decode(License.class));
                         }
 
                         Decoder decoder() throws Exception {

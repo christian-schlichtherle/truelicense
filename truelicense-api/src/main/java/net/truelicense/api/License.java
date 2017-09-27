@@ -25,7 +25,7 @@ import static java.util.Calendar.getInstance;
  * All properties are set to {@code null} by default.
  * However, {@linkplain LicenseValidation#validate license validation} may fail
  * if some properties are {@code null} when
- * {@linkplain VendorLicenseManager#generator generating},
+ * {@linkplain VendorLicenseManager#generateKeyFrom generating},
  * {@linkplain ConsumerLicenseManager#install installing} or
  * {@linkplain ConsumerLicenseManager#verify verifying}
  * license keys.
