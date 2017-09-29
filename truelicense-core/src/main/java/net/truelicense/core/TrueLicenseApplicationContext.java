@@ -202,7 +202,7 @@ implements
         return s;
     }
 
-    private static boolean exists(final Store store) throws LicenseManagementException {
+    private static boolean exists(Store store) throws LicenseManagementException {
         return wrap(store::exists);
     }
 
@@ -316,7 +316,6 @@ implements
         }
     }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     final class TrueLicenseManagementContext
     implements
             Clock,
