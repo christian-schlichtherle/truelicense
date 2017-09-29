@@ -5,7 +5,7 @@
 
 package net.truelicense.jax.rs;
 
-import net.truelicense.jax.rs.dto.ErrorDTO;
+import net.truelicense.dto.ErrorDTO;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.ws.rs.Produces;
