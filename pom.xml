@@ -131,37 +131,37 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-jax-rs</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-json</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-obfuscate</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-swing</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-ui</artifactId>
-                <version>2.6.6</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -293,7 +293,7 @@
                 <plugin>
                     <groupId>${project.groupId}</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
-                    <version>2.6.6-SNAPSHOT</version>
+                    <version>${project.version}</version>
                 </plugin>
 
                 <plugin>
