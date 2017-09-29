@@ -3,7 +3,7 @@ cache:
   - $HOME/.m2/repository
 
 git:
-  depth: 3
+  depth: 5
 
 jdk:
 - openjdk7
