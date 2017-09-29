@@ -54,9 +54,8 @@
         <site>
             <id>truelicense-website</id>
             <name>TrueLicense Website</name>
-            <!-- DON'T use ${project.groupId}, ${project.artifactId} here.
-                 This would change in sub-modules! -->
-            <url>file://${user.home}/sites/christian-schlichtherle.bitbucket.io/truelicense</url>
+            <!-- DON'T use ${project.groupId}, ${project.artifactId} here - this would change in sub-modules! -->
+            <url>file://${user.home}/sites/christian-schlichtherle.github.io/truelicense</url>
         </site>
     </distributionManagement>
 
@@ -132,63 +131,63 @@
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-api</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <artifactId>truelicense-core</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-jax-rs</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-obfuscate</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-spi</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-swing</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-ui</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v1</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-commons</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-json</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-xml</artifactId>
-                <version>3.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -307,7 +306,7 @@
                 <plugin>
                     <groupId>${project.groupId}</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
-                    <version>3.0.0-SNAPSHOT</version>
+                    <version>${project.version}</version>
                 </plugin>
 
                 <plugin>
@@ -346,7 +345,9 @@
                     <artifactId>gitflow-maven-plugin</artifactId>
                     <version>1.7.0</version>
                     <configuration>
-                        <versionTagPrefix>truelicense-</versionTagPrefix>
+                        <gitFlowConfig>
+                            <versionTagPrefix>truelicense-</versionTagPrefix>
+                        </gitFlowConfig>
                     </configuration>
                 </plugin>
                 <plugin>
