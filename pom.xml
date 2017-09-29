@@ -131,7 +131,7 @@
         <dependencies>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-core</artifactId>
+                <artifactId>truelicense-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
