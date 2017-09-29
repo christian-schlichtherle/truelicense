@@ -8,8 +8,8 @@ package net.truelicense.jax.rs;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementException;
-import net.truelicense.jax.rs.dto.LicenseDTO;
-import net.truelicense.jax.rs.dto.SubjectDTO;
+import net.truelicense.dto.LicenseDTO;
+import net.truelicense.dto.SubjectDTO;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.spi.io.MemoryStore;
 
@@ -97,14 +97,14 @@ public final class ConsumerLicenseManagementService {
 
     @GET
     @Produces(APPLICATION_JSON)
-    public LicenseDTO viewAsJson(@QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
+    public LicenseDTO loadAsJson(@QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
             throws ConsumerLicenseManagementServiceException {
-        return new LicenseDTO(viewAsXml(verify));
+        return new LicenseDTO(loadAsXml(verify));
     }
 
     @GET
     @Produces({APPLICATION_XML, TEXT_XML})
-    public License viewAsXml(final @QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
+    public License loadAsXml(final @QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
             throws ConsumerLicenseManagementServiceException {
         final License license;
         try {

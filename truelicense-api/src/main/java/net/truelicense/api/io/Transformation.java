@@ -69,4 +69,20 @@ public interface Transformation {
      * @param  source the source which provides the input streams to decorate.
      */
     Source unapply(Source source);
+
+    /** Returns a new transformation which applies the given transformation <em>after</em> this transformation. */
+    default Transformation andThen(Transformation after) {
+        return new Transformation() {
+
+            @Override
+            public Sink apply(Sink sink) {
+                return after.apply(Transformation.this.apply(sink));
+            }
+
+            @Override
+            public Source unapply(Source source) {
+                return after.unapply(Transformation.this.unapply(source));
+            }
+        };
+    }
 }

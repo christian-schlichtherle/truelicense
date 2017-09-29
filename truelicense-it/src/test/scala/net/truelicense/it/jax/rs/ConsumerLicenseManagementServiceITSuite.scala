@@ -11,9 +11,9 @@ import javax.ws.rs.core.MediaType._
 import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
 
+import net.truelicense.dto.LicenseDTO
 import net.truelicense.it.core.TestContext
 import net.truelicense.jax.rs.ConsumerLicenseManagementServiceExceptionMapper
-import net.truelicense.jax.rs.dto.LicenseDTO
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test

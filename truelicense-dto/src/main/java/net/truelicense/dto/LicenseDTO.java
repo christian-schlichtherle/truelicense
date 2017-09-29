@@ -1,4 +1,4 @@
-package net.truelicense.jax.rs.dto;
+package net.truelicense.dto;
 
 import net.truelicense.api.License;
 

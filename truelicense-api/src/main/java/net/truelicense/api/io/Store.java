@@ -6,6 +6,8 @@
 package net.truelicense.api.io;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * An abstraction for storing data.
@@ -22,4 +24,34 @@ public interface Store extends Source, Sink {
 
     /** Returns {@code true} if and only if the data exists. */
     boolean exists() throws IOException;
+
+    /**
+     * Returns a new store which (un-)applies the given transformation to the I/O streams provided by this store.
+     *
+     * @param t the transformation to (un-)apply to the I/O streams provided by this store.
+     */
+    default Store with(Transformation t) {
+        return new Store() {
+
+            @Override
+            public InputStream input() throws IOException {
+                return t.unapply(Store.this).input();
+            }
+
+            @Override
+            public OutputStream output() throws IOException {
+                return t.apply(Store.this).output();
+            }
+
+            @Override
+            public void delete() throws IOException {
+                Store.this.delete();
+            }
+
+            @Override
+            public boolean exists() throws IOException {
+                return Store.this.exists();
+            }
+        };
+    }
 }

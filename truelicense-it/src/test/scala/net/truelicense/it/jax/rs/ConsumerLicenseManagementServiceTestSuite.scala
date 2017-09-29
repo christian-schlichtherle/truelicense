@@ -31,20 +31,20 @@ abstract class ConsumerLicenseManagementServiceTestSuite
           managementService.subjectAsXml.getValue shouldBe managementContext.subject
         }
 
-        "fail to view the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsXml false)
+        "fail to load the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml false)
         }
 
-        "fail to verify and view the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsXml true)
+        "fail to load and verify the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml true)
         }
 
-        "fail to view the license key as JSON" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsJson false)
+        "fail to load the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson false)
         }
 
-        "fail to verify and view the license key as JSON" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsJson true)
+        "fail to load and verify the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson true)
         }
       }
 
@@ -53,20 +53,20 @@ abstract class ConsumerLicenseManagementServiceTestSuite
           (managementService install cachedLicenseKey).getStatus shouldBe 303
         }
 
-        "view the license key as XML" in {
-          managementService viewAsXml false shouldBe cachedLicenseBean
+        "load the license key as XML" in {
+          managementService loadAsXml false shouldBe cachedLicenseBean
         }
 
-        "verify and view the license key as XML" in {
-          managementService viewAsXml true shouldBe cachedLicenseBean
+        "load and verify the license key as XML" in {
+          managementService loadAsXml true shouldBe cachedLicenseBean
         }
 
-        "view the license key as JSON" in {
-          (managementService viewAsJson false).license shouldBe cachedLicenseBean
+        "load the license key as JSON" in {
+          (managementService loadAsJson false).license shouldBe cachedLicenseBean
         }
 
-        "verify and view the license key as JSON" in {
-          (managementService viewAsJson true).license shouldBe cachedLicenseBean
+        "load and verify the license key as JSON" in {
+          (managementService loadAsJson true).license shouldBe cachedLicenseBean
         }
       }
 
@@ -75,20 +75,20 @@ abstract class ConsumerLicenseManagementServiceTestSuite
           managementService uninstall ()
         }
 
-        "fail to view the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsXml false)
+        "fail to load the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml false)
         }
 
-        "fail to verify and view the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsXml true)
+        "fail to load and verify the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml true)
         }
 
-        "fail to view the license key as JSON" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsJson false)
+        "fail to load the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson false)
         }
 
-        "fail to verify and view the license key as JSON" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService viewAsJson true)
+        "fail to load and verify the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson true)
         }
       }
     }
