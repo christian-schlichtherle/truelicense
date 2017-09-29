@@ -79,9 +79,7 @@ public final class V2RepositoryController implements RepositoryController {
         return codec.decoder(source(artifactData));
     }
 
-    private static Source source(final byte[] encodedArtifact) {
-        final MemoryStore store = new MemoryStore();
-        store.data(encodedArtifact);
-        return store;
+    private static Source source(byte[] encodedArtifact) {
+        return new MemoryStore().data(encodedArtifact);
     }
 }

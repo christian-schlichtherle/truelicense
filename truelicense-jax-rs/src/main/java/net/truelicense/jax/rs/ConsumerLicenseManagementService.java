@@ -85,10 +85,8 @@ public final class ConsumerLicenseManagementService {
     @POST
     @Consumes(APPLICATION_OCTET_STREAM)
     public Response install(final byte[] key) throws ConsumerLicenseManagementServiceException {
-        final MemoryStore store = new MemoryStore();
-        store.data(key);
         try {
-            manager().install(store);
+            manager().install(new MemoryStore().data(key));
         } catch (LicenseManagementException e) {
             throw new ConsumerLicenseManagementServiceException(BAD_REQUEST, e);
         }
