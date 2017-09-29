@@ -333,7 +333,9 @@
                     <artifactId>gitflow-maven-plugin</artifactId>
                     <version>1.7.0</version>
                     <configuration>
-                        <versionTagPrefix>truelicense-</versionTagPrefix>
+                        <gitFlowConfig>
+                            <versionTagPrefix>truelicense-</versionTagPrefix>
+                        </gitFlowConfig>
                     </configuration>
                 </plugin>
                 <plugin>
