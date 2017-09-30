@@ -12,7 +12,6 @@ import javax.swing._
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.swing.LicenseManagementWizardITSuite._
-import net.truelicense.spi.io.MemoryStore
 import net.truelicense.swing.LicenseManagementWizard
 import net.truelicense.ui.LicenseWizardMessage
 import net.truelicense.ui.LicenseWizardMessage._
@@ -40,7 +39,7 @@ abstract class LicenseManagementWizardITSuite
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
-    val store = new MemoryStore
+    val store = managementContext.memoryStore
     outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
     manager = consumerManager(store)
     EventQueue invokeLater new Runnable {
