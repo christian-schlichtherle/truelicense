@@ -19,5 +19,5 @@ public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
     VendorLicenseManager checked();
 
     @Override
-    UncheckedLicenseKeyGenerator generateKeyFrom(License bean);
+    UncheckedLicenseKeyGenerator generateKeyFrom(License bean) throws UncheckedLicenseManagementException;
 }

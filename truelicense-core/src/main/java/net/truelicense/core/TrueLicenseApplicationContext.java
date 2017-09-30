@@ -910,8 +910,9 @@ implements
             implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
-                public LicenseKeyGenerator generateKeyFrom(final License bean) {
-                    return new LicenseKeyGenerator() {
+                public LicenseKeyGenerator generateKeyFrom(final License bean) throws LicenseManagementException {
+
+                    class TrueLicenseKeyGenerator implements LicenseKeyGenerator {
 
                         final RepositoryContext<Model> context = repositoryContext();
                         final Model model = context.model();
@@ -925,7 +926,6 @@ implements
                         @Override
                         public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
                             wrap(() -> {
-                                authorization().clearGenerate(TrueLicenseManager.this);
                                 codec().encoder(compressionThenEncryption().apply(sink)).encode(model());
                                 return null;
                             });
@@ -965,7 +965,12 @@ implements
                         License duplicatedBean() throws Exception {
                             return Codecs.clone(bean, codec());
                         }
-                    };
+                    }
+
+                    return wrap(() -> {
+                        authorization().clearGenerate(TrueLicenseManager.this);
+                        return new TrueLicenseKeyGenerator();
+                    });
                 }
 
                 @Override

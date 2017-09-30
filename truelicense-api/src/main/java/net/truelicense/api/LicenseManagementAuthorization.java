@@ -24,7 +24,7 @@ public interface LicenseManagementAuthorization {
      * in order to protect against a malicious removal of the auto-generated FTP license key.
      *
      * @param schema the licensing schema.
-     * @see LicenseKeyGenerator#saveTo(Sink)
+     * @see VendorLicenseManager#generateKeyFrom(License)
      */
     void clearGenerate(LicenseManagementSchema schema) throws Exception;
 

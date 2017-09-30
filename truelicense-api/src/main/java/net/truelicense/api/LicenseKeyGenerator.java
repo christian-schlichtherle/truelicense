@@ -24,9 +24,6 @@ public interface LicenseKeyGenerator {
 
     /**
      * Saves the generated license key to the given sink.
-     * <p>
-     * Calling this operation performs an initial
-     * {@linkplain LicenseManagementAuthorization#clearGenerate authorization check}.
      *
      * @param sink the sink for writing the generated license key to.
      * @return {@code this}
