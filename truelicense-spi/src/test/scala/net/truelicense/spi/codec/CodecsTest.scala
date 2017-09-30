@@ -35,7 +35,7 @@ class CodecsTest extends WordSpec {
       )
       forAll (table) { (contentType, contentTransferEncoding, contentTransferCharset) =>
         val codec = MockCodec(contentType, contentTransferEncoding)
-        Codecs contentTransferCharset codec should be (charset(contentTransferCharset))
+        Codecs contentTransferCharset codec shouldBe charset(contentTransferCharset)
       }
     }
 

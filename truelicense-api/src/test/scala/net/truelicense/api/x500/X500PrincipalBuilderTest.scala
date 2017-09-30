@@ -49,7 +49,7 @@ class X500PrincipalBuilderTest extends WordSpec {
         )
         forAll (table) { (name, attributes, keywords) =>
           val expected = new X500Principal(name, keywords.asJava)
-          builder(attributes, keywords).build should equal (expected)
+          builder(attributes, keywords).build shouldBe expected
         }
       }
     }

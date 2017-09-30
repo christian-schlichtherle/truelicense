@@ -47,7 +47,7 @@ class MyX500PrincipalBuilderTest extends WordSpec {
         .addSURNAME("SURNAME")
         .addT("T")
         .addUID("UID")
-        .build should equal (expected)
+        .build shouldBe expected
     }
   }
 }

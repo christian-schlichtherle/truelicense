@@ -29,8 +29,8 @@ extends WordSpec with ParallelTestExecution { this: TestContext[Model] =>
       val model = context.model()
       val controller = context.controller(model, _codec)
       val artifact = "Hello world!"
-      (authentication sign (controller, artifact) decode classOf[String]).asInstanceOf[String] should be (artifact)
-      (authentication verify controller decode classOf[String]).asInstanceOf[String] should be (artifact)
+      (authentication sign (controller, artifact) decode classOf[String]).asInstanceOf[String] shouldBe artifact
+      (authentication verify controller decode classOf[String]).asInstanceOf[String] shouldBe artifact
     }
   }
 }
