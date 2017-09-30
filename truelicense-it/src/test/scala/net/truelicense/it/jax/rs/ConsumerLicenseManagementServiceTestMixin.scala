@@ -9,10 +9,7 @@ import scala.language.existentials
 trait ConsumerLicenseManagementServiceTestMixin {
   this: TestContext[_] =>
 
-  lazy val managementService: ConsumerLicenseManagementService = {
-    lazy val m = consumerManager()
-    new ConsumerLicenseManagementService(() => m)
-  }
+  lazy val managementService: ConsumerLicenseManagementService = new ConsumerLicenseManagementService(consumerManager())
 
   protected lazy val (cachedLicenseClass, cachedLicenseBean, cachedLicenseKey): (Class[_ <: License], License, Array[Byte]) = {
     val store = new MemoryStore

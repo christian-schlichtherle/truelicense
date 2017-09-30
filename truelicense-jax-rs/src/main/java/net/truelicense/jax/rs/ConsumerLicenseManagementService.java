@@ -13,8 +13,8 @@ import net.truelicense.dto.SubjectDTO;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.spi.io.MemoryStore;
 
-import javax.inject.Provider;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -31,7 +31,6 @@ import static javax.ws.rs.core.Response.Status.*;
  * @author Christian Schlichtherle
  * @since TrueLicense 2.3
  */
-// TODO: Use Neuron DI for dependency injection.
 @Path(ConsumerLicenseManagementService.LICENSE)
 public final class ConsumerLicenseManagementService {
 
@@ -51,21 +50,17 @@ public final class ConsumerLicenseManagementService {
 
     private static final URI licenseURI = URI.create(LICENSE);
 
-    private final Provider<ConsumerLicenseManager> provider;
+    private final ConsumerLicenseManager manager;
 
-    public ConsumerLicenseManagementService(final Provider<ConsumerLicenseManager> provider) {
-        this.provider = Objects.requireNonNull(provider);
-    }
-
-    private ConsumerLicenseManager manager() {
-        return provider.get();
+    public ConsumerLicenseManagementService(final @Context ConsumerLicenseManager manager) {
+        this.manager = Objects.requireNonNull(manager);
     }
 
     @GET
     @Path(SUBJECT)
     @Produces(TEXT_PLAIN)
     public String subject() {
-        return manager().context().subject();
+        return manager.context().subject();
     }
 
     @GET
@@ -86,7 +81,7 @@ public final class ConsumerLicenseManagementService {
     @Consumes(APPLICATION_OCTET_STREAM)
     public Response install(final byte[] key) throws ConsumerLicenseManagementServiceException {
         try {
-            manager().install(new MemoryStore().data(key));
+            manager.install(new MemoryStore().data(key));
         } catch (LicenseManagementException e) {
             throw new ConsumerLicenseManagementServiceException(BAD_REQUEST, e);
         }
@@ -106,13 +101,13 @@ public final class ConsumerLicenseManagementService {
             throws ConsumerLicenseManagementServiceException {
         final License license;
         try {
-            license = manager().load();
+            license = manager.load();
         } catch (LicenseManagementException e) {
             throw new ConsumerLicenseManagementServiceException(NOT_FOUND, e);
         }
         if (verify) {
             try {
-                manager().verify();
+                manager.verify();
             } catch (LicenseManagementException e) {
                 throw new ConsumerLicenseManagementServiceException(PAYMENT_REQUIRED, e);
             }
@@ -123,7 +118,7 @@ public final class ConsumerLicenseManagementService {
     @DELETE
     public void uninstall() throws ConsumerLicenseManagementServiceException {
         try {
-            manager().uninstall();
+            manager.uninstall();
         } catch (LicenseManagementException e) {
             throw new ConsumerLicenseManagementServiceException(NOT_FOUND, e);
         }

@@ -11,9 +11,11 @@ import javax.ws.rs.core.MediaType._
 import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
 
+import net.truelicense.api.ConsumerLicenseManager
 import net.truelicense.dto.LicenseDTO
 import net.truelicense.it.core.TestContext
-import net.truelicense.jax.rs.ConsumerLicenseManagementServiceExceptionMapper
+import net.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
+import org.glassfish.hk2.utilities.binding.AbstractBinder
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
@@ -26,7 +28,12 @@ abstract class ConsumerLicenseManagementServiceITSuite
   self: TestContext[_] =>
 
   override protected def configure: Application = {
-    new ResourceConfig(classOf[ConsumerLicenseManagementServiceExceptionMapper]).registerInstances(managementService)
+    new ResourceConfig(
+      classOf[ConsumerLicenseManagementService],
+      classOf[ConsumerLicenseManagementServiceExceptionMapper]
+    ).registerInstances(new AbstractBinder {
+      def configure(): Unit = bind(consumerManager()).to(classOf[ConsumerLicenseManager])
+    })
   }
 
   @Test
