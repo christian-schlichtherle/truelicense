@@ -9,7 +9,6 @@ import net.truelicense.api.auth.RepositoryController;
 import net.truelicense.api.auth.RepositoryIntegrityException;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.codec.Decoder;
-import net.truelicense.api.io.Source;
 import net.truelicense.spi.io.MemoryStore;
 
 import java.nio.charset.Charset;
@@ -76,12 +75,6 @@ public final class V2RepositoryController implements RepositoryController {
         engine.update(artifactData);
         if (!engine.verify(getDecoder().decode(model.getSignature())))
             throw new RepositoryIntegrityException();
-        return codec.decoder(source(artifactData));
-    }
-
-    private static Source source(final byte[] encodedArtifact) {
-        final MemoryStore store = new MemoryStore();
-        store.data(encodedArtifact);
-        return store;
+        return codec.decoder(new MemoryStore().data(artifactData));
     }
 }

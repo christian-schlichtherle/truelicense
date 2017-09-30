@@ -12,7 +12,6 @@ import javax.swing._
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.swing.LicenseManagementWizardITSuite._
-import net.truelicense.spi.io.MemoryStore
 import net.truelicense.swing.LicenseManagementWizard
 import net.truelicense.ui.LicenseWizardMessage
 import net.truelicense.ui.LicenseWizardMessage._
@@ -40,7 +39,7 @@ abstract class LicenseManagementWizardITSuite
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
-    val store = new MemoryStore
+    val store = this.store
     outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
     manager = consumerManager(store)
     EventQueue invokeLater new Runnable {
@@ -62,7 +61,7 @@ abstract class LicenseManagementWizardITSuite
   after {
     cancelButton doClick ()
     dialog.isVisible shouldBe false
-    wizard.getReturnCode should be (LicenseManagementWizard.CANCEL_RETURN_CODE)
+    wizard.getReturnCode shouldBe LicenseManagementWizard.CANCEL_RETURN_CODE
     UIManager setLookAndFeel laf
   }
 
@@ -137,14 +136,14 @@ abstract class LicenseManagementWizardITSuite
           def format(date: Date) =
             display_dateTimeFormat(managementContext.subject, date)
 
-          waitText(display_holder) should be (toString(outputLicense.getHolder))
-          waitText(display_subject) should be (toString(outputLicense.getSubject))
-          waitText(display_consumer) should be (toString(outputLicense.getConsumerType) + " / " + outputLicense.getConsumerAmount)
-          waitText(display_notBefore) should be (format(outputLicense.getNotBefore))
-          waitText(display_notAfter) should be (format(outputLicense.getNotAfter))
-          waitText(display_issuer) should be (toString(outputLicense.getIssuer))
-          waitText(display_issued) should be (format(outputLicense.getIssued))
-          waitText(display_info) should be (toString(outputLicense.getInfo))
+          waitText(display_holder) shouldBe toString(outputLicense.getHolder)
+          waitText(display_subject) shouldBe toString(outputLicense.getSubject)
+          waitText(display_consumer) shouldBe (toString(outputLicense.getConsumerType) + " / " + outputLicense.getConsumerAmount)
+          waitText(display_notBefore) shouldBe format(outputLicense.getNotBefore)
+          waitText(display_notAfter) shouldBe format(outputLicense.getNotAfter)
+          waitText(display_issuer) shouldBe toString(outputLicense.getIssuer)
+          waitText(display_issued) shouldBe format(outputLicense.getIssued)
+          waitText(display_info) shouldBe toString(outputLicense.getInfo)
         }
 
         "switch to the uninstall panel when requested" ifNotHeadless {

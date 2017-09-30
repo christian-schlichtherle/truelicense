@@ -28,11 +28,11 @@ class LicenseValidationExceptionTest extends WordSpec {
       })
 
       "return the localized message upon a call to getLocalizedMessage()" in {
-        ex.getLocalizedMessage should be (message)
+        ex.getLocalizedMessage shouldBe message
       }
 
       "return the localized message upon a call to getMessage()" in {
-        ex.getMessage should be (message)
+        ex.getMessage shouldBe message
       }
     }
   }

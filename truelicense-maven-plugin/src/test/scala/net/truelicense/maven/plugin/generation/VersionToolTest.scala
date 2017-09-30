@@ -26,9 +26,9 @@ class VersionToolTest extends WordSpec {
     )
     forAll(table) { (string, major, minor, incremental) =>
       val version = new VersionTool().parse(string)
-      version.getMajorVersion should be (major)
-      version.getMinorVersion should be (minor)
-      version.getIncrementalVersion should be (incremental)
+      version.getMajorVersion shouldBe major
+      version.getMinorVersion shouldBe minor
+      version.getIncrementalVersion shouldBe incremental
     }
   }
 }

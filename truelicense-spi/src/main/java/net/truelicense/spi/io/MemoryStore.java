@@ -77,7 +77,8 @@ public final class MemoryStore implements Store {
         return optBuffer.map(byte[]::clone).orElseThrow(IllegalStateException::new);
     }
 
-    public void data(byte[] buffer) {
+    public MemoryStore data(final byte[] buffer) {
         optBuffer = Optional.ofNullable(buffer.clone());
+        return this;
     }
 }

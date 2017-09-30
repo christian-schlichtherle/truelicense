@@ -26,18 +26,18 @@ abstract class CodecTestSuite extends WordSpec {
         val artifact = this.artifact
         val codec = this.codec
         val store = this.store `with` transformation
-        store.exists should equal (false)
+        store.exists shouldBe false
         intercept[IOException] { store delete () }
         try {
           codec encoder store encode artifact
           val duplicate: AnyRef = codec decoder store decode artifact.getClass
-          duplicate should equal (artifact)
+          duplicate shouldBe artifact
           duplicate should not be theSameInstanceAs (artifact)
-          store.exists should equal (true)
+          store.exists shouldBe true
         } finally {
           store delete ()
         }
-        store.exists should equal (false)
+        store.exists shouldBe false
         intercept[IOException] { store delete () }
       }
     }
