@@ -39,7 +39,7 @@ abstract class LicenseManagementWizardITSuite
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
-    val store = managementContext.memoryStore
+    val store = this.store
     outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
     manager = consumerManager(store)
     EventQueue invokeLater new Runnable {
