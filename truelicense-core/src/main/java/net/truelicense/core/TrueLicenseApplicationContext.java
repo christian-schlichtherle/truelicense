@@ -53,7 +53,7 @@ import static net.truelicense.core.Messages.*;
  * @param <Model> the type of the repository model.
  * @author Christian Schlichtherle
  */
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+@SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
 public abstract class TrueLicenseApplicationContext<Model>
 implements
         BiosProvider,
@@ -465,12 +465,10 @@ implements
 
             @Override
             public VendorLicenseManager build() {
-                return new TrueLicenseManagementParameters(this)
-                        .new TrueLicenseManager();
+                return new TrueLicenseManagementParameters(this).new TrueLicenseManager();
             }
         }
 
-        @SuppressWarnings("unchecked")
         abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
 
             Optional<Authentication> authentication = Optional.empty();
@@ -833,6 +831,7 @@ implements
                 volatile Cache<Source, Decoder> cachedDecoder = new Cache<>();
                 volatile Cache<Source, License> cachedLicense = new Cache<>();
 
+                @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
                     final Store store = store();
@@ -840,7 +839,7 @@ implements
                         super.install(source);
 
                         final Optional<Source> optSource = Optional.ofNullable(source);
-                        final Optional<Source> optStore = Optional.ofNullable(store);
+                        final Optional<Source> optStore = Optional.of(store);
 
                         // As a side effect of the license key installation, the cached
                         // artifactory and license get associated to the source unless this
@@ -877,7 +876,7 @@ implements
                     final Optional<Source> optSource = Optional.ofNullable(source);
                     Optional<License> optLicense = cachedLicense.map(optSource);
                     if (!optLicense.isPresent()) {
-                        optLicense = Optional.ofNullable(decodeLicense(source));
+                        optLicense = Optional.of(decodeLicense(source));
                         cachedLicense = new Cache<>(optSource, optLicense, cachePeriodMillis());
                     }
                     validation().validate(optLicense.get());
@@ -888,7 +887,7 @@ implements
                     final Optional<Source> optSource = Optional.ofNullable(source);
                     Optional<Decoder> optDecoder = cachedDecoder.map(optSource);
                     if (!optDecoder.isPresent()) {
-                        optDecoder = Optional.ofNullable(super.authenticate(source));
+                        optDecoder = Optional.of(super.authenticate(source));
                         cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
                     }
                     return optDecoder.get();
@@ -925,17 +924,10 @@ implements
 
                         @Override
                         public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
-                            wrap(new Callable<Void>() {
-
-                                @Override public Void call() throws Exception {
-                                    authorization().clearGenerate(TrueLicenseManager.this);
-                                    codec().encoder(compressedAndEncryptedSink()).encode(model());
-                                    return null;
-                                }
-
-                                Sink compressedAndEncryptedSink() {
-                                    return compressionThenEncryption().apply(sink);
-                                }
+                            wrap(() -> {
+                                authorization().clearGenerate(TrueLicenseManager.this);
+                                codec().encoder(compressionThenEncryption().apply(sink)).encode(model());
+                                return null;
                             });
                             return this;
                         }
