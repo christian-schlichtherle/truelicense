@@ -12,15 +12,14 @@ import net.truelicense.api.misc.ContextProvider;
 import java.util.Objects;
 
 /**
- * Adapts vendor and consumer license managers so that they may generally throw
- * an {@link UncheckedLicenseManagementException} rather than a (checked)
- * {@link LicenseManagementException}.
+ * Adapts vendor and consumer license managers so that they may generally throw an
+ * {@link UncheckedLicenseManagementException} rather than a (checked) {@link LicenseManagementException}.
  *
  * @author Christian Schlichtherle
  */
-public final class UncheckedManager {
+public final class UncheckedLicenseManager {
 
-    private UncheckedManager() { }
+    private UncheckedLicenseManager() { }
 
     /**
      * Returns a vendor license manager which may generally throw an

@@ -6,9 +6,8 @@
 package net.truelicense.api;
 
 /**
- * A runtime exception which wraps a (checked)
- * {@link LicenseManagementException}.
- * This is generally thrown by the {@code UncheckedManager*} interfaces.
+ * A runtime exception which wraps a (checked) {@link LicenseManagementException}.
+ * This is generally thrown by the {@code Unchecked*} interfaces.
  *
  * @author Christian Schlichtherle
  */

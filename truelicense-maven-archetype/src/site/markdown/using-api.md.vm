@@ -130,23 +130,21 @@ You can generate a license key using:
 
 For a fully elaborated example, please have a look at the `Main` class.
 
-$h4 Working with (Unchecked) Runtime Exceptions
+$h4 Working with Runtime Exceptions
 
-The `VendorLicenseManager` interface may generally throw a 
-[`net.truelicense.api.LicenseManagementException`], which is a
-`GeneralSecurityException`, which is a (checked) `Exception`.
-Working with checked exceptions may be cumbersome in contexts where a method can 
-only throw (unchecked) runtime exceptions, e.g. when implementing
-`Runnable.run()`.
-For these uses cases, there exists a small adapter method named 
-[`net.truelicense.api.UncheckedManager.from(VendorLicenseManager)`](../apidocs/net/truelicense/api/UncheckedManager.html#from%28VendorLicenseManager%29):
-This method adapts a vendor license manager so that it may generally throw 
-an [`net.truelicense.api.UncheckedLicenseManagementException`], which is a
-`RuntimeException` and wraps the original `LicenseManagementException`.
+The `VendorLicenseManager` interface may generally throw a [`net.truelicense.api.LicenseManagementException`], which
+is a `GeneralSecurityException`, which is a (checked) `Exception`.
+Working with checked exceptions may be cumbersome in contexts where a method is constrained to only throw unchecked
+exceptions, e.g. when implementing `Runnable.run()`.
+For these uses cases there exists an adapter method named
+[`net.truelicense.api.UncheckedLicenseManager.from(VendorLicenseManager)`](../apidocs/net/truelicense/api/UncheckedLicenseManager.html#from%28VendorLicenseManager%29):
+This method adapts a vendor license manager so that it may generally throw an
+[`net.truelicense.api.UncheckedLicenseManagementException`], which is an (unchecked) `RuntimeException` and wraps the
+original `LicenseManagementException`.
 Here's the general usage pattern:
 
     VendorLicenseManager checkedManager = ...;
-    UncheckedVendorLicenseManager uncheckedManager = UncheckedManager.from(checkedManager);
+    UncheckedVendorLicenseManager uncheckedManager = UncheckedLicenseManager.from(checkedManager);
     uncheckedManager.generateKeyFrom(someLicense).saveTo(someSink); // throws UncheckedLicenseManagementException
 
 You can get back the original (checked) vendor license manager by calling:
@@ -395,23 +393,21 @@ If no license key is installed or only an auto-generated FTP license
 key is installed, then a
 [`net.truelicense.api.LicenseManagementException`] is thrown instead.
 
-$h4 Working with (Unchecked) Runtime Exceptions
+$h4 Working with Runtime Exceptions
 
-The `ConsumerLicenseManager` interface may generally throw a 
-[`net.truelicense.api.LicenseManagementException`],
-which is a `GeneralSecurityException`, which is a (checked) `Exception`.
-Working with checked exceptions may be cumbersome in contexts where a method can 
-only throw (unchecked) runtime exceptions, e.g. when implementing
-`Runnable.run()`.
-For these uses cases, there exists a small adapter method named 
-[`net.truelicense.api.UncheckedManager.from(ConsumerLicenseManager)`](../apidocs/net/truelicense/api/UncheckedManager.html#from%28ConsumerLicenseManager%29):
-This method adapts a consumer license manager so that it may generally throw 
-an [`net.truelicense.api.UncheckedLicenseManagementException`], which is a
-`RuntimeException` and wraps the original `LicenseManagementException`.
+The `ConsumerLicenseManager` interface may generally throw a [`net.truelicense.api.LicenseManagementException`], which
+is a `GeneralSecurityException`, which is a (checked) `Exception`.
+Working with checked exceptions may be cumbersome in contexts where a method is constrained to only throw unchecked
+exceptions, e.g. when implementing `Runnable.run()`.
+For these uses cases there exists an adapter method named
+[`net.truelicense.api.UncheckedLicenseManager.from(ConsumerLicenseManager)`](../apidocs/net/truelicense/api/UncheckedLicenseManager.html#from%28ConsumerLicenseManager%29):
+This method adapts a consumer license manager so that it may generally throw an
+[`net.truelicense.api.UncheckedLicenseManagementException`], which is an (unchecked) `RuntimeException` and wraps the
+original `LicenseManagementException`.
 Here's the general usage pattern:
 
     ConsumerLicenseManager checkedManager = ...;
-    UncheckedConsumerLicenseManager uncheckedManager = UncheckedManager.from(checkedManager);
+    UncheckedConsumerLicenseManager uncheckedManager = UncheckedLicenseManager.from(checkedManager);
     uncheckedManager.install(someSource); // throws UncheckedLicenseManagementException
 
 You can get back the original (checked) consumer license manager by calling:

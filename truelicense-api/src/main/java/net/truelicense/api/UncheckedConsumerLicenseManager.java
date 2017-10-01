@@ -8,11 +8,10 @@ package net.truelicense.api;
 import net.truelicense.api.io.Source;
 
 /**
- * A consumer license manager which may generally throw an
- * {@link UncheckedLicenseManagementException} rather than a (checked)
- * {@link LicenseManagementException}.
+ * A consumer license manager which may generally throw an {@link UncheckedLicenseManagementException} rather than a
+ * (checked) {@link LicenseManagementException}.
  *
- * @see UncheckedManager#from(ConsumerLicenseManager)
+ * @see UncheckedLicenseManager#from(ConsumerLicenseManager)
  * @author Christian Schlichtherle
  */
 public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager {

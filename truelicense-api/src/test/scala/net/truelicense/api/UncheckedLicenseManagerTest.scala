@@ -15,12 +15,12 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.mockito.MockitoSugar.mock
 
 @RunWith(classOf[JUnitRunner])
-class UncheckedManagerTest extends WordSpec {
+class UncheckedLicenseManagerTest extends WordSpec {
 
-  "The unchecked vendor license manager returned by UncheckedManager.from(VendorLicenseManager)" should {
+  "The unchecked vendor license manager returned by UncheckedLicenseManager.from(VendorLicenseManager)" should {
     val checkedManager = mock[VendorLicenseManager]
 
-    val uncheckedManager = UncheckedManager from checkedManager
+    val uncheckedManager = UncheckedLicenseManager from checkedManager
 
     "return the checked vendor license manager" in {
       uncheckedManager.checked shouldBe theSameInstanceAs(checkedManager)
@@ -46,10 +46,10 @@ class UncheckedManagerTest extends WordSpec {
     }
   }
 
-  "The unchecked consumer license manager returned by UncheckedManager.from(ConsumerLicenseManager)" should {
+  "The unchecked consumer license manager returned by UncheckedLicenseManager.from(ConsumerLicenseManager)" should {
     val checkedManager = mock[ConsumerLicenseManager]
 
-    val uncheckedManager = UncheckedManager from checkedManager
+    val uncheckedManager = UncheckedLicenseManager from checkedManager
 
     "return the checked consumer license manager" in {
       uncheckedManager.checked shouldBe theSameInstanceAs(checkedManager)

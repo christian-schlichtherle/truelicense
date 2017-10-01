@@ -6,11 +6,10 @@
 package net.truelicense.api;
 
 /**
- * A vendor license manager which may generally throw an
- * {@link UncheckedLicenseManagementException} rather than a (checked)
- * {@link LicenseManagementException}.
+ * A vendor license manager which may generally throw an {@link UncheckedLicenseManagementException} rather than a
+ * (checked) {@link LicenseManagementException}.
  *
- * @see UncheckedManager#from(VendorLicenseManager)
+ * @see UncheckedLicenseManager#from(VendorLicenseManager)
  * @author Christian Schlichtherle
  */
 public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
