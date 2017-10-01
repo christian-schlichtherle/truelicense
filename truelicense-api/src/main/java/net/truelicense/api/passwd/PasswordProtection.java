@@ -8,7 +8,7 @@ package net.truelicense.api.passwd;
 /**
  * A factory for consistent {@link Password}s.
  * Use this interface with the try-with-resources statement to ensure that the
- * password gets destroyed after use:
+ * password gets erased after use:
  * <pre>{@code
  *  import net.truelicense.api.passwd.*;
  *  import java.security.*;

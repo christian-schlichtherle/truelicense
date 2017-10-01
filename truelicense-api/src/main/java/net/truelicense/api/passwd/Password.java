@@ -6,7 +6,7 @@
 package net.truelicense.api.passwd;
 
 /**
- * A container for a destroyable password.
+ * A container for an erasable password.
  *
  * @see PasswordProtection
  * @author Christian Schlichtherle
@@ -16,6 +16,6 @@ public interface Password extends AutoCloseable {
     /** Returns the shared array of password characters. */
     char[] characters();
 
-    /** Wipes the shared array of password characters. */
+    /** Erases the shared array of password characters. */
     void close();
 }

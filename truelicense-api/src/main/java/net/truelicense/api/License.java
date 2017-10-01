@@ -148,7 +148,7 @@ public class License {
      * Sets the distinguished name of the legal entity to which the license
      * is granted by the issuer/vendor, typically the consumer.
      *
-     * @see X500PrincipalBuilder
+     * @see net.truelicense.api.x500.X500PrincipalBuilder
      */
     public final void setHolder(final X500Principal holder) {
         this.holder = holder;
@@ -198,7 +198,7 @@ public class License {
      * Sets the distinguished name of the legal entity which grants the
      * license to the holder/consumer, typically the license vendor.
      *
-     * @see X500PrincipalBuilder
+     * @see net.truelicense.api.x500.X500PrincipalBuilder
      */
     public final void setIssuer(final X500Principal issuer) {
         this.issuer = issuer;
