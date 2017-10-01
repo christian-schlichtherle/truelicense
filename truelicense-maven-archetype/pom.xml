@@ -55,26 +55,32 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-jax-rs</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-maven-plugin</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-swing</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-v1</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-v2-json</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-v2-xml</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
