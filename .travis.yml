@@ -9,6 +9,8 @@ jdk:
 - openjdk8
 - oraclejdk8
 
+install: mvn install -DskipTests=true -V
+
 language: java
 
-script: mvn verify -B
+script: mvn verify
