@@ -69,11 +69,6 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-v1</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-v2-json</artifactId>
             <optional>true</optional>
         </dependency>
@@ -320,6 +315,16 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>feature-truelicense-v1</id>
+            <dependencies>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>truelicense-v1</artifactId>
+                    <optional>true</optional>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 </project>
