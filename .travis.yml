@@ -11,6 +11,6 @@ jdk:
 
 language: java
 
-install: mvn install -DskipTests=true -B -Pfeature-truelicense-v1
+install: mvn install -DskipTests=true -Pfeature-truelicense-v1
 
-script: mvn verify -B -Pfeature-truelicense-v1
+script: mvn verify -Pfeature-truelicense-v1
