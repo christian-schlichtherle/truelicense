@@ -400,6 +400,7 @@
                         <includeDependency>false</includeDependency>
                         <libs combine.children="append">
                             <lib>${dollar}{java.home}/lib/jce.jar</lib>
+                            <lib>${dollar}{java.home}/lib/rt.jar</lib>
                         </libs>
                         <!-- The following options are required for
                              TrueLicense 3. -->
@@ -615,29 +616,6 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                     </plugin>
                 </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>rt-jar-for-oracle-jdk</id>
-            <activation>
-                <file>
-                    <exists>${dollar}{java.home}/lib/rt.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/lib/rt.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
             </build>
         </profile>
         <profile>

@@ -123,6 +123,9 @@
         <profile>
             <id>generate-keymgr-guarded-jar</id>
             <activation>
+                <file>
+                    <exists>${dollar}{java.home}/lib/rt.jar</exists>
+                </file>
                 <property>
                     <name>skipStandaloneJars</name>
                     <value>!true</value>
