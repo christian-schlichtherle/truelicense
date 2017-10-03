@@ -122,6 +122,7 @@
         <module>truelicense-spi</module>
         <module>truelicense-swing</module>
         <module>truelicense-ui</module>
+        <module>truelicense-v1</module>
         <module>truelicense-v2-commons</module>
         <module>truelicense-v2-json</module>
         <module>truelicense-v2-xml</module>
@@ -483,12 +484,6 @@
                     </plugins>
                 </pluginManagement>
             </build>
-        </profile>
-        <profile>
-            <id>feature-truelicense-v1</id>
-            <modules>
-                <module>truelicense-v1</module>
-            </modules>
         </profile>
     </profiles>
 </project>

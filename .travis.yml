@@ -9,8 +9,8 @@ jdk:
 - openjdk8
 - oraclejdk8
 
-install: mvn -V -DskipTests=true -Pfeature-truelicense-v1 install
+install: mvn -V -DskipTests=true install
 
 language: java
 
-script: mvn -Pfeature-truelicense-v1 verify
+script: mvn verify
