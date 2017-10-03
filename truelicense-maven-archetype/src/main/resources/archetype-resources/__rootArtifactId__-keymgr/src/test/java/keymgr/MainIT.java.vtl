@@ -2,6 +2,7 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
 #set($keygen = "${package}.keygen")
 #set($KeyGenManager = "${keygen}.LicenseManager")
 #set($KeyGenMain = "${keygen}.Main")
@@ -28,10 +29,10 @@ public class MainIT {
             final String edition = manager.name();
             final File licenseKey = folder.newFile(edition + ".lic");
             final String licenseKeyPath = licenseKey.getPath();
-            ${KeyGenMain}.process("create", "-edition", edition, licenseKeyPath);
+            ${KeyGenMain}.process("generate", "-edition", edition, licenseKeyPath);
             process("install", licenseKeyPath);
             try {
-                process("view");
+                process("load");
                 process("verify");
             } finally {
                 process("uninstall");

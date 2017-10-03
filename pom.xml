@@ -9,12 +9,12 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>117</version>
+        <version>119</version>
     </parent>
 
-    <groupId>net.java.truelicense</groupId>
+    <groupId>net.truelicense</groupId>
     <artifactId>truelicense</artifactId>
-    <version>2.6.6</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
 
     <name>TrueLicense</name>
@@ -61,9 +61,9 @@
 
     <properties>
         <!-- clirr-maven-plugin -->
-        <comparisonVersion>2.0</comparisonVersion>
+        <comparisonVersion>3.0.0</comparisonVersion>
 
-        <javase.major>6</javase.major>
+        <javase.major>8</javase.major>
 
         <!-- maven-compiler-plugin -->
         <maven.compiler.debug>false</maven.compiler.debug>
@@ -77,9 +77,10 @@
         <maven.enforcer.requireMavenVersion>3.5.0</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
-        <maven.version>3.0</maven.version>
+        <maven.version>3.3.9</maven.version>
 
         <!-- maven-javadoc-plugin -->
+        <additionalparam>--allow-script-in-comments</additionalparam>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <googleAnalyticsAccountId>UA-28191662-1</googleAnalyticsAccountId>
         <header><![CDATA[
@@ -103,30 +104,37 @@
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
-        <scala.compat.version>2.11</scala.compat.version>
-        <scala.version>2.11.11</scala.version>
-
         <!-- dependencies -->
         <jackson.version>2.9.1</jackson.version>
-        <javaee.version>${javase.major}.0</javaee.version>
-        <truezip.version>7.7.10</truezip.version>
+        <javaee.version>7.0</javaee.version>
     </properties>
 
     <modules>
+        <module>truelicense-api</module>
         <module>truelicense-core</module>
+        <module>truelicense-dto</module>
         <module>truelicense-it</module>
         <module>truelicense-jax-rs</module>
         <module>truelicense-jsf</module>
-        <module>truelicense-json</module>
         <module>truelicense-maven-archetype</module>
         <module>truelicense-maven-plugin</module>
         <module>truelicense-obfuscate</module>
+        <module>truelicense-spi</module>
         <module>truelicense-swing</module>
         <module>truelicense-ui</module>
+        <module>truelicense-v1</module>
+        <module>truelicense-v2-commons</module>
+        <module>truelicense-v2-json</module>
+        <module>truelicense-v2-xml</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>
@@ -134,12 +142,12 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-jax-rs</artifactId>
+                <artifactId>truelicense-dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-json</artifactId>
+                <artifactId>truelicense-jax-rs</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -154,6 +162,11 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-swing</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -162,6 +175,34 @@
                 <artifactId>truelicense-ui</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-v1</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-v2-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-v2-json</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-v2-xml</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>2.26</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
@@ -169,30 +210,30 @@
                 <version>3.0.1u2</version>
                 <!-- clear dependencies of this uber jar -->
                 <exclusions>
-                    <exclusion>
-                        <groupId>net.jcip</groupId>
+                <exclusion>
+                    <groupId>net.jcip</groupId>
                         <artifactId>jcip-annotations</artifactId>
                     </exclusion>
                     <exclusion>
-                        <groupId>com.google.code.findbugs</groupId>
+                    <groupId>com.google.code.findbugs</groupId>
                         <artifactId>jsr305</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <dependency>
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm-tree</artifactId>
-                <version>5.2</version>
+                <version>6.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.3</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.10</version>
             </dependency>
             <dependency>
                 <groupId>commons-collections</groupId>
@@ -211,12 +252,12 @@
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
+                <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.jaxrs</groupId>
-                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
@@ -230,14 +271,9 @@
                 <version>${javaee.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.jersey.jersey-test-framework</groupId>
-                <artifactId>jersey-test-framework-http</artifactId>
-                <version>1.19.4</version>
-            </dependency>
-            <dependency>
                 <groupId>javax.ws.rs</groupId>
-                <artifactId>jsr311-api</artifactId>
-                <version>1.1.1</version>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.1</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven</groupId>
@@ -248,7 +284,7 @@
             <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
                 <artifactId>maven-plugin-annotations</artifactId>
-                <version>3.5</version>
+                <version>3.3</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -256,22 +292,6 @@
                 <artifactId>maven-plugin-api</artifactId>
                 <version>${maven.version}</version>
                 <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-driver-zip</artifactId>
-                <version>${truezip.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.bouncycastle</groupId>
-                        <artifactId>bcprov-jdk15on</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>de.schlichtherle.truezip</groupId>
-                <artifactId>truezip-file</artifactId>
-                <version>${truezip.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>
@@ -327,16 +347,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>com.amashchenko.maven.plugin</groupId>
-                    <artifactId>gitflow-maven-plugin</artifactId>
-                    <version>1.7.0</version>
-                    <configuration>
-                        <gitFlowConfig>
-                            <versionTagPrefix>truelicense-</versionTagPrefix>
-                        </gitFlowConfig>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
                     <configuration>
@@ -361,6 +371,19 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.7.0</version>
+                <configuration>
+                    <gitFlowConfig>
+                        <versionTagPrefix>truelicense-</versionTagPrefix>
+                    </gitFlowConfig>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <reporting>
@@ -381,7 +404,6 @@
                 <configuration>
                     <links>
                         <link>http://commons.apache.org/codec/apidocs/</link>
-                        <link>http://findbugs.sourceforge.net/api/</link>
                     </links>
                 </configuration>
                 <reportSets>

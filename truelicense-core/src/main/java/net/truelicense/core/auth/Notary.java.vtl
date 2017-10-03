@@ -1,0 +1,221 @@
+/*
+ * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * All rights reserved. Use is subject to license terms.
+ */
+
+#macro(obfuscate $string)$java.obfuscatedString($string).replaceAll(" /\*.*\*/", ".toString()")#end
+package net.truelicense.core.auth;
+
+import net.truelicense.api.auth.Authentication;
+import net.truelicense.api.auth.AuthenticationParameters;
+import net.truelicense.api.auth.RepositoryController;
+import net.truelicense.api.codec.Decoder;
+import net.truelicense.api.i18n.Message;
+import net.truelicense.api.io.Source;
+import net.truelicense.api.passwd.Password;
+import net.truelicense.api.passwd.PasswordProtection;
+import net.truelicense.api.passwd.PasswordUsage;
+import net.truelicense.obfuscate.Obfuscate;
+
+import java.io.InputStream;
+import java.security.*;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Signs or verifies a generic artifact using the private or public keys in a
+ * key store entry.
+ * This class is immutable.
+ *
+ * @author Christian Schlichtherle
+ */
+@SuppressWarnings("LoopStatementThatDoesntLoop")
+public final class Notary implements Authentication {
+
+    @Obfuscate
+    private static final String DEFAULT_ALGORITHM = "SHA1withDSA";
+
+    @Obfuscate
+    static final String NO_PRIVATE_KEY = "noPrivateKey";
+
+    @Obfuscate
+    static final String NO_CERTIFICATE = "noCertificate";
+
+    @Obfuscate
+    static final String NO_SUCH_ENTRY = "noSuchEntry";
+
+    private static volatile boolean logged;
+
+    private final AuthenticationParameters parameters;
+
+    public Notary(final AuthenticationParameters parameters) {
+        this.parameters = Objects.requireNonNull(parameters);
+    }
+
+    @Override
+    public Decoder sign(RepositoryController repository, Object artifact) throws Exception {
+        return new Cache().sign(repository, artifact);
+    }
+
+    @Override
+    public Decoder verify(RepositoryController repository) throws Exception {
+        return new Cache().verify(repository);
+    }
+
+    AuthenticationParameters parameters() {
+        return parameters;
+    }
+
+    private final class Cache {
+
+        KeyStore keyStore;
+
+        Decoder sign(RepositoryController repository, Object artifact) throws Exception {
+            final Signature engine = engine();
+            final PrivateKey key = privateKey();
+            engine.initSign(key);
+            return repository.sign(engine, artifact);
+        }
+
+        Decoder verify(RepositoryController repository) throws Exception {
+            final Signature engine = engine();
+            final PublicKey key = publicKey();
+            engine.initVerify(key);
+            return repository.verify(engine);
+        }
+
+        Signature engine() throws Exception {
+            return Signature.getInstance(algorithm());
+        }
+
+        String algorithm() throws Exception {
+            final Optional<String> configuredAlgorithm = configuredAlgorithm();
+            if (configuredAlgorithm.isPresent())
+                return configuredAlgorithm.get();
+            return defaultAlgorithm();
+        }
+
+        String defaultAlgorithm() throws Exception {
+            final Certificate cert = certificate();
+            if (cert instanceof X509Certificate) {
+                return ((X509Certificate) cert).getSigAlgName();
+            } else {
+                return DEFAULT_ALGORITHM;
+            }
+        }
+
+        PrivateKey privateKey() throws Exception {
+            final KeyStore.Entry entry = keyStoreEntry(PasswordUsage.WRITE);
+            if (entry instanceof KeyStore.PrivateKeyEntry) {
+                return ((KeyStore.PrivateKeyEntry) entry).getPrivateKey();
+            } else {
+                throw new NotaryException(message(NO_PRIVATE_KEY));
+            }
+        }
+
+        PublicKey publicKey() throws Exception {
+            final Certificate c = certificate();
+            final PublicKey p = c.getPublicKey();
+            if (!logged && isCertificateEntry()) {
+                try (InputStream in = Notary.class.getResourceAsStream(p.getAlgorithm())) {
+                    c.verify(CertificateFactory .getInstance(#obfuscate("X.509"))
+                                                .generateCertificate(in)
+                                                .getPublicKey());
+                } catch (SignatureException ex) {
+                    logged = true;
+                    Logger  .getAnonymousLogger(Messages.class.getName())
+                            .log(   new Level(  #obfuscate("NOTICE"),
+                                                Integer.MAX_VALUE,
+                                                Messages.class.getName()) { },
+                                    #obfuscate("agpl3"));
+                }
+            }
+            return p;
+        }
+
+        Certificate certificate() throws Exception {
+            final KeyStore.Entry entry = keyStoreEntry(PasswordUsage.READ);
+            if (entry instanceof KeyStore.PrivateKeyEntry) {
+                return ((KeyStore.PrivateKeyEntry) entry).getCertificate();
+            } else if (entry instanceof KeyStore.TrustedCertificateEntry) {
+                return ((KeyStore.TrustedCertificateEntry) entry).getTrustedCertificate();
+            } else {
+                throw new NotaryException(message(NO_CERTIFICATE));
+            }
+        }
+
+        KeyStore.Entry keyStoreEntry(final PasswordUsage usage) throws Exception {
+            if (isKeyEntry()) {
+                try (Password password = keyProtection().password(usage)) {
+                    final KeyStore.PasswordProtection protection =
+                            new KeyStore.PasswordProtection(password.characters());
+                    try {
+                        return keyStoreEntry(Optional.ofNullable(protection));
+                    } finally {
+                        protection.destroy();
+                    }
+                }
+            } else if (isCertificateEntry()) {
+                return keyStoreEntry(Optional.empty());
+            } else {
+                assert !keyStore().containsAlias(alias());
+                throw new NotaryException(message(NO_SUCH_ENTRY));
+            }
+        }
+
+        boolean isKeyEntry() throws Exception {
+            return keyStore().isKeyEntry(alias());
+        }
+
+        boolean isCertificateEntry() throws Exception {
+            return keyStore().isCertificateEntry(alias());
+        }
+
+        KeyStore.Entry keyStoreEntry(Optional<KeyStore.PasswordProtection> protection) throws Exception {
+            return keyStore().getEntry(alias(), protection.orElse(null));
+        }
+
+        KeyStore keyStore() throws Exception {
+            final KeyStore ks = keyStore;
+            return null != ks ? ks : (keyStore = newKeyStore());
+        }
+
+        KeyStore newKeyStore() throws Exception {
+            try (Password password = storeProtection().password(PasswordUsage.READ)) {
+                final KeyStore keyStore = KeyStore.getInstance(storeType());
+                final char[] pc = password.characters();
+                if (source().isPresent()) {
+                    try (InputStream in = source().get().input()) {
+                        keyStore.load(in, pc);
+                    }
+                } else {
+                    keyStore.load(null, pc);
+                }
+                return keyStore;
+            }
+        }
+
+        Message message(String key) { return Messages.message(key, alias()); }
+
+        String alias() { return parameters().alias(); }
+
+        PasswordProtection keyProtection() {
+            return parameters().keyProtection();
+        }
+
+        Optional<String> configuredAlgorithm() { return parameters().algorithm(); }
+
+        Optional<Source> source() { return parameters().source(); }
+
+        PasswordProtection storeProtection() {
+            return parameters().storeProtection();
+        }
+
+        String storeType() { return parameters().storeType(); }
+    }
+}

@@ -4,14 +4,14 @@
  */
 
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseManagementContextPackage = "net.java.truelicense.json")
-#set($licenseManagementContextClass = "V2JsonLicenseManagementContext")
+#set($licenseApplicationContextPackage = "net.truelicense.v2.json")
+#set($licenseApplicationContextClass = "V2JsonLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseManagementContextPackage = "net.java.truelicense.core")
-#set($licenseManagementContextClass = "V2XmlLicenseManagementContext")
+#set($licenseApplicationContextPackage = "net.truelicense.v2.xml")
+#set($licenseApplicationContextClass = "V2XmlLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseManagementContextPackage = "net.java.truelicense.core")
-#set($licenseManagementContextClass = "V1LicenseManagementContext")
+#set($licenseApplicationContextPackage = "net.truelicense.v1")
+#set($licenseApplicationContextClass = "V1LicenseApplicationContext")
 #end
 #set($editions = $editions.split($delimiter))
 #set($editionsSize = $editions.size())
@@ -19,7 +19,7 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
-#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "")#end
+#macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
 #macro(new $class $interface)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -55,28 +55,28 @@ ${class.replace('$', '.')}.class
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
-import javax.annotation.concurrent.Immutable;
-import net.java.truelicense.core.*;
-import $licenseManagementContextPackage.$licenseManagementContextClass;
-import net.java.truelicense.core.io.Source;
-import net.java.truelicense.obfuscate.*;
+import net.truelicense.api.*;
+import net.truelicense.api.io.Source;
+import net.truelicense.api.passwd.PasswordProtection;
+import $licenseApplicationContextPackage.$licenseApplicationContextClass;
+import net.truelicense.obfuscate.*;
 #if($keyMgrClockClass != "-")
-import net.java.truelicense.core.util.Clock;
+import net.truelicense.api.misc.Clock;
 import java.util.Date;
 #end
 
 /**
- * The enumeration of the license consumer managers for $licensingSubject
- * license keys.
+ * The enumeration of the consumer license managers for $subject license keys.
  * The managers are named like each configured edition and ordered from
  * superset to subset, including an optional free trial period (FTP).
  * Each manager is configured with the algorithms and parameters for installing,
- * viewing, verifying and uninstalling license keys for the respective edition.
+ * loading, verifying and uninstalling license keys for the respective edition.
+ * <p>
+ * This class is immutable and hence trivially thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
-public enum LicenseManager implements LicenseConsumerManager {
+public enum LicenseManager implements ConsumerLicenseManager {
 #foreach($edition in $editions)
 #set($editionCertEntryAlias = $edition)
 #evaluate("${hash}set (${dollar}editionCertEntryAlias = ${dollar}${edition}KeyEntryAlias)")
@@ -93,21 +93,21 @@ public enum LicenseManager implements LicenseConsumerManager {
 #set($editionCertEntryAlias = "CERT_ENTRY_ALIAS")
 #end
         @Override
-        LicenseConsumerManager newManager() {
-            return _context.manager()
+        ConsumerLicenseManager newManager() {
+            return _managementContext.consumer()
 #if($editionPbePassword != $parentEditionPbePassword)
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .password(#obfuscate($editionPbePassword))
+                        .protection(#protection($editionPbePassword))
                         .inject()
 #end
-                    .keyStore()
+                    .authentication()
                         .alias($editionCertEntryAlias)
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($publicKeyStorePassword))
+                        .storeProtection(#protection($publicKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $publicKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $publicKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -149,16 +149,16 @@ public enum LicenseManager implements LicenseConsumerManager {
 
 #end
         @Override
-        LicenseConsumerManager newManager() {
-            return _context.manager()
+        ConsumerLicenseManager newManager() {
+            return _managementContext.consumer()
                     .ftpDays($freeTrialPeriod)
-                    .keyStore()
+                    .authentication()
                         .alias($ftpKeyEntryAlias)
 #if($ftpKeyEntryPassword && $ftpKeyEntryPassword != $ftpKeyStorePassword)
-                        .keyPassword(#obfuscate($ftpKeyEntryPassword))
+                        .keyProtection(#protection($ftpKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($ftpKeyStorePassword))
+                        .storeProtection(#protection($ftpKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $ftpKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $ftpKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -181,7 +181,7 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
 
     @Obfuscate
-    private static final String LICENSING_SUBJECT = "$licensingSubject";
+    private static final String SUBJECT = "$subject";
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
 
@@ -190,48 +190,33 @@ public enum LicenseManager implements LicenseConsumerManager {
 #end
 
     // Note that the class implementing the interface
-    // net.java.truelicense.core.LicenseManagementContext
+    // net.truelicense.api.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
-    // $licenseManagementContextPackage.$licenseManagementContextClass
+    // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final LicenseConsumerContext _context =
-            new $licenseManagementContextClass(LICENSING_SUBJECT) {
+    private static final $licenseApplicationContextClass _applicationContext =
+            new $licenseApplicationContextClass();
+
+    private static final LicenseManagementContext _managementContext =
+            _applicationContext
+                .context()
+#if($keyMgrAuthorizationClass != "-")
+                    .authorization(#new($keyMgrAuthorizationClass "LicenseManagementAuthorization"))
+#end
 #if($keyMgrClockClass != "-")
-
-                final Clock clock = #new($keyMgrClockClass "Clock");
-
-                @Override public Date now() { return clock.now(); }
+                    .clock(#new($keyMgrClockClass "Clock"))
 #end
-#if($keyMgrLicenseAuthorizationClass != "-")
-
-                @Override
-                public LicenseAuthorization authorization() {
-                    return #new($keyMgrLicenseAuthorizationClass "LicenseAuthorization");
-                }
+                    .subject(SUBJECT)
+#if($keyMgrValidationClass != "-")
+                    .validation(#new($keyMgrValidationClass "LicenseValidation"))
+#if($keyMgrValidationComposition != "decorate")
+                    .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
 #end
-#if($keyMgrLicenseValidationClass != "-")
-
-                @Override public LicenseValidation validation() {
-#if($keyMgrLicenseValidationFunction != "override")
-                    final LicenseValidation basic = super.validation();
 #end
-                    return new LicenseValidation() {
-                        final LicenseValidation custom = #new($keyMgrLicenseValidationClass "LicenseValidation");
+                    .build();
 
-                        @Override
-                        public void validate(final License bean) throws LicenseValidationException {
-                            custom.validate(bean);
-#if($keyMgrLicenseValidationFunction != "override")
-                            basic.validate(bean);
-#end
-                        }
-                    };
-                }
-#end
-            }.consumer();
-
-    private volatile LicenseConsumerManager _manager;
+    private volatile ConsumerLicenseManager _manager;
 
 #if($freeTrialPeriod != 0)
 #set($firstEdition = "ftp")
@@ -245,27 +230,31 @@ public enum LicenseManager implements LicenseConsumerManager {
      * chain-of-responsibility, which is {@link #$firstEdition}.
      * <p>
      * By default, this manager should be used to
-     * {@linkplain #install() install}, {@linkplain #view() view} and
+     * {@linkplain #install() install}, {@linkplain #load() load} and
      * {@linkplain #uninstall() uninstall} license keys.
      */
     public static LicenseManager get() { return $firstEdition; }
 
-    private LicenseConsumerManager manager() {
+    private ConsumerLicenseManager manager() {
         // No need to synchronize because managers are virtually stateless.
-        final LicenseConsumerManager m = _manager;
+        final ConsumerLicenseManager m = _manager;
         return null != m ? m : (_manager = newManager());
     }
 
-    abstract LicenseConsumerManager newManager();
+    abstract ConsumerLicenseManager newManager();
 
-    @Override
-    public License install(Source source) throws LicenseManagementException {
-        return manager().install(source);
+    final PasswordProtection protection(long[] obfuscated) {
+        return _applicationContext.protection(obfuscated);
     }
 
     @Override
-    public License view() throws LicenseManagementException {
-        return manager().view();
+    public void install(Source source) throws LicenseManagementException {
+        manager().install(source);
+    }
+
+    @Override
+    public License load() throws LicenseManagementException {
+        return manager().load();
     }
 
     @Override
@@ -279,18 +268,13 @@ public enum LicenseManager implements LicenseConsumerManager {
     }
 
     @Override
-    public LicenseConsumerContext context() {
-        assert _context == manager().context();
-        return _context;
+    public LicenseManagementContext context() {
+        assert _managementContext == manager().context();
+        return _managementContext;
     }
 
     @Override
-    public String subject() {
-        return manager().subject();
-    }
-
-    @Override
-    public LicenseParameters parameters() {
+    public LicenseManagementParameters parameters() {
         return manager().parameters();
     }
 }

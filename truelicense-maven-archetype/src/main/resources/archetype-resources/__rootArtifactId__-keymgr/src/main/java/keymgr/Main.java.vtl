@@ -2,26 +2,29 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
 #set($dollar = '$')
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
-import java.io.File;
 import static java.lang.System.*;
+import java.nio.file.Paths;
 import java.util.*;
-import javax.annotation.concurrent.Immutable;
-import net.java.truelicense.core.*;
-#if($disableLicenseWizard == false)
-import net.java.truelicense.swing.LicenseWizard;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.truelicense.api.*;
+#if($disableWizard == false)
+import net.truelicense.swing.LicenseManagementWizard;
 import javax.swing.*;
 #end
 
 /**
- * The command line interface (CLI) for consuming $licensingSubject license keys.
+ * The command line interface (CLI) for consuming $subject license keys.
+ * <p>
+ * This class is immutable and hence trivially thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public enum Main {
 
     USAGE {
@@ -44,13 +47,13 @@ public enum Main {
 
     INSTALL {
         @Override void run(Deque<String> params) throws LicenseManagementException {
-            manager().install(context().fileStore(new File(params.pop())));
+            manager().install(context().pathStore(Paths.get(params.pop())));
         }
     },
 
-    VIEW {
+    LOAD {
         @Override void run(Deque<String> params) throws LicenseManagementException {
-            out.println(manager().view());
+            out.println(manager().load());
         }
     },
 
@@ -64,9 +67,9 @@ public enum Main {
         @Override void run(Deque<String> params) throws LicenseManagementException {
             manager().uninstall();
         }
-    }#if($disableLicenseWizard == true);#{else},#end
+    }#if($disableWizard == true);#{else},#end
 
-#if($disableLicenseWizard == false)
+#if($disableWizard == false)
 
     WIZARD {
         @Override void run(Deque<String> params) throws Exception {
@@ -77,7 +80,7 @@ public enum Main {
                     } catch (Exception ex) {
                         throw new AssertionError(ex);
                     }
-                    final LicenseWizard wizard = new LicenseWizard(manager());
+                    final LicenseManagementWizard wizard = new LicenseManagementWizard(manager());
 #if($hideUninstallAction == false)
                     wizard.setUninstallButtonVisible(true);
 #end
@@ -88,11 +91,11 @@ public enum Main {
     };
 #end
 
-    private static LicenseConsumerContext context() {
+    private static LicenseManagementContext context() {
         return manager().context();
     }
 
-    private static LicenseConsumerManager manager() {
+    private static ConsumerLicenseManager manager() {
         return LicenseManager.get();
     }
 
@@ -154,25 +157,18 @@ public enum Main {
                 .getBundle(Main.class.getName())
                 .getString(name() + "." + key);
     }
-#if($keyMgrLicenseAuthorizationClass == "${package}.keymgr.Main${dollar}NoLicenseAuthorization")
-
-    public static final class NoLicenseAuthorization implements LicenseAuthorization {
-        public void clearCreate(LicenseParameters lp) { }
-        public void clearInstall(LicenseParameters lp) { }
-        public void clearVerify(LicenseParameters lp) { }
-        public void clearView(LicenseParameters lp) { }
-        public void clearUninstall(LicenseParameters lp) { }
-    }
-#end
-#if($keyMgrLicenseValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation")
+#if($keyMgrValidationClass == "${package}.keymgr.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {
-        public void validate(License bean) { }
+        public void validate(License bean) {
+            Logger  .getLogger(NoLicenseValidation.class.getName())
+                    .log(Level.INFO, "Validating license bean: {0}", bean);
+        }
     }
 #end
 #if($keyMgrClockClass == "${package}.keymgr.Main${dollar}SystemClock")
 
-    public static final class SystemClock implements net.java.truelicense.core.util.Clock {
+    public static final class SystemClock implements net.truelicense.api.misc.Clock {
         public Date now() { return new Date(); }
     }
 #end

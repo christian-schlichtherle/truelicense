@@ -19,11 +19,11 @@
     </p:documentation>
     <p:list>
         <p:artifactId>multipleProductEditions</p:artifactId>
-        <p:companyName>Company Inc.</p:companyName>
+        <p:company>Company Inc.</p:company>
         <p:editions>enterprise standard</p:editions>
         <p:groupId>com.company.product</p:groupId>
-        <p:licensingSubject>Product 1</p:licensingSubject>
         <p:password>test1234</p:password>
+        <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>
     </p:list>
 </p:properties>

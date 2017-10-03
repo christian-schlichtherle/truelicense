@@ -23,7 +23,7 @@ Using the $project.name you can...
 * Manually or automatically start a free trial period (FTP) for users.
 * Sell different types of license keys for different editions.
 * Install license keys to files, preferences nodes or any custom store.
-* Create license keys by duplicating, initializing, validating,
+* Generate license keys by duplicating, initializing, validating,
   encoding, signing, encoding (again), compressing and encrypting
   license beans.
 * Encode arbitrary properties into license keys using XML.
@@ -48,11 +48,11 @@ Using the $project.name you can...
 * Configure an authoritative clock to prevent against attacks on the
   validity period of installed license keys.
 * Configure caching of intermediate results of the processing chain for super
-  fast license verification and viewing.
+  fast license loading and verification.
 
 $h3 Usage
 
 For usage information, please have a look at the
 [TrueLicense Maven Archetype](../truelicense-maven-archetype/index.html).
 You can also check the Javadoc for the package
-[`net.java.truelicense.core`](../apidocs/net/java/truelicense/core/package-summary.html).
+[`net.truelicense.core`](../apidocs/net/truelicense/core/package-summary.html).

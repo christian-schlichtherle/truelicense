@@ -2,24 +2,27 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
 #set($dollar = '$')
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
-import java.io.*;
 import static java.lang.System.*;
+import java.nio.file.Paths;
 import java.util.*;
-import javax.annotation.concurrent.Immutable;
-import net.java.truelicense.core.*;
-import net.java.truelicense.core.codec.*;
-import net.java.truelicense.core.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.truelicense.api.*;
+import net.truelicense.api.codec.Codec;
+import net.truelicense.api.io.*;
 
 /**
- * The command line interface (CLI) for vending $licensingSubject license keys.
+ * The command line interface (CLI) for vending $subject license keys.
+ * <p>
+ * This class is immutable and hence trivially thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
 public enum Main {
 
     USAGE {
@@ -40,13 +43,13 @@ public enum Main {
         }
     },
 
-    CREATE {
+    GENERATE {
         @Override void run(final Deque<String> params) throws Exception {
             new Object() {
 
                 final Map<CreateOption, String>
                         options = Main.parse(params, CreateOption.class);
-                LicenseVendorManager manager;
+                VendorLicenseManager manager;
                 Codec codec;
 
                 {
@@ -59,52 +62,60 @@ public enum Main {
                 }
 
                 void run() throws Exception {
-                    final License inputLicense = createOrDecodeInputLicense();
-                    final License outputLicense = manager().create(inputLicense, store());
+                    final License input = createOrDecodeInputLicense();
+                    final License output = manager()
+                            .generateKeyFrom(input)
+                            .saveTo(store())
+                            .license();
                     if (verbose())
-                        err.println(outputLicense);
-                    maybeEncodeOutputLicense(outputLicense);
+                        err.println(output);
+                    maybeEncodeOutputLicense(output);
                 }
 
                 License createOrDecodeInputLicense() throws Exception {
                     final String path = options.get(CreateOption.INPUT);
                     return null == path
                             ? context().license()
-                            : (License) codec().decode("-".equals(path)
-                                    ? Sources.input()
-                                    : fileStore(path),
-                            License.class);
+                            : (License) codec()
+                                .decoder("-".equals(path) ? stdin() : pathStore(path))
+                                .decode(License.class);
                 }
 
                 void maybeEncodeOutputLicense(final License license) throws Exception {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path)
-                        codec().encode("-".equals(path)
-                                        ? Sinks.output()
-                                        : fileStore(path),
-                                license);
+                        codec() .encoder("-".equals(path) ? stdout() : pathStore(path))
+                                .encode(license);
                 }
 
                 Codec codec() {
                     final Codec c = codec;
-                    return null != c ? c : (codec = manager().parameters().codec());
+                    return null != c ? c : (codec = context().codec());
                 }
+
+                Source stdin() { return context().stdin(); }
+
+                Sink stdout() { return context().stdout(); }
 
                 Store store() {
                     final String path = options.get(CreateOption.KEY);
                     return null == path
-                            ? new MemoryStore() // -> /dev/null
-                            : fileStore(path);
+                            ? memoryStore() // -> /dev/null
+                            : pathStore(path);
                 }
 
-                Store fileStore(String path) {
-                    return context().fileStore(new File(path));
+                Store memoryStore() { return context().memoryStore(); }
+
+                Store pathStore(String path) {
+                    return context().pathStore(Paths.get(path));
                 }
 
-                LicenseVendorContext context() { return manager().context(); }
+                LicenseManagementContext context() {
+                    return manager().context();
+                }
 
-                LicenseVendorManager manager() {
-                    final LicenseVendorManager m = manager;
+                VendorLicenseManager manager() {
+                    final VendorLicenseManager m = manager;
                     return null != m ? m : (manager = LicenseManager.valueOf(editionName()));
                 }
 
@@ -214,20 +225,13 @@ public enum Main {
     }
 
     private enum CreateOption { KEY, INPUT, OUTPUT, EDITION, VERBOSE }
-#if($keyGenLicenseAuthorizationClass == "${package}.keygen.Main${dollar}NoLicenseAuthorization")
-
-    public static final class NoLicenseAuthorization implements LicenseAuthorization {
-        public void clearCreate(LicenseParameters lp) { }
-        public void clearInstall(LicenseParameters lp) { }
-        public void clearVerify(LicenseParameters lp) { }
-        public void clearView(LicenseParameters lp) { }
-        public void clearUninstall(LicenseParameters lp) { }
-    }
-#end
-#if($keyGenLicenseValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
+#if($keyGenValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
 
     public static final class NoLicenseValidation implements LicenseValidation {
-        public void validate(License bean) { }
+        public void validate(License bean) {
+            Logger  .getLogger(NoLicenseValidation.class.getName())
+                    .log(Level.INFO, "Validating license bean: {0}", bean);
+        }
     }
 #end
 }

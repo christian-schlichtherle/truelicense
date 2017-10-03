@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * All rights reserved. Use is subject to license terms.
+ */
+
+a:not([href]) {
+    color: initial;
+    text-decoration: none;
+}
+
+a tt {
+    color: inherit;
+}
+
+dl {
+    margin: initial;
+}
+
+tt {
+    font-size: 12px;
+}
+
+.carousel h1, .carousel h2 {
+    margin: 10px 0;
+}
+
+.carousel .hero-unit {
+    margin: inherit;
+}
+
+.carousel-control {
+    background-color: transparent;
+    border: 0;
+    color: #000;
+    font-size: 120px;
+    font-weight: lighter;
+    text-shadow: 4pt 4pt 8pt rgba(0, 0, 0, 1);
+    top: 45%;
+}
+
+.dt-wide dt {
+    width: 180px;
+}
+
+.dt-wide dd {
+    margin-left: 200px;
+}
+
+.hero-unit h1, .hero-unit h2 {
+    font-size: 50px;
+    line-height: 1;
+}
+
+pre.prettyprint {
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    margin: 0 0 10px;
+    padding: 9.5px;
+}

@@ -23,10 +23,12 @@
 #set($pbeAlgorithm = "PBEWithSHA1AndDESede")
 #end
 #end
-#if($licenseKeyFormat == "V2/JSON")
-#set($trueLicenseArtifactId = "truelicense-json")
+#if($licenseKeyFormat == "V1")
+#set($trueLicenseArtifactId = "truelicense-v1")
+#elseif($licenseKeyFormat == "V2/JSON")
+#set($trueLicenseArtifactId = "truelicense-v2-json")
 #else
-#set($trueLicenseArtifactId = "truelicense-core")
+#set($trueLicenseArtifactId = "truelicense-v2-xml")
 #end
 #set($delimiter = "[, \t\r\n]+")
 #set($dollar = '$')
@@ -47,7 +49,7 @@
         <!-- TO DO: Fill in the gaps. -->
     </licenses>
     <organization>
-        <name>${dollar}{companyName}</name>
+        <name>${dollar}{company}</name>
         <!-- TO DO: Fill in the gaps. -->
     </organization>
     <developers>
@@ -79,7 +81,7 @@
 
         <!-- The distinguished name to use when generating private key entries
              in key stores and initializing the issuer in license beans. -->
-        <distinguishedName>CN=${dollar}{companyName}</distinguishedName>
+        <distinguishedName>CN=${dollar}{company}</distinguishedName>
 
         <!-- The alias of the entry with the private key for the edition
              "ftp" in the FTP key store file ${dollar}{ftpKeyStoreFile} in the
@@ -173,14 +175,14 @@
         <maven.enforcer.requireJavaVersion>${dollar}{maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
-        <netbeans.hint.jdkPlatform>JDK_1.6</netbeans.hint.jdkPlatform>
+        <netbeans.hint.jdkPlatform>JDK_1.8</netbeans.hint.jdkPlatform>
 
         <!-- Reinforce defaults of maven-compiler-plugin for NetBeans. -->
         <maven.compiler.debug>true</maven.compiler.debug>
         <maven.compiler.optimize>false</maven.compiler.optimize>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
-        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${dollar}{maven.compiler.source}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -191,6 +193,7 @@
         <gpg.useagent>true</gpg.useagent>
 
         <!-- maven-javadoc-plugin -->
+        <additionalparam/>
         <!--detectLinks>true</detectLinks-->
         <header><![CDATA[<b>${dollar}{project.name} ${dollar}{project.version}</b>]]></header>
         <nodeprecated>true</nodeprecated>
@@ -234,7 +237,7 @@
             </dependency>
 
             <dependency>
-                <groupId>net.java.truelicense</groupId>
+                <groupId>net.truelicense</groupId>
                 <artifactId>truelicense</artifactId>
                 <version>${dollar}{trueLicenseVersion}</version>
                 <type>pom</type>
@@ -281,16 +284,6 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.7.0</version>
-                    <configuration>
-                        <compilerArgs>
-                            <arg>-Xlint:unchecked</arg>
-                        </compilerArgs>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>keytool-maven-plugin</artifactId>
-                    <version>1.5</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
@@ -298,7 +291,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.4.1</version>
+                    <version>3.0.0-M1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
@@ -323,11 +316,11 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>3.0.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.4</version>
+                    <version>3.0.0-M1</version>
                     <configuration>
                         <version>${dollar}{javadoc.version}</version>
                     </configuration>
@@ -407,12 +400,16 @@
                         <includeDependency>false</includeDependency>
                         <libs combine.children="append">
                             <lib>${dollar}{java.home}/lib/jce.jar</lib>
+                            <lib>${dollar}{java.home}/lib/rt.jar</lib>
                         </libs>
                         <!-- The following options are required for
-                             TrueLicense 2. -->
+                             TrueLicense 3. -->
                         <options combine.children="append">
+#if($licenseKeyFormat == "V1")
                             <option>
-                                -adaptresourcefilenames
+#else
+                            <!--option>
+#end
                                 -keepnames class de.schlichtherle.license.LicenseContent
                                 -keepclassmembers class de.schlichtherle.license.LicenseContent {
                                     public *** get*();
@@ -423,15 +420,36 @@
                                     public *** get*();
                                     public void set*(***);
                                 }
-                                -keepclassmembers class net.java.truelicense.core.License {
+#if($licenseKeyFormat != "V1")
+                            </option-->
+#else
+                            </option>
+#end
+#if($licenseKeyFormat.startsWith("V2/"))
+                            <option>
+#else
+                            <!--option>
+#end
+                                -keepclassmembers class net.truelicense.v2.commons.auth.V2RepositoryModel {
                                     public *** get*();
                                     public void set*(***);
                                 }
-                                -keepclassmembers class net.java.truelicense.core.auth.BasicRepository {
+#if(!$licenseKeyFormat.startsWith("V2/"))
+                            </option-->
+#else
+                            </option>
+#end
+
+                            <option>
+                                -adaptresourcefilenames
+                                -keepclassmembers class net.truelicense.api.License {
                                     public *** get*();
                                     public void set*(***);
                                 }
-                                -keep,allowobfuscation class net.java.truelicense.core.codec.X500PrincipalXmlAdapter
+                                -keep,allowobfuscation class net.truelicense.api.codec.X500PrincipalXmlAdapter
+                                -keepclassmembers class net.truelicense.dto.*DTO {
+                                    *;
+                                }
                                 -keepclassmembers enum * {
                                     public static **[] values();
                                     public static ** valueOf(java.lang.String);
@@ -448,7 +466,7 @@
                             </option>
 
                             <!-- This option configures the obfuscation of the
-                                 Jackson JSON Processor, version 2.6.5.
+                                 Jackson JSON Processor, version 2.7.0.
                                  You should remove this option if you are not
                                  using the V2/JSON license key format. -->
 #if($licenseKeyFormat == "V2/JSON")
@@ -480,7 +498,7 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>net.java.truelicense</groupId>
+                    <groupId>net.truelicense</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
                     <version>${dollar}{trueLicenseVersion}</version>
                     <executions>
@@ -506,6 +524,11 @@
                             </configuration>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>keytool-maven-plugin</artifactId>
+                    <version>1.5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -560,7 +583,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>net.java.truelicense</groupId>
+                        <groupId>net.truelicense</groupId>
                         <artifactId>truelicense-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
@@ -576,7 +599,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>net.java.truelicense</groupId>
+                        <groupId>net.truelicense</groupId>
                         <artifactId>truelicense-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
@@ -598,49 +621,19 @@
             </build>
         </profile>
         <profile>
-            <id>rt-jar-for-apple-jdk-1.6</id>
+            <id>javadoc-on-jdk-9</id>
             <activation>
-                <file>
-                    <exists>${dollar}{java.home}/../Classes/classes.jar</exists>
-                </file>
+                <jdk>[9,)</jdk>
             </activation>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/../Classes/classes.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>rt-jar-for-oracle-jdk-1.7</id>
-            <activation>
-                <file>
-                    <exists>${dollar}{java.home}/lib/rt.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/lib/rt.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <additionalparam>--add-modules ALL-SYSTEM ${additionalparam}</additionalparam>
+                        </configuration>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>

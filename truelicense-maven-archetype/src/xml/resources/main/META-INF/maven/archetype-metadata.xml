@@ -89,9 +89,9 @@
                 </fileSet>
             </fileSets>
         </module>
-        <module dir="__rootArtifactId__-keymgrsvc"
-                id="${rootArtifactId}-keymgrsvc"
-                name="${rootArtifactId}-keymgrsvc">
+        <module dir="__rootArtifactId__-keymgrsrv"
+                id="${rootArtifactId}-keymgrsrv"
+                name="${rootArtifactId}-keymgrsrv">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>

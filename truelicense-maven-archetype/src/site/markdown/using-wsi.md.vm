@@ -21,13 +21,13 @@ For testing purposes, there is a main class which runs a simple
 WSI.
 You can start it using the following command:
 
-    ${dollar} mvn test-compile exec:java -Dexec.mainClass=${dollar}{package}.keymgrsvc.Main \
-        -Dexec.classpathScope=test -pl *-keymgrsvc
+    ${dollar} mvn compile exec:java -Dexec.mainClass=${dollar}{package}.keymgrsrv.Main \
+        -Dexec.classpathScope=test -pl *-keymgrsrv
 
 $h4 Installing a License Key
 
 Once the server is running, you can install the license key which you may have
-created when [using the CLI] like this:
+generated when [using the CLI] like this:
 
     ${dollar} curl -v http://localhost:9998/license --data-binary @product.lic
     * Hostname was NOT found in DNS cache
@@ -49,14 +49,14 @@ created when [using the CLI] like this:
     * Connection #0 to host localhost left intact
 
 Note that `@product.lic` references the license key file which has been
-previously created.
+previously generated.
 
 The server responds with the status code 204 to indicate that the operation
 succeeded with an empty response entity.
 
-$h4 Viewing the License Key
+$h4 Loading the License Key
 
-You can view the installed license key using:
+You can load the installed license key using:
 
     ${dollar} curl -v http://localhost:9998/license
     * Hostname was NOT found in DNS cache

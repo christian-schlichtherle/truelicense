@@ -26,15 +26,15 @@ Using the $project.name you can...
 $h3 Usage
 
 The service is implemented by the class
-[`LicenseConsumerService`](../apidocs/net/java/truelicense/ws/rs/LicenseConsumerService.html)
+[`LicenseConsumerService`](../apidocs/net/truelicense/ws/rs/LicenseConsumerService.html)
 and accompanied by the exception mapper class
-[`LicenseConsumerServiceExceptionMapper`](../apidocs/net/java/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
+[`LicenseConsumerServiceExceptionMapper`](../apidocs/net/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
 With a typical container, you should just let it scan the package
-[`net.java.truelicense.ws.rs`](../apidocs/net/java/truelicense/ws/rs/package-summary.html)
+[`net.truelicense.jax.rs`](../apidocs/net/truelicense/jax/rs/package-summary.html)
 so that it can find these classes.
 
 The `LicenseConsumerService` needs a
-[`LicenseConsumerManager`](../apidocs/net/java/truelicense/core/LicenseConsumerManager.html)
+[`LicenseConsumerManager`](../apidocs/net/truelicense/core/LicenseConsumerManager.html)
 as its dependency.
 If no dependency injection framework is available, you can satisfy this
 dependency using:
@@ -42,7 +42,7 @@ dependency using:
     package [...];
 
     import javax.ws.rs.ext.*;
-    import net.java.truelicense.core.LicenseConsumerManager;
+    import net.truelicense.api.ConsumerLicenseManager;
 
     @Provider
     public class LicenseConsumerManagerResolver
@@ -67,20 +67,20 @@ class in the KeyMgr module like this:
 
     import javax.enterprise.context.ApplicationScoped;
     import javax.enterprise.inject.Produces;
-    import net.java.truelicense.core.LicenseConsumerManager;
+    import net.truelicense.api.ConsumerLicenseManager;
     [...]
 
     public class LicensingSchema {
 
         [...]
 
-        /** Returns the first license consumer manager in the configured chain-of-responsibility. [...] */
+        /** Returns the first consumer license manager in the configured chain-of-responsibility. [...] */
         @Produces @ApplicationScoped
         public static LicenseConsumerManager manager() { [...] }
     }
 
 The `@Produces` annotation tells the container that it should call the
-`manager()` method to obtain the license consumer manager.
+`manager()` method to obtain the consumer license manager.
 The returned object is a singleton which is typically not serializable, so the
 `@ApplicationScoped` annotation is used to wrap it in a serializable proxy with
 application scope.

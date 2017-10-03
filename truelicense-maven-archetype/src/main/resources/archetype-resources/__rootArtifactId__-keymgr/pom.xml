@@ -37,14 +37,14 @@
         </dependency>
 
         <dependency>
-            <groupId>net.java.truelicense</groupId>
+            <groupId>net.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
         </dependency>
-#if($disableLicenseWizard == false)
+#if($disableWizard == false)
         <!-- This dependency is only required for the "wizard" command of the
              Main class. -->
         <dependency>
-            <groupId>net.java.truelicense</groupId>
+            <groupId>net.truelicense</groupId>
             <artifactId>truelicense-swing</artifactId>
             <optional>true</optional>
         </dependency>
@@ -58,6 +58,9 @@
                     <groupId>com.github.wvengen</groupId>
                     <artifactId>proguard-maven-plugin</artifactId>
                     <configuration>
+                        <libs>
+                            <lib>${dollar}{java.home}/lib/jsse.jar</lib>
+                        </libs>
                         <!-- The following options should apply to most
                              standalone Java applications. -->
                         <options>
@@ -102,7 +105,7 @@
 
     <profiles>
         <profile>
-            <id>create-keymgr-standalone-jar</id>
+            <id>generate-keymgr-standalone-jar</id>
             <activation>
                 <property>
                     <name>skipStandaloneJars</name>
@@ -118,8 +121,11 @@
             </build>
         </profile>
         <profile>
-            <id>create-keymgr-guarded-jar</id>
+            <id>generate-keymgr-guarded-jar</id>
             <activation>
+                <file>
+                    <exists>${dollar}{java.home}/lib/rt.jar</exists>
+                </file>
                 <property>
                     <name>skipStandaloneJars</name>
                     <value>!true</value>
@@ -132,52 +138,6 @@
                         <artifactId>proguard-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>jsse-lib-for-apple-jdk-1.6</id>
-            <activation>
-                <file>
-                    <exists>${dollar}{java.home}/../Classes/jsse.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/../Classes/jsse.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
-            <id>jsse-lib-for-any-jdk-1.7+</id>
-            <activation>
-                <file>
-                    <exists>${dollar}{java.home}/lib/jsse.jar</exists>
-                </file>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>com.github.wvengen</groupId>
-                            <artifactId>proguard-maven-plugin</artifactId>
-                            <configuration>
-                                <libs>
-                                    <lib>${dollar}{java.home}/lib/jsse.jar</lib>
-                                </libs>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
             </build>
         </profile>
         <profile>

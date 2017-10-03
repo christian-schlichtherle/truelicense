@@ -20,7 +20,7 @@ is part of this process.
 
 $h3 Issuing the Certificate Signing Request
 
-You can create a Certificate Signing Request (CSR) using:
+You can generate a Certificate Signing Request (CSR) using:
 
     ${dollar} keytool -certreq \
         -keystore *-keygen/src/main/resources/${dollar}{privateKeyStoreFile} \

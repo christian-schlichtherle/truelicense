@@ -2,6 +2,7 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
+
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
@@ -34,8 +35,8 @@ public class MainIT {
 
         for (LicenseManager manager : LicenseManager.values()) {
             final String edition = manager.name();
-            process("create", "-output", inputPath, "-edition", edition, keyPath);
-            process("create", "-key", keyPath, "-input", inputPath, "-output", outputPath, "-edition", edition);
+            process("generate", "-output", inputPath, "-edition", edition, keyPath);
+            process("generate", "-key", keyPath, "-input", inputPath, "-output", outputPath, "-edition", edition);
             assertArrayEquals(read(input), read(output));
         }
     }
@@ -46,9 +47,9 @@ public class MainIT {
 
     private static byte[] read(final File file) throws IOException {
         final byte[] data = new byte[(int) file.length()];
-        final InputStream in = new FileInputStream(file);
-        try { new DataInputStream(in).readFully(data); }
-        finally { in.close(); }
+        try (InputStream in = new FileInputStream(file)) {
+            new DataInputStream(in).readFully(data);
+        }
         return data;
     }
 }

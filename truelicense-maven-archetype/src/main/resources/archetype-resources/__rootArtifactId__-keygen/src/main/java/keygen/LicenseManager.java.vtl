@@ -4,21 +4,21 @@
  */
 
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseManagementContextPackage = "net.java.truelicense.json")
-#set($licenseManagementContextClass = "V2JsonLicenseManagementContext")
+#set($licenseApplicationContextPackage = "net.truelicense.v2.json")
+#set($licenseApplicationContextClass = "V2JsonLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseManagementContextPackage = "net.java.truelicense.core")
-#set($licenseManagementContextClass = "V2XmlLicenseManagementContext")
+#set($licenseApplicationContextPackage = "net.truelicense.v2.xml")
+#set($licenseApplicationContextClass = "V2XmlLicenseApplicationContext")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseManagementContextPackage = "net.java.truelicense.core")
-#set($licenseManagementContextClass = "V1LicenseManagementContext")
+#set($licenseApplicationContextPackage = "net.truelicense.v1")
+#set($licenseApplicationContextClass = "V1LicenseApplicationContext")
 #end
 #set($editions = $editions.split($delimiter))
 #set($editionsSize = $editions.size())
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(obfuscate $string)$java.obfuscatedString($string).replace("net.java.truelicense.obfuscate.", "")#end
+#macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
 #macro(new $class $interface)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -39,25 +39,25 @@ new ${class.replace('$', '.')}()
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
-import javax.annotation.concurrent.Immutable;
 import javax.security.auth.x500.X500Principal;
-import net.java.truelicense.core.*;
-import $licenseManagementContextPackage.$licenseManagementContextClass;
-import net.java.truelicense.core.io.Sink;
-import net.java.truelicense.obfuscate.*;
+import net.truelicense.api.*;
+import net.truelicense.api.io.Sink;
+import net.truelicense.api.passwd.PasswordProtection;
+import $licenseApplicationContextPackage.$licenseApplicationContextClass;
+import net.truelicense.obfuscate.*;
 
 /**
- * The enumeration of the license vendor managers for $licensingSubject
- * license keys.
+ * The enumeration of the vendor license managers for $subject license keys.
  * The managers are named like each configured edition and ordered from
  * superset to subset.
- * Each manager is configured with the algorithms and parameters for creating
+ * Each manager is configured with the algorithms and parameters for generating
  * license keys for the respective edition.
+ * <p>
+ * This class is immutable and hence trivially thread-safe.
  *
  * @author Christian Schlichtherle
  */
-@Immutable
-public enum LicenseManager implements LicenseVendorManager {
+public enum LicenseManager implements VendorLicenseManager {
 #foreach($edition in $editions)
 #set($editionKeyEntryAlias = $edition)
 #evaluate("${hash}set (${dollar}editionKeyEntryAlias = ${dollar}${edition}KeyEntryAlias)")
@@ -76,22 +76,22 @@ public enum LicenseManager implements LicenseVendorManager {
 #set($editionKeyEntryAlias = "KEY_ENTRY_ALIAS")
 #end
         @Override
-        LicenseVendorManager newManager() {
-            return _context.manager()
+        VendorLicenseManager newManager() {
+            return _managementContext.vendor()
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
                         .algorithm(PBE_ALGORITHM)
 #end
-                        .password(#obfuscate($editionPbePassword))
+                        .protection(#protection($editionPbePassword))
                         .inject()
-                    .keyStore()
+                    .authentication()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
-                        .keyPassword(#obfuscate($editionKeyEntryPassword))
+                        .keyProtection(#protection($editionKeyEntryPassword))
 #end
                         .loadFromResource(KEY_STORE_FILE)
-                        .storePassword(#obfuscate($privateKeyStorePassword))
+                        .storeProtection(#protection($privateKeyStorePassword))
 #if($licenseKeyFormat == "V1" && $privateKeyStoreType != "JKS" ||
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
@@ -116,7 +116,7 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
 
     @Obfuscate
-    private static final String LICENSING_SUBJECT = "$licensingSubject";
+    private static final String SUBJECT = "$subject";
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
 
@@ -125,83 +125,63 @@ public enum LicenseManager implements LicenseVendorManager {
 #end
 
     // Note that the class implementing the interface
-    // net.java.truelicense.core.LicenseManagementContext
+    // net.truelicense.api.LicenseManagementContext
     // determines the format of the license keys:
     // The implementation class
-    // $licenseManagementContextPackage.$licenseManagementContextClass
+    // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final LicenseVendorContext _context =
-            new $licenseManagementContextClass(LICENSING_SUBJECT) {
-#if($keyGenLicenseAuthorizationClass != "-")
+    private static final $licenseApplicationContextClass _applicationContext =
+            new $licenseApplicationContextClass();
 
-                @Override
-                public LicenseAuthorization authorization() {
-                    return #new($keyGenLicenseAuthorizationClass "LicenseAuthorization");
-                }
+    private static final LicenseManagementContext _managementContext =
+            _applicationContext
+                .context()
+#if($keyGenAuthorizationClass != "-")
+                    .authorization(#new($keyGenAuthorizationClass "LicenseManagementAuthorization"))
 #end
-
-                @Override
-                public LicenseInitialization initialization() {
-                    final LicenseInitialization basic = super.initialization();
-                    return new LicenseInitialization() {
-                        @Override
-                        public void initialize(final License bean) {
-                            if (null == bean.getIssuer())
-                                bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
-                            basic.initialize(bean);
-                        }
-                    };
-                }
-#if($keyGenLicenseValidationClass != "-")
-
-                @Override
-                public LicenseValidation validation() {
-#if($keyGenLicenseValidationFunction != "override")
-                    final LicenseValidation basic = super.validation();
+                    .initialization(new LicenseInitialization() {
+                            @Override
+                            public void initialize(final License bean) {
+                                if (null == bean.getIssuer())
+                                    bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
+                            }
+                        })
+                    .subject(SUBJECT)
+#if($keyGenValidationClass != "-")
+                    .validation(#new($keyGenValidationClass "LicenseValidation"))
+#if($keyGenValidationComposition != "decorate")
+                    .validationComposition(LicenseFunctionComposition.$keyGenValidationComposition)
 #end
-                    return new LicenseValidation() {
-                        final LicenseValidation custom = #new($keyGenLicenseValidationClass "LicenseValidation");
-
-                        @Override
-                        public void validate(final License bean) throws LicenseValidationException {
-                            custom.validate(bean);
-#if($keyGenLicenseValidationFunction != "override")
-                            basic.validate(bean);
 #end
-                        }
-                    };
-                }
-#end
-            }.vendor();
+                    .build();
 
-    private volatile LicenseVendorManager _manager;
+    private volatile VendorLicenseManager _manager;
 
-    private LicenseVendorManager manager() {
+    private VendorLicenseManager manager() {
         // No need to synchronize because managers are virtually stateless.
-        final LicenseVendorManager m = _manager;
+        final VendorLicenseManager m = _manager;
         return null != m ? m : (_manager = newManager());
     }
 
-    abstract LicenseVendorManager newManager();
+    abstract VendorLicenseManager newManager();
 
-    @Override
-    public License create(License bean, Sink sink) throws LicenseManagementException {
-        return manager().create(bean, sink);
+    final PasswordProtection protection(long[] obfuscated) {
+        return _applicationContext.protection(obfuscated);
     }
 
     @Override
-    public LicenseVendorContext context() {
-        assert _context == manager().context();
-        return _context;
+    public LicenseKeyGenerator generateKeyFrom(License bean) throws LicenseManagementException {
+        return manager().generateKeyFrom(bean);
     }
 
     @Override
-    public String subject() {
-        return manager().subject();
+    public LicenseManagementContext context() {
+        assert _managementContext == manager().context();
+        return _managementContext;
     }
 
     @Override
-    public LicenseParameters parameters() {
+    public LicenseManagementParameters parameters() {
         return manager().parameters();
     }
 }
