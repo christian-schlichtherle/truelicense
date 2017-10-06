@@ -227,8 +227,7 @@
                                     <dir>${test-projects-directory}</dir>
                                     <fileMappers>
                                         <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                                            <targetExtension>properties
-                                            </targetExtension>
+                                            <targetExtension>properties</targetExtension>
                                         </fileMapper>
                                     </fileMappers>
                                     <includes>
