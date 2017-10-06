@@ -222,7 +222,7 @@
                             <goal>transform</goal>
                         </goals>
                         <configuration>
-                            <transformationSets>
+                            <transformationSets combine.children="append">
                                 <transformationSet>
                                     <dir>${test-projects-directory}</dir>
                                     <fileMappers>
@@ -316,6 +316,39 @@
                         <configuration>
                             <skip>true</skip>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>generate-json-properties</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>xml-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-test-sources</id>
+                                <configuration>
+                                    <transformationSets>
+                                        <transformationSet>
+                                            <dir>${test-projects-directory}</dir>
+                                            <fileMappers>
+                                                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                                                    <targetExtension>json</targetExtension>
+                                                </fileMapper>
+                                            </fileMappers>
+                                            <includes>
+                                                <include>**/archetype.xml</include>
+                                            </includes>
+                                            <outputDir>${project.build.testOutputDirectory}/projects</outputDir>
+                                            <stylesheet>${test-projects-directory}/archetype-json.xsl</stylesheet>
+                                        </transformationSet>
+                                    </transformationSets>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
