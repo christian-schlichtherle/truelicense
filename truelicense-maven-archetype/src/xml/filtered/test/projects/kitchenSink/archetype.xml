@@ -15,29 +15,21 @@
         <p:artifactId>kitchenSink</p:artifactId>
         <p:artifactName>Kitchen Sink</p:artifactName>
         <p:company>Company Inc.</p:company>
-        <p:disableWizard>true</p:disableWizard>
         <p:customClasspathScope>runtime</p:customClasspathScope>
+        <p:disableWizard>true</p:disableWizard>
         <p:editions>enterprise standard</p:editions>
         <p:freeTrialPeriod>30</p:freeTrialPeriod>
         <p:ftpKeyStoreFile>ftp.ks</p:ftpKeyStoreFile>
         <p:ftpSecretMarkerClass>sun.security.provider.Sun</p:ftpSecretMarkerClass>
         <p:groupId>com.company.product</p:groupId>
         <p:hideUninstallAction>false</p:hideUninstallAction>
-        <p:keyGenAuthorizationClass>
-            net.truelicense.core.TrueLicenseManagementAuthorization
-        </p:keyGenAuthorizationClass>
-        <p:keyGenValidationClass>
-            com.company.product.keygen.Main$NoLicenseValidation
-        </p:keyGenValidationClass>
-        <p:keyMgrClockClass>
-            com.company.product.keymgr.Main$SystemClock
-        </p:keyMgrClockClass>
-        <p:keyMgrAuthorizationClass>
-            net.truelicense.core.TrueLicenseManagementAuthorization
-        </p:keyMgrAuthorizationClass>
-        <p:keyMgrValidationClass>
-            com.company.product.keymgr.Main$NoLicenseValidation
-        </p:keyMgrValidationClass>
+        <p:keyGenAuthorizationClass>net.truelicense.core.TrueLicenseManagementAuthorization</p:keyGenAuthorizationClass>
+        <p:keyGenValidationClass>com.company.product.keygen.Main$NoLicenseValidation</p:keyGenValidationClass>
+        <p:keyGenValidationComposition>decorate</p:keyGenValidationComposition>
+        <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock</p:keyMgrClockClass>
+        <p:keyMgrAuthorizationClass>net.truelicense.core.TrueLicenseManagementAuthorization</p:keyMgrAuthorizationClass>
+        <p:keyMgrValidationClass>com.company.product.keymgr.Main$NoLicenseValidation</p:keyMgrValidationClass>
+        <p:keyMgrValidationComposition>decorate</p:keyMgrValidationComposition>
         <p:keyPairAlgorithm>RSA</p:keyPairAlgorithm>
         <p:keyPairSize>2048</p:keyPairSize>
         <p:keyStoreType>JKS</p:keyStoreType>
