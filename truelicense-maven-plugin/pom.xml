@@ -16,7 +16,7 @@
     <parent>
         <groupId>net.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>3.0.1-json-properties-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>truelicense-maven-plugin</artifactId>
