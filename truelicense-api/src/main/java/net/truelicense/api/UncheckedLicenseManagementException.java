@@ -15,7 +15,7 @@ public class UncheckedLicenseManagementException extends RuntimeException {
 
     private static final long serialVersionUID = 0L;
 
-    public UncheckedLicenseManagementException(LicenseManagementException e) {
-        super(e);
+    public UncheckedLicenseManagementException(Throwable cause) {
+        super(cause);
     }
 }

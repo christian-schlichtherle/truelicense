@@ -203,24 +203,19 @@ implements
     }
 
     private static boolean exists(Store store) throws LicenseManagementException {
-        return wrap(store::exists);
+        return check(store::exists);
     }
 
-    /**
-     * Executes the given {@code task} and wraps any
-     * non-{@link RuntimeException} and non-{@link LicenseManagementException}
-     * in a new {@code LicenseManagementException}.
-     *
-     * @param  task the task to {@link Callable#call}.
-     * @return the result of calling the task.
-     * @throws RuntimeException at the discretion of the task.
-     * @throws LicenseManagementException on any other {@link Exception} thrown
-     *         by the task.
-     */
-    private static <V> V wrap(final Callable<V> task) throws LicenseManagementException {
+    private static <V> V check(final Callable<V> task) throws LicenseManagementException {
         try { return task.call(); }
         catch (RuntimeException | LicenseManagementException e) { throw e; }
         catch (Exception e) { throw new LicenseManagementException(e); }
+    }
+
+    private static <V> V uncheck(final Callable<V> task) {
+        try { return task.call(); }
+        catch (RuntimeException e) { throw e; }
+        catch (Exception e) { throw new UncheckedLicenseManagementException(e); }
     }
 
     //
@@ -920,12 +915,12 @@ implements
 
                         @Override
                         public License license() throws LicenseManagementException {
-                            return wrap(() -> decoder().decode(License.class));
+                            return check(() -> decoder().decode(License.class));
                         }
 
                         @Override
                         public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
-                            wrap(() -> {
+                            check(() -> {
                                 codec().encoder(compressionThenEncryption().apply(sink)).encode(model());
                                 return null;
                             });
@@ -967,7 +962,7 @@ implements
                         }
                     }
 
-                    return wrap(() -> {
+                    return check(() -> {
                         authorization().clearGenerate(TrueLicenseManager.this);
                         return new TrueLicenseKeyGenerator();
                     });
@@ -975,7 +970,7 @@ implements
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    wrap(() -> {
+                    check(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
                         bios().copy(source, store());
@@ -985,7 +980,7 @@ implements
 
                 @Override
                 public License load() throws LicenseManagementException {
-                    return wrap(() -> {
+                    return check(() -> {
                         authorization().clearLoad(TrueLicenseManager.this);
                         return decodeLicense(store());
                     });
@@ -993,7 +988,7 @@ implements
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    wrap(() -> {
+                    check(() -> {
                         authorization().clearVerify(TrueLicenseManager.this);
                         validate(store());
                         return null;
@@ -1002,7 +997,7 @@ implements
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    wrap(() -> {
+                    check(() -> {
                         authorization().clearUninstall(TrueLicenseManager.this);
                         final Store store1 = store();
                         // #TRUELICENSE-81: A consumer license manager must
@@ -1054,6 +1049,76 @@ implements
                 @Override
                 public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
+                }
+
+                @Override
+                public UncheckedTrueLicenseManager unchecked() {
+                    return new UncheckedTrueLicenseManager();
+                }
+
+                private class UncheckedTrueLicenseManager
+                        implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
+
+                        @Override
+                    public UncheckedLicenseKeyGenerator generateKeyFrom(final License bean)
+                            throws UncheckedLicenseManagementException {
+                        return uncheck(() -> new UncheckedLicenseKeyGenerator() {
+                            final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
+
+                            @Override
+                            public License license() throws UncheckedLicenseManagementException {
+                                return uncheck(generator::license);
+                            }
+
+                            @Override
+                            public LicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
+                                return uncheck(() -> generator.saveTo(sink));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void install(final Source source) throws UncheckedLicenseManagementException {
+                        uncheck(() -> {
+                            checked().install(source);
+                            return null;
+                        });
+                    }
+
+                    @Override
+                    public License load() throws UncheckedLicenseManagementException {
+                        return uncheck(checked()::load);
+                    }
+
+                    @Override
+                    public void verify() throws UncheckedLicenseManagementException {
+                        uncheck(() -> {
+                            checked().verify();
+                            return null;
+                        });
+                    }
+
+                    @Override
+                    public void uninstall() throws UncheckedLicenseManagementException {
+                        uncheck(() -> {
+                            checked().uninstall();
+                            return null;
+                        });
+                    }
+
+                    @Override
+                    public LicenseManagementContext context() { return checked().context(); }
+
+                    @Override
+                    public LicenseManagementParameters parameters() {
+                        return checked().parameters();
+                    }
+
+                    @Override
+                    public TrueLicenseManager checked() { return TrueLicenseManager.this; }
+
+                    @Override
+                    public UncheckedTrueLicenseManager unchecked() { return this; }
                 }
             }
         }

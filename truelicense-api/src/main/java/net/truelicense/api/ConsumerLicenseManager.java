@@ -78,4 +78,14 @@ public interface ConsumerLicenseManager extends LicenseManagementSchema {
      * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
      */
     void uninstall() throws LicenseManagementException;
+
+    /**
+     * Adapts this consumer license manager so that it generally throws an {@link UncheckedLicenseManagementException}
+     * rather than a (checked) {@link LicenseManagementException}.
+     *
+     * @return the adapted unchecked consumer license manager.
+     * @since TrueLicense 3.1.0
+     */
+    @SuppressWarnings("deprecation")
+    default UncheckedConsumerLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
 }

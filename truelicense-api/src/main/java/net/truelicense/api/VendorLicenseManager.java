@@ -23,4 +23,14 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      * @return A license key generator for the given license bean.
      */
     LicenseKeyGenerator generateKeyFrom(License bean) throws LicenseManagementException;
+
+    /**
+     * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}
+     * rather than a (checked) {@link LicenseManagementException}.
+     *
+     * @return the adapted unchecked vendor license manager.
+     * @since TrueLicense 3.1.0
+     */
+    @SuppressWarnings("deprecation")
+    default UncheckedVendorLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
 }

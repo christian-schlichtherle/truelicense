@@ -11,13 +11,10 @@ import net.truelicense.api.io.Source;
  * A consumer license manager which may generally throw an {@link UncheckedLicenseManagementException} rather than a
  * (checked) {@link LicenseManagementException}.
  *
- * @see UncheckedLicenseManager#from(ConsumerLicenseManager)
+ * @see ConsumerLicenseManager#unchecked()
  * @author Christian Schlichtherle
  */
 public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager {
-
-    /** Returns the underlying (checked) consumer license manager. */
-    ConsumerLicenseManager checked();
 
     @Override
     void install(Source source) throws UncheckedLicenseManagementException;
@@ -30,4 +27,7 @@ public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager 
 
     @Override
     void uninstall() throws UncheckedLicenseManagementException;
+
+    /** Returns the underlying (checked) consumer license manager. */
+    ConsumerLicenseManager checked();
 }
