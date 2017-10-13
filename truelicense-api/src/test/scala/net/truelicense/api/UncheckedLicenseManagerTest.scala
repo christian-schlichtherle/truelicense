@@ -20,7 +20,7 @@ class UncheckedLicenseManagerTest extends WordSpec {
   "The unchecked vendor license manager returned by UncheckedLicenseManager.from(VendorLicenseManager)" should {
     val checkedManager = mock[VendorLicenseManager]
 
-    val uncheckedManager = checkedManager.unchecked
+    val uncheckedManager = UncheckedLicenseManager from checkedManager
 
     "return the checked vendor license manager" in {
       uncheckedManager.checked shouldBe theSameInstanceAs(checkedManager)
@@ -49,7 +49,7 @@ class UncheckedLicenseManagerTest extends WordSpec {
   "The unchecked consumer license manager returned by UncheckedLicenseManager.from(ConsumerLicenseManager)" should {
     val checkedManager = mock[ConsumerLicenseManager]
 
-    val uncheckedManager = checkedManager.unchecked
+    val uncheckedManager = UncheckedLicenseManager from checkedManager
 
     "return the checked consumer license manager" in {
       uncheckedManager.checked shouldBe theSameInstanceAs(checkedManager)
