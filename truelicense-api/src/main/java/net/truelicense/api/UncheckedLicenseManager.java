@@ -9,7 +9,6 @@ import net.truelicense.api.io.Sink;
 import net.truelicense.api.io.Source;
 import net.truelicense.api.misc.ContextProvider;
 
-import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
