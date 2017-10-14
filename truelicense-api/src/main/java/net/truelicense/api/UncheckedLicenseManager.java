@@ -34,7 +34,7 @@ public final class UncheckedLicenseManager {
      * @param manager the vendor license manager to adapt.
      */
     public static UncheckedVendorLicenseManager from(VendorLicenseManager manager) {
-        return new UncheckedVendorTrueLicenseManager(manager);
+        return (UncheckedVendorTrueLicenseManager) () -> manager;
     }
 
     /**
@@ -45,25 +45,20 @@ public final class UncheckedLicenseManager {
      * @param manager the consumer license manager to adapt.
      */
     public static UncheckedConsumerLicenseManager from(ConsumerLicenseManager manager) {
-        return new UncheckedConsumerTrueLicenseManager(manager);
+        return (UncheckedConsumerTrueLicenseManager) () -> manager;
     }
 
-    private static <V> V uncheck(final Callable<V> task) {
+    private static <V> V uncheck(Callable<V> task) {
         try { return task.call(); }
         catch (RuntimeException e) { throw e; }
         catch (Exception e) { throw new UncheckedLicenseManagementException(e); }
     }
 
-    private static final class UncheckedVendorTrueLicenseManager
-            extends UncheckedTrueLicenseManager<VendorLicenseManager>
-            implements UncheckedVendorLicenseManager {
-
-        UncheckedVendorTrueLicenseManager(VendorLicenseManager manager) {
-            super(manager);
-        }
+    private interface UncheckedVendorTrueLicenseManager
+            extends UncheckedTrueLicenseManager<VendorLicenseManager>, UncheckedVendorLicenseManager {
 
         @Override
-        public UncheckedLicenseKeyGenerator generateKeyFrom(final License bean)
+        default UncheckedLicenseKeyGenerator generateKeyFrom(License bean)
                 throws UncheckedLicenseManagementException {
             return uncheck(() -> new UncheckedLicenseKeyGenerator() {
                 final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
@@ -81,16 +76,11 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private static final class UncheckedConsumerTrueLicenseManager
-            extends UncheckedTrueLicenseManager<ConsumerLicenseManager>
-            implements UncheckedConsumerLicenseManager {
-
-        UncheckedConsumerTrueLicenseManager(ConsumerLicenseManager manager) {
-            super(manager);
-        }
+    private interface UncheckedConsumerTrueLicenseManager
+            extends UncheckedTrueLicenseManager<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
 
         @Override
-        public void install(final Source source) throws UncheckedLicenseManagementException {
+        default void install(Source source) throws UncheckedLicenseManagementException {
             uncheck(() -> {
                 checked().install(source);
                 return null;
@@ -98,12 +88,12 @@ public final class UncheckedLicenseManager {
         }
 
         @Override
-        public License load() throws UncheckedLicenseManagementException {
+        default License load() throws UncheckedLicenseManagementException {
             return uncheck(checked()::load);
         }
 
         @Override
-        public void verify() throws UncheckedLicenseManagementException {
+        default void verify() throws UncheckedLicenseManagementException {
             uncheck(() -> {
                 checked().verify();
                 return null;
@@ -111,7 +101,7 @@ public final class UncheckedLicenseManager {
         }
 
         @Override
-        public void uninstall() throws UncheckedLicenseManagementException {
+        default void uninstall() throws UncheckedLicenseManagementException {
             uncheck(() -> {
                 checked().uninstall();
                 return null;
@@ -119,23 +109,15 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private static abstract class UncheckedTrueLicenseManager<M extends ContextProvider<LicenseManagementContext> & LicenseManagementParametersProvider>
-            implements ContextProvider<LicenseManagementContext>, LicenseManagementParametersProvider {
-
-        private final M manager;
-
-        UncheckedTrueLicenseManager(final M manager) {
-            this.manager = Objects.requireNonNull(manager);
-        }
-
-        public M checked() { return manager; }
+    private interface UncheckedTrueLicenseManager<M extends ContextProvider<LicenseManagementContext> & LicenseManagementParametersProvider>
+            extends ContextProvider<LicenseManagementContext>, LicenseManagementParametersProvider {
 
         @Override
-        public LicenseManagementContext context() { return manager.context(); }
+        default LicenseManagementContext context() { return checked().context(); }
 
         @Override
-        public LicenseManagementParameters parameters() {
-            return manager.parameters();
-        }
+        default LicenseManagementParameters parameters() { return checked().parameters(); }
+
+        M checked();
     }
 }
