@@ -23,9 +23,9 @@ import net.truelicense.core.passwd.MinimumPasswordPolicy;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.obfuscate.ObfuscatedString;
-import net.truelicense.spi.codec.Codecs;
 import net.truelicense.spi.io.BIOS;
 import net.truelicense.spi.io.BiosProvider;
+import net.truelicense.spi.io.MemoryStore;
 import net.truelicense.spi.io.StandardBIOS;
 
 import javax.security.auth.x500.X500Principal;
@@ -963,7 +963,7 @@ implements
                         }
 
                         License duplicatedBean() throws Exception {
-                            return Codecs.clone(bean, codec());
+                            return new MemoryStore().clone(bean, codec());
                         }
                     }
 

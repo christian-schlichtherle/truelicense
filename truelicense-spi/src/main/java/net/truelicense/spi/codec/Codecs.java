@@ -6,9 +6,7 @@
 package net.truelicense.spi.codec;
 
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.io.Store;
 import net.truelicense.obfuscate.Obfuscate;
-import net.truelicense.spi.io.MemoryStore;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -111,23 +109,6 @@ public class Codecs {
         }
         throw new BinaryCodecException(
                 "The Content-Transfer-Encoding " + encoding + " doesn't produce text.");
-    }
-
-    /**
-     * Returns a clone of the given object using a new
-     * {@link SerializationCodec}.
-     */
-    public static <T> T clone(T object) throws Exception {
-        return clone(object, new SerializationCodec());
-    }
-
-    /**
-     * Returns a clone of the given object using the given codec.
-     */
-    public static <T> T clone(final T object, final Codec codec) throws Exception {
-        final Store store = new MemoryStore();
-        codec.encoder(store).encode(object);
-        return codec.decoder(store).decode(object.getClass());
     }
 
     private Codecs() { }
