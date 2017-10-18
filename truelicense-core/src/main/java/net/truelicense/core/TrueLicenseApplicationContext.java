@@ -381,7 +381,7 @@ implements
         public License license() { return context().license(); }
 
         @Override
-        public Store memoryStore() { return bios().memoryStore(); }
+        public MemoryStore memoryStore() { return new MemoryStore(); }
 
         @Override
         public Date now() { return clock.now(); }
@@ -963,7 +963,7 @@ implements
                         }
 
                         License duplicatedBean() throws Exception {
-                            return new MemoryStore().clone(bean, codec());
+                            return memoryStore().clone(bean, codec());
                         }
                     }
 

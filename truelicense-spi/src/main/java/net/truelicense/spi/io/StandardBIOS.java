@@ -40,11 +40,6 @@ public class StandardBIOS implements BIOS {
     }
 
     @Override
-    public Store memoryStore() {
-        return new MemoryStore();
-    }
-
-    @Override
     public Store pathStore(Path path) {
         return new PathStore(path);
     }
