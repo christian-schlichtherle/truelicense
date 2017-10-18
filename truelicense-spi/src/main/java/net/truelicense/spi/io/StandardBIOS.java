@@ -45,7 +45,6 @@ public class StandardBIOS implements BIOS {
     }
 
     @Override
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     public Source resource(
             final String name,
             final Optional<ClassLoader> classLoader) {
