@@ -9,11 +9,7 @@ import net.truelicense.api.codec.Codec;
 import net.truelicense.obfuscate.Obfuscate;
 
 import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,27 +26,11 @@ public class Codecs {
     @Obfuscate private static final String QUOTED_PRINTABLE = "quoted-printable";
     @Obfuscate private static final String BASE64 = "base64";
 
-    /** Not perfect, but should work for all valid input. */
+    // Not perfect, but should work for all valid input.
     @Obfuscate private static final String CHARSET_REGEXP =
-            "\\s*charset\\s*=\\s*(?:\"([^\"]*)\"|([^\\s\\(\\)<>@,;:\\\\\"/\\[\\]\\?=]+))";
+            "\\s*charset\\s*=\\s*(?:\"([^\"]*)\"|([^\\s()<>@,;:\\\\\"/\\[\\]?=]+))";
 
-    private static final Pattern CHARSET_PATTERN =
-            Pattern.compile(CHARSET_REGEXP, Pattern.CASE_INSENSITIVE);
-
-    /**
-     * Figures the content transfer charset which is used by the given codec.
-     * This method passes the call to {@link #contentTransferCharset}.
-     *
-     * @param  codec the codec to test.
-     * @return A list which either contains the single content transfer charset
-     *         which is used by the given codec or is empty if the codec
-     *         doesn't produce text or specifies an invalid charset name or an
-     *         unknown charset.
-     */
-    public static List<Charset> charset(final Codec codec) {
-        try { return Collections.singletonList(contentTransferCharset(codec)); }
-        catch (IllegalArgumentException ex) { return Collections.emptyList(); }
-    }
+    private static final Pattern CHARSET_PATTERN = Pattern.compile(CHARSET_REGEXP, Pattern.CASE_INSENSITIVE);
 
     /**
      * Figures the content transfer charset which is used by the given codec.
@@ -76,39 +56,38 @@ public class Codecs {
      * This ensures compatibility with JSON.
      * </ol>
      * <li>
-     * Finally, in all other cases, an {@link IllegalArgumentException} gets
-     * thrown in order to specify that the codec doesn't produce text or
-     * specifies an invalid charset name or an unknown charset.
+     * Finally, in all other cases, the optional return value is empty in order to specify that the codec doesn't
+     * produce text or specifies an invalid charset name or an unknown charset.
      * </ol>
      *
      * @param  codec the codec to test.
-     * @return The content transfer charset which is used by the given codec.
-     * @throws IllegalCharsetNameException if the specified charset name is
-     *         invalid.
-     * @throws UnsupportedCharsetException if the specified charset is unknown.
-     * @throws BinaryCodecException if the codec doesn't produce text.
-     * @since TrueLicense 2.2.1
+     * @return The optional content transfer charset which is used by the given codec.
+     *         Maybe empty if the codec doesn't produce text or specifies an invalid charset name or an unknown charset.
+     * @since TrueLicense 3.1.0
      */
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
-    public static Charset contentTransferCharset(final Codec codec) {
+    public static Optional<Charset> charset(final Codec codec) {
         final String encoding = codec.contentTransferEncoding();
-        if (    SEVEN_BIT.equalsIgnoreCase(encoding) ||
+        if (SEVEN_BIT.equalsIgnoreCase(encoding) ||
                 QUOTED_PRINTABLE.equalsIgnoreCase(encoding) ||
                 BASE64.equalsIgnoreCase(encoding)) {
-            return StandardCharsets.US_ASCII;
-        } else  if (EIGHT_BIT.equalsIgnoreCase(encoding)) {
+            return Optional.of(StandardCharsets.US_ASCII);
+        } else if (EIGHT_BIT.equalsIgnoreCase(encoding)) {
             final Matcher matcher = CHARSET_PATTERN.matcher(codec.contentType());
             if (matcher.find()) {
                 assert 2 == matcher.groupCount();
-                return Optional.ofNullable(matcher.group(1))
-                        .map(Charset::forName)
-                        .orElseGet(() -> Charset.forName(matcher.group(2)));
+                try {
+                    return Optional.of(Optional
+                            .ofNullable(matcher.group(1))
+                            .map(Charset::forName)
+                            .orElseGet(() -> Charset.forName(matcher.group(2))));
+                } catch (IllegalArgumentException ignored) {
+                    return Optional.empty();
+                }
             } else {
-                return StandardCharsets.UTF_8;
+                return Optional.of(StandardCharsets.UTF_8);
             }
         }
-        throw new BinaryCodecException(
-                "The Content-Transfer-Encoding " + encoding + " doesn't produce text.");
+        return Optional.empty();
     }
 
     private Codecs() { }
