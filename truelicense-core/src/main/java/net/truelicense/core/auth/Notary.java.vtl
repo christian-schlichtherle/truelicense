@@ -93,7 +93,10 @@ public final class Notary implements Authentication {
         }
 
         String algorithm() throws Exception {
-            return configuredAlgorithm().orElseGet(this::defaultAlgorithm);
+            final Optional<String> configuredAlgorithm = configuredAlgorithm();
+            if (configuredAlgorithm.isPresent())
+                return configuredAlgorithm.get();
+            return defaultAlgorithm();
         }
 
         String defaultAlgorithm() throws Exception {
