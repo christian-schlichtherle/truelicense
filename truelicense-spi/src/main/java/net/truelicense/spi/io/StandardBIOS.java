@@ -40,17 +40,11 @@ public class StandardBIOS implements BIOS {
     }
 
     @Override
-    public Store memoryStore() {
-        return new MemoryStore();
-    }
-
-    @Override
     public Store pathStore(Path path) {
         return new PathStore(path);
     }
 
     @Override
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     public Source resource(
             final String name,
             final Optional<ClassLoader> classLoader) {

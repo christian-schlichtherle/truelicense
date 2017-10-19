@@ -14,13 +14,10 @@ import net.truelicense.api.codec.Codec;
  *
  * @author Christian Schlichtherle
  */
-public final class V2RepositoryContext
-implements RepositoryContext<V2RepositoryModel> {
+public final class V2RepositoryContext implements RepositoryContext<V2RepositoryModel> {
 
     @Override
-    public V2RepositoryModel model() {
-        return new V2RepositoryModel();
-    }
+    public V2RepositoryModel model() { return new V2RepositoryModel(); }
 
     @Override
     public RepositoryController controller(V2RepositoryModel model, Codec codec) {

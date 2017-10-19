@@ -13,7 +13,6 @@ import net.truelicense.api.codec.Decoder;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.spi.io.MemoryStore;
 
-import java.nio.charset.Charset;
 import java.security.Signature;
 
 import static java.util.Base64.getDecoder;
@@ -26,7 +25,7 @@ import static net.truelicense.spi.codec.Codecs.charset;
  *
  * @author Christian Schlichtherle
  */
-public class V1RepositoryController implements RepositoryController {
+final class V1RepositoryController implements RepositoryController {
 
     @Obfuscate
     private static final String SIGNATURE_ENCODING = "US-ASCII/Base64";
@@ -34,23 +33,21 @@ public class V1RepositoryController implements RepositoryController {
     private final GenericCertificate model;
     private final Codec codec;
 
-    public V1RepositoryController(final GenericCertificate model, final Codec codec) {
+    V1RepositoryController(final GenericCertificate model, final Codec codec) {
         this.model = requireNonNull(model);
         this.codec = requireNonNull(codec);
     }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
-    private byte[] data(final Codec codec, final String body) {
-        for (Charset cs : charset(codec))
-            return body.getBytes(cs);
-        return getDecoder().decode(body);
+    private byte[] data(Codec codec, String body) {
+        return charset(codec)
+                .map(body::getBytes)
+                .orElseGet(() -> getDecoder().decode(body));
     }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
-    private String body(final Codec codec, final byte[] artifact) {
-        for (Charset cs : charset(codec))
-            return new String(artifact, cs);
-        return getEncoder().encodeToString(artifact);
+    private String body(Codec codec, byte[] artifact) {
+        return charset(codec)
+                .map(cs -> new String(artifact, cs))
+                .orElseGet(() -> getEncoder().encodeToString(artifact));
     }
 
     @Override
