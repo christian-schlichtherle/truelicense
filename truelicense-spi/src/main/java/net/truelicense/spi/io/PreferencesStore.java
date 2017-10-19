@@ -54,7 +54,6 @@ final class PreferencesStore implements Store {
     @Override
     public boolean exists() { return optData().isPresent(); }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
     private byte[] data() throws IOException {
         return optData()
                 .orElseThrow(() -> new FileNotFoundException(

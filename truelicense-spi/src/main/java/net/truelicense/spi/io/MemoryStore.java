@@ -5,7 +5,9 @@
 
 package net.truelicense.spi.io;
 
+import net.truelicense.api.codec.Codec;
 import net.truelicense.api.io.Store;
+import net.truelicense.spi.codec.SerializationCodec;
 
 import java.io.*;
 import java.util.Optional;
@@ -80,5 +82,14 @@ public final class MemoryStore implements Store {
     public MemoryStore data(final byte[] buffer) {
         optBuffer = Optional.ofNullable(buffer.clone());
         return this;
+    }
+
+    /** Returns a clone of the given object using a new {@link SerializationCodec} and this memory store. */
+    public <T> T clone(T object) throws Exception { return clone(object, new SerializationCodec()); }
+
+    /** Returns a clone of the given object using the given codec and this memory store. */
+    public <T> T clone(final T object, final Codec codec) throws Exception {
+        codec.encoder(this).encode(object);
+        return codec.decoder(this).decode(object.getClass());
     }
 }

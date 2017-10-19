@@ -23,9 +23,9 @@ import net.truelicense.core.passwd.MinimumPasswordPolicy;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.obfuscate.ObfuscatedString;
-import net.truelicense.spi.codec.Codecs;
 import net.truelicense.spi.io.BIOS;
 import net.truelicense.spi.io.BiosProvider;
+import net.truelicense.spi.io.MemoryStore;
 import net.truelicense.spi.io.StandardBIOS;
 
 import javax.security.auth.x500.X500Principal;
@@ -376,7 +376,7 @@ implements
         public License license() { return context().license(); }
 
         @Override
-        public Store memoryStore() { return bios().memoryStore(); }
+        public MemoryStore memoryStore() { return new MemoryStore(); }
 
         @Override
         public Date now() { return clock.now(); }
@@ -958,7 +958,7 @@ implements
                         }
 
                         License duplicatedBean() throws Exception {
-                            return Codecs.clone(bean, codec());
+                            return memoryStore().clone(bean, codec());
                         }
                     }
 

@@ -6,6 +6,7 @@
 package net.truelicense.spi.codec
 
 import java.nio.charset.Charset
+import java.util.Optional
 
 import net.truelicense.api.codec.Codec
 import net.truelicense.api.io.{Sink, Source}
@@ -18,8 +19,6 @@ import org.scalatest.prop.PropertyChecks._
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
 class CodecsTest extends WordSpec {
-
-  def charset(name: String) = Charset forName name
 
   "The contentTransferCharset function" should {
     "figure the correct charset" in {
@@ -35,7 +34,7 @@ class CodecsTest extends WordSpec {
       )
       forAll (table) { (contentType, contentTransferEncoding, contentTransferCharset) =>
         val codec = MockCodec(contentType, contentTransferEncoding)
-        Codecs contentTransferCharset codec shouldBe charset(contentTransferCharset)
+        Codecs charset codec shouldBe Optional.of(Charset forName contentTransferCharset)
       }
     }
 
@@ -48,7 +47,7 @@ class CodecsTest extends WordSpec {
       )
       forAll (table) { (contentType, contentTransferEncoding) =>
         val codec = MockCodec(contentType, contentTransferEncoding)
-        intercept[IllegalArgumentException] { Codecs contentTransferCharset codec }
+        Codecs charset codec shouldBe Optional.empty
       }
     }
   }

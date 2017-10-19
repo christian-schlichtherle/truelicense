@@ -11,7 +11,6 @@ import net.truelicense.api.codec.Codec;
 import net.truelicense.api.codec.Decoder;
 import net.truelicense.spi.io.MemoryStore;
 
-import java.nio.charset.Charset;
 import java.security.Signature;
 
 import static java.util.Base64.getDecoder;
@@ -24,28 +23,26 @@ import static net.truelicense.spi.codec.Codecs.charset;
  *
  * @author Christian Schlichtherle
  */
-public final class V2RepositoryController implements RepositoryController {
+final class V2RepositoryController implements RepositoryController {
 
     private final V2RepositoryModel model;
     private final Codec codec;
 
-    public V2RepositoryController(final V2RepositoryModel model, final Codec codec) {
+    V2RepositoryController(final V2RepositoryModel model, final Codec codec) {
         this.model = requireNonNull(model);
         this.codec = requireNonNull(codec);
     }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
-    private byte[] data(final Codec codec, final String body) {
-        for (Charset cs : charset(codec))
-            return body.getBytes(cs);
-        return getDecoder().decode(body);
+    private byte[] data(Codec codec, String body) {
+        return charset(codec)
+                .map(body::getBytes)
+                .orElseGet(() -> getDecoder().decode(body));
     }
 
-    @SuppressWarnings("LoopStatementThatDoesntLoop")
-    private String body(final Codec codec, final byte[] artifact) {
-        for (Charset cs : charset(codec))
-            return new String(artifact, cs);
-        return getEncoder().encodeToString(artifact);
+    private String body(Codec codec, byte[] artifact) {
+        return charset(codec)
+                .map(cs -> new String(artifact, cs))
+                .orElseGet(() -> getEncoder().encodeToString(artifact));
     }
 
     @Override

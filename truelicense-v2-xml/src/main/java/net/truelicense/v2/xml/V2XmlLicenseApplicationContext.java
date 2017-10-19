@@ -8,7 +8,6 @@ package net.truelicense.v2.xml;
 import net.truelicense.api.License;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.v2.commons.V2LicenseApplicationContext;
-import net.truelicense.v2.commons.auth.V2RepositoryController;
 import net.truelicense.v2.commons.auth.V2RepositoryModel;
 import net.truelicense.v2.xml.codec.JaxbCodec;
 
@@ -53,7 +52,7 @@ extends V2LicenseApplicationContext {
      * <p>
      * The implementation in the class {@link V2XmlLicenseApplicationContext}
      * constructs a new {@code JAXBContext} for the root element classes
-     * {@link License} and {@link V2RepositoryController}.
+     * {@link License} and {@link V2RepositoryModel}.
      */
     protected JAXBContext newJaxbContext() {
         try {
