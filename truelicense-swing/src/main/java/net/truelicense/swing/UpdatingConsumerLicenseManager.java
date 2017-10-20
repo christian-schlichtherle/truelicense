@@ -24,9 +24,7 @@ implements Serializable {
 
     private final Enabler enabler;
 
-    UpdatingConsumerLicenseManager(
-            final ConsumerLicenseManager manager,
-            final Enabler enabler) {
+    UpdatingConsumerLicenseManager(final ConsumerLicenseManager manager, final Enabler enabler) {
         super(manager);
         assert null != enabler;
         this.enabler = enabler;
@@ -37,19 +35,15 @@ implements Serializable {
 
     final boolean enabled() {
         class Action implements Runnable {
-            @SuppressWarnings("PackageVisibleField")
+            @SuppressWarnings("WeakerAccess")
             boolean result;
 
-            @Override public void run() {
-                result = enabler.enabled();
-            }
+            @Override public void run() { result = enabler.enabled(); }
         }
         return runOnEventDispatchThread(new Action()).result;
     }
 
-    final void enabled(final boolean value) {
-        runOnEventDispatchThread(() -> enabler.enabled(value));
-    }
+    final void enabled(final boolean value) { runOnEventDispatchThread(() -> enabler.enabled(value)); }
 
     private <R extends Runnable> R runOnEventDispatchThread(R action) {
         if (SwingUtilities.isEventDispatchThread()) {

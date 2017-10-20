@@ -7,7 +7,10 @@ package net.truelicense.api;
 
 /**
  * Defines the life cycle management operations for license keys in vendor applications alias key generators.
+ * <p>
+ * A (checked) vendor license manager generally throws a {@link LicenseManagementException} if an operation fails.
  *
+ * @see UncheckedVendorLicenseManager#checked()
  * @author Christian Schlichtherle
  */
 public interface VendorLicenseManager extends LicenseManagementSchema {
@@ -23,4 +26,13 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      * @return A license key generator for the given license bean.
      */
     LicenseKeyGenerator generateKeyFrom(License bean) throws LicenseManagementException;
+
+    /**
+     * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}
+     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
+     *
+     * @return the adapted unchecked vendor license manager.
+     * @since TrueLicense 3.1.0
+     */
+    default UncheckedVendorLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
 }
