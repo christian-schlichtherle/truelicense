@@ -1,5 +1,5 @@
 [![Build Status](https://api.travis-ci.org/christian-schlichtherle/truelicense.svg)](https://travis-ci.org/christian-schlichtherle/truelicense)
-[![Maven Central](https://img.shields.io/maven-central/v/net.java.truelicense/truelicense.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.java.truelicense%22)
+[![Maven Central](https://img.shields.io/maven-central/v/net.truelicense/truelicense.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.truelicense%22)
 
 # TrueLicense
 
