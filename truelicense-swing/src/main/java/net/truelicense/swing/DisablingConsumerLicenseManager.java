@@ -25,21 +25,13 @@ extends UpdatingConsumerLicenseManager {
 
     private static final long serialVersionUID = 0L;
 
-    DisablingConsumerLicenseManager(
-            Enabler enabler,
-            ConsumerLicenseManager manager) {
-        super(manager, enabler);
-    }
+    DisablingConsumerLicenseManager(Enabler enabler, ConsumerLicenseManager manager) { super(manager, enabler); }
 
     @Override
-    public void install(final Source source) throws LicenseManagementException {
-        run(() -> manager.install(source));
-    }
+    public void install(final Source source) throws LicenseManagementException { run(() -> manager.install(source)); }
 
     @Override
-    public void uninstall() throws LicenseManagementException {
-        run(() -> manager.uninstall());
-    }
+    public void uninstall() throws LicenseManagementException { run(manager::uninstall); }
 
     private void run(final CheckedTask task) throws LicenseManagementException {
         final boolean enabled = enabled();

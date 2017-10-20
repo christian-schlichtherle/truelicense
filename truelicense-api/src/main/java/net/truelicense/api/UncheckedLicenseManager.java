@@ -12,15 +12,14 @@ import net.truelicense.api.misc.ContextProvider;
 import java.util.concurrent.Callable;
 
 /**
- * Adapts vendor and consumer license managers so that they may generally throw an
- * {@link UncheckedLicenseManagementException} rather than a (checked) {@link LicenseManagementException}.
+ * Adapts vendor and consumer license managers so that they generally throw an
+ * {@link UncheckedLicenseManagementException} instead of a (checked) {@link LicenseManagementException} if an
+ * operation fails.
  *
- * @deprecated since TrueLicense 3.1.0. Use {@link VendorLicenseManager#unchecked()} or
- *             {@link ConsumerLicenseManager#unchecked()} instead.
+ * @see ConsumerLicenseManager#unchecked()
+ * @see VendorLicenseManager#unchecked()
  * @author Christian Schlichtherle
  */
-@SuppressWarnings("DeprecatedIsStillUsed")
-@Deprecated
 public final class UncheckedLicenseManager {
 
     private UncheckedLicenseManager() { }

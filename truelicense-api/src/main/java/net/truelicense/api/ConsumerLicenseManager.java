@@ -8,8 +8,9 @@ package net.truelicense.api;
 import net.truelicense.api.io.Source;
 
 /**
- * Defines the life cycle management operations for license keys in consumer
- * applications.
+ * Defines the life cycle management operations for license keys in consumer applications.
+ * <p>
+ * A (checked) consumer license manager generally throws a {@link LicenseManagementException} if an operation fails.
  *
  * <h3>How to Preview License Keys</h3>
  * <p>
@@ -21,6 +22,7 @@ import net.truelicense.api.io.Source;
  * Once configured, you can {@linkplain #install install} the license key to the transient memory store and
  * {@linkplain #load load} its encoded license bean.
  *
+ * @see UncheckedConsumerLicenseManager#checked()
  * @author Christian Schlichtherle
  */
 public interface ConsumerLicenseManager extends LicenseManagementSchema {
@@ -81,11 +83,10 @@ public interface ConsumerLicenseManager extends LicenseManagementSchema {
 
     /**
      * Adapts this consumer license manager so that it generally throws an {@link UncheckedLicenseManagementException}
-     * rather than a (checked) {@link LicenseManagementException}.
+     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
      *
      * @return the adapted unchecked consumer license manager.
      * @since TrueLicense 3.1.0
      */
-    @SuppressWarnings("deprecation")
     default UncheckedConsumerLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
 }
