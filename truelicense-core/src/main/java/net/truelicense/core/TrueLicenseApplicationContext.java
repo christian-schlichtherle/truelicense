@@ -23,9 +23,9 @@ import net.truelicense.core.passwd.MinimumPasswordPolicy;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.obfuscate.ObfuscatedString;
-import net.truelicense.spi.codec.Codecs;
 import net.truelicense.spi.io.BIOS;
 import net.truelicense.spi.io.BiosProvider;
+import net.truelicense.spi.io.MemoryStore;
 import net.truelicense.spi.io.StandardBIOS;
 
 import javax.security.auth.x500.X500Principal;
@@ -77,9 +77,7 @@ implements
      *
      * @param parameters the key store parameters.
      */
-    public Authentication authentication(AuthenticationParameters parameters) {
-        return new Notary(parameters);
-    }
+    public Authentication authentication(AuthenticationParameters parameters) { return new Notary(parameters); }
 
     /**
      * {@inheritDoc}
@@ -88,9 +86,7 @@ implements
      * returns an authorization which clears all operation requests.
      */
     @Override
-    public final LicenseManagementAuthorization authorization() {
-        return new TrueLicenseManagementAuthorization();
-    }
+    public final LicenseManagementAuthorization authorization() { return new TrueLicenseManagementAuthorization(); }
 
     /**
      * {@inheritDoc}
@@ -123,9 +119,7 @@ implements
     }
 
     @Override
-    public final LicenseManagementContextBuilder context() {
-        return new TrueLicenseManagementContextBuilder();
-    }
+    public final LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
 
     /**
      * Returns a password based encryption using the given parameters.
@@ -141,9 +135,7 @@ implements
      * returns a new {@link Date}.
      */
     @Override
-    public final Date now() {
-        return new Date();
-    }
+    public final Date now() { return new Date(); }
 
     /**
      * Returns the name of the default Password Based Encryption (PBE)
@@ -180,9 +172,7 @@ implements
      * returns a new {@link ObfuscatedPasswordProtection}.
      */
     @Override
-    public final PasswordProtection protection(ObfuscatedString os) {
-        return new ObfuscatedPasswordProtection(os);
-    }
+    public final PasswordProtection protection(ObfuscatedString os) { return new ObfuscatedPasswordProtection(os); }
 
     /**
      * Returns the name of the default key store type,
@@ -197,30 +187,34 @@ implements
     //
 
     private static String requireNonEmpty(final String s) {
-        if (s.isEmpty())
+        if (s.isEmpty()) {
             throw new IllegalArgumentException();
+        }
         return s;
     }
 
     private static boolean exists(Store store) throws LicenseManagementException {
-        return wrap(store::exists);
+        return check(store::exists);
     }
 
-    /**
-     * Executes the given {@code task} and wraps any
-     * non-{@link RuntimeException} and non-{@link LicenseManagementException}
-     * in a new {@code LicenseManagementException}.
-     *
-     * @param  task the task to {@link Callable#call}.
-     * @return the result of calling the task.
-     * @throws RuntimeException at the discretion of the task.
-     * @throws LicenseManagementException on any other {@link Exception} thrown
-     *         by the task.
-     */
-    private static <V> V wrap(final Callable<V> task) throws LicenseManagementException {
-        try { return task.call(); }
-        catch (RuntimeException | LicenseManagementException e) { throw e; }
-        catch (Exception e) { throw new LicenseManagementException(e); }
+    private static <V> V check(final Callable<V> task) throws LicenseManagementException {
+        try {
+            return task.call();
+        } catch (RuntimeException | LicenseManagementException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new LicenseManagementException(e);
+        }
+    }
+
+    private static <V> V uncheck(final Callable<V> task) {
+        try {
+            return task.call();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UncheckedLicenseManagementException(e);
+        }
     }
 
     //
@@ -231,14 +225,13 @@ implements
 
         final PasswordProtection protection;
 
-        CheckedPasswordProtection(final PasswordProtection protection) {
-            this.protection = protection;
-        }
+        CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
 
         @Override
         public Password password(final PasswordUsage usage) throws Exception {
-            if (usage.equals(PasswordUsage.WRITE)) // check null
+            if (usage.equals(PasswordUsage.WRITE)) { // check null
                 policy().check(protection);
+            }
             return protection.password(usage);
         }
     }
@@ -311,9 +304,7 @@ implements
         }
 
         @Override
-        public LicenseManagementContext build() {
-            return new TrueLicenseManagementContext(this);
-        }
+        public LicenseManagementContext build() { return new TrueLicenseManagementContext(this); }
     }
 
     final class TrueLicenseManagementContext
@@ -347,27 +338,19 @@ implements
         }
 
         @Override
-        public LicenseManagementAuthorization authorization() {
-            return authorization;
-        }
+        public LicenseManagementAuthorization authorization() { return authorization; }
 
         @Override
-        public Optional<ClassLoader> classLoader() {
-            return classLoaderProvider.classLoader();
-        }
+        public Optional<ClassLoader> classLoader() { return classLoaderProvider.classLoader(); }
 
         @Override
         public Codec codec() { return context().codec(); }
 
         @Override
-        public ConsumerLicenseManagerBuilder consumer() {
-            return new ConsumerTrueLicenseManagerBuilder();
-        }
+        public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
 
         @Override
-        public TrueLicenseApplicationContext<Model> context() {
-            return TrueLicenseApplicationContext.this;
-        }
+        public TrueLicenseApplicationContext<Model> context() { return TrueLicenseApplicationContext.this; }
 
         @Override
         public LicenseInitialization initialization() {
@@ -381,7 +364,7 @@ implements
         public License license() { return context().license(); }
 
         @Override
-        public Store memoryStore() { return bios().memoryStore(); }
+        public MemoryStore memoryStore() { return new MemoryStore(); }
 
         @Override
         public Date now() { return clock.now(); }
@@ -390,9 +373,7 @@ implements
         public Store pathStore(Path path) { return bios().pathStore(path); }
 
         @Override
-        public Source resource(String name) {
-            return bios().resource(name, classLoader());
-        }
+        public Source resource(String name) { return bios().resource(name, classLoader()); }
 
         @Override
         public Source stdin() { return bios().stdin(); }
@@ -440,9 +421,7 @@ implements
             }
 
             @Override
-            public ConsumerTrueLicenseManagerBuilder inject() {
-                throw new UnsupportedOperationException();
-            }
+            public ConsumerTrueLicenseManagerBuilder inject() { throw new UnsupportedOperationException(); }
 
             @Override
             public ParentConsumerTrueLicenseManagerBuilder parent() {
@@ -506,9 +485,7 @@ implements
                 return (This) this;
             }
 
-            public final This storeInPath(Path path) {
-                return storeIn(pathStore(path));
-            }
+            public final This storeInPath(Path path) { return storeIn(pathStore(path)); }
 
             public final This storeInSystemPreferences(Class<?> classInPackage) {
                 return storeIn(systemPreferencesStore(classInPackage));
@@ -561,9 +538,7 @@ implements
                 }
 
                 @Override
-                public TrueAuthenticationBuilder loadFromResource(String name) {
-                    return loadFrom(resource(name));
-                }
+                public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
 
                 @Override
                 public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
@@ -594,9 +569,7 @@ implements
                 }
 
                 @Override
-                public Transformation build() {
-                    return context().encryption(new TrueEncryptionParameters(this));
-                }
+                public Transformation build() { return context().encryption(new TrueEncryptionParameters(this)); }
 
                 @Override
                 public TrueEncryptionBuilder protection(final PasswordProtection protection) {
@@ -641,14 +614,10 @@ implements
             public Optional<Source> source() { return source; }
 
             @Override
-            public PasswordProtection storeProtection() {
-                return new CheckedPasswordProtection(storeProtection);
-            }
+            public PasswordProtection storeProtection() { return new CheckedPasswordProtection(storeProtection); }
 
             @Override
-            public String storeType() {
-                return storeType.orElseGet(() -> context().storeType());
-            }
+            public String storeType() { return storeType.orElseGet(() -> context().storeType()); }
         }
 
         final class TrueEncryptionParameters implements EncryptionParameters {
@@ -662,14 +631,10 @@ implements
             }
 
             @Override
-            public String algorithm() {
-                return algorithm.orElseGet(TrueLicenseApplicationContext.this::pbeAlgorithm);
-            }
+            public String algorithm() { return algorithm.orElseGet(TrueLicenseApplicationContext.this::pbeAlgorithm); }
 
             @Override
-            public PasswordProtection protection() {
-                return new CheckedPasswordProtection(protection);
-            }
+            public PasswordProtection protection() { return new CheckedPasswordProtection(protection); }
         }
 
         final class TrueLicenseManagementParameters
@@ -696,39 +661,35 @@ implements
             public Authentication authentication() { return authentication; }
 
             @Override
-            public TrueLicenseManagementContext context() {
-                return TrueLicenseManagementContext.this;
-            }
+            public TrueLicenseManagementContext context() { return TrueLicenseManagementContext.this; }
 
             @Override
             public Transformation encryption() {
-                return encryption
-                        .orElseGet(() -> parent().parameters().encryption());
+                return encryption.orElseGet(() -> parent().parameters().encryption());
             }
 
             @Override
             public LicenseInitialization initialization() {
                 final LicenseInitialization initialization = context().initialization();
-                if (0 == ftpDays)
+                if (0 != ftpDays) {
+                    return bean -> {
+                        initialization.initialize(bean);
+                        final Calendar cal = getInstance();
+                        cal.setTime(bean.getIssued());
+                        bean.setNotBefore(cal.getTime()); // not before issued
+                        cal.add(DATE, ftpDays); // FTP countdown starts NOW
+                        bean.setNotAfter(cal.getTime());
+                    };
+                } else {
                     return initialization;
-
-                return bean -> {
-                    initialization.initialize(bean);
-                    final Calendar cal = getInstance();
-                    cal.setTime(bean.getIssued());
-                    bean.setNotBefore(cal.getTime()); // not before issued
-                    cal.add(DATE, ftpDays); // FTP countdown starts NOW
-                    bean.setNotAfter(cal.getTime());
-                };
+                }
             }
 
             ConsumerLicenseManager parent() { return parent.get(); }
 
             Store store() { return store.get();}
 
-            Transformation compressionThenEncryption() {
-                return compression().andThen(encryption());
-            }
+            Transformation compressionThenEncryption() { return compression().andThen(encryption()); }
 
             final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
 
@@ -739,8 +700,9 @@ implements
                     try {
                         parent().install(source);
                     } catch (final LicenseManagementException first) {
-                        if (canGenerateLicenseKeys())
+                        if (canGenerateLicenseKeys()) {
                             throw first;
+                        }
                         super.install(source);
                     }
                 }
@@ -788,8 +750,9 @@ implements
                     try {
                         parent().uninstall();
                     } catch (final LicenseManagementException first) {
-                        if (canGenerateLicenseKeys())
+                        if (canGenerateLicenseKeys()) {
                             throw first;
+                        }
                         super.uninstall();
                     }
                 }
@@ -812,11 +775,13 @@ implements
                 }
 
                 LicenseKeyGenerator generateIffNewFtp(final LicenseManagementException e) throws LicenseManagementException {
-                    if (!canGenerateLicenseKeys())
+                    if (!canGenerateLicenseKeys()) {
                         throw e;
+                    }
                     final Store store = store();
-                    if (exists(store))
+                    if (exists(store)) {
                         throw e;
+                    }
                     return super.generateKeyFrom(license()).saveTo(store);
                 }
             }
@@ -920,12 +885,12 @@ implements
 
                         @Override
                         public License license() throws LicenseManagementException {
-                            return wrap(() -> decoder().decode(License.class));
+                            return check(() -> decoder().decode(License.class));
                         }
 
                         @Override
                         public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
-                            wrap(() -> {
+                            check(() -> {
                                 codec().encoder(compressionThenEncryption().apply(sink)).encode(model());
                                 return null;
                             });
@@ -963,11 +928,11 @@ implements
                         }
 
                         License duplicatedBean() throws Exception {
-                            return Codecs.clone(bean, codec());
+                            return memoryStore().clone(bean, codec());
                         }
                     }
 
-                    return wrap(() -> {
+                    return check(() -> {
                         authorization().clearGenerate(TrueLicenseManager.this);
                         return new TrueLicenseKeyGenerator();
                     });
@@ -975,7 +940,7 @@ implements
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    wrap(() -> {
+                    check(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
                         bios().copy(source, store());
@@ -985,7 +950,7 @@ implements
 
                 @Override
                 public License load() throws LicenseManagementException {
-                    return wrap(() -> {
+                    return check(() -> {
                         authorization().clearLoad(TrueLicenseManager.this);
                         return decodeLicense(store());
                     });
@@ -993,7 +958,7 @@ implements
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    wrap(() -> {
+                    check(() -> {
                         authorization().clearVerify(TrueLicenseManager.this);
                         validate(store());
                         return null;
@@ -1002,7 +967,7 @@ implements
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    wrap(() -> {
+                    check(() -> {
                         authorization().clearUninstall(TrueLicenseManager.this);
                         final Store store1 = store();
                         // #TRUELICENSE-81: A consumer license manager must
@@ -1047,13 +1012,74 @@ implements
                 //
 
                 @Override
-                public final LicenseManagementContext context() {
-                    return TrueLicenseManagementContext.this;
-                }
+                public final LicenseManagementContext context() { return TrueLicenseManagementContext.this; }
 
                 @Override
                 public final TrueLicenseManagementParameters parameters() {
                     return TrueLicenseManagementParameters.this;
+                }
+
+                @Override
+                public UncheckedTrueLicenseManager unchecked() { return new UncheckedTrueLicenseManager(); }
+
+                private class UncheckedTrueLicenseManager
+                        implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
+
+                        @Override
+                    public UncheckedLicenseKeyGenerator generateKeyFrom(final License bean)
+                            throws UncheckedLicenseManagementException {
+                        return uncheck(() -> new UncheckedLicenseKeyGenerator() {
+                            final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
+
+                            @Override
+                            public License license() throws UncheckedLicenseManagementException {
+                                return uncheck(generator::license);
+                            }
+
+                            @Override
+                            public LicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
+                                return uncheck(() -> generator.saveTo(sink));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void install(final Source source) throws UncheckedLicenseManagementException {
+                        uncheck(() -> {
+                            checked().install(source);
+                            return null;
+                        });
+                    }
+
+                    @Override
+                    public License load() throws UncheckedLicenseManagementException {
+                        return uncheck(checked()::load);
+                    }
+
+                    @Override
+                    public void verify() throws UncheckedLicenseManagementException {
+                        uncheck(() -> {
+                            checked().verify();
+                            return null;
+                        });
+                    }
+
+                    @Override
+                    public void uninstall() throws UncheckedLicenseManagementException {
+                        uncheck(() -> {
+                            checked().uninstall();
+                            return null;
+                        });
+                    }
+
+                    @Override
+                    public LicenseManagementContext context() { return checked().context(); }
+
+                    @Override
+                    public LicenseManagementParameters parameters() { return checked().parameters(); }
+
+                    @Override
+                    public TrueLicenseManager checked() { return TrueLicenseManager.this; }
                 }
             }
         }
@@ -1088,16 +1114,21 @@ implements
 
             @Override
             public void initialize(final License bean) {
-                if (null == bean.getConsumerType())
+                if (null == bean.getConsumerType()) {
                     bean.setConsumerType(DEFAULT_CONSUMER_TYPE);
-                if (null == bean.getHolder())
+                }
+                if (null == bean.getHolder()) {
                     bean.setHolder(new X500Principal(CN_PREFIX + message(UNKNOWN)));
-                if (null == bean.getIssued())
+                }
+                if (null == bean.getIssued()) {
                     bean.setIssued(now()); // don't trust the system clock!
-                if (null == bean.getIssuer())
+                }
+                if (null == bean.getIssuer()) {
                     bean.setIssuer(new X500Principal(CN_PREFIX + subject()));
-                if (null == bean.getSubject())
+                }
+                if (null == bean.getSubject()) {
                     bean.setSubject(subject());
+                }
             }
         }
 
@@ -1126,25 +1157,33 @@ implements
 
             @Override
             public void validate(final License bean) throws LicenseValidationException {
-                if (0 >= bean.getConsumerAmount())
+                if (0 >= bean.getConsumerAmount()) {
                     throw new LicenseValidationException(message(CONSUMER_AMOUNT_IS_NOT_POSITIVE, bean.getConsumerAmount()));
-                if (null == bean.getConsumerType())
+                }
+                if (null == bean.getConsumerType()) {
                     throw new LicenseValidationException(message(CONSUMER_TYPE_IS_NULL));
-                if (null == bean.getHolder())
+                }
+                if (null == bean.getHolder()) {
                     throw new LicenseValidationException(message(HOLDER_IS_NULL));
-                if (null == bean.getIssued())
+                }
+                if (null == bean.getIssued()) {
                     throw new LicenseValidationException(message(ISSUED_IS_NULL));
-                if (null == bean.getIssuer())
+                }
+                if (null == bean.getIssuer()) {
                     throw new LicenseValidationException(message(ISSUER_IS_NULL));
+                }
                 final Date now = now(); // don't trust the system clock!
                 final Date notAfter = bean.getNotAfter();
-                if (null != notAfter && now.after(notAfter))
+                if (null != notAfter && now.after(notAfter)) {
                     throw new LicenseValidationException(message(LICENSE_HAS_EXPIRED, notAfter));
+                }
                 final Date notBefore = bean.getNotBefore();
-                if (null != notBefore && now.before(notBefore))
+                if (null != notBefore && now.before(notBefore)) {
                     throw new LicenseValidationException(message(LICENSE_IS_NOT_YET_VALID, notBefore));
-                if (!subject().equals(bean.getSubject()))
+                }
+                if (!subject().equals(bean.getSubject())) {
                     throw new LicenseValidationException(message(INVALID_SUBJECT, bean.getSubject(), subject()));
+                }
             }
         }
     }

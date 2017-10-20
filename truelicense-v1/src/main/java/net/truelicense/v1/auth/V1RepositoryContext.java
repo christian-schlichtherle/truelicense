@@ -15,13 +15,10 @@ import net.truelicense.api.codec.Codec;
  *
  * @author Christian Schlichtherle
  */
-public final class V1RepositoryContext
-implements RepositoryContext<GenericCertificate> {
+public final class V1RepositoryContext implements RepositoryContext<GenericCertificate> {
 
     @Override
-    public GenericCertificate model() {
-        return new GenericCertificate();
-    }
+    public GenericCertificate model() { return new GenericCertificate(); }
 
     @Override
     public RepositoryController controller(GenericCertificate model, Codec codec) {

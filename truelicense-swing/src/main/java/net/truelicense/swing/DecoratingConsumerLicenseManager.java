@@ -22,35 +22,26 @@ implements ConsumerLicenseManager {
     @SuppressWarnings({"PackageVisibleField"})
     protected final ConsumerLicenseManager manager;
 
-    protected DecoratingConsumerLicenseManager(final ConsumerLicenseManager manager) {
-        this.manager = Objects.requireNonNull(manager);
+    DecoratingConsumerLicenseManager(final ConsumerLicenseManager manager) {
+        assert null != manager;
+        this.manager = manager;
     }
 
     @Override
     public LicenseManagementContext context() { return manager.context(); }
 
     @Override
-    public LicenseManagementParameters parameters() {
-        return manager.parameters();
-    }
+    public LicenseManagementParameters parameters() { return manager.parameters(); }
 
     @Override
-    public void install(Source source) throws LicenseManagementException {
-        manager.install(source);
-    }
+    public void install(Source source) throws LicenseManagementException { manager.install(source); }
 
     @Override
-    public License load() throws LicenseManagementException {
-        return manager.load();
-    }
+    public License load() throws LicenseManagementException { return manager.load(); }
 
     @Override
-    public void verify() throws LicenseManagementException {
-        manager.verify();
-    }
+    public void verify() throws LicenseManagementException { manager.verify(); }
 
     @Override
-    public void uninstall() throws LicenseManagementException {
-        manager.uninstall();
-    }
+    public void uninstall() throws LicenseManagementException { manager.uninstall(); }
 }

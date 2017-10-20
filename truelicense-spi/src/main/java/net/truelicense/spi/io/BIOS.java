@@ -24,9 +24,6 @@ public interface BIOS {
     /** Copies the data from the given source to the given sink. */
     void copy(Source source, Sink sink) throws IOException;
 
-    /** Returns a new memory store. */
-    Store memoryStore();
-
     /** Returns a store for the given path. */
     Store pathStore(Path path);
 

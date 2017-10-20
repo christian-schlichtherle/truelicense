@@ -9,7 +9,7 @@ jdk:
 - openjdk8
 - oraclejdk8
 
-install: mvn -V -DskipTests=true install
+install: mvn -V -DskipTests=true -Dgpg.skip=true -Psonatype-oss-release install
 
 language: java
 

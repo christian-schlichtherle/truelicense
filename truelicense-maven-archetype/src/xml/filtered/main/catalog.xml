@@ -1,8 +1,4 @@
 <?xml version='1.0'?>
-<!--
-  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
-  ~ All rights reserved. Use is subject to license terms.
-  -->
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <public publicId="http://www.w3.org/XML/1998/namespace" uri="xml.xsd"/>
 </catalog>
