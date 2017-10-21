@@ -29,10 +29,10 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>net.java.truelicense</groupId>
+                <groupId>net.truelicense</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
                 <!-- Cannot use the build version for bootstrapping! -->
-                <version>2.6.4</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>generate-main-sources</id>
