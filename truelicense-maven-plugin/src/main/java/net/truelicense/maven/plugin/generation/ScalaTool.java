@@ -15,7 +15,8 @@ import net.truelicense.obfuscate.ObfuscatedString;
 public final class ScalaTool {
 
     public String obfuscatedString(String s) {
-        return ObfuscatedString.obfuscate(s)
+        return ObfuscatedString
+                .obfuscate(s)
                 .replace("new long[] { ", "Array[Long](")
                 .replace(" }).toString()", "))");
     }
