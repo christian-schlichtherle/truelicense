@@ -35,12 +35,12 @@ public interface Store extends Source, Sink {
 
             @Override
             public InputStream input() throws IOException {
-                return t.unapply(Source.this).input();
+                return t.unapply(Store.this).input();
             }
 
             @Override
             public OutputStream output() throws IOException {
-                return t.apply(Sink.this).output();
+                return t.apply(Store.this).output();
             }
 
             @Override
