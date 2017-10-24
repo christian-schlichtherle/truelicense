@@ -246,11 +246,6 @@
                 <version>2.1</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.6</version>
-            </dependency>
-            <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>1.2</version>
@@ -300,8 +295,8 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity-engine-core</artifactId>
-                <version>2.0</version>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity</groupId>
