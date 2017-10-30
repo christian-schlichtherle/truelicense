@@ -9,6 +9,7 @@ import net.truelicense.api.io.Store;
 
 import java.io.*;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -52,7 +53,18 @@ final class PreferencesStore implements Store {
     }
 
     @Override
-    public boolean exists() { return optData().isPresent(); }
+    public OptionalLong size() throws IOException {
+        return optData().map(bytes -> OptionalLong.of(bytes.length)).orElseGet(OptionalLong::empty);
+    }
+
+    @Override
+    public boolean exists() throws IOException {
+        try {
+            return prefs.nodeExists("");
+        } catch (BackingStoreException e) {
+            throw new IOException(e);
+        }
+    }
 
     private byte[] data() throws IOException {
         return optData()

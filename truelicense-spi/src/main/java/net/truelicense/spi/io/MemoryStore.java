@@ -11,6 +11,7 @@ import net.truelicense.spi.codec.SerializationCodec;
 
 import java.io.*;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 /**
  * A (heap) memory store.
@@ -67,17 +68,18 @@ public final class MemoryStore implements Store {
     }
 
     @Override
-    public boolean exists() {
-        return optBuffer.isPresent();
+    public OptionalLong size() throws IOException {
+        return optBuffer.map(bytes -> OptionalLong.of(bytes.length)).orElseGet(OptionalLong::empty);
     }
+
+    @Override
+    public boolean exists() { return optBuffer.isPresent(); }
 
     private byte[] checkedData() throws FileNotFoundException {
         return optBuffer.orElseThrow(FileNotFoundException::new);
     }
 
-    public byte[] data() {
-        return optBuffer.map(byte[]::clone).orElseThrow(IllegalStateException::new);
-    }
+    public byte[] data() { return optBuffer.map(byte[]::clone).orElseThrow(IllegalStateException::new); }
 
     public MemoryStore data(final byte[] buffer) {
         optBuffer = Optional.ofNullable(buffer.clone());
