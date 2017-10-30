@@ -381,6 +381,7 @@
                     <gitFlowConfig>
                         <versionTagPrefix>truelicense-</versionTagPrefix>
                     </gitFlowConfig>
+                    <skipTestProject>true</skipTestProject>
                 </configuration>
             </plugin>
         </plugins>
