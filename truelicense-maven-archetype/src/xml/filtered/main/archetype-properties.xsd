@@ -673,7 +673,12 @@
         <xs:restriction base="xs:token">
             <xs:enumeration value="auto"/>
             <xs:enumeration value="PBEWithMD5AndDES"/>
+            <xs:enumeration value="PBEWithMD5AndTripleDES"/>
             <xs:enumeration value="PBEWithSHA1AndDESede"/>
+            <xs:enumeration value="PBEWithSHA1AndRC2_40"/>
+            <xs:enumeration value="PBEWithSHA1AndRC2_128"/>
+            <xs:enumeration value="PBEWithSHA1AndRC4_40"/>
+            <xs:enumeration value="PBEWithSHA1AndRC4_128"/>
             <xs:enumeration value="PBEWithHmacSHA1AndAES_128"/>
             <xs:enumeration value="PBEWithHmacSHA224AndAES_128"/>
             <xs:enumeration value="PBEWithHmacSHA256AndAES_128"/>
@@ -719,6 +724,8 @@
             <xs:enumeration value="SHA384withECDSA"/>
             <xs:enumeration value="SHA512withECDSA"/>
             <xs:enumeration value="NONEwithRSA"/>
+            <xs:enumeration value="MD2withRSA"/>
+            <xs:enumeration value="MD5withRSA"/>
             <xs:enumeration value="SHA1withRSA"/>
             <xs:enumeration value="SHA224withRSA"/>
             <xs:enumeration value="SHA256withRSA"/>
