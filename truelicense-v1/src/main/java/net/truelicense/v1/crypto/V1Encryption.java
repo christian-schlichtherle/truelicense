@@ -28,7 +28,8 @@ import static javax.crypto.Cipher.*;
  */
 public final class V1Encryption extends BasicEncryption {
 
-    @Obfuscate private static final String PBE_ALGORITHM = "PBEWithMD5andDES";
+    @Obfuscate
+    private static final String PBE_ALGORITHM = "PBEWithMD5AndDES";
 
     @Obfuscate
     private static final String
@@ -36,18 +37,21 @@ public final class V1Encryption extends BasicEncryption {
 
     public V1Encryption(final EncryptionParameters parameters) {
         super(parameters);
-        if (!PBE_ALGORITHM.equalsIgnoreCase(parameters.algorithm()))
+        if (!PBE_ALGORITHM.equalsIgnoreCase(parameters.algorithm())) {
             throw new IllegalArgumentException(ILLEGAL_PBE_ALGORITHM);
+        }
     }
 
-    @Override public Sink apply(final Sink sink) {
+    @Override
+    public Sink apply(final Sink sink) {
         return () -> wrap(() -> {
             final Cipher cipher = cipher(PasswordUsage.WRITE);
             return new CipherOutputStream(sink.output(), cipher);
         });
     }
 
-    @Override public Source unapply(final Source source) {
+    @Override
+    public Source unapply(final Source source) {
         return () -> wrap(() -> {
             final Cipher cipher = cipher(PasswordUsage.READ);
             return new CipherInputStream(source.input(), cipher);
@@ -55,7 +59,7 @@ public final class V1Encryption extends BasicEncryption {
     }
 
     private Cipher cipher(final PasswordUsage usage) throws Exception {
-        // Hard coded in TrueLicense V1.
+        // The salt is hard coded in TrueLicense V1:
         final AlgorithmParameterSpec spec = new PBEParameterSpec(
                 new byte[] {
                     (byte) 0xce, (byte) 0xfb, (byte) 0xde, (byte) 0xac,
@@ -63,9 +67,7 @@ public final class V1Encryption extends BasicEncryption {
                 },
                 2005);
         final Cipher cipher = getInstance(algorithm());
-        cipher.init(
-                PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE,
-                secretKey(usage), spec);
+        cipher.init(PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), spec);
         return cipher;
     }
 }
