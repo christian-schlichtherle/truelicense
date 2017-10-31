@@ -36,8 +36,7 @@ public final class V2Encryption extends BasicEncryption {
     public Sink apply(final Sink sink) {
         return () -> wrap(() -> {
             final Cipher cipher = cipher(PasswordUsage.WRITE, null);
-            final AlgorithmParameters
-                    param = cipher.getParameters();
+            final AlgorithmParameters param = cipher.getParameters();
             final byte[] encoded = param.getEncoded();
             assert encoded.length <= Short.MAX_VALUE;
             final OutputStream out = sink.output();
@@ -72,18 +71,15 @@ public final class V2Encryption extends BasicEncryption {
         });
     }
 
-    private AlgorithmParameters param(final byte[] encoded) throws Exception {
-        final AlgorithmParameters
-                param = AlgorithmParameters.getInstance(algorithm());
-        param.init(encoded);
-        return param;
-    }
-
     private Cipher cipher(final PasswordUsage usage, final AlgorithmParameters param) throws Exception {
         final Cipher cipher = getInstance(algorithm());
-        cipher.init(
-                PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE,
-                secretKey(usage), param);
+        cipher.init(PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), param);
         return cipher;
+    }
+
+    private AlgorithmParameters param(final byte[] encoded) throws Exception {
+        final AlgorithmParameters param = AlgorithmParameters.getInstance(algorithm());
+        param.init(encoded);
+        return param;
     }
 }
