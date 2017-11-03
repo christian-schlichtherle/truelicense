@@ -75,8 +75,8 @@ public class XmlCodec implements Codec {
     @Override
     public Decoder decoder(final Source source) {
         return new Decoder() {
-            @SuppressWarnings("unchecked")
             @Override
+            @SuppressWarnings("unchecked")
             public <T> T decode(final Type expected) throws Exception {
                 final Object obj;
                 final ZeroToleranceListener ztl = new ZeroToleranceListener();

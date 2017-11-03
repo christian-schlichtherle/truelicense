@@ -79,8 +79,8 @@ public class JaxbCodec implements Codec {
     @Override
     public Decoder decoder(final Source source) {
         return new Decoder() {
-            @SuppressWarnings("unchecked")
             @Override
+            @SuppressWarnings("unchecked")
             public <T> T decode(final Type expected) throws Exception {
                 try (InputStream in = source.input()) {
                     return (T) unmarshaller().unmarshal(in);
