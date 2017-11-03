@@ -53,7 +53,8 @@ public class JsonCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc4627">RFC 4627</a>
      */
-    @Override public String contentType() { return CONTENT_TYPE; }
+    @Override
+    public String contentType() { return CONTENT_TYPE; }
 
     /**
      * {@inheritDoc}
@@ -63,11 +64,11 @@ public class JsonCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc4627">RFC 4627</a>
      */
-    @Override public String contentTransferEncoding() {
-        return CONTENT_TRANSFER_ENCODING;
-    }
+    @Override
+    public String contentTransferEncoding() { return CONTENT_TRANSFER_ENCODING; }
 
-    @Override public Encoder encoder(final Sink sink) {
+    @Override
+    public Encoder encoder(final Sink sink) {
         return obj -> {
             try (OutputStream out = sink.output()) {
                 mapper.writeValue(out, obj);
@@ -75,7 +76,8 @@ public class JsonCodec implements Codec {
         };
     }
 
-    @Override public Decoder decoder(final Source source) {
+    @Override
+    public Decoder decoder(final Source source) {
         return new Decoder() {
             @Override
             public <T> T decode(final Type expected) throws Exception {

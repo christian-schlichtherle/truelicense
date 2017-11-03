@@ -40,9 +40,7 @@ public class JaxbCodec implements Codec {
     /** The JAXB context provided to the constructor. */
     protected final JAXBContext context;
 
-    public JaxbCodec(final JAXBContext context) {
-        this.context = Objects.requireNonNull(context);
-    }
+    public JaxbCodec(final JAXBContext context) { this.context = Objects.requireNonNull(context); }
 
     /**
      * {@inheritDoc}
@@ -52,9 +50,8 @@ public class JaxbCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
-    @Override public String contentType() {
-        return APPLICATION_XML_WITH_UTF_8;
-    }
+    @Override
+    public String contentType() { return APPLICATION_XML_WITH_UTF_8; }
 
     /**
      * {@inheritDoc}
@@ -64,11 +61,11 @@ public class JaxbCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
-    @Override public String contentTransferEncoding() {
-        return EIGHT_BIT;
-    }
+    @Override
+    public String contentTransferEncoding() { return EIGHT_BIT; }
 
-    @Override public Encoder encoder(final Sink sink) {
+    @Override
+    public Encoder encoder(final Sink sink) {
         return obj -> {
             try (OutputStream out = sink.output()) {
                 marshaller().marshal(obj, out);
@@ -77,11 +74,10 @@ public class JaxbCodec implements Codec {
     }
 
     /** Returns a new marshaller. */
-    protected Marshaller marshaller() throws JAXBException {
-        return context.createMarshaller();
-    }
+    protected Marshaller marshaller() throws JAXBException { return context.createMarshaller(); }
 
-    @Override public Decoder decoder(final Source source) {
+    @Override
+    public Decoder decoder(final Source source) {
         return new Decoder() {
             @SuppressWarnings("unchecked")
             @Override
@@ -94,7 +90,5 @@ public class JaxbCodec implements Codec {
     }
 
     /** Returns a new unmarshaller. */
-    protected Unmarshaller unmarshaller() throws JAXBException {
-        return context.createUnmarshaller();
-    }
+    protected Unmarshaller unmarshaller() throws JAXBException { return context.createUnmarshaller(); }
 }
