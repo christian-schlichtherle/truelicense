@@ -22,13 +22,10 @@ public final class ObfuscatedPasswordProtection implements PasswordProtection {
 
     private final ObfuscatedString os;
 
-    public ObfuscatedPasswordProtection(final ObfuscatedString os) {
-        this.os = Objects.requireNonNull(os);
-    }
+    public ObfuscatedPasswordProtection(final ObfuscatedString os) { this.os = Objects.requireNonNull(os); }
 
-    @Override public Password password(PasswordUsage usage) {
-        return new ObfuscatedPassword();
-    }
+    @Override
+    public Password password(PasswordUsage usage) { return new ObfuscatedPassword(); }
 
     private final class ObfuscatedPassword implements Password {
 
