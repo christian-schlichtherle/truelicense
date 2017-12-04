@@ -35,8 +35,8 @@ public final class GenericCertificate {
 
     public String getSignatureAlgorithm()  { return signatureAlgorithm; }
 
-    public void setSignatureAlgorithm(final String algorithm) {
-        this.signatureAlgorithm = algorithm;
+    public void setSignatureAlgorithm(final String signatureAlgorithm) {
+        this.signatureAlgorithm = signatureAlgorithm;
     }
 
     public String getSignatureEncoding() { return signatureEncoding; }
