@@ -8,7 +8,6 @@ package net.truelicense.api.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.OptionalLong;
 
 /**
  * An abstraction for storing data.
@@ -23,11 +22,8 @@ public interface Store extends Source, Sink {
     /** Deletes the data. */
     void delete() throws IOException;
 
-    /** Returns the size of the data in the store iff it exists, otherwise empty. */
-    OptionalLong size() throws IOException;
-
     /** Returns {@code true} if and only if the data exists. */
-    default boolean exists() throws IOException { return size().isPresent(); }
+    boolean exists() throws IOException;
 
     /**
      * Returns a new store which (un-)applies the given transformation to the I/O streams provided by this store.
@@ -38,16 +34,24 @@ public interface Store extends Source, Sink {
         return new Store() {
 
             @Override
-            public InputStream input() throws IOException { return t.unapply(Store.this).input(); }
+            public InputStream input() throws IOException {
+                return t.unapply(Store.this).input();
+            }
 
             @Override
-            public OutputStream output() throws IOException { return t.apply(Store.this).output(); }
+            public OutputStream output() throws IOException {
+                return t.apply(Store.this).output();
+            }
 
             @Override
-            public void delete() throws IOException { Store.this.delete(); }
+            public void delete() throws IOException {
+                Store.this.delete();
+            }
 
             @Override
-            public OptionalLong size() throws IOException { return Store.this.size(); }
+            public boolean exists() throws IOException {
+                return Store.this.exists();
+            }
         };
     }
 }

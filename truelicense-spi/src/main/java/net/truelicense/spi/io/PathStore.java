@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.OptionalLong;
 
 import static java.util.Objects.requireNonNull;
 
@@ -40,15 +38,6 @@ final class PathStore implements Store {
     @Override
     public void delete() throws IOException {
         Files.delete(path);
-    }
-
-    @Override
-    public OptionalLong size() throws IOException {
-        try {
-            return OptionalLong.of(Files.size(path));
-        } catch (NoSuchFileException ignored) {
-            return OptionalLong.empty();
-        }
     }
 
     @Override
