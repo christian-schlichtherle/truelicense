@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>119</version>
+        <version>120</version>
     </parent>
 
     <groupId>net.truelicense</groupId>
@@ -77,7 +77,7 @@
         <maven.enforcer.requireMavenVersion>3.5.0</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
-        <maven.version>3.3.9</maven.version>
+        <maven.version>3.5.2</maven.version>
 
         <!-- maven-javadoc-plugin -->
         <additionalparam>--allow-script-in-comments</additionalparam>
@@ -105,8 +105,8 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <jackson.version>2.9.1</jackson.version>
-        <javaee.version>7.0</javaee.version>
+        <jackson.version>2.9.4</jackson.version>
+        <javaee.version>8.0</javaee.version>
     </properties>
 
     <modules>
@@ -223,7 +223,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.0.1</version>
+                <version>4.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.ow2.asm</groupId>
@@ -284,7 +284,7 @@
             <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
                 <artifactId>maven-plugin-annotations</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -365,7 +365,7 @@
                         <dependency>
                             <groupId>net.sf.saxon</groupId>
                             <artifactId>Saxon-HE</artifactId>
-                            <version>9.7.0-20</version>
+                            <version>9.8.0-8</version>
                         </dependency>
                     </dependencies>
                 </plugin>
