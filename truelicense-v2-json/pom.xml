@@ -9,7 +9,7 @@
     <parent>
         <groupId>net.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>3.2.1-SNAPSHOT</version>
+        <version>4.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>truelicense-v2-json</artifactId>
