@@ -15,6 +15,8 @@ import net.truelicense.obfuscate.ObfuscatedString;
 public final class JavaTool {
 
     public String obfuscatedString(String s) {
-        return ObfuscatedString.obfuscate(s).replace(".toString()", "");
+        return ObfuscatedString
+                .obfuscate(s)
+                .replace(".toString()", "");
     }
 }

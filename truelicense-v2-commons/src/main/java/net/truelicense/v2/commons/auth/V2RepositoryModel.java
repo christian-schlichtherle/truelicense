@@ -38,8 +38,8 @@ public final class V2RepositoryModel {
     public final String getAlgorithm() { return algorithm; }
 
     /** Sets the signature algorithm. */
-    public final void setAlgorithm(final String signatureAlgorithm) {
-        this.algorithm = signatureAlgorithm;
+    public final void setAlgorithm(final String algorithm) {
+        this.algorithm = algorithm;
     }
 
     /** Returns the encoded artifact. */
@@ -47,8 +47,8 @@ public final class V2RepositoryModel {
     public final String getArtifact() { return artifact; }
 
     /** Sets the encoded artifact. */
-    public final void setArtifact(final String encodedArtifact) {
-        this.artifact = encodedArtifact;
+    public final void setArtifact(final String artifact) {
+        this.artifact = artifact;
     }
 
     /** Returns the encoded signature. */
@@ -56,8 +56,8 @@ public final class V2RepositoryModel {
     public final String getSignature() { return signature; }
 
     /** Sets the encoded signature. */
-    public void setSignature(final String encodedSignature) {
-        this.signature = encodedSignature;
+    public void setSignature(final String signature) {
+        this.signature = signature;
     }
 
     /**

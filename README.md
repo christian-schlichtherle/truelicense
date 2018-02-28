@@ -1,7 +1,4 @@
-[![Build Status](https://api.travis-ci.org/christian-schlichtherle/truelicense.svg)](https://travis-ci.org/christian-schlichtherle/truelicense)
-[![Maven Central](https://img.shields.io/maven-central/v/net.truelicense/truelicense.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.truelicense%22)
-
-# TrueLicense
+# TrueLicense [![Maven Central](https://img.shields.io/maven-central/v/net.truelicense/truelicense.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.truelicense%22) [![Build Status](https://api.travis-ci.org/christian-schlichtherle/truelicense.svg)](https://travis-ci.org/christian-schlichtherle/truelicense)
 
 TrueLicense is a commercial open source engine for license management on the Java Virtual Machine.
 Due to its functional and modular design TrueLicense scales from simple to complex licensing schemas.

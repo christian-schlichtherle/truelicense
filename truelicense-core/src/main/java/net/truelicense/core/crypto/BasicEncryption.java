@@ -40,9 +40,7 @@ public abstract class BasicEncryption implements Transformation {
         try (Password password = protection().password(usage)) {
             final PBEKeySpec ks = new PBEKeySpec(password.characters());
             try {
-                return SecretKeyFactory
-                        .getInstance(algorithm())
-                        .generateSecret(ks);
+                return SecretKeyFactory.getInstance(algorithm()).generateSecret(ks);
             } finally {
                 ks.clearPassword();
             }

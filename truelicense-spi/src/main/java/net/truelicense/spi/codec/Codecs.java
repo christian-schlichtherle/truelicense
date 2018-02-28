@@ -62,7 +62,8 @@ public class Codecs {
      *
      * @param  codec the codec to test.
      * @return The optional content transfer charset which is used by the given codec.
-     *         Maybe empty if the codec doesn't produce text or specifies an invalid charset name or an unknown charset.
+     *         Maybe empty if the codec doesn't produce text.
+     * @throws IllegalArgumentException if the codec specifies and invalid charset name or an unknown charset.
      * @since TrueLicense 3.1.0
      */
     public static Optional<Charset> charset(final Codec codec) {
@@ -75,14 +76,10 @@ public class Codecs {
             final Matcher matcher = CHARSET_PATTERN.matcher(codec.contentType());
             if (matcher.find()) {
                 assert 2 == matcher.groupCount();
-                try {
-                    return Optional.of(Optional
-                            .ofNullable(matcher.group(1))
-                            .map(Charset::forName)
-                            .orElseGet(() -> Charset.forName(matcher.group(2))));
-                } catch (IllegalArgumentException ignored) {
-                    return Optional.empty();
-                }
+                return Optional.of(Optional
+                        .ofNullable(matcher.group(1))
+                        .map(Charset::forName)
+                        .orElseGet(() -> Charset.forName(matcher.group(2))));
             } else {
                 return Optional.of(StandardCharsets.UTF_8);
             }

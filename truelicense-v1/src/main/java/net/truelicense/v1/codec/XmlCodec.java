@@ -43,9 +43,8 @@ public class XmlCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
-    @Override public String contentType() {
-        return APPLICATION_XML_WITH_UTF_8;
-    }
+    @Override
+    public String contentType() { return APPLICATION_XML_WITH_UTF_8; }
 
     /**
      * {@inheritDoc}
@@ -55,9 +54,8 @@ public class XmlCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
-    @Override public String contentTransferEncoding() {
-        return EIGHT_BIT;
-    }
+    @Override
+    public String contentTransferEncoding() { return EIGHT_BIT; }
 
     @Override
     public Encoder encoder(final Sink sink) {
@@ -72,15 +70,13 @@ public class XmlCodec implements Codec {
     }
 
     /** Returns a new XML encoder. */
-    protected XMLEncoder encoder(OutputStream out) {
-        return new XMLEncoder(out);
-    }
+    protected XMLEncoder encoder(OutputStream out) { return new XMLEncoder(out); }
 
     @Override
     public Decoder decoder(final Source source) {
         return new Decoder() {
-            @SuppressWarnings("unchecked")
             @Override
+            @SuppressWarnings("unchecked")
             public <T> T decode(final Type expected) throws Exception {
                 final Object obj;
                 final ZeroToleranceListener ztl = new ZeroToleranceListener();
@@ -95,9 +91,7 @@ public class XmlCodec implements Codec {
     }
 
     /** Returns a new XML decoder. */
-    protected XMLDecoder decoder(InputStream in) {
-        return new XMLDecoder(in);
-    }
+    protected XMLDecoder decoder(InputStream in) { return new XMLDecoder(in); }
 
     private static class ZeroToleranceListener implements ExceptionListener {
 

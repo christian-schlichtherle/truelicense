@@ -41,7 +41,8 @@ public class SerializationCodec implements Codec {
      *
      * @see java.awt.datatransfer.DataFlavor
      */
-    @Override public String contentType() { return CONTENT_TYPE; }
+    @Override
+    public String contentType() { return CONTENT_TYPE; }
 
     /**
      * {@inheritDoc}
@@ -51,19 +52,15 @@ public class SerializationCodec implements Codec {
      *
      * @see <a href="http://tools.ietf.org/html/rfc2045">RFC 2045</a>
      */
-    @Override public String contentTransferEncoding() {
-        return CONTENT_TRANSFER_ENCODING;
-    }
+    @Override
+    public String contentTransferEncoding() { return CONTENT_TRANSFER_ENCODING; }
 
     @Override
     public Encoder encoder(final Sink sink) {
-        return new Encoder() {
-            @Override
-            public void encode(final Object obj) throws Exception {
-                try (OutputStream out = sink.output();
-                     ObjectOutputStream oos = new ObjectOutputStream(out)) {
-                    oos.writeObject(obj);
-                }
+        return obj -> {
+            try (OutputStream out = sink.output();
+                 ObjectOutputStream oos = new ObjectOutputStream(out)) {
+                oos.writeObject(obj);
             }
         };
     }

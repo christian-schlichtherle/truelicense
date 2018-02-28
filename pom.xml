@@ -9,12 +9,12 @@
     <parent>
         <groupId>net.java.truecommons</groupId>
         <artifactId>truecommons-parent</artifactId>
-        <version>119</version>
+        <version>120</version>
     </parent>
 
     <groupId>net.truelicense</groupId>
     <artifactId>truelicense</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
     <packaging>pom</packaging>
 
     <name>TrueLicense</name>
@@ -77,10 +77,9 @@
         <maven.enforcer.requireMavenVersion>3.5.0</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
-        <maven.version>3.3.9</maven.version>
+        <maven.version>3.5.2</maven.version>
 
         <!-- maven-javadoc-plugin -->
-        <additionalparam>--allow-script-in-comments</additionalparam>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <googleAnalyticsAccountId>UA-28191662-1</googleAnalyticsAccountId>
         <header><![CDATA[
@@ -105,8 +104,8 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <jackson.version>2.9.1</jackson.version>
-        <javaee.version>7.0</javaee.version>
+        <jackson.version>2.9.4</jackson.version>
+        <javaee.version>8.0</javaee.version>
     </properties>
 
     <modules>
@@ -223,7 +222,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.0.1</version>
+                <version>4.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.ow2.asm</groupId>
@@ -284,7 +283,7 @@
             <dependency>
                 <groupId>org.apache.maven.plugin-tools</groupId>
                 <artifactId>maven-plugin-annotations</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -335,6 +334,13 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <additionalOptions>--allow-script-in-comments</additionalOptions>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>3.5</version>
                     <executions>
@@ -365,7 +371,7 @@
                         <dependency>
                             <groupId>net.sf.saxon</groupId>
                             <artifactId>Saxon-HE</artifactId>
-                            <version>9.7.0-14</version>
+                            <version>9.8.0-8</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -376,11 +382,12 @@
             <plugin>
                 <groupId>com.amashchenko.maven.plugin</groupId>
                 <artifactId>gitflow-maven-plugin</artifactId>
-                <version>1.7.0</version>
+                <version>1.9.0</version>
                 <configuration>
                     <gitFlowConfig>
                         <versionTagPrefix>truelicense-</versionTagPrefix>
                     </gitFlowConfig>
+                    <skipTestProject>true</skipTestProject>
                 </configuration>
             </plugin>
         </plugins>
@@ -400,11 +407,9 @@
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
+                <version>3.0.0</version>
                 <configuration>
-                    <links>
-                        <link>http://commons.apache.org/codec/apidocs/</link>
-                    </links>
+                    <additionalOptions>--allow-script-in-comments</additionalOptions>
                 </configuration>
                 <reportSets>
                     <reportSet />

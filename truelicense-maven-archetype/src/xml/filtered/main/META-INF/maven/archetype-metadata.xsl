@@ -3,11 +3,6 @@
   ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<!DOCTYPE stylesheet [
-        <!-- Use whatever line separator is used in this document: CR, LF or CRLF. -->
-        <!ENTITY lineSeparator "
-">
-        ]>
 <xsl:stylesheet
         exclude-result-prefixes="d xs"
         version="1.0"
@@ -16,22 +11,42 @@
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+    <xsl:output indent="yes"/>
+
     <xsl:template match="/d:archetype-descriptor/d:requiredProperties">
         <xsl:copy>
             <xsl:copy-of select="@*"/>
-            <xsl:for-each select="document('../../archetype-properties.xsd')/xs:schema/xs:complexType[@name = 'List']/xs:all/xs:element">
-                <xsl:text>&lineSeparator;        </xsl:text>
+            <xsl:variable name="schema" select="document('../../archetype-properties.xsd')/xs:schema"/>
+            <xsl:for-each select="$schema/xs:complexType[@name = 'List']/xs:all/xs:element">
                 <requiredProperty key="{@name}">
                     <xsl:if test="@default">
-                        <xsl:text>&lineSeparator;            </xsl:text>
                         <defaultValue>
                             <xsl:value-of select="@default"/>
                         </defaultValue>
-                        <xsl:text>&lineSeparator;        </xsl:text>
                     </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="@name = 'editions'">
+                            <validationRegex>([A-Za-z_$][A-Za-z0-9_$]*\s*)+</validationRegex>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:variable name="type" select="substring-after(@type, ':')"/>
+                            <xsl:variable name="enumerationValues" select="$schema/xs:simpleType[@name = $type]/xs:restriction/xs:enumeration/@value"/>
+                            <xsl:if test="$enumerationValues">
+                                <validationRegex>
+                                    <xsl:for-each select="$enumerationValues">
+                                        <xsl:if test="position() != 1">
+                                            <xsl:text>|</xsl:text>
+                                        </xsl:if>
+                                        <xsl:text>\Q</xsl:text>
+                                        <xsl:value-of select="."/>
+                                        <xsl:text>\E</xsl:text>
+                                    </xsl:for-each>
+                                </validationRegex>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </requiredProperty>
             </xsl:for-each>
-            <xsl:text>&lineSeparator;    </xsl:text>
         </xsl:copy>
     </xsl:template>
 

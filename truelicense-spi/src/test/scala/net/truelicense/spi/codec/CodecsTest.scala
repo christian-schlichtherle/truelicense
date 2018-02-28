@@ -33,7 +33,7 @@ class CodecsTest extends WordSpec {
         ("application/xml; charset=utf-8", "8bit", "utf-8")
       )
       forAll (table) { (contentType, contentTransferEncoding, contentTransferCharset) =>
-        val codec = MockCodec(contentType, contentTransferEncoding)
+        val codec = new MockCodec(contentType, contentTransferEncoding)
         Codecs charset codec shouldBe Optional.of(Charset forName contentTransferCharset)
       }
     }
@@ -42,20 +42,29 @@ class CodecsTest extends WordSpec {
       val table = Table(
         ("contentType", "contentTransferEncoding"),
         ("foo", "binary"),
-        ("foo; charset=utf-8", "binary"),
+        ("foo; charset=utf-8", "binary")
+      )
+      forAll (table) { (contentType, contentTransferEncoding) =>
+        val codec = new MockCodec(contentType, contentTransferEncoding)
+        Codecs charset codec shouldBe Optional.empty
+      }
+    }
+
+    "throw an `IllegalArgumentException`" in {
+      val table = Table(
+        ("contentType", "contentTransferEncoding"),
         ("foo; charset=bar", "8bit")
       )
       forAll (table) { (contentType, contentTransferEncoding) =>
-        val codec = MockCodec(contentType, contentTransferEncoding)
-        Codecs charset codec shouldBe Optional.empty
+        val codec = new MockCodec(contentType, contentTransferEncoding)
+        intercept[IllegalArgumentException] { Codecs charset codec }
       }
     }
   }
 }
 
 /** @author Christian Schlichtherle */
-private case class MockCodec(contentType: String, contentTransferEncoding: String)
-  extends Codec {
+private class MockCodec(val contentType: String, val contentTransferEncoding: String) extends Codec {
 
   def encoder(sink: Sink) = throw new UnsupportedOperationException
   def decoder(source: Source) = throw new UnsupportedOperationException
