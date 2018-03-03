@@ -67,4 +67,7 @@ public final class V2Encryption extends BasicEncryption {
         param.init(encoded);
         return param;
     }
+
+    @Override
+    public Transformation inverse() { return BIOS.inverse(this); }
 }

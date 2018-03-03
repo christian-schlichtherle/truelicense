@@ -6,7 +6,6 @@
 package net.truelicense.core.crypto;
 
 import global.namespace.fun.io.api.Transformation;
-import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -15,9 +14,7 @@ import net.truelicense.api.passwd.PasswordUsage;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.io.IOException;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 /**
  * A basic password based encryption.
@@ -47,7 +44,4 @@ public abstract class BasicEncryption implements Transformation {
             }
         }
     }
-
-    @Override
-    public Transformation inverse() { return BIOS.inverse(this); }
 }

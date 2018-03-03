@@ -6,14 +6,14 @@
 package net.truelicense.v1.crypto;
 
 import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.PasswordUsage;
 import net.truelicense.core.crypto.BasicEncryption;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.PBEParameterSpec;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,6 +36,8 @@ public final class V1Encryption extends BasicEncryption {
     private static final String
             ILLEGAL_PBE_ALGORITHM = "V1 format license keys require the " + PBE_ALGORITHM + " algorithm.";
 
+    private final Transformation cipher = BIOS.cipher(this::cipher);
+
     public V1Encryption(final EncryptionParameters parameters) {
         super(parameters);
         if (!PBE_ALGORITHM.equalsIgnoreCase(parameters.algorithm())) {
@@ -44,13 +46,13 @@ public final class V1Encryption extends BasicEncryption {
     }
 
     @Override
-    public Socket<OutputStream> apply(Socket<OutputStream> output) {
-        return output.map(out -> new CipherOutputStream(out, cipher(PasswordUsage.WRITE)));
-    }
+    public Socket<OutputStream> apply(Socket<OutputStream> output) { return cipher.apply(output); }
 
     @Override
-    public Socket<InputStream> unapply(Socket<InputStream> input) {
-        return input.map(in -> new CipherInputStream(in, cipher(PasswordUsage.READ)));
+    public Socket<InputStream> unapply(Socket<InputStream> input) { return cipher.unapply(input); }
+
+    private Cipher cipher(boolean forEncryption) throws Exception {
+        return cipher(forEncryption ? PasswordUsage.WRITE : PasswordUsage.READ);
     }
 
     private Cipher cipher(final PasswordUsage usage) throws Exception {
@@ -65,4 +67,7 @@ public final class V1Encryption extends BasicEncryption {
         cipher.init(PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), spec);
         return cipher;
     }
+
+    @Override
+    public Transformation inverse() { return cipher.inverse(); }
 }
