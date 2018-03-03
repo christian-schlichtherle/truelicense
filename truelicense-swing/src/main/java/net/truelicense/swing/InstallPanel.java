@@ -5,6 +5,7 @@
 
 package net.truelicense.swing;
 
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.i18n.Message;
 import net.truelicense.swing.util.ComponentEnabler;
@@ -74,6 +75,7 @@ final class InstallPanel extends LicenseWorkerPanel {
 
     private FileFilter fileFilter() {
         class Filter extends FileFilter {
+
             final String description = install_fileFilter.format(
                     subject(), installFileExtension()).toString();
 
@@ -223,7 +225,7 @@ final class InstallPanel extends LicenseWorkerPanel {
     private void installActionPerformed(java.awt.event.ActionEvent ignored) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
             @Override protected Void doInBackground() throws Exception {
-                manager().install(manager().context().pathStore(Paths.get(fileField.getText())).input());
+                manager().install(BIOS.pathStore(Paths.get(fileField.getText())).input());
                 return null;
             }
 

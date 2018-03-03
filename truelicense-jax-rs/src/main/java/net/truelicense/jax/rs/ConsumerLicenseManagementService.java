@@ -6,6 +6,7 @@
 package net.truelicense.jax.rs;
 
 import global.namespace.fun.io.api.Store;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementException;
@@ -81,9 +82,9 @@ public final class ConsumerLicenseManagementService {
     @Consumes(APPLICATION_OCTET_STREAM)
     public Response install(final byte[] key) throws ConsumerLicenseManagementServiceException {
         try {
-            final Store buffer = manager.context().memoryStore();
-            buffer.output().accept(out -> out.write(key));
-            manager.install(buffer.input());
+            final Store store = BIOS.memoryStore();
+            store.content(key);
+            manager.install(store.input());
         } catch (Exception e) {
             throw new ConsumerLicenseManagementServiceException(BAD_REQUEST, e);
         }

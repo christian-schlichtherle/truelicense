@@ -7,11 +7,13 @@ package net.truelicense.it.core
 
 import java.nio.file.Files
 
+import global.namespace.fun.io.bios.BIOS
+
 /** @author Christian Schlichtherle */
 trait PathStoreITContext { this: TestContext[_] =>
   final override def store = {
     val path = Files.createTempFile("truelicense", ".tmp")
     Files delete path
-    managementContext.pathStore(path)
+    BIOS pathStore path
   }
 }

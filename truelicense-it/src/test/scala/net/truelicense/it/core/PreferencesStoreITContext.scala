@@ -6,8 +6,10 @@
 package net.truelicense.it.core
 
 import global.namespace.fun.io.api.Store
+import global.namespace.fun.io.bios.BIOS
 
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext[_] =>
-  final override def store: Store = managementContext userPreferencesStore getClass
+
+  final override def store: Store = BIOS.userPreferencesStore(getClass, managementContext.subject)
 }

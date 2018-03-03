@@ -20,6 +20,8 @@ import net.truelicense.api.codec.Codec;
 
 import static java.lang.System.*;
 
+import static global.namespace.fun.io.bios.BIOS.*;
+
 /**
  * The command line interface (CLI) for vending $subject license keys.
  * <p>
@@ -83,14 +85,14 @@ public enum Main {
                     return null == path
                             ? context().license()
                             : (License) codec()
-                                .decoder("-".equals(path) ? stdin() : pathStore(path).input())
+                                .decoder("-".equals(path) ? stdin() : store(path).input())
                                 .decode(License.class);
                 }
 
                 void maybeEncodeOutputLicense(final License license) throws Exception {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path) {
-                        codec() .encoder("-".equals(path) ? stdout() : pathStore(path).output())
+                        codec() .encoder("-".equals(path) ? stdout() : store(path).output())
                                 .encode(license);
                     }
                 }
@@ -100,22 +102,12 @@ public enum Main {
                     return null != c ? c : (codec = context().codec());
                 }
 
-                Socket<InputStream> stdin() { return context().stdin(); }
-
-                Socket<OutputStream> stdout() { return context().stdout(); }
-
                 Store store() {
                     final String path = options.get(CreateOption.KEY);
-                    return null == path
-                            ? memoryStore() // -> /dev/null
-                            : pathStore(path);
+                    return null == path ? memoryStore() : store(path); // send to /dev/null if no path
                 }
 
-                Store memoryStore() { return context().memoryStore(); }
-
-                Store pathStore(String path) {
-                    return context().pathStore(Paths.get(path));
-                }
+                Store store(String path) { return pathStore(Paths.get(path)); }
 
                 LicenseManagementContext context() {
                     return manager().context();

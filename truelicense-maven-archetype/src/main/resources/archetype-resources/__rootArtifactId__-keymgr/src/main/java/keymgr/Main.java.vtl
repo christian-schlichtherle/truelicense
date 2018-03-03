@@ -22,6 +22,8 @@ import net.truelicense.swing.LicenseManagementWizard;
 
 import static java.lang.System.*;
 
+import static global.namespace.fun.io.bios.BIOS.*;
+
 /**
  * The command line interface (CLI) for consuming $subject license keys.
  * <p>
@@ -51,7 +53,7 @@ public enum Main {
 
     INSTALL {
         @Override void run(Deque<String> params) throws LicenseManagementException {
-            manager().install(context().pathStore(Paths.get(params.pop())).input());
+            manager().install(pathStore(Paths.get(params.pop())).input());
         }
     },
 

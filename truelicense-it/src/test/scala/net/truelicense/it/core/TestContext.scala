@@ -10,10 +10,11 @@ import java.util.Date
 import javax.security.auth.x500.X500Principal
 
 import global.namespace.fun.io.api.{Store, Transformation}
+import global.namespace.fun.io.bios.BIOS
 import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
 import net.truelicense.api.codec.{Codec, CodecProvider}
 import net.truelicense.api.passwd.PasswordProtection
-import net.truelicense.api.{ConsumerLicenseManager, License, VendorLicenseManager}
+import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementContext, VendorLicenseManager}
 import net.truelicense.core.TrueLicenseApplicationContext
 import net.truelicense.it.core.TestContext._
 import org.slf4j.LoggerFactory
@@ -75,7 +76,7 @@ trait TestContext[Model <: AnyRef]
     license
   }
 
-  final lazy val managementContext = {
+  final lazy val managementContext: LicenseManagementContext = {
     applicationContext
       .context
       .subject("subject")
@@ -85,7 +86,7 @@ trait TestContext[Model <: AnyRef]
 
   final override def repositoryContext: RepositoryContext[Model] = applicationContext.repositoryContext
 
-  def store: Store = managementContext.memoryStore
+  def store: Store = BIOS.memoryStore
 
   final def test1234: PasswordProtection = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */

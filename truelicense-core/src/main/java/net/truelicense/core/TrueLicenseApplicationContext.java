@@ -22,9 +22,6 @@ import net.truelicense.core.passwd.MinimumPasswordPolicy;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.obfuscate.ObfuscatedString;
-import net.truelicense.spi.io.BIOS;
-import net.truelicense.spi.io.BiosProvider;
-import net.truelicense.spi.io.StandardBIOS;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.InputStream;
@@ -35,6 +32,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static global.namespace.fun.io.bios.BIOS.*;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
 import static java.util.Objects.requireNonNull;
@@ -56,7 +54,6 @@ import static net.truelicense.core.Messages.*;
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
 public abstract class TrueLicenseApplicationContext<Model>
 implements
-        BiosProvider,
         CachePeriodProvider,
         ClassLoaderProvider,
         Clock,
@@ -87,15 +84,6 @@ implements
      */
     @Override
     public final LicenseManagementAuthorization authorization() { return new TrueLicenseManagementAuthorization(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a {@link StandardBIOS}.
-     */
-    @Override
-    public BIOS bios() { return new StandardBIOS(); }
 
     /**
      * {@inheritDoc}
@@ -364,35 +352,10 @@ implements
         public License license() { return context().license(); }
 
         @Override
-        public Store memoryStore() { return bios().memoryStore(); }
-
-        @Override
         public Date now() { return clock.now(); }
 
         @Override
-        public Store pathStore(Path path) { return bios().pathStore(path); }
-
-        @Override
-        public Socket<InputStream> resource(String name) { return bios().resource(name, classLoader()); }
-
-        @Override
-        public Socket<InputStream> stdin() { return bios().stdin(); }
-
-        @Override
-        public Socket<OutputStream> stdout() { return bios().stdout(); }
-
-        @Override
         public String subject() { return subject; }
-
-        @Override
-        public Store systemPreferencesStore(Class<?> classInPackage) {
-            return bios().systemPreferencesStore(classInPackage, subject());
-        }
-
-        @Override
-        public Store userPreferencesStore(Class<?> classInPackage) {
-            return bios().userPreferencesStore(classInPackage, subject());
-        }
 
         @Override
         public LicenseValidation validation() {
@@ -488,11 +451,11 @@ implements
             public final This storeInPath(Path path) { return storeIn(pathStore(path)); }
 
             public final This storeInSystemPreferences(Class<?> classInPackage) {
-                return storeIn(systemPreferencesStore(classInPackage));
+                return storeIn(systemPreferencesStore(classInPackage, subject()));
             }
 
             public final This storeInUserPreferences(Class<?> classInPackage) {
-                return storeIn(userPreferencesStore(classInPackage));
+                return storeIn(userPreferencesStore(classInPackage, subject()));
             }
 
             final class TrueAuthenticationBuilder
@@ -943,7 +906,7 @@ implements
                     check(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
-                        bios().copy(source, store().output());
+                        copy(source, store().output());
                         return null;
                     });
                 }
