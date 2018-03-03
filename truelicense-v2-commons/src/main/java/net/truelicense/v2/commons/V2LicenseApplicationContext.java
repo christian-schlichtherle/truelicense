@@ -42,7 +42,7 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
      * returns a compression for V2 format license keys.
      */
     @Override
-    public final Transformation compression() { return BIOS.deflate(Deflater.DEFAULT_COMPRESSION); }
+    public final Transformation compression() { return BIOS.deflate(Deflater.BEST_COMPRESSION); }
 
     /**
      * {@inheritDoc}
