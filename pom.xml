@@ -104,6 +104,7 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
+        <fun-io.version>0.3.0-SNAPSHOT</fun-io.version>
         <jackson.version>2.9.4</jackson.version>
         <javaee.version>8.0</javaee.version>
     </properties>
@@ -301,6 +302,26 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-tools</artifactId>
                 <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-api</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-bios</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-jackson</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
+                <version>${fun-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

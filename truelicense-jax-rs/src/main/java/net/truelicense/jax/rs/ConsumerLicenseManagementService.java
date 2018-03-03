@@ -5,13 +5,13 @@
 
 package net.truelicense.jax.rs;
 
+import global.namespace.fun.io.api.Store;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementException;
 import net.truelicense.dto.LicenseDTO;
 import net.truelicense.dto.SubjectDTO;
 import net.truelicense.obfuscate.Obfuscate;
-import net.truelicense.spi.io.MemoryStore;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -81,8 +81,10 @@ public final class ConsumerLicenseManagementService {
     @Consumes(APPLICATION_OCTET_STREAM)
     public Response install(final byte[] key) throws ConsumerLicenseManagementServiceException {
         try {
-            manager.install(new MemoryStore().data(key));
-        } catch (LicenseManagementException e) {
+            final Store buffer = manager.context().memoryStore();
+            buffer.output().accept(out -> out.write(key));
+            manager.install(buffer.input());
+        } catch (Exception e) {
             throw new ConsumerLicenseManagementServiceException(BAD_REQUEST, e);
         }
         return Response.seeOther(licenseURI).build();

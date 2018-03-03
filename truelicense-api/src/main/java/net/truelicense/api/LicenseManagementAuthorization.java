@@ -5,9 +5,6 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
-
 /**
  * Defines an authorization for the license key life cycle management operations.
  *
@@ -32,7 +29,7 @@ public interface LicenseManagementAuthorization {
      * Returns if and only if installing a license key is authorized.
      *
      * @param schema the licensing schema.
-     * @see ConsumerLicenseManager#install(Source)
+     * @see ConsumerLicenseManager#install(Socket)
      */
     void clearInstall(LicenseManagementSchema schema) throws Exception;
 

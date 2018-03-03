@@ -6,12 +6,12 @@
 #macro(obfuscate $string)$java.obfuscatedString($string).replaceAll(" /\*.*\*/", ".toString()")#end
 package net.truelicense.core.auth;
 
+import global.namespace.fun.io.api.Decoder;
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationParameters;
 import net.truelicense.api.auth.RepositoryController;
-import net.truelicense.api.codec.Decoder;
 import net.truelicense.api.i18n.Message;
-import net.truelicense.api.io.Source;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordProtection;
 import net.truelicense.api.passwd.PasswordUsage;
@@ -188,10 +188,9 @@ public final class Notary implements Authentication {
             try (Password password = storeProtection().password(PasswordUsage.READ)) {
                 final KeyStore keyStore = KeyStore.getInstance(storeType());
                 final char[] pc = password.characters();
-                if (source().isPresent()) {
-                    try (InputStream in = source().get().input()) {
-                        keyStore.load(in, pc);
-                    }
+                final Optional<Socket<InputStream>> source = source();
+                if (source.isPresent()) {
+                    source.get().accept(in -> keyStore.load(in, pc));
                 } else {
                     keyStore.load(null, pc);
                 }
@@ -209,7 +208,7 @@ public final class Notary implements Authentication {
 
         Optional<String> configuredAlgorithm() { return parameters().algorithm(); }
 
-        Optional<Source> source() { return parameters().source(); }
+        Optional<Socket<InputStream>> source() { return parameters().source(); }
 
         PasswordProtection storeProtection() {
             return parameters().storeProtection();

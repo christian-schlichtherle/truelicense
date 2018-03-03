@@ -19,4 +19,16 @@
         The TrueLicense API module provides an Application Programming
         Interface for license management on the Java Virtual Machine.
     </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

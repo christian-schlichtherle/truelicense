@@ -5,7 +5,7 @@
 
 package net.truelicense.api.comp;
 
-import net.truelicense.api.io.Transformation;
+import global.namespace.fun.io.api.Transformation;
 
 /**
  * Provides a compression.
@@ -14,6 +14,6 @@ import net.truelicense.api.io.Transformation;
  */
 public interface CompressionProvider {
 
-    /** Returns a compression. */
+    /** Returns a compression transformation. */
     Transformation compression();
 }

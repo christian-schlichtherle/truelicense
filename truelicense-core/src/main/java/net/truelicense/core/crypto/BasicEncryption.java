@@ -5,8 +5,9 @@
 
 package net.truelicense.core.crypto;
 
+import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.crypto.EncryptionParameters;
-import net.truelicense.api.io.Transformation;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordProtection;
 import net.truelicense.api.passwd.PasswordUsage;
@@ -47,19 +48,6 @@ public abstract class BasicEncryption implements Transformation {
         }
     }
 
-    /**
-     * Executes the given {@code task} and wraps any
-     * non-{@link RuntimeException} and non-{@link IOException}
-     * in a new {@code IOException}.
-     *
-     * @param  task the task to {@link Callable#call}.
-     * @return the result of calling the task.
-     * @throws RuntimeException at the discretion of the task.
-     * @throws IOException on any other {@link Exception} thrown by the task.
-     */
-    protected static <V> V wrap(final Callable<V> task) throws IOException {
-        try { return task.call(); }
-        catch (RuntimeException | IOException e) { throw e; }
-        catch (Exception e) { throw new IOException(e); }
-    }
+    @Override
+    public Transformation inverse() { return BIOS.inverse(this); }
 }

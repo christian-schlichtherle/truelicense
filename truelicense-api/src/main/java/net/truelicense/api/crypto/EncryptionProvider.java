@@ -5,7 +5,7 @@
 
 package net.truelicense.api.crypto;
 
-import net.truelicense.api.io.Transformation;
+import global.namespace.fun.io.api.Transformation;
 
 /**
  * Provides an encryption.
@@ -14,6 +14,6 @@ import net.truelicense.api.io.Transformation;
  */
 public interface EncryptionProvider {
 
-    /** Returns an encryption. */
+    /** Returns an encryption transformation. */
     Transformation encryption();
 }

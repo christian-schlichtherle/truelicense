@@ -6,12 +6,13 @@
 package net.truelicense.v1.auth;
 
 import de.schlichtherle.xml.GenericCertificate;
+import global.namespace.fun.io.api.Decoder;
+import global.namespace.fun.io.api.Store;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.auth.RepositoryController;
 import net.truelicense.api.auth.RepositoryIntegrityException;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.Decoder;
 import net.truelicense.obfuscate.Obfuscate;
-import net.truelicense.spi.io.MemoryStore;
 
 import java.security.Signature;
 
@@ -40,9 +41,9 @@ final class V1RepositoryController implements RepositoryController {
 
     @Override
     public final Decoder sign(final Signature engine, final Object artifact) throws Exception {
-        final MemoryStore store = new MemoryStore();
-        codec.encoder(store).encode(artifact);
-        final byte[] artifactData = store.data();
+        final Store store = BIOS.memoryStore();
+        codec.encoder(store.output()).encode(artifact);
+        final byte[] artifactData = store.content();
         engine.update(artifactData);
         final byte[] signatureData = engine.sign();
 
@@ -55,7 +56,7 @@ final class V1RepositoryController implements RepositoryController {
         model.setSignatureAlgorithm(signatureAlgorithm);
         model.setSignatureEncoding(SIGNATURE_ENCODING);
 
-        return codec.decoder(store);
+        return codec.decoder(store.input());
     }
 
     private static String body(Codec codec, byte[] artifact) {
@@ -66,13 +67,17 @@ final class V1RepositoryController implements RepositoryController {
 
     @Override
     public final Decoder verify(final Signature engine) throws Exception {
-        if (!engine.getAlgorithm().equalsIgnoreCase(model.getSignatureAlgorithm()))
+        if (!engine.getAlgorithm().equalsIgnoreCase(model.getSignatureAlgorithm())) {
             throw new IllegalArgumentException();
+        }
         final byte[] artifactData = data(codec, model.getEncoded());
         engine.update(artifactData);
-        if (!engine.verify(getDecoder().decode(model.getSignature())))
+        if (!engine.verify(getDecoder().decode(model.getSignature()))) {
             throw new RepositoryIntegrityException();
-        return codec.decoder(new MemoryStore().data(artifactData));
+        }
+        final Store store = BIOS.memoryStore();
+        store.content(artifactData);
+        return codec.decoder(store.input());
     }
 
     private static byte[] data(Codec codec, String body) {

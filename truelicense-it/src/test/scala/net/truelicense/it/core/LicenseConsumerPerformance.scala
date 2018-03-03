@@ -11,10 +11,10 @@ import java.util.concurrent.Callable
 trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =>
   def call() {
     val store = this.store
-    vendorManager generateKeyFrom license saveTo store
+    vendorManager generateKeyFrom license saveTo store.output
     for (i <- 1 to 5) {
       val manager = consumerManager()
-      manager install store
+      manager install store.input
       val num = 1000 * 1000
       val start = System.nanoTime
       for (j <- 1 to num) {

@@ -7,14 +7,18 @@
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
-import static java.lang.System.*;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.io.*;
+
+import static java.lang.System.*;
 
 /**
  * The command line interface (CLI) for vending $subject license keys.
@@ -47,28 +51,30 @@ public enum Main {
         @Override void run(final Deque<String> params) throws Exception {
             new Object() {
 
-                final Map<CreateOption, String>
-                        options = Main.parse(params, CreateOption.class);
+                final Map<CreateOption, String> options = Main.parse(params, CreateOption.class);
                 VendorLicenseManager manager;
                 Codec codec;
 
                 {
                     final String licenseKeyPath = params.poll();
-                    if (null != licenseKeyPath)
+                    if (null != licenseKeyPath) {
                         options.put(CreateOption.KEY, licenseKeyPath);
+                    }
                     Main.parse(params, CreateOption.class, options);
-                    if (!params.isEmpty())
+                    if (!params.isEmpty()) {
                         throw new IllegalArgumentException();
+                    }
                 }
 
                 void run() throws Exception {
                     final License input = createOrDecodeInputLicense();
                     final License output = manager()
                             .generateKeyFrom(input)
-                            .saveTo(store())
+                            .saveTo(store().output())
                             .license();
-                    if (verbose())
+                    if (verbose()) {
                         err.println(output);
+                    }
                     maybeEncodeOutputLicense(output);
                 }
 
@@ -77,15 +83,16 @@ public enum Main {
                     return null == path
                             ? context().license()
                             : (License) codec()
-                                .decoder("-".equals(path) ? stdin() : pathStore(path))
+                                .decoder("-".equals(path) ? stdin() : pathStore(path).input())
                                 .decode(License.class);
                 }
 
                 void maybeEncodeOutputLicense(final License license) throws Exception {
                     final String path = options.get(CreateOption.OUTPUT);
-                    if (null != path)
-                        codec() .encoder("-".equals(path) ? stdout() : pathStore(path))
+                    if (null != path) {
+                        codec() .encoder("-".equals(path) ? stdout() : pathStore(path).output())
                                 .encode(license);
+                    }
                 }
 
                 Codec codec() {
@@ -93,9 +100,9 @@ public enum Main {
                     return null != c ? c : (codec = context().codec());
                 }
 
-                Source stdin() { return context().stdin(); }
+                Socket<InputStream> stdin() { return context().stdin(); }
 
-                Sink stdout() { return context().stdout(); }
+                Socket<OutputStream> stdout() { return context().stdout(); }
 
                 Store store() {
                     final String path = options.get(CreateOption.KEY);
@@ -121,9 +128,13 @@ public enum Main {
 
                 String editionName() {
                     final String name = options.get(CreateOption.EDITION);
-                    if (null != name) return name;
+                    if (null != name) {
+                        return name;
+                    }
                     final LicenseManager[] managers = LicenseManager.values();
-                    if (1 != managers.length) throw new IllegalArgumentException();
+                    if (1 != managers.length) {
+                        throw new IllegalArgumentException();
+                    }
                     return managers[0].name();
                 }
 

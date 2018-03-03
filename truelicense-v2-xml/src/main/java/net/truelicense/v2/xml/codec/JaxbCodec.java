@@ -5,11 +5,11 @@
 
 package net.truelicense.v2.xml.codec;
 
+import global.namespace.fun.io.api.Decoder;
+import global.namespace.fun.io.api.Encoder;
+import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.Decoder;
-import net.truelicense.api.codec.Encoder;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.xml.bind.JAXBContext;
@@ -38,9 +38,9 @@ public class JaxbCodec implements Codec {
     private static final String EIGHT_BIT = "8bit";
 
     /** The JAXB context provided to the constructor. */
-    protected final JAXBContext context;
+    private final global.namespace.fun.io.api.Codec codec;
 
-    public JaxbCodec(final JAXBContext context) { this.context = Objects.requireNonNull(context); }
+    public JaxbCodec(final JAXBContext context) { this.codec = BIOS.jaxbCodec(context); }
 
     /**
      * {@inheritDoc}
@@ -65,30 +65,8 @@ public class JaxbCodec implements Codec {
     public String contentTransferEncoding() { return EIGHT_BIT; }
 
     @Override
-    public Encoder encoder(final Sink sink) {
-        return obj -> {
-            try (OutputStream out = sink.output()) {
-                marshaller().marshal(obj, out);
-            }
-        };
-    }
-
-    /** Returns a new marshaller. */
-    protected Marshaller marshaller() throws JAXBException { return context.createMarshaller(); }
+    public Encoder encoder(Socket<OutputStream> output) { return codec.encoder(output); }
 
     @Override
-    public Decoder decoder(final Source source) {
-        return new Decoder() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public <T> T decode(final Type expected) throws Exception {
-                try (InputStream in = source.input()) {
-                    return (T) unmarshaller().unmarshal(in);
-                }
-            }
-        };
-    }
-
-    /** Returns a new unmarshaller. */
-    protected Unmarshaller unmarshaller() throws JAXBException { return context.createUnmarshaller(); }
+    public Decoder decoder(Socket<InputStream> input) { return codec.decoder(input); }
 }

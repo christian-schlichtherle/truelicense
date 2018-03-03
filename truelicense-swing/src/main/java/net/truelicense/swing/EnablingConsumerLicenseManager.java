@@ -5,10 +5,12 @@
 
 package net.truelicense.swing;
 
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.LicenseManagementException;
-import net.truelicense.api.io.Source;
 import net.truelicense.swing.util.Enabler;
+
+import java.io.InputStream;
 
 /**
  * A decorating consumer license manager which enables a component after it has
@@ -31,8 +33,8 @@ extends UpdatingConsumerLicenseManager {
     }
 
     @Override
-    public void install(final Source source) throws LicenseManagementException {
-        manager.install(source);
+    public void install(final Socket<InputStream> input) throws LicenseManagementException {
+        manager.install(input);
         enable();
     }
 

@@ -5,18 +5,16 @@
 
 package net.truelicense.spi.codec;
 
+import global.namespace.fun.io.api.Decoder;
+import global.namespace.fun.io.api.Encoder;
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.Decoder;
-import net.truelicense.api.codec.Encoder;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
 import net.truelicense.obfuscate.Obfuscate;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 
 /**
  * A codec which encodes/decodes an object with an
@@ -32,6 +30,9 @@ public class SerializationCodec implements Codec {
 
     @Obfuscate
     private static final String CONTENT_TRANSFER_ENCODING = "binary";
+
+    private static final global.namespace.fun.io.api.Codec
+            CODEC = global.namespace.fun.io.bios.BIOS.serializationCodec();
 
     /**
      * {@inheritDoc}
@@ -56,26 +57,8 @@ public class SerializationCodec implements Codec {
     public String contentTransferEncoding() { return CONTENT_TRANSFER_ENCODING; }
 
     @Override
-    public Encoder encoder(final Sink sink) {
-        return obj -> {
-            try (OutputStream out = sink.output();
-                 ObjectOutputStream oos = new ObjectOutputStream(out)) {
-                oos.writeObject(obj);
-            }
-        };
-    }
+    public Encoder encoder(Socket<OutputStream> output) { return CODEC.encoder(output); }
 
     @Override
-    public Decoder decoder(final Source source) {
-        return new Decoder() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public <T> T decode(final Type expected) throws Exception {
-                try (InputStream in = source.input();
-                     ObjectInputStream oin = new ObjectInputStream(in)) {
-                    return (T) oin.readObject();
-                }
-            }
-        };
-    }
+    public Decoder decoder(Socket<InputStream> input) { return CODEC.decoder(input); }
 }

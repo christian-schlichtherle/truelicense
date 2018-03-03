@@ -8,8 +8,8 @@ package net.truelicense.spi.codec
 import java.nio.charset.Charset
 import java.util.Optional
 
+import global.namespace.fun.io.scala.api.{Sink, Source}
 import net.truelicense.api.codec.Codec
-import net.truelicense.api.io.{Sink, Source}
 import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
@@ -33,7 +33,7 @@ class CodecsTest extends WordSpec {
         ("application/xml; charset=utf-8", "8bit", "utf-8")
       )
       forAll (table) { (contentType, contentTransferEncoding, contentTransferCharset) =>
-        val codec = new MockCodec(contentType, contentTransferEncoding)
+        val codec = new DummyCodec(contentType, contentTransferEncoding)
         Codecs charset codec shouldBe Optional.of(Charset forName contentTransferCharset)
       }
     }
@@ -45,7 +45,7 @@ class CodecsTest extends WordSpec {
         ("foo; charset=utf-8", "binary")
       )
       forAll (table) { (contentType, contentTransferEncoding) =>
-        val codec = new MockCodec(contentType, contentTransferEncoding)
+        val codec = new DummyCodec(contentType, contentTransferEncoding)
         Codecs charset codec shouldBe Optional.empty
       }
     }
@@ -56,7 +56,7 @@ class CodecsTest extends WordSpec {
         ("foo; charset=bar", "8bit")
       )
       forAll (table) { (contentType, contentTransferEncoding) =>
-        val codec = new MockCodec(contentType, contentTransferEncoding)
+        val codec = new DummyCodec(contentType, contentTransferEncoding)
         intercept[IllegalArgumentException] { Codecs charset codec }
       }
     }
@@ -64,8 +64,8 @@ class CodecsTest extends WordSpec {
 }
 
 /** @author Christian Schlichtherle */
-private class MockCodec(val contentType: String, val contentTransferEncoding: String) extends Codec {
+private class DummyCodec(val contentType: String, val contentTransferEncoding: String) extends Codec {
 
-  def encoder(sink: Sink) = throw new UnsupportedOperationException
-  def decoder(source: Source) = throw new UnsupportedOperationException
+  def encoder(output: Sink) = throw new UnsupportedOperationException
+  def decoder(input: Source) = throw new UnsupportedOperationException
 }

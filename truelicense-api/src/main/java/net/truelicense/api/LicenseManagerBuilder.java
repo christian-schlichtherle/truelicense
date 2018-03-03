@@ -5,8 +5,8 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
-import net.truelicense.api.io.Transformation;
 import net.truelicense.api.misc.Injection;
 
 /**

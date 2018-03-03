@@ -5,9 +5,11 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.io.Source;
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.misc.Injection;
 import net.truelicense.api.passwd.PasswordProtection;
+
+import java.io.InputStream;
 
 /**
  * Injects a key store based authentication into some target.
@@ -51,16 +53,16 @@ extends Injection<Target> {
     AuthenticationInjection<Target> keyProtection(PasswordProtection keyProtection);
 
     /**
-     * Sets the source for the key store (optional).
+     * Sets the input for the key store (optional).
      * Either this method or {@link #loadFromResource(String)} must be called.
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> loadFrom(Source source);
+    AuthenticationInjection<Target> loadFrom(Socket<InputStream> input);
 
     /**
      * Sets the resource name of the key store (optional).
-     * Either this method or {@link #loadFrom(Source)} must be called.
+     * Either this method or {@link #loadFrom(Socket)} must be called.
      *
      * @return {@code this}
      */

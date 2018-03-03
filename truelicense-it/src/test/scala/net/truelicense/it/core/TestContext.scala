@@ -9,9 +9,9 @@ import java.util.Calendar._
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
+import global.namespace.fun.io.api.{Store, Transformation}
 import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
 import net.truelicense.api.codec.{Codec, CodecProvider}
-import net.truelicense.api.io.{Store, Transformation}
 import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.api.{ConsumerLicenseManager, License, VendorLicenseManager}
 import net.truelicense.core.TrueLicenseApplicationContext

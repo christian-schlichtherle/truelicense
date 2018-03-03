@@ -30,6 +30,10 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
         </dependency>
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-jackson</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

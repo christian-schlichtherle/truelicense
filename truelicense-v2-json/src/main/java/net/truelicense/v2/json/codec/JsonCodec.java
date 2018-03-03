@@ -6,17 +6,15 @@
 package net.truelicense.v2.json.codec;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import global.namespace.fun.io.api.Decoder;
+import global.namespace.fun.io.api.Encoder;
+import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.jackson.Jackson;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.Decoder;
-import net.truelicense.api.codec.Encoder;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
 import net.truelicense.obfuscate.Obfuscate;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.util.Objects;
 
 /**
  * A codec which encodes/decodes objects to/from JSON with an
@@ -34,16 +32,14 @@ public class JsonCodec implements Codec {
     @Obfuscate
     private static final String CONTENT_TRANSFER_ENCODING = "8bit";
 
-    private final ObjectMapper mapper;
+    private final global.namespace.fun.io.api.Codec codec;
 
     /**
      * Constructs a new JSON codec.
      *
      * @param mapper the object mapper.
      */
-    public JsonCodec(final ObjectMapper mapper) {
-        this.mapper = Objects.requireNonNull(mapper);
-    }
+    public JsonCodec(final ObjectMapper mapper) { this.codec = Jackson.jsonCodec(mapper); }
 
     /**
      * {@inheritDoc}
@@ -68,23 +64,8 @@ public class JsonCodec implements Codec {
     public String contentTransferEncoding() { return CONTENT_TRANSFER_ENCODING; }
 
     @Override
-    public Encoder encoder(final Sink sink) {
-        return obj -> {
-            try (OutputStream out = sink.output()) {
-                mapper.writeValue(out, obj);
-            }
-        };
-    }
+    public Encoder encoder(Socket<OutputStream> output) { return codec.encoder(output); }
 
     @Override
-    public Decoder decoder(final Source source) {
-        return new Decoder() {
-            @Override
-            public <T> T decode(final Type expected) throws Exception {
-                try (InputStream in = source.input()) {
-                    return mapper.readValue(in, mapper.constructType(expected));
-                }
-            }
-        };
-    }
+    public Decoder decoder(Socket<InputStream> input) { return codec.decoder(input); }
 }

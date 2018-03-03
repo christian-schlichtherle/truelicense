@@ -5,7 +5,9 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.io.Source;
+import global.namespace.fun.io.api.Socket;
+
+import java.io.InputStream;
 
 /**
  * Defines the life cycle management operations for license keys in consumer applications.
@@ -29,41 +31,34 @@ import net.truelicense.api.io.Source;
 public interface UncheckedConsumerLicenseManager extends LicenseManagementSchema {
 
     /**
-     * Verifies the digital signature of the license key and copies it to the
-     * configured store.
-     * Unlike {@link #verify}, this operation does <em>not</em> validate the
-     * encoded license bean.
-     * This enables the caller to obtain a duplicate of the license bean even
-     * if its validation would fail, e.g. if the license has expired.
+     * Verifies the digital signature of the license key and copies it to the configured store.
+     * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
+     * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
+     * license has expired.
      * <p>
      * Calling this operation performs an initial
-     * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
+     * * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
      *
-     * @param  source the source for loading the license key.
+     * @param  input the input stream socket for reading the license key.
      */
-    void install(Source source) throws UncheckedLicenseManagementException;
+    void install(Socket<InputStream> input) throws UncheckedLicenseManagementException;
 
     /**
-     * Eventually loads the installed license key and returns an unvalidated
-     * duplicate of its encoded license bean.
-     * Unlike {@link #verify}, this operation does <em>not</em> validate the
-     * encoded license bean.
-     * This enables the caller to obtain a duplicate of the license bean even
-     * if its validation would fail, e.g. if the license has expired.
+     * Eventually loads the installed license key and returns an unvalidated duplicate of its encoded license bean.
+     * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
+     * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
+     * license has expired.
      * <p>
      * Calling this operation performs an initial
      * {@linkplain LicenseManagementAuthorization#clearLoad authorization check}.
      *
-     * @return An unvalidated duplicate of the license bean which is encoded in
-     *         the installed license key.
+     * @return An unvalidated duplicate of the license bean which is encoded in the installed license key.
      */
     License load() throws UncheckedLicenseManagementException;
 
     /**
-     * Eventually loads the installed license key and verifies its encoded
-     * license bean.
-     * You should call this method whenever you want to verify access to a
-     * feature of your software product.
+     * Loads the installed license key and verifies its encoded license bean.
+     * You should call this method whenever you want to verify access to a feature of your software product.
      * Execution needs to be fast in order to support frequent calling.
      * <p>
      * Calling this operation performs an initial

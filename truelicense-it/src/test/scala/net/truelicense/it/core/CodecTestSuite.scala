@@ -8,7 +8,7 @@ package net.truelicense.it.core
 import java.io.IOException
 
 import net.truelicense.api.codec.Codec
-import net.truelicense.api.io.{Store, Transformation}
+import global.namespace.fun.io.api.{Store, Transformation}
 import org.scalatest.Matchers._
 import org.scalatest._
 
@@ -25,12 +25,12 @@ abstract class CodecTestSuite extends WordSpec {
       "support round trip I/O" in {
         val artifact = this.artifact
         val codec = this.codec
-        val store = this.store `with` transformation
+        val store = this.store map transformation
         store.exists shouldBe false
         intercept[IOException] { store delete () }
         try {
-          codec encoder store encode artifact
-          val duplicate: AnyRef = codec decoder store decode artifact.getClass
+          codec connect store encode artifact
+          val duplicate: AnyRef = codec connect store decode artifact.getClass
           duplicate shouldBe artifact
           duplicate should not be theSameInstanceAs (artifact)
           store.exists shouldBe true

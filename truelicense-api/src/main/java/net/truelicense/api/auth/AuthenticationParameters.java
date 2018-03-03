@@ -5,9 +5,10 @@
 
 package net.truelicense.api.auth;
 
-import net.truelicense.api.io.Source;
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.passwd.PasswordProtection;
 
+import java.io.InputStream;
 import java.util.Optional;
 
 /**
@@ -47,11 +48,10 @@ public interface AuthenticationParameters {
     PasswordProtection keyProtection();
 
     /**
-     * Returns the optional input source for the key store.
-     * If no value is present then the key store type does not require loading
-     * from an input source / stream.
+     * Returns the optional input stream socket for loading the key store.
+     * If no value is present then the key store type does not require loading from an input source / stream.
      */
-    Optional<Source> source();
+    Optional<Socket<InputStream>> source();
 
     /**
      * Returns a password protection for verifying the integrity of the key

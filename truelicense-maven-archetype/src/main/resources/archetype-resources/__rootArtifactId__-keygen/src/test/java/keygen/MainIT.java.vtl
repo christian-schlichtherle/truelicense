@@ -7,10 +7,13 @@
 package ${package}.keygen;
 
 import java.io.*;
+
 import org.junit.*;
 import org.junit.rules.*;
 
+import static global.namespace.fun.io.bios.BIOS.*;
 import static org.junit.Assert.*;
+
 import static ${package}.keygen.Main.*;
 
 /**
@@ -45,11 +48,7 @@ public class MainIT {
         return folder.newFile(name);
     }
 
-    private static byte[] read(final File file) throws IOException {
-        final byte[] data = new byte[(int) file.length()];
-        try (InputStream in = new FileInputStream(file)) {
-            new DataInputStream(in).readFully(data);
-        }
-        return data;
+    private static byte[] read(File file) throws IOException {
+        return pathStore(file.toPath()).content();
     }
 }

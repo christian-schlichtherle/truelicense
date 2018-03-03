@@ -5,9 +5,8 @@
 
 package net.truelicense.v1.crypto;
 
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.crypto.EncryptionParameters;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
 import net.truelicense.api.passwd.PasswordUsage;
 import net.truelicense.core.crypto.BasicEncryption;
 import net.truelicense.obfuscate.Obfuscate;
@@ -16,6 +15,8 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.spec.PBEParameterSpec;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.spec.AlgorithmParameterSpec;
 
 import static javax.crypto.Cipher.*;
@@ -43,19 +44,13 @@ public final class V1Encryption extends BasicEncryption {
     }
 
     @Override
-    public Sink apply(final Sink sink) {
-        return () -> wrap(() -> {
-            final Cipher cipher = cipher(PasswordUsage.WRITE);
-            return new CipherOutputStream(sink.output(), cipher);
-        });
+    public Socket<OutputStream> apply(Socket<OutputStream> output) {
+        return output.map(out -> new CipherOutputStream(out, cipher(PasswordUsage.WRITE)));
     }
 
     @Override
-    public Source unapply(final Source source) {
-        return () -> wrap(() -> {
-            final Cipher cipher = cipher(PasswordUsage.READ);
-            return new CipherInputStream(source.input(), cipher);
-        });
+    public Socket<InputStream> unapply(Socket<InputStream> input) {
+        return input.map(in -> new CipherInputStream(in, cipher(PasswordUsage.READ)));
     }
 
     private Cipher cipher(final PasswordUsage usage) throws Exception {

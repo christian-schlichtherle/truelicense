@@ -9,7 +9,7 @@ import java.util.Date
 
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.LicenseKeyLifeCycleTestSuite.logger
-import net.truelicense.spi.io.MemoryStore
+import global.namespace.fun.io.api.Store
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
@@ -25,23 +25,19 @@ abstract class LicenseKeyLifeCycleTestSuite
 
       val generated = {
         val vm = vendorManager
-        val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
+        val generated = (vm generateKeyFrom managementContext.license saveTo vs.output).license
         assertLicense(generated)
         generated
       }
 
-      vs match {
-        case ms: MemoryStore =>
-          logger debug ("Generated license key with {} bytes size.", ms.data.length)
-        case _ =>
-      }
+      logger debug ("Generated license key with {} bytes size.", vs.size().getAsLong)
 
       val cs = store
       val cm = consumerManager(cs)
       cs exists () shouldBe false
       assertUninstalled(cm)
-      cm install vs
-      cm install vs // reinstall
+      cm install vs.input
+      cm install vs.input // reinstall
       cm verify ()
       val viewed = cm load ()
       viewed shouldBe generated
@@ -92,12 +88,12 @@ abstract class LicenseKeyLifeCycleTestSuite
       ;{
         val generated = {
           val vm = vendorManager
-          val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
+          val generated = (vm generateKeyFrom managementContext.license saveTo vs.output).license
           assertLicense(generated)
           generated
         }
 
-        ccm install vs // delegates to cm!
+        ccm install vs.input // delegates to cm!
         cs exists () shouldBe true
         ccs exists () shouldBe false
         ccm verify ()
@@ -114,12 +110,12 @@ abstract class LicenseKeyLifeCycleTestSuite
       ;{
         val generated = {
           val vm = chainedVendorManager
-          val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
+          val generated = (vm generateKeyFrom managementContext.license saveTo vs.output).license
           assertLicense(generated)
           generated
         }
 
-        ccm install vs // installs in ccm!
+        ccm install vs.input // installs in ccm!
         assertUninstalled(cm)
         cs exists () shouldBe false
         ccs exists () shouldBe true

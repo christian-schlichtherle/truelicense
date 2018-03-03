@@ -8,7 +8,7 @@ package net.truelicense.it.v1
 import de.schlichtherle.xml.GenericCertificate
 import net.truelicense.api._
 import net.truelicense.api.crypto.EncryptionParameters
-import net.truelicense.api.io.{Store, Transformation}
+import global.namespace.fun.io.api.{Store, Transformation}
 import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.v1.V1TestContext._

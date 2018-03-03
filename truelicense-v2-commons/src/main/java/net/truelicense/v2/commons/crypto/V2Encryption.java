@@ -5,9 +5,10 @@
 
 package net.truelicense.v2.commons.crypto;
 
+import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.crypto.EncryptionParameters;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
 import net.truelicense.api.passwd.PasswordUsage;
 import net.truelicense.core.crypto.BasicEncryption;
 
@@ -33,41 +34,25 @@ public final class V2Encryption extends BasicEncryption {
     public V2Encryption(EncryptionParameters parameters) { super(parameters); }
 
     @Override
-    public Sink apply(final Sink sink) {
-        return () -> wrap(() -> {
+    public Socket<OutputStream> apply(final Socket<OutputStream> output) {
+        return output.map(out -> {
             final Cipher cipher = cipher(PasswordUsage.WRITE, null);
             final AlgorithmParameters param = cipher.getParameters();
             final byte[] encoded = param.getEncoded();
             assert encoded.length <= Short.MAX_VALUE;
-            final OutputStream out = sink.output();
-            try {
-                new DataOutputStream(out).writeShort(encoded.length);
-                out.write(encoded);
-            } catch (final Throwable t) {
-                try { out.close(); }
-                catch (Throwable t2) { t.addSuppressed(t2); }
-                throw t;
-            }
+            new DataOutputStream(out).writeShort(encoded.length);
+            out.write(encoded);
             return new CipherOutputStream(out, cipher);
         });
     }
 
     @Override
-    public Source unapply(final Source source) {
-        return () -> wrap(() -> {
-            final Cipher cipher;
-            final InputStream in = source.input();
-            try {
-                final DataInputStream din = new DataInputStream(in);
-                final byte[] encoded = new byte[din.readShort() & 0xffff];
-                din.readFully(encoded);
-                cipher = cipher(PasswordUsage.READ, param(encoded));
-            } catch (final Throwable t) {
-                try { in.close(); }
-                catch (Throwable t2) { t.addSuppressed(t2); }
-                throw t;
-            }
-            return new CipherInputStream(in, cipher);
+    public Socket<InputStream> unapply(final Socket<InputStream> input) {
+        return input.map(in -> {
+            final DataInputStream din = new DataInputStream(in);
+            final byte[] encoded = new byte[din.readShort() & 0xffff];
+            din.readFully(encoded);
+            return new CipherInputStream(in, cipher(PasswordUsage.READ, param(encoded)));
         });
     }
 

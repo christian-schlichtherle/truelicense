@@ -5,7 +5,7 @@
 
 package net.truelicense.it.core
 
-import net.truelicense.api.io.Store
+import global.namespace.fun.io.api.Store
 
 /** @author Christian Schlichtherle */
 trait PreferencesStoreITContext { this: TestContext[_] =>

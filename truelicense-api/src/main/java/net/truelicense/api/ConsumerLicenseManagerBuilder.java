@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.io.Store;
+import global.namespace.fun.io.api.Store;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Injection;
 

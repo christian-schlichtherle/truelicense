@@ -5,12 +5,13 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Store;
 import net.truelicense.api.codec.CodecProvider;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
-import net.truelicense.api.io.Store;
 import net.truelicense.api.misc.ClassLoaderProvider;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 
 /**
@@ -36,13 +37,13 @@ extends ClassLoaderProvider,
     ConsumerLicenseManagerBuilder consumer();
 
     /** Returns a new memory store. */
-    Store memoryStore();
+    Store memoryStore(); // FIXME: Remove this!
 
     /** Returns a store for the given path. */
-    Store pathStore(Path path);
+    Store pathStore(Path path); // FIXME: Remove this!
 
     /**
-     * Returns a source which loads the resource with the given {@code name}.
+     * Returns an input stream socket which loads the resource with the given {@code name}.
      * The provided string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.
      * <p>
@@ -52,17 +53,13 @@ extends ClassLoaderProvider,
      * @param  name the name of the resource to load.
      * @return A source which loads the resource with the given {@code name}.
      */
-    Source resource(String name);
+    Socket<InputStream> resource(String name); // FIXME: Remove this!
 
-    /**
-     * Returns a source which reads from standard input without ever closing it.
-     */
-    Source stdin();
+    /** Returns an input stream socket which reads from standard input without ever closing it. */
+    Socket<InputStream> stdin(); // FIXME: Remove this!
 
-    /**
-     * Returns a sink which writes to standard output without ever closing it.
-     */
-    Sink stdout();
+    /** Returns an output stream socket which writes to standard output without ever closing it. */
+    Socket<OutputStream> stdout(); // FIXME: Remove this!
 
     /**
      * Returns a store for the system preferences node for the package of the
@@ -74,7 +71,7 @@ extends ClassLoaderProvider,
      * The store will use the {@linkplain #subject() license subject} as its
      * key in the preferences node.
      */
-    Store systemPreferencesStore(Class<?> classInPackage);
+    Store systemPreferencesStore(Class<?> classInPackage); // FIXME: Remove this!
 
     /**
      * Returns a store for the user preferences node for the package of the
@@ -86,7 +83,7 @@ extends ClassLoaderProvider,
      * The store will use the {@linkplain #subject() license subject} as its
      * key in the preferences node.
      */
-    Store userPreferencesStore(Class<?> classInPackage);
+    Store userPreferencesStore(Class<?> classInPackage); // FIXME: Remove this!
 
     /**
      * Returns a builder for a

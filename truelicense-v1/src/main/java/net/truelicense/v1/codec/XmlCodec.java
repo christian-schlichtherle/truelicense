@@ -5,11 +5,11 @@
 
 package net.truelicense.v1.codec;
 
+import global.namespace.fun.io.api.Decoder;
+import global.namespace.fun.io.api.Encoder;
+import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.Decoder;
-import net.truelicense.api.codec.Encoder;
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
 import net.truelicense.obfuscate.Obfuscate;
 
 import java.beans.ExceptionListener;
@@ -35,6 +35,8 @@ public class XmlCodec implements Codec {
     @Obfuscate
     private static final String EIGHT_BIT = "8bit";
 
+    private final global.namespace.fun.io.api.Codec codec = BIOS.xmlCodec(this::encoder, this::decoder);
+
     /**
      * {@inheritDoc}
      * <p>
@@ -58,50 +60,14 @@ public class XmlCodec implements Codec {
     public String contentTransferEncoding() { return EIGHT_BIT; }
 
     @Override
-    public Encoder encoder(final Sink sink) {
-        return obj -> {
-            final ZeroToleranceListener ztl = new ZeroToleranceListener();
-            try (XMLEncoder enc = encoder(sink.output())) {
-                enc.setExceptionListener(ztl);
-                enc.writeObject(obj);
-            }
-            ztl.check();
-        };
-    }
+    public Encoder encoder(Socket<OutputStream> output) { return codec.encoder(output); }
 
     /** Returns a new XML encoder. */
     protected XMLEncoder encoder(OutputStream out) { return new XMLEncoder(out); }
 
     @Override
-    public Decoder decoder(final Source source) {
-        return new Decoder() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public <T> T decode(final Type expected) throws Exception {
-                final Object obj;
-                final ZeroToleranceListener ztl = new ZeroToleranceListener();
-                try (XMLDecoder dec = decoder(source.input())) {
-                    dec.setExceptionListener(ztl);
-                    obj = dec.readObject();
-                }
-                ztl.check();
-                return (T) obj;
-            }
-        };
-    }
+    public Decoder decoder(Socket<InputStream> input) { return codec.decoder(input); }
 
     /** Returns a new XML decoder. */
     protected XMLDecoder decoder(InputStream in) { return new XMLDecoder(in); }
-
-    private static class ZeroToleranceListener implements ExceptionListener {
-
-        Exception ex;
-
-        @Override
-        public void exceptionThrown(final Exception ex) {
-            if (null == this.ex) this.ex = ex; // don't overwrite prior exception
-        }
-
-        void check() throws Exception { if (null != ex) throw ex; }
-    } // ZeroToleranceListener
 }

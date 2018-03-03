@@ -25,6 +25,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-spi</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-bios</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

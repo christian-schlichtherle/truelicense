@@ -5,15 +5,12 @@
 
 package net.truelicense.api.codec;
 
-import net.truelicense.api.io.Sink;
-import net.truelicense.api.io.Source;
-
 /**
  * Provides encoders and decoders for generic object graphs.
  *
  * @author Christian Schlichtherle
  */
-public interface Codec {
+public interface Codec extends global.namespace.fun.io.api.Codec {
 
     /**
      * Returns an identifier for the content type used by this codec.
@@ -43,10 +40,4 @@ public interface Codec {
      * {@code charset} parameter, then {@code UTF-8} is assumed as the charset.
      */
     String contentTransferEncoding();
-
-    /** Returns an encoder which writes object graphs to the given sink. */
-    Encoder encoder(Sink sink);
-
-    /** Returns a decoder which reads object graphs from the given source. */
-    Decoder decoder(Source source);
 }

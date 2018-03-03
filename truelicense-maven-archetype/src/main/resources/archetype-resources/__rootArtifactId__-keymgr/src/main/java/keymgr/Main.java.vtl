@@ -7,16 +7,20 @@
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
-import static java.lang.System.*;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.truelicense.api.*;
+
 #if($disableWizard == false)
-import net.truelicense.swing.LicenseManagementWizard;
 import javax.swing.*;
+
+import net.truelicense.swing.LicenseManagementWizard;
 #end
+
+import static java.lang.System.*;
 
 /**
  * The command line interface (CLI) for consuming $subject license keys.
@@ -47,7 +51,7 @@ public enum Main {
 
     INSTALL {
         @Override void run(Deque<String> params) throws LicenseManagementException {
-            manager().install(context().pathStore(Paths.get(params.pop())));
+            manager().install(context().pathStore(Paths.get(params.pop())).input());
         }
     },
 
@@ -142,7 +146,9 @@ public enum Main {
 
     private static void printUsage() {
         final StringBuilder builder = new StringBuilder(25 * 80);
-        for (final Main main : values()) builder.append(main.usage());
+        for (final Main main : values()) {
+            builder.append(main.usage());
+        }
         err.println(builder.toString());
     }
 

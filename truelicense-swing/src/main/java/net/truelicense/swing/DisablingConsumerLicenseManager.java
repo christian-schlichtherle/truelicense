@@ -5,10 +5,12 @@
 
 package net.truelicense.swing;
 
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.LicenseManagementException;
-import net.truelicense.api.io.Source;
 import net.truelicense.swing.util.Enabler;
+
+import java.io.InputStream;
 
 /**
  * A decorating consumer license manager which disables a component before it
@@ -20,15 +22,16 @@ import net.truelicense.swing.util.Enabler;
  *
  * @author Christian Schlichtherle
  */
-final class DisablingConsumerLicenseManager
-extends UpdatingConsumerLicenseManager {
+final class DisablingConsumerLicenseManager extends UpdatingConsumerLicenseManager {
 
     private static final long serialVersionUID = 0L;
 
     DisablingConsumerLicenseManager(Enabler enabler, ConsumerLicenseManager manager) { super(manager, enabler); }
 
     @Override
-    public void install(final Source source) throws LicenseManagementException { run(() -> manager.install(source)); }
+    public void install(Socket<InputStream> input) throws LicenseManagementException {
+        run(() -> manager.install(input));
+    }
 
     @Override
     public void uninstall() throws LicenseManagementException { run(manager::uninstall); }

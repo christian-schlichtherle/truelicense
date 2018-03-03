@@ -9,9 +9,9 @@
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${keymgr};
 
-import net.truelicense.api.*;
-
 import java.nio.file.Path;
+
+import net.truelicense.api.*;
 import org.junit.*;
 import org.junit.rules.*;
 
@@ -26,6 +26,7 @@ public class LicenseManagerIT {
     @Test
     public void testAcceptValidLicenseKeyForEditionAndSuperSets() throws Exception {
         forAllEditions(new ManagerTest() {
+
             final LicenseManager managers[] = LicenseManager.values();
 
             public void run(final LicenseManager manager) throws Exception {
@@ -39,6 +40,7 @@ public class LicenseManagerIT {
     @Test
     public void testRejectValidLicenseKeyForFeatureSubSets() throws Exception {
         forAllEditions(new ManagerTest() {
+
             final LicenseManager managers[] = LicenseManager.values();
 
             public void run(final LicenseManager manager) throws Exception {
@@ -59,7 +61,7 @@ public class LicenseManagerIT {
             if (!"ftp".equalsIgnoreCase(edition)) {
                 final Path licenseKey = folder.newFile(edition + ".lic").toPath();
                 ${KeyGenMain}.process("generate", "-edition", edition, licenseKey.toString());
-                manager.install(manager.context().pathStore(licenseKey));
+                manager.install(manager.context().pathStore(licenseKey).input());
                 try {
                     test.run(manager);
                 } finally {

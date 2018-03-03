@@ -55,14 +55,19 @@ ${class.replace('$', '.')}.class
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr;
 
+import java.io.InputStream;
+
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.*;
-import net.truelicense.api.io.Source;
 import net.truelicense.api.passwd.PasswordProtection;
-import $licenseApplicationContextPackage.$licenseApplicationContextClass;
 import net.truelicense.obfuscate.*;
+
+import $licenseApplicationContextPackage.$licenseApplicationContextClass;
+
 #if($keyMgrClockClass != "-")
-import net.truelicense.api.misc.Clock;
 import java.util.Date;
+
+import net.truelicense.api.misc.Clock;
 #end
 
 /**
@@ -248,8 +253,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
     }
 
     @Override
-    public void install(Source source) throws LicenseManagementException {
-        manager().install(source);
+    public void install(Socket<InputStream> input) throws LicenseManagementException {
+        manager().install(input);
     }
 
     @Override

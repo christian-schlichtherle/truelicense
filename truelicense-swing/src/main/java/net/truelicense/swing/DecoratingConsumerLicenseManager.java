@@ -5,10 +5,10 @@
 
 package net.truelicense.swing;
 
+import global.namespace.fun.io.api.Socket;
 import net.truelicense.api.*;
-import net.truelicense.api.io.Source;
 
-import java.util.Objects;
+import java.io.InputStream;
 
 /**
  * A decorator for a consumer license manager.
@@ -16,8 +16,7 @@ import java.util.Objects;
  *
  * @author Christian Schlichtherle
  */
-abstract class DecoratingConsumerLicenseManager
-implements ConsumerLicenseManager {
+abstract class DecoratingConsumerLicenseManager implements ConsumerLicenseManager {
 
     @SuppressWarnings({"PackageVisibleField"})
     protected final ConsumerLicenseManager manager;
@@ -34,7 +33,7 @@ implements ConsumerLicenseManager {
     public LicenseManagementParameters parameters() { return manager.parameters(); }
 
     @Override
-    public void install(Source source) throws LicenseManagementException { manager.install(source); }
+    public void install(Socket<InputStream> input) throws LicenseManagementException { manager.install(input); }
 
     @Override
     public License load() throws LicenseManagementException { return manager.load(); }

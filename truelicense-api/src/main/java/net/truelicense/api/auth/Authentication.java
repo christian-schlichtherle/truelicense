@@ -5,7 +5,7 @@
 
 package net.truelicense.api.auth;
 
-import net.truelicense.api.codec.Decoder;
+import global.namespace.fun.io.api.Decoder;
 
 /**
  * Provides authentication services.

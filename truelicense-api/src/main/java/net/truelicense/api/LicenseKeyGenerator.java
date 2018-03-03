@@ -5,7 +5,9 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.io.Sink;
+import global.namespace.fun.io.api.Socket;
+
+import java.io.OutputStream;
 
 /**
  * Generates a license key and writes it to a given sink or returns a duplicate of its encoded license bean.
@@ -23,10 +25,10 @@ public interface LicenseKeyGenerator {
     License license() throws LicenseManagementException;
 
     /**
-     * Saves the generated license key to the given sink.
+     * Saves the generated license key to the given output stream socket.
      *
-     * @param sink the sink for writing the generated license key to.
+     * @param output the output stream socket for writing the generated license key to.
      * @return {@code this}
      */
-    LicenseKeyGenerator saveTo(Sink sink) throws LicenseManagementException;
+    LicenseKeyGenerator saveTo(Socket<OutputStream> output) throws LicenseManagementException;
 }
