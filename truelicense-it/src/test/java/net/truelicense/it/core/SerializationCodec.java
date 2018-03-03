@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package net.truelicense.spi.codec;
+package net.truelicense.it.core;
 
 import global.namespace.fun.io.api.Decoder;
 import global.namespace.fun.io.api.Encoder;
@@ -23,7 +23,7 @@ import java.io.OutputStream;
  *
  * @author Christian Schlichtherle
  */
-public class SerializationCodec implements Codec {
+class SerializationCodec implements Codec {
 
     @Obfuscate
     private static final String CONTENT_TYPE = "application/x-java-serialized-object";

@@ -15,7 +15,8 @@ public class ExtraData {
 
     public void setMessage(final String message) { this.message = message; }
 
-    @Override public boolean equals(final Object other) {
+    @Override
+    public boolean equals(final Object other) {
         if (!(other instanceof ExtraData)) return false;
         final ExtraData that = (ExtraData) other;
         return Objects.equals(this.message, that.message);
