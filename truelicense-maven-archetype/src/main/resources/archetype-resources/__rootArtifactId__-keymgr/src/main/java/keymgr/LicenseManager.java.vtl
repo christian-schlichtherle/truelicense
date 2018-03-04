@@ -107,7 +107,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
                         .algorithm(PBE_ALGORITHM)
 #end
                         .protection(#protection($editionPbePassword))
-                        .inject()
+                        .up()
 #end
                     .authentication()
                         .alias($editionCertEntryAlias)
@@ -117,7 +117,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
     $licenseKeyFormat.startsWith("V2/") && $publicKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
 #end
-                        .inject()
+                        .up()
 #if(0 < $foreach.index)
                     .parent(LicenseManager.$parentEdition)
 #end
@@ -168,7 +168,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
     $licenseKeyFormat.startsWith("V2/") && $ftpKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
 #end
-                        .inject()
+                        .up()
                     .parent(LicenseManager.$parentEdition)
                     .storeIn${preferencesType}Preferences(#class($ftpSecretMarkerClass))
                     .build();

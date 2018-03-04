@@ -12,7 +12,6 @@ import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.misc.ClassLoaderProvider;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordProtection;
-import org.mockito.Mockito;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -60,12 +59,12 @@ public abstract class ApiDemo {
     public VendorLicenseManager vendorLicenseManager() {
         return licenseManagementContext()
                 .vendor() // returns a VendorLicenseManagerBuilder
-                .encryption() // returns an EncryptionInjection
+                .encryption() // returns an EncryptionBuilder
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
-                    .inject() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the builder
+                    .up() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the latter
                 .encryption(mock(Transformation.class))
-                .authentication() // returns an AuthenticationInjection
+                .authentication() // returns an AuthenticationBuilder
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
@@ -73,7 +72,7 @@ public abstract class ApiDemo {
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
-                    .inject() // builds the authentication, injects it into the VendorLicenseManagerBuilder and returns the builder
+                    .up() // builds the authentication, injects it into the VendorLicenseManagerBuilder and returns the latter
                 .authentication(mock(Authentication.class))
                 .build();
     }
@@ -89,12 +88,12 @@ public abstract class ApiDemo {
         return licenseManagementContext()
                 .consumer() // returns a ConsumerLicenseManagerBuilder
                 .ftpDays(30)
-                .encryption() // returns an EncryptionInjection
+                .encryption() // returns an EncryptionBuilder
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
-                    .inject() // builds the encryption, injects it into the ConsumerLicenseManagerBuilder and returns the builder
+                    .up() // builds the encryption, injects it into the ConsumerLicenseManagerBuilder and returns the latter
                 .encryption(mock(Transformation.class))
-                .authentication() // returns an AuthenticationInjection
+                .authentication() // returns an AuthenticationBuilder
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
@@ -102,11 +101,11 @@ public abstract class ApiDemo {
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
-                    .inject() // builds the authentication, injects it into the ConsumerLicenseManagerBuilder and returns the builder
+                    .up() // builds the authentication, injects it into the ConsumerLicenseManagerBuilder and returns the latter
                 .authentication(mock(Authentication.class))
                 .parent() // returns another ConsumerLicenseManagerBuilder
                     //...
-                    .inject() // builds the consumer license manager, injects it into the child ConsumerLicenseManagerBuilder and returns the child builder
+                    .up() // builds the consumer license manager, injects it into the child ConsumerLicenseManagerBuilder and returns the latter
                 .parent(mock(ConsumerLicenseManager.class))
                 .storeIn(mock(Store.class))
                 .storeInPath(mock(Path.class))
