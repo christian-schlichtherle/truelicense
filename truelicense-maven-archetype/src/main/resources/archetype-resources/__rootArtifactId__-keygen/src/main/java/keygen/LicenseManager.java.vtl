@@ -85,7 +85,7 @@ public enum LicenseManager implements VendorLicenseManager {
                         .algorithm(PBE_ALGORITHM)
 #end
                         .protection(#protection($editionPbePassword))
-                        .inject()
+                        .up()
                     .authentication()
                         .alias($editionKeyEntryAlias)
 #if($editionKeyEntryPassword != $privateKeyStorePassword)
@@ -97,7 +97,7 @@ public enum LicenseManager implements VendorLicenseManager {
     $licenseKeyFormat.startsWith("V2/") && $privateKeyStoreType != "JCEKS")
                         .storeType(KEY_STORE_TYPE)
 #end
-                        .inject()
+                        .up()
                     .build();
         }
     }#if($foreach.count == $editionsSize);#{else},#end

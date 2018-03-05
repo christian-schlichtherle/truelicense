@@ -7,7 +7,7 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
-import net.truelicense.api.misc.Injection;
+import net.truelicense.api.misc.ChildBuilder;
 
 /**
  * A generic builder for license managers.
@@ -19,12 +19,12 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
 
     /**
      * Returns an injection for a key store based authentication.
-     * Call its {@link Injection#inject} method to build and inject the
+     * Call its {@link ChildBuilder#up} method to build and inject the
      * configured authentication into this builder and return it.
      *
      * @see #authentication(Authentication)
      */
-    AuthenticationInjection<? extends This> authentication();
+    AuthenticationBuilder<? extends This> authentication();
 
     /**
      * Sets the authentication.
@@ -35,12 +35,12 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
 
     /**
      * Returns an injection for a password based encryption.
-     * Call its {@link Injection#inject} method to build and inject the
+     * Call its {@link ChildBuilder#up} method to build and inject the
      * configured encryption into this builder and return it.
      *
      * @see #encryption(Transformation)
      */
-    EncryptionInjection<? extends This> encryption();
+    EncryptionBuilder<? extends This> encryption();
 
     /**
      * Sets the encryption.

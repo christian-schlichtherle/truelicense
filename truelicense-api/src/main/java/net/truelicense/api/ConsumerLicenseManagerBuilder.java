@@ -7,7 +7,7 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Store;
 import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.Injection;
+import net.truelicense.api.misc.ChildBuilder;
 
 import java.nio.file.Path;
 
@@ -15,15 +15,12 @@ import java.nio.file.Path;
  * A builder for {@linkplain ConsumerLicenseManager consumer license managers}.
  * Call its {@link #build} method to obtain the configured license consumer
  * manager.
- * <p>
- * Clients should not implement this interface because it's subject to expansion
- * in future minor version updates.
  *
  * @author Christian Schlichtherle
  */
 public interface ConsumerLicenseManagerBuilder
 extends Builder<ConsumerLicenseManager>,
-        Injection<ConsumerLicenseManagerBuilder>,
+        ChildBuilder<ConsumerLicenseManagerBuilder>,
         LicenseManagerBuilder<ConsumerLicenseManagerBuilder> {
 
     /**
@@ -40,7 +37,7 @@ extends Builder<ConsumerLicenseManager>,
 
     /**
      * Returns a builder for the parent consumer license manager.
-     * Call its {@link ConsumerLicenseManagerBuilder#inject} method to build and inject
+     * Call its {@link ConsumerLicenseManagerBuilder#up} method to build and inject
      * the configured parent consumer license manager into this builder and
      * return it.
      * <p>

@@ -5,17 +5,18 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.misc.Injection;
+import net.truelicense.api.misc.Builder;
+import net.truelicense.api.misc.ChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
 
 /**
- * Injects a password based encryption into some target.
+ * Injects a password based encryption into some parent component builder.
  *
- * @param <Target> the type of the target.
+ * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface EncryptionInjection<Target>
-extends Injection<Target> {
+public interface EncryptionBuilder<ParentBuilder extends Builder<?>>
+extends ChildBuilder<ParentBuilder> {
 
     /**
      * Sets the algorithm name (optional).
@@ -24,7 +25,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    EncryptionInjection<Target> algorithm(String algorithm);
+    EncryptionBuilder<ParentBuilder> algorithm(String algorithm);
 
     /**
      * Sets the password protection which is used for generating a secret key
@@ -32,5 +33,5 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    EncryptionInjection<Target> protection(PasswordProtection protection);
+    EncryptionBuilder<ParentBuilder> protection(PasswordProtection protection);
 }

@@ -6,19 +6,20 @@
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Socket;
-import net.truelicense.api.misc.Injection;
+import net.truelicense.api.misc.Builder;
+import net.truelicense.api.misc.ChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
 
 import java.io.InputStream;
 
 /**
- * Injects a key store based authentication into some target.
+ * Injects a key store based authentication into some parent component builder.
  *
- * @param <Target> the type of the target.
+ * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface AuthenticationInjection<Target>
-extends Injection<Target> {
+public interface AuthenticationBuilder<ParentBuilder extends Builder<?>>
+extends ChildBuilder<ParentBuilder> {
 
     /**
      * Sets the name of the signature algorithm (optional).
@@ -27,14 +28,14 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> algorithm(String algorithm);
+    AuthenticationBuilder<ParentBuilder> algorithm(String algorithm);
 
     /**
      * Sets the alias name of the key entry.
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> alias(String alias);
+    AuthenticationBuilder<ParentBuilder> alias(String alias);
 
     /**
      * Sets the password protection which is used for accessing the private key
@@ -50,7 +51,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> keyProtection(PasswordProtection keyProtection);
+    AuthenticationBuilder<ParentBuilder> keyProtection(PasswordProtection keyProtection);
 
     /**
      * Sets the input for the key store (optional).
@@ -58,7 +59,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> loadFrom(Socket<InputStream> input);
+    AuthenticationBuilder<ParentBuilder> loadFrom(Socket<InputStream> input);
 
     /**
      * Sets the resource name of the key store (optional).
@@ -66,7 +67,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> loadFromResource(String name);
+    AuthenticationBuilder<ParentBuilder> loadFromResource(String name);
 
     /**
      * Sets the password protection which is used for verifying the integrity
@@ -74,7 +75,7 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> storeProtection(PasswordProtection storeProtection);
+    AuthenticationBuilder<ParentBuilder> storeProtection(PasswordProtection storeProtection);
 
     /**
      * Sets the type of the key store,
@@ -82,5 +83,5 @@ extends Injection<Target> {
      *
      * @return {@code this}
      */
-    AuthenticationInjection<Target> storeType(String storeType);
+    AuthenticationBuilder<ParentBuilder> storeType(String storeType);
 }

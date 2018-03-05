@@ -5,9 +5,9 @@
 
 package net.truelicense.it.v2.commons
 
+import global.namespace.fun.io.api.{Store, Transformation}
 import net.truelicense.api._
 import net.truelicense.api.crypto.EncryptionParameters
-import global.namespace.fun.io.api.{Store, Transformation}
 import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.v2.commons.V2TestContext.prefix
@@ -22,7 +22,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
         .alias("mykey")
         .loadFromResource(prefix + "chained-public.jceks")
         .storeProtection(test1234)
-        .inject
+        .up
       .parent(parent)
       .storeIn(store)
       .build
@@ -34,12 +34,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     val vm = managementContext.vendor
       .encryption
         .protection(test1234)
-        .inject
+        .up
       .authentication
         .alias("mykey")
         .loadFromResource(prefix + "chained-private.jceks")
         .storeProtection(test1234)
-        .inject
+        .up
       .build
     require(vm.context eq managementContext)
     vm
@@ -49,12 +49,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     val cm = managementContext.consumer
       .encryption
         .protection(test1234)
-        .inject
+        .up
       .authentication
         .alias("mykey")
         .loadFromResource(prefix + "public.jceks")
         .storeProtection(test1234)
-        .inject
+        .up
       .storeIn(store)
       .build
     require(cm.context eq managementContext)
@@ -73,7 +73,7 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jceks")
         .storeProtection(test1234)
-        .inject
+        .up
       .parent(parent)
       .storeIn(store)
       .build
@@ -85,12 +85,12 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
     val vm = managementContext.vendor
       .encryption
         .protection(test1234)
-        .inject
+        .up
       .authentication
         .alias("mykey")
         .loadFromResource(prefix + "private.jceks")
         .storeProtection(test1234)
-        .inject
+        .up
       .build
     require(vm.context eq managementContext)
     vm

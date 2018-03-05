@@ -130,7 +130,7 @@ implements
      * algorithm for the license key format.
      * You can override this default value when configuring the PBE.
      *
-     * @see EncryptionInjection#algorithm
+     * @see EncryptionBuilder#algorithm
      */
     public abstract String pbeAlgorithm();
 
@@ -384,7 +384,7 @@ implements
             }
 
             @Override
-            public ConsumerTrueLicenseManagerBuilder inject() { throw new UnsupportedOperationException(); }
+            public ConsumerTrueLicenseManagerBuilder up() { throw new UnsupportedOperationException(); }
 
             @Override
             public ParentConsumerTrueLicenseManagerBuilder parent() {
@@ -395,7 +395,7 @@ implements
             extends ConsumerTrueLicenseManagerBuilder {
 
                 @Override
-                public ConsumerTrueLicenseManagerBuilder inject() {
+                public ConsumerTrueLicenseManagerBuilder up() {
                     return ConsumerTrueLicenseManagerBuilder.this.parent(build());
                 }
             }
@@ -411,7 +411,7 @@ implements
             }
         }
 
-        abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
+        abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This> & Builder<?>> {
 
             Optional<Authentication> authentication = Optional.empty();
             Optional<Transformation> encryption = Optional.empty();
@@ -459,7 +459,7 @@ implements
             }
 
             final class TrueAuthenticationBuilder
-            implements Builder<Authentication>, AuthenticationInjection<This> {
+            implements Builder<Authentication>, AuthenticationBuilder<This> {
 
                 Optional<String> algorithm = Optional.empty();
                 Optional<String> alias = Optional.empty();
@@ -469,7 +469,7 @@ implements
                 Optional<String> storeType = Optional.empty();
 
                 @Override
-                public This inject() { return authentication(build()); }
+                public This up() { return authentication(build()); }
 
                 @Override
                 public TrueAuthenticationBuilder algorithm(final String algorithm) {
@@ -517,13 +517,13 @@ implements
             }
 
             final class TrueEncryptionBuilder
-            implements Builder<Transformation>, EncryptionInjection<This> {
+            implements Builder<Transformation>, EncryptionBuilder<This> {
 
                 Optional<String> algorithm = Optional.empty();
                 Optional<PasswordProtection> protection = Optional.empty();
 
                 @Override
-                public This inject() { return encryption(build()); }
+                public This up() { return encryption(build()); }
 
                 @Override
                 public TrueEncryptionBuilder algorithm(final String algorithm) {
