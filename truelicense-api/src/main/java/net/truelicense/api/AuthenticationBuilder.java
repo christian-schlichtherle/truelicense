@@ -6,6 +6,7 @@
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Socket;
+import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.ChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
 
@@ -17,7 +18,7 @@ import java.io.InputStream;
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface AuthenticationBuilder<ParentBuilder>
+public interface AuthenticationBuilder<ParentBuilder extends Builder<?>>
 extends ChildBuilder<ParentBuilder> {
 
     /**

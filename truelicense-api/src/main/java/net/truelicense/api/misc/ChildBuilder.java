@@ -11,7 +11,7 @@ package net.truelicense.api.misc;
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface ChildBuilder<ParentBuilder> {
+public interface ChildBuilder<ParentBuilder extends Builder<?>> {
 
     /** Builds a new child component, injects it into the parent component builder and returns the latter. */
     ParentBuilder up();

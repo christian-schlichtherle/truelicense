@@ -411,7 +411,7 @@ implements
             }
         }
 
-        abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This>> {
+        abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This> & Builder<?>> {
 
             Optional<Authentication> authentication = Optional.empty();
             Optional<Transformation> encryption = Optional.empty();
