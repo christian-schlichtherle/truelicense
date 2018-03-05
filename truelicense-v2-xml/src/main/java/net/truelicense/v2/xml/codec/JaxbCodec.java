@@ -8,18 +8,16 @@ package net.truelicense.v2.xml.codec;
 import global.namespace.fun.io.api.Decoder;
 import global.namespace.fun.io.api.Encoder;
 import global.namespace.fun.io.api.Socket;
-import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.util.Objects;
+
+import static global.namespace.fun.io.bios.BIOS.jaxbCodec;
 
 /**
  * A codec which encodes/decodes objects to/from XML with a
@@ -40,7 +38,7 @@ public class JaxbCodec implements Codec {
     /** The JAXB context provided to the constructor. */
     private final global.namespace.fun.io.api.Codec codec;
 
-    public JaxbCodec(final JAXBContext context) { this.codec = BIOS.jaxbCodec(context); }
+    public JaxbCodec(final JAXBContext context) { this.codec = jaxbCodec(context); }
 
     /**
      * {@inheritDoc}

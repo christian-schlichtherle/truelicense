@@ -10,7 +10,7 @@ import java.util.Date
 import javax.security.auth.x500.X500Principal
 
 import global.namespace.fun.io.api.{Store, Transformation}
-import global.namespace.fun.io.bios.BIOS
+import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
 import net.truelicense.api.codec.{Codec, CodecProvider}
 import net.truelicense.api.passwd.PasswordProtection
@@ -34,7 +34,7 @@ trait TestContext[Model <: AnyRef]
 
   final def compression: Transformation = applicationContext.compression
 
-  final def consumerManager(): ConsumerLicenseManager = consumerManager(store)
+  final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
 
   def consumerManager(store: Store): ConsumerLicenseManager
 
@@ -85,8 +85,6 @@ trait TestContext[Model <: AnyRef]
   }
 
   final override def repositoryContext: RepositoryContext[Model] = applicationContext.repositoryContext
-
-  def store: Store = BIOS.memoryStore
 
   final def test1234: PasswordProtection = applicationContext protection
     Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */

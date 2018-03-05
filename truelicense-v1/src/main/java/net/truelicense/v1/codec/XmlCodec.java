@@ -8,16 +8,15 @@ package net.truelicense.v1.codec;
 import global.namespace.fun.io.api.Decoder;
 import global.namespace.fun.io.api.Encoder;
 import global.namespace.fun.io.api.Socket;
-import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.obfuscate.Obfuscate;
 
-import java.beans.ExceptionListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
+
+import static global.namespace.fun.io.bios.BIOS.xmlCodec;
 
 /**
  * A codec which encodes/decodes objects to/from XML with an
@@ -35,7 +34,7 @@ public class XmlCodec implements Codec {
     @Obfuscate
     private static final String EIGHT_BIT = "8bit";
 
-    private final global.namespace.fun.io.api.Codec codec = BIOS.xmlCodec(this::encoder, this::decoder);
+    private final global.namespace.fun.io.api.Codec codec = xmlCodec(this::encoder, this::decoder);
 
     /**
      * {@inheritDoc}

@@ -9,6 +9,7 @@ import java.awt.{Component, EventQueue, GraphicsEnvironment}
 import java.util.Date
 import javax.swing._
 
+import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.swing.LicenseManagementWizardITSuite._
@@ -39,16 +40,14 @@ abstract class LicenseManagementWizardITSuite
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
-    val store = this.store
+    val store = memoryStore
     outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store.output).license
     manager = consumerManager(store)
-    EventQueue invokeLater new Runnable {
-      override def run() {
-        UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
-        wizard = newLicenseManagementWizard(manager)
-        wizard showModalDialog ()
-      }
-    }
+    EventQueue invokeLater (() => {
+      UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
+      wizard = newLicenseManagementWizard(manager)
+      wizard showModalDialog()
+    })
     dialog = new JDialogOperator()
     cancelButton = waitButton(dialog, wizard_cancel)
     backButton = waitButton(dialog, wizard_back)

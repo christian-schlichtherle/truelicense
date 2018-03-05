@@ -7,10 +7,12 @@ package net.truelicense.it.core
 
 import java.util.concurrent.Callable
 
+import global.namespace.fun.io.bios.BIOS.memoryStore
+
 /** @author Christian Schlichtherle */
 trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =>
   def call() {
-    val store = this.store
+    val store = memoryStore
     vendorManager generateKeyFrom license saveTo store.output
     for (i <- 1 to 5) {
       val manager = consumerManager()

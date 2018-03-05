@@ -8,7 +8,6 @@ package net.truelicense.v1;
 import de.schlichtherle.license.LicenseContent;
 import de.schlichtherle.xml.GenericCertificate;
 import global.namespace.fun.io.api.Transformation;
-import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.License;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
@@ -18,6 +17,8 @@ import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v1.auth.V1RepositoryContext;
 import net.truelicense.v1.codec.X500PrincipalXmlCodec;
 import net.truelicense.v1.crypto.V1Encryption;
+
+import static global.namespace.fun.io.bios.BIOS.gzip;
 
 /**
  * The root context for applications which need to manage Version 1 (V1) format
@@ -59,7 +60,7 @@ extends TrueLicenseApplicationContext<GenericCertificate> {
      * returns a compression for V1 format license keys.
      */
     @Override
-    public final Transformation compression() { return BIOS.gzip(); }
+    public final Transformation compression() { return gzip(); }
 
     /**
      * {@inheritDoc}

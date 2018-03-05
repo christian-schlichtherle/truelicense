@@ -6,7 +6,6 @@
 package net.truelicense.v2.commons;
 
 import global.namespace.fun.io.api.Transformation;
-import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.License;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.crypto.EncryptionParameters;
@@ -17,6 +16,8 @@ import net.truelicense.v2.commons.auth.V2RepositoryModel;
 import net.truelicense.v2.commons.crypto.V2Encryption;
 
 import java.util.zip.Deflater;
+
+import static global.namespace.fun.io.bios.BIOS.deflate;
 
 /**
  * The root context for applications which need to manage V2/* format license
@@ -42,7 +43,7 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
      * returns a compression for V2 format license keys.
      */
     @Override
-    public final Transformation compression() { return BIOS.deflate(Deflater.BEST_COMPRESSION); }
+    public final Transformation compression() { return deflate(Deflater.BEST_COMPRESSION); }
 
     /**
      * {@inheritDoc}

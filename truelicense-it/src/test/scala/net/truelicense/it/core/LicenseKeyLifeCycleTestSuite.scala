@@ -7,9 +7,9 @@ package net.truelicense.it.core
 
 import java.util.Date
 
+import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.LicenseKeyLifeCycleTestSuite.logger
-import global.namespace.fun.io.api.Store
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
@@ -21,7 +21,7 @@ abstract class LicenseKeyLifeCycleTestSuite
 
   "The license key life cycle" should {
     "work for regular license keys" in {
-      val vs = store
+      val vs = memoryStore
 
       val generated = {
         val vm = vendorManager
@@ -32,7 +32,7 @@ abstract class LicenseKeyLifeCycleTestSuite
 
       logger debug ("Generated license key with {} bytes size.", vs.size().getAsLong)
 
-      val cs = store
+      val cs = memoryStore
       val cm = consumerManager(cs)
       cs exists () shouldBe false
       assertUninstalled(cm)
@@ -47,10 +47,10 @@ abstract class LicenseKeyLifeCycleTestSuite
     }
 
     "work for FTP license keys" in {
-      val cs = store
+      val cs = memoryStore
       val cm = consumerManager(cs)
       cs exists () shouldBe false
-      val fcs = store
+      val fcs = memoryStore
       val fcm = ftpConsumerManager(cm, fcs)
       fcs exists () shouldBe false
       fcm verify () // generate
@@ -71,12 +71,12 @@ abstract class LicenseKeyLifeCycleTestSuite
     }
 
     "work for chained license keys" in {
-      val vs = store
+      val vs = memoryStore
 
-      val cs = store
+      val cs = memoryStore
       val cm = consumerManager(cs)
 
-      val ccs = store
+      val ccs = memoryStore
       val ccm = chainedConsumerManager(cm, ccs)
 
       cs exists () shouldBe false

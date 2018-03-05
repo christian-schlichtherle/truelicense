@@ -7,6 +7,8 @@ package net.truelicense.it.core
 
 import java.util.concurrent.Callable
 
+import global.namespace.fun.io.bios.BIOS.memoryStore
+
 /** @author Christian Schlichtherle */
 trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext[_] =>
   def call() {
@@ -15,7 +17,7 @@ trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext[_] =>
       val num = 1000
       val start = System.nanoTime
       for (j <- 1 to num) {
-        vm generateKeyFrom license saveTo store.output
+        vm generateKeyFrom license saveTo memoryStore.output
       }
       val time = System.nanoTime - start
       printf("Iteration %d generated %,d license keys per second.\n", i, num * 1000l * 1000l * 1000l / time)
