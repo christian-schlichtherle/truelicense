@@ -19,9 +19,7 @@ import net.truelicense.api.misc.*;
 import net.truelicense.api.passwd.*;
 import net.truelicense.core.auth.Notary;
 import net.truelicense.core.passwd.MinimumPasswordPolicy;
-import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.Obfuscate;
-import net.truelicense.obfuscate.ObfuscatedString;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.InputStream;
@@ -63,7 +61,6 @@ implements
         LicenseManagementAuthorizationProvider,
         LicenseFactory,
         PasswordPolicyProvider,
-        PasswordProtectionProvider<ObfuscatedString>,
         RepositoryContextProvider<Model> {
 
     /**
@@ -144,25 +141,6 @@ implements
     public PasswordPolicy policy() { return new MinimumPasswordPolicy(); }
 
     /**
-     * Returns a password protection for the given representation of an
-     * obfuscated string.
-     * Calling this method creates a new {@link ObfuscatedString} from the given
-     * array and forwards the call to {@link #protection(ObfuscatedString)}.
-     */
-    public final PasswordProtection protection(long[] obfuscated) {
-        return protection(new ObfuscatedString(obfuscated));
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link ObfuscatedPasswordProtection}.
-     */
-    @Override
-    public final PasswordProtection protection(ObfuscatedString os) { return new ObfuscatedPasswordProtection(os); }
-
-    /**
      * Returns the name of the default key store type,
      * for example {@code "JCEKS"} or {@code "JKS"}.
      * You can override this default value when configuring the key store based
@@ -217,7 +195,7 @@ implements
 
         @Override
         public Password password(final PasswordUsage usage) throws Exception {
-            if (usage.equals(PasswordUsage.WRITE)) { // check null
+            if (usage.equals(PasswordUsage.WRITE)) { // checks null
                 policy().check(protection);
             }
             return protection.password(usage);
