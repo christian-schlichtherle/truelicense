@@ -9,7 +9,6 @@ import global.namespace.fun.io.api.Socket;
 import global.namespace.fun.io.api.Store;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
-import net.truelicense.api.misc.ClassLoaderProvider;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordProtection;
 
@@ -39,7 +38,6 @@ public abstract class ApiDemo {
         return licenseApplicationContext()
                 .context() // returns a LicenseManagementContextBuilder
                 .authorization(mock(LicenseManagementAuthorization.class))
-                .classLoaderProvider(mock(ClassLoaderProvider.class))
                 .clock(mock(Clock.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)

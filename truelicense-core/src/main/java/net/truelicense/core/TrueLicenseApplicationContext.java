@@ -15,7 +15,10 @@ import net.truelicense.api.codec.Codec;
 import net.truelicense.api.codec.CodecProvider;
 import net.truelicense.api.comp.CompressionProvider;
 import net.truelicense.api.crypto.EncryptionParameters;
-import net.truelicense.api.misc.*;
+import net.truelicense.api.misc.Builder;
+import net.truelicense.api.misc.CachePeriodProvider;
+import net.truelicense.api.misc.Clock;
+import net.truelicense.api.misc.ContextProvider;
 import net.truelicense.api.passwd.*;
 import net.truelicense.core.auth.Notary;
 import net.truelicense.core.passwd.MinimumPasswordPolicy;
@@ -53,7 +56,6 @@ import static net.truelicense.core.Messages.*;
 public abstract class TrueLicenseApplicationContext<Model>
 implements
         CachePeriodProvider,
-        ClassLoaderProvider,
         Clock,
         CodecProvider,
         CompressionProvider,
@@ -91,17 +93,6 @@ implements
      */
     @Override
     public long cachePeriodMillis() { return 30 * 60 * 1000; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * lists the current thread's context class loader, if not {@code null}.
-     */
-    @Override
-    public final Optional<ClassLoader> classLoader() {
-        return Optional.ofNullable(Thread.currentThread().getContextClassLoader());
-    }
 
     @Override
     public final LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
@@ -208,7 +199,6 @@ implements
             LicenseManagementContextBuilder {
 
         LicenseManagementAuthorization authorization = context().authorization();
-        ClassLoaderProvider classLoaderProvider = context();
         Clock clock = context();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
@@ -220,12 +210,6 @@ implements
         public LicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
             this.authorization = requireNonNull(authorization);
             return this;
-        }
-
-        @Override
-        public LicenseManagementContextBuilder classLoaderProvider(final ClassLoaderProvider classLoaderProvider) {
-            this.classLoaderProvider = requireNonNull(classLoaderProvider);
-            return null;
         }
 
         @Override
@@ -284,7 +268,6 @@ implements
             LicenseValidationProvider {
 
         final LicenseManagementAuthorization authorization;
-        final ClassLoaderProvider classLoaderProvider;
         final Clock clock;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
@@ -294,7 +277,6 @@ implements
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
             this.authorization = b.authorization;
-            this.classLoaderProvider = b.classLoaderProvider;
             this.clock = b.clock;
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
@@ -305,9 +287,6 @@ implements
 
         @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
-
-        @Override
-        public Optional<ClassLoader> classLoader() { return classLoaderProvider.classLoader(); }
 
         @Override
         public Codec codec() { return context().codec(); }

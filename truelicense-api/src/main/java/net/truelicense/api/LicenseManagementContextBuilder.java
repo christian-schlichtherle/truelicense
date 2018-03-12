@@ -6,7 +6,6 @@
 package net.truelicense.api;
 
 import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.ClassLoaderProvider;
 import net.truelicense.api.misc.Clock;
 
 /**
@@ -26,13 +25,6 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder authorization(LicenseManagementAuthorization authorization);
-
-    /**
-     * Sets the class loader provider (optional).
-     *
-     * @return {@code this}
-     */
-    LicenseManagementContextBuilder classLoaderProvider(ClassLoaderProvider classLoaderProvider);
 
     /**
      * Sets the custom clock (optional).
