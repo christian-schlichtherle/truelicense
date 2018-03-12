@@ -141,13 +141,11 @@ public enum LicenseManager implements VendorLicenseManager {
 #if($keyGenAuthorizationClass != "-")
                     .authorization(#new($keyGenAuthorizationClass "LicenseManagementAuthorization"))
 #end
-                    .initialization(new LicenseInitialization() {
-                            @Override
-                            public void initialize(final License bean) {
-                                if (null == bean.getIssuer())
-                                    bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
-                            }
-                        })
+                    .initialization(bean -> {
+                        if (null == bean.getIssuer()) {
+                            bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
+                        }
+                    })
                     .subject(SUBJECT)
 #if($keyGenValidationClass != "-")
                     .validation(#new($keyGenValidationClass "LicenseValidation"))
