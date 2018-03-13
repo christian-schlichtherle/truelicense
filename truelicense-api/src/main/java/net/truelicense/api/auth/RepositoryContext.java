@@ -10,8 +10,6 @@ import net.truelicense.api.codec.Codec;
 /**
  * A factory for repository models and their associated
  * {@linkplain RepositoryController repository controllers}.
- * A repository context is created by a
- * {@linkplain RepositoryContextProvider repository context provider}.
  *
  * @param <Model> the generic repository model.
  */
