@@ -39,6 +39,7 @@ public abstract class ApiDemo {
         return licenseApplicationContext()
                 .context() // returns a LicenseManagementContextBuilder
                 .authorization(mock(LicenseManagementAuthorization.class))
+                .cachePeriodMillis(1000L)
                 .clock(mock(Clock.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)

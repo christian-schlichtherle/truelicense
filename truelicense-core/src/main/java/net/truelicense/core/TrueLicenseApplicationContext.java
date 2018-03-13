@@ -55,23 +55,12 @@ import static net.truelicense.core.Messages.*;
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
 public abstract class TrueLicenseApplicationContext<Model>
 implements
-        CachePeriodProvider,
         Clock,
         CodecProvider,
         CompressionProvider,
         LicenseApplicationContext,
         LicenseFactory,
         RepositoryContextProvider<Model> {
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns half an hour (in milliseconds) to account for external changes
-     * to the configured store for the license key.
-     */
-    @Override
-    public long cachePeriodMillis() { return 30 * 60 * 1000; }
 
     @Override
     public final LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
@@ -154,6 +143,7 @@ implements
             LicenseManagementContextBuilder {
 
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
+        long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = context();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
@@ -165,6 +155,15 @@ implements
         @Override
         public LicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
             this.authorization = requireNonNull(authorization);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder cachePeriodMillis(final long cachePeriodMillis) {
+            if (cachePeriodMillis < 0) {
+                throw new IllegalArgumentException("" + cachePeriodMillis);
+            }
+            this.cachePeriodMillis = cachePeriodMillis;
             return this;
         }
 
@@ -221,6 +220,7 @@ implements
 
     final class TrueLicenseManagementContext
     implements
+            CachePeriodProvider,
             Clock,
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementAuthorizationProvider,
@@ -231,6 +231,7 @@ implements
             PasswordPolicyProvider {
 
         final LicenseManagementAuthorization authorization;
+        final long cachePeriodMillis;
         final Clock clock;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
@@ -241,6 +242,7 @@ implements
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
             this.authorization = b.authorization;
+            this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
@@ -252,6 +254,9 @@ implements
 
         @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
+
+        @Override
+        public long cachePeriodMillis() { return cachePeriodMillis; }
 
         @Override
         public Codec codec() { return context().codec(); }

@@ -27,6 +27,16 @@ extends Builder<LicenseManagementContext> {
      */
     LicenseManagementContextBuilder authorization(LicenseManagementAuthorization authorization);
 
+
+    /**
+     * Sets the cache period for external changes to the license key in milliseconds (optional).
+     * Any non-negative value is valid.
+     * Pass {@link Long#MAX_VALUE} to disable the timeout or zero to disable the caching of intermediate results.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder cachePeriodMillis(long cachePeriodMillis);
+
     /**
      * Sets the custom clock (optional).
      *

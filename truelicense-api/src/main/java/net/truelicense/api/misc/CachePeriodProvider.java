@@ -13,10 +13,9 @@ package net.truelicense.api.misc;
 public interface CachePeriodProvider {
 
     /**
-     * Returns the cache period for some intermediate results in milliseconds.
+     * Returns the cache period for external changes to the license key in milliseconds.
      * Any non-negative value is valid.
-     * Return {@link Long#MAX_VALUE} to disable the timeout or zero to disable
-     * the caching of intermediate results.
+     * Return {@link Long#MAX_VALUE} to disable the timeout or zero to disable the caching of intermediate results.
      */
     long cachePeriodMillis();
 }
