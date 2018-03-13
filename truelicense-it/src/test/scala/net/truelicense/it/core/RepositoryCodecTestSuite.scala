@@ -6,18 +6,17 @@
 package net.truelicense.it.core
 
 /** @author Christian Schlichtherle */
-abstract class RepositoryCodecTestSuite[Model <: AnyRef]
-  extends CodecTestSuite { this: TestContext[Model] =>
+abstract class RepositoryCodecTestSuite[Model <: AnyRef] extends CodecTestSuite { self: TestContext[Model] =>
 
   final override def artifact: AnyRef = {
-    val l = license
-    val c = managementContext.codec
-    val p = vendorManager.parameters
-    val a = p.authentication
-    val rx = repositoryContext
-    val rm = rx.model
-    val rc = rx.controller(rm, c)
-    a sign (rc, l)
-    rm
+    val license = self.license
+    val codec = managementContext.codec
+    val parameters = vendorManager.parameters
+    val authentication = parameters.authentication
+    val context = repositoryContext
+    val model = context.model
+    val controller = context.controller(model, codec)
+    authentication.sign(controller, license)
+    model
   }
 }

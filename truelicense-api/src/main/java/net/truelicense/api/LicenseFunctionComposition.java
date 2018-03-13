@@ -21,9 +21,7 @@ public enum LicenseFunctionComposition {
         }
 
         @Override
-        public LicenseValidation compose(LicenseValidation first, LicenseValidation second) {
-            return first;
-        }
+        public LicenseValidation compose(LicenseValidation first, LicenseValidation second) { return first; }
     },
 
     decorate {
