@@ -323,9 +323,7 @@ implements
         }
 
         @Override
-        public VendorLicenseManagerBuilder vendor() {
-            return new VendorTrueLicenseManagerBuilder();
-        }
+        public VendorLicenseManagerBuilder vendor() { return new VendorTrueLicenseManagerBuilder(); }
 
         class ConsumerTrueLicenseManagerBuilder
         extends TrueLicenseManagerBuilder<ConsumerTrueLicenseManagerBuilder>
