@@ -13,5 +13,5 @@ package net.truelicense.api.passwd;
 public interface PasswordPolicyProvider {
 
     /** Returns the password policy. */
-    PasswordPolicy policy();
+    PasswordPolicy passwordPolicy();
 }

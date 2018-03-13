@@ -10,6 +10,7 @@ import global.namespace.fun.io.api.Store;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.misc.Clock;
+import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
 
 import java.io.InputStream;
@@ -41,6 +42,7 @@ public abstract class ApiDemo {
                 .clock(mock(Clock.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
+                .passwordPolicy(mock(PasswordPolicy.class))
                 .subject("MyProduct 1")
                 .validation(mock(LicenseValidation.class))
                 .validationComposition(LicenseFunctionComposition.decorate)

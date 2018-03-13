@@ -62,7 +62,6 @@ implements
         LicenseApplicationContext,
         LicenseManagementAuthorizationProvider,
         LicenseFactory,
-        PasswordPolicyProvider,
         RepositoryContextProvider<Model> {
 
     /**
@@ -123,15 +122,6 @@ implements
     public abstract String pbeAlgorithm();
 
     /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link MinimumPasswordPolicy}.
-     */
-    @Override
-    public PasswordPolicy policy() { return new MinimumPasswordPolicy(); }
-
-    /**
      * Returns the name of the default key store type,
      * for example {@code "JCEKS"} or {@code "JKS"}.
      * You can override this default value when configuring the key store based
@@ -178,21 +168,6 @@ implements
     // Inner classes:
     //
 
-    final class CheckedPasswordProtection implements PasswordProtection {
-
-        final PasswordProtection protection;
-
-        CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
-
-        @Override
-        public Password password(final PasswordUsage usage) throws Exception {
-            if (usage.equals(PasswordUsage.WRITE)) { // checks null
-                policy().check(protection);
-            }
-            return protection.password(usage);
-        }
-    }
-
     final class TrueLicenseManagementContextBuilder
     implements
             ContextProvider<TrueLicenseApplicationContext>,
@@ -202,6 +177,7 @@ implements
         Clock clock = context();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
+        PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
         String subject = "";
         Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
@@ -236,6 +212,12 @@ implements
         }
 
         @Override
+        public LicenseManagementContextBuilder passwordPolicy(final PasswordPolicy passwordPolicy) {
+            this.passwordPolicy = requireNonNull(passwordPolicy);
+            return this;
+        }
+
+        @Override
         public LicenseManagementContextBuilder subject(final String subject) {
             this.subject = requireNonEmpty(subject);
             return this;
@@ -265,12 +247,14 @@ implements
             LicenseInitializationProvider,
             LicenseManagementContext,
             LicenseManagementSubjectProvider,
-            LicenseValidationProvider {
+            LicenseValidationProvider,
+            PasswordPolicyProvider {
 
         final LicenseManagementAuthorization authorization;
         final Clock clock;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
+        final PasswordPolicy passwordPolicy;
         final String subject;
         final Optional<LicenseValidation> validation;
         final LicenseFunctionComposition validationComposition;
@@ -280,6 +264,7 @@ implements
             this.clock = b.clock;
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
+            this.passwordPolicy = b.passwordPolicy;
             this.subject = requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
@@ -310,6 +295,9 @@ implements
 
         @Override
         public Date now() { return clock.now(); }
+
+        @Override
+        public PasswordPolicy passwordPolicy() { return passwordPolicy; }
 
         @Override
         public String subject() { return subject; }
@@ -553,6 +541,21 @@ implements
 
             @Override
             public PasswordProtection protection() { return new CheckedPasswordProtection(protection); }
+        }
+
+        final class CheckedPasswordProtection implements PasswordProtection {
+
+            final PasswordProtection protection;
+
+            CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
+
+            @Override
+            public Password password(final PasswordUsage usage) throws Exception {
+                if (usage.equals(PasswordUsage.WRITE)) { // checks null
+                    passwordPolicy().check(protection);
+                }
+                return protection.password(usage);
+            }
         }
 
         final class TrueLicenseManagementParameters

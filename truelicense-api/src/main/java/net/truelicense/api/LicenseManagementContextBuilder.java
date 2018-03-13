@@ -7,6 +7,7 @@ package net.truelicense.api;
 
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Clock;
+import net.truelicense.api.passwd.PasswordPolicy;
 
 /**
  * A builder for
@@ -52,6 +53,13 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder initializationComposition(LicenseFunctionComposition composition);
+
+    /**
+     * Sets the password policy (optional).
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder passwordPolicy(PasswordPolicy policy);
 
     /**
      * Sets the license subject.
