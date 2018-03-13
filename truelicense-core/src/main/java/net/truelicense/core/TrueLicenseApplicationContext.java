@@ -60,28 +60,8 @@ implements
         CodecProvider,
         CompressionProvider,
         LicenseApplicationContext,
-        LicenseManagementAuthorizationProvider,
         LicenseFactory,
         RepositoryContextProvider<Model> {
-
-    /**
-     * Returns an authentication for the given key store parameters.
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link Notary} for the given key store parameters.
-     *
-     * @param parameters the key store parameters.
-     */
-    public Authentication authentication(AuthenticationParameters parameters) { return new Notary(parameters); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns an authorization which clears all operation requests.
-     */
-    @Override
-    public final LicenseManagementAuthorization authorization() { return new TrueLicenseManagementAuthorization(); }
 
     /**
      * {@inheritDoc}
@@ -173,7 +153,7 @@ implements
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementContextBuilder {
 
-        LicenseManagementAuthorization authorization = context().authorization();
+        LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         Clock clock = context();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
@@ -319,8 +299,7 @@ implements
 
             @Override
             public ConsumerLicenseManager build() {
-                final TrueLicenseManagementParameters
-                        p = new TrueLicenseManagementParameters(this);
+                final TrueLicenseManagementParameters p = new TrueLicenseManagementParameters(this);
                 return parent.isPresent()
                         ? p.new ChainedTrueLicenseManager()
                         : p.new CachingTrueLicenseManager();
@@ -428,7 +407,7 @@ implements
 
                 @Override
                 public Authentication build() {
-                    return context().authentication(new TrueAuthenticationParameters(this));
+                    return new Notary(new TrueAuthenticationParameters(this));
                 }
 
                 @Override
