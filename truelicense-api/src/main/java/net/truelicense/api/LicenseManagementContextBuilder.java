@@ -5,6 +5,7 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.AuthenticationFunction;
 import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Builder;
@@ -51,6 +52,13 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder clock(Clock clock);
+
+    /**
+     * Sets the compression transformation.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder compression(Transformation compression);
 
     /**
      * Sets the (password based) encryption function.

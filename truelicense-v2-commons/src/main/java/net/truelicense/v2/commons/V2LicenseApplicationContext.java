@@ -5,7 +5,6 @@
 
 package net.truelicense.v2.commons;
 
-import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.auth.RepositoryContext;
@@ -36,18 +35,11 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithSHA1AndDESede";
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns a compression for V2 format license keys.
-     */
-    @Override
-    public final Transformation compression() { return deflate(Deflater.BEST_COMPRESSION); }
-
     @Override
     public LicenseManagementContextBuilder context() {
-        return super.context().encryptionFunction(V2Encryption::new);
+        return super.context()
+                .compression(deflate(Deflater.BEST_COMPRESSION))
+                .encryptionFunction(V2Encryption::new);
     }
 
     @Override

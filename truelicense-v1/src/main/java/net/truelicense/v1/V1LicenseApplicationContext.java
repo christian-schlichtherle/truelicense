@@ -7,7 +7,6 @@ package net.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
 import de.schlichtherle.xml.GenericCertificate;
-import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.auth.RepositoryContext;
@@ -53,18 +52,11 @@ extends TrueLicenseApplicationContext<GenericCertificate> {
     @Override
     public Codec codec() { return codec; }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseApplicationContext}
-     * returns a compression for V1 format license keys.
-     */
-    @Override
-    public final Transformation compression() { return gzip(); }
-
     @Override
     public LicenseManagementContextBuilder context() {
-        return super.context().encryptionFunction(V1Encryption::new);
+        return super.context()
+                .compression(gzip())
+                .encryptionFunction(V1Encryption::new);
     }
 
     /** Returns a <em>new</em> license content. */

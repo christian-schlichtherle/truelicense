@@ -59,7 +59,6 @@ public abstract class TrueLicenseApplicationContext<Model>
 implements
         Clock,
         CodecProvider,
-        CompressionProvider,
         LicenseApplicationContext,
         LicenseFactory,
         RepositoryContextProvider<Model> {
@@ -141,6 +140,7 @@ implements
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = context();
+        Optional<Transformation> compression = Optional.empty();
         Optional<EncryptionFunction> encryptionFunction = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
@@ -173,6 +173,12 @@ implements
         @Override
         public LicenseManagementContextBuilder clock(final Clock clock) {
             this.clock = requireNonNull(clock);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder compression(final Transformation compression) {
+            this.compression = Optional.of(compression);
             return this;
         }
 
@@ -232,6 +238,7 @@ implements
             AuthenticationFunctionProvider,
             CachePeriodProvider,
             Clock,
+            CompressionProvider,
             ContextProvider<TrueLicenseApplicationContext>,
             EncryptionFunctionProvider,
             LicenseManagementAuthorizationProvider,
@@ -245,6 +252,7 @@ implements
         final LicenseManagementAuthorization authorization;
         final long cachePeriodMillis;
         final Clock clock;
+        final Transformation compression;
         final EncryptionFunction encryptionFunction;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
@@ -258,6 +266,7 @@ implements
             this.authorization = b.authorization;
             this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
+            this.compression = b .compression.get();
             this.encryptionFunction = b.encryptionFunction.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
@@ -278,6 +287,9 @@ implements
 
         @Override
         public Codec codec() { return context().codec(); }
+
+        @Override
+        public Transformation compression() { return compression; }
 
         @Override
         public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
