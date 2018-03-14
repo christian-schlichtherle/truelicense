@@ -5,6 +5,7 @@
 
 package net.truelicense.api;
 
+import net.truelicense.api.auth.AuthenticationFunction;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
@@ -21,7 +22,14 @@ public interface LicenseManagementContextBuilder
 extends Builder<LicenseManagementContext> {
 
     /**
-     * Sets the custom license management authorization (optional).
+     * Sets the authentication function (optional).
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder authenticationFunction(AuthenticationFunction function);
+
+    /**
+     * Sets the license management authorization (optional).
      *
      * @return {@code this}
      */
@@ -38,7 +46,7 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder cachePeriodMillis(long cachePeriodMillis);
 
     /**
-     * Sets the custom clock (optional).
+     * Sets the clock (optional).
      *
      * @return {@code this}
      */

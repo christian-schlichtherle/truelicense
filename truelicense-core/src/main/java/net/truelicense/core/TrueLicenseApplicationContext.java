@@ -142,6 +142,7 @@ implements
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementContextBuilder {
 
+        AuthenticationFunction authenticationFunction = Notary::new;
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = context();
@@ -151,6 +152,12 @@ implements
         String subject = "";
         Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
+
+        @Override
+        public LicenseManagementContextBuilder authenticationFunction(AuthenticationFunction function) {
+            this.authenticationFunction = requireNonNull(function);
+            return this;
+        }
 
         @Override
         public LicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
@@ -220,6 +227,7 @@ implements
 
     final class TrueLicenseManagementContext
     implements
+            AuthenticationFunctionProvider,
             CachePeriodProvider,
             Clock,
             ContextProvider<TrueLicenseApplicationContext>,
@@ -230,6 +238,7 @@ implements
             LicenseValidationProvider,
             PasswordPolicyProvider {
 
+        final AuthenticationFunction authenticationFunction;
         final LicenseManagementAuthorization authorization;
         final long cachePeriodMillis;
         final Clock clock;
@@ -241,6 +250,7 @@ implements
         final LicenseFunctionComposition validationComposition;
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
+            this.authenticationFunction = b.authenticationFunction;
             this.authorization = b.authorization;
             this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
@@ -251,6 +261,9 @@ implements
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
         }
+
+        @Override
+        public AuthenticationFunction authenticationFunction() { return authenticationFunction; }
 
         @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
@@ -412,7 +425,7 @@ implements
 
                 @Override
                 public Authentication build() {
-                    return new Notary(new TrueAuthenticationParameters(this));
+                    return authenticationFunction().apply(new TrueAuthenticationParameters(this));
                 }
 
                 @Override
