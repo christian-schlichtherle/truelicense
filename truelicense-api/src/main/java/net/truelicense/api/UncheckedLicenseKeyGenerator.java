@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Store;
+import global.namespace.fun.io.api.Sink;
 
 /**
  * A license key generator which generally throws an
@@ -21,5 +21,5 @@ public interface UncheckedLicenseKeyGenerator extends LicenseKeyGenerator {
     License license() throws UncheckedLicenseManagementException;
 
     @Override
-    UncheckedLicenseKeyGenerator saveTo(Store sink) throws UncheckedLicenseManagementException;
+    UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException;
 }

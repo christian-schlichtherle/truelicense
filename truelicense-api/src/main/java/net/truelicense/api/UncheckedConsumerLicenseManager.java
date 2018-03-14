@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Store;
+import global.namespace.fun.io.api.Source;
 
 /**
  * Defines the life cycle management operations for license keys in consumer applications.
@@ -28,7 +28,7 @@ import global.namespace.fun.io.api.Store;
 public interface UncheckedConsumerLicenseManager extends LicenseManagementSchema {
 
     /**
-     * Verifies the digital signature of the license key in the given store and copies it to the configured store.
+     * Verifies the digital signature of the license key in the given source and copies it to the configured store.
      * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
      * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
      * license has expired.
@@ -36,9 +36,9 @@ public interface UncheckedConsumerLicenseManager extends LicenseManagementSchema
      * Calling this operation performs an initial
      * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
      *
-     * @param source the store to read the license key from.
+     * @param source the source to read the license key from.
      */
-    void install(Store source) throws UncheckedLicenseManagementException;
+    void install(Source source) throws UncheckedLicenseManagementException;
 
     /**
      * Eventually loads the installed license key and returns an unvalidated duplicate of its encoded license bean.

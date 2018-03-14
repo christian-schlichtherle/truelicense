@@ -5,13 +5,12 @@
 
 package net.truelicense.jsf;
 
-import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Source;
 import net.truelicense.api.LicenseManagementException;
 
 import javax.faces.component.FacesComponent;
 import javax.servlet.http.Part;
 import javax.validation.constraints.NotNull;
-import java.io.InputStream;
 import java.util.Objects;
 
 import static net.truelicense.ui.LicenseWizardMessage.*;
@@ -35,7 +34,7 @@ public final class InstallBean extends LicenseBean {
 
     public String installAction() {
         try {
-            manager().install(input());
+            manager().install(source());
             outputInfo(getSuccess());
         } catch (LicenseManagementException ex) {
             outputError(getFailure(), ex);
@@ -43,7 +42,7 @@ public final class InstallBean extends LicenseBean {
         return null;
     }
 
-    private Socket<InputStream> input() { return () -> getPart().getInputStream(); }
+    private Source source() { return () -> () -> getPart().getInputStream(); }
 
     public Part getPart() { return (Part) getStateHelper().get("part"); }
 

@@ -5,10 +5,7 @@
 
 package net.truelicense.core;
 
-import global.namespace.fun.io.api.Decoder;
-import global.namespace.fun.io.api.Socket;
-import global.namespace.fun.io.api.Store;
-import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
@@ -658,7 +655,7 @@ implements
                 volatile Optional<Boolean> canGenerateLicenseKeys = Optional.empty();
 
                 @Override
-                public void install(Store source) throws LicenseManagementException {
+                public void install(Source source) throws LicenseManagementException {
                     try {
                         parent().install(source);
                     } catch (final LicenseManagementException first) {
@@ -755,15 +752,15 @@ implements
                 // So some concurrent threads may safely interleave when initializing these
                 // fields without creating a racing condition and thus it's not generally
                 // required to synchronize access to them.
-                volatile Cache<Store, Decoder> cachedDecoder = new Cache<>();
-                volatile Cache<Store, License> cachedLicense = new Cache<>();
+                volatile Cache<Source, Decoder> cachedDecoder = new Cache<>();
+                volatile Cache<Source, License> cachedLicense = new Cache<>();
 
                 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
                 @Override
-                public void install(final Store source) throws LicenseManagementException {
+                public void install(final Source source) throws LicenseManagementException {
+                    final Optional<Source> optSource = Optional.of(source);
                     final Store store = store();
-                    final Optional<Store> optSource = Optional.of(source);
-                    final Optional<Store> optStore = Optional.of(store);
+                    final Optional<Source> optStore = Optional.of(store);
                     synchronized (store) {
                         super.install(source);
 
@@ -788,8 +785,8 @@ implements
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    final Cache<Store, Decoder> cachedDecoder = new Cache<>();
-                    final Cache<Store, License> cachedLicense = new Cache<>();
+                    final Cache<Source, Decoder> cachedDecoder = new Cache<>();
+                    final Cache<Source, License> cachedLicense = new Cache<>();
                     synchronized (store()) {
                         super.uninstall();
                         this.cachedDecoder = cachedDecoder;
@@ -798,8 +795,8 @@ implements
                 }
 
                 @Override
-                void validate(final Store source) throws Exception {
-                    final Optional<Store> optSource = Optional.of(source);
+                void validate(final Source source) throws Exception {
+                    final Optional<Source> optSource = Optional.of(source);
                     Optional<License> optLicense = cachedLicense.map(optSource);
                     if (!optLicense.isPresent()) {
                         optLicense = Optional.of(decodeLicense(source));
@@ -809,8 +806,8 @@ implements
                 }
 
                 @Override
-                Decoder authenticate(final Store source) throws Exception {
-                    final Optional<Store> optSource = Optional.of(source);
+                Decoder authenticate(final Source source) throws Exception {
+                    final Optional<Source> optSource = Optional.of(source);
                     Optional<Decoder> optDecoder = cachedDecoder.map(optSource);
                     if (!optDecoder.isPresent()) {
                         optDecoder = Optional.of(super.authenticate(source));
@@ -850,7 +847,7 @@ implements
                         }
 
                         @Override
-                        public LicenseKeyGenerator saveTo(final Store sink) throws LicenseManagementException {
+                        public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
                             check(() -> {
                                 codec().encoder(sink.map(compressionThenEncryption())).encode(model());
                                 return null;
@@ -900,11 +897,11 @@ implements
                 }
 
                 @Override
-                public void install(final Store source) throws LicenseManagementException {
+                public void install(final Source source) throws LicenseManagementException {
                     check(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
-                        copy(source.input(), store().output());
+                        copy(source, store());
                         return null;
                     });
                 }
@@ -944,25 +941,25 @@ implements
                 // License consumer functions:
                 //
 
-                void validate(Store source) throws Exception { validation().validate(decodeLicense(source)); }
+                void validate(Source source) throws Exception { validation().validate(decodeLicense(source)); }
 
-                License decodeLicense(Store source) throws Exception {
+                License decodeLicense(Source source) throws Exception {
                     return authenticate(source).decode(License.class);
                 }
 
-                Decoder authenticate(Store source) throws Exception {
+                Decoder authenticate(Source source) throws Exception {
                     return authentication().verify(repositoryController(source));
                 }
 
-                RepositoryController repositoryController(Store source) throws Exception {
+                RepositoryController repositoryController(Source source) throws Exception {
                     return repositoryContext().controller(repositoryModel(source), codec());
                 }
 
-                Model repositoryModel(Store source) throws Exception {
+                Model repositoryModel(Source source) throws Exception {
                     return codec().decoder(decryptedAndDecompressedSource(source)).decode(repositoryContext().model().getClass());
                 }
 
-                Store decryptedAndDecompressedSource(Store source) { return source.map(compressionThenEncryption()); }
+                Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
 
                 //
                 // Property/factory functions:
@@ -994,7 +991,7 @@ implements
                             }
 
                             @Override
-                            public UncheckedLicenseKeyGenerator saveTo(Store sink) throws UncheckedLicenseManagementException {
+                            public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
                                 uncheck(() -> generator.saveTo(sink));
                                 return this;
                             }
@@ -1002,7 +999,7 @@ implements
                     }
 
                     @Override
-                    public void install(final Store source) throws UncheckedLicenseManagementException {
+                    public void install(final Source source) throws UncheckedLicenseManagementException {
                         uncheck(() -> {
                             checked().install(source);
                             return null;

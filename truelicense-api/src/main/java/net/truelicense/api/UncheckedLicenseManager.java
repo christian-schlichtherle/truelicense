@@ -5,11 +5,10 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Sink;
+import global.namespace.fun.io.api.Source;
 import net.truelicense.api.misc.ContextProvider;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.concurrent.Callable;
 
 /**
@@ -68,8 +67,9 @@ public final class UncheckedLicenseManager {
                 }
 
                 @Override
-                public LicenseKeyGenerator saveTo(Socket<OutputStream> output) throws UncheckedLicenseManagementException {
-                    return uncheck(() -> generator.saveTo(output));
+                public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
+                    uncheck(() -> generator.saveTo(sink));
+                    return this;
                 }
             });
         }
@@ -79,9 +79,9 @@ public final class UncheckedLicenseManager {
             extends UncheckedTrueLicenseManager<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
 
         @Override
-        default void install(Socket<InputStream> input) throws UncheckedLicenseManagementException {
+        default void install(Source source) throws UncheckedLicenseManagementException {
             uncheck(() -> {
-                checked().install(input);
+                checked().install(source);
                 return null;
             });
         }

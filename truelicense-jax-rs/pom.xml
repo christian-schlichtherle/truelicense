@@ -31,6 +31,10 @@
         </dependency>
 
         <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-bios</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <scope>provided</scope>

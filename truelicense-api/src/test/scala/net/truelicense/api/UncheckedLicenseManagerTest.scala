@@ -5,7 +5,7 @@
 
 package net.truelicense.api
 
-import global.namespace.fun.io.scala.api.{Sink, Source}
+import global.namespace.fun.io.scala.api.Store
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
@@ -39,8 +39,8 @@ class UncheckedLicenseManagerTest extends WordSpec {
         }
 
         "calling saveTo(Sink)" in {
-          when(checkedGenerator saveTo any[Sink]) thenThrow checkedException
-          interceptUncheckedException { uncheckedGenerator saveTo mock[Sink] }
+          when(checkedGenerator saveTo any[Store]) thenThrow checkedException
+          interceptUncheckedException { uncheckedGenerator saveTo mock[Store] }
         }
       }
     }
@@ -57,8 +57,8 @@ class UncheckedLicenseManagerTest extends WordSpec {
 
     "throw only unchecked exceptions" when {
       "installing a license key" in {
-        when(checkedManager install any[Source]) thenThrow checkedException
-        interceptUncheckedException { uncheckedManager install mock[Source] }
+        when(checkedManager install any[Store]) thenThrow checkedException
+        interceptUncheckedException { uncheckedManager install mock[Store] }
       }
 
       "loading a license key" in {

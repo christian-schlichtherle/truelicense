@@ -25,6 +25,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-v2-commons</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-jaxb</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

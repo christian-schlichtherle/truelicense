@@ -5,16 +5,14 @@
 
 package net.truelicense.swing;
 
-import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Source;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.LicenseManagementException;
 import net.truelicense.swing.util.Enabler;
 
-import java.io.InputStream;
-
 /**
  * A decorating consumer license manager which enables a component after it has
- * successfully called {@link #install} or {@link #uninstall} on the delegate
+ * successfully called {@link ConsumerLicenseManager#install} or {@link #uninstall} on the delegate
  * manager.
  * If the operation fails, the component's state remains unchanged.
  * This class is immutable.
@@ -33,8 +31,8 @@ extends UpdatingConsumerLicenseManager {
     }
 
     @Override
-    public void install(final Socket<InputStream> input) throws LicenseManagementException {
-        manager.install(input);
+    public void install(final Source source) throws LicenseManagementException {
+        manager.install(source);
         enable();
     }
 

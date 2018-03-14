@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Store;
+import global.namespace.fun.io.api.Sink;
 
 /**
  * Generates a license key and writes it to a given sink or returns a duplicate of its encoded license bean.
@@ -23,10 +23,10 @@ public interface LicenseKeyGenerator {
     License license() throws LicenseManagementException;
 
     /**
-     * Saves the generated license key to the given store.
+     * Saves the generated license key to the given sink.
      *
-     * @param sink the store to write the generated license key to.
+     * @param sink the sink to write the generated license key to.
      * @return {@code this}
      */
-    LicenseKeyGenerator saveTo(Store sink) throws LicenseManagementException;
+    LicenseKeyGenerator saveTo(Sink sink) throws LicenseManagementException;
 }
