@@ -7,6 +7,7 @@ package net.truelicense.it.core;
 
 import java.util.Objects;
 
+/** @author Christian Schlichtherle */
 public class ExtraData {
 
     private String message;

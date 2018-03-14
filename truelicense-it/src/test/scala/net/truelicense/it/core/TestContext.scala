@@ -9,7 +9,7 @@ import java.util.Calendar._
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
-import global.namespace.fun.io.api.{Store, Transformation}
+import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
 import net.truelicense.api.codec.{Codec, CodecProvider}
@@ -34,8 +34,6 @@ trait TestContext[Model <: AnyRef]
 
   final override def codec: Codec = managementContext.codec
 
-  final def compression: Transformation = applicationContext.compression
-
   final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
 
   def consumerManager(store: Store): ConsumerLicenseManager
@@ -48,8 +46,6 @@ trait TestContext[Model <: AnyRef]
     add(DATE, days)
     getTime
   }
-
-  def encryption: Transformation
 
   def extraData: AnyRef = { // must be AnyRef to enable overriding and returning a bean instead.
 
@@ -90,8 +86,6 @@ trait TestContext[Model <: AnyRef]
 
   final def test1234: PasswordProtection =
     new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael))) /* => "test1234" */
-
-  final def transformation: Transformation = compression andThen encryption
 
   def vendorManager: VendorLicenseManager
 }

@@ -9,9 +9,9 @@ import de.schlichtherle.license.LicenseContent;
 import de.schlichtherle.xml.GenericCertificate;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.License;
+import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v1.auth.V1RepositoryContext;
@@ -62,16 +62,9 @@ extends TrueLicenseApplicationContext<GenericCertificate> {
     @Override
     public final Transformation compression() { return gzip(); }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseApplicationContext}
-     * returns an encryption for V1 format license keys with the given PBE
-     * parameters.
-     */
     @Override
-    public final Transformation encryption(EncryptionParameters parameters) {
-        return new V1Encryption(parameters);
+    public LicenseManagementContextBuilder context() {
+        return super.context().encryptionFunction(V1Encryption::new);
     }
 
     /** Returns a <em>new</em> license content. */

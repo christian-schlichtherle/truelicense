@@ -14,6 +14,8 @@ import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.codec.CodecProvider;
 import net.truelicense.api.comp.CompressionProvider;
+import net.truelicense.api.crypto.EncryptionFunction;
+import net.truelicense.api.crypto.EncryptionFunctionProvider;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.CachePeriodProvider;
@@ -63,14 +65,7 @@ implements
         RepositoryContextProvider<Model> {
 
     @Override
-    public final LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
-
-    /**
-     * Returns a password based encryption using the given parameters.
-     *
-     * @param parameters the password based encryption parameters.
-     */
-    public abstract Transformation encryption(EncryptionParameters parameters);
+    public LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
 
     /**
      * {@inheritDoc}
@@ -146,6 +141,7 @@ implements
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = context();
+        Optional<EncryptionFunction> encryptionFunction = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
         PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
@@ -154,7 +150,7 @@ implements
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
         @Override
-        public LicenseManagementContextBuilder authenticationFunction(AuthenticationFunction function) {
+        public LicenseManagementContextBuilder authenticationFunction(final AuthenticationFunction function) {
             this.authenticationFunction = requireNonNull(function);
             return this;
         }
@@ -183,6 +179,12 @@ implements
         @Override
         public TrueLicenseApplicationContext context() {
             return TrueLicenseApplicationContext.this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder encryptionFunction(final EncryptionFunction function) {
+            this.encryptionFunction = Optional.of(function);
+            return this;
         }
 
         @Override
@@ -231,6 +233,7 @@ implements
             CachePeriodProvider,
             Clock,
             ContextProvider<TrueLicenseApplicationContext>,
+            EncryptionFunctionProvider,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
@@ -242,6 +245,7 @@ implements
         final LicenseManagementAuthorization authorization;
         final long cachePeriodMillis;
         final Clock clock;
+        final EncryptionFunction encryptionFunction;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
         final PasswordPolicy passwordPolicy;
@@ -254,6 +258,7 @@ implements
             this.authorization = b.authorization;
             this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
+            this.encryptionFunction = b.encryptionFunction.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
@@ -279,6 +284,9 @@ implements
 
         @Override
         public TrueLicenseApplicationContext<Model> context() { return TrueLicenseApplicationContext.this; }
+
+        @Override
+        public EncryptionFunction encryptionFunction() { return encryptionFunction; }
 
         @Override
         public LicenseInitialization initialization() {
@@ -472,7 +480,9 @@ implements
                 }
 
                 @Override
-                public Transformation build() { return context().encryption(new TrueEncryptionParameters(this)); }
+                public Transformation build() {
+                    return encryptionFunction().apply(new TrueEncryptionParameters(this));
+                }
 
                 @Override
                 public TrueEncryptionBuilder protection(final PasswordProtection protection) {

@@ -6,6 +6,7 @@
 package net.truelicense.api;
 
 import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
@@ -35,7 +36,6 @@ extends Builder<LicenseManagementContext> {
      */
     LicenseManagementContextBuilder authorization(LicenseManagementAuthorization authorization);
 
-
     /**
      * Sets the cache period for external changes to the license key in milliseconds (optional).
      * Any non-negative value is valid.
@@ -51,6 +51,13 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder clock(Clock clock);
+
+    /**
+     * Sets the (password based) encryption function.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder encryptionFunction(EncryptionFunction function);
 
     /**
      * Sets the custom license initialization (optional).

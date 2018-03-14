@@ -7,8 +7,8 @@ package net.truelicense.v2.commons;
 
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.License;
+import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.auth.RepositoryContext;
-import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v2.commons.auth.V2RepositoryContext;
@@ -45,15 +45,10 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
     @Override
     public final Transformation compression() { return deflate(Deflater.BEST_COMPRESSION); }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns an encryption for V2 format license keys with the given PBE
-     * parameters.
-     */
     @Override
-    public final Transformation encryption(EncryptionParameters parameters) { return new V2Encryption(parameters); }
+    public LicenseManagementContextBuilder context() {
+        return super.context().encryptionFunction(V2Encryption::new);
+    }
 
     @Override
     public License license() { return new License(); }

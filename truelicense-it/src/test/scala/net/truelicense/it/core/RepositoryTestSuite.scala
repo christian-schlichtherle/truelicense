@@ -10,9 +10,7 @@ import java.util.Locale.ENGLISH
 import org.scalatest.Matchers._
 import org.scalatest._
 
-/**
- * @author Christian Schlichtherle
- */
+/** @author Christian Schlichtherle */
 abstract class RepositoryTestSuite[Model <: AnyRef]
 extends WordSpec with ParallelTestExecution { this: TestContext[Model] =>
 
