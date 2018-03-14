@@ -23,7 +23,7 @@ import javax.xml.bind.JAXBException;
  *
  * @author Christian Schlichtherle
  */
-public class V2XmlLicenseApplicationContext
+public final class V2XmlLicenseApplicationContext
 extends V2LicenseApplicationContext {
 
     private volatile JAXBContext context;

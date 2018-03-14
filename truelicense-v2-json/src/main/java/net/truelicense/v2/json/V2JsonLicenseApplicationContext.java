@@ -21,7 +21,7 @@ import net.truelicense.v2.json.codec.JsonCodec;
  *
  * @author Christian Schlichtherle
  */
-public class V2JsonLicenseApplicationContext
+public final class V2JsonLicenseApplicationContext
 extends V2LicenseApplicationContext {
 
     private volatile ObjectMapper mapper;

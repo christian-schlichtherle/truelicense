@@ -33,7 +33,7 @@ import static global.namespace.fun.io.bios.BIOS.gzip;
  *
  * @author Christian Schlichtherle
  */
-public class V1LicenseApplicationContext
+public final class V1LicenseApplicationContext
 extends TrueLicenseApplicationContext<GenericCertificate> {
 
     @Obfuscate
