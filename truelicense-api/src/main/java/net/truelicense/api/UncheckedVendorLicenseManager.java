@@ -26,7 +26,7 @@ public interface UncheckedVendorLicenseManager extends LicenseManagementSchema {
      *             This bean is not modified by the returned license key generator.
      * @return A license key generator for the given license bean.
      */
-    LicenseKeyGenerator generateKeyFrom(License bean) throws UncheckedLicenseManagementException;
+    UncheckedLicenseKeyGenerator generateKeyFrom(License bean) throws UncheckedLicenseManagementException;
 
     /**
      * Adapts this vendor license manager so that it generally throws a (checked) {@link LicenseManagementException}

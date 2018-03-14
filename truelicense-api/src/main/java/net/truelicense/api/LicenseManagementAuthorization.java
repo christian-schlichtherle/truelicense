@@ -29,7 +29,7 @@ public interface LicenseManagementAuthorization {
      * Returns if and only if installing a license key is authorized.
      *
      * @param schema the licensing schema.
-     * @see ConsumerLicenseManager#install(Socket)
+     * @see ConsumerLicenseManager#install(global.namespace.fun.io.api.Source)
      */
     void clearInstall(LicenseManagementSchema schema) throws Exception;
 

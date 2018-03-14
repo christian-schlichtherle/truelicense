@@ -5,10 +5,11 @@
 
 package net.truelicense.spi.codec
 
+import java.io.{InputStream, OutputStream}
 import java.nio.charset.Charset
 import java.util.Optional
 
-import global.namespace.fun.io.scala.api.{Sink, Source}
+import global.namespace.fun.io.scala.api.Socket
 import net.truelicense.api.codec.Codec
 import org.junit.runner.RunWith
 import org.scalatest.Matchers._
@@ -66,6 +67,6 @@ class CodecsTest extends WordSpec {
 /** @author Christian Schlichtherle */
 private class DummyCodec(val contentType: String, val contentTransferEncoding: String) extends Codec {
 
-  def encoder(output: Sink) = throw new UnsupportedOperationException
-  def decoder(input: Source) = throw new UnsupportedOperationException
+  def encoder(output: Socket[OutputStream]) = throw new UnsupportedOperationException
+  def decoder(input: Socket[InputStream]) = throw new UnsupportedOperationException
 }

@@ -225,7 +225,7 @@ final class InstallPanel extends LicenseWorkerPanel {
     private void installActionPerformed(java.awt.event.ActionEvent ignored) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
             @Override protected Void doInBackground() throws Exception {
-                manager().install(pathStore(Paths.get(fileField.getText())).input());
+                manager().install(pathStore(Paths.get(fileField.getText())));
                 return null;
             }
 

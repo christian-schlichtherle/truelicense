@@ -104,7 +104,7 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <fun-io.version>0.3.0</fun-io.version>
+        <fun-io.version>0.6.0</fun-io.version>
         <jackson.version>2.9.4</jackson.version>
         <javaee.version>8.0</javaee.version>
     </properties>
@@ -316,6 +316,11 @@
             <dependency>
                 <groupId>global.namespace.fun-io</groupId>
                 <artifactId>fun-io-jackson</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-jaxb</artifactId>
                 <version>${fun-io.version}</version>
             </dependency>
             <dependency>

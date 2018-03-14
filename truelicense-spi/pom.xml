@@ -32,10 +32,6 @@
 
         <dependency>
             <groupId>global.namespace.fun-io</groupId>
-            <artifactId>fun-io-bios</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>global.namespace.fun-io</groupId>
             <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
             <scope>test</scope>
         </dependency>

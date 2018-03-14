@@ -10,7 +10,7 @@ import java.util.Optional;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * A simple cache with just one association.
+ * A simple time sensitive cache with just one association.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
@@ -19,17 +19,16 @@ final class Cache<K, V> {
 
     private final Optional<K> optKey;
     private final Optional<V> optValue;
-    private final long cachePeriodMillis;
-    private final long startTimeMillis = currentTimeMillis();
+    private final long cachePeriodMillis, startTimeMillis = currentTimeMillis();
 
-    Cache() {
-        this(Optional.empty(), Optional.empty(), 0); } // => obsolete() == true
+    Cache() { this(Optional.empty(), Optional.empty(), 0); } // => obsolete() == true
 
     Cache(final Optional<K> optKey, final Optional<V> optValue, final long cachePeriodMillis) {
         this.optKey = optKey;
         this.optValue = optValue;
-        if (0 > (this.cachePeriodMillis = cachePeriodMillis))
+        if (0 > (this.cachePeriodMillis = cachePeriodMillis)) {
             throw new IllegalArgumentException();
+        }
     }
 
     Cache<K, V> key(Optional<K> optKey) {
@@ -40,11 +39,7 @@ final class Cache<K, V> {
         return hasKey(optKey) && !obsolete() ? optValue : Optional.empty();
     }
 
-    boolean hasKey(Optional<K> optKey) {
-        return optKey.equals(this.optKey);
-    }
+    boolean hasKey(Optional<K> optKey) { return optKey.equals(this.optKey); }
 
-    boolean obsolete() {
-        return currentTimeMillis() - startTimeMillis >= cachePeriodMillis;
-    }
+    boolean obsolete() { return currentTimeMillis() - startTimeMillis >= cachePeriodMillis; }
 }

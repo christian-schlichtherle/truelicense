@@ -5,9 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Socket;
-
-import java.io.InputStream;
+import global.namespace.fun.io.api.Source;
 
 /**
  * Defines the life cycle management operations for license keys in consumer applications.
@@ -18,8 +16,7 @@ import java.io.InputStream;
  * <p>
  * This interface intentionally lacks a method to preview the license bean which is encoded in a license key.
  * You can work around this constraint by using a {@linkplain LicenseManagementContext license management context} to
- * configure a consumer license manager which uses a transient
- * {@linkplain LicenseManagementContext#memoryStore() memory store} instead of a persistent store - see
+ * configure a consumer license manager which uses a transient memory store instead of a persistent store - see
  * {@link ConsumerLicenseManagerBuilder#storeIn}.
  * Once configured, you can {@linkplain #install install} the license key to the transient memory store and
  * {@linkplain #load load} its encoded license bean.
@@ -30,17 +27,17 @@ import java.io.InputStream;
 public interface ConsumerLicenseManager extends LicenseManagementSchema {
 
     /**
-     * Verifies the digital signature of the license key and copies it to the configured store.
+     * Verifies the digital signature of the license key in the given source and copies it to the configured store.
      * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
      * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
      * license has expired.
      * <p>
      * Calling this operation performs an initial
-     * * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
+     * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
      *
-     * @param  input the input stream socket for reading the license key.
+     * @param source the source to read the license key from.
      */
-    void install(Socket<InputStream> input) throws LicenseManagementException;
+    void install(Source source) throws LicenseManagementException;
 
     /**
      * Eventually loads the installed license key and returns an unvalidated duplicate of its encoded license bean.
