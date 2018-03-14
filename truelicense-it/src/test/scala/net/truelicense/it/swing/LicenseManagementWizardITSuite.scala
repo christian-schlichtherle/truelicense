@@ -41,7 +41,7 @@ abstract class LicenseManagementWizardITSuite
 
   before {
     val store = memoryStore
-    outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store.output).license
+    outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
     manager = consumerManager(store)
     EventQueue invokeLater (() => {
       UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName

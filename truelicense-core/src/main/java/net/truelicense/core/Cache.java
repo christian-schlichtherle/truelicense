@@ -10,7 +10,7 @@ import java.util.Optional;
 import static java.lang.System.currentTimeMillis;
 
 /**
- * A simple cache with just one association.
+ * A simple time sensitive cache with just one association.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
@@ -28,8 +28,9 @@ final class Cache<K, V> {
     Cache(final Optional<K> optKey, final Optional<V> optValue, final long cachePeriodMillis) {
         this.optKey = optKey;
         this.optValue = optValue;
-        if (0 > (this.cachePeriodMillis = cachePeriodMillis))
+        if (0 > (this.cachePeriodMillis = cachePeriodMillis)) {
             throw new IllegalArgumentException();
+        }
     }
 
     Cache<K, V> key(Optional<K> optKey) {

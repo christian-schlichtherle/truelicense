@@ -25,7 +25,6 @@ import net.truelicense.obfuscate.ObfuscatedString;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
@@ -659,14 +658,14 @@ implements
                 volatile Optional<Boolean> canGenerateLicenseKeys = Optional.empty();
 
                 @Override
-                public void install(Socket<InputStream> input) throws LicenseManagementException {
+                public void install(Store source) throws LicenseManagementException {
                     try {
-                        parent().install(input);
+                        parent().install(source);
                     } catch (final LicenseManagementException first) {
                         if (canGenerateLicenseKeys()) {
                             throw first;
                         }
-                        super.install(input);
+                        super.install(source);
                     }
                 }
 
@@ -726,7 +725,7 @@ implements
                             if (!canGenerateLicenseKeys.isPresent()) {
                                 try {
                                     // Test encoding a new license key to /dev/null .
-                                    super.generateKeyFrom(license()).saveTo(memoryStore().output());
+                                    super.generateKeyFrom(license()).saveTo(memoryStore());
                                     canGenerateLicenseKeys = Optional.of(Boolean.TRUE);
                                 } catch (LicenseManagementException ignored) {
                                     canGenerateLicenseKeys = Optional.of(Boolean.FALSE);
@@ -745,7 +744,7 @@ implements
                     if (exists(store)) {
                         throw e;
                     }
-                    return super.generateKeyFrom(license()).saveTo(store.output());
+                    return super.generateKeyFrom(license()).saveTo(store);
                 }
             }
 
@@ -756,18 +755,17 @@ implements
                 // So some concurrent threads may safely interleave when initializing these
                 // fields without creating a racing condition and thus it's not generally
                 // required to synchronize access to them.
-                volatile Cache<Socket<InputStream>, Decoder> cachedDecoder = new Cache<>();
-                volatile Cache<Socket<InputStream>, License> cachedLicense = new Cache<>();
+                volatile Cache<Store, Decoder> cachedDecoder = new Cache<>();
+                volatile Cache<Store, License> cachedLicense = new Cache<>();
 
                 @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
                 @Override
-                public void install(final Socket<InputStream> source) throws LicenseManagementException {
+                public void install(final Store source) throws LicenseManagementException {
                     final Store store = store();
+                    final Optional<Store> optSource = Optional.of(source);
+                    final Optional<Store> optStore = Optional.of(store);
                     synchronized (store) {
                         super.install(source);
-
-                        final Optional<Socket<InputStream>> optSource = Optional.ofNullable(source);
-                        final Optional<Socket<InputStream>> optStore = Optional.of(store.input());
 
                         // As a side effect of the license key installation, the cached
                         // artifactory and license get associated to the source unless this
@@ -790,8 +788,8 @@ implements
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    final Cache<Socket<InputStream>, Decoder> cachedDecoder = new Cache<>();
-                    final Cache<Socket<InputStream>, License> cachedLicense = new Cache<>();
+                    final Cache<Store, Decoder> cachedDecoder = new Cache<>();
+                    final Cache<Store, License> cachedLicense = new Cache<>();
                     synchronized (store()) {
                         super.uninstall();
                         this.cachedDecoder = cachedDecoder;
@@ -800,22 +798,22 @@ implements
                 }
 
                 @Override
-                void validate(final Socket<InputStream> input) throws Exception {
-                    final Optional<Socket<InputStream>> optSource = Optional.ofNullable(input);
+                void validate(final Store source) throws Exception {
+                    final Optional<Store> optSource = Optional.of(source);
                     Optional<License> optLicense = cachedLicense.map(optSource);
                     if (!optLicense.isPresent()) {
-                        optLicense = Optional.of(decodeLicense(input));
+                        optLicense = Optional.of(decodeLicense(source));
                         cachedLicense = new Cache<>(optSource, optLicense, cachePeriodMillis());
                     }
                     validation().validate(optLicense.get());
                 }
 
                 @Override
-                Decoder authenticate(final Socket<InputStream> input) throws Exception {
-                    final Optional<Socket<InputStream>> optSource = Optional.ofNullable(input);
+                Decoder authenticate(final Store source) throws Exception {
+                    final Optional<Store> optSource = Optional.of(source);
                     Optional<Decoder> optDecoder = cachedDecoder.map(optSource);
                     if (!optDecoder.isPresent()) {
-                        optDecoder = Optional.of(super.authenticate(input));
+                        optDecoder = Optional.of(super.authenticate(source));
                         cachedDecoder = new Cache<>(optSource, optDecoder, cachePeriodMillis());
                     }
                     return optDecoder.get();
@@ -852,9 +850,9 @@ implements
                         }
 
                         @Override
-                        public LicenseKeyGenerator saveTo(final Socket<OutputStream> output) throws LicenseManagementException {
+                        public LicenseKeyGenerator saveTo(final Store sink) throws LicenseManagementException {
                             check(() -> {
-                                codec().encoder(compressionThenEncryption().apply(output)).encode(model());
+                                codec().encoder(sink.map(compressionThenEncryption())).encode(model());
                                 return null;
                             });
                             return this;
@@ -902,11 +900,11 @@ implements
                 }
 
                 @Override
-                public void install(final Socket<InputStream> source) throws LicenseManagementException {
+                public void install(final Store source) throws LicenseManagementException {
                     check(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
-                        copy(source, store().output());
+                        copy(source.input(), store().output());
                         return null;
                     });
                 }
@@ -915,7 +913,7 @@ implements
                 public License load() throws LicenseManagementException {
                     return check(() -> {
                         authorization().clearLoad(TrueLicenseManager.this);
-                        return decodeLicense(store().input());
+                        return decodeLicense(store());
                     });
                 }
 
@@ -923,7 +921,7 @@ implements
                 public void verify() throws LicenseManagementException {
                     check(() -> {
                         authorization().clearVerify(TrueLicenseManager.this);
-                        validate(store().input());
+                        validate(store());
                         return null;
                     });
                 }
@@ -936,7 +934,7 @@ implements
                         // #TRUELICENSE-81: A consumer license manager must
                         // authenticate the installed license key before uninstalling
                         // it.
-                        authenticate(store1.input());
+                        authenticate(store1);
                         store1.delete();
                         return null;
                     });
@@ -946,29 +944,25 @@ implements
                 // License consumer functions:
                 //
 
-                void validate(Socket<InputStream> input) throws Exception {
-                    validation().validate(decodeLicense(input));
+                void validate(Store source) throws Exception { validation().validate(decodeLicense(source)); }
+
+                License decodeLicense(Store source) throws Exception {
+                    return authenticate(source).decode(License.class);
                 }
 
-                License decodeLicense(Socket<InputStream> input) throws Exception {
-                    return authenticate(input).decode(License.class);
+                Decoder authenticate(Store source) throws Exception {
+                    return authentication().verify(repositoryController(source));
                 }
 
-                Decoder authenticate(Socket<InputStream> input) throws Exception {
-                    return authentication().verify(repositoryController(input));
+                RepositoryController repositoryController(Store source) throws Exception {
+                    return repositoryContext().controller(repositoryModel(source), codec());
                 }
 
-                RepositoryController repositoryController(Socket<InputStream> input) throws Exception {
-                    return repositoryContext().controller(repositoryModel(input), codec());
+                Model repositoryModel(Store source) throws Exception {
+                    return codec().decoder(decryptedAndDecompressedSource(source)).decode(repositoryContext().model().getClass());
                 }
 
-                Model repositoryModel(Socket<InputStream> input) throws Exception {
-                    return codec().decoder(decryptedAndDecompressedSource(input)).decode(repositoryContext().model().getClass());
-                }
-
-                Socket<InputStream> decryptedAndDecompressedSource(Socket<InputStream> input) {
-                    return compressionThenEncryption().unapply(input);
-                }
+                Store decryptedAndDecompressedSource(Store source) { return source.map(compressionThenEncryption()); }
 
                 //
                 // Property/factory functions:
@@ -1000,16 +994,17 @@ implements
                             }
 
                             @Override
-                            public LicenseKeyGenerator saveTo(Socket<OutputStream> output) throws UncheckedLicenseManagementException {
-                                return uncheck(() -> generator.saveTo(output));
+                            public UncheckedLicenseKeyGenerator saveTo(Store sink) throws UncheckedLicenseManagementException {
+                                uncheck(() -> generator.saveTo(sink));
+                                return this;
                             }
                         });
                     }
 
                     @Override
-                    public void install(final Socket<InputStream> input) throws UncheckedLicenseManagementException {
+                    public void install(final Store source) throws UncheckedLicenseManagementException {
                         uncheck(() -> {
-                            checked().install(input);
+                            checked().install(source);
                             return null;
                         });
                     }

@@ -5,9 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Socket;
-
-import java.io.OutputStream;
+import global.namespace.fun.io.api.Store;
 
 /**
  * A license key generator which generally throws an
@@ -23,5 +21,5 @@ public interface UncheckedLicenseKeyGenerator extends LicenseKeyGenerator {
     License license() throws UncheckedLicenseManagementException;
 
     @Override
-    LicenseKeyGenerator saveTo(Socket<OutputStream> output) throws UncheckedLicenseManagementException;
+    UncheckedLicenseKeyGenerator saveTo(Store sink) throws UncheckedLicenseManagementException;
 }

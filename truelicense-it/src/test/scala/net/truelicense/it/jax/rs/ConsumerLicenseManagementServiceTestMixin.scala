@@ -15,7 +15,7 @@ trait ConsumerLicenseManagementServiceTestMixin {
   protected lazy val (cachedLicenseClass, cachedLicenseBean, cachedLicenseKey): (Class[_ <: License], License, Array[Byte]) = {
     val store = memoryStore
     val bean = license
-    val generator = vendorManager generateKeyFrom bean saveTo store.output
+    val generator = vendorManager generateKeyFrom bean saveTo store
     (bean.getClass, generator.license, store.content)
   }
 }

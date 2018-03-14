@@ -13,10 +13,10 @@ import global.namespace.fun.io.bios.BIOS.memoryStore
 trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =>
   def call() {
     val store = memoryStore
-    vendorManager generateKeyFrom license saveTo store.output
+    vendorManager generateKeyFrom license saveTo store
     for (i <- 1 to 5) {
       val manager = consumerManager()
-      manager install store.input
+      manager install store
       val num = 1000 * 1000
       val start = System.nanoTime
       for (j <- 1 to num) {

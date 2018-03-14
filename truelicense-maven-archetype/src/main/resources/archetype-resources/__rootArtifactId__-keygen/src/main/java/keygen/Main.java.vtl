@@ -72,7 +72,7 @@ public enum Main {
                     final License input = createOrDecodeInputLicense();
                     final License output = manager()
                             .generateKeyFrom(input)
-                            .saveTo(store().output())
+                            .saveTo(store())
                             .license();
                     if (verbose()) {
                         err.println(output);

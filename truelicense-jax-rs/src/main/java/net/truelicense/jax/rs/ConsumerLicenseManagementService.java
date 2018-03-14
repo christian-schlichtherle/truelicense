@@ -84,7 +84,7 @@ public final class ConsumerLicenseManagementService {
         try {
             final Store store = memoryStore();
             store.content(key);
-            manager.install(store.input());
+            manager.install(store);
         } catch (Exception e) {
             throw new ConsumerLicenseManagementServiceException(BAD_REQUEST, e);
         }
