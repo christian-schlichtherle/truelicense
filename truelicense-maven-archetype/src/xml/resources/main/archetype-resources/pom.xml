@@ -625,20 +625,34 @@
             </build>
         </profile>
         <profile>
-            <id>javadoc-on-jdk-9</id>
+            <id>exclude-jaxb-dependencies-before-jdk9</id>
             <activation>
-                <jdk>[9,)</jdk>
+                <jdk>[,9)</jdk>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <additionalparam>--add-modules ALL-SYSTEM ${additionalparam}</additionalparam>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.truelicense</groupId>
+                        <artifactId>truelicense-v2-xml</artifactId>
+                        <version>${trueLicenseVersion}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>javax.activation</groupId>
+                                <artifactId>javax.activation-api</artifactId>
+                            </exclusion>
+                            <exclusion>
+                                <groupId>javax.xml.bind</groupId>
+                                <artifactId>jaxb-api</artifactId>
+                            </exclusion>
+                            <exclusion>
+                                <groupId>org.glassfish.jaxb</groupId>
+                                <artifactId>jaxb-runtime</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
         </profile>
     </profiles>
+
 </project>
