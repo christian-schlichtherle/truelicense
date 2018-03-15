@@ -12,7 +12,6 @@ import javax.security.auth.x500.X500Principal
 import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api._
-import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
 import net.truelicense.api.codec.{Codec, CodecProvider}
 import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.core.TrueLicenseApplicationContext
@@ -22,9 +21,7 @@ import net.truelicense.obfuscate.ObfuscatedString
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
-trait TestContext[Model <: AnyRef]
-  extends CodecProvider
-  with RepositoryContextProvider[Model] {
+trait TestContext[Model <: AnyRef] extends CodecProvider {
 
   val applicationContext: TrueLicenseApplicationContext[Model]
 
@@ -82,8 +79,6 @@ trait TestContext[Model <: AnyRef]
   }
 
   def managementContextBuilder: LicenseManagementContextBuilder = applicationContext.context
-
-  final override def repositoryContext: RepositoryContext[Model] = applicationContext.repositoryContext
 
   final def test1234: PasswordProtection =
     new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael))) /* => "test1234" */
