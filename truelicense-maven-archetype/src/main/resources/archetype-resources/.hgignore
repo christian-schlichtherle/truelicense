@@ -21,3 +21,4 @@ sdfsdsfd
 ^(.*/)?target/
 
 # NetBeans artifacts (none):
+nbactions.xml

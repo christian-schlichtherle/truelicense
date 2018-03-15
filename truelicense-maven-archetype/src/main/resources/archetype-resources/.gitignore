@@ -21,3 +21,4 @@ target/
 /.hg/
 
 # NetBeans artifacts (none):
+nbactions.xml
