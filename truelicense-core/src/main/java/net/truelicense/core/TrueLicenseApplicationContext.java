@@ -956,7 +956,9 @@ implements
                 }
 
                 Model repositoryModel(Source source) throws Exception {
-                    return codec().decoder(decryptedAndDecompressedSource(source)).decode(repositoryContext().model().getClass());
+                    return codec()
+                            .decoder(decryptedAndDecompressedSource(source))
+                            .decode((Class<? extends Model>) repositoryContext().model().getClass());
                 }
 
                 Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
