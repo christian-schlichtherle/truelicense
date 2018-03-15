@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<p:properties
+        name="V2/JSON License Key Format"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:documentation>
+        This example adds
+        <code>licenseKeyFormat=V2/JSON</code>
+        to the Basic Configuration example in order to use the V2/JSON
+        license key format and use the dependency on the Jackson JSON
+        Processor in the generated code.
+    </p:documentation>
+    <p:list>
+        <p:artifactId>v2-json-license-key-format</p:artifactId>
+        <p:company>Company Inc.</p:company>
+        <p:groupId>com.company.product</p:groupId>
+        <p:licenseKeyFormat>V2/JSON</p:licenseKeyFormat>
+        <p:password>test1234</p:password>
+        <p:subject>Product 1</p:subject>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
+</p:properties>

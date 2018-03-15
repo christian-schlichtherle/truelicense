@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<p:properties
+        name="Hide Uninstall Action"
+        xml:lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:p="${project.url}/xml/archetype-properties">
+    <p:documentation>
+        This example adds
+        <code>hideUninstallAction=true</code>
+        to the Basic Configuration example in order to remove the
+        <i>Uninstall ${dollar}{subject} license key</i>
+        action from the license wizard dialog.
+    </p:documentation>
+    <p:list>
+        <p:artifactId>hide-uninstall-action</p:artifactId>
+        <p:company>Company Inc.</p:company>
+        <p:groupId>com.company.product</p:groupId>
+        <p:hideUninstallAction>true</p:hideUninstallAction>
+        <p:password>test1234</p:password>
+        <p:subject>Product 1</p:subject>
+        <p:version>1.0-SNAPSHOT</p:version>
+    </p:list>
+</p:properties>

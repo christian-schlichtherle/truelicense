@@ -16,6 +16,8 @@
             <directory/>
             <includes>
                 <include>.*ignore</include>
+                <include>.mvn/wrapper/**</include>
+                <include>mvnw*</include>
             </includes>
         </fileSet>
     </fileSets>
@@ -89,9 +91,9 @@
                 </fileSet>
             </fileSets>
         </module>
-        <module dir="__rootArtifactId__-keymgrsrv"
-                id="${rootArtifactId}-keymgrsrv"
-                name="${rootArtifactId}-keymgrsrv">
+        <module dir="__rootArtifactId__-keymgr-service"
+                id="${rootArtifactId}-keymgr-service"
+                name="${rootArtifactId}-keymgr-service">
             <fileSets>
                 <fileSet packaged="true" filtered="true">
                     <directory>src/main/java</directory>

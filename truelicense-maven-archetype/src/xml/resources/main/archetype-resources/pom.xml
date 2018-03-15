@@ -625,6 +625,7 @@
             </build>
         </profile>
         <profile>
+            <!-- Remove redundant JAXB dependencies because they cause ProGuard to fail the build. -->
             <id>exclude-jaxb-dependencies-before-jdk9</id>
             <activation>
                 <jdk>[,9)</jdk>
@@ -633,8 +634,17 @@
                 <dependencies>
                     <dependency>
                         <groupId>net.truelicense</groupId>
-                        <artifactId>truelicense-v2-xml</artifactId>
-                        <version>${trueLicenseVersion}</version>
+                        <artifactId>truelicense-api</artifactId>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>javax.xml.bind</groupId>
+                                <artifactId>jaxb-api</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>global.namespace.fun-io</groupId>
+                        <artifactId>fun-io-jaxb</artifactId>
                         <exclusions>
                             <exclusion>
                                 <groupId>javax.activation</groupId>
