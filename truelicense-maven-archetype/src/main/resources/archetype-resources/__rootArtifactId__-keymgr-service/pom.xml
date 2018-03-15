@@ -23,7 +23,7 @@
     <description>The RESTful web service interface for the license consumer application.</description>
 
     <properties>
-        <mainClass>${package}.keymgrsrv.Main</mainClass>
+        <mainClass>${package}.keymgr.service.Main</mainClass>
     </properties>
 
     <dependencies>
@@ -52,7 +52,7 @@
 
     <profiles>
         <profile>
-            <id>generate-keymgrsrv-standalone-jar</id>
+            <id>generate-keymgr-service-standalone-jar</id>
             <activation>
                 <property>
                     <name>skipStandaloneJars</name>
