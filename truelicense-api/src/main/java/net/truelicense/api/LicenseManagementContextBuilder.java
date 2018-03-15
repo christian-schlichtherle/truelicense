@@ -70,6 +70,15 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder compression(Transformation compression);
 
     /**
+     * Sets the name of the default (password based) encryption algorithm for the license key format.
+     * You can override this default value when configuring the (password based) encryption.
+     *
+     * @see EncryptionBuilder#algorithm(String)
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder encryptionAlgorithm(String encryptionAlgorithm);
+
+    /**
      * Sets the (password based) encryption function.
      *
      * @return {@code this}
@@ -116,6 +125,15 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder repositoryContext(RepositoryContext<?> repositoryContext);
+
+    /**
+     * Sets the name of the default key store type, for example {@code "JCEKS"} or {@code "JKS"}.
+     * You can override this default value when configuring the key store based authentication.
+     *
+     * @see AuthenticationBuilder#storeType(String)
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder storeType(String storeType);
 
     /**
      * Sets the license subject.

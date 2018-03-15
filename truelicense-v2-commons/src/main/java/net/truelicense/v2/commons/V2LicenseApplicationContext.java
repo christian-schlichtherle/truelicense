@@ -35,26 +35,10 @@ public abstract class V2LicenseApplicationContext extends TrueLicenseApplication
     public LicenseManagementContextBuilder context() {
         return super.context()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
+                .encryptionAlgorithm(PBE_ALGORITHM)
                 .encryptionFunction(V2Encryption::new)
                 .licenseFactory(License::new)
-                .repositoryContext(new V2RepositoryContext());
+                .repositoryContext(new V2RepositoryContext())
+                .storeType(STORE_TYPE);
     }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns {@code "PBEWithSHA1AndDESede"}.
-     */
-    @Override
-    public final String pbeAlgorithm() { return PBE_ALGORITHM; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns {@code "JCEKS"}.
-     */
-    @Override
-    public final String storeType() { return STORE_TYPE; }
 }

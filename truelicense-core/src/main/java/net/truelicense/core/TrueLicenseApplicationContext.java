@@ -63,23 +63,6 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
     @Override
     public final Date now() { return new Date(); }
 
-    /**
-     * Returns the name of the default Password Based Encryption (PBE)
-     * algorithm for the license key format.
-     * You can override this default value when configuring the PBE.
-     *
-     * @see EncryptionBuilder#algorithm
-     */
-    public abstract String pbeAlgorithm();
-
-    /**
-     * Returns the name of the default key store type,
-     * for example {@code "JCEKS"} or {@code "JKS"}.
-     * You can override this default value when configuring the key store based
-     * authentication.
-     */
-    public abstract String storeType();
-
     //
     // Utility functions:
     //
@@ -130,6 +113,7 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         Clock clock = context();
         Optional<Codec> codec = Optional.empty();
         Optional<Transformation> compression = Optional.empty();
+        String encryptionAlgorithm = "";
         Optional<EncryptionFunction> encryptionFunction = Optional.empty();
         Optional<LicenseFactory> factory = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
@@ -137,6 +121,7 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
         Optional<RepositoryContext<?>> repositoryContext = Optional.empty();
         String subject = "";
+        String storeType = "";
         Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
@@ -185,6 +170,12 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         }
 
         @Override
+        public LicenseManagementContextBuilder encryptionAlgorithm(final String encryptionAlgorithm) {
+            this.encryptionAlgorithm = requireNonEmpty(encryptionAlgorithm);
+            return this;
+        }
+
+        @Override
         public LicenseManagementContextBuilder encryptionFunction(final EncryptionFunction function) {
             this.encryptionFunction = Optional.of(function);
             return this;
@@ -217,6 +208,12 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         @Override
         public LicenseManagementContextBuilder repositoryContext(final RepositoryContext<?> repositoryContext) {
             this.repositoryContext = Optional.of(repositoryContext);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder storeType(final String storeType) {
+            this.storeType = requireNonEmpty(storeType);
             return this;
         }
 
@@ -264,12 +261,14 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         final Clock clock;
         final Codec codec;
         final Transformation compression;
+        final String encryptionAlgorithm;
         final EncryptionFunction encryptionFunction;
         final LicenseFactory factory;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
         final PasswordPolicy passwordPolicy;
         final RepositoryContext<?> repositoryContext;
+        final String storeType;
         final String subject;
         final Optional<LicenseValidation> validation;
         final LicenseFunctionComposition validationComposition;
@@ -281,12 +280,14 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
             this.clock = b.clock;
             this.codec = b.codec.get();
             this.compression = b .compression.get();
+            this.encryptionAlgorithm = requireNonEmpty(b.encryptionAlgorithm);
             this.encryptionFunction = b.encryptionFunction.get();
             this.factory = b.factory.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
             this.repositoryContext = b.repositoryContext.get();
+            this.storeType = requireNonEmpty(b.storeType);
             this.subject = requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
@@ -313,6 +314,8 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         @Override
         public TrueLicenseApplicationContext context() { return TrueLicenseApplicationContext.this; }
 
+        String encryptionAlgorithm() { return encryptionAlgorithm; }
+
         @Override
         public EncryptionFunction encryptionFunction() { return encryptionFunction; }
 
@@ -337,6 +340,8 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         public <Model> RepositoryContext<Model> repositoryContext() {
             return (RepositoryContext<Model>) repositoryContext;
         }
+
+        String storeType() { return storeType; }
 
         @Override
         public String subject() { return subject; }
@@ -563,7 +568,7 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
             public PasswordProtection storeProtection() { return new CheckedPasswordProtection(storeProtection); }
 
             @Override
-            public String storeType() { return storeType.orElseGet(() -> context().storeType()); }
+            public String storeType() { return storeType.orElseGet(TrueLicenseManagementContext.this::storeType); }
         }
 
         final class TrueEncryptionParameters implements EncryptionParameters {
@@ -577,7 +582,9 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
             }
 
             @Override
-            public String algorithm() { return algorithm.orElseGet(TrueLicenseApplicationContext.this::pbeAlgorithm); }
+            public String algorithm() {
+                return algorithm.orElseGet(TrueLicenseManagementContext.this::encryptionAlgorithm);
+            }
 
             @Override
             public PasswordProtection protection() { return new CheckedPasswordProtection(protection); }

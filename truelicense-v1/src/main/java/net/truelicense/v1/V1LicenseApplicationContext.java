@@ -38,28 +38,10 @@ public final class V1LicenseApplicationContext extends TrueLicenseApplicationCon
         return super.context()
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
+                .encryptionAlgorithm(PBE_ALGORITHM)
                 .encryptionFunction(V1Encryption::new)
                 .licenseFactory(LicenseContent::new)
-                .repositoryContext(new V1RepositoryContext());
+                .repositoryContext(new V1RepositoryContext())
+                .storeType(STORE_TYPE);
     }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseApplicationContext}
-     * returns {@code "PBEWithMD5AndDES"}.
-     * This was the only supported PBE algorithm in TrueLicense 1 and its
-     * not possible to use another one.
-     */
-    @Override
-    public final String pbeAlgorithm() { return PBE_ALGORITHM; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseApplicationContext}
-     * returns {@code "JKS"}.
-     */
-    @Override
-    public final String storeType() { return STORE_TYPE; }
 }

@@ -48,6 +48,7 @@ public abstract class ApiDemo {
                 .codec(mock(Codec.class))
                 .clock(mock(Clock.class))
                 .compression(mock(Transformation.class))
+                .encryptionAlgorithm("PBEWithSHA1AndDESede")
                 .encryptionFunction(mock(EncryptionFunction.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
@@ -55,6 +56,7 @@ public abstract class ApiDemo {
                 .passwordPolicy(mock(PasswordPolicy.class))
                 .repositoryContext(mock(RepositoryContext.class))
                 .subject("MyProduct 1")
+                .storeType("JCEKS")
                 .validation(mock(LicenseValidation.class))
                 .validationComposition(LicenseFunctionComposition.decorate)
                 .build();

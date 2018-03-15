@@ -20,12 +20,9 @@ import net.truelicense.api.passwd.PasswordProtection;
  */
 public interface EncryptionParameters {
 
-    /** Returns the password based encryption algorithm. */
+    /** Returns the name of the password based encryption algorithm. */
     String algorithm();
 
-    /**
-     * Returns a password protection for generating the secret key for
-     * encryption/decryption.
-     */
+    /** Returns a password protection for generating the secret key for encryption/decryption. */
     PasswordProtection protection();
 }
