@@ -5,14 +5,11 @@
 
 package net.truelicense.v2.commons;
 
-import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.License;
-import net.truelicense.api.auth.RepositoryContext;
-import net.truelicense.api.crypto.EncryptionParameters;
+import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v2.commons.auth.V2RepositoryContext;
-import net.truelicense.v2.commons.auth.V2RepositoryModel;
 import net.truelicense.v2.commons.crypto.V2Encryption;
 
 import java.util.zip.Deflater;
@@ -20,15 +17,13 @@ import java.util.zip.Deflater;
 import static global.namespace.fun.io.bios.BIOS.deflate;
 
 /**
- * The root context for applications which need to manage V2/* format license
- * keys.
+ * The root context for applications which need to manage V2/* format license keys.
  * <p>
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-public abstract class V2LicenseApplicationContext
-extends TrueLicenseApplicationContext<V2RepositoryModel> {
+public abstract class V2LicenseApplicationContext extends TrueLicenseApplicationContext {
 
     @Obfuscate
     private static final String STORE_TYPE = "JCEKS";
@@ -36,54 +31,14 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithSHA1AndDESede";
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns a compression for V2 format license keys.
-     */
     @Override
-    public final Transformation compression() { return deflate(Deflater.BEST_COMPRESSION); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns an encryption for V2 format license keys with the given PBE
-     * parameters.
-     */
-    @Override
-    public final Transformation encryption(EncryptionParameters parameters) { return new V2Encryption(parameters); }
-
-    @Override
-    public License license() { return new License(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns {@code "PBEWithSHA1AndDESede"}.
-     */
-    @Override
-    public final String pbeAlgorithm() { return PBE_ALGORITHM; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns a new {@link V2RepositoryContext}.
-     */
-    @Override
-    public final RepositoryContext<V2RepositoryModel> repositoryContext() {
-        return new V2RepositoryContext();
+    public LicenseManagementContextBuilder context() {
+        return super.context()
+                .compression(deflate(Deflater.BEST_COMPRESSION))
+                .encryptionAlgorithm(PBE_ALGORITHM)
+                .encryptionFunction(V2Encryption::new)
+                .licenseFactory(License::new)
+                .repositoryContext(new V2RepositoryContext())
+                .storeType(STORE_TYPE);
     }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns {@code "JCEKS"}.
-     */
-    @Override
-    public final String storeType() { return STORE_TYPE; }
 }

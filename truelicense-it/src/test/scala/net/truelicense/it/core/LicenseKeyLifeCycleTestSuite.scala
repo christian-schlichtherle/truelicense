@@ -15,9 +15,7 @@ import org.scalatest._
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
-abstract class LicenseKeyLifeCycleTestSuite
-  extends WordSpec
-{ this: TestContext[_] =>
+abstract class LicenseKeyLifeCycleTestSuite extends WordSpec { this: TestContext =>
 
   "The license key life cycle" should {
     "work for regular license keys" in {

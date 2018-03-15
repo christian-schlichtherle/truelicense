@@ -10,7 +10,7 @@ import java.util.concurrent.Callable
 import global.namespace.fun.io.bios.BIOS.memoryStore
 
 /** @author Christian Schlichtherle */
-trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext[_] =>
+trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext =>
   def call() {
     val store = memoryStore
     vendorManager generateKeyFrom license saveTo store

@@ -24,6 +24,4 @@ import net.truelicense.api.crypto.EncryptionProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementParameters
-extends AuthenticationProvider,
-        EncryptionProvider {
-}
+extends AuthenticationProvider, EncryptionProvider { }

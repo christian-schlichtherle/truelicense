@@ -6,12 +6,12 @@
 package net.truelicense.api.auth;
 
 /**
- * Provides a repository context.
+ * Provides an authentication function.
  *
  * @author Christian Schlichtherle
  */
-public interface RepositoryContextProvider {
+public interface AuthenticationFunctionProvider {
 
-    /** Returns a repository context. */
-    <Model> RepositoryContext<Model> repositoryContext();
+    /** Returns the authentication function. */
+    AuthenticationFunction authenticationFunction();
 }

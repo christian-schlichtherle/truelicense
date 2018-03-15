@@ -7,8 +7,7 @@ import net.truelicense.jax.rs.ConsumerLicenseManagementService
 
 import scala.language.existentials
 
-trait ConsumerLicenseManagementServiceTestMixin {
-  this: TestContext[_] =>
+trait ConsumerLicenseManagementServiceTestMixin { this: TestContext =>
 
   lazy val managementService: ConsumerLicenseManagementService = new ConsumerLicenseManagementService(consumerManager())
 

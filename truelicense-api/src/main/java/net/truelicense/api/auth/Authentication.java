@@ -24,8 +24,7 @@ public interface Authentication {
      * @param repository the controller for the repository for encoding the
      *                   artifact to.
      * @param artifact the artifact to sign.
-     * @return An Artifactory for decoding the signed artifact in the
-     *         repository.
+     * @return A decoder for the signed artifact in the repository.
      */
     Decoder sign(RepositoryController repository, Object artifact) throws Exception;
 
@@ -37,8 +36,7 @@ public interface Authentication {
      *
      * @param repository the controller for the repository for decoding the
      *                   artifact from.
-     * @return An Artifactory for decoding the verified artifact in the
-     *         repository.
+     * @return A decoder for the verified artifact in the repository.
      * @throws RepositoryIntegrityException if the integrity of the repository
      *         with its encoded artifact has been compromised.
      */

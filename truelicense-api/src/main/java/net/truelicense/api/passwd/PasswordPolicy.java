@@ -14,10 +14,10 @@ public interface PasswordPolicy {
 
     /**
      * Checks the password provided by the given protection for compliance to
-     * this policy.
+     * this password policy.
      *
      * @throws WeakPasswordException If the password provided by the given
-     *         protection does not comply to this policy.
+     *         protection does not comply to this password policy.
      */
     void check(PasswordProtection protection) throws Exception;
 }

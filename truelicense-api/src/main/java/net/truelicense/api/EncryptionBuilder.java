@@ -10,7 +10,7 @@ import net.truelicense.api.misc.ChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
 
 /**
- * Injects a password based encryption into some parent component builder.
+ * Injects a (password based) encryption into some parent component builder.
  *
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle

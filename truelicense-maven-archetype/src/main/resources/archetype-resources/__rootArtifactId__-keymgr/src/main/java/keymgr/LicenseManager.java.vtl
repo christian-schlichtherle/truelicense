@@ -60,6 +60,7 @@ import java.io.InputStream;
 import global.namespace.fun.io.api.Source;
 import net.truelicense.api.*;
 import net.truelicense.api.passwd.PasswordProtection;
+import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.*;
 
 import $licenseApplicationContextPackage.$licenseApplicationContextClass;
@@ -200,7 +201,7 @@ public enum LicenseManager implements ConsumerLicenseManager {
     // The implementation class
     // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final $licenseApplicationContextClass _applicationContext =
+    private static final LicenseApplicationContext _applicationContext =
             new $licenseApplicationContextClass();
 
     private static final LicenseManagementContext _managementContext =
@@ -248,8 +249,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
 
     abstract ConsumerLicenseManager newManager();
 
-    final PasswordProtection protection(long[] obfuscated) {
-        return _applicationContext.protection(obfuscated);
+    private static PasswordProtection protection(long[] obfuscated) {
+        return new ObfuscatedPasswordProtection(new ObfuscatedString(obfuscated));
     }
 
     @Override

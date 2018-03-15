@@ -9,8 +9,12 @@ import global.namespace.fun.io.api.Socket;
 import global.namespace.fun.io.api.Store;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
-import net.truelicense.api.misc.ClassLoaderProvider;
+import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.auth.RepositoryContext;
+import net.truelicense.api.codec.Codec;
+import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Clock;
+import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
 
 import java.io.InputStream;
@@ -38,12 +42,21 @@ public abstract class ApiDemo {
     public LicenseManagementContext licenseManagementContext() {
         return licenseApplicationContext()
                 .context() // returns a LicenseManagementContextBuilder
+                .authenticationFunction(mock(AuthenticationFunction.class))
                 .authorization(mock(LicenseManagementAuthorization.class))
-                .classLoaderProvider(mock(ClassLoaderProvider.class))
+                .cachePeriodMillis(1000L)
+                .codec(mock(Codec.class))
                 .clock(mock(Clock.class))
+                .compression(mock(Transformation.class))
+                .encryptionAlgorithm("PBEWithSHA1AndDESede")
+                .encryptionFunction(mock(EncryptionFunction.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
+                .licenseFactory(mock(LicenseFactory.class))
+                .passwordPolicy(mock(PasswordPolicy.class))
+                .repositoryContext(mock(RepositoryContext.class))
                 .subject("MyProduct 1")
+                .storeType("JCEKS")
                 .validation(mock(LicenseValidation.class))
                 .validationComposition(LicenseFunctionComposition.decorate)
                 .build();

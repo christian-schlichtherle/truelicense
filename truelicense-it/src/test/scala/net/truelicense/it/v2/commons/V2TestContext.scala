@@ -5,16 +5,13 @@
 
 package net.truelicense.it.v2.commons
 
-import global.namespace.fun.io.api.{Store, Transformation}
+import global.namespace.fun.io.api.Store
 import net.truelicense.api._
-import net.truelicense.api.crypto.EncryptionParameters
-import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.v2.commons.V2TestContext.prefix
-import net.truelicense.v2.commons.auth.V2RepositoryModel
 
 /** @author Christian Schlichtherle */
-trait V2TestContext extends TestContext[V2RepositoryModel] {
+trait V2TestContext extends TestContext {
 
   final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
@@ -59,11 +56,6 @@ trait V2TestContext extends TestContext[V2RepositoryModel] {
       .build
     require(cm.context eq managementContext)
     cm
-  }
-
-  final def encryption: Transformation = applicationContext encryption new EncryptionParameters {
-    def algorithm: String = "PBEWithSHA1AndDESede"
-    def protection: PasswordProtection = test1234
   }
 
   final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {

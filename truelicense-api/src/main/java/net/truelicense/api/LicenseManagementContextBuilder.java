@@ -5,9 +5,14 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Transformation;
+import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.auth.RepositoryContext;
+import net.truelicense.api.codec.Codec;
+import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.ClassLoaderProvider;
 import net.truelicense.api.misc.Clock;
+import net.truelicense.api.passwd.PasswordPolicy;
 
 /**
  * A builder for
@@ -21,25 +26,64 @@ public interface LicenseManagementContextBuilder
 extends Builder<LicenseManagementContext> {
 
     /**
-     * Sets the custom license management authorization (optional).
+     * Sets the authentication function (optional).
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder authenticationFunction(AuthenticationFunction function);
+
+    /**
+     * Sets the license management authorization (optional).
      *
      * @return {@code this}
      */
     LicenseManagementContextBuilder authorization(LicenseManagementAuthorization authorization);
 
     /**
-     * Sets the class loader provider (optional).
+     * Sets the cache period for external changes to the license key in milliseconds (optional).
+     * Any non-negative value is valid.
+     * Pass {@link Long#MAX_VALUE} to disable the timeout or zero to disable the caching of intermediate results.
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder classLoaderProvider(ClassLoaderProvider classLoaderProvider);
+    LicenseManagementContextBuilder cachePeriodMillis(long cachePeriodMillis);
 
     /**
-     * Sets the custom clock (optional).
+     * Sets the clock (optional).
      *
      * @return {@code this}
      */
     LicenseManagementContextBuilder clock(Clock clock);
+
+    /**
+     * Sets the codec.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder codec(Codec codec);
+
+    /**
+     * Sets the compression transformation.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder compression(Transformation compression);
+
+    /**
+     * Sets the name of the default (password based) encryption algorithm for the license key format.
+     * You can override this default value when configuring the (password based) encryption.
+     *
+     * @see EncryptionBuilder#algorithm(String)
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder encryptionAlgorithm(String encryptionAlgorithm);
+
+    /**
+     * Sets the (password based) encryption function.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder encryptionFunction(EncryptionFunction function);
 
     /**
      * Sets the custom license initialization (optional).
@@ -60,6 +104,36 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder initializationComposition(LicenseFunctionComposition composition);
+
+    /**
+     * Sets the license factory.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder licenseFactory(LicenseFactory factory);
+
+    /**
+     * Sets the password policy (optional).
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder passwordPolicy(PasswordPolicy policy);
+
+    /**
+     * Sets the repository context.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder repositoryContext(RepositoryContext<?> repositoryContext);
+
+    /**
+     * Sets the name of the default key store type, for example {@code "JCEKS"} or {@code "JKS"}.
+     * You can override this default value when configuring the key store based authentication.
+     *
+     * @see AuthenticationBuilder#storeType(String)
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder storeType(String storeType);
 
     /**
      * Sets the license subject.

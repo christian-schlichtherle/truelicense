@@ -6,7 +6,6 @@
 package net.truelicense.api;
 
 import net.truelicense.api.codec.CodecProvider;
-import net.truelicense.api.misc.ClassLoaderProvider;
 
 /**
  * A context for license management.
@@ -17,10 +16,7 @@ import net.truelicense.api.misc.ClassLoaderProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementContext
-extends ClassLoaderProvider,
-        CodecProvider,
-        LicenseFactory,
-        LicenseManagementSubjectProvider {
+extends CodecProvider, LicenseFactory, LicenseManagementSubjectProvider {
 
     /**
      * Returns a builder for a

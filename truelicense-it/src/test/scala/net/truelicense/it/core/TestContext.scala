@@ -9,30 +9,27 @@ import java.util.Calendar._
 import java.util.Date
 import javax.security.auth.x500.X500Principal
 
-import global.namespace.fun.io.api.{Store, Transformation}
+import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memoryStore
-import net.truelicense.api.auth.{RepositoryContext, RepositoryContextProvider}
+import net.truelicense.api._
 import net.truelicense.api.codec.{Codec, CodecProvider}
 import net.truelicense.api.passwd.PasswordProtection
-import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementContext, VendorLicenseManager}
 import net.truelicense.core.TrueLicenseApplicationContext
+import net.truelicense.core.passwd.ObfuscatedPasswordProtection
 import net.truelicense.it.core.TestContext._
+import net.truelicense.obfuscate.ObfuscatedString
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
-trait TestContext[Model <: AnyRef]
-  extends CodecProvider
-  with RepositoryContextProvider[Model] {
+trait TestContext extends CodecProvider {
 
-  val applicationContext: TrueLicenseApplicationContext[Model]
+  val applicationContext: TrueLicenseApplicationContext
 
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
   def chainedVendorManager: VendorLicenseManager
 
   final override def codec: Codec = managementContext.codec
-
-  final def compression: Transformation = applicationContext.compression
 
   final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
 
@@ -46,8 +43,6 @@ trait TestContext[Model <: AnyRef]
     add(DATE, days)
     getTime
   }
-
-  def encryption: Transformation
 
   def extraData: AnyRef = { // must be AnyRef to enable overriding and returning a bean instead.
 
@@ -77,19 +72,16 @@ trait TestContext[Model <: AnyRef]
   }
 
   final lazy val managementContext: LicenseManagementContext = {
-    applicationContext
-      .context
+    managementContextBuilder
       .subject("subject")
       .validation(logger debug("Validating license bean: {}", _))
       .build
   }
 
-  final override def repositoryContext: RepositoryContext[Model] = applicationContext.repositoryContext
+  def managementContextBuilder: LicenseManagementContextBuilder = applicationContext.context
 
-  final def test1234: PasswordProtection = applicationContext protection
-    Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael) /* => "test1234" */
-
-  final def transformation: Transformation = compression andThen encryption
+  final def test1234: PasswordProtection =
+    new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael))) /* => "test1234" */
 
   def vendorManager: VendorLicenseManager
 }
@@ -97,5 +89,5 @@ trait TestContext[Model <: AnyRef]
 /** @author Christian Schlichtherle */
 object TestContext {
 
-  private val logger = LoggerFactory getLogger classOf[TestContext[_]]
+  private val logger = LoggerFactory getLogger classOf[TestContext]
 }

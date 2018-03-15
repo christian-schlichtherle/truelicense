@@ -43,6 +43,7 @@ import javax.security.auth.x500.X500Principal;
 
 import net.truelicense.api.*;
 import net.truelicense.api.passwd.PasswordProtection;
+import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.*;
 
 import $licenseApplicationContextPackage.$licenseApplicationContextClass;
@@ -131,7 +132,7 @@ public enum LicenseManager implements VendorLicenseManager {
     // The implementation class
     // $licenseApplicationContextPackage.$licenseApplicationContextClass
     // uses the license key format $licenseKeyFormat.
-    private static final $licenseApplicationContextClass _applicationContext =
+    private static final LicenseApplicationContext _applicationContext =
             new $licenseApplicationContextClass();
 
     private static final LicenseManagementContext _managementContext =
@@ -140,13 +141,11 @@ public enum LicenseManager implements VendorLicenseManager {
 #if($keyGenAuthorizationClass != "-")
                     .authorization(#new($keyGenAuthorizationClass "LicenseManagementAuthorization"))
 #end
-                    .initialization(new LicenseInitialization() {
-                            @Override
-                            public void initialize(final License bean) {
-                                if (null == bean.getIssuer())
-                                    bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
-                            }
-                        })
+                    .initialization(bean -> {
+                        if (null == bean.getIssuer()) {
+                            bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
+                        }
+                    })
                     .subject(SUBJECT)
 #if($keyGenValidationClass != "-")
                     .validation(#new($keyGenValidationClass "LicenseValidation"))
@@ -166,8 +165,8 @@ public enum LicenseManager implements VendorLicenseManager {
 
     abstract VendorLicenseManager newManager();
 
-    final PasswordProtection protection(long[] obfuscated) {
-        return _applicationContext.protection(obfuscated);
+    private static PasswordProtection protection(long[] obfuscated) {
+        return new ObfuscatedPasswordProtection(new ObfuscatedString(obfuscated));
     }
 
     @Override

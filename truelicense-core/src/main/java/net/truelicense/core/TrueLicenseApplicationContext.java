@@ -9,16 +9,18 @@ import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.CodecProvider;
 import net.truelicense.api.comp.CompressionProvider;
+import net.truelicense.api.crypto.EncryptionFunction;
+import net.truelicense.api.crypto.EncryptionFunctionProvider;
 import net.truelicense.api.crypto.EncryptionParameters;
-import net.truelicense.api.misc.*;
+import net.truelicense.api.misc.Builder;
+import net.truelicense.api.misc.CachePeriodProvider;
+import net.truelicense.api.misc.Clock;
+import net.truelicense.api.misc.ContextProvider;
 import net.truelicense.api.passwd.*;
 import net.truelicense.core.auth.Notary;
 import net.truelicense.core.passwd.MinimumPasswordPolicy;
-import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.Obfuscate;
-import net.truelicense.obfuscate.ObfuscatedString;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.InputStream;
@@ -44,73 +46,13 @@ import static net.truelicense.core.Messages.*;
  * {@linkplain Object#equals(Object) equal} or at least behaves identical to
  * any previously returned object.
  *
- * @param <Model> the type of the repository model.
  * @author Christian Schlichtherle
  */
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
-public abstract class TrueLicenseApplicationContext<Model>
-implements
-        CachePeriodProvider,
-        ClassLoaderProvider,
-        Clock,
-        CodecProvider,
-        CompressionProvider,
-        LicenseApplicationContext,
-        LicenseManagementAuthorizationProvider,
-        LicenseFactory,
-        PasswordPolicyProvider,
-        PasswordProtectionProvider<ObfuscatedString>,
-        RepositoryContextProvider<Model> {
-
-    /**
-     * Returns an authentication for the given key store parameters.
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link Notary} for the given key store parameters.
-     *
-     * @param parameters the key store parameters.
-     */
-    public Authentication authentication(AuthenticationParameters parameters) { return new Notary(parameters); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns an authorization which clears all operation requests.
-     */
-    @Override
-    public final LicenseManagementAuthorization authorization() { return new TrueLicenseManagementAuthorization(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns half an hour (in milliseconds) to account for external changes
-     * to the configured store for the license key.
-     */
-    @Override
-    public long cachePeriodMillis() { return 30 * 60 * 1000; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * lists the current thread's context class loader, if not {@code null}.
-     */
-    @Override
-    public final Optional<ClassLoader> classLoader() {
-        return Optional.ofNullable(Thread.currentThread().getContextClassLoader());
-    }
+public abstract class TrueLicenseApplicationContext implements Clock, LicenseApplicationContext {
 
     @Override
-    public final LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
-
-    /**
-     * Returns a password based encryption using the given parameters.
-     *
-     * @param parameters the password based encryption parameters.
-     */
-    public abstract Transformation encryption(EncryptionParameters parameters);
+    public LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
 
     /**
      * {@inheritDoc}
@@ -120,51 +62,6 @@ implements
      */
     @Override
     public final Date now() { return new Date(); }
-
-    /**
-     * Returns the name of the default Password Based Encryption (PBE)
-     * algorithm for the license key format.
-     * You can override this default value when configuring the PBE.
-     *
-     * @see EncryptionBuilder#algorithm
-     */
-    public abstract String pbeAlgorithm();
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link MinimumPasswordPolicy}.
-     */
-    @Override
-    public PasswordPolicy policy() { return new MinimumPasswordPolicy(); }
-
-    /**
-     * Returns a password protection for the given representation of an
-     * obfuscated string.
-     * Calling this method creates a new {@link ObfuscatedString} from the given
-     * array and forwards the call to {@link #protection(ObfuscatedString)}.
-     */
-    public final PasswordProtection protection(long[] obfuscated) {
-        return protection(new ObfuscatedString(obfuscated));
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link ObfuscatedPasswordProtection}.
-     */
-    @Override
-    public final PasswordProtection protection(ObfuscatedString os) { return new ObfuscatedPasswordProtection(os); }
-
-    /**
-     * Returns the name of the default key store type,
-     * for example {@code "JCEKS"} or {@code "JKS"}.
-     * You can override this default value when configuring the key store based
-     * authentication.
-     */
-    public abstract String storeType();
 
     //
     // Utility functions:
@@ -205,34 +102,34 @@ implements
     // Inner classes:
     //
 
-    final class CheckedPasswordProtection implements PasswordProtection {
-
-        final PasswordProtection protection;
-
-        CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
-
-        @Override
-        public Password password(final PasswordUsage usage) throws Exception {
-            if (usage.equals(PasswordUsage.WRITE)) { // check null
-                policy().check(protection);
-            }
-            return protection.password(usage);
-        }
-    }
-
     final class TrueLicenseManagementContextBuilder
     implements
             ContextProvider<TrueLicenseApplicationContext>,
             LicenseManagementContextBuilder {
 
-        LicenseManagementAuthorization authorization = context().authorization();
-        ClassLoaderProvider classLoaderProvider = context();
+        AuthenticationFunction authenticationFunction = Notary::new;
+        LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
+        long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = context();
+        Optional<Codec> codec = Optional.empty();
+        Optional<Transformation> compression = Optional.empty();
+        String encryptionAlgorithm = "";
+        Optional<EncryptionFunction> encryptionFunction = Optional.empty();
+        Optional<LicenseFactory> factory = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
+        PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
+        Optional<RepositoryContext<?>> repositoryContext = Optional.empty();
         String subject = "";
+        String storeType = "";
         Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
+
+        @Override
+        public LicenseManagementContextBuilder authenticationFunction(final AuthenticationFunction function) {
+            this.authenticationFunction = requireNonNull(function);
+            return this;
+        }
 
         @Override
         public LicenseManagementContextBuilder authorization(final LicenseManagementAuthorization authorization) {
@@ -241,9 +138,12 @@ implements
         }
 
         @Override
-        public LicenseManagementContextBuilder classLoaderProvider(final ClassLoaderProvider classLoaderProvider) {
-            this.classLoaderProvider = requireNonNull(classLoaderProvider);
-            return null;
+        public LicenseManagementContextBuilder cachePeriodMillis(final long cachePeriodMillis) {
+            if (cachePeriodMillis < 0) {
+                throw new IllegalArgumentException("" + cachePeriodMillis);
+            }
+            this.cachePeriodMillis = cachePeriodMillis;
+            return this;
         }
 
         @Override
@@ -253,8 +153,32 @@ implements
         }
 
         @Override
+        public LicenseManagementContextBuilder codec(final Codec codec) {
+            this.codec = Optional.of(codec);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder compression(final Transformation compression) {
+            this.compression = Optional.of(compression);
+            return this;
+        }
+
+        @Override
         public TrueLicenseApplicationContext context() {
             return TrueLicenseApplicationContext.this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder encryptionAlgorithm(final String encryptionAlgorithm) {
+            this.encryptionAlgorithm = requireNonEmpty(encryptionAlgorithm);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder encryptionFunction(final EncryptionFunction function) {
+            this.encryptionFunction = Optional.of(function);
+            return this;
         }
 
         @Override
@@ -266,6 +190,30 @@ implements
         @Override
         public LicenseManagementContextBuilder initializationComposition(final LicenseFunctionComposition composition) {
             this.initializationComposition = requireNonNull(composition);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder licenseFactory(final LicenseFactory factory) {
+            this.factory = Optional.of(factory);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder passwordPolicy(final PasswordPolicy passwordPolicy) {
+            this.passwordPolicy = requireNonNull(passwordPolicy);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder repositoryContext(final RepositoryContext<?> repositoryContext) {
+            this.repositoryContext = Optional.of(repositoryContext);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder storeType(final String storeType) {
+            this.storeType = requireNonEmpty(storeType);
             return this;
         }
 
@@ -293,48 +241,83 @@ implements
 
     final class TrueLicenseManagementContext
     implements
+            AuthenticationFunctionProvider,
+            CachePeriodProvider,
             Clock,
+            CompressionProvider,
             ContextProvider<TrueLicenseApplicationContext>,
+            EncryptionFunctionProvider,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
             LicenseManagementSubjectProvider,
-            LicenseValidationProvider {
+            LicenseValidationProvider,
+            PasswordPolicyProvider,
+            RepositoryContextProvider {
 
+        final AuthenticationFunction authenticationFunction;
         final LicenseManagementAuthorization authorization;
-        final ClassLoaderProvider classLoaderProvider;
+        final long cachePeriodMillis;
         final Clock clock;
+        final Codec codec;
+        final Transformation compression;
+        final String encryptionAlgorithm;
+        final EncryptionFunction encryptionFunction;
+        final LicenseFactory factory;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
+        final PasswordPolicy passwordPolicy;
+        final RepositoryContext<?> repositoryContext;
+        final String storeType;
         final String subject;
         final Optional<LicenseValidation> validation;
         final LicenseFunctionComposition validationComposition;
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
+            this.authenticationFunction = b.authenticationFunction;
             this.authorization = b.authorization;
-            this.classLoaderProvider = b.classLoaderProvider;
+            this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
+            this.codec = b.codec.get();
+            this.compression = b .compression.get();
+            this.encryptionAlgorithm = requireNonEmpty(b.encryptionAlgorithm);
+            this.encryptionFunction = b.encryptionFunction.get();
+            this.factory = b.factory.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
+            this.passwordPolicy = b.passwordPolicy;
+            this.repositoryContext = b.repositoryContext.get();
+            this.storeType = requireNonEmpty(b.storeType);
             this.subject = requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
         }
 
         @Override
+        public AuthenticationFunction authenticationFunction() { return authenticationFunction; }
+
+        @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
 
         @Override
-        public Optional<ClassLoader> classLoader() { return classLoaderProvider.classLoader(); }
+        public long cachePeriodMillis() { return cachePeriodMillis; }
 
         @Override
-        public Codec codec() { return context().codec(); }
+        public Codec codec() { return codec; }
+
+        @Override
+        public Transformation compression() { return compression; }
 
         @Override
         public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
 
         @Override
-        public TrueLicenseApplicationContext<Model> context() { return TrueLicenseApplicationContext.this; }
+        public TrueLicenseApplicationContext context() { return TrueLicenseApplicationContext.this; }
+
+        String encryptionAlgorithm() { return encryptionAlgorithm; }
+
+        @Override
+        public EncryptionFunction encryptionFunction() { return encryptionFunction; }
 
         @Override
         public LicenseInitialization initialization() {
@@ -345,10 +328,20 @@ implements
         }
 
         @Override
-        public License license() { return context().license(); }
+        public License license() { return factory.license(); }
 
         @Override
         public Date now() { return clock.now(); }
+
+        @Override
+        public PasswordPolicy passwordPolicy() { return passwordPolicy; }
+
+        @Override
+        public <Model> RepositoryContext<Model> repositoryContext() {
+            return (RepositoryContext<Model>) repositoryContext;
+        }
+
+        String storeType() { return storeType; }
 
         @Override
         public String subject() { return subject; }
@@ -362,9 +355,7 @@ implements
         }
 
         @Override
-        public VendorLicenseManagerBuilder vendor() {
-            return new VendorTrueLicenseManagerBuilder();
-        }
+        public VendorLicenseManagerBuilder vendor() { return new VendorTrueLicenseManagerBuilder(); }
 
         class ConsumerTrueLicenseManagerBuilder
         extends TrueLicenseManagerBuilder<ConsumerTrueLicenseManagerBuilder>
@@ -372,8 +363,7 @@ implements
 
             @Override
             public ConsumerLicenseManager build() {
-                final TrueLicenseManagementParameters
-                        p = new TrueLicenseManagementParameters(this);
+                final TrueLicenseManagementParameters p = new TrueLicenseManagementParameters(this);
                 return parent.isPresent()
                         ? p.new ChainedTrueLicenseManager()
                         : p.new CachingTrueLicenseManager();
@@ -481,7 +471,7 @@ implements
 
                 @Override
                 public Authentication build() {
-                    return context().authentication(new TrueAuthenticationParameters(this));
+                    return authenticationFunction().apply(new TrueAuthenticationParameters(this));
                 }
 
                 @Override
@@ -528,7 +518,9 @@ implements
                 }
 
                 @Override
-                public Transformation build() { return context().encryption(new TrueEncryptionParameters(this)); }
+                public Transformation build() {
+                    return encryptionFunction().apply(new TrueEncryptionParameters(this));
+                }
 
                 @Override
                 public TrueEncryptionBuilder protection(final PasswordProtection protection) {
@@ -576,7 +568,7 @@ implements
             public PasswordProtection storeProtection() { return new CheckedPasswordProtection(storeProtection); }
 
             @Override
-            public String storeType() { return storeType.orElseGet(() -> context().storeType()); }
+            public String storeType() { return storeType.orElseGet(TrueLicenseManagementContext.this::storeType); }
         }
 
         final class TrueEncryptionParameters implements EncryptionParameters {
@@ -590,10 +582,27 @@ implements
             }
 
             @Override
-            public String algorithm() { return algorithm.orElseGet(TrueLicenseApplicationContext.this::pbeAlgorithm); }
+            public String algorithm() {
+                return algorithm.orElseGet(TrueLicenseManagementContext.this::encryptionAlgorithm);
+            }
 
             @Override
             public PasswordProtection protection() { return new CheckedPasswordProtection(protection); }
+        }
+
+        final class CheckedPasswordProtection implements PasswordProtection {
+
+            final PasswordProtection protection;
+
+            CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
+
+            @Override
+            public Password password(final PasswordUsage usage) throws Exception {
+                if (usage.equals(PasswordUsage.WRITE)) { // checks null
+                    passwordPolicy().check(protection);
+                }
+                return protection.password(usage);
+            }
         }
 
         final class TrueLicenseManagementParameters
@@ -837,8 +846,7 @@ implements
 
                     class TrueLicenseKeyGenerator implements LicenseKeyGenerator {
 
-                        final RepositoryContext<Model> context = repositoryContext();
-                        final Model model = context.model();
+                        final Object model = repositoryContext().model();
                         Decoder decoder;
 
                         @Override
@@ -860,16 +868,15 @@ implements
                             return decoder;
                         }
 
-                        Model model() throws Exception {
+                        Object model() throws Exception {
                             init();
                             return model;
                         }
 
                         synchronized void init() throws Exception {
                             if (null == decoder) {
-                                decoder = authentication().sign(
-                                        context.controller(model, codec()),
-                                        validatedBean());
+                                decoder = authentication()
+                                        .sign(repositoryContext().controller(model, codec()), validatedBean());
                             }
                         }
 
@@ -955,10 +962,10 @@ implements
                     return repositoryContext().controller(repositoryModel(source), codec());
                 }
 
-                Model repositoryModel(Source source) throws Exception {
+                Object repositoryModel(Source source) throws Exception {
                     return codec()
                             .decoder(decryptedAndDecompressedSource(source))
-                            .decode((Class<? extends Model>) repositoryContext().model().getClass());
+                            .decode(repositoryContext().model().getClass());
                 }
 
                 Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }

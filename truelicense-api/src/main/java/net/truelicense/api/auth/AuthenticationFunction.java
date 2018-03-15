@@ -5,13 +5,11 @@
 
 package net.truelicense.api.auth;
 
+import java.util.function.Function;
+
 /**
- * Provides a repository context.
+ * Maps authentication parameters to authentications.
  *
  * @author Christian Schlichtherle
  */
-public interface RepositoryContextProvider {
-
-    /** Returns a repository context. */
-    <Model> RepositoryContext<Model> repositoryContext();
-}
+public interface AuthenticationFunction extends Function<AuthenticationParameters, Authentication> { }
