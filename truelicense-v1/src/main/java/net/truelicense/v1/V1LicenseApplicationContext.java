@@ -6,7 +6,6 @@
 package net.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
-import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
@@ -40,15 +39,9 @@ public final class V1LicenseApplicationContext extends TrueLicenseApplicationCon
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
                 .encryptionFunction(V1Encryption::new)
+                .licenseFactory(LicenseContent::new)
                 .repositoryContext(new V1RepositoryContext());
     }
-
-    /** Returns a <em>new</em> license content. */
-    // This introduces a cyclic dependency between the packages
-    // de.schlichtherle.license and this package.
-    // However, this is tolerable.
-    @Override
-    public License license() { return new LicenseContent(); }
 
     /**
      * {@inheritDoc}

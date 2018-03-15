@@ -49,8 +49,7 @@ import static net.truelicense.core.Messages.*;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
-public abstract class TrueLicenseApplicationContext
-implements Clock, LicenseApplicationContext, LicenseFactory {
+public abstract class TrueLicenseApplicationContext implements Clock, LicenseApplicationContext {
 
     @Override
     public LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
@@ -132,6 +131,7 @@ implements Clock, LicenseApplicationContext, LicenseFactory {
         Optional<Codec> codec = Optional.empty();
         Optional<Transformation> compression = Optional.empty();
         Optional<EncryptionFunction> encryptionFunction = Optional.empty();
+        Optional<LicenseFactory> factory = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
         PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
@@ -203,6 +203,12 @@ implements Clock, LicenseApplicationContext, LicenseFactory {
         }
 
         @Override
+        public LicenseManagementContextBuilder licenseFactory(final LicenseFactory factory) {
+            this.factory = Optional.of(factory);
+            return this;
+        }
+
+        @Override
         public LicenseManagementContextBuilder passwordPolicy(final PasswordPolicy passwordPolicy) {
             this.passwordPolicy = requireNonNull(passwordPolicy);
             return this;
@@ -259,6 +265,7 @@ implements Clock, LicenseApplicationContext, LicenseFactory {
         final Codec codec;
         final Transformation compression;
         final EncryptionFunction encryptionFunction;
+        final LicenseFactory factory;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
         final PasswordPolicy passwordPolicy;
@@ -275,6 +282,7 @@ implements Clock, LicenseApplicationContext, LicenseFactory {
             this.codec = b.codec.get();
             this.compression = b .compression.get();
             this.encryptionFunction = b.encryptionFunction.get();
+            this.factory = b.factory.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
@@ -317,7 +325,7 @@ implements Clock, LicenseApplicationContext, LicenseFactory {
         }
 
         @Override
-        public License license() { return context().license(); }
+        public License license() { return factory.license(); }
 
         @Override
         public Date now() { return clock.now(); }

@@ -97,6 +97,13 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder initializationComposition(LicenseFunctionComposition composition);
 
     /**
+     * Sets the license factory.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder licenseFactory(LicenseFactory factory);
+
+    /**
      * Sets the password policy (optional).
      *
      * @return {@code this}

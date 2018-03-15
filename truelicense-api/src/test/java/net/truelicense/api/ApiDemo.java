@@ -51,6 +51,7 @@ public abstract class ApiDemo {
                 .encryptionFunction(mock(EncryptionFunction.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
+                .licenseFactory(mock(LicenseFactory.class))
                 .passwordPolicy(mock(PasswordPolicy.class))
                 .repositoryContext(mock(RepositoryContext.class))
                 .subject("MyProduct 1")

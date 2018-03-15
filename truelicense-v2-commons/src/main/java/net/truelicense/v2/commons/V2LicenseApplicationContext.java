@@ -36,11 +36,9 @@ public abstract class V2LicenseApplicationContext extends TrueLicenseApplication
         return super.context()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionFunction(V2Encryption::new)
+                .licenseFactory(License::new)
                 .repositoryContext(new V2RepositoryContext());
     }
-
-    @Override
-    public License license() { return new License(); }
 
     /**
      * {@inheritDoc}
