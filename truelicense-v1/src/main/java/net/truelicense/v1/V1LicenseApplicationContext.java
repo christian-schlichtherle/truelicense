@@ -10,7 +10,6 @@ import de.schlichtherle.xml.GenericCertificate;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.auth.RepositoryContext;
-import net.truelicense.api.codec.Codec;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v1.auth.V1RepositoryContext;
@@ -20,20 +19,16 @@ import net.truelicense.v1.crypto.V1Encryption;
 import static global.namespace.fun.io.bios.BIOS.gzip;
 
 /**
- * The root context for applications which need to manage Version 1 (V1) format
- * license keys.
- * This class is provided to enable applications to generate, install, verify
- * and uninstall license keys in the format for TrueLicense 1.X applications.
- * Since TrueLicense 2.0, this format is obsolete and should not be used for
- * new applications!
- * Note that there is no compatibility between different format license keys.
+ * The root context for applications which need to manage Version 1 (V1) format license keys.
+ * This class is provided to enable applications to generate, install, verify and uninstall license keys in the format
+ * for TrueLicense 1.X applications.
+ * Since TrueLicense 2.0, this format is obsolete and should not be used for new applications!
  * <p>
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-public final class V1LicenseApplicationContext
-extends TrueLicenseApplicationContext<GenericCertificate> {
+public final class V1LicenseApplicationContext extends TrueLicenseApplicationContext<GenericCertificate> {
 
     @Obfuscate
     private static final String STORE_TYPE = "JKS";
@@ -41,20 +36,10 @@ extends TrueLicenseApplicationContext<GenericCertificate> {
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithMD5AndDES";
 
-    private final X500PrincipalXmlCodec codec = new X500PrincipalXmlCodec();
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseApplicationContext}
-     * returns an {@link X500PrincipalXmlCodec}.
-     */
-    @Override
-    public Codec codec() { return codec; }
-
     @Override
     public LicenseManagementContextBuilder context() {
         return super.context()
+                .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
                 .encryptionFunction(V1Encryption::new);
     }

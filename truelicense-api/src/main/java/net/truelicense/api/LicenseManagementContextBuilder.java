@@ -7,6 +7,7 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Clock;
@@ -52,6 +53,13 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder clock(Clock clock);
+
+    /**
+     * Sets the codec.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder codec(Codec codec);
 
     /**
      * Sets the compression transformation.

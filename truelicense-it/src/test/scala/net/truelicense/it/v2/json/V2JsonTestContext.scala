@@ -11,5 +11,5 @@ import net.truelicense.v2.json.V2JsonLicenseApplicationContext
 /** @author Christian Schlichtherle */
 trait V2JsonTestContext extends V2TestContext {
 
-  override final val applicationContext = new V2JsonLicenseApplicationContext
+  final val applicationContext = new V2JsonLicenseApplicationContext
 }

@@ -9,7 +9,6 @@ import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.codec.CodecProvider;
 import net.truelicense.api.comp.CompressionProvider;
 import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.crypto.EncryptionFunctionProvider;
@@ -54,7 +53,6 @@ import static net.truelicense.core.Messages.*;
 public abstract class TrueLicenseApplicationContext<Model>
 implements
         Clock,
-        CodecProvider,
         LicenseApplicationContext,
         LicenseFactory,
         RepositoryContextProvider<Model> {
@@ -136,6 +134,7 @@ implements
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = context();
+        Optional<Codec> codec = Optional.empty();
         Optional<Transformation> compression = Optional.empty();
         Optional<EncryptionFunction> encryptionFunction = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
@@ -169,6 +168,12 @@ implements
         @Override
         public LicenseManagementContextBuilder clock(final Clock clock) {
             this.clock = requireNonNull(clock);
+            return this;
+        }
+
+        @Override
+        public LicenseManagementContextBuilder codec(final Codec codec) {
+            this.codec = Optional.of(codec);
             return this;
         }
 
@@ -248,6 +253,7 @@ implements
         final LicenseManagementAuthorization authorization;
         final long cachePeriodMillis;
         final Clock clock;
+        final Codec codec;
         final Transformation compression;
         final EncryptionFunction encryptionFunction;
         final Optional<LicenseInitialization> initialization;
@@ -262,6 +268,7 @@ implements
             this.authorization = b.authorization;
             this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
+            this.codec = b.codec.get();
             this.compression = b .compression.get();
             this.encryptionFunction = b.encryptionFunction.get();
             this.initialization = b.initialization;
@@ -282,7 +289,7 @@ implements
         public long cachePeriodMillis() { return cachePeriodMillis; }
 
         @Override
-        public Codec codec() { return context().codec(); }
+        public Codec codec() { return codec; }
 
         @Override
         public Transformation compression() { return compression; }
@@ -814,8 +821,7 @@ implements
 
                     class TrueLicenseKeyGenerator implements LicenseKeyGenerator {
 
-                        final RepositoryContext<Model> context = repositoryContext();
-                        final Model model = context.model();
+                        final Model model = repositoryContext().model();
                         Decoder decoder;
 
                         @Override
@@ -844,9 +850,8 @@ implements
 
                         synchronized void init() throws Exception {
                             if (null == decoder) {
-                                decoder = authentication().sign(
-                                        context.controller(model, codec()),
-                                        validatedBean());
+                                decoder = authentication()
+                                        .sign(repositoryContext().controller(model, codec()), validatedBean());
                             }
                         }
 

@@ -19,8 +19,7 @@ import java.util.zip.Deflater;
 import static global.namespace.fun.io.bios.BIOS.deflate;
 
 /**
- * The root context for applications which need to manage V2/* format license
- * keys.
+ * The root context for applications which need to manage V2/* format license keys.
  * <p>
  * This class is immutable.
  *
