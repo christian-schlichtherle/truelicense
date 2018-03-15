@@ -12,7 +12,7 @@
         This example drags in all features which are possible to combine.
     </p:documentation>
     <p:list>
-        <p:artifactId>kitchenSink</p:artifactId>
+        <p:artifactId>kitchen-sink</p:artifactId>
         <p:artifactName>Kitchen Sink</p:artifactName>
         <p:company>Company Inc.</p:company>
         <p:customClasspathScope>runtime</p:customClasspathScope>

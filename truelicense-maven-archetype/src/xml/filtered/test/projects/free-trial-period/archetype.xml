@@ -4,23 +4,26 @@
   ~ All rights reserved. Use is subject to license terms.
   -->
 <p:properties
-        name="Multiple Product Editions"
+        name="Free Trial Period"
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>editions=enterprise standard</code>
-        to the Basic Configuration example in order to manage separate
-        license keys for a Standard Edition and an Enterprise Edition of
-        the software product.
-        Note that due to the ordering of the editions, the Enterprise
-        Edition is a superset of the Standard Edition.
+        <code>freeTrialPeriod=30</code>
+        and
+        <code>ftpSecretMarkerClass=sun.security.provider.Sun</code>
+        to the Basic Configuration example in order to configure a free
+        trial period of thirty days.
+        For a production project, please change the value of the property
+        <code>ftpSecretMarkerClass</code>
+        because it's obviously not secret anymore.
     </p:documentation>
     <p:list>
-        <p:artifactId>multipleProductEditions</p:artifactId>
+        <p:artifactId>free-trial-period</p:artifactId>
         <p:company>Company Inc.</p:company>
-        <p:editions>enterprise standard</p:editions>
+        <p:freeTrialPeriod>30</p:freeTrialPeriod>
+        <p:ftpSecretMarkerClass>sun.security.provider.Sun</p:ftpSecretMarkerClass>
         <p:groupId>com.company.product</p:groupId>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>

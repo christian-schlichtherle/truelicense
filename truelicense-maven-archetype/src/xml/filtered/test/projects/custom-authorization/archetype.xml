@@ -17,7 +17,7 @@
         license authorization.
     </p:documentation>
     <p:list>
-        <p:artifactId>customAuthorization</p:artifactId>
+        <p:artifactId>custom-authorization</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
         <p:keyGenAuthorizationClass>

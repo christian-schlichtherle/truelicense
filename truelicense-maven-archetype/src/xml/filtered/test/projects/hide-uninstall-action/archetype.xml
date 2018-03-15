@@ -4,22 +4,22 @@
   ~ All rights reserved. Use is subject to license terms.
   -->
 <p:properties
-        name="V1 License Key Format"
+        name="Hide Uninstall Action"
         xml:lang="en"
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>licenseKeyFormat=V1</code>
-        to the Basic Configuration example in order to use the V1
-        license key format and remove the dependency on the Jackson JSON
-        Processor from the generated code.
+        <code>hideUninstallAction=true</code>
+        to the Basic Configuration example in order to remove the
+        <i>Uninstall ${dollar}{subject} license key</i>
+        action from the license wizard dialog.
     </p:documentation>
     <p:list>
-        <p:artifactId>v1LicenseKeyFormat</p:artifactId>
+        <p:artifactId>hide-uninstall-action</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
-        <p:licenseKeyFormat>V1</p:licenseKeyFormat>
+        <p:hideUninstallAction>true</p:hideUninstallAction>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>
