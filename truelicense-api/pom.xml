@@ -22,6 +22,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>global.namespace.fun-io</groupId>
             <artifactId>fun-io-api</artifactId>
         </dependency>
