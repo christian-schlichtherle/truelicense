@@ -9,10 +9,9 @@ import global.namespace.fun.io.api.Store
 import net.truelicense.api._
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.v2.commons.V2TestContext.prefix
-import net.truelicense.v2.commons.auth.V2RepositoryModel
 
 /** @author Christian Schlichtherle */
-trait V2TestContext extends TestContext[V2RepositoryModel] {
+trait V2TestContext extends TestContext {
 
   final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer

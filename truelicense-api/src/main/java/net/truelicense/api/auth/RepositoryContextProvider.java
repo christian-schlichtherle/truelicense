@@ -8,11 +8,10 @@ package net.truelicense.api.auth;
 /**
  * Provides a repository context.
  *
- * @param <Model> the generic repository model.
  * @author Christian Schlichtherle
  */
-public interface RepositoryContextProvider<Model> {
+public interface RepositoryContextProvider {
 
     /** Returns a repository context. */
-    RepositoryContext<Model> repositoryContext();
+    <Model> RepositoryContext<Model> repositoryContext();
 }

@@ -12,8 +12,7 @@ import org.scalatest.Matchers._
 import org.scalatest._
 
 /** @author Christian Schlichtherle */
-abstract class RepositoryTestSuite[Model <: AnyRef]
-extends WordSpec with ParallelTestExecution { this: TestContext[Model] =>
+abstract class RepositoryTestSuite[Model <: AnyRef] extends WordSpec with ParallelTestExecution { this: TestContext =>
 
   private val _codec = new SerializationCodec {
     override def contentType: String = super.contentType.toUpperCase(ENGLISH)

@@ -6,10 +6,8 @@
 package net.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
-import de.schlichtherle.xml.GenericCertificate;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
-import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v1.auth.V1RepositoryContext;
@@ -28,7 +26,7 @@ import static global.namespace.fun.io.bios.BIOS.gzip;
  *
  * @author Christian Schlichtherle
  */
-public final class V1LicenseApplicationContext extends TrueLicenseApplicationContext<GenericCertificate> {
+public final class V1LicenseApplicationContext extends TrueLicenseApplicationContext {
 
     @Obfuscate
     private static final String STORE_TYPE = "JKS";
@@ -41,7 +39,8 @@ public final class V1LicenseApplicationContext extends TrueLicenseApplicationCon
         return super.context()
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
-                .encryptionFunction(V1Encryption::new);
+                .encryptionFunction(V1Encryption::new)
+                .repositoryContext(new V1RepositoryContext());
     }
 
     /** Returns a <em>new</em> license content. */
@@ -61,17 +60,6 @@ public final class V1LicenseApplicationContext extends TrueLicenseApplicationCon
      */
     @Override
     public final String pbeAlgorithm() { return PBE_ALGORITHM; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V1LicenseApplicationContext}
-     * returns a new {@link V1RepositoryContext}.
-     */
-    @Override
-    public final RepositoryContext<GenericCertificate> repositoryContext() {
-        return new V1RepositoryContext();
-    }
 
     /**
      * {@inheritDoc}

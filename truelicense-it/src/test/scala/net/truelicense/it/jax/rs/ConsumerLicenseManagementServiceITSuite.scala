@@ -23,9 +23,7 @@ import org.scalatest.Matchers._
 
 /** @author Christian Schlichtherle */
 abstract class ConsumerLicenseManagementServiceITSuite
-  extends JerseyTest
-    with ConsumerLicenseManagementServiceTestMixin {
-  self: TestContext[_] =>
+  extends JerseyTest with ConsumerLicenseManagementServiceTestMixin { this: TestContext =>
 
   override protected def configure: Application = {
     new ResourceConfig(

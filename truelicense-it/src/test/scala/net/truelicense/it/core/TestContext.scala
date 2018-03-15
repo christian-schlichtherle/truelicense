@@ -21,9 +21,9 @@ import net.truelicense.obfuscate.ObfuscatedString
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
-trait TestContext[Model <: AnyRef] extends CodecProvider {
+trait TestContext extends CodecProvider {
 
-  val applicationContext: TrueLicenseApplicationContext[Model]
+  val applicationContext: TrueLicenseApplicationContext
 
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
@@ -89,5 +89,5 @@ trait TestContext[Model <: AnyRef] extends CodecProvider {
 /** @author Christian Schlichtherle */
 object TestContext {
 
-  private val logger = LoggerFactory getLogger classOf[TestContext[_]]
+  private val logger = LoggerFactory getLogger classOf[TestContext]
 }

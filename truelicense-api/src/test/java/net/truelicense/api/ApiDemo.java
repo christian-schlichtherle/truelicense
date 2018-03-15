@@ -10,6 +10,8 @@ import global.namespace.fun.io.api.Store;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.auth.RepositoryContext;
+import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
@@ -43,11 +45,14 @@ public abstract class ApiDemo {
                 .authenticationFunction(mock(AuthenticationFunction.class))
                 .authorization(mock(LicenseManagementAuthorization.class))
                 .cachePeriodMillis(1000L)
+                .codec(mock(Codec.class))
                 .clock(mock(Clock.class))
+                .compression(mock(Transformation.class))
                 .encryptionFunction(mock(EncryptionFunction.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
                 .passwordPolicy(mock(PasswordPolicy.class))
+                .repositoryContext(mock(RepositoryContext.class))
                 .subject("MyProduct 1")
                 .validation(mock(LicenseValidation.class))
                 .validationComposition(LicenseFunctionComposition.decorate)

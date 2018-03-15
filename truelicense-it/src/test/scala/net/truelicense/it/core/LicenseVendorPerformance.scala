@@ -10,7 +10,7 @@ import java.util.concurrent.Callable
 import global.namespace.fun.io.bios.BIOS.memoryStore
 
 /** @author Christian Schlichtherle */
-trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext[_] =>
+trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext =>
   def call() {
     for (i <- 1 to 5) {
       val vm = vendorManager

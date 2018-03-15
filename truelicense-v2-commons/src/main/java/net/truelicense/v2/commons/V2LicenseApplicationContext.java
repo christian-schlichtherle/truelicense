@@ -7,11 +7,9 @@ package net.truelicense.v2.commons;
 
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
-import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.core.TrueLicenseApplicationContext;
 import net.truelicense.obfuscate.Obfuscate;
 import net.truelicense.v2.commons.auth.V2RepositoryContext;
-import net.truelicense.v2.commons.auth.V2RepositoryModel;
 import net.truelicense.v2.commons.crypto.V2Encryption;
 
 import java.util.zip.Deflater;
@@ -25,8 +23,7 @@ import static global.namespace.fun.io.bios.BIOS.deflate;
  *
  * @author Christian Schlichtherle
  */
-public abstract class V2LicenseApplicationContext
-extends TrueLicenseApplicationContext<V2RepositoryModel> {
+public abstract class V2LicenseApplicationContext extends TrueLicenseApplicationContext {
 
     @Obfuscate
     private static final String STORE_TYPE = "JCEKS";
@@ -38,7 +35,8 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
     public LicenseManagementContextBuilder context() {
         return super.context()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
-                .encryptionFunction(V2Encryption::new);
+                .encryptionFunction(V2Encryption::new)
+                .repositoryContext(new V2RepositoryContext());
     }
 
     @Override
@@ -52,17 +50,6 @@ extends TrueLicenseApplicationContext<V2RepositoryModel> {
      */
     @Override
     public final String pbeAlgorithm() { return PBE_ALGORITHM; }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link V2LicenseApplicationContext}
-     * returns a new {@link V2RepositoryContext}.
-     */
-    @Override
-    public final RepositoryContext<V2RepositoryModel> repositoryContext() {
-        return new V2RepositoryContext();
-    }
 
     /**
      * {@inheritDoc}

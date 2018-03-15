@@ -46,16 +46,11 @@ import static net.truelicense.core.Messages.*;
  * {@linkplain Object#equals(Object) equal} or at least behaves identical to
  * any previously returned object.
  *
- * @param <Model> the type of the repository model.
  * @author Christian Schlichtherle
  */
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
-public abstract class TrueLicenseApplicationContext<Model>
-implements
-        Clock,
-        LicenseApplicationContext,
-        LicenseFactory,
-        RepositoryContextProvider<Model> {
+public abstract class TrueLicenseApplicationContext
+implements Clock, LicenseApplicationContext, LicenseFactory {
 
     @Override
     public LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
@@ -140,6 +135,7 @@ implements
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
         PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
+        Optional<RepositoryContext<?>> repositoryContext = Optional.empty();
         String subject = "";
         Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
@@ -213,6 +209,12 @@ implements
         }
 
         @Override
+        public LicenseManagementContextBuilder repositoryContext(final RepositoryContext<?> repositoryContext) {
+            this.repositoryContext = Optional.of(repositoryContext);
+            return this;
+        }
+
+        @Override
         public LicenseManagementContextBuilder subject(final String subject) {
             this.subject = requireNonEmpty(subject);
             return this;
@@ -247,7 +249,8 @@ implements
             LicenseManagementContext,
             LicenseManagementSubjectProvider,
             LicenseValidationProvider,
-            PasswordPolicyProvider {
+            PasswordPolicyProvider,
+            RepositoryContextProvider {
 
         final AuthenticationFunction authenticationFunction;
         final LicenseManagementAuthorization authorization;
@@ -259,6 +262,7 @@ implements
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
         final PasswordPolicy passwordPolicy;
+        final RepositoryContext<?> repositoryContext;
         final String subject;
         final Optional<LicenseValidation> validation;
         final LicenseFunctionComposition validationComposition;
@@ -274,6 +278,7 @@ implements
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
+            this.repositoryContext = b.repositoryContext.get();
             this.subject = requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
@@ -298,7 +303,7 @@ implements
         public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
 
         @Override
-        public TrueLicenseApplicationContext<Model> context() { return TrueLicenseApplicationContext.this; }
+        public TrueLicenseApplicationContext context() { return TrueLicenseApplicationContext.this; }
 
         @Override
         public EncryptionFunction encryptionFunction() { return encryptionFunction; }
@@ -319,6 +324,11 @@ implements
 
         @Override
         public PasswordPolicy passwordPolicy() { return passwordPolicy; }
+
+        @Override
+        public <Model> RepositoryContext<Model> repositoryContext() {
+            return (RepositoryContext<Model>) repositoryContext;
+        }
 
         @Override
         public String subject() { return subject; }
@@ -821,7 +831,7 @@ implements
 
                     class TrueLicenseKeyGenerator implements LicenseKeyGenerator {
 
-                        final Model model = repositoryContext().model();
+                        final Object model = repositoryContext().model();
                         Decoder decoder;
 
                         @Override
@@ -843,7 +853,7 @@ implements
                             return decoder;
                         }
 
-                        Model model() throws Exception {
+                        Object model() throws Exception {
                             init();
                             return model;
                         }
@@ -937,7 +947,7 @@ implements
                     return repositoryContext().controller(repositoryModel(source), codec());
                 }
 
-                Model repositoryModel(Source source) throws Exception {
+                Object repositoryModel(Source source) throws Exception {
                     return codec().decoder(decryptedAndDecompressedSource(source)).decode(repositoryContext().model().getClass());
                 }
 

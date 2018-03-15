@@ -5,7 +5,6 @@
 
 package net.truelicense.it.v1
 
-import de.schlichtherle.xml.GenericCertificate
 import global.namespace.fun.io.api.Store
 import net.truelicense.api._
 import net.truelicense.it.core.TestContext
@@ -13,7 +12,7 @@ import net.truelicense.it.v1.V1TestContext._
 import net.truelicense.v1.V1LicenseApplicationContext
 
 /** @author Christian Schlichtherle */
-trait V1TestContext extends TestContext[GenericCertificate] {
+trait V1TestContext extends TestContext {
 
   final val applicationContext = new V1LicenseApplicationContext
 

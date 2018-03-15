@@ -25,10 +25,7 @@ import org.scalatest.Matchers._
 import org.scalatest._
 
 /** @author Christian Schlichtherle */
-abstract class LicenseManagementWizardITSuite
-  extends WordSpec
-  with BeforeAndAfter
-{ this: TestContext[_] =>
+abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAfter { this: TestContext =>
 
   private val laf = UIManager.getLookAndFeel
   private var outputLicense: License = _

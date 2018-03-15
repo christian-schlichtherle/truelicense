@@ -7,6 +7,7 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionFunction;
 import net.truelicense.api.misc.Builder;
@@ -101,6 +102,13 @@ extends Builder<LicenseManagementContext> {
      * @return {@code this}
      */
     LicenseManagementContextBuilder passwordPolicy(PasswordPolicy policy);
+
+    /**
+     * Sets the repository context.
+     *
+     * @return {@code this}
+     */
+    LicenseManagementContextBuilder repositoryContext(RepositoryContext<?> repositoryContext);
 
     /**
      * Sets the license subject.
