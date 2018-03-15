@@ -963,7 +963,9 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
                 }
 
                 Object repositoryModel(Source source) throws Exception {
-                    return codec().decoder(decryptedAndDecompressedSource(source)).decode(repositoryContext().model().getClass());
+                    return codec()
+                            .decoder(decryptedAndDecompressedSource(source))
+                            .decode(repositoryContext().model().getClass());
                 }
 
                 Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
