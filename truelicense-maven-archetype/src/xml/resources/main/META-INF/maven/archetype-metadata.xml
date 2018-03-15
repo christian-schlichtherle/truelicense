@@ -16,6 +16,8 @@
             <directory/>
             <includes>
                 <include>.*ignore</include>
+                <include>.mvn/wrapper/**</include>
+                <include>mvnw*</include>
             </includes>
         </fileSet>
     </fileSets>
