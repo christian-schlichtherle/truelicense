@@ -16,7 +16,6 @@ import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.CachePeriodProvider;
 import net.truelicense.api.misc.Clock;
-import net.truelicense.api.misc.ContextProvider;
 import net.truelicense.api.passwd.*;
 import net.truelicense.core.auth.Notary;
 import net.truelicense.core.passwd.MinimumPasswordPolicy;
@@ -49,19 +48,10 @@ import static net.truelicense.core.Messages.*;
  * @author Christian Schlichtherle
  */
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked", "unused", "WeakerAccess"})
-public abstract class TrueLicenseApplicationContext implements Clock, LicenseApplicationContext {
+public abstract class TrueLicenseApplicationContext implements LicenseApplicationContext {
 
     @Override
     public LicenseManagementContextBuilder context() { return new TrueLicenseManagementContextBuilder(); }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The implementation in the class {@link TrueLicenseApplicationContext}
-     * returns a new {@link Date}.
-     */
-    @Override
-    public final Date now() { return new Date(); }
 
     //
     // Utility functions:
@@ -102,15 +92,12 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
     // Inner classes:
     //
 
-    final class TrueLicenseManagementContextBuilder
-    implements
-            ContextProvider<TrueLicenseApplicationContext>,
-            LicenseManagementContextBuilder {
+    final class TrueLicenseManagementContextBuilder implements LicenseManagementContextBuilder {
 
         AuthenticationFunction authenticationFunction = Notary::new;
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
-        Clock clock = context();
+        Clock clock = Date::new;
         Optional<Codec> codec = Optional.empty();
         Optional<Transformation> compression = Optional.empty();
         String encryptionAlgorithm = "";
@@ -162,11 +149,6 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         public LicenseManagementContextBuilder compression(final Transformation compression) {
             this.compression = Optional.of(compression);
             return this;
-        }
-
-        @Override
-        public TrueLicenseApplicationContext context() {
-            return TrueLicenseApplicationContext.this;
         }
 
         @Override
@@ -245,7 +227,6 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
             CachePeriodProvider,
             Clock,
             CompressionProvider,
-            ContextProvider<TrueLicenseApplicationContext>,
             EncryptionFunctionProvider,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
@@ -310,9 +291,6 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
 
         @Override
         public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
-
-        @Override
-        public TrueLicenseApplicationContext context() { return TrueLicenseApplicationContext.this; }
 
         String encryptionAlgorithm() { return encryptionAlgorithm; }
 
@@ -606,10 +584,7 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
         }
 
         final class TrueLicenseManagementParameters
-        implements
-                ContextProvider<TrueLicenseManagementContext>,
-                LicenseInitializationProvider,
-                LicenseManagementParameters {
+        implements LicenseInitializationProvider, LicenseManagementParameters {
 
             final Authentication authentication;
             final Optional<Transformation> encryption;
@@ -629,16 +604,13 @@ public abstract class TrueLicenseApplicationContext implements Clock, LicenseApp
             public Authentication authentication() { return authentication; }
 
             @Override
-            public TrueLicenseManagementContext context() { return TrueLicenseManagementContext.this; }
-
-            @Override
             public Transformation encryption() {
                 return encryption.orElseGet(() -> parent().parameters().encryption());
             }
 
             @Override
             public LicenseInitialization initialization() {
-                final LicenseInitialization initialization = context().initialization();
+                final LicenseInitialization initialization = TrueLicenseManagementContext.this.initialization();
                 if (0 != ftpDays) {
                     return bean -> {
                         initialization.initialize(bean);
