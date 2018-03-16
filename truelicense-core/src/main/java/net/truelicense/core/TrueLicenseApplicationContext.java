@@ -9,6 +9,7 @@ import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
+import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
@@ -21,7 +22,6 @@ import net.truelicense.core.passwd.MinimumPasswordPolicy;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.security.auth.x500.X500Principal;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
@@ -413,7 +413,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 Optional<String> algorithm = Optional.empty();
                 Optional<String> alias = Optional.empty();
                 Optional<PasswordProtection> keyProtection = Optional.empty();
-                Optional<Socket<InputStream>> source = Optional.empty();
+                Optional<Source> source = Optional.empty();
                 Optional<PasswordProtection> storeProtection = Optional.empty();
                 Optional<String> storeType = Optional.empty();
 
@@ -444,13 +444,13 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
 
                 @Override
-                public TrueAuthenticationBuilder loadFrom(final Socket<InputStream> input) {
-                    this.source = Optional.ofNullable(input);
+                public TrueAuthenticationBuilder loadFrom(final Source source) {
+                    this.source = Optional.ofNullable(source);
                     return this;
                 }
 
                 @Override
-                public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
+                public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(() -> resource(name)); }
 
                 @Override
                 public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
@@ -497,7 +497,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             final Optional<String> algorithm;
             final String alias;
             final Optional<PasswordProtection> keyProtection;
-            final Optional<Socket<InputStream>> source;
+            final Optional<Source> source;
             final PasswordProtection storeProtection;
             final Optional<String> storeType;
 
@@ -524,7 +524,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             public Optional<String> algorithm() { return algorithm; }
 
             @Override
-            public Optional<Socket<InputStream>> source() { return source; }
+            public Optional<Source> source() { return source; }
 
             @Override
             public PasswordProtection storeProtection() { return new CheckedPasswordProtection(storeProtection); }

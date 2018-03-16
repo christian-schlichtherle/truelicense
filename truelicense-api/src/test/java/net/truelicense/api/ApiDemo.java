@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Source;
 import global.namespace.fun.io.api.Store;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
@@ -17,7 +17,6 @@ import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
 
-import java.io.InputStream;
 import java.nio.file.Path;
 
 import static org.mockito.Mockito.mock;
@@ -81,7 +80,7 @@ public abstract class ApiDemo {
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
-                    .loadFrom((Socket<InputStream>) mock(Socket.class))
+                    .loadFrom(mock(Source.class))
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
@@ -110,7 +109,7 @@ public abstract class ApiDemo {
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
-                    .loadFrom((Socket<InputStream>) mock(Socket.class))
+                    .loadFrom(mock(Source.class))
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")

@@ -6,9 +6,11 @@
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Transformation;
+import net.truelicense.api.auth.AuthenticationBuilder;
 import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
+import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Clock;

@@ -3,14 +3,15 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package net.truelicense.api;
+package net.truelicense.api.auth;
 
-import global.namespace.fun.io.api.Socket;
+import global.namespace.fun.io.api.Source;
+import net.truelicense.api.ConsumerLicenseManager;
+import net.truelicense.api.LicenseManagementContextBuilder;
+import net.truelicense.api.VendorLicenseManager;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.ChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
-
-import java.io.InputStream;
 
 /**
  * Injects a keystore based authentication into some parent component builder.
@@ -18,8 +19,7 @@ import java.io.InputStream;
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface AuthenticationBuilder<ParentBuilder extends Builder<?>>
-extends ChildBuilder<ParentBuilder> {
+public interface AuthenticationBuilder<ParentBuilder extends Builder<?>>  extends ChildBuilder<ParentBuilder> {
 
     /**
      * Sets the name of the signature algorithm (optional).
@@ -54,16 +54,17 @@ extends ChildBuilder<ParentBuilder> {
     AuthenticationBuilder<ParentBuilder> keyProtection(PasswordProtection keyProtection);
 
     /**
-     * Sets the input for the keystore (optional).
+     * Sets the source for loading the keystore (optional).
      * Either this method or {@link #loadFromResource(String)} must be called.
      *
      * @return {@code this}
+     * @param source
      */
-    AuthenticationBuilder<ParentBuilder> loadFrom(Socket<InputStream> input);
+    AuthenticationBuilder<ParentBuilder> loadFrom(Source source);
 
     /**
-     * Sets the resource name of the keystore (optional).
-     * Either this method or {@link #loadFrom(Socket)} must be called.
+     * Sets the resource name for loading the keystore (optional).
+     * Either this method or {@link #loadFrom(Source)} must be called.
      *
      * @return {@code this}
      */
