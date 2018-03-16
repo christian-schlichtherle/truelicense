@@ -217,7 +217,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             EncryptionFactory,
             LicenseInitializationProvider,
             LicenseManagementContext,
-            LicenseManagementSubjectProvider,
             LicenseValidationProvider,
             PasswordPolicyProvider {
 

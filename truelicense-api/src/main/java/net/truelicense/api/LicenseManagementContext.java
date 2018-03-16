@@ -15,8 +15,7 @@ import net.truelicense.api.codec.Codec;
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseManagementContext
-extends LicenseFactory, LicenseManagementSubjectProvider {
+public interface LicenseManagementContext extends LicenseFactory {
 
     /** Returns the codec. */
     Codec codec();
@@ -28,6 +27,9 @@ extends LicenseFactory, LicenseManagementSubjectProvider {
      * the configured consumer license manager.
      */
     ConsumerLicenseManagerBuilder consumer();
+
+    /** Returns the license management subject. */
+    String subject();
 
     /**
      * Returns a builder for a
