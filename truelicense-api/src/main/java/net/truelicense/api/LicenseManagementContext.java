@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.codec.CodecProvider;
+import net.truelicense.api.codec.Codec;
 
 /**
  * A context for license management.
@@ -16,7 +16,10 @@ import net.truelicense.api.codec.CodecProvider;
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementContext
-extends CodecProvider, LicenseFactory, LicenseManagementSubjectProvider {
+extends LicenseFactory, LicenseManagementSubjectProvider {
+
+    /** Returns the codec. */
+    Codec codec();
 
     /**
      * Returns a builder for a

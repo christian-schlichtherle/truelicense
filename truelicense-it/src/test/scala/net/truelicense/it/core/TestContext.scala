@@ -12,7 +12,6 @@ import javax.security.auth.x500.X500Principal
 import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api._
-import net.truelicense.api.codec.{Codec, CodecProvider}
 import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.core.TrueLicenseApplicationContext
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection
@@ -21,15 +20,13 @@ import net.truelicense.obfuscate.ObfuscatedString
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
-trait TestContext extends CodecProvider {
+trait TestContext {
 
   val applicationContext: TrueLicenseApplicationContext
 
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
   def chainedVendorManager: VendorLicenseManager
-
-  final override def codec: Codec = managementContext.codec
 
   final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
 
