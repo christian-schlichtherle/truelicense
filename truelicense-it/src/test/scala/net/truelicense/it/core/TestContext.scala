@@ -12,6 +12,7 @@ import javax.security.auth.x500.X500Principal
 import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api._
+import net.truelicense.api.codec.Codec
 import net.truelicense.api.passwd.PasswordProtection
 import net.truelicense.core.TrueLicenseApplicationContext
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection
@@ -27,6 +28,8 @@ trait TestContext {
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
   def chainedVendorManager: VendorLicenseManager
+
+  final def codec: Codec = managementContext.codec
 
   final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
 
