@@ -426,7 +426,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
 
                 @Override
-                public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(() -> resource(name)); }
+                public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
 
                 @Override
                 public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {

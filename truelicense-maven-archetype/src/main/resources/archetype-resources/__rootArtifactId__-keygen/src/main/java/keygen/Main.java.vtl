@@ -32,25 +32,23 @@ import static global.namespace.fun.io.bios.BIOS.*;
 public enum Main {
 
     USAGE {
-        @Override void run(final Deque<String> params) {
-            throw new IllegalArgumentException();
-        }
+        @Override
+        void run(final Deque<String> params) { throw new IllegalArgumentException(); }
     },
 
     HELP {
-        @Override void run(final Deque<String> params) {
-            out.printf(Main.valueOf(params.pop().toUpperCase(Locale.ROOT)).help());
-        }
+        @Override
+        void run(final Deque<String> params) { out.printf(Main.valueOf(params.pop().toUpperCase(Locale.ROOT)).help()); }
     },
 
     VERSION {
-        @Override void run(final Deque<String> params) {
-            out.printf(message("version"), Main.class.getSimpleName());
-        }
+        @Override
+        void run(final Deque<String> params) { out.printf(message("version"), Main.class.getSimpleName()); }
     },
 
     GENERATE {
-        @Override void run(final Deque<String> params) throws Exception {
+        @Override
+        void run(final Deque<String> params) throws Exception {
             new Object() {
 
                 final Map<CreateOption, String> options = Main.parse(params, CreateOption.class);
@@ -85,14 +83,14 @@ public enum Main {
                     return null == path
                             ? context().license()
                             : (License) codec()
-                                .decoder("-".equals(path) ? stdin() : store(path).input())
+                                .decoder("-".equals(path) ? stdin() : store(path))
                                 .decode(License.class);
                 }
 
                 void maybeEncodeOutputLicense(final License license) throws Exception {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path) {
-                        codec() .encoder("-".equals(path) ? stdout() : store(path).output())
+                        codec() .encoder("-".equals(path) ? stdout() : store(path))
                                 .encode(license);
                     }
                 }
@@ -109,9 +107,7 @@ public enum Main {
 
                 Store store(String path) { return pathStore(Paths.get(path)); }
 
-                LicenseManagementContext context() {
-                    return manager().context();
-                }
+                LicenseManagementContext context() { return manager().context(); }
 
                 VendorLicenseManager manager() {
                     final VendorLicenseManager m = manager;
@@ -146,9 +142,7 @@ public enum Main {
      */
     abstract void run(Deque<String> params) throws Exception;
 
-    public static void main(String... args) {
-        exit(processAndHandleExceptions(args));
-    }
+    public static void main(String... args) { exit(processAndHandleExceptions(args)); }
 
     @SuppressWarnings("CallToThreadDumpStack")
     private static int processAndHandleExceptions(final String... args) {
@@ -175,9 +169,7 @@ public enum Main {
         valueOf(command).run(params);
     }
 
-    private static String upperCase(String s) {
-        return s.toUpperCase(Locale.ENGLISH);
-    }
+    private static String upperCase(String s) { return s.toUpperCase(Locale.ENGLISH); }
 
     private static void printUsage() {
         final StringBuilder builder = new StringBuilder(25 * 80);
@@ -185,9 +177,7 @@ public enum Main {
         err.println(builder.toString());
     }
 
-    private String usage() {
-        return String.format(message("usage"), Main.class.getSimpleName());
-    }
+    private String usage() { return String.format(message("usage"), Main.class.getSimpleName()); }
 
     private String help() { return message("help"); }
 

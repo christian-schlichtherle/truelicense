@@ -34,51 +34,47 @@ import static global.namespace.fun.io.bios.BIOS.*;
 public enum Main {
 
     USAGE {
-        @Override void run(final Deque<String> params) {
-            throw new IllegalArgumentException();
-        }
+        @Override
+        void run(final Deque<String> params) { throw new IllegalArgumentException(); }
     },
 
     HELP {
-        @Override void run(final Deque<String> params) {
-            out.printf(Main.valueOf(params.pop().toUpperCase(Locale.ROOT)).help());
-        }
+        @Override
+        void run(final Deque<String> params) { out.printf(Main.valueOf(params.pop().toUpperCase(Locale.ROOT)).help()); }
     },
 
     VERSION {
-        @Override void run(final Deque<String> params) {
-            out.printf(message("version"), Main.class.getSimpleName());
-        }
+        @Override
+        void run(final Deque<String> params) { out.printf(message("version"), Main.class.getSimpleName()); }
     },
 
     INSTALL {
-        @Override void run(Deque<String> params) throws LicenseManagementException {
+        @Override
+        void run(Deque<String> params) throws LicenseManagementException {
             manager().install(pathStore(Paths.get(params.pop())));
         }
     },
 
     LOAD {
-        @Override void run(Deque<String> params) throws LicenseManagementException {
-            out.println(manager().load());
-        }
+        @Override
+        void run(Deque<String> params) throws LicenseManagementException { out.println(manager().load()); }
     },
 
     VERIFY {
-        @Override void run(Deque<String> params) throws LicenseManagementException {
-            manager().verify();
-        }
+        @Override
+        void run(Deque<String> params) throws LicenseManagementException { manager().verify(); }
     },
 
     UNINSTALL {
-        @Override void run(Deque<String> params) throws LicenseManagementException {
-            manager().uninstall();
-        }
+        @Override
+        void run(Deque<String> params) throws LicenseManagementException { manager().uninstall(); }
     }#if($disableWizard == true);#{else},#end
 
 #if($disableWizard == false)
 
     WIZARD {
-        @Override void run(Deque<String> params) throws Exception {
+        @Override
+        void run(Deque<String> params) throws Exception {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override public void run() {
                     try {
@@ -97,9 +93,7 @@ public enum Main {
     };
 #end
 
-    private static ConsumerLicenseManager manager() {
-        return LicenseManager.get();
-    }
+    private static ConsumerLicenseManager manager() { return LicenseManager.get(); }
 
     /**
      * Runs this command.
@@ -109,9 +103,7 @@ public enum Main {
      */
     abstract void run(Deque<String> params) throws Exception;
 
-    public static void main(String... args) {
-        exit(processAndHandleExceptions(args));
-    }
+    public static void main(String... args) { exit(processAndHandleExceptions(args)); }
 
     @SuppressWarnings("CallToThreadDumpStack")
     private static int processAndHandleExceptions(final String... args) {
@@ -138,9 +130,7 @@ public enum Main {
         valueOf(command).run(params);
     }
 
-    private static String upperCase(String s) {
-        return s.toUpperCase(Locale.ENGLISH);
-    }
+    private static String upperCase(String s) { return s.toUpperCase(Locale.ENGLISH); }
 
     private static void printUsage() {
         final StringBuilder builder = new StringBuilder(25 * 80);
@@ -150,9 +140,7 @@ public enum Main {
         err.println(builder.toString());
     }
 
-    private String usage() {
-        return String.format(message("usage"), Main.class.getSimpleName());
-    }
+    private String usage() { return String.format(message("usage"), Main.class.getSimpleName()); }
 
     private String help() { return message("help"); }
 
