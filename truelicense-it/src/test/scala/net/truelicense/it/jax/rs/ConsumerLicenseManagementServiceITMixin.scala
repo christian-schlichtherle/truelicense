@@ -7,14 +7,14 @@ import net.truelicense.jax.rs.ConsumerLicenseManagementService
 
 import scala.language.existentials
 
-trait ConsumerLicenseManagementServiceTestMixin { this: TestContext =>
+trait ConsumerLicenseManagementServiceITMixin { this: TestContext =>
 
   lazy val managementService: ConsumerLicenseManagementService = new ConsumerLicenseManagementService(consumerManager())
 
   protected lazy val (cachedLicenseClass, cachedLicenseBean, cachedLicenseKey): (Class[_ <: License], License, Array[Byte]) = {
     val store = memoryStore
-    val bean = license
-    val generator = vendorManager generateKeyFrom bean saveTo store
-    (bean.getClass, generator.license, store.content)
+    val license = this.license
+    val generator = vendorManager generateKeyFrom license saveTo store
+    (license.getClass, generator.license, store.content)
   }
 }

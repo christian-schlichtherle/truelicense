@@ -6,11 +6,10 @@
 package net.truelicense.it.jax.rs
 
 import net.truelicense.it.v1.V1TestContext
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
-class V1ConsumerLicenseManagementServiceTest
-extends ConsumerLicenseManagementServiceTestSuite
-with V1TestContext
+class V1ConsumerLicenseManagementServiceJerseyIT
+extends ConsumerLicenseManagementServiceJerseyITSuite
+with V1TestContext {
+  override def extraData: AnyRef = null
+}

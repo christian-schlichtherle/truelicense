@@ -5,105 +5,90 @@
 
 package net.truelicense.it.jax.rs
 
-import javax.ws.rs.WebApplicationException
-import javax.ws.rs.client.Entity
-import javax.ws.rs.core.MediaType._
-import javax.ws.rs.core.Response.Status._
-import javax.ws.rs.core.{Application, MediaType}
-
-import net.truelicense.api.ConsumerLicenseManager
-import net.truelicense.dto.LicenseDTO
 import net.truelicense.it.core.TestContext
-import net.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
-import org.glassfish.hk2.utilities.binding.AbstractBinder
-import org.glassfish.jersey.server.ResourceConfig
-import org.glassfish.jersey.test.JerseyTest
-import org.junit.Test
+import net.truelicense.jax.rs.ConsumerLicenseManagementServiceException
 import org.scalatest.Matchers._
+import org.scalatest.WordSpec
 
 /** @author Christian Schlichtherle */
 abstract class ConsumerLicenseManagementServiceITSuite
-  extends JerseyTest with ConsumerLicenseManagementServiceTestMixin { this: TestContext =>
+  extends WordSpec with ConsumerLicenseManagementServiceITMixin { this: TestContext =>
 
-  override protected def configure: Application = {
-    new ResourceConfig(
-      classOf[ConsumerLicenseManagementService],
-      classOf[ConsumerLicenseManagementServiceExceptionMapper]
-    ).registerInstances(new AbstractBinder {
-      def configure(): Unit = bind(consumerManager()).to(classOf[ConsumerLicenseManager])
-    })
+  "A consumer license management service" when {
+    "using a consumer license manager" when {
+      "no license key is installed" should {
+        "return its subject" in {
+          managementService.subject shouldBe managementContext.subject
+        }
+
+        "return its subject encoded as JSON" in {
+          managementService.subjectAsJson.subject shouldBe managementContext.subject
+        }
+
+        "return its subject encoded as XML" in {
+          managementService.subjectAsXml.getValue shouldBe managementContext.subject
+        }
+
+        "fail to load the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml false)
+        }
+
+        "fail to load and verify the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml true)
+        }
+
+        "fail to load the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson false)
+        }
+
+        "fail to load and verify the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson true)
+        }
+      }
+
+      "installing a license key" should {
+        "install the license key" in {
+          (managementService install cachedLicenseKey).getStatus shouldBe 303
+        }
+
+        "load the license key as XML" in {
+          managementService loadAsXml false shouldBe cachedLicenseBean
+        }
+
+        "load and verify the license key as XML" in {
+          managementService loadAsXml true shouldBe cachedLicenseBean
+        }
+
+        "load the license key as JSON" in {
+          (managementService loadAsJson false).license shouldBe cachedLicenseBean
+        }
+
+        "load and verify the license key as JSON" in {
+          (managementService loadAsJson true).license shouldBe cachedLicenseBean
+        }
+      }
+
+      "uninstalling the license key again" should {
+        "uninstall the license key" in {
+          managementService uninstall ()
+        }
+
+        "fail to load the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml false)
+        }
+
+        "fail to load and verify the license key as XML" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml true)
+        }
+
+        "fail to load the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson false)
+        }
+
+        "fail to load and verify the license key as JSON" in {
+          intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson true)
+        }
+      }
+    }
   }
-
-  @Test
-  def testLifeCycle() {
-    assertSubject()
-    assertFailView()
-    assertFailVerify()
-    assertUninstallFailure()
-    assertInstall()
-    assertSubject()
-    assertView()
-    assertVerify()
-    assertUninstallSuccess()
-    assertSubject()
-    assertFailView()
-    assertFailVerify()
-    assertUninstallFailure()
-  }
-
-  private def assertSubject() {
-    val subject = managementContext.subject
-    subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
-    subjectAs(APPLICATION_JSON_TYPE) shouldBe s"""{"subject":"$subject"}"""
-    subjectAs(APPLICATION_XML_TYPE) shouldBe s"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subject>$subject</subject>"""
-  }
-
-  private def subjectAs(mediaType: MediaType) = target("license/subject") request mediaType get classOf[String]
-
-  private def assertInstall() {
-    target("license").request.post(
-      Entity.entity(cachedLicenseKey, APPLICATION_OCTET_STREAM_TYPE),
-      classOf[LicenseDTO]
-    ).license shouldBe cachedLicenseBean
-  }
-
-  private def assertFailView() { assertFail(assertView()) }
-
-  private def assertView() {
-    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
-    viewAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-    viewAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-  }
-
-  private final def viewAs[T](mediaType: MediaType, responseType: Class[T]): T = {
-    target("license") request mediaType get responseType
-  }
-
-  private def assertFailVerify() { assertFail(assertVerify()) }
-
-  private def assertFail(what: => Any) {
-    val response = intercept[WebApplicationException](what).getResponse
-    response.getStatusInfo shouldBe NOT_FOUND
-    response.getMediaType shouldBe APPLICATION_JSON_TYPE
-  }
-
-  private def assertVerify() {
-    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
-    verifyAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-    verifyAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-  }
-
-  private final def verifyAs[T](mediaType: MediaType, responseType: Class[T]): T = {
-    target("license") queryParam ("verify", "true") request mediaType get responseType
-  }
-
-  private def assertUninstallSuccess() {
-    uninstallStatus() shouldBe 204
-  }
-
-  private def assertUninstallFailure() {
-    uninstallStatus() shouldBe 404
-  }
-
-  private def uninstallStatus() = target("license").request.delete().getStatus
 }
