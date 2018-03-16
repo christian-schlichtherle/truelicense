@@ -91,7 +91,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         Optional<Transformation> compression = Optional.empty();
         String encryptionAlgorithm = "";
         Optional<EncryptionFactory> encryptionFactory = Optional.empty();
-        Optional<LicenseFactory> factory = Optional.empty();
+        Optional<LicenseFactory> licenseFactory = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
         PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
@@ -165,8 +165,8 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public LicenseManagementContextBuilder licenseFactory(final LicenseFactory factory) {
-            this.factory = Optional.of(factory);
+        public LicenseManagementContextBuilder licenseFactory(final LicenseFactory licenseFactory) {
+            this.licenseFactory = Optional.of(licenseFactory);
             return this;
         }
 
@@ -231,7 +231,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         final Transformation compression;
         final String encryptionAlgorithm;
         final EncryptionFactory encryptionFactory;
-        final LicenseFactory factory;
+        final LicenseFactory licenseFactory;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
         final PasswordPolicy passwordPolicy;
@@ -250,7 +250,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             this.compression = b .compression.get();
             this.encryptionAlgorithm = Strings.requireNonEmpty(b.encryptionAlgorithm);
             this.encryptionFactory = b.encryptionFactory.get();
-            this.factory = b.factory.get();
+            this.licenseFactory = b.licenseFactory.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
@@ -291,7 +291,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public License license() { return factory.license(); }
+        public License license() { return licenseFactory.license(); }
 
         @Override
         public Date now() { return clock.now(); }

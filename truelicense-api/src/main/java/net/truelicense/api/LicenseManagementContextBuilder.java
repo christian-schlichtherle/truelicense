@@ -109,7 +109,7 @@ extends Builder<LicenseManagementContext> {
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder licenseFactory(LicenseFactory factory);
+    LicenseManagementContextBuilder licenseFactory(LicenseFactory licenseFactory);
 
     /**
      * Sets the password policy (optional).
