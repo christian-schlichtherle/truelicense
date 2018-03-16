@@ -7,7 +7,6 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Sink;
 import global.namespace.fun.io.api.Source;
-import net.truelicense.api.misc.ContextProvider;
 
 import java.util.concurrent.Callable;
 
@@ -108,8 +107,7 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private interface UncheckedTrueLicenseManager<M extends ContextProvider<LicenseManagementContext> & LicenseManagementParametersProvider>
-            extends ContextProvider<LicenseManagementContext>, LicenseManagementParametersProvider {
+    private interface UncheckedTrueLicenseManager<M extends LicenseManagementSchema> extends LicenseManagementSchema {
 
         @Override
         default LicenseManagementContext context() { return checked().context(); }
