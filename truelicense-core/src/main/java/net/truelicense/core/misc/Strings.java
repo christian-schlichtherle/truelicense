@@ -15,16 +15,17 @@ import java.util.Locale;
  */
 public class Strings {
 
-    public static boolean equalsIgnoreCase(String a, String b) {
-        return null == a ? null == b : a.equalsIgnoreCase(b);
-    }
+    public static boolean equalsIgnoreCase(String a, String b) { return null == a ? null == b : a.equalsIgnoreCase(b); }
 
-    public static String toLowerCase(String s, Locale l) {
-        return null == s ? null : s.toLowerCase(l);
-    }
+    public static String toLowerCase(String s, Locale l) { return null == s ? null : s.toLowerCase(l); }
 
-    public static String toUpperCase(String s, Locale l) {
-        return null == s ? null : s.toUpperCase(l);
+    public static String toUpperCase(String s, Locale l) { return null == s ? null : s.toUpperCase(l); }
+
+    public static String requireNonEmpty(final String s) {
+        if (s.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        return s;
     }
 
     private Strings() { }

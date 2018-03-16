@@ -18,6 +18,7 @@ import net.truelicense.api.misc.CachePeriodProvider;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.*;
 import net.truelicense.core.auth.Notary;
+import net.truelicense.core.misc.Strings;
 import net.truelicense.core.passwd.MinimumPasswordPolicy;
 import net.truelicense.obfuscate.Obfuscate;
 
@@ -57,18 +58,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
     // Utility functions:
     //
 
-    private static String requireNonEmpty(final String s) {
-        if (s.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-        return s;
-    }
-
-    private static boolean exists(Store store) throws LicenseManagementException {
-        return check(store::exists);
-    }
-
-    private static <V> V check(final Callable<V> task) throws LicenseManagementException {
+    private static <V> V checked(final Callable<V> task) throws LicenseManagementException {
         try {
             return task.call();
         } catch (RuntimeException | LicenseManagementException e) {
@@ -78,7 +68,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
     }
 
-    private static <V> V uncheck(final Callable<V> task) {
+    private static <V> V unchecked(final Callable<V> task) {
         try {
             return task.call();
         } catch (RuntimeException e) {
@@ -153,7 +143,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
         @Override
         public LicenseManagementContextBuilder encryptionAlgorithm(final String encryptionAlgorithm) {
-            this.encryptionAlgorithm = requireNonEmpty(encryptionAlgorithm);
+            this.encryptionAlgorithm = Strings.requireNonEmpty(encryptionAlgorithm);
             return this;
         }
 
@@ -195,13 +185,13 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
         @Override
         public LicenseManagementContextBuilder storeType(final String storeType) {
-            this.storeType = requireNonEmpty(storeType);
+            this.storeType = Strings.requireNonEmpty(storeType);
             return this;
         }
 
         @Override
         public LicenseManagementContextBuilder subject(final String subject) {
-            this.subject = requireNonEmpty(subject);
+            this.subject = Strings.requireNonEmpty(subject);
             return this;
         }
 
@@ -261,15 +251,15 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             this.clock = b.clock;
             this.codec = b.codec.get();
             this.compression = b .compression.get();
-            this.encryptionAlgorithm = requireNonEmpty(b.encryptionAlgorithm);
+            this.encryptionAlgorithm = Strings.requireNonEmpty(b.encryptionAlgorithm);
             this.encryptionFunction = b.encryptionFunction.get();
             this.factory = b.factory.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
             this.repositoryContext = b.repositoryContext.get();
-            this.storeType = requireNonEmpty(b.storeType);
-            this.subject = requireNonEmpty(b.subject);
+            this.storeType = Strings.requireNonEmpty(b.storeType);
+            this.subject = Strings.requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
         }
@@ -719,7 +709,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                         throw e;
                     }
                     final Store store = store();
-                    if (exists(store)) {
+                    if (checked(store::exists)) {
                         throw e;
                     }
                     return super.generateKeyFrom(license()).saveTo(store);
@@ -823,12 +813,12 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                         @Override
                         public License license() throws LicenseManagementException {
-                            return check(() -> decoder().decode(License.class));
+                            return checked(() -> decoder().decode(License.class));
                         }
 
                         @Override
                         public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
-                            check(() -> {
+                            checked(() -> {
                                 codec().encoder(sink.map(compressionThenEncryption())).encode(model());
                                 return null;
                             });
@@ -869,7 +859,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                         }
                     }
 
-                    return check(() -> {
+                    return checked(() -> {
                         authorization().clearGenerate(TrueLicenseManager.this);
                         return new TrueLicenseKeyGenerator();
                     });
@@ -877,7 +867,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    check(() -> {
+                    checked(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
                         copy(source, store());
@@ -887,7 +877,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public License load() throws LicenseManagementException {
-                    return check(() -> {
+                    return checked(() -> {
                         authorization().clearLoad(TrueLicenseManager.this);
                         return decodeLicense(store());
                     });
@@ -895,7 +885,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    check(() -> {
+                    checked(() -> {
                         authorization().clearVerify(TrueLicenseManager.this);
                         validate(store());
                         return null;
@@ -904,7 +894,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    check(() -> {
+                    checked(() -> {
                         authorization().clearUninstall(TrueLicenseManager.this);
                         final Store store1 = store();
                         // #TRUELICENSE-81: A consumer license manager must
@@ -963,17 +953,17 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                         @Override
                     public UncheckedLicenseKeyGenerator generateKeyFrom(final License bean)
                             throws UncheckedLicenseManagementException {
-                        return uncheck(() -> new UncheckedLicenseKeyGenerator() {
+                        return TrueLicenseApplicationContext.unchecked(() -> new UncheckedLicenseKeyGenerator() {
                             final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
 
                             @Override
                             public License license() throws UncheckedLicenseManagementException {
-                                return uncheck(generator::license);
+                                return TrueLicenseApplicationContext.unchecked(generator::license);
                             }
 
                             @Override
                             public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
-                                uncheck(() -> generator.saveTo(sink));
+                                TrueLicenseApplicationContext.unchecked(() -> generator.saveTo(sink));
                                 return this;
                             }
                         });
@@ -981,7 +971,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                     @Override
                     public void install(final Source source) throws UncheckedLicenseManagementException {
-                        uncheck(() -> {
+                        TrueLicenseApplicationContext.unchecked(() -> {
                             checked().install(source);
                             return null;
                         });
@@ -989,12 +979,12 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                     @Override
                     public License load() throws UncheckedLicenseManagementException {
-                        return uncheck(checked()::load);
+                        return TrueLicenseApplicationContext.unchecked(checked()::load);
                     }
 
                     @Override
                     public void verify() throws UncheckedLicenseManagementException {
-                        uncheck(() -> {
+                        TrueLicenseApplicationContext.unchecked(() -> {
                             checked().verify();
                             return null;
                         });
@@ -1002,7 +992,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                     @Override
                     public void uninstall() throws UncheckedLicenseManagementException {
-                        uncheck(() -> {
+                        TrueLicenseApplicationContext.unchecked(() -> {
                             checked().uninstall();
                             return null;
                         });
