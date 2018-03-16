@@ -12,7 +12,7 @@ import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationFunction;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.crypto.EncryptionFunction;
+import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -49,7 +49,7 @@ public abstract class ApiDemo {
                 .clock(mock(Clock.class))
                 .compression(mock(Transformation.class))
                 .encryptionAlgorithm("PBEWithSHA1AndDESede")
-                .encryptionFunction(mock(EncryptionFunction.class))
+                .encryptionFactory(mock(EncryptionFactory.class))
                 .initialization(mock(LicenseInitialization.class))
                 .initializationComposition(LicenseFunctionComposition.decorate)
                 .licenseFactory(mock(LicenseFactory.class))

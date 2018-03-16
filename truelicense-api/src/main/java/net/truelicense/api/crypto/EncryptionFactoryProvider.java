@@ -6,12 +6,12 @@
 package net.truelicense.api.crypto;
 
 /**
- * Provides an encryption function.
+ * Provides a password based encryption factory.
  *
  * @author Christian Schlichtherle
  */
-public interface EncryptionFunctionProvider {
+public interface EncryptionFactoryProvider {
 
-    /** Returns the encryption function. */
-    EncryptionFunction encryptionFunction();
+    /** Returns the password based encryption function. */
+    EncryptionFactory encryptionFactory();
 }

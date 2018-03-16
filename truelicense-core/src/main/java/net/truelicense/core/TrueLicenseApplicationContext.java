@@ -10,8 +10,8 @@ import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.comp.CompressionProvider;
-import net.truelicense.api.crypto.EncryptionFunction;
-import net.truelicense.api.crypto.EncryptionFunctionProvider;
+import net.truelicense.api.crypto.EncryptionFactory;
+import net.truelicense.api.crypto.EncryptionFactoryProvider;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.CachePeriodProvider;
@@ -91,7 +91,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         Optional<Codec> codec = Optional.empty();
         Optional<Transformation> compression = Optional.empty();
         String encryptionAlgorithm = "";
-        Optional<EncryptionFunction> encryptionFunction = Optional.empty();
+        Optional<EncryptionFactory> encryptionFactory = Optional.empty();
         Optional<LicenseFactory> factory = Optional.empty();
         Optional<LicenseInitialization> initialization = Optional.empty();
         LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
@@ -148,8 +148,8 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public LicenseManagementContextBuilder encryptionFunction(final EncryptionFunction function) {
-            this.encryptionFunction = Optional.of(function);
+        public LicenseManagementContextBuilder encryptionFactory(final EncryptionFactory encryptionFactory) {
+            this.encryptionFactory = Optional.of(encryptionFactory);
             return this;
         }
 
@@ -217,7 +217,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             CachePeriodProvider,
             Clock,
             CompressionProvider,
-            EncryptionFunctionProvider,
+            EncryptionFactoryProvider,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
@@ -233,7 +233,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         final Codec codec;
         final Transformation compression;
         final String encryptionAlgorithm;
-        final EncryptionFunction encryptionFunction;
+        final EncryptionFactory encryptionFactory;
         final LicenseFactory factory;
         final Optional<LicenseInitialization> initialization;
         final LicenseFunctionComposition initializationComposition;
@@ -252,7 +252,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             this.codec = b.codec.get();
             this.compression = b .compression.get();
             this.encryptionAlgorithm = Strings.requireNonEmpty(b.encryptionAlgorithm);
-            this.encryptionFunction = b.encryptionFunction.get();
+            this.encryptionFactory = b.encryptionFactory.get();
             this.factory = b.factory.get();
             this.initialization = b.initialization;
             this.initializationComposition = b.initializationComposition;
@@ -285,7 +285,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         String encryptionAlgorithm() { return encryptionAlgorithm; }
 
         @Override
-        public EncryptionFunction encryptionFunction() { return encryptionFunction; }
+        public EncryptionFactory encryptionFactory() { return encryptionFactory; }
 
         @Override
         public LicenseInitialization initialization() {
@@ -485,7 +485,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public Transformation build() {
-                    return encryptionFunction().apply(new TrueEncryptionParameters(this));
+                    return encryptionFactory().apply(new TrueEncryptionParameters(this));
                 }
 
                 @Override

@@ -36,7 +36,7 @@ public abstract class V2LicenseApplicationContext extends TrueLicenseApplication
         return super.context()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(PBE_ALGORITHM)
-                .encryptionFunction(V2Encryption::new)
+                .encryptionFactory(V2Encryption::new)
                 .licenseFactory(License::new)
                 .repositoryContext(new V2RepositoryContext())
                 .storeType(STORE_TYPE);

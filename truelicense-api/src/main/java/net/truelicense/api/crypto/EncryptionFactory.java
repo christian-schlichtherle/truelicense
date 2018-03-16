@@ -10,8 +10,8 @@ import global.namespace.fun.io.api.Transformation;
 import java.util.function.Function;
 
 /**
- * Maps (password based) encryption parameters to encryption transformations.
+ * Creates a password based encryption transformation from some parameters.
  *
  * @author Christian Schlichtherle
  */
-public interface EncryptionFunction extends Function<EncryptionParameters, Transformation> { }
+public interface EncryptionFactory extends Function<EncryptionParameters, Transformation> { }

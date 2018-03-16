@@ -39,7 +39,7 @@ public final class V1LicenseApplicationContext extends TrueLicenseApplicationCon
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
                 .encryptionAlgorithm(PBE_ALGORITHM)
-                .encryptionFunction(V1Encryption::new)
+                .encryptionFactory(V1Encryption::new)
                 .licenseFactory(LicenseContent::new)
                 .repositoryContext(new V1RepositoryContext())
                 .storeType(STORE_TYPE);

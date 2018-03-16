@@ -22,7 +22,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import static javax.crypto.Cipher.*;
 
 /**
- * The encryption for V1 format license keys.
+ * The password based encryption for V1 format license keys.
  * This class is immutable.
  *
  * @author Christian Schlichtherle

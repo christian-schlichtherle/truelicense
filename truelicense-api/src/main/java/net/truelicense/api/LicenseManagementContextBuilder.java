@@ -9,7 +9,7 @@ import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.AuthenticationFunction;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.crypto.EncryptionFunction;
+import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
@@ -83,7 +83,7 @@ extends Builder<LicenseManagementContext> {
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder encryptionFunction(EncryptionFunction function);
+    LicenseManagementContextBuilder encryptionFactory(EncryptionFactory encryptionFactory);
 
     /**
      * Sets the custom license initialization (optional).
