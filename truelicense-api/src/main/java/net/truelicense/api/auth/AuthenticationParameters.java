@@ -28,23 +28,19 @@ public interface AuthenticationParameters {
 
     /**
      * Returns the optional signature algorithm.
-     * If no value is present then the same signature algorithm should be used
-     * which was used to sign the public key of the keystore entry which is
-     * addressed by the other properties of this interface.
+     * If no value is present then the same signature algorithm should be used which was used to sign the public key of
+     * the keystore entry which is addressed by the other properties of this interface.
      */
     Optional<String> algorithm();
 
     /**
      * Returns the alias of the entry in the keystore.
-     * The returned string should be computed on demand from an obfuscated form,
-     * e.g. by processing it with the TrueLicense Maven Plugin.
+     * The returned string should be computed on demand from an obfuscated form, e.g. by processing it with the
+     * TrueLicense Maven Plugin.
      */
     String alias();
 
-    /**
-     * Returns a password protection for accessing the private key in the key
-     * entry.
-     */
+    /** Returns a password protection for accessing the private key in the key entry. */
     PasswordProtection keyProtection();
 
     /**
@@ -53,17 +49,13 @@ public interface AuthenticationParameters {
      */
     Optional<Socket<InputStream>> source();
 
-    /**
-     * Returns a password protection for verifying the integrity of the key
-     * store.
-     */
+    /** Returns a password protection for verifying the integrity of the key store. */
     PasswordProtection storeProtection();
 
     /**
-     * Returns the type of the keystore, for example {@code "JCEKS"} or
-     * {@code "JKS"}.
-     * The returned string should be computed on demand from an obfuscated form,
-     * e.g. by processing it with the TrueLicense Maven Plugin.
+     * Returns the type of the keystore.
+     * The returned string should be computed on demand from an obfuscated form, e.g. by processing it with the
+     * TrueLicense Maven Plugin.
      */
     String storeType();
 }

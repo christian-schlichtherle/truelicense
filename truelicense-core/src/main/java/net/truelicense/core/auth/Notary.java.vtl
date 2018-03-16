@@ -57,13 +57,13 @@ public final class Notary implements Authentication {
     }
 
     @Override
-    public Decoder sign(RepositoryController repository, Object artifact) throws Exception {
-        return new Cache().sign(repository, artifact);
+    public Decoder sign(RepositoryController controller, Object artifact) throws Exception {
+        return new Cache().sign(controller, artifact);
     }
 
     @Override
-    public Decoder verify(RepositoryController repository) throws Exception {
-        return new Cache().verify(repository);
+    public Decoder verify(RepositoryController controller) throws Exception {
+        return new Cache().verify(controller);
     }
 
     AuthenticationParameters parameters() {
@@ -74,18 +74,18 @@ public final class Notary implements Authentication {
 
         KeyStore keyStore;
 
-        Decoder sign(RepositoryController repository, Object artifact) throws Exception {
+        Decoder sign(RepositoryController controller, Object artifact) throws Exception {
             final Signature engine = engine();
             final PrivateKey key = privateKey();
             engine.initSign(key);
-            return repository.sign(engine, artifact);
+            return controller.sign(engine, artifact);
         }
 
-        Decoder verify(RepositoryController repository) throws Exception {
+        Decoder verify(RepositoryController controller) throws Exception {
             final Signature engine = engine();
             final PublicKey key = publicKey();
             engine.initVerify(key);
-            return repository.verify(engine);
+            return controller.verify(engine);
         }
 
         Signature engine() throws Exception {

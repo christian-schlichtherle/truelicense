@@ -9,12 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import global.namespace.fun.io.api.Decoder;
 import global.namespace.fun.io.api.Encoder;
 import global.namespace.fun.io.api.Socket;
-import global.namespace.fun.io.jackson.Jackson;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.obfuscate.Obfuscate;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static global.namespace.fun.io.jackson.Jackson.jsonCodec;
 
 /**
  * A codec which encodes/decodes objects to/from JSON with an
@@ -39,7 +40,7 @@ public class JsonCodec implements Codec {
      *
      * @param mapper the object mapper.
      */
-    public JsonCodec(final ObjectMapper mapper) { this.codec = Jackson.jsonCodec(mapper); }
+    public JsonCodec(final ObjectMapper mapper) { this.codec = jsonCodec(mapper); }
 
     /**
      * {@inheritDoc}
