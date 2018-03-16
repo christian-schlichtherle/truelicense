@@ -752,12 +752,16 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
             }
 
-            class TrueLicenseManager
-                    extends TrueHasLicenseManagementSchema
-                    implements ConsumerLicenseManager, VendorLicenseManager {
+            class TrueLicenseManager implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
-                public UncheckedLicenseManager unchecked() { return new UncheckedLicenseManager(); }
+                public LicenseManagementSchema schema() { return TrueLicenseManagementSchema.this; }
+
+                @Override
+                public LicenseManagementContext context() { return TrueLicenseManagementContext.this; }
+
+                @Override
+                public TrueUncheckedLicenseManager unchecked() { return new TrueUncheckedLicenseManager(); }
 
                 @Override
                 public LicenseKeyGenerator generateKeyFrom(final License bean) throws LicenseManagementException {
@@ -888,74 +892,13 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
 
-                //
-                // Property/factory functions:
-                //
-
-                final class UncheckedLicenseManager
-                        extends TrueHasLicenseManagementSchema
-                        implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
+                final class TrueUncheckedLicenseManager implements
+                        UncheckedLicenseManager.Vendor<TrueLicenseManager>,
+                        UncheckedLicenseManager.Consumer<TrueLicenseManager> {
 
                     @Override
                     public TrueLicenseManager checked() { return TrueLicenseManager.this; }
-
-                    @Override
-                    public UncheckedLicenseKeyGenerator generateKeyFrom(final License bean)
-                            throws UncheckedLicenseManagementException {
-                        return callUnchecked(() -> new UncheckedLicenseKeyGenerator() {
-                            final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
-
-                            @Override
-                            public License license() throws UncheckedLicenseManagementException {
-                                return callUnchecked(generator::license);
-                            }
-
-                            @Override
-                            public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
-                                callUnchecked(() -> generator.saveTo(sink));
-                                return this;
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void install(final Source source) throws UncheckedLicenseManagementException {
-                        callUnchecked(() -> {
-                            checked().install(source);
-                            return null;
-                        });
-                    }
-
-                    @Override
-                    public License load() throws UncheckedLicenseManagementException {
-                        return callUnchecked(checked()::load);
-                    }
-
-                    @Override
-                    public void verify() throws UncheckedLicenseManagementException {
-                        callUnchecked(() -> {
-                            checked().verify();
-                            return null;
-                        });
-                    }
-
-                    @Override
-                    public void uninstall() throws UncheckedLicenseManagementException {
-                        callUnchecked(() -> {
-                            checked().uninstall();
-                            return null;
-                        });
-                    }
                 }
-            }
-
-            abstract class TrueHasLicenseManagementSchema implements HasLicenseManagementSchema {
-
-                @Override
-                public LicenseManagementSchema schema() { return TrueLicenseManagementSchema.this; }
-
-                @Override
-                public LicenseManagementContext context() { return TrueLicenseManagementContext.this; }
             }
         }
 

@@ -31,7 +31,7 @@ public final class UncheckedLicenseManager {
      * @param manager the vendor license manager to adapt.
      */
     public static UncheckedVendorLicenseManager from(VendorLicenseManager manager) {
-        return (TrueUncheckedVendorLicenseManager) () -> manager;
+        return (Vendor<VendorLicenseManager>) () -> manager;
     }
 
     /**
@@ -42,10 +42,10 @@ public final class UncheckedLicenseManager {
      * @param manager the consumer license manager to adapt.
      */
     public static UncheckedConsumerLicenseManager from(ConsumerLicenseManager manager) {
-        return (TrueUncheckedConsumerLicenseManager) () -> manager;
+        return (Consumer<ConsumerLicenseManager>) () -> manager;
     }
 
-    private static <V> V callUnchecked(Callable<V> task) {
+    static <V> V callUnchecked(Callable<V> task) {
         try {
             return task.call();
         } catch (RuntimeException e) {
@@ -55,12 +55,10 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private interface TrueUncheckedVendorLicenseManager
-            extends TrueHasLicenseManagementSchema<VendorLicenseManager>, UncheckedVendorLicenseManager {
+    public interface Vendor<M extends VendorLicenseManager> extends HasSchema<M>, UncheckedVendorLicenseManager {
 
         @Override
-        default UncheckedLicenseKeyGenerator generateKeyFrom(License bean)
-                throws UncheckedLicenseManagementException {
+        default UncheckedLicenseKeyGenerator generateKeyFrom(License bean) throws UncheckedLicenseManagementException {
             return callUnchecked(() -> new UncheckedLicenseKeyGenerator() {
                 final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
 
@@ -78,8 +76,7 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private interface TrueUncheckedConsumerLicenseManager
-            extends TrueHasLicenseManagementSchema<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
+    public interface Consumer<M extends ConsumerLicenseManager> extends HasSchema<M>, UncheckedConsumerLicenseManager {
 
         @Override
         default void install(Source source) throws UncheckedLicenseManagementException {
@@ -111,8 +108,7 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private interface TrueHasLicenseManagementSchema<M extends HasLicenseManagementSchema>
-            extends HasLicenseManagementSchema {
+    private interface HasSchema<M extends HasLicenseManagementSchema> extends HasLicenseManagementSchema {
 
         @Override
         default LicenseManagementSchema schema() { return checked().schema(); }
