@@ -7,6 +7,8 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Source;
 
+import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
+
 /**
  * Defines the life cycle management operations for license keys in consumer applications.
  * <p>
@@ -36,6 +38,9 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
      */
     ConsumerLicenseManager checked();
 
+    @Override
+    default LicenseManagementSchema schema() { return checked().schema(); }
+
     /**
      * Verifies the digital signature of the license key in the given source and copies it to the configured store.
      * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
@@ -47,10 +52,15 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
      *
      * @param source the source to read the license key from.
      */
-    void install(Source source) throws UncheckedLicenseManagementException;
+    default void install(Source source) throws UncheckedLicenseManagementException {
+        callUnchecked(() -> {
+            checked().install(source);
+            return null;
+        });
+    }
 
     /**
-     * Eventually loads the installed license key and returns an unvalidated duplicate of its encoded license bean.
+     * Loads the installed license key and returns an unvalidated duplicate of its encoded license bean.
      * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
      * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
      * license has expired.
@@ -60,7 +70,9 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
      *
      * @return An unvalidated duplicate of the license bean which is encoded in the installed license key.
      */
-    License load() throws UncheckedLicenseManagementException;
+    default License load() throws UncheckedLicenseManagementException {
+        return callUnchecked(checked()::load);
+    }
 
     /**
      * Loads the installed license key and verifies its encoded license bean.
@@ -73,7 +85,12 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
      * @throws UncheckedLicenseManagementException with a {@link LicenseValidationException} as its cause if validating
      *         the license bean fails, e.g. if the license has expired.
      */
-    void verify() throws UncheckedLicenseManagementException;
+    default void verify() throws UncheckedLicenseManagementException {
+        callUnchecked(() -> {
+            checked().verify();
+            return null;
+        });
+    }
 
     /**
      * Uninstalls the installed license key.
@@ -81,5 +98,10 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
      * Calling this operation performs an initial
      * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
      */
-    void uninstall() throws UncheckedLicenseManagementException;
+    default void uninstall() throws UncheckedLicenseManagementException {
+        callUnchecked(() -> {
+            checked().uninstall();
+            return null;
+        });
+    }
 }

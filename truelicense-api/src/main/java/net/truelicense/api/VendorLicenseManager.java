@@ -22,7 +22,9 @@ public interface VendorLicenseManager extends HasLicenseManagementSchema {
      * @return the adapted unchecked vendor license manager.
      * @since TrueLicense 3.1.0
      */
-    default UncheckedVendorLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
+    default UncheckedVendorLicenseManager unchecked() {
+        return () -> this;
+    }
 
     /**
      * Returns a license key generator for the given license bean.

@@ -68,16 +68,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
     }
 
-    private static <V> V callUnchecked(final Callable<V> task) {
-        try {
-            return task.call();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new UncheckedLicenseManagementException(e);
-        }
-    }
-
     //
     // Inner classes:
     //
@@ -752,13 +742,9 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
             }
 
-            class TrueLicenseManager implements ConsumerLicenseManager, VendorLicenseManager {
-
-                @Override
-                public LicenseManagementSchema schema() { return TrueLicenseManagementSchema.this; }
-
-                @Override
-                public LicenseManagementContext context() { return TrueLicenseManagementContext.this; }
+            class TrueLicenseManager
+                    extends TrueHasLicenseManagementSchema
+                    implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
                 public TrueUncheckedLicenseManager unchecked() { return new TrueUncheckedLicenseManager(); }
@@ -892,13 +878,22 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
 
-                final class TrueUncheckedLicenseManager implements
-                        UncheckedLicenseManager.Vendor<TrueLicenseManager>,
-                        UncheckedLicenseManager.Consumer<TrueLicenseManager> {
+                final class TrueUncheckedLicenseManager
+                        extends TrueHasLicenseManagementSchema
+                        implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                     @Override
                     public TrueLicenseManager checked() { return TrueLicenseManager.this; }
                 }
+            }
+
+            abstract class TrueHasLicenseManagementSchema implements HasLicenseManagementSchema {
+
+                @Override
+                public LicenseManagementSchema schema() { return TrueLicenseManagementSchema.this; }
+
+                @Override
+                public LicenseManagementContext context() { return TrueLicenseManagementContext.this; }
             }
         }
 

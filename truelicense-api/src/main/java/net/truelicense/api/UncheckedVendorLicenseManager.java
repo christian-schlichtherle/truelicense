@@ -5,6 +5,10 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Sink;
+
+import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
+
 /**
  * Defines the life cycle management operations for license keys in vendor applications alias key generators.
  * <p>
@@ -25,6 +29,9 @@ public interface UncheckedVendorLicenseManager extends HasLicenseManagementSchem
      */
     VendorLicenseManager checked();
 
+    @Override
+    default LicenseManagementSchema schema() { return checked().schema(); }
+
     /**
      * Returns a license key generator for the given license bean.
      * <p>
@@ -35,5 +42,20 @@ public interface UncheckedVendorLicenseManager extends HasLicenseManagementSchem
      *             This bean is not modified by the returned license key generator.
      * @return A license key generator for the given license bean.
      */
-    UncheckedLicenseKeyGenerator generateKeyFrom(License bean) throws UncheckedLicenseManagementException;
+    default UncheckedLicenseKeyGenerator generateKeyFrom(License bean) throws UncheckedLicenseManagementException {
+        return callUnchecked(() -> new UncheckedLicenseKeyGenerator() {
+            final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
+
+            @Override
+            public License license() throws UncheckedLicenseManagementException {
+                return callUnchecked(generator::license);
+            }
+
+            @Override
+            public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
+                callUnchecked(() -> generator.saveTo(sink));
+                return this;
+            }
+        });
+    }
 }

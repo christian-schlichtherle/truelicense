@@ -33,7 +33,7 @@ public interface ConsumerLicenseManager extends HasLicenseManagementSchema {
      * @return the adapted unchecked consumer license manager.
      * @since TrueLicense 3.1.0
      */
-    default UncheckedConsumerLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
+    default UncheckedConsumerLicenseManager unchecked() { return () -> this; }
 
     /**
      * Verifies the digital signature of the license key in the given source and copies it to the configured store.
@@ -49,7 +49,7 @@ public interface ConsumerLicenseManager extends HasLicenseManagementSchema {
     void install(Source source) throws LicenseManagementException;
 
     /**
-     * Eventually loads the installed license key and returns an unvalidated duplicate of its encoded license bean.
+     * Loads the installed license key and returns an unvalidated duplicate of its encoded license bean.
      * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
      * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
      * license has expired.
