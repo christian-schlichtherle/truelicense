@@ -7,11 +7,13 @@ package net.truelicense.api.crypto;
 
 import global.namespace.fun.io.api.Transformation;
 
-import java.util.function.Function;
-
 /**
- * Creates a password based encryption transformation from some parameters.
+ * Creates a password based encryption transformation from some given parameters.
  *
  * @author Christian Schlichtherle
  */
-public interface EncryptionFactory extends Function<EncryptionParameters, Transformation> { }
+public interface EncryptionFactory {
+
+    /** Returns a password based encryption from the given parameters. */
+    Transformation encryption(EncryptionParameters encryptionParameters);
+}

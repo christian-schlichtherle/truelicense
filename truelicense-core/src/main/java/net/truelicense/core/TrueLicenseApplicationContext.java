@@ -216,6 +216,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             CachePeriodProvider,
             Clock,
             CompressionProvider,
+            EncryptionFactory,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
@@ -284,7 +285,10 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
         String encryptionAlgorithm() { return encryptionAlgorithm; }
 
-        EncryptionFactory encryptionFactory() { return encryptionFactory; }
+        @Override
+        public Transformation encryption(EncryptionParameters encryptionParameters) {
+            return encryptionFactory.encryption(encryptionParameters);
+        }
 
         @Override
         public LicenseInitialization initialization() {
@@ -484,7 +488,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public Transformation build() {
-                    return encryptionFactory().apply(new TrueEncryptionParameters(this));
+                    return TrueLicenseManagementContext.this.encryption(new TrueEncryptionParameters(this));
                 }
 
                 @Override
