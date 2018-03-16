@@ -9,7 +9,6 @@ import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.comp.CompressionProvider;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
@@ -215,7 +214,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             AuthenticationFactory,
             CachePeriodProvider,
             Clock,
-            CompressionProvider,
             EncryptionFactory,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
@@ -276,8 +274,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         @Override
         public Codec codec() { return codec; }
 
-        @Override
-        public Transformation compression() { return compression; }
+        Transformation compression() { return compression; }
 
         @Override
         public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
