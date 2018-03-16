@@ -10,6 +10,5 @@ import net.truelicense.it.v2.json.V2JsonTestContext
 /** @author Christian Schlichtherle */
 class V2JsonConsumerLicenseManagementServiceJerseyIT
 extends ConsumerLicenseManagementServiceJerseyITSuite
-with V2JsonTestContext {
-  override def extraData: AnyRef = null
-}
+with V2JsonTestContext
+with NoExtraDataMixin

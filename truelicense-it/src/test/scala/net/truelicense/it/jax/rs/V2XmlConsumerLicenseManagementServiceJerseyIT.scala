@@ -10,6 +10,5 @@ import net.truelicense.it.v2.xml.V2XmlTestContext
 /** @author Christian Schlichtherle */
 class V2XmlConsumerLicenseManagementServiceJerseyIT
 extends ConsumerLicenseManagementServiceJerseyITSuite
-with V2XmlTestContext {
-  override def extraData: AnyRef = null
-}
+with V2XmlTestContext
+with NoExtraDataMixin
