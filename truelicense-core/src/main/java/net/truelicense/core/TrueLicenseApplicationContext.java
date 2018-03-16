@@ -215,7 +215,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             CachePeriodProvider,
             Clock,
             EncryptionFactory,
-            LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
             LicenseManagementSubjectProvider,
@@ -265,8 +264,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             return authenticationFactory.authentication(authenticationParameters);
         }
 
-        @Override
-        public LicenseManagementAuthorization authorization() { return authorization; }
+        LicenseManagementAuthorization authorization() { return authorization; }
 
         @Override
         public long cachePeriodMillis() { return cachePeriodMillis; }
