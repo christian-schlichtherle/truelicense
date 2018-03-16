@@ -215,7 +215,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             CachePeriodProvider,
             Clock,
             EncryptionFactory,
-            LicenseInitializationProvider,
             LicenseManagementContext,
             LicenseValidationProvider,
             PasswordPolicyProvider {
@@ -283,8 +282,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             return encryptionFactory.encryption(encryptionParameters);
         }
 
-        @Override
-        public LicenseInitialization initialization() {
+        LicenseInitialization initialization() {
             final LicenseInitialization second = new TrueLicenseInitialization();
             return initialization
                     .map(first -> initializationComposition.compose(first, second))
@@ -564,8 +562,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             }
         }
 
-        final class TrueLicenseManagementParameters
-        implements LicenseInitializationProvider, LicenseManagementParameters {
+        final class TrueLicenseManagementParameters implements LicenseManagementParameters {
 
             final Authentication authentication;
             final Optional<Transformation> encryption;
@@ -589,8 +586,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 return encryption.orElseGet(() -> parent().parameters().encryption());
             }
 
-            @Override
-            public LicenseInitialization initialization() {
+            LicenseInitialization initialization() {
                 final LicenseInitialization initialization = TrueLicenseManagementContext.this.initialization();
                 if (0 != ftpDays) {
                     return bean -> {

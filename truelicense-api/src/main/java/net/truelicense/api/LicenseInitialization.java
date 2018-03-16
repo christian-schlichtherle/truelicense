@@ -8,7 +8,6 @@ package net.truelicense.api;
 /**
  * Defines a license initialization.
  *
- * @see    LicenseInitializationProvider
  * @author Christian Schlichtherle
  */
 public interface LicenseInitialization {
