@@ -212,6 +212,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
     final class TrueLicenseManagementContext
     implements
+            AuthenticationFactory,
             CachePeriodProvider,
             Clock,
             CompressionProvider,
@@ -261,7 +262,10 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             this.validationComposition = b.validationComposition;
         }
 
-        AuthenticationFactory authenticationFactory() { return authenticationFactory; }
+        @Override
+        public Authentication authentication(AuthenticationParameters authenticationParameters) {
+            return authenticationFactory.authentication(authenticationParameters);
+        }
 
         @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
@@ -433,7 +437,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public Authentication build() {
-                    return authenticationFactory().apply(new TrueAuthenticationParameters(this));
+                    return TrueLicenseManagementContext.this.authentication(new TrueAuthenticationParameters(this));
                 }
 
                 @Override
