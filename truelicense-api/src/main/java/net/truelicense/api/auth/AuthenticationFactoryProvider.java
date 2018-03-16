@@ -5,11 +5,13 @@
 
 package net.truelicense.api.auth;
 
-import java.util.function.Function;
-
 /**
- * Maps authentication parameters to authentications.
+ * Provides an authentication factory.
  *
  * @author Christian Schlichtherle
  */
-public interface AuthenticationFunction extends Function<AuthenticationParameters, Authentication> { }
+public interface AuthenticationFactoryProvider {
+
+    /** Returns the authentication factory. */
+    AuthenticationFactory authenticationFactory();
+}

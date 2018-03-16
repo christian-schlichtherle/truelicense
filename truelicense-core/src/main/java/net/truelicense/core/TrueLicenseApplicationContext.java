@@ -84,7 +84,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
     final class TrueLicenseManagementContextBuilder implements LicenseManagementContextBuilder {
 
-        AuthenticationFunction authenticationFunction = Notary::new;
+        AuthenticationFactory authenticationFactory = Notary::new;
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = Date::new;
@@ -103,8 +103,8 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
         @Override
-        public LicenseManagementContextBuilder authenticationFunction(final AuthenticationFunction function) {
-            this.authenticationFunction = requireNonNull(function);
+        public LicenseManagementContextBuilder authenticationFactory(final AuthenticationFactory authenticationFactory) {
+            this.authenticationFactory = requireNonNull(authenticationFactory);
             return this;
         }
 
@@ -213,7 +213,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
     final class TrueLicenseManagementContext
     implements
-            AuthenticationFunctionProvider,
+            AuthenticationFactoryProvider,
             CachePeriodProvider,
             Clock,
             CompressionProvider,
@@ -226,7 +226,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             PasswordPolicyProvider,
             RepositoryContextProvider {
 
-        final AuthenticationFunction authenticationFunction;
+        final AuthenticationFactory authenticationFactory;
         final LicenseManagementAuthorization authorization;
         final long cachePeriodMillis;
         final Clock clock;
@@ -245,7 +245,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         final LicenseFunctionComposition validationComposition;
 
         TrueLicenseManagementContext(final TrueLicenseManagementContextBuilder b) {
-            this.authenticationFunction = b.authenticationFunction;
+            this.authenticationFactory = b.authenticationFactory;
             this.authorization = b.authorization;
             this.cachePeriodMillis = b.cachePeriodMillis;
             this.clock = b.clock;
@@ -265,7 +265,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public AuthenticationFunction authenticationFunction() { return authenticationFunction; }
+        public AuthenticationFactory authenticationFactory() { return authenticationFactory; }
 
         @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
@@ -438,7 +438,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public Authentication build() {
-                    return authenticationFunction().apply(new TrueAuthenticationParameters(this));
+                    return authenticationFactory().apply(new TrueAuthenticationParameters(this));
                 }
 
                 @Override

@@ -6,7 +6,7 @@
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Transformation;
-import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionFactory;
@@ -26,11 +26,11 @@ public interface LicenseManagementContextBuilder
 extends Builder<LicenseManagementContext> {
 
     /**
-     * Sets the authentication function (optional).
+     * Sets the authentication factory (optional).
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder authenticationFunction(AuthenticationFunction function);
+    LicenseManagementContextBuilder authenticationFactory(AuthenticationFactory authenticationFactory);
 
     /**
      * Sets the license management authorization (optional).
@@ -79,7 +79,7 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder encryptionAlgorithm(String encryptionAlgorithm);
 
     /**
-     * Sets the (password based) encryption function (optional).
+     * Sets the (password based) encryption factory (optional).
      *
      * @return {@code this}
      */

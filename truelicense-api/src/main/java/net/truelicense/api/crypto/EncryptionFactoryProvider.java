@@ -12,6 +12,6 @@ package net.truelicense.api.crypto;
  */
 public interface EncryptionFactoryProvider {
 
-    /** Returns the password based encryption function. */
+    /** Returns the password based encryption factory. */
     EncryptionFactory encryptionFactory();
 }

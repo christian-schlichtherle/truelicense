@@ -5,13 +5,11 @@
 
 package net.truelicense.api.auth;
 
+import java.util.function.Function;
+
 /**
- * Provides an authentication function.
+ * Creates an authentication from some parameters.
  *
  * @author Christian Schlichtherle
  */
-public interface AuthenticationFunctionProvider {
-
-    /** Returns the authentication function. */
-    AuthenticationFunction authenticationFunction();
-}
+public interface AuthenticationFactory extends Function<AuthenticationParameters, Authentication> { }

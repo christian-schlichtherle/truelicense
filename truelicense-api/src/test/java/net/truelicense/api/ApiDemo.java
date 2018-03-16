@@ -9,7 +9,7 @@ import global.namespace.fun.io.api.Socket;
 import global.namespace.fun.io.api.Store;
 import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
-import net.truelicense.api.auth.AuthenticationFunction;
+import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionFactory;
@@ -42,7 +42,7 @@ public abstract class ApiDemo {
     public LicenseManagementContext licenseManagementContext() {
         return licenseApplicationContext()
                 .context() // returns a LicenseManagementContextBuilder
-                .authenticationFunction(mock(AuthenticationFunction.class))
+                .authenticationFactory(mock(AuthenticationFactory.class))
                 .authorization(mock(LicenseManagementAuthorization.class))
                 .cachePeriodMillis(1000L)
                 .codec(mock(Codec.class))
