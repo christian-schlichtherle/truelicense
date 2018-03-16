@@ -9,13 +9,13 @@ import java.util.Date
 
 import global.namespace.fun.io.bios.BIOS.memoryStore
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
-import net.truelicense.it.core.LicenseKeyLifeCycleTestSuite.logger
+import net.truelicense.it.core.LicenseKeyLifeCycleITSuite.logger
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
 
 /** @author Christian Schlichtherle */
-abstract class LicenseKeyLifeCycleTestSuite extends WordSpec { this: TestContext =>
+abstract class LicenseKeyLifeCycleITSuite extends WordSpec { this: TestContext =>
 
   "The license key life cycle" should {
     "work for regular license keys" in {
@@ -152,6 +152,7 @@ abstract class LicenseKeyLifeCycleTestSuite extends WordSpec { this: TestContext
 }
 
 /** @author Christian Schlichtherle */
-object LicenseKeyLifeCycleTestSuite {
-  private val logger = LoggerFactory getLogger classOf[LicenseKeyLifeCycleTestSuite]
+object LicenseKeyLifeCycleITSuite {
+
+  private val logger = LoggerFactory getLogger classOf[LicenseKeyLifeCycleITSuite]
 }

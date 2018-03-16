@@ -3,14 +3,14 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package net.truelicense.it.v2.xml
+package net.truelicense.it.v2.json
 
-import net.truelicense.it.core.LicenseKeyLifeCycleTestSuite
+import net.truelicense.it.core.LicenseKeyLifeCycleITSuite
 import org.junit.runner._
 import org.scalatest.junit._
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
-class V2XmlLicenseKeyLifeCycleTest
-  extends LicenseKeyLifeCycleTestSuite
-  with V2XmlTestContext
+class V2JsonLicenseKeyLifeCycleIT
+  extends LicenseKeyLifeCycleITSuite
+  with V2JsonTestContext

@@ -5,12 +5,12 @@
 
 package net.truelicense.it.v2.json
 
-import net.truelicense.it.v2.commons.V2RepositoryTestSuite
+import net.truelicense.it.v2.commons.V2RepositoryITSuite
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 /** @author Christian Schlichtherle */
 @RunWith(classOf[JUnitRunner])
-class V2JsonRepositoryTest
-extends V2RepositoryTestSuite
+class V2JsonRepositoryIT
+extends V2RepositoryITSuite
 with V2JsonTestContext

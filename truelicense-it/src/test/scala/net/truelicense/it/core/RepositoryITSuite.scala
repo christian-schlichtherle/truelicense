@@ -10,7 +10,7 @@ import org.scalatest.Matchers._
 import org.scalatest._
 
 /** @author Christian Schlichtherle */
-abstract class RepositoryTestSuite[Model <: AnyRef] extends WordSpec with ParallelTestExecution { this: TestContext =>
+abstract class RepositoryITSuite[Model <: AnyRef] extends WordSpec with ParallelTestExecution { this: TestContext =>
 
   val context: RepositoryContext[Model]
 
@@ -18,9 +18,10 @@ abstract class RepositoryTestSuite[Model <: AnyRef] extends WordSpec with Parall
     "sign and verify an object" in {
       val authentication = vendorManager.parameters.authentication
       val controller = context.controller(context.model, codec)
-      val artifact = "Hello world!"
-      (authentication.sign(controller, artifact) decode classOf[String]: String) shouldBe artifact
-      (authentication verify controller decode classOf[String]: String) shouldBe artifact
+      val artifact = license
+      val clazz = license.getClass
+      authentication.sign(controller, artifact) decode clazz shouldBe artifact
+      authentication verify controller decode clazz shouldBe artifact
     }
   }
 }
