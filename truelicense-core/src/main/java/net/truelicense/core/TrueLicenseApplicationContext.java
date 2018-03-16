@@ -13,9 +13,11 @@ import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.CachePeriodProvider;
 import net.truelicense.api.misc.Clock;
-import net.truelicense.api.passwd.*;
+import net.truelicense.api.passwd.Password;
+import net.truelicense.api.passwd.PasswordPolicy;
+import net.truelicense.api.passwd.PasswordProtection;
+import net.truelicense.api.passwd.PasswordUsage;
 import net.truelicense.core.auth.Notary;
 import net.truelicense.core.misc.Strings;
 import net.truelicense.core.passwd.MinimumPasswordPolicy;
@@ -210,14 +212,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
     }
 
     final class TrueLicenseManagementContext
-    implements
-            AuthenticationFactory,
-            CachePeriodProvider,
-            Clock,
-            EncryptionFactory,
-            LicenseManagementContext,
-            LicenseValidationProvider,
-            PasswordPolicyProvider {
+    implements AuthenticationFactory, Clock, EncryptionFactory, LicenseManagementContext {
 
         final AuthenticationFactory authenticationFactory;
         final LicenseManagementAuthorization authorization;
@@ -264,8 +259,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
         LicenseManagementAuthorization authorization() { return authorization; }
 
-        @Override
-        public long cachePeriodMillis() { return cachePeriodMillis; }
+        long cachePeriodMillis() { return cachePeriodMillis; }
 
         @Override
         public Codec codec() { return codec; }
@@ -295,8 +289,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         @Override
         public Date now() { return clock.now(); }
 
-        @Override
-        public PasswordPolicy passwordPolicy() { return passwordPolicy; }
+        PasswordPolicy passwordPolicy() { return passwordPolicy; }
 
         <Model> RepositoryContext<Model> repositoryContext() { return (RepositoryContext<Model>) repositoryContext; }
 
@@ -305,8 +298,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         @Override
         public String subject() { return subject; }
 
-        @Override
-        public LicenseValidation validation() {
+        LicenseValidation validation() {
             final LicenseValidation second = new TrueLicenseValidation();
             return validation
                     .map(first -> validationComposition.compose(first, second))

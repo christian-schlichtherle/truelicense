@@ -5,13 +5,17 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.misc.ContextProvider;
-
 /**
- * Provides a {@linkplain LicenseManagementContext license management context}
- * and {@link LicenseManagementParameters license management parameters}.
+ * Provides the {@linkplain LicenseManagementContext license management context}
+ * and the {@link LicenseManagementParameters license management parameters}.
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseManagementSchema
-extends ContextProvider<LicenseManagementContext>, LicenseManagementParametersProvider { }
+public interface LicenseManagementSchema {
+
+    /** Returns the license management context from which this license management schema originated. */
+    LicenseManagementContext context();
+
+    /** Returns the license management parameters. */
+    LicenseManagementParameters parameters();
+}

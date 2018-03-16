@@ -8,7 +8,6 @@ package net.truelicense.api;
 /**
  * Defines a license validation.
  *
- * @see    LicenseValidationProvider
  * @author Christian Schlichtherle
  */
 public interface LicenseValidation {

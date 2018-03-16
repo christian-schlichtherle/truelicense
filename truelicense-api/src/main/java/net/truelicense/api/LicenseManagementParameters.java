@@ -20,7 +20,6 @@ import net.truelicense.api.auth.Authentication;
  * Applications have no need to implement this interface and should not do so
  * because it may be subject to expansion in future versions.
  *
- * @see    LicenseManagementParametersProvider
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementParameters {
