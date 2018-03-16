@@ -7,6 +7,8 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Sink;
 import global.namespace.fun.io.api.Source;
+import global.namespace.fun.io.api.Transformation;
+import net.truelicense.api.auth.Authentication;
 
 import java.util.concurrent.Callable;
 
@@ -31,7 +33,7 @@ public final class UncheckedLicenseManager {
      * @param manager the vendor license manager to adapt.
      */
     public static UncheckedVendorLicenseManager from(VendorLicenseManager manager) {
-        return (UncheckedVendorTrueLicenseManager) () -> manager;
+        return (TrueUncheckedVendorLicenseManager) () -> manager;
     }
 
     /**
@@ -42,44 +44,48 @@ public final class UncheckedLicenseManager {
      * @param manager the consumer license manager to adapt.
      */
     public static UncheckedConsumerLicenseManager from(ConsumerLicenseManager manager) {
-        return (UncheckedConsumerTrueLicenseManager) () -> manager;
+        return (TrueUncheckedConsumerLicenseManager) () -> manager;
     }
 
-    private static <V> V uncheck(Callable<V> task) {
-        try { return task.call(); }
-        catch (RuntimeException e) { throw e; }
-        catch (Exception e) { throw new UncheckedLicenseManagementException(e); }
+    private static <V> V callUnchecked(Callable<V> task) {
+        try {
+            return task.call();
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new UncheckedLicenseManagementException(e);
+        }
     }
 
-    private interface UncheckedVendorTrueLicenseManager
-            extends UncheckedTrueLicenseManager<VendorLicenseManager>, UncheckedVendorLicenseManager {
+    private interface TrueUncheckedVendorLicenseManager
+            extends UncheckedLicenseManagementSchema<VendorLicenseManager>, UncheckedVendorLicenseManager {
 
         @Override
         default UncheckedLicenseKeyGenerator generateKeyFrom(License bean)
                 throws UncheckedLicenseManagementException {
-            return uncheck(() -> new UncheckedLicenseKeyGenerator() {
+            return callUnchecked(() -> new UncheckedLicenseKeyGenerator() {
                 final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
 
                 @Override
                 public License license() throws UncheckedLicenseManagementException {
-                    return uncheck(generator::license);
+                    return callUnchecked(generator::license);
                 }
 
                 @Override
                 public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
-                    uncheck(() -> generator.saveTo(sink));
+                    callUnchecked(() -> generator.saveTo(sink));
                     return this;
                 }
             });
         }
     }
 
-    private interface UncheckedConsumerTrueLicenseManager
-            extends UncheckedTrueLicenseManager<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
+    private interface TrueUncheckedConsumerLicenseManager
+            extends UncheckedLicenseManagementSchema<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
 
         @Override
         default void install(Source source) throws UncheckedLicenseManagementException {
-            uncheck(() -> {
+            callUnchecked(() -> {
                 checked().install(source);
                 return null;
             });
@@ -87,12 +93,12 @@ public final class UncheckedLicenseManager {
 
         @Override
         default License load() throws UncheckedLicenseManagementException {
-            return uncheck(checked()::load);
+            return callUnchecked(checked()::load);
         }
 
         @Override
         default void verify() throws UncheckedLicenseManagementException {
-            uncheck(() -> {
+            callUnchecked(() -> {
                 checked().verify();
                 return null;
             });
@@ -100,20 +106,24 @@ public final class UncheckedLicenseManager {
 
         @Override
         default void uninstall() throws UncheckedLicenseManagementException {
-            uncheck(() -> {
+            callUnchecked(() -> {
                 checked().uninstall();
                 return null;
             });
         }
     }
 
-    private interface UncheckedTrueLicenseManager<M extends LicenseManagementSchema> extends LicenseManagementSchema {
+    private interface UncheckedLicenseManagementSchema<M extends LicenseManagementSchema>
+            extends LicenseManagementSchema {
+
+        @Override
+        default Authentication authentication() { return checked().authentication(); }
 
         @Override
         default LicenseManagementContext context() { return checked().context(); }
 
         @Override
-        default LicenseManagementParameters parameters() { return checked().parameters(); }
+        default Transformation encryption() { return checked().encryption(); }
 
         M checked();
     }

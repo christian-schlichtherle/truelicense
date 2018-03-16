@@ -58,7 +58,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
     // Utility functions:
     //
 
-    private static <V> V checked(final Callable<V> task) throws LicenseManagementException {
+    private static <V> V callChecked(final Callable<V> task) throws LicenseManagementException {
         try {
             return task.call();
         } catch (RuntimeException | LicenseManagementException e) {
@@ -68,7 +68,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
     }
 
-    private static <V> V unchecked(final Callable<V> task) {
+    private static <V> V callUnchecked(final Callable<V> task) {
         try {
             return task.call();
         } catch (RuntimeException e) {
@@ -267,7 +267,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         Transformation compression() { return compression; }
 
         @Override
-        public ConsumerLicenseManagerBuilder consumer() { return new ConsumerTrueLicenseManagerBuilder(); }
+        public ConsumerLicenseManagerBuilder consumer() { return new TrueConsumerLicenseManagerBuilder(); }
 
         String encryptionAlgorithm() { return encryptionAlgorithm; }
 
@@ -306,45 +306,45 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public VendorLicenseManagerBuilder vendor() { return new VendorTrueLicenseManagerBuilder(); }
+        public VendorLicenseManagerBuilder vendor() { return new TrueVendorLicenseManagerBuilder(); }
 
-        class ConsumerTrueLicenseManagerBuilder
-        extends TrueLicenseManagerBuilder<ConsumerTrueLicenseManagerBuilder>
+        class TrueConsumerLicenseManagerBuilder
+        extends TrueLicenseManagerBuilder<TrueConsumerLicenseManagerBuilder>
         implements ConsumerLicenseManagerBuilder {
 
             @Override
             public ConsumerLicenseManager build() {
-                final TrueLicenseManagementParameters p = new TrueLicenseManagementParameters(this);
+                final TrueLicenseManagementSchema schema = new TrueLicenseManagementSchema(this);
                 return parent.isPresent()
-                        ? p.new ChainedTrueLicenseManager()
-                        : p.new CachingTrueLicenseManager();
+                        ? schema.new ChainedLicenseManager()
+                        : schema.new CachingLicenseManager();
             }
 
             @Override
-            public ConsumerTrueLicenseManagerBuilder up() { throw new UnsupportedOperationException(); }
+            public TrueConsumerLicenseManagerBuilder up() { throw new UnsupportedOperationException(); }
 
             @Override
-            public ParentConsumerTrueLicenseManagerBuilder parent() {
-                return new ParentConsumerTrueLicenseManagerBuilder();
+            public ParentConsumerLicenseManagerBuilder parent() {
+                return new ParentConsumerLicenseManagerBuilder();
             }
 
-            final class ParentConsumerTrueLicenseManagerBuilder
-            extends ConsumerTrueLicenseManagerBuilder {
+            final class ParentConsumerLicenseManagerBuilder
+            extends TrueConsumerLicenseManagerBuilder {
 
                 @Override
-                public ConsumerTrueLicenseManagerBuilder up() {
-                    return ConsumerTrueLicenseManagerBuilder.this.parent(build());
+                public TrueConsumerLicenseManagerBuilder up() {
+                    return TrueConsumerLicenseManagerBuilder.this.parent(build());
                 }
             }
         }
 
-        final class VendorTrueLicenseManagerBuilder
-        extends TrueLicenseManagerBuilder<VendorTrueLicenseManagerBuilder>
+        final class TrueVendorLicenseManagerBuilder
+        extends TrueLicenseManagerBuilder<TrueVendorLicenseManagerBuilder>
         implements VendorLicenseManagerBuilder {
 
             @Override
             public VendorLicenseManager build() {
-                return new TrueLicenseManagementParameters(this).new TrueLicenseManager();
+                return new TrueLicenseManagementSchema(this).new TrueLicenseManager();
             }
         }
 
@@ -539,7 +539,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             public PasswordProtection protection() { return new CheckedPasswordProtection(protection); }
         }
 
-        final class TrueLicenseManagementParameters implements LicenseManagementParameters {
+        final class TrueLicenseManagementSchema implements LicenseManagementSchema {
 
             final Authentication authentication;
             final Optional<Transformation> encryption;
@@ -547,7 +547,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             final Optional<ConsumerLicenseManager> parent;
             final Optional<Store> store;
 
-            TrueLicenseManagementParameters(final TrueLicenseManagerBuilder<?> b) {
+            TrueLicenseManagementSchema(final TrueLicenseManagerBuilder<?> b) {
                 this.authentication = b.authentication.get();
                 this.encryption = b.encryption;
                 this.ftpDays = b.ftpDays;
@@ -558,13 +558,16 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             @Override
             public Authentication authentication() { return authentication; }
 
+            Transformation compressionThenEncryption() { return compression().andThen(encryption()); }
+
             @Override
-            public Transformation encryption() {
-                return encryption.orElseGet(() -> parent().parameters().encryption());
-            }
+            public TrueLicenseManagementContext context() { return TrueLicenseManagementContext.this; }
+
+            @Override
+            public Transformation encryption() { return encryption.orElseGet(() -> parent().encryption()); }
 
             LicenseInitialization initialization() {
-                final LicenseInitialization initialization = TrueLicenseManagementContext.this.initialization();
+                final LicenseInitialization initialization = context().initialization();
                 if (0 != ftpDays) {
                     return bean -> {
                         initialization.initialize(bean);
@@ -583,9 +586,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
             Store store() { return store.get();}
 
-            Transformation compressionThenEncryption() { return compression().andThen(encryption()); }
-
-            final class ChainedTrueLicenseManager extends CachingTrueLicenseManager {
+            final class ChainedLicenseManager extends CachingLicenseManager {
 
                 volatile Optional<Boolean> canGenerateLicenseKeys = Optional.empty();
 
@@ -673,14 +674,14 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                         throw e;
                     }
                     final Store store = store();
-                    if (checked(store::exists)) {
+                    if (callChecked(store::exists)) {
                         throw e;
                     }
                     return super.generateKeyFrom(license()).saveTo(store);
                 }
             }
 
-            class CachingTrueLicenseManager extends TrueLicenseManager {
+            class CachingLicenseManager extends TrueLicenseManager {
 
                 // These volatile fields get initialized by applying a pure function which
                 // takes the immutable value of the store() property as its single argument.
@@ -764,8 +765,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
              *
              * @author Christian Schlichtherle
              */
-            class TrueLicenseManager
-            implements ConsumerLicenseManager, VendorLicenseManager {
+            class TrueLicenseManager implements ConsumerLicenseManager, VendorLicenseManager {
 
                 @Override
                 public LicenseKeyGenerator generateKeyFrom(final License bean) throws LicenseManagementException {
@@ -777,12 +777,12 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                         @Override
                         public License license() throws LicenseManagementException {
-                            return checked(() -> decoder().decode(License.class));
+                            return callChecked(() -> decoder().decode(License.class));
                         }
 
                         @Override
                         public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
-                            checked(() -> {
+                            callChecked(() -> {
                                 codec().encoder(sink.map(compressionThenEncryption())).encode(model());
                                 return null;
                             });
@@ -823,7 +823,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                         }
                     }
 
-                    return checked(() -> {
+                    return callChecked(() -> {
                         authorization().clearGenerate(TrueLicenseManager.this);
                         return new TrueLicenseKeyGenerator();
                     });
@@ -831,7 +831,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public void install(final Source source) throws LicenseManagementException {
-                    checked(() -> {
+                    callChecked(() -> {
                         authorization().clearInstall(TrueLicenseManager.this);
                         decodeLicense(source); // checks digital signature
                         copy(source, store());
@@ -841,7 +841,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public License load() throws LicenseManagementException {
-                    return checked(() -> {
+                    return callChecked(() -> {
                         authorization().clearLoad(TrueLicenseManager.this);
                         return decodeLicense(store());
                     });
@@ -849,7 +849,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public void verify() throws LicenseManagementException {
-                    checked(() -> {
+                    callChecked(() -> {
                         authorization().clearVerify(TrueLicenseManager.this);
                         validate(store());
                         return null;
@@ -858,7 +858,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                 @Override
                 public void uninstall() throws LicenseManagementException {
-                    checked(() -> {
+                    callChecked(() -> {
                         authorization().clearUninstall(TrueLicenseManager.this);
                         final Store store1 = store();
                         // #TRUELICENSE-81: A consumer license manager must
@@ -901,33 +901,34 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 //
 
                 @Override
+                public Authentication authentication() { return TrueLicenseManagementSchema.this.authentication(); }
+
+                @Override
                 public final LicenseManagementContext context() { return TrueLicenseManagementContext.this; }
 
                 @Override
-                public final TrueLicenseManagementParameters parameters() {
-                    return TrueLicenseManagementParameters.this;
-                }
+                public Transformation encryption() { return TrueLicenseManagementSchema.this.encryption(); }
 
                 @Override
-                public UncheckedTrueLicenseManager unchecked() { return new UncheckedTrueLicenseManager(); }
+                public UncheckedLicenseManager unchecked() { return new UncheckedLicenseManager(); }
 
-                private class UncheckedTrueLicenseManager
+                private class UncheckedLicenseManager
                         implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                         @Override
                     public UncheckedLicenseKeyGenerator generateKeyFrom(final License bean)
                             throws UncheckedLicenseManagementException {
-                        return TrueLicenseApplicationContext.unchecked(() -> new UncheckedLicenseKeyGenerator() {
+                        return callUnchecked(() -> new UncheckedLicenseKeyGenerator() {
                             final LicenseKeyGenerator generator = checked().generateKeyFrom(bean);
 
                             @Override
                             public License license() throws UncheckedLicenseManagementException {
-                                return TrueLicenseApplicationContext.unchecked(generator::license);
+                                return callUnchecked(generator::license);
                             }
 
                             @Override
                             public UncheckedLicenseKeyGenerator saveTo(Sink sink) throws UncheckedLicenseManagementException {
-                                TrueLicenseApplicationContext.unchecked(() -> generator.saveTo(sink));
+                                callUnchecked(() -> generator.saveTo(sink));
                                 return this;
                             }
                         });
@@ -935,7 +936,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                     @Override
                     public void install(final Source source) throws UncheckedLicenseManagementException {
-                        TrueLicenseApplicationContext.unchecked(() -> {
+                        callUnchecked(() -> {
                             checked().install(source);
                             return null;
                         });
@@ -943,12 +944,12 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                     @Override
                     public License load() throws UncheckedLicenseManagementException {
-                        return TrueLicenseApplicationContext.unchecked(checked()::load);
+                        return callUnchecked(checked()::load);
                     }
 
                     @Override
                     public void verify() throws UncheckedLicenseManagementException {
-                        TrueLicenseApplicationContext.unchecked(() -> {
+                        callUnchecked(() -> {
                             checked().verify();
                             return null;
                         });
@@ -956,17 +957,20 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
                     @Override
                     public void uninstall() throws UncheckedLicenseManagementException {
-                        TrueLicenseApplicationContext.unchecked(() -> {
+                        callUnchecked(() -> {
                             checked().uninstall();
                             return null;
                         });
                     }
 
                     @Override
+                    public Authentication authentication() { return checked().authentication(); }
+
+                    @Override
                     public LicenseManagementContext context() { return checked().context(); }
 
                     @Override
-                    public LicenseManagementParameters parameters() { return checked().parameters(); }
+                    public Transformation encryption() { return checked().encryption(); }
 
                     @Override
                     public TrueLicenseManager checked() { return TrueLicenseManager.this; }

@@ -41,7 +41,9 @@ package ${package}.keygen;
 
 import javax.security.auth.x500.X500Principal;
 
+import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.*;
+import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.passwd.PasswordProtection;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.*;
@@ -175,13 +177,14 @@ public enum LicenseManager implements VendorLicenseManager {
     }
 
     @Override
+    public Authentication authentication() { return manager().authentication(); }
+
+    @Override
     public LicenseManagementContext context() {
         assert _managementContext == manager().context();
         return _managementContext;
     }
 
     @Override
-    public LicenseManagementParameters parameters() {
-        return manager().parameters();
-    }
+    public Transformation encryption() { return manager().encryption(); }
 }

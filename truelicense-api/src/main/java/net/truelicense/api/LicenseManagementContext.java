@@ -9,9 +9,6 @@ import net.truelicense.api.codec.Codec;
 
 /**
  * A context for license management.
- * Use this context to configure and build a
- * {@linkplain #vendor() vendor license manager} or a
- * {@linkplain #consumer() consumer license manager}.
  *
  * @author Christian Schlichtherle
  */
@@ -21,10 +18,8 @@ public interface LicenseManagementContext extends LicenseFactory {
     Codec codec();
 
     /**
-     * Returns a builder for a
-     * {@linkplain ConsumerLicenseManager consumer license manager}.
-     * Call its {@link ConsumerLicenseManagerBuilder#build} method to build
-     * the configured consumer license manager.
+     * Returns a builder for a {@linkplain ConsumerLicenseManager consumer license manager}.
+     * Call its {@link ConsumerLicenseManagerBuilder#build} method to build the configured consumer license manager.
      */
     ConsumerLicenseManagerBuilder consumer();
 
@@ -32,10 +27,8 @@ public interface LicenseManagementContext extends LicenseFactory {
     String subject();
 
     /**
-     * Returns a builder for a
-     * {@linkplain VendorLicenseManager vendor license manager}.
-     * Call its {@link VendorLicenseManagerBuilder#build} method to build
-     * the configured vendor license manager.
+     * Returns a builder for a {@linkplain VendorLicenseManager vendor license manager}.
+     * Call its {@link VendorLicenseManagerBuilder#build} method to build the configured vendor license manager.
      */
     VendorLicenseManagerBuilder vendor();
 }

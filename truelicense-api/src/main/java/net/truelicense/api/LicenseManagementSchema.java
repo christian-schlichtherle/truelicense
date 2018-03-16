@@ -5,17 +5,22 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Transformation;
+import net.truelicense.api.auth.Authentication;
+
 /**
- * Provides the {@linkplain LicenseManagementContext license management context}
- * and the {@link LicenseManagementParameters license management parameters}.
+ * A schema for license management.
  *
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementSchema {
 
+    /** Returns the authentication. */
+    Authentication authentication();
+
     /** Returns the license management context from which this license management schema originated. */
     LicenseManagementContext context();
 
-    /** Returns the license management parameters. */
-    LicenseManagementParameters parameters();
+    /** Returns the password based encryption transformation. */
+    Transformation encryption();
 }
