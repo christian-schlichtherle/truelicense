@@ -222,8 +222,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             LicenseManagementContext,
             LicenseManagementSubjectProvider,
             LicenseValidationProvider,
-            PasswordPolicyProvider,
-            RepositoryContextProvider {
+            PasswordPolicyProvider {
 
         final AuthenticationFactory authenticationFactory;
         final LicenseManagementAuthorization authorization;
@@ -307,10 +306,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         @Override
         public PasswordPolicy passwordPolicy() { return passwordPolicy; }
 
-        @Override
-        public <Model> RepositoryContext<Model> repositoryContext() {
-            return (RepositoryContext<Model>) repositoryContext;
-        }
+        <Model> RepositoryContext<Model> repositoryContext() { return (RepositoryContext<Model>) repositoryContext; }
 
         String keystoreType() { return keystoreType; }
 
