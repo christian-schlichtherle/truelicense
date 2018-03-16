@@ -5,8 +5,8 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.auth.AuthenticationProvider;
-import net.truelicense.api.crypto.EncryptionProvider;
+import global.namespace.fun.io.api.Transformation;
+import net.truelicense.api.auth.Authentication;
 
 /**
  * Defines license parameters.
@@ -23,5 +23,11 @@ import net.truelicense.api.crypto.EncryptionProvider;
  * @see    LicenseManagementParametersProvider
  * @author Christian Schlichtherle
  */
-public interface LicenseManagementParameters
-extends AuthenticationProvider, EncryptionProvider { }
+public interface LicenseManagementParameters {
+
+    /** Returns the authentication. */
+    Authentication authentication();
+
+    /** Returns the password based encryption transformation. */
+    Transformation encryption();
+}
