@@ -412,8 +412,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 return storeIn(userPreferencesStore(classInPackage, subject()));
             }
 
-            final class TrueAuthenticationBuilder
-            implements Builder<Authentication>, AuthenticationBuilder<This> {
+            final class TrueAuthenticationBuilder implements Builder<Authentication>, AuthenticationBuilder<This> {
 
                 Optional<String> algorithm = Optional.empty();
                 Optional<String> alias = Optional.empty();
@@ -470,8 +469,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
             }
 
-            final class TrueEncryptionBuilder
-            implements Builder<Transformation>, EncryptionBuilder<This> {
+            final class TrueEncryptionBuilder implements Builder<Transformation>, EncryptionBuilder<This> {
 
                 Optional<String> algorithm = Optional.empty();
                 Optional<PasswordProtection> protection = Optional.empty();

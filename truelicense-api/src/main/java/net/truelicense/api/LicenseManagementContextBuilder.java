@@ -56,22 +56,22 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder clock(Clock clock);
 
     /**
-     * Sets the codec.
+     * Sets the codec (optional).
      *
      * @return {@code this}
      */
     LicenseManagementContextBuilder codec(Codec codec);
 
     /**
-     * Sets the compression transformation.
+     * Sets the compression transformation (optional).
      *
      * @return {@code this}
      */
     LicenseManagementContextBuilder compression(Transformation compression);
 
     /**
-     * Sets the name of the default (password based) encryption algorithm for the license key format.
-     * You can override this default value when configuring the (password based) encryption.
+     * Sets the default name of the password based encryption algorithm (optional).
+     * You can override this default value when configuring the password based encryption.
      *
      * @see EncryptionBuilder#algorithm(String)
      * @return {@code this}
@@ -79,7 +79,7 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder encryptionAlgorithm(String encryptionAlgorithm);
 
     /**
-     * Sets the (password based) encryption function.
+     * Sets the (password based) encryption function (optional).
      *
      * @return {@code this}
      */
@@ -94,8 +94,7 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder initialization(LicenseInitialization initialization);
 
     /**
-     * Sets the composition of the custom license initialization and the
-     * built-in license initialization (optional).
+     * Sets the composition of the custom license initialization and the built-in license initialization (optional).
      * This property is ignored if no custom license initialization is set.
      * Otherwise, if this method is not called, then
      * {@link LicenseFunctionComposition#decorate} is used.
@@ -106,7 +105,7 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder initializationComposition(LicenseFunctionComposition composition);
 
     /**
-     * Sets the license factory.
+     * Sets the license factory (optional).
      *
      * @return {@code this}
      */
@@ -120,14 +119,14 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder passwordPolicy(PasswordPolicy policy);
 
     /**
-     * Sets the repository context.
+     * Sets the repository context (optional).
      *
      * @return {@code this}
      */
     LicenseManagementContextBuilder repositoryContext(RepositoryContext<?> repositoryContext);
 
     /**
-     * Sets the name of the default key store type, for example {@code "JCEKS"} or {@code "JKS"}.
+     * Sets the default type of the key store (optional).
      * You can override this default value when configuring the key store based authentication.
      *
      * @see AuthenticationBuilder#storeType(String)
@@ -157,8 +156,7 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder validation(LicenseValidation validation);
 
     /**
-     * Sets the composition of the custom license validation and the built-in
-     * license validation (optional).
+     * Sets the composition of the custom license validation and the built-in license validation (optional).
      * This property is ignored if no custom license validation is set.
      * Otherwise, if this method is not called, then
      * {@link LicenseFunctionComposition#decorate} is used.

@@ -23,8 +23,8 @@ extends ChildBuilder<ParentBuilder> {
 
     /**
      * Sets the name of the signature algorithm (optional).
-     * If this method is not called, then the same algorithm is used which has
-     * been used to sign the public key in the entry.
+     * If this method is not called, then the same algorithm is used which has been used to sign the public key in the
+     * entry.
      *
      * @return {@code this}
      */
@@ -78,9 +78,10 @@ extends ChildBuilder<ParentBuilder> {
     AuthenticationBuilder<ParentBuilder> storeProtection(PasswordProtection storeProtection);
 
     /**
-     * Sets the type of the key store,
-     * for example {@code "JCEKS"} or {@code "JKS"} (optional).
+     * Sets the type of the key store (optional).
+     * If this method is not called, then the type is inherited from the license management context.
      *
+     * @see LicenseManagementContextBuilder#storeType(String)
      * @return {@code this}
      */
     AuthenticationBuilder<ParentBuilder> storeType(String storeType);
