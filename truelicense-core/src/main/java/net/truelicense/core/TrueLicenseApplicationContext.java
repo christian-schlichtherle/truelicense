@@ -11,7 +11,6 @@ import net.truelicense.api.auth.*;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.comp.CompressionProvider;
 import net.truelicense.api.crypto.EncryptionFactory;
-import net.truelicense.api.crypto.EncryptionFactoryProvider;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
 import net.truelicense.api.misc.CachePeriodProvider;
@@ -213,11 +212,9 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
     final class TrueLicenseManagementContext
     implements
-            AuthenticationFactoryProvider,
             CachePeriodProvider,
             Clock,
             CompressionProvider,
-            EncryptionFactoryProvider,
             LicenseManagementAuthorizationProvider,
             LicenseInitializationProvider,
             LicenseManagementContext,
@@ -264,8 +261,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             this.validationComposition = b.validationComposition;
         }
 
-        @Override
-        public AuthenticationFactory authenticationFactory() { return authenticationFactory; }
+        AuthenticationFactory authenticationFactory() { return authenticationFactory; }
 
         @Override
         public LicenseManagementAuthorization authorization() { return authorization; }
@@ -284,8 +280,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
         String encryptionAlgorithm() { return encryptionAlgorithm; }
 
-        @Override
-        public EncryptionFactory encryptionFactory() { return encryptionFactory; }
+        EncryptionFactory encryptionFactory() { return encryptionFactory; }
 
         @Override
         public LicenseInitialization initialization() {
