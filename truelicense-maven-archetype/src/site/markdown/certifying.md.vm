@@ -30,7 +30,7 @@ You can generate a Certificate Signing Request (CSR) using:
 ... where `${dollar}{privateKeyStoreFile}` and `${dollar}{keyStoreType}` 
 represent the values of the equal named properties when 
 [generating your project] and `${dollar}{edition}` is the name of an edition 
-alias key store entry.
+alias keystore entry.
 For example, if you have used the same property values as shown in the sample 
 command when generating your project, then this would be:
 
@@ -39,7 +39,7 @@ command when generating your project, then this would be:
         -storetype JCEKS \
         -alias standard
 
-Once you've entered the password for the key store, you should see some output
+Once you've entered the password for the keystore, you should see some output
 like this:
 
     -----BEGIN NEW CERTIFICATE REQUEST-----
@@ -118,7 +118,7 @@ Please check that they match one of the following two entries:
 
 $h3 Updating Your Project
 
-Next, you need to trigger a regeneration of the public key store file on the
+Next, you need to trigger a regeneration of the public keystore file on the
 next build by removing it:
 
     ${dollar} rm *-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}

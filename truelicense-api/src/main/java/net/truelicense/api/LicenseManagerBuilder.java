@@ -18,7 +18,7 @@ import net.truelicense.api.misc.ChildBuilder;
 public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>> {
 
     /**
-     * Returns an injection for a key store based authentication.
+     * Returns an injection for a keystore based authentication.
      * Call its {@link ChildBuilder#up} method to build and inject the
      * configured authentication into this builder and return it.
      *

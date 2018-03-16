@@ -65,7 +65,7 @@
                 <p>
                     You can retain compatibility with any V2/JSON, V2/XML or V1
                     format license keys by configuring the same cryptographic
-                    algorithms and parameters, e.g. key stores and passwords.
+                    algorithms and parameters, e.g. keystores and passwords.
                     The recommended strategy to do this is to generate a new
                     project from the
                     <a href="truelicense-maven-archetype/index.html">

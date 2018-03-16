@@ -53,7 +53,7 @@ $ cd $PROJECT
 $ keytool -certreq -keystore keygen/src/main/resources/private.ks -storetype jceks
 +--
 
-    Once you've entered the password for the key store, you should see some
+    Once you've entered the password for the keystore, you should see some
     output like this:
 
 +--
@@ -148,13 +148,13 @@ $ keytool -importcert -keystore keygen/src/main/resources/private.ks -storetype 
     Because the second certificate is self-signed, you need to confirm to trust
     it - see above.
 
-    Now the private key store of the license vendor application contains a
+    Now the private keystore of the license vendor application contains a
     private key entry with a private/public key pair which has been signed
     by TrueLicense 2.
 
 * Importing the Certificate Response into the License Consumer Application
 
-    Next, you need to recreate the public key store for the key manager.
+    Next, you need to recreate the public keystore for the key manager.
     Submit the following commands.
 
 +--
@@ -170,7 +170,7 @@ $ keytool -importcert \
 $ rm public.cert
 +--
 
-    Now the public key store of the license consumer application contains a
+    Now the public keystore of the license consumer application contains a
     trusted certificate key entry with a public key which has been signed by
     TrueLicense 2.
 

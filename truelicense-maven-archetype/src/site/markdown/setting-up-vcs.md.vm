@@ -7,7 +7,7 @@
 
 This page shows you how to set-up a Version Control System for your project so 
 that you can track any changes to the source code.
-The VCS will also cover the key store files which are automatically generated 
+The VCS will also cover the keystore files which are automatically generated
 when [building your project] for the first time.
 
 $h3 Using Mercurial

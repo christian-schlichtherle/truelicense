@@ -111,7 +111,7 @@ For each edition, TrueLicense needs passwords for
 (b) encrypting and decrypting license keys.
 
 If you don't configure a password for (a), then it defaults to the password
-used for verying the integrity of the private key store, which in turn defaults
+used for verying the integrity of the private keystore, which in turn defaults
 to the default password defined when generating your project.
 You don't need to change this password at all, but if you want to, then you can
 do so by adding a property named `${dollar}{edition}KeyEntryPassword`, where you
@@ -129,9 +129,9 @@ For example, you can add a password for an edition named `enterprise` like this:
 
     <enterprisePbePassword>[...]</enterprisePbePassword>
 
-$h4 Updating Key Stores
+$h4 Updating Keystores
 
-Next, the private and public key stores need to get updated so that they
+Next, the private and public keystores need to get updated so that they
 contain an entry for the new edition.
 This is done automatically when you are [building your project] for
 the very first time.
@@ -147,7 +147,7 @@ The general pattern for this step is to run the following command:
 
 ... where you need to replace `${dollar}{edition}` with the name of the new
 feature set.
-For example, you can update the key stores for an edition named `enterprise`
+For example, you can update the keystores for an edition named `enterprise`
 like this:
 
     ${dollar} mvn generate-resources \
@@ -250,7 +250,7 @@ equal:
 
 All other properties may have different values.
 
-$h4 Copying Key Stores
+$h4 Copying Keystores
 
 Please copy the following files from the old project to the new project:
 

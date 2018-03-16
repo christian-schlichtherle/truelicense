@@ -13,7 +13,7 @@ import net.truelicense.api.passwd.PasswordProtection;
 import java.io.InputStream;
 
 /**
- * Injects a key store based authentication into some parent component builder.
+ * Injects a keystore based authentication into some parent component builder.
  *
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
@@ -46,7 +46,7 @@ extends ChildBuilder<ParentBuilder> {
      * {@linkplain ConsumerLicenseManager consumer license manager}
      * for a free trial period.
      * If this method is not called then the
-     * {@linkplain #storeProtection(PasswordProtection) key store protection} is
+     * {@linkplain #storeProtection(PasswordProtection) keystore protection} is
      * used.
      *
      * @return {@code this}
@@ -54,7 +54,7 @@ extends ChildBuilder<ParentBuilder> {
     AuthenticationBuilder<ParentBuilder> keyProtection(PasswordProtection keyProtection);
 
     /**
-     * Sets the input for the key store (optional).
+     * Sets the input for the keystore (optional).
      * Either this method or {@link #loadFromResource(String)} must be called.
      *
      * @return {@code this}
@@ -62,7 +62,7 @@ extends ChildBuilder<ParentBuilder> {
     AuthenticationBuilder<ParentBuilder> loadFrom(Socket<InputStream> input);
 
     /**
-     * Sets the resource name of the key store (optional).
+     * Sets the resource name of the keystore (optional).
      * Either this method or {@link #loadFrom(Socket)} must be called.
      *
      * @return {@code this}
@@ -71,14 +71,14 @@ extends ChildBuilder<ParentBuilder> {
 
     /**
      * Sets the password protection which is used for verifying the integrity
-     * of the key store.
+     * of the keystore.
      *
      * @return {@code this}
      */
     AuthenticationBuilder<ParentBuilder> storeProtection(PasswordProtection storeProtection);
 
     /**
-     * Sets the type of the key store (optional).
+     * Sets the type of the keystore (optional).
      * If this method is not called, then the type is inherited from the license management context.
      *
      * @see LicenseManagementContextBuilder#storeType(String)

@@ -31,7 +31,7 @@ Building the sample project produces the following artifacts - listed in
 alphabetic order:
 
 `${dollar}{artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`
-:   The private key store - see below.
+:   The private keystore - see below.
 
 `${dollar}{artifactId}-keygen/target/${dollar}{artifactId}-keygen-${dollar}{version}-standalone.jar`
 :   This is the standalone <abbr title="Java ARchive">JAR</abbr> for the Key 
@@ -49,10 +49,10 @@ alphabetic order:
     You must not distribute this JAR to users.
 
 `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}`
-:   The <abbr title="Free Trial Period">FTP</abbr> key store - see below.
+:   The <abbr title="Free Trial Period">FTP</abbr> keystore - see below.
 
 `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`
-:   The public key store - see below.
+:   The public keystore - see below.
 
 `${dollar}{artifactId}-keymgr/target/${dollar}{artifactId}-keymgr-${dollar}{version}-guarded.jar`
 :   This is the obfuscated standalone JAR for the Key Manager module.
@@ -79,9 +79,9 @@ alphabetic order:
     for this module.
     You should not distribute this JAR to users.
 
-$h4 Generated Key Stores
+$h4 Generated Keystores
 
-When you run the build for the very first time, the following key store files
+When you run the build for the very first time, the following keystore files
 are automatically generated:
 
 * `${dollar}{artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`
@@ -96,10 +96,10 @@ store files:
         -storetype ${dollar}{keyStoreType}
 
 ... where you need to replace `${dollar}{keyStorePath}` with the respective
-path of the key store file and `${dollar}{keyStoreType}` with the value of
+path of the keystore file and `${dollar}{keyStoreType}` with the value of
 the equal named property in the parent POM file `pom.xml`, i.e. 
-<abbr title="Java Cryptography Extension Key Store">`JCEKS`</abbr> or
-<abbr title="Java Key Store">`JKS`</abbr>.
+<abbr title="Java Cryptography Extension keystore">`JCEKS`</abbr> or
+<abbr title="Java keystore">`JKS`</abbr>.
 
 The output of this command will show you a lot of meta data information:
 The distinguished name of the key pair owner and issuer, the validity

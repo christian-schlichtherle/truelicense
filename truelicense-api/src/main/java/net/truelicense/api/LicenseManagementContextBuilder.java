@@ -126,8 +126,8 @@ extends Builder<LicenseManagementContext> {
     LicenseManagementContextBuilder repositoryContext(RepositoryContext<?> repositoryContext);
 
     /**
-     * Sets the default type of the key store (optional).
-     * You can override this default value when configuring the key store based authentication.
+     * Sets the default type of the keystore (optional).
+     * You can override this default value when configuring the keystore based authentication.
      *
      * @see AuthenticationBuilder#storeType(String)
      * @return {@code this}

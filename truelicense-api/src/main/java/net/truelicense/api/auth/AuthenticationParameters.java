@@ -29,13 +29,13 @@ public interface AuthenticationParameters {
     /**
      * Returns the optional signature algorithm.
      * If no value is present then the same signature algorithm should be used
-     * which was used to sign the public key of the key store entry which is
+     * which was used to sign the public key of the keystore entry which is
      * addressed by the other properties of this interface.
      */
     Optional<String> algorithm();
 
     /**
-     * Returns the alias of the entry in the key store.
+     * Returns the alias of the entry in the keystore.
      * The returned string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.
      */
@@ -48,8 +48,8 @@ public interface AuthenticationParameters {
     PasswordProtection keyProtection();
 
     /**
-     * Returns the optional input stream socket for loading the key store.
-     * If no value is present then the key store type does not require loading from an input source / stream.
+     * Returns the optional input stream socket for loading the keystore.
+     * If no value is present then the keystore type does not require loading from an input source / stream.
      */
     Optional<Socket<InputStream>> source();
 
@@ -60,7 +60,7 @@ public interface AuthenticationParameters {
     PasswordProtection storeProtection();
 
     /**
-     * Returns the type of the key store, for example {@code "JCEKS"} or
+     * Returns the type of the keystore, for example {@code "JCEKS"} or
      * {@code "JKS"}.
      * The returned string should be computed on demand from an obfuscated form,
      * e.g. by processing it with the TrueLicense Maven Plugin.

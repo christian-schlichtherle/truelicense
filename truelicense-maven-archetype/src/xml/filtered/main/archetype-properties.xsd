@@ -247,7 +247,7 @@
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        The path of the FTP key store file in the Key Manager
+                        The path of the FTP keystore file in the Key Manager
                         module relative to the base path
                         <code>
                             ${dollar}{artifactId}-keymgr/src/main/resources/
@@ -419,8 +419,8 @@
                 <xs:annotation>
                     <xs:documentation>
                         The algorithm to use when generating key pairs in the
-                        key store files on the first build.
-                        This property is ignored if the key store files already
+                        keystore files on the first build.
+                        This property is ignored if the keystore files already
                         exist.
                         The algorithm needs to be supported by one of the
                         security providers which are installed in the JRE.
@@ -432,8 +432,8 @@
                 <xs:annotation>
                     <xs:documentation>
                         The key size in bits when generating key pairs in the
-                        key store files at the first build.
-                        This property is ignored if the key store files already
+                        keystore files at the first build.
+                        This property is ignored if the keystore files already
                         exist.
                         Otherwise, if the value is set to
                         <code>0</code>,
@@ -449,7 +449,7 @@
                         minOccurs="0" default="auto">
                 <xs:annotation>
                     <xs:documentation>
-                        The default key store type.
+                        The default keystore type.
                         The type needs to be supported by one of the security
                         providers which are installed in the JRE.
                         If the value is set to
@@ -508,7 +508,7 @@
             <xs:element type="p:Password" name="password">
                 <xs:annotation>
                     <xs:documentation>
-                        The common password for accessing key stores and
+                        The common password for accessing keystores and
                         encrypting license keys.
                     </xs:documentation>
                 </xs:annotation>
@@ -555,7 +555,7 @@
                         minOccurs="0" default="private.ks">
                 <xs:annotation>
                     <xs:documentation>
-                        The path of the private key store file in the Key
+                        The path of the private keystore file in the Key
                         Generator module relative to the base path
                         <code>
                             ${dollar}{artifactId}-keygen/src/main/resources/
@@ -567,7 +567,7 @@
                         minOccurs="0" default="public.ks">
                 <xs:annotation>
                     <xs:documentation>
-                        The path of the public key store file in the Key
+                        The path of the public keystore file in the Key
                         Manager module relative to the base path
                         <code>
                             ${dollar}{artifactId}-keymgr/src/main/resources/
@@ -580,8 +580,8 @@
                 <xs:annotation>
                     <xs:documentation>
                         The algorithm to use when signing a generated key
-                        pair in a key store file at the first build.
-                        This property is ignored if the key store file already
+                        pair in a keystore file at the first build.
+                        This property is ignored if the keystore file already
                         exists.
                         Otherwise, if the value is set to
                         <code>auto</code>,

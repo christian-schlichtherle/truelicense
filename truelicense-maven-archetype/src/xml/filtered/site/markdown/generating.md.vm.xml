@@ -24,7 +24,7 @@ $h3 Important Notes
    Maven Archetype.**
 2. **For any two generated projects, their license keys are not compatible even
    if all property values are equal, unless both projects also share a copy of
-   the same key store files (see below):**
+   the same keystore files (see below):**
     * `${dollar}{artifactId}-keygen/src/main/resources/${dollar}{privateKeyStoreFile}`,
     * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{ftpKeyStoreFile}` and
     * `${dollar}{artifactId}-keymgr/src/main/resources/${dollar}{publicKeyStoreFile}`.

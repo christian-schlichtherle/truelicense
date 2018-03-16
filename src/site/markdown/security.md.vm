@@ -69,7 +69,7 @@ cryptographic tasks:
   compatibility with applications using the legacy V1 license key format or 
   `SHA256withRSA` for applications using the new V2/* license key formats.
   If you use the [TrueLicense Maven Archetype] to generate a project, then
-  key stores are created and set-up so that no private keys are leaked to users.
+  keystores are created and set-up so that no private keys are leaked to users.
 * License keys are encrypted in order to protect the privacy of your customers.
   The password based encryption algorithm is configurable, e.g.
   `PBEWithMD5AndDES` for compatibility with applications using the legacy V1 

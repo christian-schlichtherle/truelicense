@@ -38,7 +38,7 @@
  * <p>
  * The validation step is skipped when a license key is just viewed.
  * Encryption is done via JCA with a configurable password based encryption algorithm.
- * Authentication is done via JCA with a configurable key store type and signature algorithm.
+ * Authentication is done via JCA with a configurable keystore type and signature algorithm.
  * Encoding is done with {@link java.beans.XMLEncoder} for simple, schema-less, yet resilient long term archival.
  * <p>
  * TrueLicense 3 retains full compatibility with TrueLicense 1 ({@code V1}) and TrueLicense 2 ({@code V2/*}) format

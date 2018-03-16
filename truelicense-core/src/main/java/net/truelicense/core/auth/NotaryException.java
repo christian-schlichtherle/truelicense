@@ -14,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Indicates that a notary could not access the private or public key in a
- * key store due to insufficient or incorrect configuration parameters.
+ * keystore due to insufficient or incorrect configuration parameters.
  *
  * @author Christian Schlichtherle
  */
