@@ -539,21 +539,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             public PasswordProtection protection() { return new CheckedPasswordProtection(protection); }
         }
 
-        final class CheckedPasswordProtection implements PasswordProtection {
-
-            final PasswordProtection protection;
-
-            CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
-
-            @Override
-            public Password password(final PasswordUsage usage) throws Exception {
-                if (usage.equals(PasswordUsage.WRITE)) { // checks null
-                    passwordPolicy().check(protection);
-                }
-                return protection.password(usage);
-            }
-        }
-
         final class TrueLicenseManagementParameters implements LicenseManagementParameters {
 
             final Authentication authentication;
@@ -989,25 +974,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             }
         }
 
-        /**
-         * A basic license initialization.
-         * This class is immutable.
-         * <p>
-         * This implementation of the {@link LicenseInitialization} interface
-         * initializes the license
-         * {@linkplain License#getConsumerType consumer type},
-         * {@linkplain License#getHolder holder},
-         * {@linkplain License#getIssued issue date/time},
-         * {@linkplain License#getIssuer issuer} and
-         * {@linkplain License#getSubject subject}
-         * unless these properties are respectively set already.
-         * <p>
-         * Unless stated otherwise, all no-argument methods need to return consistent
-         * objects so that caching them is not required.
-         * A returned object is considered to be consistent if it compares
-         * {@linkplain Object#equals(Object) equal} or at least behaves identical to
-         * any previously returned object.
-         */
         final class TrueLicenseInitialization implements LicenseInitialization {
 
             @Obfuscate
@@ -1037,27 +1003,6 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             }
         }
 
-        /**
-         * A basic license validation.
-         * This class is immutable.
-         * <p>
-         * This implementation of the {@link LicenseValidation} interface validates the
-         * license
-         * {@linkplain License#getConsumerAmount consumer amount},
-         * {@linkplain License#getConsumerType consumer type},
-         * {@linkplain License#getHolder holder},
-         * {@linkplain License#getIssued issue date/time},
-         * {@linkplain License#getIssuer issuer},
-         * {@linkplain License#getNotAfter not after date/time} (if set),
-         * {@linkplain License#getNotBefore not before date/time} (if set) and
-         * {@linkplain License#getSubject subject}.
-         * <p>
-         * Unless stated otherwise, all no-argument methods need to return consistent
-         * objects so that caching them is not required.
-         * A returned object is considered to be consistent if it compares
-         * {@linkplain Object#equals(Object) equal} or at least behaves identical to
-         * any previously returned object.
-         */
         final class TrueLicenseValidation implements LicenseValidation {
 
             @Override
@@ -1089,6 +1034,21 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 if (!subject().equals(bean.getSubject())) {
                     throw new LicenseValidationException(message(INVALID_SUBJECT, bean.getSubject(), subject()));
                 }
+            }
+        }
+
+        final class CheckedPasswordProtection implements PasswordProtection {
+
+            final PasswordProtection protection;
+
+            CheckedPasswordProtection(final PasswordProtection protection) { this.protection = protection; }
+
+            @Override
+            public Password password(final PasswordUsage usage) throws Exception {
+                if (usage.equals(PasswordUsage.WRITE)) { // checks null
+                    passwordPolicy().check(protection);
+                }
+                return protection.password(usage);
             }
         }
     }

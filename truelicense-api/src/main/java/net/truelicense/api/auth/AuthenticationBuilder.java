@@ -19,7 +19,7 @@ import net.truelicense.api.passwd.PasswordProtection;
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface AuthenticationBuilder<ParentBuilder extends Builder<?>>  extends ChildBuilder<ParentBuilder> {
+public interface AuthenticationBuilder<ParentBuilder extends Builder<?>> extends ChildBuilder<ParentBuilder> {
 
     /**
      * Sets the name of the signature algorithm (optional).
