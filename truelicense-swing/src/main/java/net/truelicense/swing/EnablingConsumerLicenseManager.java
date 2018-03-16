@@ -19,8 +19,7 @@ import net.truelicense.swing.util.Enabler;
  *
  * @author Christian Schlichtherle
  */
-final class EnablingConsumerLicenseManager
-extends UpdatingConsumerLicenseManager {
+final class EnablingConsumerLicenseManager extends UpdatingConsumerLicenseManager {
 
     private static final long serialVersionUID = 0L;
 

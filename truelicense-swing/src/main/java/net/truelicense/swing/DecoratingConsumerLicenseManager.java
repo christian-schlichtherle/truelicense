@@ -6,12 +6,10 @@
 package net.truelicense.swing;
 
 import global.namespace.fun.io.api.Source;
-import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
-import net.truelicense.api.LicenseManagementContext;
 import net.truelicense.api.LicenseManagementException;
-import net.truelicense.api.auth.Authentication;
+import net.truelicense.api.LicenseManagementSchema;
 
 /**
  * A decorator for a consumer license manager.
@@ -30,13 +28,7 @@ abstract class DecoratingConsumerLicenseManager implements ConsumerLicenseManage
     }
 
     @Override
-    public Authentication authentication() { return manager.authentication(); }
-
-    @Override
-    public LicenseManagementContext context() { return manager.context(); }
-
-    @Override
-    public Transformation encryption() { return manager.encryption(); }
+    public LicenseManagementSchema schema() { return manager.schema(); }
 
     @Override
     public void install(Source source) throws LicenseManagementException { manager.install(source); }

@@ -25,7 +25,16 @@ import global.namespace.fun.io.api.Source;
  * @see ConsumerLicenseManager#unchecked()
  * @author Christian Schlichtherle
  */
-public interface UncheckedConsumerLicenseManager extends LicenseManagementSchema {
+public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSchema {
+
+    /**
+     * Adapts this consumer license manager so that it generally throws a (checked) {@link LicenseManagementException}
+     * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
+     *
+     * @return the adapted (checked) consumer license manager.
+     * @since TrueLicense 3.1.0
+     */
+    ConsumerLicenseManager checked();
 
     /**
      * Verifies the digital signature of the license key in the given source and copies it to the configured store.
@@ -73,13 +82,4 @@ public interface UncheckedConsumerLicenseManager extends LicenseManagementSchema
      * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
      */
     void uninstall() throws UncheckedLicenseManagementException;
-
-    /**
-     * Adapts this consumer license manager so that it generally throws a (checked) {@link LicenseManagementException}
-     * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
-     *
-     * @return the adapted (checked) consumer license manager.
-     * @since TrueLicense 3.1.0
-     */
-    ConsumerLicenseManager checked();
 }

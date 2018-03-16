@@ -7,8 +7,6 @@ package net.truelicense.api;
 
 import global.namespace.fun.io.api.Sink;
 import global.namespace.fun.io.api.Source;
-import global.namespace.fun.io.api.Transformation;
-import net.truelicense.api.auth.Authentication;
 
 import java.util.concurrent.Callable;
 
@@ -58,7 +56,7 @@ public final class UncheckedLicenseManager {
     }
 
     private interface TrueUncheckedVendorLicenseManager
-            extends UncheckedLicenseManagementSchema<VendorLicenseManager>, UncheckedVendorLicenseManager {
+            extends TrueHasLicenseManagementSchema<VendorLicenseManager>, UncheckedVendorLicenseManager {
 
         @Override
         default UncheckedLicenseKeyGenerator generateKeyFrom(License bean)
@@ -81,7 +79,7 @@ public final class UncheckedLicenseManager {
     }
 
     private interface TrueUncheckedConsumerLicenseManager
-            extends UncheckedLicenseManagementSchema<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
+            extends TrueHasLicenseManagementSchema<ConsumerLicenseManager>, UncheckedConsumerLicenseManager {
 
         @Override
         default void install(Source source) throws UncheckedLicenseManagementException {
@@ -113,17 +111,11 @@ public final class UncheckedLicenseManager {
         }
     }
 
-    private interface UncheckedLicenseManagementSchema<M extends LicenseManagementSchema>
-            extends LicenseManagementSchema {
+    private interface TrueHasLicenseManagementSchema<M extends HasLicenseManagementSchema>
+            extends HasLicenseManagementSchema {
 
         @Override
-        default Authentication authentication() { return checked().authentication(); }
-
-        @Override
-        default LicenseManagementContext context() { return checked().context(); }
-
-        @Override
-        default Transformation encryption() { return checked().encryption(); }
+        default LicenseManagementSchema schema() { return checked().schema(); }
 
         M checked();
     }

@@ -13,7 +13,16 @@ package net.truelicense.api;
  * @see UncheckedVendorLicenseManager#checked()
  * @author Christian Schlichtherle
  */
-public interface VendorLicenseManager extends LicenseManagementSchema {
+public interface VendorLicenseManager extends HasLicenseManagementSchema {
+
+    /**
+     * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}
+     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
+     *
+     * @return the adapted unchecked vendor license manager.
+     * @since TrueLicense 3.1.0
+     */
+    default UncheckedVendorLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
 
     /**
      * Returns a license key generator for the given license bean.
@@ -26,13 +35,4 @@ public interface VendorLicenseManager extends LicenseManagementSchema {
      * @return A license key generator for the given license bean.
      */
     LicenseKeyGenerator generateKeyFrom(License bean) throws LicenseManagementException;
-
-    /**
-     * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}
-     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
-     *
-     * @return the adapted unchecked vendor license manager.
-     * @since TrueLicense 3.1.0
-     */
-    default UncheckedVendorLicenseManager unchecked() { return UncheckedLicenseManager.from(this); }
 }
