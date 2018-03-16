@@ -132,7 +132,7 @@ extends Builder<LicenseManagementContext> {
      * @see AuthenticationBuilder#storeType(String)
      * @return {@code this}
      */
-    LicenseManagementContextBuilder storeType(String storeType);
+    LicenseManagementContextBuilder keystoreType(String keystoreType);
 
     /**
      * Sets the license subject.

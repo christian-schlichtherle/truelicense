@@ -98,7 +98,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
         Optional<RepositoryContext<?>> repositoryContext = Optional.empty();
         String subject = "";
-        String storeType = "";
+        String keystoreType = "";
         Optional<LicenseValidation> validation = Optional.empty();
         LicenseFunctionComposition validationComposition = LicenseFunctionComposition.decorate;
 
@@ -184,8 +184,8 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public LicenseManagementContextBuilder storeType(final String storeType) {
-            this.storeType = Strings.requireNonEmpty(storeType);
+        public LicenseManagementContextBuilder keystoreType(final String keystoreType) {
+            this.keystoreType = Strings.requireNonEmpty(keystoreType);
             return this;
         }
 
@@ -239,7 +239,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         final LicenseFunctionComposition initializationComposition;
         final PasswordPolicy passwordPolicy;
         final RepositoryContext<?> repositoryContext;
-        final String storeType;
+        final String keystoreType;
         final String subject;
         final Optional<LicenseValidation> validation;
         final LicenseFunctionComposition validationComposition;
@@ -258,7 +258,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             this.initializationComposition = b.initializationComposition;
             this.passwordPolicy = b.passwordPolicy;
             this.repositoryContext = b.repositoryContext.get();
-            this.storeType = Strings.requireNonEmpty(b.storeType);
+            this.keystoreType = Strings.requireNonEmpty(b.keystoreType);
             this.subject = Strings.requireNonEmpty(b.subject);
             this.validation = b.validation;
             this.validationComposition = b.validationComposition;
@@ -309,7 +309,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             return (RepositoryContext<Model>) repositoryContext;
         }
 
-        String storeType() { return storeType; }
+        String keystoreType() { return keystoreType; }
 
         @Override
         public String subject() { return subject; }
@@ -534,7 +534,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             public PasswordProtection storeProtection() { return new CheckedPasswordProtection(storeProtection); }
 
             @Override
-            public String storeType() { return storeType.orElseGet(TrueLicenseManagementContext.this::storeType); }
+            public String storeType() { return storeType.orElseGet(TrueLicenseManagementContext.this::keystoreType); }
         }
 
         final class TrueEncryptionParameters implements EncryptionParameters {

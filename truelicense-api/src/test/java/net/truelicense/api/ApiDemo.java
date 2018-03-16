@@ -56,7 +56,7 @@ public abstract class ApiDemo {
                 .passwordPolicy(mock(PasswordPolicy.class))
                 .repositoryContext(mock(RepositoryContext.class))
                 .subject("MyProduct 1")
-                .storeType("JCEKS")
+                .keystoreType("JCEKS")
                 .validation(mock(LicenseValidation.class))
                 .validationComposition(LicenseFunctionComposition.decorate)
                 .build();

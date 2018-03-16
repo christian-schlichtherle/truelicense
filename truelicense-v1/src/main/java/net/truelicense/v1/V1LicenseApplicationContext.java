@@ -28,20 +28,20 @@ import static global.namespace.fun.io.bios.BIOS.gzip;
 public final class V1LicenseApplicationContext extends TrueLicenseApplicationContext {
 
     @Obfuscate
-    private static final String STORE_TYPE = "JKS";
+    private static final String ENCRYPTION_ALGORITHM = "PBEWithMD5AndDES";
 
     @Obfuscate
-    private static final String PBE_ALGORITHM = "PBEWithMD5AndDES";
+    private static final String KEYSTORE_TYPE = "JKS";
 
     @Override
     public LicenseManagementContextBuilder context() {
         return super.context()
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
-                .encryptionAlgorithm(PBE_ALGORITHM)
+                .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
                 .licenseFactory(LicenseContent::new)
                 .repositoryContext(new V1RepositoryContext())
-                .storeType(STORE_TYPE);
+                .keystoreType(KEYSTORE_TYPE);
     }
 }

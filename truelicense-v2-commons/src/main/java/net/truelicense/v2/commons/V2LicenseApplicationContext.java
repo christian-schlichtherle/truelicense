@@ -26,19 +26,19 @@ import static global.namespace.fun.io.bios.BIOS.deflate;
 public abstract class V2LicenseApplicationContext extends TrueLicenseApplicationContext {
 
     @Obfuscate
-    private static final String STORE_TYPE = "JCEKS";
+    private static final String ENCRYPTION_ALGORITHM = "PBEWithSHA1AndDESede";
 
     @Obfuscate
-    private static final String PBE_ALGORITHM = "PBEWithSHA1AndDESede";
+    private static final String KEYSTORE_TYPE = "JCEKS";
 
     @Override
     public LicenseManagementContextBuilder context() {
         return super.context()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
-                .encryptionAlgorithm(PBE_ALGORITHM)
+                .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V2Encryption::new)
                 .licenseFactory(License::new)
                 .repositoryContext(new V2RepositoryContext())
-                .storeType(STORE_TYPE);
+                .keystoreType(KEYSTORE_TYPE);
     }
 }

@@ -81,7 +81,7 @@ extends ChildBuilder<ParentBuilder> {
      * Sets the type of the keystore (optional).
      * If this method is not called, then the type is inherited from the license management context.
      *
-     * @see LicenseManagementContextBuilder#storeType(String)
+     * @see LicenseManagementContextBuilder#keystoreType(String)
      * @return {@code this}
      */
     AuthenticationBuilder<ParentBuilder> storeType(String storeType);
