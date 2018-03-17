@@ -27,7 +27,7 @@
         <p:keyGenValidationClass>com.company.product.keygen.Main$NoLicenseValidation</p:keyGenValidationClass>
         <p:keyGenValidationComposition>decorate</p:keyGenValidationComposition>
         <p:keyMgrAuthorizationClass>net.truelicense.core.TrueLicenseManagementAuthorization</p:keyMgrAuthorizationClass>
-        <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock</p:keyMgrClockClass>
+        <p:keyMgrClockExpr>java.time.Clock.systemDefaultZone()</p:keyMgrClockExpr>
         <p:keyMgrValidationClass>com.company.product.keymgr.Main$NoLicenseValidation</p:keyMgrValidationClass>
         <p:keyMgrValidationComposition>decorate</p:keyMgrValidationComposition>
         <p:keyPairAlgorithm>RSA</p:keyPairAlgorithm>

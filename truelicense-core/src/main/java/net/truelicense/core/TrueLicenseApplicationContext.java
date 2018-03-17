@@ -13,7 +13,6 @@ import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -25,6 +24,7 @@ import net.truelicense.obfuscate.Obfuscate;
 
 import javax.security.auth.x500.X500Principal;
 import java.nio.file.Path;
+import java.time.Clock;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -77,7 +77,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         AuthenticationFactory authenticationFactory = Notary::new;
         LicenseManagementAuthorization authorization = new TrueLicenseManagementAuthorization();
         long cachePeriodMillis = 30 * 60 * 1000;
-        Clock clock = Date::new;
+        Clock clock = Clock.systemDefaultZone();
         Optional<Codec> codec = Optional.empty();
         Optional<Transformation> compression = Optional.empty();
         String encryptionAlgorithm = "";
@@ -202,7 +202,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
     }
 
     final class TrueLicenseManagementContext
-            implements AuthenticationFactory, Clock, EncryptionFactory, LicenseManagementContext {
+            implements LicenseManagementContext, AuthenticationFactory, EncryptionFactory {
 
         final AuthenticationFactory authenticationFactory;
         final LicenseManagementAuthorization authorization;
@@ -276,8 +276,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         @Override
         public License license() { return licenseFactory.license(); }
 
-        @Override
-        public Date now() { return clock.now(); }
+        Date now() { return Date.from(clock.instant()); }
 
         PasswordPolicy passwordPolicy() { return passwordPolicy; }
 

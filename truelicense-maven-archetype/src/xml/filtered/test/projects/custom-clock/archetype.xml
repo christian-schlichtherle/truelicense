@@ -10,7 +10,7 @@
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>keyMgrClockClass=com.company.product.keymgr.CustomClock</code>
+        <code>keyMgrClockExpr=java.time.Clock.systemDefaultZone()</code>
         to the Basic Configuration example in order to replace the system
         clock with a custom implementation.
     </p:documentation>
@@ -18,8 +18,7 @@
         <p:artifactId>custom-clock</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
-        <p:keyMgrClockClass>com.company.product.keymgr.Main$SystemClock
-        </p:keyMgrClockClass>
+        <p:keyMgrClockExpr>java.time.Clock.systemDefaultZone()</p:keyMgrClockExpr>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>

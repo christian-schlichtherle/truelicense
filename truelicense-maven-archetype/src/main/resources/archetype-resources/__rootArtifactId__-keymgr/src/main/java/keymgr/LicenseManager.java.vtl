@@ -65,12 +65,6 @@ import net.truelicense.obfuscate.*;
 
 import $licenseApplicationContextPackage.$licenseApplicationContextClass;
 
-#if($keyMgrClockClass != "-")
-import java.util.Date;
-
-import net.truelicense.api.misc.Clock;
-#end
-
 /**
  * The enumeration of the consumer license managers for $subject license keys.
  * The managers are named like each configured edition and ordered from
@@ -210,8 +204,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #if($keyMgrAuthorizationClass != "-")
                     .authorization(#new($keyMgrAuthorizationClass "LicenseManagementAuthorization"))
 #end
-#if($keyMgrClockClass != "-")
-                    .clock(#new($keyMgrClockClass "Clock"))
+#if($keyMgrClockExpr != "-")
+                    .clock($keyMgrClockExpr)
 #end
                     .subject(SUBJECT)
 #if($keyMgrValidationClass != "-")

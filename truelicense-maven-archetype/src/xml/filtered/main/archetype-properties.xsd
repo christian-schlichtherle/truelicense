@@ -368,15 +368,12 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrClockClass"
+            <xs:element type="xs:token" name="keyMgrClockExpr"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which implements the
-                        interface
-                        <a href="../apidocs/${miscApiPackagePath}/Clock.html">
-                            <code>${miscApiPackage}.Clock</code>
-                        </a>
+                        A fully qualified expression of the type
+                        <code>java.time.Clock</code>
                         for use in the Key Manager module.
                         Select
                         <code>-</code>
@@ -705,8 +702,8 @@
             <xs:element type="p:Documentation" name="documentation" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element type="p:List" name="list"/>
         </xs:sequence>
-        <xs:attribute type="xs:token" name="name" use="optional"/>
-        <xs:attribute type="xs:token" name="version" use="optional"/>
+        <xs:attribute type="xs:token" name="name"/>
+        <xs:attribute type="xs:token" name="version"/>
         <xs:attribute ref="xml:lang"/>
     </xs:complexType>
     <xs:simpleType name="SignatureAlgorithm"

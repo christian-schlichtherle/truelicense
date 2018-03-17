@@ -13,11 +13,11 @@ import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionFactory;
-import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
 
 import java.nio.file.Path;
+import java.time.Clock;
 
 import static org.mockito.Mockito.mock;
 

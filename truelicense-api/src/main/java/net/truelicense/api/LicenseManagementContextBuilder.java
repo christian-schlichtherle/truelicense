@@ -13,8 +13,9 @@ import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.Clock;
 import net.truelicense.api.passwd.PasswordPolicy;
+
+import java.time.Clock;
 
 /**
  * A builder for
@@ -52,6 +53,12 @@ extends Builder<LicenseManagementContext> {
 
     /**
      * Sets the clock (optional).
+     * If this method is not called, then the system clock is used.
+     * However, in order to protect against date/time forgery, a more sophisticated implementation should use an
+     * authoritative time source, e.g. a radio clock, an Internet time server or extrapolate an approximation from some
+     * timestamps in input data.
+     * If resolving the current date/time from an authoritative resource fails for any reason, the implementation should
+     * simply fallback to use the system clock.
      *
      * @return {@code this}
      */
@@ -98,8 +105,7 @@ extends Builder<LicenseManagementContext> {
     /**
      * Sets the composition of the custom license initialization and the built-in license initialization (optional).
      * This property is ignored if no custom license initialization is set.
-     * Otherwise, if this method is not called, then
-     * {@link LicenseFunctionComposition#decorate} is used.
+     * Otherwise, if this method is not called, then {@link LicenseFunctionComposition#decorate} is used.
      *
      * @see #initialization(LicenseInitialization)
      * @return {@code this}
@@ -160,8 +166,7 @@ extends Builder<LicenseManagementContext> {
     /**
      * Sets the composition of the custom license validation and the built-in license validation (optional).
      * This property is ignored if no custom license validation is set.
-     * Otherwise, if this method is not called, then
-     * {@link LicenseFunctionComposition#decorate} is used.
+     * Otherwise, if this method is not called, then {@link LicenseFunctionComposition#decorate} is used.
      *
      * @see #validation(LicenseValidation)
      * @return {@code this}
