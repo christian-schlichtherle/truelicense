@@ -9,7 +9,7 @@ import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.v2.commons.V2LicenseApplicationContext;
 import net.truelicense.v2.commons.auth.V2RepositoryModel;
-import net.truelicense.v2.xml.codec.JaxbCodec;
+import net.truelicense.v2.xml.codec.XMLCodec;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -24,7 +24,7 @@ import javax.xml.bind.JAXBException;
 public final class V2XmlLicenseApplicationContext extends V2LicenseApplicationContext {
 
     @Override
-    public LicenseManagementContextBuilder context() { return super.context().codec(new JaxbCodec(jaxbContext())); }
+    public LicenseManagementContextBuilder context() { return super.context().codec(new XMLCodec(jaxbContext())); }
 
     private JAXBContext jaxbContext() {
         try {

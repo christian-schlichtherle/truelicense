@@ -27,7 +27,7 @@ import static global.namespace.fun.io.jaxb.JAXB.xmlCodec;
  *
  * @author Christian Schlichtherle
  */
-public class JaxbCodec implements Codec {
+public class XMLCodec implements Codec {
 
     @Obfuscate
     private static final String APPLICATION_XML_WITH_UTF_8 = "application/xml; charset=utf-8";
@@ -38,12 +38,12 @@ public class JaxbCodec implements Codec {
     /** The JAXB context provided to the constructor. */
     private final global.namespace.fun.io.api.Codec codec;
 
-    public JaxbCodec(final JAXBContext context) { this.codec = xmlCodec(context); }
+    public XMLCodec(final JAXBContext context) { this.codec = xmlCodec(context); }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link JaxbCodec}
+     * The implementation in the class {@link XMLCodec}
      * returns {@code "application/xml; charset=utf-8"}.
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
@@ -54,7 +54,7 @@ public class JaxbCodec implements Codec {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link JaxbCodec}
+     * The implementation in the class {@link XMLCodec}
      * returns {@code "8bit"}.
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
