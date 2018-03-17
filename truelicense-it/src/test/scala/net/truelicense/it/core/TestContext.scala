@@ -7,10 +7,10 @@ package net.truelicense.it.core
 
 import java.util.Calendar._
 import java.util.Date
-import javax.security.auth.x500.X500Principal
 
 import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memoryStore
+import javax.security.auth.x500.X500Principal
 import net.truelicense.api._
 import net.truelicense.api.codec.Codec
 import net.truelicense.api.passwd.PasswordProtection
@@ -45,7 +45,6 @@ trait TestContext {
   }
 
   def extraData: AnyRef = { // must be AnyRef to enable overriding and returning a bean instead.
-
     // The XmlEncoder used with V1 format license keys supports only standard
     // Java collections by default, so I cannot use collection.JavaConverters
     // here because it would create a custom implementation.

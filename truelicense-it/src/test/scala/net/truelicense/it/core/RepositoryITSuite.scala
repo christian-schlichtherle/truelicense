@@ -5,6 +5,7 @@
 
 package net.truelicense.it.core
 
+import net.truelicense.api.License
 import net.truelicense.api.auth.RepositoryContext
 import org.scalatest.Matchers._
 import org.scalatest._
@@ -20,8 +21,8 @@ abstract class RepositoryITSuite[Model <: AnyRef] extends WordSpec with Parallel
       val controller = context.controller(context.model, codec)
       val artifact = license
       val clazz = license.getClass
-      authentication.sign(controller, artifact) decode clazz shouldBe artifact
-      authentication verify controller decode clazz shouldBe artifact
+      (authentication.sign(controller, artifact) decode clazz: License) shouldBe artifact
+      (authentication verify controller decode clazz: License) shouldBe artifact
     }
   }
 }
