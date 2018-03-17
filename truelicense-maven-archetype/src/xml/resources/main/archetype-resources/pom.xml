@@ -635,6 +635,7 @@
                     <dependency>
                         <groupId>net.truelicense</groupId>
                         <artifactId>truelicense-v2-json</artifactId>
+                        <version>${dollar}{trueLicenseVersion}</version>
                         <exclusions>
                             <exclusion>
                                 <groupId>javax.xml.bind</groupId>
