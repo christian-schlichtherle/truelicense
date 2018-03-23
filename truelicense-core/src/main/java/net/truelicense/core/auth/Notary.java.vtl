@@ -190,7 +190,7 @@ public final class Notary implements Authentication {
                 final char[] pc = password.characters();
                 final Optional<Source> source = source();
                 if (source.isPresent()) {
-                    source.get().input().accept(in -> keyStore.load(in, pc));
+                    source.get().acceptReader(in -> keyStore.load(in, pc));
                 } else {
                     keyStore.load(null, pc);
                 }
