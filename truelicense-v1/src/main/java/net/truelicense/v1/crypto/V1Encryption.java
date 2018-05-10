@@ -5,8 +5,8 @@
 
 package net.truelicense.v1.crypto;
 
+import global.namespace.fun.io.api.Filter;
 import global.namespace.fun.io.api.Socket;
-import global.namespace.fun.io.api.Transformation;
 import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.PasswordUsage;
@@ -36,7 +36,7 @@ public final class V1Encryption extends BasicEncryption {
     private static final String
             ILLEGAL_PBE_ALGORITHM = "V1 format license keys require the " + PBE_ALGORITHM + " algorithm.";
 
-    private final Transformation cipher = BIOS.cipher(this::cipher);
+    private final Filter cipher = BIOS.cipher(this::cipher);
 
     public V1Encryption(final EncryptionParameters parameters) {
         super(parameters);
@@ -67,7 +67,4 @@ public final class V1Encryption extends BasicEncryption {
         cipher.init(PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), spec);
         return cipher;
     }
-
-    @Override
-    public Transformation inverse() { return cipher.inverse(); }
 }

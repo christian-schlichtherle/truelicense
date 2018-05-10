@@ -15,7 +15,7 @@ import net.truelicense.obfuscate.Obfuscate;
 
 import java.security.Signature;
 
-import static global.namespace.fun.io.bios.BIOS.memoryStore;
+import static global.namespace.fun.io.bios.BIOS.memory;
 import static java.util.Base64.getDecoder;
 import static java.util.Base64.getEncoder;
 import static java.util.Objects.requireNonNull;
@@ -41,7 +41,7 @@ final class V1RepositoryController implements RepositoryController {
 
     @Override
     public final Decoder sign(final Signature engine, final Object artifact) throws Exception {
-        final Store store = memoryStore();
+        final Store store = memory();
         codec.encoder(store).encode(artifact);
         final byte[] artifactData = store.content();
         engine.update(artifactData);
@@ -75,7 +75,7 @@ final class V1RepositoryController implements RepositoryController {
         if (!engine.verify(getDecoder().decode(model.getSignature()))) {
             throw new RepositoryIntegrityException();
         }
-        final Store store = memoryStore();
+        final Store store = memory();
         store.content(artifactData);
         return codec.decoder(store);
     }

@@ -9,7 +9,7 @@ import java.util.Calendar._
 import java.util.Date
 
 import global.namespace.fun.io.api.Store
-import global.namespace.fun.io.bios.BIOS.memoryStore
+import global.namespace.fun.io.bios.BIOS.memory
 import javax.security.auth.x500.X500Principal
 import net.truelicense.api._
 import net.truelicense.api.codec.Codec
@@ -31,7 +31,7 @@ trait TestContext {
 
   final def codec: Codec = managementContext.codec
 
-  final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
+  final def consumerManager(): ConsumerLicenseManager = consumerManager(memory)
 
   def consumerManager(store: Store): ConsumerLicenseManager
 

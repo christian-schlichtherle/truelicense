@@ -6,8 +6,6 @@
 package net.truelicense.v2.commons.crypto;
 
 import global.namespace.fun.io.api.Socket;
-import global.namespace.fun.io.api.Transformation;
-import global.namespace.fun.io.bios.BIOS;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.PasswordUsage;
 import net.truelicense.core.crypto.BasicEncryption;
@@ -67,7 +65,4 @@ public final class V2Encryption extends BasicEncryption {
         param.init(encoded);
         return param;
     }
-
-    @Override
-    public Transformation inverse() { return BIOS.inverse(this); }
 }

@@ -79,7 +79,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         long cachePeriodMillis = 30 * 60 * 1000;
         Clock clock = Clock.systemDefaultZone();
         Optional<Codec> codec = Optional.empty();
-        Optional<Transformation> compression = Optional.empty();
+        Optional<Filter> compression = Optional.empty();
         String encryptionAlgorithm = "";
         Optional<EncryptionFactory> encryptionFactory = Optional.empty();
         Optional<LicenseFactory> licenseFactory = Optional.empty();
@@ -126,7 +126,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         }
 
         @Override
-        public LicenseManagementContextBuilder compression(final Transformation compression) {
+        public LicenseManagementContextBuilder compression(final Filter compression) {
             this.compression = Optional.of(compression);
             return this;
         }
@@ -209,7 +209,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         final long cachePeriodMillis;
         final Clock clock;
         final Codec codec;
-        final Transformation compression;
+        final Filter compression;
         final String encryptionAlgorithm;
         final EncryptionFactory encryptionFactory;
         final LicenseFactory licenseFactory;
@@ -254,7 +254,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         @Override
         public Codec codec() { return codec; }
 
-        Transformation compression() { return compression; }
+        Filter compression() { return compression; }
 
         @Override
         public ConsumerLicenseManagerBuilder consumer() { return new TrueConsumerLicenseManagerBuilder(); }
@@ -262,7 +262,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         String encryptionAlgorithm() { return encryptionAlgorithm; }
 
         @Override
-        public Transformation encryption(EncryptionParameters encryptionParameters) {
+        public Filter encryption(EncryptionParameters encryptionParameters) {
             return encryptionFactory.encryption(encryptionParameters);
         }
 
@@ -339,7 +339,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This> & Builder<?>> {
 
             Optional<Authentication> authentication = Optional.empty();
-            Optional<Transformation> encryption = Optional.empty();
+            Optional<Filter> encryption = Optional.empty();
             int ftpDays;
             Optional<ConsumerLicenseManager> parent = Optional.empty();
             Optional<Store> store = Optional.empty();
@@ -351,7 +351,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
 
             public final TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
 
-            public final This encryption(final Transformation encryption) {
+            public final This encryption(final Filter encryption) {
                 this.encryption = Optional.ofNullable(encryption);
                 return (This) this;
             }
@@ -373,14 +373,14 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 return (This) this;
             }
 
-            public final This storeInPath(Path path) { return storeIn(pathStore(path)); }
+            public final This storeInPath(Path path) { return storeIn(path(path)); }
 
             public final This storeInSystemPreferences(Class<?> classInPackage) {
-                return storeIn(systemPreferencesStore(classInPackage, subject()));
+                return storeIn(systemPreferences(classInPackage, subject()));
             }
 
             public final This storeInUserPreferences(Class<?> classInPackage) {
-                return storeIn(userPreferencesStore(classInPackage, subject()));
+                return storeIn(userPreferences(classInPackage, subject()));
             }
 
             final class TrueAuthenticationBuilder implements Builder<Authentication>, AuthenticationBuilder<This> {
@@ -440,7 +440,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
             }
 
-            final class TrueEncryptionBuilder implements Builder<Transformation>, EncryptionBuilder<This> {
+            final class TrueEncryptionBuilder implements Builder<Filter>, EncryptionBuilder<This> {
 
                 Optional<String> algorithm = Optional.empty();
                 Optional<PasswordProtection> protection = Optional.empty();
@@ -455,7 +455,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                 }
 
                 @Override
-                public Transformation build() {
+                public Filter build() {
                     return TrueLicenseManagementContext.this.encryption(new TrueEncryptionParameters(this));
                 }
 
@@ -530,7 +530,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
         final class TrueLicenseManagementSchema implements LicenseManagementSchema {
 
             final Authentication authentication;
-            final Optional<Transformation> encryption;
+            final Optional<Filter> encryption;
             final int ftpDays;
             final Optional<ConsumerLicenseManager> parent;
             final Optional<Store> store;
@@ -546,13 +546,13 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
             @Override
             public Authentication authentication() { return authentication; }
 
-            Transformation compressionThenEncryption() { return compression().andThen(encryption()); }
+            Filter compressionThenEncryption() { return compression().andThen(encryption()); }
 
             @Override
             public TrueLicenseManagementContext context() { return TrueLicenseManagementContext.this; }
 
             @Override
-            public Transformation encryption() { return encryption.orElseGet(() -> parent().schema().encryption()); }
+            public Filter encryption() { return encryption.orElseGet(() -> parent().schema().encryption()); }
 
             LicenseInitialization initialization() {
                 final LicenseInitialization initialization = context().initialization();
@@ -646,7 +646,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                             if (!canGenerateLicenseKeys.isPresent()) {
                                 try {
                                     // Test encoding a new license key to /dev/null .
-                                    super.generateKeyFrom(license()).saveTo(memoryStore());
+                                    super.generateKeyFrom(license()).saveTo(memory());
                                     canGenerateLicenseKeys = Optional.of(Boolean.TRUE);
                                 } catch (LicenseManagementException ignored) {
                                     canGenerateLicenseKeys = Optional.of(Boolean.FALSE);
@@ -799,9 +799,7 @@ public abstract class TrueLicenseApplicationContext implements LicenseApplicatio
                             return duplicate;
                         }
 
-                        License duplicatedBean() throws Exception {
-                            return memoryStore().connect(codec()).clone(bean);
-                        }
+                        License duplicatedBean() throws Exception { return memory().connect(codec()).clone(bean); }
                     }
 
                     return callChecked(() -> {

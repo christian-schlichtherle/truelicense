@@ -9,7 +9,7 @@ import java.io.{InputStream, OutputStream}
 import java.nio.charset.Charset
 import java.util.Optional
 
-import global.namespace.fun.io.scala.api.Socket
+import global.namespace.fun.io.api.Socket
 import net.truelicense.api.codec.Codec
 import org.junit.runner.RunWith
 import org.scalatest.Matchers._

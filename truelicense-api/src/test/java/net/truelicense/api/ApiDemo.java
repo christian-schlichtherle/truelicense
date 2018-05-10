@@ -5,9 +5,9 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Filter;
 import global.namespace.fun.io.api.Source;
 import global.namespace.fun.io.api.Store;
-import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
@@ -46,7 +46,7 @@ public abstract class ApiDemo {
                 .cachePeriodMillis(1000L)
                 .codec(mock(Codec.class))
                 .clock(mock(Clock.class))
-                .compression(mock(Transformation.class))
+                .compression(mock(Filter.class))
                 .encryptionAlgorithm("PBEWithSHA1AndDESede")
                 .encryptionFactory(mock(EncryptionFactory.class))
                 .initialization(mock(LicenseInitialization.class))
@@ -75,7 +75,7 @@ public abstract class ApiDemo {
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
                     .up() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the latter
-                .encryption(mock(Transformation.class))
+                .encryption(mock(Filter.class))
                 .authentication() // returns an AuthenticationBuilder
                     .algorithm("RSA")
                     .alias("mykey")
@@ -104,7 +104,7 @@ public abstract class ApiDemo {
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
                     .up() // builds the encryption, injects it into the ConsumerLicenseManagerBuilder and returns the latter
-                .encryption(mock(Transformation.class))
+                .encryption(mock(Filter.class))
                 .authentication() // returns an AuthenticationBuilder
                     .algorithm("RSA")
                     .alias("mykey")

@@ -15,7 +15,7 @@ import net.truelicense.obfuscate.Obfuscate;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static global.namespace.fun.io.jackson.Jackson.jsonCodec;
+import static global.namespace.fun.io.jackson.Jackson.json;
 
 /**
  * A codec which encodes/decodes objects to/from JSON with an
@@ -40,7 +40,7 @@ public class JsonCodec implements Codec {
      *
      * @param mapper the object mapper.
      */
-    public JsonCodec(final ObjectMapper mapper) { this.codec = jsonCodec(mapper); }
+    public JsonCodec(final ObjectMapper mapper) { this.codec = json(mapper); }
 
     /**
      * {@inheritDoc}

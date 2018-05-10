@@ -16,7 +16,7 @@ import java.beans.XMLEncoder;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static global.namespace.fun.io.bios.BIOS.xmlCodec;
+import static global.namespace.fun.io.bios.BIOS.xml;
 
 /**
  * A codec which encodes/decodes objects to/from XML with an
@@ -34,7 +34,7 @@ public class XmlCodec implements Codec {
     @Obfuscate
     private static final String EIGHT_BIT = "8bit";
 
-    private final global.namespace.fun.io.api.Codec codec = xmlCodec(this::encoder, this::decoder);
+    private final global.namespace.fun.io.api.Codec codec = xml(this::encoder, this::decoder);
 
     /**
      * {@inheritDoc}

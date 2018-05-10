@@ -50,9 +50,7 @@ public enum Main {
 
     INSTALL {
         @Override
-        void run(Deque<String> params) throws LicenseManagementException {
-            manager().install(pathStore(Paths.get(params.pop())));
-        }
+        void run(Deque<String> params) throws LicenseManagementException { manager().install(file(params.pop())); }
     },
 
     LOAD {

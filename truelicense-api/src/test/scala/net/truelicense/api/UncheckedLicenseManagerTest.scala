@@ -5,7 +5,7 @@
 
 package net.truelicense.api
 
-import global.namespace.fun.io.scala.api.Store
+import global.namespace.fun.io.api.Store
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._

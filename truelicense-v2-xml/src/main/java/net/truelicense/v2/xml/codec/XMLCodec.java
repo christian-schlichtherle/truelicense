@@ -17,7 +17,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static global.namespace.fun.io.jaxb.JAXB.xmlCodec;
+import static global.namespace.fun.io.jaxb.JAXB.xml;
 
 /**
  * A codec which encodes/decodes objects to/from XML with a
@@ -38,7 +38,7 @@ public class XMLCodec implements Codec {
     /** The JAXB context provided to the constructor. */
     private final global.namespace.fun.io.api.Codec codec;
 
-    public XMLCodec(final JAXBContext context) { this.codec = xmlCodec(context); }
+    public XMLCodec(final JAXBContext context) { this.codec = xml(context); }
 
     /**
      * {@inheritDoc}

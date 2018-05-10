@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.auth.Authentication;
 
 /**
@@ -22,5 +22,5 @@ public interface LicenseManagementSchema {
     LicenseManagementContext context();
 
     /** Returns the password based encryption transformation. */
-    Transformation encryption();
+    Filter encryption();
 }
