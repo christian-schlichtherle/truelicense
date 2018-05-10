@@ -11,15 +11,12 @@ import java.util.Optional
 
 import global.namespace.fun.io.api.Socket
 import net.truelicense.api.codec.Codec
-import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
-class CodecsTest extends WordSpec {
+class CodecsSpec extends WordSpec {
 
   "The contentTransferCharset function" should {
     "figure the correct charset" in {

@@ -7,17 +7,13 @@
 package net.truelicense.obfuscate
 
 import java.util.regex.Pattern
-import org.junit.runner._
 import org.scalatest._
-import org.scalatest.junit._
 import org.scalatest.Matchers._
 import org.scalatest.prop.PropertyChecks._
+import ObfuscatedStringSpec._
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
-class ObfuscatedStringTest extends WordSpec {
-
-  import ObfuscatedStringTest._
+class ObfuscatedStringSpec extends WordSpec {
 
   "An ObfuscatedString" should {
     "always reproduce the original string literal" in {
@@ -60,16 +56,16 @@ class ObfuscatedStringTest extends WordSpec {
 }
 
 /** @author Christian Schlichtherle */
-object ObfuscatedStringTest {
+private object ObfuscatedStringSpec {
 
-  private def escape(s: String) =
+  def escape(s: String) =
     s.replace("\\", "\\\\").replace("\"", "\\\"").replace("*/", "*\\/")
 
   /**
    * `java.lang.Long.parseLong` doesn't work if the highest bit is set in the
    * string to parse. Hence a simplified version is provided here.
    */
-  private def parseLong(s: String) = {
+  def parseLong(s: String) = {
     val l = s.length
     if (16 < l) throw new NumberFormatException(s)
     var result = 0L

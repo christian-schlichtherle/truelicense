@@ -7,16 +7,13 @@ package net.truelicense.ui.wizard
 
 import net.truelicense.ui.MessagesTestSupport._
 import net.truelicense.ui.wizard.WizardMessage._
-import org.junit.runner.RunWith
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
 
 /**
   * @author Christian Schlichtherle
   */
-@RunWith(classOf[JUnitRunner])
-class MessagesTest extends WordSpec {
+class MessagesSpec extends WordSpec {
 
   "Messages" should {
     "be binary serializable" in {

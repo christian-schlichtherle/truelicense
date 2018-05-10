@@ -6,11 +6,8 @@
 package net.truelicense.it.v1
 
 import net.truelicense.it.core.LicenseKeyLifeCycleITSuite
-import org.junit.runner._
-import org.scalatest.junit._
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
 class V1LicenseKeyLifeCycleIT
   extends LicenseKeyLifeCycleITSuite
   with V1TestContext

@@ -6,17 +6,13 @@
 package net.truelicense.api.x500
 
 import javax.security.auth.x500.X500Principal
-
-import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 
 /**
  * @author Christian Schlichtherle
  */
-@RunWith(classOf[JUnitRunner])
-class MyX500PrincipalBuilderTest extends WordSpec {
+class MyX500PrincipalBuilderSpec extends WordSpec {
 
   private val expected = {
     import collection.JavaConverters._

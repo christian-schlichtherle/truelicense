@@ -5,12 +5,9 @@
 
 package net.truelicense.it.jax.rs
 
-import net.truelicense.it.v2.xml.V2XmlTestContext
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import net.truelicense.it.v1.V1TestContext
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
-class V2XmlConsumerLicenseManagementServiceTest
+class V1ConsumerLicenseManagementServiceSpec
 extends ConsumerLicenseManagementServiceITSuite
-with V2XmlTestContext
+with V1TestContext

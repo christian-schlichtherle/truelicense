@@ -8,16 +8,13 @@ package net.truelicense.api
 import java.util.Locale
 
 import net.truelicense.api.i18n.Message
-import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 
 /**
  * @author Christian Schlichtherle
  */
-@RunWith(classOf[JUnitRunner])
-class LicenseValidationExceptionTest extends WordSpec {
+class LicenseValidationExceptionSpec extends WordSpec {
 
   "A LicenseValidationException" when {
     "created with a localized message" should {

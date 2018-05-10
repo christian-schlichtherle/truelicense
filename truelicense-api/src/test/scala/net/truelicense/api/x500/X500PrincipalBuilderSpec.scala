@@ -6,11 +6,8 @@
 package net.truelicense.api.x500
 
 import javax.security.auth.x500.X500Principal
-
-import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
 
 import scala.collection.JavaConverters._
@@ -18,8 +15,7 @@ import scala.collection.JavaConverters._
 /**
  * @author Christian Schlichtherle
  */
-@RunWith(classOf[JUnitRunner])
-class X500PrincipalBuilderTest extends WordSpec {
+class X500PrincipalBuilderSpec extends WordSpec {
 
   private val none = Map[String, String]()
 

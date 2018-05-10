@@ -5,19 +5,16 @@
 
 package net.truelicense.maven.plugin.generation
 
-import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
 
 /**
  * @author Christian Schlichtherle
  */
-@RunWith(classOf[JUnitRunner])
-class JavaToolTest extends WordSpec /*with Matchers*/ {
+class ScalaToolSpec extends WordSpec {
 
-  "A JavaTool " should {
+  "A ScalaTool " should {
     "generate an obfuscated string " which {
       "matches the pattern" in {
         forAll(Table(
@@ -25,7 +22,7 @@ class JavaToolTest extends WordSpec /*with Matchers*/ {
           "",
           "Hello world!"
         )) { string =>
-          new JavaTool obfuscatedString string should (fullyMatch regex "new net\\.truelicense\\.obfuscate\\.ObfuscatedString\\(new long\\[\\] \\{ [^}]* \\}\\) /\\*.*\\*/")
+          new ScalaTool obfuscatedString string should (fullyMatch regex "new net\\.truelicense\\.obfuscate\\.ObfuscatedString\\(Array\\[Long\\]\\([^)]*\\)\\) /\\*.*\\*/")
         }
       }
     }

@@ -5,18 +5,15 @@
 
 package net.truelicense.core
 
+import net.truelicense.core.Messages._
 import net.truelicense.core.MessagesTestSupport._
-import org.junit.runner.RunWith
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
-import Messages._
 
 /**
  * @author Christian Schlichtherle
  */
-@RunWith(classOf[JUnitRunner])
-class MessagesTest extends WordSpec {
+class MessagesSpec extends WordSpec {
 
   "Messages" should {
     "be binary serializable" in {

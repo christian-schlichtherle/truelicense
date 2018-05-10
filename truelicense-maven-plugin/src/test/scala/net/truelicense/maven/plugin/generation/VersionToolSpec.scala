@@ -5,17 +5,14 @@
 
 package net.truelicense.maven.plugin.generation
 
-import org.junit.runner.RunWith
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.prop.PropertyChecks._
 
 /**
  * @author Christian Schlichtherle
  */
-@RunWith(classOf[JUnitRunner])
-class VersionToolTest extends WordSpec {
+class VersionToolSpec extends WordSpec {
 
   "A VersionTool should correctly parse the given version string" in {
     val table = Table(
