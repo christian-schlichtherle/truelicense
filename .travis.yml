@@ -2,9 +2,6 @@ cache:
   directories:
   - $HOME/.m2/repository
 
-git:
-  depth: 3
-
 jdk:
 - openjdk8
 - oraclejdk8
