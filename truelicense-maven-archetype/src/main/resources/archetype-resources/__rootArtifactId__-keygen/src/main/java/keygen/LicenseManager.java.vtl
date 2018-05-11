@@ -4,14 +4,14 @@
  */
 
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseApplicationContextPackage = "net.truelicense.v2.json")
-#set($licenseApplicationContextClass = "V2JsonLicenseApplicationContext")
+#set($facadePackage = "net.truelicense.v2.json")
+#set($facadeClass = "V2Json")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseApplicationContextPackage = "net.truelicense.v2.xml")
-#set($licenseApplicationContextClass = "V2XmlLicenseApplicationContext")
+#set($facadePackage = "net.truelicense.v2.xml")
+#set($facadeClass = "V2Xml")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseApplicationContextPackage = "net.truelicense.v1")
-#set($licenseApplicationContextClass = "V1LicenseApplicationContext")
+#set($facadePackage = "net.truelicense.v1")
+#set($facadeClass = "V1")
 #end
 #set($editions = $editions.split($delimiter))
 #set($editionsSize = $editions.size())
@@ -46,7 +46,7 @@ import net.truelicense.api.passwd.PasswordProtection;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.*;
 
-import $licenseApplicationContextPackage.$licenseApplicationContextClass;
+import $facadePackage.$facadeClass;
 
 /**
  * The enumeration of the vendor license managers for $subject license keys.
@@ -79,7 +79,8 @@ public enum LicenseManager implements VendorLicenseManager {
 #end
         @Override
         VendorLicenseManager newManager() {
-            return _managementContext.vendor()
+            return _managementContext
+                    .vendor()
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
     $licenseKeyFormat.startsWith("V2/") && $pbeAlgorithm != "PBEWithSHA1AndDESede")
@@ -126,18 +127,9 @@ public enum LicenseManager implements VendorLicenseManager {
     private static final String PBE_ALGORITHM = "$pbeAlgorithm";
 #end
 
-    // Note that the class implementing the interface
-    // net.truelicense.api.LicenseManagementContext
-    // determines the format of the license keys:
-    // The implementation class
-    // $licenseApplicationContextPackage.$licenseApplicationContextClass
-    // uses the license key format $licenseKeyFormat.
-    private static final LicenseApplicationContext _applicationContext =
-            new $licenseApplicationContextClass();
-
     private static final LicenseManagementContext _managementContext =
-            _applicationContext
-                .context()
+            $facadeClass
+                    .builder()
 #if($keyGenAuthorizationClass != "-")
                     .authorization(#new($keyGenAuthorizationClass "LicenseManagementAuthorization"))
 #end

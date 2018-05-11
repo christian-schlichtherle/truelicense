@@ -44,8 +44,8 @@
  * TrueLicense 3 retains full compatibility with TrueLicense 1 ({@code V1}) and TrueLicense 2 ({@code V2/*}) format
  * license keys.
  * <p>
- * Applications use an instance of the interface {@link net.truelicense.api.LicenseApplicationContext} as their starting
- * point for configuring a {@link net.truelicense.api.LicenseManagementContext} and subsequently one or more
+ * Applications use an instance of the interface {@link net.truelicense.api.LicenseManagementContextBuilder} as their
+ * starting point for configuring a {@link net.truelicense.api.LicenseManagementContext} and subsequently one or more
  * {@link net.truelicense.api.ConsumerLicenseManager} or {@link net.truelicense.api.VendorLicenseManager} instances.
  * <p>
  * For security, passwords are represented as an instance of the {@link net.truelicense.api.passwd.PasswordProtection}

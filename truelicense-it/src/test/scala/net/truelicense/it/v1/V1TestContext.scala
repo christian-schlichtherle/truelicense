@@ -9,12 +9,13 @@ import global.namespace.fun.io.api.Store
 import net.truelicense.api._
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.v1.V1TestContext._
-import net.truelicense.v1.V1LicenseApplicationContext
+import net.truelicense.v1.V1
 
 /** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext {
 
-  final val applicationContext = new V1LicenseApplicationContext
+  //noinspection ScalaDeprecation
+  final override def managementContextBuilder: LicenseManagementContextBuilder = V1.builder
 
   final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer

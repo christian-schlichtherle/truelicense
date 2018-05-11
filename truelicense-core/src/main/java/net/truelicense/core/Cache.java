@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.core;
 
 import java.util.Optional;
@@ -15,6 +14,7 @@ import static java.lang.System.currentTimeMillis;
  *
  * @author Christian Schlichtherle
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 final class Cache<K, V> {
 
     private final Optional<K> optKey;
