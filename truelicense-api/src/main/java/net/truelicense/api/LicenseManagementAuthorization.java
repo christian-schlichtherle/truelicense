@@ -21,40 +21,40 @@ public class LicenseManagementAuthorization {
      * In this case, the implementation may perform a test if the consumer is eligible to generate a new FTP license key
      * in order to protect against a malicious removal of the auto-generated FTP license key.
      *
-     * @param schema the licensing schema.
+     * @param manager the vendor license manager.
      * @see VendorLicenseManager#generateKeyFrom(License)
      */
-    public void clearGenerate(LicenseManagementSchema schema) throws Exception { }
+    public void clearGenerate(VendorLicenseManager manager) throws Exception { }
 
     /**
      * Returns if and only if installing a license key is authorized.
      *
-     * @param schema the licensing schema.
+     * @param manager the consumer license manager.
      * @see ConsumerLicenseManager#install(global.namespace.fun.io.api.Source)
      */
-    public void clearInstall(LicenseManagementSchema schema) throws Exception { }
+    public void clearInstall(ConsumerLicenseManager manager) throws Exception { }
 
     /**
      * Returns if and only if loading a license key is authorized.
      *
-     * @param schema the licensing schema.
+     * @param manager the consumer license manager.
      * @see ConsumerLicenseManager#load()
      */
-    public void clearLoad(LicenseManagementSchema schema) throws Exception { }
+    public void clearLoad(ConsumerLicenseManager manager) throws Exception { }
 
     /**
      * Returns if and only if verifying a license key is authorized.
      *
-     * @param schema the licensing schema.
+     * @param manager the consumer license manager.
      * @see ConsumerLicenseManager#verify()
      */
-    public void clearVerify(LicenseManagementSchema schema) throws Exception { }
+    public void clearVerify(ConsumerLicenseManager manager) throws Exception { }
 
     /**
      * Returns if and only if uninstalling a license key is authorized.
      *
-     * @param schema the licensing schema.
+     * @param manager the consumer license manager.
      * @see ConsumerLicenseManager#uninstall()
      */
-    public void clearUninstall(LicenseManagementSchema schema) throws Exception { }
+    public void clearUninstall(ConsumerLicenseManager manager) throws Exception { }
 }

@@ -642,7 +642,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
                 }
 
                 return callChecked(() -> {
-                    authorization().clearGenerate(schema());
+                    authorization().clearGenerate(this);
                     return new TrueLicenseKeyGenerator();
                 });
             }
@@ -650,7 +650,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             @Override
             public void install(final Source source) throws LicenseManagementException {
                 callChecked(() -> {
-                    authorization().clearInstall(schema());
+                    authorization().clearInstall(this);
                     decodeLicense(source); // checks digital signature
                     copy(source, store());
                     return null;
@@ -660,7 +660,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             @Override
             public License load() throws LicenseManagementException {
                 return callChecked(() -> {
-                    authorization().clearLoad(schema());
+                    authorization().clearLoad(this);
                     return decodeLicense(store());
                 });
             }
@@ -668,7 +668,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             @Override
             public void verify() throws LicenseManagementException {
                 callChecked(() -> {
-                    authorization().clearVerify(schema());
+                    authorization().clearVerify(this);
                     validate(store());
                     return null;
                 });
@@ -677,7 +677,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             @Override
             public void uninstall() throws LicenseManagementException {
                 callChecked(() -> {
-                    authorization().clearUninstall(schema());
+                    authorization().clearUninstall(this);
                     final Store store1 = store();
                     // #TRUELICENSE-81: A consumer license manager must
                     // authenticate the installed license key before uninstalling
