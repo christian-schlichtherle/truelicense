@@ -109,25 +109,24 @@ public enum LicenseManager implements VendorLicenseManager {
     private static final String PBE_ALGORITHM = "$pbeAlgorithm";
 #end
 
-    private static final LicenseManagementContext _managementContext =
-            $facadeClass
-                    .builder()
+    private static final LicenseManagementContext _managementContext = $facadeClass
+            .builder()
 #if($keyGenAuthorization != "-")
-                    .authorization($keyGenAuthorization)
+            .authorization($keyGenAuthorization)
 #end
-                    .initialization(bean -> {
-                        if (null == bean.getIssuer()) {
-                            bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
-                        }
-                    })
-                    .subject(SUBJECT)
+            .initialization(bean -> {
+                if (null == bean.getIssuer()) {
+                    bean.setIssuer(new X500Principal(DISTINGUISHED_NAME));
+                }
+            })
+            .subject(SUBJECT)
 #if($keyGenValidation != "-")
-                    .validation($keyGenValidation)
+            .validation($keyGenValidation)
 #if($keyGenValidationComposition != "decorate")
-                    .validationComposition(LicenseFunctionComposition.$keyGenValidationComposition)
+            .validationComposition(LicenseFunctionComposition.$keyGenValidationComposition)
 #end
 #end
-                    .build();
+            .build();
 
     private volatile VendorLicenseManager _manager;
 

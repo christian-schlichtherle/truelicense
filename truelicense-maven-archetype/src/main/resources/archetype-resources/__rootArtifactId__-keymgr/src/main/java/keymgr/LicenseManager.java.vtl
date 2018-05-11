@@ -172,23 +172,22 @@ public enum LicenseManager implements ConsumerLicenseManager {
     private static final String PBE_ALGORITHM = "$pbeAlgorithm";
 #end
 
-    private static final LicenseManagementContext _managementContext =
-            $facadeClass
-                    .builder()
+    private static final LicenseManagementContext _managementContext = $facadeClass
+            .builder()
 #if($keyMgrAuthorization != "-")
-                    .authorization($keyMgrAuthorization)
+            .authorization($keyMgrAuthorization)
 #end
 #if($keyMgrClock != "-")
-                    .clock($keyMgrClock)
+            .clock($keyMgrClock)
 #end
-                    .subject(SUBJECT)
+            .subject(SUBJECT)
 #if($keyMgrValidation != "-")
-                    .validation($keyMgrValidation)
+            .validation($keyMgrValidation)
 #if($keyMgrValidationComposition != "decorate")
-                    .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
+            .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
 #end
 #end
-                    .build();
+            .build();
 
     private volatile ConsumerLicenseManager _manager;
 
