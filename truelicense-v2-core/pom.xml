@@ -12,31 +12,18 @@
         <version>4.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>truelicense-v2-json</artifactId>
+    <artifactId>truelicense-v2-core</artifactId>
 
-    <name>TrueLicense V2/JSON</name>
+    <name>TrueLicense V2 Core</name>
     <description>
-        The TrueLicense V2/JSON module extends the TrueLicense Core module in
-        order to add support for the V2/JSON license key format.
+        The TrueLicense V2 Core module provides common functionality for the
+        V2/JSON and V2/XML license key formats.
     </description>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-v2-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>global.namespace.fun-io</groupId>
-            <artifactId>fun-io-jackson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <artifactId>truelicense-core</artifactId>
         </dependency>
     </dependencies>
 

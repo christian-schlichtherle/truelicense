@@ -8,8 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import net.truelicense.api.LicenseManagementContextBuilder;
-import net.truelicense.v2.commons.V2;
-import net.truelicense.v2.json.codec.JsonCodec;
+import net.truelicense.v2.core.V2;
 
 /**
  * This facade provides a static factory method for license management context builders for Version 2-with-JSON
@@ -22,8 +21,14 @@ public final class V2Json {
     /**
      * Returns a new license management context builder for managing Version 2-with-JSON (V2/JSON) format license keys.
      */
-    public static LicenseManagementContextBuilder builder() {
-        return V2.builder().codec(new JsonCodec(objectMapper()));
+    public static LicenseManagementContextBuilder builder() { return builder(objectMapper()); }
+
+    /**
+     * Returns a new license management context builder for managing Version 2-with-JSON (V2/JSON) format license keys
+     * using the given object mapper.
+     */
+    public static LicenseManagementContextBuilder builder(ObjectMapper mapper) {
+        return V2.builder().codec(new JsonCodec(mapper));
     }
 
     private static ObjectMapper objectMapper() {
@@ -32,4 +37,6 @@ public final class V2Json {
         mapper.registerModule(new JaxbAnnotationModule());
         return mapper;
     }
+
+    private V2Json() { }
 }

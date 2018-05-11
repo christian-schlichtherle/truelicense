@@ -21,4 +21,6 @@ public final class Core {
      * partially configured.
      */
     public static LicenseManagementContextBuilder builder() { return new TrueLicenseManagementContextBuilder(); }
+
+    private Core() { }
 }

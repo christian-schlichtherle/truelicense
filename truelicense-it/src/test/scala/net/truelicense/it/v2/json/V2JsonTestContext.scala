@@ -5,7 +5,7 @@
 package net.truelicense.it.v2.json
 
 import net.truelicense.api.LicenseManagementContextBuilder
-import net.truelicense.it.v2.commons.V2TestContext
+import net.truelicense.it.v2.core.V2TestContext
 import net.truelicense.v2.json.V2Json
 
 /** @author Christian Schlichtherle */

@@ -430,7 +430,7 @@
 #else
                             <!--option>
 #end
-                                -keepclassmembers class net.truelicense.v2.commons.auth.V2RepositoryModel {
+                                -keepclassmembers class net.truelicense.v2.coreth.V2RepositoryModel {
                                     public *** get*();
                                     public void set*(***);
                                 }

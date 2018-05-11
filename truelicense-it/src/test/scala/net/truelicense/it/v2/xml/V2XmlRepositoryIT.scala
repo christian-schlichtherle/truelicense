@@ -5,7 +5,7 @@
 
 package net.truelicense.it.v2.xml
 
-import net.truelicense.it.v2.commons.V2RepositoryITSuite
+import net.truelicense.it.v2.core.V2RepositoryITSuite
 
 /** @author Christian Schlichtherle */
 class V2XmlRepositoryIT

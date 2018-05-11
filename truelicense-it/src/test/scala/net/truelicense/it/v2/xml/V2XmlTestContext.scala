@@ -7,26 +7,15 @@ package net.truelicense.it.v2.xml
 import javax.xml.bind._
 import net.truelicense.api.{License, LicenseManagementContextBuilder}
 import net.truelicense.it.core.ExtraData
-import net.truelicense.it.v2.commons.V2TestContext
-import net.truelicense.v2.commons.auth.V2RepositoryModel
+import net.truelicense.it.v2.core.V2TestContext
+import net.truelicense.v2.core.auth.V2RepositoryModel
 import net.truelicense.v2.xml.V2Xml
-import net.truelicense.v2.xml.codec.XMLCodec
 
 /** @author Christian Schlichtherle */
 trait V2XmlTestContext extends V2TestContext {
 
   final override def managementContextBuilder: LicenseManagementContextBuilder = {
-    V2Xml.builder.codec(new XMLCodec(
-      try {
-        JAXBContext.newInstance(
-          classOf[License],
-          classOf[ExtraData],
-          classOf[V2RepositoryModel]
-        )
-      } catch {
-        case ex: JAXBException => throw new AssertionError(ex)
-      }
-    ))
+    V2Xml builder JAXBContext.newInstance(classOf[License], classOf[ExtraData], classOf[V2RepositoryModel])
   }
 
   override def extraData: AnyRef = {

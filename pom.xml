@@ -123,7 +123,7 @@
         <module>truelicense-swing</module>
         <module>truelicense-ui</module>
         <module>truelicense-v1</module>
-        <module>truelicense-v2-commons</module>
+        <module>truelicense-v2-core</module>
         <module>truelicense-v2-json</module>
         <module>truelicense-v2-xml</module>
     </modules>
@@ -182,7 +182,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-v2-commons</artifactId>
+                <artifactId>truelicense-v2-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
