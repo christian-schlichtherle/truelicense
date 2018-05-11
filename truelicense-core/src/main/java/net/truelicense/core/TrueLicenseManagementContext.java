@@ -122,7 +122,9 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
     private PasswordPolicy passwordPolicy() { return passwordPolicy; }
 
-    private <Model> RepositoryContext<Model> repositoryContext() { return (RepositoryContext<Model>) repositoryContext; }
+    private <Model> RepositoryContext<Model> repositoryContext() {
+        return (RepositoryContext<Model>) repositoryContext;
+    }
 
     private String keystoreType() { return keystoreType; }
 
@@ -131,9 +133,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
     private LicenseValidation validation() {
         final LicenseValidation second = new TrueLicenseValidation();
-        return validation
-                .map(first -> validationComposition.compose(first, second))
-                .orElse(second);
+        return validation.map(first -> validationComposition.compose(first, second)).orElse(second);
     }
 
     @Override
@@ -155,16 +155,12 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         public TrueConsumerLicenseManagerBuilder up() { throw new UnsupportedOperationException(); }
 
         @Override
-        public TrueConsumerLicenseManagerBuilder.ParentConsumerLicenseManagerBuilder parent() {
-            return new TrueConsumerLicenseManagerBuilder.ParentConsumerLicenseManagerBuilder();
-        }
+        public ParentConsumerLicenseManagerBuilder parent() { return new ParentConsumerLicenseManagerBuilder(); }
 
         final class ParentConsumerLicenseManagerBuilder extends TrueConsumerLicenseManagerBuilder {
 
             @Override
-            public TrueConsumerLicenseManagerBuilder up() {
-                return TrueConsumerLicenseManagerBuilder.this.parent(build());
-            }
+            public TrueConsumerLicenseManagerBuilder up() { return parent(build()); }
         }
     }
 
@@ -191,7 +187,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return (This) this;
         }
 
-        public final TrueLicenseManagerBuilder.TrueEncryptionBuilder encryption() { return new TrueLicenseManagerBuilder.TrueEncryptionBuilder(); }
+        public final TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
 
         public final This encryption(final Filter encryption) {
             this.encryption = Optional.ofNullable(encryption);
@@ -203,7 +199,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return (This) this;
         }
 
-        public final TrueLicenseManagerBuilder.TrueAuthenticationBuilder authentication() { return new TrueLicenseManagerBuilder.TrueAuthenticationBuilder(); }
+        public final TrueAuthenticationBuilder authentication() { return new TrueAuthenticationBuilder(); }
 
         public final This parent(final ConsumerLicenseManager parent) {
             this.parent = Optional.ofNullable(parent);
@@ -239,13 +235,13 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             public This up() { return authentication(build()); }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder algorithm(final String algorithm) {
+            public TrueAuthenticationBuilder algorithm(final String algorithm) {
                 this.algorithm = Optional.ofNullable(algorithm);
                 return this;
             }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder alias(final String alias) {
+            public TrueAuthenticationBuilder alias(final String alias) {
                 this.alias = Optional.ofNullable(alias);
                 return this;
             }
@@ -256,28 +252,28 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder keyProtection(final PasswordProtection keyProtection) {
+            public TrueAuthenticationBuilder keyProtection(final PasswordProtection keyProtection) {
                 this.keyProtection = Optional.ofNullable(keyProtection);
                 return this;
             }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder loadFrom(final Source source) {
+            public TrueAuthenticationBuilder loadFrom(final Source source) {
                 this.source = Optional.ofNullable(source);
                 return this;
             }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
+            public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
+            public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
                 this.storeProtection = Optional.ofNullable(storeProtection);
                 return this;
             }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueAuthenticationBuilder storeType(final String storeType) {
+            public TrueAuthenticationBuilder storeType(final String storeType) {
                 this.storeType = Optional.ofNullable(storeType);
                 return this;
             }
@@ -292,7 +288,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             public This up() { return encryption(build()); }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueEncryptionBuilder algorithm(final String algorithm) {
+            public TrueEncryptionBuilder algorithm(final String algorithm) {
                 this.algorithm = Optional.ofNullable(algorithm);
                 return this;
             }
@@ -303,7 +299,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             @Override
-            public TrueLicenseManagerBuilder.TrueEncryptionBuilder protection(final PasswordProtection protection) {
+            public TrueEncryptionBuilder protection(final PasswordProtection protection) {
                 this.protection = Optional.ofNullable(protection);
                 return this;
             }
@@ -585,11 +581,11 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
 
         class TrueLicenseManager
-                extends TrueLicenseManagementSchema.TrueHasLicenseManagementSchema
+                extends TrueHasLicenseManagementSchema
                 implements ConsumerLicenseManager, VendorLicenseManager {
 
             @Override
-            public TrueLicenseManagementSchema.TrueLicenseManager.TrueUncheckedLicenseManager unchecked() { return new TrueLicenseManagementSchema.TrueLicenseManager.TrueUncheckedLicenseManager(); }
+            public TrueUncheckedLicenseManager unchecked() { return new TrueUncheckedLicenseManager(); }
 
             @Override
             public LicenseKeyGenerator generateKeyFrom(final License bean) throws LicenseManagementException {
@@ -719,11 +715,11 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
 
             final class TrueUncheckedLicenseManager
-                    extends TrueLicenseManagementSchema.TrueHasLicenseManagementSchema
+                    extends TrueHasLicenseManagementSchema
                     implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                 @Override
-                public TrueLicenseManagementSchema.TrueLicenseManager checked() { return TrueLicenseManagementSchema.TrueLicenseManager.this; }
+                public TrueLicenseManager checked() { return TrueLicenseManager.this; }
             }
         }
 
