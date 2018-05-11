@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 #if($licenseKeyFormat == "V2/JSON")
 #set($facadePackage = "net.truelicense.v2.json")
 #set($facadeClass = "V2Json")
@@ -19,23 +18,6 @@
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
-#macro(new $class $interface)
-#if($customClasspathScope == "runtime")
-new Object() {
-    $interface newInstance() {
-        try {
-            return ($interface) Class.forName("$class").newInstance();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-}.newInstance()
-#else
-new ${class.replace('$', '.')}()
-#end
-#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
@@ -130,8 +112,8 @@ public enum LicenseManager implements VendorLicenseManager {
     private static final LicenseManagementContext _managementContext =
             $facadeClass
                     .builder()
-#if($keyGenAuthorizationClass != "-")
-                    .authorization(#new($keyGenAuthorizationClass "LicenseManagementAuthorization"))
+#if($keyGenAuthorization != "-")
+                    .authorization($keyGenAuthorization)
 #end
                     .initialization(bean -> {
                         if (null == bean.getIssuer()) {
@@ -139,8 +121,8 @@ public enum LicenseManager implements VendorLicenseManager {
                         }
                     })
                     .subject(SUBJECT)
-#if($keyGenValidationClass != "-")
-                    .validation(#new($keyGenValidationClass "LicenseValidation"))
+#if($keyGenValidation != "-")
+                    .validation($keyGenValidation)
 #if($keyGenValidationComposition != "decorate")
                     .validationComposition(LicenseFunctionComposition.$keyGenValidationComposition)
 #end

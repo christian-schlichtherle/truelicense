@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 #set($dollar = '$')
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
@@ -216,7 +215,7 @@ public enum Main {
     }
 
     private enum CreateOption { KEY, INPUT, OUTPUT, EDITION, VERBOSE }
-#if($keyGenValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
+#if($keyGenValidation == "new ${package}.keygen.Main.NoLicenseValidation()")
 
     public static final class NoLicenseValidation implements LicenseValidation {
         public void validate(License bean) {

@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 #if($licenseKeyFormat == "V2/JSON")
 #set($facadePackage = "net.truelicense.v2.json")
 #set($facadeClass = "V2Json")
@@ -20,23 +19,6 @@
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
 #macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
-#macro(new $class $interface)
-#if($customClasspathScope == "runtime")
-new Object() {
-    $interface newInstance() {
-        try {
-            return ($interface) Class.forName("$class").newInstance();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-}.newInstance()
-#else
-new ${class.replace('$', '.')}()
-#end
-#end
 #macro(class $class)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -193,15 +175,15 @@ public enum LicenseManager implements ConsumerLicenseManager {
     private static final LicenseManagementContext _managementContext =
             $facadeClass
                     .builder()
-#if($keyMgrAuthorizationClass != "-")
-                    .authorization(#new($keyMgrAuthorizationClass "LicenseManagementAuthorization"))
+#if($keyMgrAuthorization != "-")
+                    .authorization($keyMgrAuthorization)
 #end
-#if($keyMgrClockExpr != "-")
-                    .clock($keyMgrClockExpr)
+#if($keyMgrClock != "-")
+                    .clock($keyMgrClock)
 #end
                     .subject(SUBJECT)
-#if($keyMgrValidationClass != "-")
-                    .validation(#new($keyMgrValidationClass "LicenseValidation"))
+#if($keyMgrValidation != "-")
+                    .validation($keyMgrValidation)
 #if($keyMgrValidationComposition != "decorate")
                     .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
 #end

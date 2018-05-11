@@ -6,11 +6,12 @@
 package net.truelicense.api;
 
 /**
- * Defines an authorization for the license key life cycle management operations.
+ * Defines an authorization for license key life cycle management operations.
+ * The implementation in this class authorizes all operations.
  *
  * @author Christian Schlichtherle
  */
-public interface LicenseManagementAuthorization {
+public class LicenseManagementAuthorization {
 
     /**
      * Returns if and only if saving a license key is authorized.
@@ -23,7 +24,7 @@ public interface LicenseManagementAuthorization {
      * @param schema the licensing schema.
      * @see VendorLicenseManager#generateKeyFrom(License)
      */
-    void clearGenerate(LicenseManagementSchema schema) throws Exception;
+    public void clearGenerate(LicenseManagementSchema schema) throws Exception { }
 
     /**
      * Returns if and only if installing a license key is authorized.
@@ -31,7 +32,7 @@ public interface LicenseManagementAuthorization {
      * @param schema the licensing schema.
      * @see ConsumerLicenseManager#install(global.namespace.fun.io.api.Source)
      */
-    void clearInstall(LicenseManagementSchema schema) throws Exception;
+    public void clearInstall(LicenseManagementSchema schema) throws Exception { }
 
     /**
      * Returns if and only if loading a license key is authorized.
@@ -39,7 +40,7 @@ public interface LicenseManagementAuthorization {
      * @param schema the licensing schema.
      * @see ConsumerLicenseManager#load()
      */
-    void clearLoad(LicenseManagementSchema schema) throws Exception;
+    public void clearLoad(LicenseManagementSchema schema) throws Exception { }
 
     /**
      * Returns if and only if verifying a license key is authorized.
@@ -47,7 +48,7 @@ public interface LicenseManagementAuthorization {
      * @param schema the licensing schema.
      * @see ConsumerLicenseManager#verify()
      */
-    void clearVerify(LicenseManagementSchema schema) throws Exception;
+    public void clearVerify(LicenseManagementSchema schema) throws Exception { }
 
     /**
      * Returns if and only if uninstalling a license key is authorized.
@@ -55,5 +56,5 @@ public interface LicenseManagementAuthorization {
      * @param schema the licensing schema.
      * @see ConsumerLicenseManager#uninstall()
      */
-    void clearUninstall(LicenseManagementSchema schema) throws Exception;
+    public void clearUninstall(LicenseManagementSchema schema) throws Exception { }
 }

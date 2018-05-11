@@ -27,48 +27,6 @@
         </xs:annotation>
         <xs:restriction base="xs:NCName"/>
     </xs:simpleType>
-    <xs:simpleType name="CustomClasspathScope">
-        <xs:annotation>
-            <xs:documentation>
-                Select
-                <code>compile</code>
-                to declare that custom classes are available on the class path
-                at compile time.
-                The generated code will instantiate the classes using the
-                <code>new</code>
-                operator.
-                The advantage is that the classes can be safely included in the
-                byte code obfuscation process.
-                The disadvantage is that the classes need to be known at compile
-                time so that manual editing of the dependencies in the generated
-                POM files for the Key Generator or Key Manager module may be
-                necessary.
-                Select
-                <code>runtime</code>
-                to declare that custom classes are available on the class path
-                at runtime only.
-                The generated code will instantiate the classes using the Java
-                Reflection API.
-                The advantage is that the classes don't need to be known at
-                compile time so that manual editing of the generated POM files
-                should not be necessary.
-                The disadvantage is that the classes need to be generally
-                excluded from the byte code obfuscation process, e.g. for the
-                Key Manager module.
-                This is considered to be a security leak and therefore should be
-                generally avoided.
-                However, this is not true for
-                <a href="http://proguard.sourceforge.net">ProGuard</a>:
-                TrueLicense generates code for dynamic class loading which is
-                correctly recognized and obfuscated by ProGuard so that it's
-                safe to use this option with ProGuard.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:token">
-            <xs:enumeration value="compile"/>
-            <xs:enumeration value="runtime"/>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:complexType name="Documentation" mixed="true">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:any processContents="lax"/>
@@ -186,18 +144,6 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="p:CustomClasspathScope"
-                        name="customClasspathScope"
-                        minOccurs="0" default="compile">
-                <xs:annotation>
-                    <xs:documentation>
-                        Declares the scope of the class path for the custom
-                        classes referenced by the properties with the name
-                        pattern
-                        <code>*Class</code>.
-                    </xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element type="xs:boolean" name="disableWizard"
                         minOccurs="0" default="false">
                 <xs:annotation>
@@ -282,7 +228,7 @@
                         preferences node triggers the auto-generation of another
                         FTP license key!
                         The named class gets dynamically loaded at run time, so
-                        it doesn't have to be on the compile time class path of
+                        it doesn't have to be on the compile-time class path of
                         the Key Manager module.
                     </xs:documentation>
                 </xs:annotation>
@@ -306,12 +252,11 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyGenAuthorizationClass"
+            <xs:element type="xs:token" name="keyGenAuthorization"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which implements the
-                        interface
+                        A fully qualified expression of the type
                         <a href="../apidocs/${apiPackagePath}/LicenseManagementAuthorization.html">
                             <code>${apiPackage}.LicenseManagementAuthorization</code>
                         </a>
@@ -322,12 +267,11 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyGenValidationClass"
+            <xs:element type="xs:token" name="keyGenValidation"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which implements the
-                        interface
+                        A fully qualified expression of the type
                         <a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
                             <code>${apiPackage}.LicenseValidation</code>
                         </a>
@@ -346,18 +290,17 @@
                         Selects the composition strategy for license validation
                         functions in the Key Generator module.
                         This property is ignored if the property
-                        <code>keyGenValidationClass</code>
+                        <code>keyGenValidation</code>
                         is set to
                         <code>-</code>.
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrAuthorizationClass"
+            <xs:element type="xs:token" name="keyMgrAuthorization"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which implements the
-                        interface
+                        A fully qualified expression of the type
                         <a href="../apidocs/${apiPackagePath}/LicenseManagementAuthorization.html">
                             <code>${apiPackage}.LicenseManagementAuthorization</code>
                         </a>
@@ -368,7 +311,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrClockExpr"
+            <xs:element type="xs:token" name="keyMgrClock"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
@@ -381,12 +324,11 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element type="xs:token" name="keyMgrValidationClass"
+            <xs:element type="xs:token" name="keyMgrValidation"
                         minOccurs="0" default="-">
                 <xs:annotation>
                     <xs:documentation>
-                        A fully qualified binary class name which implements the
-                        interface
+                        A fully qualified expression of the type
                         <a href="../apidocs/${apiPackagePath}/LicenseValidation.html">
                             <code>${apiPackage}.LicenseValidation</code>
                         </a>
@@ -405,7 +347,7 @@
                         Selects the composition strategy for license validation
                         functions in the Key Manager module.
                         This property is ignored if the property
-                        <code>keyMgrValidationClass</code>
+                        <code>keyMgrValidation</code>
                         is set to
                         <code>-</code>.
                     </xs:documentation>
