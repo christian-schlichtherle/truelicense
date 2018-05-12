@@ -18,9 +18,12 @@ public interface RepositoryContext<Model> {
     /** Returns a new repository model. */
     Model model();
 
-    /**
-     * Returns a repository controller for the given repository model using the
-     * given codec.
-     */
-    RepositoryController controller(Model model, Codec codec);
+    /** Configures the repository context to use the given codec. */
+    WithCodec<Model> with(Codec codec);
+
+    interface WithCodec<Model> {
+
+        /** Returns a repository controller for the given repository model using the configured codec. */
+        RepositoryController controller(Model model);
+    }
 }

@@ -31,12 +31,12 @@ final class V1RepositoryController implements RepositoryController {
     @Obfuscate
     private static final String SIGNATURE_ENCODING = "US-ASCII/Base64";
 
-    private final GenericCertificate model;
     private final Codec codec;
+    private final GenericCertificate model;
 
-    V1RepositoryController(final GenericCertificate model, final Codec codec) {
-        this.model = requireNonNull(model);
+    V1RepositoryController(final Codec codec, final GenericCertificate model) {
         this.codec = requireNonNull(codec);
+        this.model = requireNonNull(model);
     }
 
     @Override

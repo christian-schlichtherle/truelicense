@@ -52,9 +52,7 @@ public final class Notary implements Authentication {
 
     private final AuthenticationParameters parameters;
 
-    public Notary(final AuthenticationParameters parameters) {
-        this.parameters = Objects.requireNonNull(parameters);
-    }
+    public Notary(final AuthenticationParameters parameters) { this.parameters = Objects.requireNonNull(parameters); }
 
     @Override
     public Decoder sign(RepositoryController controller, Object artifact) throws Exception {
@@ -66,9 +64,7 @@ public final class Notary implements Authentication {
         return new Cache().verify(controller);
     }
 
-    AuthenticationParameters parameters() {
-        return parameters;
-    }
+    AuthenticationParameters parameters() { return parameters; }
 
     private final class Cache {
 
@@ -202,17 +198,13 @@ public final class Notary implements Authentication {
 
         String alias() { return parameters().alias(); }
 
-        PasswordProtection keyProtection() {
-            return parameters().keyProtection();
-        }
+        PasswordProtection keyProtection() { return parameters().keyProtection(); }
 
         Optional<String> configuredAlgorithm() { return parameters().algorithm(); }
 
         Optional<Source> source() { return parameters().source(); }
 
-        PasswordProtection storeProtection() {
-            return parameters().storeProtection();
-        }
+        PasswordProtection storeProtection() { return parameters().storeProtection(); }
 
         String storeType() { return parameters().storeType(); }
     }

@@ -6,7 +6,6 @@
 package net.truelicense.v2.core.auth;
 
 import net.truelicense.api.auth.RepositoryContext;
-import net.truelicense.api.auth.RepositoryController;
 import net.truelicense.api.codec.Codec;
 
 /**
@@ -20,7 +19,7 @@ public final class V2RepositoryContext implements RepositoryContext<V2Repository
     public V2RepositoryModel model() { return new V2RepositoryModel(); }
 
     @Override
-    public RepositoryController controller(V2RepositoryModel model, Codec codec) {
-        return new V2RepositoryController(model, codec);
+    public WithCodec<V2RepositoryModel> with(Codec codec) {
+        return model -> new V2RepositoryController(codec, model);
     }
 }

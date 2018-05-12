@@ -413,7 +413,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         Store store() { return store.get();}
 
-        final class ChainedLicenseManager extends TrueLicenseManagementSchema.CachingLicenseManager {
+        final class ChainedLicenseManager extends CachingLicenseManager {
 
             volatile Optional<Boolean> canGenerateLicenseKeys = Optional.empty();
 
@@ -508,7 +508,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        class CachingLicenseManager extends TrueLicenseManagementSchema.TrueLicenseManager {
+        class CachingLicenseManager extends TrueLicenseManager {
 
             // These volatile fields get initialized by applying a pure function which
             // takes the immutable value of the store() property as its single argument.
@@ -622,7 +622,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
                     synchronized private void init() throws Exception {
                         if (null == decoder) {
                             decoder = authentication()
-                                    .sign(repositoryContext().controller(model, codec()), validatedBean());
+                                    .sign(repositoryContext().with(codec()).controller(model), validatedBean());
                         }
                     }
 
@@ -703,7 +703,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             RepositoryController repositoryController(Source source) throws Exception {
-                return repositoryContext().controller(repositoryModel(source), codec());
+                return repositoryContext().with(codec()).controller(repositoryModel(source));
             }
 
             Object repositoryModel(Source source) throws Exception {

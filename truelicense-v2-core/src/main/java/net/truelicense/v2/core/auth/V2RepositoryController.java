@@ -26,12 +26,12 @@ import static net.truelicense.spi.codec.Codecs.charset;
  */
 final class V2RepositoryController implements RepositoryController {
 
-    private final V2RepositoryModel model;
     private final Codec codec;
+    private final V2RepositoryModel model;
 
-    V2RepositoryController(final V2RepositoryModel model, final Codec codec) {
-        this.model = requireNonNull(model);
+    V2RepositoryController(final Codec codec, final V2RepositoryModel model) {
         this.codec = requireNonNull(codec);
+        this.model = requireNonNull(model);
     }
 
     @Override
