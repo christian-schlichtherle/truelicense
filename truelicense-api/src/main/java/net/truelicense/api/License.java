@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.util.Calendar.DATE;
@@ -286,21 +287,24 @@ public class License {
     @Override
     @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof License))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof License)) return false;
         final License that = (License) obj;
-        return  this.getConsumerAmount() == that.getConsumerAmount()
-                && Objects.equals(this.getConsumerType(), that.getConsumerType())
-                && Objects.equals(this.getExtra(), that.getExtra())
-                && Objects.equals(this.getHolder(), that.getHolder())
-                && Objects.equals(this.getInfo(), that.getInfo())
-                && Objects.equals(this.getIssued(), that.getIssued())
-                && Objects.equals(this.getIssuer(), that.getIssuer())
-                && Objects.equals(this.getNotAfter(), that.getNotAfter())
-                && Objects.equals(this.getNotBefore(), that.getNotBefore())
-                && Objects.equals(this.getSubject(), that.getSubject());
+        return that.canEqual(this) &&
+                this.getConsumerAmount() == that.getConsumerAmount() &&
+                Objects.equals(this.getConsumerType(), that.getConsumerType()) &&
+                Objects.equals(this.getExtra(), that.getExtra()) &&
+                Objects.equals(this.getHolder(), that.getHolder()) &&
+                Objects.equals(this.getInfo(), that.getInfo()) &&
+                Objects.equals(this.getIssued(), that.getIssued()) &&
+                Objects.equals(this.getIssuer(), that.getIssuer()) &&
+                Objects.equals(this.getNotAfter(), that.getNotAfter()) &&
+                Objects.equals(this.getNotBefore(), that.getNotBefore()) &&
+                Objects.equals(this.getSubject(), that.getSubject());
+    }
+
+    protected boolean canEqual(Object that) {
+        return that instanceof License;
     }
 
     /** Returns a hash code which is consistent with {@link #equals(Object)}. */
@@ -326,7 +330,8 @@ public class License {
      */
     @Override
     public String toString() {
-        return String.format("%s@%x[subject=%s, holder=%s, issuer=%s, issued=%tc, notBefore=%tc, notAfter=%tc, consumerType=%s, consumerAmount=%d, info=%s]",
+        return String.format(Locale.ENGLISH,
+                "%s@%x[subject=%s, holder=%s, issuer=%s, issued=%tc, notBefore=%tc, notAfter=%tc, consumerType=%s, consumerAmount=%d, info=%s]",
                 getClass().getName(),
                 hashCode(),
                 literal(getSubject()),
