@@ -430,7 +430,7 @@
 #else
                             <!--option>
 #end
-                                -keepclassmembers class net.truelicense.v2.coreth.V2RepositoryModel {
+                                -keepclassmembers class net.truelicense.v2.core.auth.V2RepositoryModel {
                                     public *** get*();
                                     public void set*(***);
                                 }
@@ -634,7 +634,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>net.truelicense</groupId>
-                        <artifactId>truelicense-v2-json</artifactId>
+                        <artifactId>truelicense-v2-core</artifactId>
                         <version>${dollar}{trueLicenseVersion}</version>
                         <exclusions>
                             <exclusion>
