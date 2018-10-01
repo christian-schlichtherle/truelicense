@@ -7,9 +7,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>net.java.truecommons</groupId>
-        <artifactId>truecommons-parent</artifactId>
-        <version>123</version>
+        <groupId>global.namespace.parent-pom</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>3</version>
     </parent>
 
     <groupId>net.truelicense</groupId>
@@ -302,6 +302,11 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-tools</artifactId>
                 <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.netbeans</groupId>
+                <artifactId>jemmy</artifactId>
+                <version>2.2.7.5</version>
             </dependency>
             <dependency>
                 <groupId>org.ow2.asm</groupId>
