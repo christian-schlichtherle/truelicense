@@ -34,10 +34,6 @@
             <groupId>global.namespace.fun-io</groupId>
             <artifactId>fun-io-jackson</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

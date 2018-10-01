@@ -29,6 +29,12 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
