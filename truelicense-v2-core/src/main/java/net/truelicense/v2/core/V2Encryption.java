@@ -26,9 +26,9 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-public final class V2Encryption extends BasicEncryption {
+final class V2Encryption extends BasicEncryption {
 
-    public V2Encryption(EncryptionParameters parameters) { super(parameters); }
+    V2Encryption(EncryptionParameters parameters) { super(parameters); }
 
     @Override
     public Socket<OutputStream> apply(final Socket<OutputStream> output) {
