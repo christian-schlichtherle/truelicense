@@ -8,8 +8,8 @@ jdk:
 - openjdk10
 - openjdk11
 
-install: ./mvnw -V -DskipTests=true -Dgpg.skip=true -Psonatype-oss-release install
+install: ./mvnw --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
 
 language: java
 
-script: ./mvnw verify
+script: ./mvnw --batch-mode verify
