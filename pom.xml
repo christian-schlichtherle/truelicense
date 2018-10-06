@@ -9,7 +9,7 @@
     <parent>
         <groupId>global.namespace.parent-pom</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>4</version>
+        <version>5</version>
     </parent>
 
     <groupId>net.truelicense</groupId>
@@ -72,11 +72,6 @@
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
         <maven.compiler.source>1.${javase.major}</maven.compiler.source>
 
-        <!-- maven-enforcer-plugin -->
-        <!-- Older versions will fail to build the TrueLicense Maven Archetype. -->
-        <maven.enforcer.requireMavenVersion>3.5.0</maven.enforcer.requireMavenVersion>
-        <maven.enforcer.requireJavaVersion>${maven.compiler.source}</maven.enforcer.requireJavaVersion>
-
         <maven.version>3.5.4</maven.version>
 
         <!-- maven-javadoc-plugin -->
@@ -104,9 +99,9 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <fun-io.version>1.7.1</fun-io.version>
+        <fun-io.version>1.7.2</fun-io.version>
         <jackson.version>2.9.7</jackson.version>
-        <javaee.version>8.0</javaee.version>
+        <jaxb.version>2.3.1</jaxb.version>
     </properties>
 
     <modules>
@@ -142,6 +137,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-jax-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-jsf</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -199,22 +199,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>annotations</artifactId>
-                <version>3.0.1u2</version>
-                <!-- clear dependencies of this uber jar -->
-                <exclusions>
-                <exclusion>
-                    <groupId>net.jcip</groupId>
-                        <artifactId>jcip-annotations</artifactId>
-                    </exclusion>
-                    <exclusion>
-                    <groupId>com.google.code.findbugs</groupId>
-                        <artifactId>jsr305</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.3</version>
@@ -245,14 +229,9 @@
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-jaxb-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>javax</groupId>
                 <artifactId>javaee-web-api</artifactId>
-                <version>${javaee.version}</version>
+                <version>8.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -267,7 +246,7 @@
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
-                <version>2.3.0</version>
+                <version>${jaxb.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.maven</groupId>
@@ -296,6 +275,11 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-tools</artifactId>
                 <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${jaxb.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.netbeans</groupId>

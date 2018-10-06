@@ -171,7 +171,7 @@
              See https://jira.codehaus.org/browse/MNG-5787 and
              https://java.net/jira/browse/TRUELICENSE-87 .
              -->
-        <maven.enforcer.requireMavenVersion>[3.0,3.3.0),[3.3.9,)</maven.enforcer.requireMavenVersion>
+        <maven.enforcer.requireMavenVersion>3.5.4</maven.enforcer.requireMavenVersion>
         <maven.enforcer.requireJavaVersion>${dollar}{maven.compiler.source}</maven.enforcer.requireJavaVersion>
 
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
@@ -649,16 +649,8 @@
                         <artifactId>fun-io-jaxb</artifactId>
                         <exclusions>
                             <exclusion>
-                                <groupId>javax.activation</groupId>
-                                <artifactId>javax.activation-api</artifactId>
-                            </exclusion>
-                            <exclusion>
                                 <groupId>javax.xml.bind</groupId>
                                 <artifactId>jaxb-api</artifactId>
-                            </exclusion>
-                            <exclusion>
-                                <groupId>org.glassfish.jaxb</groupId>
-                                <artifactId>jaxb-runtime</artifactId>
                             </exclusion>
                         </exclusions>
                     </dependency>

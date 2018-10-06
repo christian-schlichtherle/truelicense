@@ -34,6 +34,10 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-jsf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>truelicense-swing</artifactId>
         </dependency>
         <dependency>
@@ -50,8 +54,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.netbeans</groupId>
-            <artifactId>jemmy</artifactId>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
@@ -67,6 +72,10 @@
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
             <artifactId>jersey-test-framework-provider-inmemory</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans</groupId>
+            <artifactId>jemmy</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
