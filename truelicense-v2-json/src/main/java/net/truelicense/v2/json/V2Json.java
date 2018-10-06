@@ -5,10 +5,19 @@
 package net.truelicense.v2.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.v2.core.V2;
+
+import javax.security.auth.x500.X500Principal;
+import java.io.IOException;
 
 /**
  * This facade provides a static factory method for license management context builders for Version 2-with-JSON
@@ -34,7 +43,22 @@ public final class V2Json {
     private static ObjectMapper objectMapper() {
         final ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-        mapper.registerModule(new JaxbAnnotationModule());
+        final SimpleModule module = new SimpleModule();
+        module.addSerializer(new StdSerializer<X500Principal>(X500Principal.class) {
+
+            @Override
+            public void serialize(X500Principal value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+                gen.writeString(value.getName());
+            }
+        });
+        module.addDeserializer(X500Principal.class, new StdDeserializer<X500Principal>(X500Principal.class) {
+
+            @Override
+            public X500Principal deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+                return new X500Principal(p.readValueAs(String.class));
+            }
+        });
+        mapper.registerModule(module);
         return mapper;
     }
 
