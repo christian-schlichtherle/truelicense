@@ -8,4 +8,4 @@
  *
  * @author Christian Schlichtherle
  */
-package net.truelicense.dto;
+package net.truelicense.jax.rs.dto;

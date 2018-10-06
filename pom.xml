@@ -112,7 +112,6 @@
     <modules>
         <module>truelicense-api</module>
         <module>truelicense-core</module>
-        <module>truelicense-dto</module>
         <module>truelicense-it</module>
         <module>truelicense-jax-rs</module>
         <module>truelicense-jsf</module>
@@ -138,11 +137,6 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

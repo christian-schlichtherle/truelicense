@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package net.truelicense.dto;
+package net.truelicense.jax.rs.dto;
 
 import net.truelicense.api.License;
 

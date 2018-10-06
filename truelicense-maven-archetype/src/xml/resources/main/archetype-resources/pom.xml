@@ -447,7 +447,7 @@
                                     public void set*(***);
                                 }
                                 -keep,allowobfuscation class net.truelicense.api.codec.X500PrincipalXmlAdapter
-                                -keepclassmembers class net.truelicense.dto.*DTO {
+                                -keepclassmembers class net.truelicense.jax.rs.dto.*DTO {
                                     *;
                                 }
                                 -keepclassmembers enum * {

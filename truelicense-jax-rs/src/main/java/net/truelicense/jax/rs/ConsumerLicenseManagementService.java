@@ -9,8 +9,8 @@ import global.namespace.fun.io.api.Store;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementException;
-import net.truelicense.dto.LicenseDTO;
-import net.truelicense.dto.SubjectDTO;
+import net.truelicense.jax.rs.dto.LicenseDTO;
+import net.truelicense.jax.rs.dto.SubjectDTO;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.ws.rs.*;
