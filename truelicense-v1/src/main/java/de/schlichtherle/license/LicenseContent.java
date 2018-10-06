@@ -24,8 +24,4 @@ import javax.xml.bind.annotation.XmlType;
 // This annotation enables objects of this class to participate in larger object graphs which the application wants to
 // encode/decode to/from XML.
 @XmlType(name = "license-content")
-public class LicenseContent extends License {
-
-    @Override
-    protected boolean canEqual(Object that) { return that instanceof LicenseContent; }
-}
+public class LicenseContent extends License { }
