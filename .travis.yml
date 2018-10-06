@@ -4,8 +4,9 @@ cache:
 
 jdk:
 - openjdk8
+- openjdk9
+- openjdk10
 - openjdk11
-- oraclejdk8
 
 install: ./mvnw -V -DskipTests=true -Dgpg.skip=true -Psonatype-oss-release install
 
