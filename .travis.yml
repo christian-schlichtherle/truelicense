@@ -6,7 +6,6 @@ jdk:
 - openjdk8
 - openjdk11
 - oraclejdk8
-- oraclejdk9
 
 install: ./mvnw -V -DskipTests=true -Dgpg.skip=true -Psonatype-oss-release install
 
