@@ -635,6 +635,17 @@
                 <dependencies>
                     <dependency>
                         <groupId>net.truelicense</groupId>
+                        <artifactId>truelicense-jax-rs</artifactId>
+                        <version>${dollar}{trueLicenseVersion}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>javax.xml.bind</groupId>
+                                <artifactId>jaxb-api</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.truelicense</groupId>
                         <artifactId>truelicense-v2-core</artifactId>
                         <version>${dollar}{trueLicenseVersion}</version>
                         <exclusions>
