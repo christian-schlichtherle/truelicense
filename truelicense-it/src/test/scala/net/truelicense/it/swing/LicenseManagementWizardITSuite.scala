@@ -7,9 +7,9 @@ package net.truelicense.it.swing
 
 import java.awt.{Component, EventQueue, GraphicsEnvironment}
 import java.util.Date
-import javax.swing._
 
-import global.namespace.fun.io.bios.BIOS.memoryStore
+import global.namespace.fun.io.bios.BIOS.memory
+import javax.swing._
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.TestContext
 import net.truelicense.it.swing.LicenseManagementWizardITSuite._
@@ -37,7 +37,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
-    val store = memoryStore
+    val store = memory
     outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
     manager = consumerManager(store)
     EventQueue invokeLater (() => {

@@ -9,12 +9,11 @@ import java.util.Calendar._
 import java.util.Date
 
 import global.namespace.fun.io.api.Store
-import global.namespace.fun.io.bios.BIOS.memoryStore
+import global.namespace.fun.io.bios.BIOS.memory
 import javax.security.auth.x500.X500Principal
 import net.truelicense.api._
 import net.truelicense.api.codec.Codec
 import net.truelicense.api.passwd.PasswordProtection
-import net.truelicense.core.TrueLicenseApplicationContext
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection
 import net.truelicense.it.core.TestContext._
 import net.truelicense.obfuscate.ObfuscatedString
@@ -23,15 +22,13 @@ import org.slf4j.LoggerFactory
 /** @author Christian Schlichtherle */
 trait TestContext {
 
-  val applicationContext: TrueLicenseApplicationContext
-
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
   def chainedVendorManager: VendorLicenseManager
 
   final def codec: Codec = managementContext.codec
 
-  final def consumerManager(): ConsumerLicenseManager = consumerManager(memoryStore)
+  final def consumerManager(): ConsumerLicenseManager = consumerManager(memory)
 
   def consumerManager(store: Store): ConsumerLicenseManager
 
@@ -77,7 +74,7 @@ trait TestContext {
       .build
   }
 
-  def managementContextBuilder: LicenseManagementContextBuilder = applicationContext.context
+  def managementContextBuilder: LicenseManagementContextBuilder
 
   final def test1234: PasswordProtection =
     new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael))) /* => "test1234" */

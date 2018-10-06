@@ -5,9 +5,9 @@
 
 package net.truelicense.api;
 
+import global.namespace.fun.io.api.Filter;
 import global.namespace.fun.io.api.Source;
 import global.namespace.fun.io.api.Store;
-import global.namespace.fun.io.api.Transformation;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
@@ -27,9 +27,9 @@ import static org.mockito.Mockito.mock;
  *
  * @author Christian Schlichtherle
  */
-public abstract class ApiDemo {
+interface ApiDemo {
 
-    public abstract LicenseApplicationContext licenseApplicationContext();
+    LicenseManagementContextBuilder licenseManagementContextBuilder();
 
     /**
      * Returns a license management context.
@@ -38,15 +38,14 @@ public abstract class ApiDemo {
      * or consumer license managers or create their dependencies, e.g. a store
      * for the license key to generate or install.
      */
-    public LicenseManagementContext licenseManagementContext() {
-        return licenseApplicationContext()
-                .context() // returns a LicenseManagementContextBuilder
+    default LicenseManagementContext licenseManagementContext() {
+        return licenseManagementContextBuilder()
                 .authenticationFactory(mock(AuthenticationFactory.class))
                 .authorization(mock(LicenseManagementAuthorization.class))
                 .cachePeriodMillis(1000L)
                 .codec(mock(Codec.class))
                 .clock(mock(Clock.class))
-                .compression(mock(Transformation.class))
+                .compression(mock(Filter.class))
                 .encryptionAlgorithm("PBEWithSHA1AndDESede")
                 .encryptionFactory(mock(EncryptionFactory.class))
                 .initialization(mock(LicenseInitialization.class))
@@ -68,14 +67,14 @@ public abstract class ApiDemo {
      * license management context and can be used to generate and save license
      * keys.
      */
-    public VendorLicenseManager vendorLicenseManager() {
+    default VendorLicenseManager vendorLicenseManager() {
         return licenseManagementContext()
                 .vendor() // returns a VendorLicenseManagerBuilder
                 .encryption() // returns an EncryptionBuilder
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
                     .up() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the latter
-                .encryption(mock(Transformation.class))
+                .encryption(mock(Filter.class))
                 .authentication() // returns an AuthenticationBuilder
                     .algorithm("RSA")
                     .alias("mykey")
@@ -96,7 +95,7 @@ public abstract class ApiDemo {
      * license management context and can be used to install, load, verify and
      * uninstall license keys.
      */
-    public ConsumerLicenseManager consumerLicenseManager() {
+    default ConsumerLicenseManager consumerLicenseManager() {
         return licenseManagementContext()
                 .consumer() // returns a ConsumerLicenseManagerBuilder
                 .ftpDays(30)
@@ -104,7 +103,7 @@ public abstract class ApiDemo {
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
                     .up() // builds the encryption, injects it into the ConsumerLicenseManagerBuilder and returns the latter
-                .encryption(mock(Transformation.class))
+                .encryption(mock(Filter.class))
                 .authentication() // returns an AuthenticationBuilder
                     .algorithm("RSA")
                     .alias("mykey")

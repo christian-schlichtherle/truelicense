@@ -2,16 +2,15 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 #if($licenseKeyFormat == "V2/JSON")
-#set($licenseApplicationContextPackage = "net.truelicense.v2.json")
-#set($licenseApplicationContextClass = "V2JsonLicenseApplicationContext")
+#set($facadePackage = "net.truelicense.v2.json")
+#set($facadeClass = "V2Json")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($licenseApplicationContextPackage = "net.truelicense.v2.xml")
-#set($licenseApplicationContextClass = "V2XmlLicenseApplicationContext")
+#set($facadePackage = "net.truelicense.v2.xml")
+#set($facadeClass = "V2Xml")
 #elseif($licenseKeyFormat == "V1")
-#set($licenseApplicationContextPackage = "net.truelicense.v1")
-#set($licenseApplicationContextClass = "V1LicenseApplicationContext")
+#set($facadePackage = "net.truelicense.v1")
+#set($facadeClass = "V1")
 #end
 #set($editions = $editions.split($delimiter))
 #set($editionsSize = $editions.size())
@@ -20,23 +19,6 @@
 #set($english = $field.get("java.util.Locale.ENGLISH"))
 #set($preferencesType = $display.capitalize($preferencesType.toLowerCase($english)))
 #macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
-#macro(new $class $interface)
-#if($customClasspathScope == "runtime")
-new Object() {
-    $interface newInstance() {
-        try {
-            return ($interface) Class.forName("$class").newInstance();
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-}.newInstance()
-#else
-new ${class.replace('$', '.')}()
-#end
-#end
 #macro(class $class)
 #if($customClasspathScope == "runtime")
 new Object() {
@@ -63,7 +45,7 @@ import net.truelicense.api.passwd.PasswordProtection;
 import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
 import net.truelicense.obfuscate.*;
 
-import $licenseApplicationContextPackage.$licenseApplicationContextClass;
+import $facadePackage.$facadeClass;
 
 /**
  * The enumeration of the consumer license managers for $subject license keys.
@@ -94,7 +76,8 @@ public enum LicenseManager implements ConsumerLicenseManager {
 #end
         @Override
         ConsumerLicenseManager newManager() {
-            return _managementContext.consumer()
+            return _managementContext
+                    .consumer()
 #if($editionPbePassword != $parentEditionPbePassword)
                     .encryption()
 #if($licenseKeyFormat == "V1" && $pbeAlgorithm != "PBEWithMD5AndDES" ||
@@ -189,32 +172,22 @@ public enum LicenseManager implements ConsumerLicenseManager {
     private static final String PBE_ALGORITHM = "$pbeAlgorithm";
 #end
 
-    // Note that the class implementing the interface
-    // net.truelicense.api.LicenseManagementContext
-    // determines the format of the license keys:
-    // The implementation class
-    // $licenseApplicationContextPackage.$licenseApplicationContextClass
-    // uses the license key format $licenseKeyFormat.
-    private static final LicenseApplicationContext _applicationContext =
-            new $licenseApplicationContextClass();
-
-    private static final LicenseManagementContext _managementContext =
-            _applicationContext
-                .context()
-#if($keyMgrAuthorizationClass != "-")
-                    .authorization(#new($keyMgrAuthorizationClass "LicenseManagementAuthorization"))
+    private static final LicenseManagementContext _managementContext = $facadeClass
+            .builder()
+#if($keyMgrAuthorization != "-")
+            .authorization($keyMgrAuthorization)
 #end
-#if($keyMgrClockExpr != "-")
-                    .clock($keyMgrClockExpr)
+#if($keyMgrClock != "-")
+            .clock($keyMgrClock)
 #end
-                    .subject(SUBJECT)
-#if($keyMgrValidationClass != "-")
-                    .validation(#new($keyMgrValidationClass "LicenseValidation"))
+            .subject(SUBJECT)
+#if($keyMgrValidation != "-")
+            .validation($keyMgrValidation)
 #if($keyMgrValidationComposition != "decorate")
-                    .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
+            .validationComposition(LicenseFunctionComposition.$keyMgrValidationComposition)
 #end
 #end
-                    .build();
+            .build();
 
     private volatile ConsumerLicenseManager _manager;
 

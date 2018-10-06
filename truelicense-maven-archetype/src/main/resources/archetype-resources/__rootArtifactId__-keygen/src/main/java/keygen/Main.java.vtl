@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 #set($dollar = '$')
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
@@ -83,14 +82,14 @@ public enum Main {
                     return null == path
                             ? context().license()
                             : (License) codec()
-                                .decoder("-".equals(path) ? stdin() : store(path))
+                                .decoder("-".equals(path) ? stdin() : file(path))
                                 .decode(License.class);
                 }
 
                 void maybeEncodeOutputLicense(final License license) throws Exception {
                     final String path = options.get(CreateOption.OUTPUT);
                     if (null != path) {
-                        codec() .encoder("-".equals(path) ? stdout() : store(path))
+                        codec() .encoder("-".equals(path) ? stdout() : file(path))
                                 .encode(license);
                     }
                 }
@@ -102,10 +101,8 @@ public enum Main {
 
                 Store store() {
                     final String path = options.get(CreateOption.KEY);
-                    return null == path ? memoryStore() : store(path); // send to /dev/null if no path
+                    return null == path ? memory() : file(path); // send to /dev/null if no path
                 }
-
-                Store store(String path) { return pathStore(Paths.get(path)); }
 
                 LicenseManagementContext context() { return manager().context(); }
 
@@ -218,7 +215,7 @@ public enum Main {
     }
 
     private enum CreateOption { KEY, INPUT, OUTPUT, EDITION, VERBOSE }
-#if($keyGenValidationClass == "${package}.keygen.Main${dollar}NoLicenseValidation")
+#if($keyGenValidation == "new ${package}.keygen.Main.NoLicenseValidation()")
 
     public static final class NoLicenseValidation implements LicenseValidation {
         public void validate(License bean) {

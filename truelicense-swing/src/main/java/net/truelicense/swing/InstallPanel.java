@@ -17,10 +17,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.Locale;
 
-import static global.namespace.fun.io.bios.BIOS.pathStore;
+import static global.namespace.fun.io.bios.BIOS.file;
 import static net.truelicense.ui.LicenseWizardMessage.*;
 
 /**
@@ -225,7 +224,7 @@ final class InstallPanel extends LicenseWorkerPanel {
     private void installActionPerformed(java.awt.event.ActionEvent ignored) {//GEN-FIRST:event_installActionPerformed
         new LicenseWorker() {
             @Override protected Void doInBackground() throws Exception {
-                manager().install(pathStore(Paths.get(fileField.getText())));
+                manager().install(file(fileField.getText()));
                 return null;
             }
 

@@ -10,10 +10,9 @@ import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType._
 import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
-
 import net.truelicense.api.ConsumerLicenseManager
-import net.truelicense.dto.LicenseDTO
 import net.truelicense.it.core.TestContext
+import net.truelicense.jax.rs.dto.LicenseDTO
 import net.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
 import org.glassfish.hk2.utilities.binding.AbstractBinder
 import org.glassfish.jersey.server.ResourceConfig

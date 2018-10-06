@@ -6,11 +6,8 @@
 package net.truelicense.it.swing
 
 import net.truelicense.it.v2.xml.V2XmlTestContext
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 
 /** @author Christian Schlichtherle */
-@RunWith(classOf[JUnitRunner])
 class V2XmlLicenseManagementWizardIT
   extends LicenseManagementWizardITSuite
   with V2XmlTestContext

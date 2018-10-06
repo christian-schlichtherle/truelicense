@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import net.truelicense.api.codec.Codec;
@@ -15,6 +14,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.util.Calendar.DATE;
@@ -23,44 +23,36 @@ import static java.util.Calendar.getInstance;
 /**
  * A Java Bean which defines and provides the common properties of any license.
  * All properties are set to {@code null} by default.
- * However, {@linkplain LicenseValidation#validate license validation} may fail
- * if some properties are {@code null} when
- * {@linkplain VendorLicenseManager#generateKeyFrom generating},
- * {@linkplain ConsumerLicenseManager#install installing} or
- * {@linkplain ConsumerLicenseManager#verify verifying}
- * license keys.
+ * However, {@linkplain LicenseValidation#validate license validation} may fail if some properties are {@code null} when
+ * {@linkplain VendorLicenseManager#generateKeyFrom generating}, {@linkplain ConsumerLicenseManager#install installing}
+ * or {@linkplain ConsumerLicenseManager#verify verifying} license keys.
  * <p>
  * There are two options for extending a license with custom properties:
  * <ul>
- * <li>The easiest way is to put the custom properties in a
- *     {@linkplain java.util.Map map} or another JavaBean and store it in the
- *     {@linkplain #setExtra(Object) extra} property (composition).
- * <li>Another option is to subclass this class and add the custom properties
- *     (inheritance).
- *     However, you may then need to override {@link #equals(Object)}, too.
- *     If you do, you also need to override {@link #hashCode()} for consistency.
+ * <li>The easiest way is to put the custom properties in a {@linkplain java.util.Map map} or another JavaBean and store
+ * it in the {@linkplain #setExtra(Object) extra} property (composition).
+ * <li>Another option is to subclass this class and add the custom properties (inheritance).
+ * However, you may then need to override {@link #equals(Object)}, too.
+ * If you do, you also need to override {@link #hashCode()} for consistency.
  * </ul>
- * Either way, the custom properties must support the {@link Codec} of the
- * respective license key format - see {@link LicenseManagementContext#codec}.
- * This is easiest to achieve if the respective class follows the JavaBean
- * pattern just like this class does.
+ * Either way, the custom properties must be supported by the {@link Codec} of the respective license key format - see
+ * {@link LicenseManagementContext#codec}.
+ * This is easiest to achieve if the respective class follows the JavaBean pattern just like this class does.
  * <p>
- * Note that this class deviates from the JavaBeans specification in that it
- * neither implements {@link java.io.Serializable} nor
- * {@link java.io.Externalizable}.
- * This is because object serialization is not required with the used
- * {@code Codec}s and creates a major obligation for any subclass.
+ * Note that this class deviates from the JavaBeans specification in that it neither implements
+ * {@link java.io.Serializable} nor {@link java.io.Externalizable}.
+ * This is because object serialization is not required with the used {@code Codec}s and creates a major obligation for
+ * any subclass, but subclassing is essential to adapt this class to different codecs.
  *
  * @see    LicenseFactory
  * @author Christian Schlichtherle
  */
 // #TRUELICENSE-50: The XML root element name MUST be explicitly defined!
-// Otherwise, it would get derived from the class name, but this would break
-// if the class name gets obfuscated, e.g. when using the ProGuard
-// configuration from the TrueLicense Maven Archetype.
+// Otherwise, it would get derived from the class name, but this would break if the class name gets obfuscated, e.g.
+// when using the ProGuard configuration from the TrueLicense Maven Archetype.
 @XmlRootElement(name = "license")
-// #TRUELICENSE-52: Dito for the XML type. This enables objects of this class
-// to participate in larger object graphs which the application wants to
+// #TRUELICENSE-52: Dito for the XML type.
+// This annotation enables objects of this class to participate in larger object graphs which the application wants to
 // encode/decode to/from XML.
 @XmlType(name = "license")
 public class License {
@@ -84,7 +76,9 @@ public class License {
      * (default values don't need to get encoded).
      */
     @XmlElement(defaultValue = "1")
-    public final int getConsumerAmount() { return consumerAmount; }
+    public final int getConsumerAmount() {
+        return consumerAmount;
+    }
 
     /**
      * Sets the amount of consumers which are allowed to use the
@@ -102,7 +96,9 @@ public class License {
      * {@code "User"}.
      */
     @XmlElement(required = true)
-    public final String getConsumerType() { return consumerType; }
+    public final String getConsumerType() {
+        return consumerType;
+    }
 
     /**
      * Sets the description of the type of the entity or object which
@@ -121,7 +117,9 @@ public class License {
      * for
      * {@linkplain LicenseManagementContextBuilder#validation custom license validation}.
      */
-    public final Object getExtra() { return extra; }
+    public final Object getExtra() {
+        return extra;
+    }
 
     /**
      * Sets the license extra data.
@@ -142,7 +140,9 @@ public class License {
      */
     @XmlElement(required = true)
     @XmlJavaTypeAdapter(X500PrincipalXmlAdapter.class)
-    public final X500Principal getHolder() { return holder; }
+    public final X500Principal getHolder() {
+        return holder;
+    }
 
     /**
      * Sets the distinguished name of the legal entity to which the license
@@ -159,7 +159,9 @@ public class License {
      * This could be any text which may be displayed to users for informational
      * purposes.
      */
-    public final String getInfo() { return info; }
+    public final String getInfo() {
+        return info;
+    }
 
     /**
      * Sets the license information.
@@ -173,7 +175,9 @@ public class License {
      * Note that a protective copy is made.
      */
     @XmlElement(required = true)
-    public final Date getIssued() { return clone(issued); }
+    public final Date getIssued() {
+        return clone(issued);
+    }
 
     /**
      * Sets the date/time when the license has been issued.
@@ -192,7 +196,9 @@ public class License {
      */
     @XmlElement(required = true)
     @XmlJavaTypeAdapter(X500PrincipalXmlAdapter.class)
-    public final X500Principal getIssuer() { return issuer; }
+    public final X500Principal getIssuer() {
+        return issuer;
+    }
 
     /**
      * Sets the distinguished name of the legal entity which grants the
@@ -208,7 +214,9 @@ public class License {
      * Returns the date/time when the license ends to be valid (expires).
      * Note that a protective copy is made.
      */
-    public final Date getNotAfter() { return clone(notAfter); }
+    public final Date getNotAfter() {
+        return clone(notAfter);
+    }
 
     /**
      * Sets the date/time when the license ends to be valid (expires).
@@ -222,7 +230,9 @@ public class License {
      * Returns the date/time when the license begins to be valid.
      * Note that a protective copy is made.
      */
-    public final Date getNotBefore() { return clone(notBefore); }
+    public final Date getNotBefore() {
+        return clone(notBefore);
+    }
 
     /**
      * Sets the date/time when the license begins to be valid.
@@ -264,7 +274,9 @@ public class License {
      * range this license is applicable, e.g. {@code "MyApp 1.X"}.
      */
     @XmlElement(required = true)
-    public final String getSubject() { return subject; }
+    public final String getSubject() {
+        return subject;
+    }
 
     /**
      * Sets the license management subject.
@@ -284,26 +296,30 @@ public class License {
      * license.
      */
     @Override
-    @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
     public boolean equals(final Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof License))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof License)) return false;
         final License that = (License) obj;
-        return  this.getConsumerAmount() == that.getConsumerAmount()
-                && Objects.equals(this.getConsumerType(), that.getConsumerType())
-                && Objects.equals(this.getExtra(), that.getExtra())
-                && Objects.equals(this.getHolder(), that.getHolder())
-                && Objects.equals(this.getInfo(), that.getInfo())
-                && Objects.equals(this.getIssued(), that.getIssued())
-                && Objects.equals(this.getIssuer(), that.getIssuer())
-                && Objects.equals(this.getNotAfter(), that.getNotAfter())
-                && Objects.equals(this.getNotBefore(), that.getNotBefore())
-                && Objects.equals(this.getSubject(), that.getSubject());
+        return that.canEqual(this) &&
+                this.getConsumerAmount() == that.getConsumerAmount() &&
+                Objects.equals(this.getConsumerType(), that.getConsumerType()) &&
+                Objects.equals(this.getExtra(), that.getExtra()) &&
+                Objects.equals(this.getHolder(), that.getHolder()) &&
+                Objects.equals(this.getInfo(), that.getInfo()) &&
+                Objects.equals(this.getIssued(), that.getIssued()) &&
+                Objects.equals(this.getIssuer(), that.getIssuer()) &&
+                Objects.equals(this.getNotAfter(), that.getNotAfter()) &&
+                Objects.equals(this.getNotBefore(), that.getNotBefore()) &&
+                Objects.equals(this.getSubject(), that.getSubject());
     }
 
-    /** Returns a hash code which is consistent with {@link #equals(Object)}. */
+    protected boolean canEqual(Object that) {
+        return that instanceof License;
+    }
+
+    /**
+     * Returns a hash code which is consistent with {@link #equals(Object)}.
+     */
     @Override
     public int hashCode() {
         int c = 17;
@@ -326,7 +342,8 @@ public class License {
      */
     @Override
     public String toString() {
-        return String.format("%s@%x[subject=%s, holder=%s, issuer=%s, issued=%tc, notBefore=%tc, notAfter=%tc, consumerType=%s, consumerAmount=%d, info=%s]",
+        return String.format(Locale.ENGLISH,
+                "%s@%x[subject=%s, holder=%s, issuer=%s, issued=%tc, notBefore=%tc, notAfter=%tc, consumerType=%s, consumerAmount=%d, info=%s]",
                 getClass().getName(),
                 hashCode(),
                 literal(getSubject()),
@@ -345,8 +362,8 @@ public class License {
             return null;
         final String s = obj.toString();
         return '"' +
-                s   .replace("\\", "\\\\")
-                    .replace("\"", "\\\"") +
+                s.replace("\\", "\\\\")
+                        .replace("\"", "\\\"") +
                 '"';
     }
 }

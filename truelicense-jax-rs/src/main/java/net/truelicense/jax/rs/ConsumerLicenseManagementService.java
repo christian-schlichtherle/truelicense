@@ -9,8 +9,8 @@ import global.namespace.fun.io.api.Store;
 import net.truelicense.api.ConsumerLicenseManager;
 import net.truelicense.api.License;
 import net.truelicense.api.LicenseManagementException;
-import net.truelicense.dto.LicenseDTO;
-import net.truelicense.dto.SubjectDTO;
+import net.truelicense.jax.rs.dto.LicenseDTO;
+import net.truelicense.jax.rs.dto.SubjectDTO;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.ws.rs.*;
@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import java.net.URI;
 import java.util.Objects;
 
-import static global.namespace.fun.io.bios.BIOS.memoryStore;
+import static global.namespace.fun.io.bios.BIOS.memory;
 import static javax.ws.rs.core.MediaType.*;
 import static javax.ws.rs.core.Response.Status.*;
 
@@ -82,7 +82,7 @@ public final class ConsumerLicenseManagementService {
     @Consumes(APPLICATION_OCTET_STREAM)
     public Response install(final byte[] key) throws ConsumerLicenseManagementServiceException {
         try {
-            final Store store = memoryStore();
+            final Store store = memory();
             store.content(key);
             manager.install(store);
         } catch (Exception e) {

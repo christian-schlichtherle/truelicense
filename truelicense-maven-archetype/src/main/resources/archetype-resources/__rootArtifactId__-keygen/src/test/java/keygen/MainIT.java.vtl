@@ -44,11 +44,7 @@ public class MainIT {
         }
     }
 
-    private File newFile(String name) throws IOException {
-        return folder.newFile(name);
-    }
+    private File newFile(String name) throws IOException { return folder.newFile(name); }
 
-    private static byte[] read(File file) throws IOException {
-        return pathStore(file.toPath()).content();
-    }
+    private static byte[] read(File file) throws IOException { return file(file).content(); }
 }

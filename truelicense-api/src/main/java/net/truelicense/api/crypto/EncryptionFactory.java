@@ -5,7 +5,7 @@
 
 package net.truelicense.api.crypto;
 
-import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.api.Filter;
 
 /**
  * Creates a password based encryption transformation from some given parameters.
@@ -15,5 +15,5 @@ import global.namespace.fun.io.api.Transformation;
 public interface EncryptionFactory {
 
     /** Returns a password based encryption from the given parameters. */
-    Transformation encryption(EncryptionParameters encryptionParameters);
+    Filter encryption(EncryptionParameters encryptionParameters);
 }

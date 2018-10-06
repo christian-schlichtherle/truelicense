@@ -18,7 +18,7 @@ abstract class RepositoryITSuite[Model <: AnyRef] extends WordSpec with Parallel
   "A repository" should {
     "sign and verify an object" in {
       val authentication = vendorManager.schema.authentication
-      val controller = context.controller(context.model, codec)
+      val controller = context `with` codec controller context.model
       val artifact = license
       val clazz = license.getClass
       (authentication.sign(controller, artifact) decode clazz: License) shouldBe artifact

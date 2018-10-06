@@ -23,7 +23,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>truelicense-v2-commons</artifactId>
+            <artifactId>truelicense-v2-core</artifactId>
         </dependency>
 
         <dependency>

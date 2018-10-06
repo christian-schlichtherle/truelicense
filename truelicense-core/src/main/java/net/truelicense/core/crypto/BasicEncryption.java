@@ -5,7 +5,7 @@
 
 package net.truelicense.core.crypto;
 
-import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * @author Christian Schlichtherle
  */
-public abstract class BasicEncryption implements Transformation {
+public abstract class BasicEncryption implements Filter {
 
     private final EncryptionParameters parameters;
 

@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.auth.AuthenticationBuilder;
 import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
@@ -76,7 +76,7 @@ extends Builder<LicenseManagementContext> {
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder compression(Transformation compression);
+    LicenseManagementContextBuilder compression(Filter compression);
 
     /**
      * Sets the default name of the password based encryption algorithm (optional).

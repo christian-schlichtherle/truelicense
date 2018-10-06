@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import global.namespace.fun.io.api.Transformation;
+import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationBuilder;
 import net.truelicense.api.crypto.EncryptionBuilder;
@@ -40,7 +40,7 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
      * Call its {@link ChildBuilder#up} method to build and inject the
      * configured encryption into this builder and return it.
      *
-     * @see #encryption(Transformation)
+     * @see #encryption(Filter)
      */
     EncryptionBuilder<? extends This> encryption();
 
@@ -49,5 +49,5 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
      *
      * @return {@code this}.
      */
-    This encryption(Transformation encryption);
+    This encryption(Filter encryption);
 }

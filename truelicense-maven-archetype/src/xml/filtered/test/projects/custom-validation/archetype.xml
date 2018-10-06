@@ -10,9 +10,9 @@
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>keyGenValidationClass=com.company.product.keygen.Main$NoLicenseValidation</code>
+        <code>keyGenValidation=new com.company.product.keygen.Main.NoLicenseValidation()</code>
         and
-        <code>keyMgrValidationClass=com.company.product.keymgr.Main$NoLicenseValidation</code>
+        <code>keyMgrValidation=new com.company.product.keymgr.Main.NoLicenseValidation()</code>
         to the Basic Configuration example in order to decorate the basic
         license validation function in the Key Generator and Key Manager
         modules with the named custom class.
@@ -21,12 +21,8 @@
         <p:artifactId>custom-validation</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
-        <p:keyGenValidationClass>
-            com.company.product.keygen.Main$NoLicenseValidation
-        </p:keyGenValidationClass>
-        <p:keyMgrValidationClass>
-            com.company.product.keymgr.Main$NoLicenseValidation
-        </p:keyMgrValidationClass>
+        <p:keyGenValidation>new com.company.product.keygen.Main.NoLicenseValidation()</p:keyGenValidation>
+        <p:keyMgrValidation>new com.company.product.keymgr.Main.NoLicenseValidation()</p:keyMgrValidation>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>

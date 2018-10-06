@@ -13,6 +13,6 @@ package net.truelicense.api.misc;
  */
 public interface ChildBuilder<ParentBuilder extends Builder<?>> {
 
-    /** Builds a new child component, injects it into the parent component builder and returns the latter. */
+    /** Builds the child component, injects it into the parent component builder and returns the latter. */
     ParentBuilder up();
 }

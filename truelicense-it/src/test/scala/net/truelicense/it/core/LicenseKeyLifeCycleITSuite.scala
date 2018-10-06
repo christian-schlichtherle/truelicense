@@ -7,7 +7,7 @@ package net.truelicense.it.core
 
 import java.util.Date
 
-import global.namespace.fun.io.bios.BIOS.memoryStore
+import global.namespace.fun.io.bios.BIOS.memory
 import net.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import net.truelicense.it.core.LicenseKeyLifeCycleITSuite.logger
 import org.scalatest.Matchers._
@@ -19,7 +19,7 @@ abstract class LicenseKeyLifeCycleITSuite extends WordSpec { this: TestContext =
 
   "The license key life cycle" should {
     "work for regular license keys" in {
-      val vs = memoryStore
+      val vs = memory
 
       val generated = {
         val vm = vendorManager
@@ -30,7 +30,7 @@ abstract class LicenseKeyLifeCycleITSuite extends WordSpec { this: TestContext =
 
       logger debug ("Generated license key with {} bytes size.", vs.size().getAsLong)
 
-      val cs = memoryStore
+      val cs = memory
       val cm = consumerManager(cs)
       cs exists () shouldBe false
       assertUninstalled(cm)
@@ -45,10 +45,10 @@ abstract class LicenseKeyLifeCycleITSuite extends WordSpec { this: TestContext =
     }
 
     "work for FTP license keys" in {
-      val cs = memoryStore
+      val cs = memory
       val cm = consumerManager(cs)
       cs exists () shouldBe false
-      val fcs = memoryStore
+      val fcs = memory
       val fcm = ftpConsumerManager(cm, fcs)
       fcs exists () shouldBe false
       fcm verify () // generate
@@ -69,12 +69,12 @@ abstract class LicenseKeyLifeCycleITSuite extends WordSpec { this: TestContext =
     }
 
     "work for chained license keys" in {
-      val vs = memoryStore
+      val vs = memory
 
-      val cs = memoryStore
+      val cs = memory
       val cm = consumerManager(cs)
 
-      val ccs = memoryStore
+      val ccs = memory
       val ccm = chainedConsumerManager(cm, ccs)
 
       cs exists () shouldBe false
