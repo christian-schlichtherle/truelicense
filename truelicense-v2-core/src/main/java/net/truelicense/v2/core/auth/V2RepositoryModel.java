@@ -20,13 +20,12 @@ import static java.util.Locale.ENGLISH;
  *
  * @author Christian Schlichtherle
  */
-// #TRUELICENSE-50: The XML element name MUST be explicitly defined!
-// Otherwise, it would get derived from the class name, but this would break
-// if the class name gets obfuscated, e.g. when using the ProGuard
-// configuration from the TrueLicense Maven Archetype.
+// #TRUELICENSE-50: The XML root element name MUST be explicitly defined!
+// Otherwise, it would get derived from the class name, but this would break if the class name gets obfuscated, e.g.
+// when using the ProGuard configuration from the TrueLicense Maven Archetype.
 @XmlRootElement(name = "repository")
-// #TRUELICENSE-52: Dito for the XML type. This enables objects of this class
-// to participate in larger object graphs which the application wants to
+// #TRUELICENSE-52: Dito for the XML type.
+// This annotation enables objects of this class to participate in larger object graphs which the application wants to
 // encode/decode to/from XML.
 @XmlType(name = "repository")
 public final class V2RepositoryModel {

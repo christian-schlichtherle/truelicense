@@ -442,7 +442,7 @@
 
                             <option>
                                 -adaptresourcefilenames
-                                -keepclassmembers class net.truelicense.api.License {
+                                -keepclassmembers class * extends net.truelicense.api.License {
                                     public *** get*();
                                     public void set*(***);
                                 }

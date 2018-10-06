@@ -14,4 +14,6 @@ public interface LicenseFactory {
 
     /** Returns a new license. */
     License license();
+
+    default Class<? extends License> licenseClass() { return license().getClass(); }
 }

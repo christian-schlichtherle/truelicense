@@ -118,6 +118,9 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
     @Override
     public License license() { return licenseFactory.license(); }
 
+    @Override
+    public Class<? extends License> licenseClass() { return licenseFactory.licenseClass(); }
+
     private Date now() { return Date.from(clock.instant()); }
 
     private PasswordPolicy passwordPolicy() { return passwordPolicy; }
@@ -597,7 +600,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
                     @Override
                     public License license() throws LicenseManagementException {
-                        return callChecked(() -> decoder().decode(License.class));
+                        return callChecked(() -> decoder().decode(licenseClass()));
                     }
 
                     @Override
@@ -695,7 +698,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             void validate(Source source) throws Exception { validation().validate(decodeLicense(source)); }
 
             License decodeLicense(Source source) throws Exception {
-                return authenticate(source).decode(License.class);
+                return authenticate(source).decode(licenseClass());
             }
 
             Decoder authenticate(Source source) throws Exception {
