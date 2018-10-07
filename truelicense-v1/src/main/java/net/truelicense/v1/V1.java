@@ -5,6 +5,8 @@
 package net.truelicense.v1;
 
 import de.schlichtherle.license.LicenseContent;
+import net.truelicense.api.License;
+import net.truelicense.api.LicenseFactory;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.core.Core;
 import net.truelicense.obfuscate.Obfuscate;
@@ -33,13 +35,21 @@ public final class V1 {
 
     /** Returns a new license management context builder for managing Version 1 (V1) format license keys. */
     public static LicenseManagementContextBuilder builder() {
+        final LicenseFactory licenseFactory = new LicenseFactory() {
+
+            @Override
+            public License license() { return new LicenseContent(); }
+
+            @Override
+            public Class<? extends License> licenseClass() { return LicenseContent.class; }
+        };
         return Core
                 .builder()
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
-                .licenseFactory(LicenseContent::new)
+                .licenseFactory(licenseFactory)
                 .repositoryContext(new V1RepositoryContext())
                 .keystoreType(KEYSTORE_TYPE);
     }

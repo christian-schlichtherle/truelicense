@@ -5,6 +5,7 @@
 package net.truelicense.v2.core;
 
 import net.truelicense.api.License;
+import net.truelicense.api.LicenseFactory;
 import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.core.Core;
 import net.truelicense.obfuscate.Obfuscate;
@@ -36,12 +37,20 @@ public final class V2 {
      * partially configured.
      */
     public static LicenseManagementContextBuilder builder() {
+        final LicenseFactory licenseFactory = new LicenseFactory() {
+
+            @Override
+            public License license() { return new License(); }
+
+            @Override
+            public Class<? extends License> licenseClass() { return License.class; }
+        };
         return Core
                 .builder()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V2Encryption::new)
-                .licenseFactory(License::new)
+                .licenseFactory(licenseFactory)
                 .repositoryContext(new V2RepositoryContext())
                 .keystoreType(KEYSTORE_TYPE);
     }
