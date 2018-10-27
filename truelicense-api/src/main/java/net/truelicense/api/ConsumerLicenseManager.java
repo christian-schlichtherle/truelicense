@@ -23,7 +23,7 @@ import global.namespace.fun.io.api.Source;
  * @author Christian Schlichtherle
  * @see UncheckedConsumerLicenseManager#checked()
  */
-public interface ConsumerLicenseManager extends LicenseManagerFragment {
+public interface ConsumerLicenseManager extends LicenseManagerMixin {
 
     /**
      * Adapts this consumer license manager so that it generally throws an {@link UncheckedLicenseManagementException}

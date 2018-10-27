@@ -26,7 +26,7 @@ import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
  * @author Christian Schlichtherle
  * @see ConsumerLicenseManager#unchecked()
  */
-public interface UncheckedConsumerLicenseManager extends LicenseManagerFragment {
+public interface UncheckedConsumerLicenseManager extends LicenseManagerMixin {
 
     /**
      * Adapts this consumer license manager so that it generally throws a (checked) {@link LicenseManagementException}

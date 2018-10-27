@@ -11,12 +11,12 @@ import net.truelicense.api.builder.GenChildBuilder;
 import net.truelicense.api.crypto.EncryptionChildBuilder;
 
 /**
- * A fragment of a builder for license managers.
+ * A mix-in for a builder for license managers.
  *
  * @param <This> the specialized type for fluent programming.
  * @author Christian Schlichtherle
  */
-public interface LicenseManagerBuilderFragment<This extends LicenseManagerBuilderFragment<This>> {
+public interface LicenseManagerBuilderMixin<This extends LicenseManagerBuilderMixin<This>> {
 
     /**
      * Returns an injection for a keystore based authentication.

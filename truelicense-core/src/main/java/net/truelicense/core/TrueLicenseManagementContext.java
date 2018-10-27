@@ -9,6 +9,7 @@ import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.codec.Codec;
+import net.truelicense.api.crypto.Encryption;
 import net.truelicense.api.crypto.EncryptionChildBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
@@ -104,7 +105,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
     private String encryptionAlgorithm() { return encryptionAlgorithm; }
 
     @Override
-    public Filter encryption(EncryptionParameters encryptionParameters) {
+    public Encryption encryption(EncryptionParameters encryptionParameters) {
         return encryptionFactory.encryption(encryptionParameters);
     }
 
@@ -584,7 +585,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
 
         class TrueLicenseManager
-                extends TrueLicenseManagerFragment
+                extends TrueLicenseManagerMixin
                 implements ConsumerLicenseManager, VendorLicenseManager {
 
             @Override
@@ -718,7 +719,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
 
             final class TrueUncheckedLicenseManager
-                    extends TrueLicenseManagerFragment
+                    extends TrueLicenseManagerMixin
                     implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                 @Override
@@ -726,7 +727,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        abstract class TrueLicenseManagerFragment implements LicenseManagerFragment {
+        abstract class TrueLicenseManagerMixin implements LicenseManagerMixin {
 
             @Override
             public LicenseManagementSchema schema() { return TrueLicenseManagementSchema.this; }

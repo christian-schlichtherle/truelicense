@@ -2,10 +2,8 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.core.crypto;
 
-import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -17,25 +15,29 @@ import javax.crypto.spec.PBEKeySpec;
 import java.util.Objects;
 
 /**
- * A basic password based encryption.
+ * A mix-in for a password based encryption.
  * This class is immutable.
  *
  * @author Christian Schlichtherle
  */
-public abstract class BasicEncryption implements Filter {
+public abstract class EncryptionMixin {
 
     private final EncryptionParameters parameters;
 
-    protected BasicEncryption(final EncryptionParameters parameters) {
+    protected EncryptionMixin(final EncryptionParameters parameters) {
         this.parameters = Objects.requireNonNull(parameters);
     }
 
-    private PasswordProtection protection() { return parameters.protection(); }
+    private PasswordProtection passwordProtection() {
+        return parameters.protection();
+    }
 
-    protected final String algorithm() { return parameters.algorithm(); }
+    protected final String algorithm() {
+        return parameters.algorithm();
+    }
 
     protected final SecretKey secretKey(final PasswordUsage usage) throws Exception {
-        try (Password password = protection().password(usage)) {
+        try (Password password = passwordProtection().password(usage)) {
             final PBEKeySpec ks = new PBEKeySpec(password.characters());
             try {
                 return SecretKeyFactory.getInstance(algorithm()).generateSecret(ks);

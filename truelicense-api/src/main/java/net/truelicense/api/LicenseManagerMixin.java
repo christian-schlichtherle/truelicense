@@ -5,9 +5,9 @@
 package net.truelicense.api;
 
 /**
- * A fragment of a license manager.
+ * A mix-in for a license manager.
  */
-public interface LicenseManagerFragment {
+public interface LicenseManagerMixin {
 
     /**
      * Returns the license management schema.

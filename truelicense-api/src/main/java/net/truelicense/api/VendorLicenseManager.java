@@ -12,7 +12,7 @@ package net.truelicense.api;
  * @author Christian Schlichtherle
  * @see UncheckedVendorLicenseManager#checked()
  */
-public interface VendorLicenseManager extends LicenseManagerFragment {
+public interface VendorLicenseManager extends LicenseManagerMixin {
 
     /**
      * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}

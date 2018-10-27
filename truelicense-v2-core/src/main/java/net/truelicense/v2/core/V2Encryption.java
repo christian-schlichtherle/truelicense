@@ -5,9 +5,10 @@
 package net.truelicense.v2.core;
 
 import global.namespace.fun.io.api.Socket;
+import net.truelicense.api.crypto.Encryption;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.PasswordUsage;
-import net.truelicense.core.crypto.BasicEncryption;
+import net.truelicense.core.crypto.EncryptionMixin;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -26,9 +27,11 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-final class V2Encryption extends BasicEncryption {
+final class V2Encryption extends EncryptionMixin implements Encryption {
 
-    V2Encryption(EncryptionParameters parameters) { super(parameters); }
+    V2Encryption(EncryptionParameters parameters) {
+        super(parameters);
+    }
 
     @Override
     public Socket<OutputStream> apply(final Socket<OutputStream> output) {

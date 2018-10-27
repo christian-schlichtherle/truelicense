@@ -18,7 +18,7 @@ import java.nio.file.Path;
  * @author Christian Schlichtherle
  */
 public interface ConsumerLicenseManagerBuilder
-        extends LicenseManagerBuilderFragment<ConsumerLicenseManagerBuilder>,
+        extends LicenseManagerBuilderMixin<ConsumerLicenseManagerBuilder>,
         GenBuilder<ConsumerLicenseManager>,
         GenChildBuilder<ConsumerLicenseManagerBuilder> {
 

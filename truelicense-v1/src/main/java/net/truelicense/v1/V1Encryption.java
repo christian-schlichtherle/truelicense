@@ -7,9 +7,10 @@ package net.truelicense.v1;
 import global.namespace.fun.io.api.Filter;
 import global.namespace.fun.io.api.Socket;
 import global.namespace.fun.io.bios.BIOS;
+import net.truelicense.api.crypto.Encryption;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.PasswordUsage;
-import net.truelicense.core.crypto.BasicEncryption;
+import net.truelicense.core.crypto.EncryptionMixin;
 import net.truelicense.obfuscate.Obfuscate;
 
 import javax.crypto.Cipher;
@@ -26,7 +27,7 @@ import static javax.crypto.Cipher.*;
  *
  * @author Christian Schlichtherle
  */
-final class V1Encryption extends BasicEncryption {
+final class V1Encryption extends EncryptionMixin implements Encryption {
 
     @Obfuscate
     private static final String PBE_ALGORITHM = "PBEWithMD5AndDES";
@@ -45,10 +46,14 @@ final class V1Encryption extends BasicEncryption {
     }
 
     @Override
-    public Socket<OutputStream> apply(Socket<OutputStream> output) { return cipher.apply(output); }
+    public Socket<OutputStream> apply(Socket<OutputStream> output) {
+        return cipher.apply(output);
+    }
 
     @Override
-    public Socket<InputStream> unapply(Socket<InputStream> input) { return cipher.unapply(input); }
+    public Socket<InputStream> unapply(Socket<InputStream> input) {
+        return cipher.unapply(input);
+    }
 
     private Cipher cipher(boolean forEncryption) throws Exception {
         return cipher(forEncryption ? PasswordUsage.WRITE : PasswordUsage.READ);
@@ -57,9 +62,9 @@ final class V1Encryption extends BasicEncryption {
     private Cipher cipher(final PasswordUsage usage) throws Exception {
         // The salt is hard coded in TrueLicense V1:
         final AlgorithmParameterSpec spec = new PBEParameterSpec(
-                new byte[] {
-                    (byte) 0xce, (byte) 0xfb, (byte) 0xde, (byte) 0xac,
-                    (byte) 0x05, (byte) 0x02, (byte) 0x19, (byte) 0x71
+                new byte[]{
+                        (byte) 0xce, (byte) 0xfb, (byte) 0xde, (byte) 0xac,
+                        (byte) 0x05, (byte) 0x02, (byte) 0x19, (byte) 0x71
                 },
                 2005);
         final Cipher cipher = getInstance(algorithm());

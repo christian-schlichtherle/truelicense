@@ -14,6 +14,6 @@ import net.truelicense.api.builder.GenBuilder;
  * @author Christian Schlichtherle
  */
 public interface VendorLicenseManagerBuilder
-        extends LicenseManagerBuilderFragment<VendorLicenseManagerBuilder>,
+        extends LicenseManagerBuilderMixin<VendorLicenseManagerBuilder>,
         GenBuilder<VendorLicenseManager> {
 }
