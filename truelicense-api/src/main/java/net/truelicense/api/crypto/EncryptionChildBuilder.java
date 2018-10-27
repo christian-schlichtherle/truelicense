@@ -4,7 +4,6 @@
  */
 package net.truelicense.api.crypto;
 
-import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.builder.GenChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -19,10 +18,9 @@ public interface EncryptionChildBuilder<ParentBuilder extends GenBuilder<?>> ext
 
     /**
      * Sets the name of the password based encryption algorithm (optional).
-     * If this method is not called, then the name is inherited from the license management context.
+     * If this method is not called, then the name is inherited from some context.
      *
      * @return {@code this}
-     * @see LicenseManagementContextBuilder#encryptionAlgorithm(String)
      */
     EncryptionChildBuilder<ParentBuilder> algorithm(String algorithm);
 

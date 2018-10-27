@@ -73,7 +73,7 @@ interface ApiDemo {
                 .encryption() // returns an encryption builder
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
-                    .up() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the latter
+                    .up() // builds the encryption, injects it into the vendor license manager builder and returns the latter
                 .encryption(mock(Filter.class))
                 .authentication() // returns an authentication builder
                     .algorithm("RSA")

@@ -6,7 +6,6 @@ package net.truelicense.api.auth;
 
 import global.namespace.fun.io.api.Source;
 import net.truelicense.api.ConsumerLicenseManager;
-import net.truelicense.api.LicenseManagementContextBuilder;
 import net.truelicense.api.VendorLicenseManager;
 import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.builder.GenChildBuilder;
@@ -37,15 +36,11 @@ public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>>
     AuthenticationChildBuilder<ParentBuilder> alias(String alias);
 
     /**
-     * Sets the password protection which is used for accessing the private key
-     * in the key entry (optional).
-     * A private key entry is only required to generate license keys, that is
-     * for any {@linkplain VendorLicenseManager vendor license manager}
-     * and for any
-     * {@linkplain ConsumerLicenseManager consumer license manager}
-     * for a free trial period.
-     * If this method is not called then the
-     * {@linkplain #storeProtection(PasswordProtection) keystore protection} is
+     * Sets the password protection which is used for accessing the private key in the key entry (optional).
+     * A private key entry is only required to generate license keys, that is for any
+     * {@linkplain VendorLicenseManager vendor license manager} and for any
+     * {@linkplain ConsumerLicenseManager consumer license manager} for a free trial period.
+     * If this method is not called then the {@linkplain #storeProtection(PasswordProtection) keystore protection} is
      * used.
      *
      * @return {@code this}
@@ -70,8 +65,7 @@ public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>>
     AuthenticationChildBuilder<ParentBuilder> loadFromResource(String name);
 
     /**
-     * Sets the password protection which is used for verifying the integrity
-     * of the keystore.
+     * Sets the password protection which is used for verifying the integrity of the keystore.
      *
      * @return {@code this}
      */
@@ -79,10 +73,9 @@ public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>>
 
     /**
      * Sets the type of the keystore (optional).
-     * If this method is not called, then the type is inherited from the license management context.
+     * If this method is not called, then the type is inherited from some context.
      *
      * @return {@code this}
-     * @see LicenseManagementContextBuilder#keystoreType(String)
      */
     AuthenticationChildBuilder<ParentBuilder> storeType(String storeType);
 }
