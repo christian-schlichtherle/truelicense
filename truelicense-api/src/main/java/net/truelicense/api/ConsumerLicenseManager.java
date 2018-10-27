@@ -26,17 +26,6 @@ import global.namespace.fun.io.api.Source;
 public interface ConsumerLicenseManager extends LicenseManagerMixin {
 
     /**
-     * Adapts this consumer license manager so that it generally throws an {@link UncheckedLicenseManagementException}
-     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
-     *
-     * @return the adapted unchecked consumer license manager.
-     * @since TrueLicense 3.1.0
-     */
-    default UncheckedConsumerLicenseManager unchecked() {
-        return () -> this;
-    }
-
-    /**
      * Verifies the digital signature of the license key in the given source and copies it to the configured store.
      * Unlike {@link #verify}, this operation does <em>not</em> validate the encoded license bean.
      * This enables the caller to obtain a duplicate of the license bean even if its validation would fail, e.g. if the
@@ -81,4 +70,15 @@ public interface ConsumerLicenseManager extends LicenseManagerMixin {
      * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
      */
     void uninstall() throws LicenseManagementException;
+
+    /**
+     * Adapts this consumer license manager so that it generally throws an {@link UncheckedLicenseManagementException}
+     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
+     *
+     * @return the adapted unchecked consumer license manager.
+     * @since TrueLicense 3.1.0
+     */
+    default UncheckedConsumerLicenseManager unchecked() {
+        return () -> this;
+    }
 }

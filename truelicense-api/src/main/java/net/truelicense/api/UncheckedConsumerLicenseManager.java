@@ -26,16 +26,7 @@ import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
  * @author Christian Schlichtherle
  * @see ConsumerLicenseManager#unchecked()
  */
-public interface UncheckedConsumerLicenseManager extends LicenseManagerMixin {
-
-    /**
-     * Adapts this consumer license manager so that it generally throws a (checked) {@link LicenseManagementException}
-     * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
-     *
-     * @return the adapted (checked) consumer license manager.
-     * @since TrueLicense 3.1.0
-     */
-    ConsumerLicenseManager checked();
+public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager {
 
     @Override
     default LicenseManagementSchema schema() {
@@ -105,4 +96,18 @@ public interface UncheckedConsumerLicenseManager extends LicenseManagerMixin {
             return null;
         });
     }
+
+    @Override
+    default UncheckedConsumerLicenseManager unchecked() {
+        return this;
+    }
+
+    /**
+     * Adapts this consumer license manager so that it generally throws a (checked) {@link LicenseManagementException}
+     * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
+     *
+     * @return the adapted (checked) consumer license manager.
+     * @since TrueLicense 3.1.0
+     */
+    ConsumerLicenseManager checked();
 }

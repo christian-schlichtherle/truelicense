@@ -17,16 +17,7 @@ import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
  * @author Christian Schlichtherle
  * @see VendorLicenseManager#unchecked()
  */
-public interface UncheckedVendorLicenseManager extends LicenseManagerMixin {
-
-    /**
-     * Adapts this vendor license manager so that it generally throws a (checked) {@link LicenseManagementException}
-     * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
-     *
-     * @return the adapted (checked) vendor license manager.
-     * @since TrueLicense 3.1.0
-     */
-    VendorLicenseManager checked();
+public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
 
     @Override
     default LicenseManagementSchema schema() {
@@ -59,4 +50,18 @@ public interface UncheckedVendorLicenseManager extends LicenseManagerMixin {
             }
         });
     }
+
+    @Override
+    default UncheckedVendorLicenseManager unchecked() {
+        return this;
+    }
+
+    /**
+     * Adapts this vendor license manager so that it generally throws a (checked) {@link LicenseManagementException}
+     * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
+     *
+     * @return the adapted (checked) vendor license manager.
+     * @since TrueLicense 3.1.0
+     */
+    VendorLicenseManager checked();
 }

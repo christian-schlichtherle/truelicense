@@ -15,17 +15,6 @@ package net.truelicense.api;
 public interface VendorLicenseManager extends LicenseManagerMixin {
 
     /**
-     * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}
-     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
-     *
-     * @return the adapted unchecked vendor license manager.
-     * @since TrueLicense 3.1.0
-     */
-    default UncheckedVendorLicenseManager unchecked() {
-        return () -> this;
-    }
-
-    /**
      * Returns a license key generator for the given license bean.
      * <p>
      * Calling this operation performs an initial
@@ -36,4 +25,15 @@ public interface VendorLicenseManager extends LicenseManagerMixin {
      * @return A license key generator for the given license bean.
      */
     LicenseKeyGenerator generateKeyFrom(License bean) throws LicenseManagementException;
+
+    /**
+     * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}
+     * instead of a (checked) {@link LicenseManagementException} if an operation fails.
+     *
+     * @return the adapted unchecked vendor license manager.
+     * @since TrueLicense 3.1.0
+     */
+    default UncheckedVendorLicenseManager unchecked() {
+        return () -> this;
+    }
 }
