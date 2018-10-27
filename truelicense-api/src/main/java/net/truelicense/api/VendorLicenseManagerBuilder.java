@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import net.truelicense.api.builder.GenBuilder;
@@ -15,6 +14,6 @@ import net.truelicense.api.builder.GenBuilder;
  * @author Christian Schlichtherle
  */
 public interface VendorLicenseManagerBuilder
-extends GenBuilder<VendorLicenseManager>,
-        LicenseManagerBuilder<VendorLicenseManagerBuilder> {
+        extends LicenseManagerBuilderFragment<VendorLicenseManagerBuilder>,
+        GenBuilder<VendorLicenseManager> {
 }

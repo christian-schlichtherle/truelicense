@@ -69,13 +69,13 @@ interface ApiDemo {
      */
     default VendorLicenseManager vendorLicenseManager() {
         return licenseManagementContext()
-                .vendor() // returns a VendorLicenseManagerBuilder
-                .encryption() // returns an EncryptionBuilder
+                .vendor() // returns a vendor license manager builder
+                .encryption() // returns an encryption builder
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
                     .up() // builds the encryption, injects it into the VendorLicenseManagerBuilder and returns the latter
                 .encryption(mock(Filter.class))
-                .authentication() // returns an AuthenticationBuilder
+                .authentication() // returns an authentication builder
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
@@ -83,7 +83,7 @@ interface ApiDemo {
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
-                    .up() // builds the authentication, injects it into the VendorLicenseManagerBuilder and returns the latter
+                    .up() // builds the authentication, injects it into the vendor license manager builder and returns the latter
                 .authentication(mock(Authentication.class))
                 .build();
     }
@@ -97,14 +97,14 @@ interface ApiDemo {
      */
     default ConsumerLicenseManager consumerLicenseManager() {
         return licenseManagementContext()
-                .consumer() // returns a ConsumerLicenseManagerBuilder
+                .consumer() // returns a consumer license manager builder
                 .ftpDays(30)
-                .encryption() // returns an EncryptionBuilder
+                .encryption() // returns an encryption builder
                     .algorithm("PBEWithSHA1AndDESede")
                     .protection(mock(PasswordProtection.class))
-                    .up() // builds the encryption, injects it into the ConsumerLicenseManagerBuilder and returns the latter
+                    .up() // builds the encryption, injects it into the consumer license manager builder and returns the latter
                 .encryption(mock(Filter.class))
-                .authentication() // returns an AuthenticationBuilder
+                .authentication() // returns an authentication builder
                     .algorithm("RSA")
                     .alias("mykey")
                     .keyProtection(mock(PasswordProtection.class))
@@ -112,11 +112,11 @@ interface ApiDemo {
                     .loadFromResource("private.ks")
                     .storeProtection(mock(PasswordProtection.class))
                     .storeType("JCEKS")
-                    .up() // builds the authentication, injects it into the ConsumerLicenseManagerBuilder and returns the latter
+                    .up() // builds the authentication, injects it into the consumer license manager builder and returns the latter
                 .authentication(mock(Authentication.class))
-                .parent() // returns another ConsumerLicenseManagerBuilder
+                .parent() // returns another consumer license manager builder
                     //...
-                    .up() // builds the consumer license manager, injects it into the child ConsumerLicenseManagerBuilder and returns the latter
+                    .up() // builds the consumer license manager, injects it into the child consumer license manager builder and returns the latter
                 .parent(mock(ConsumerLicenseManager.class))
                 .storeIn(mock(Store.class))
                 .storeInPath(mock(Path.class))

@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api.auth;
 
 import global.namespace.fun.io.api.Source;
@@ -14,12 +13,12 @@ import net.truelicense.api.builder.GenChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
 
 /**
- * Injects a keystore based authentication into some parent component builder.
+ * A child builder for an authentication which injects a keystore based authentication into some parent builder.
  *
- * @param <ParentBuilder> the type of the parent component builder.
+ * @param <ParentBuilder> the type of the parent builder.
  * @author Christian Schlichtherle
  */
-public interface AuthenticationBuilder<ParentBuilder extends GenBuilder<?>> extends GenChildBuilder<ParentBuilder> {
+public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>> extends GenChildBuilder<ParentBuilder> {
 
     /**
      * Sets the name of the signature algorithm (optional).
@@ -28,14 +27,14 @@ public interface AuthenticationBuilder<ParentBuilder extends GenBuilder<?>> exte
      *
      * @return {@code this}
      */
-    AuthenticationBuilder<ParentBuilder> algorithm(String algorithm);
+    AuthenticationChildBuilder<ParentBuilder> algorithm(String algorithm);
 
     /**
      * Sets the alias name of the key entry.
      *
      * @return {@code this}
      */
-    AuthenticationBuilder<ParentBuilder> alias(String alias);
+    AuthenticationChildBuilder<ParentBuilder> alias(String alias);
 
     /**
      * Sets the password protection which is used for accessing the private key
@@ -51,16 +50,16 @@ public interface AuthenticationBuilder<ParentBuilder extends GenBuilder<?>> exte
      *
      * @return {@code this}
      */
-    AuthenticationBuilder<ParentBuilder> keyProtection(PasswordProtection keyProtection);
+    AuthenticationChildBuilder<ParentBuilder> keyProtection(PasswordProtection keyProtection);
 
     /**
      * Sets the source for loading the keystore (optional).
      * Either this method or {@link #loadFromResource(String)} must be called.
      *
-     * @return {@code this}
      * @param source
+     * @return {@code this}
      */
-    AuthenticationBuilder<ParentBuilder> loadFrom(Source source);
+    AuthenticationChildBuilder<ParentBuilder> loadFrom(Source source);
 
     /**
      * Sets the resource name for loading the keystore (optional).
@@ -68,7 +67,7 @@ public interface AuthenticationBuilder<ParentBuilder extends GenBuilder<?>> exte
      *
      * @return {@code this}
      */
-    AuthenticationBuilder<ParentBuilder> loadFromResource(String name);
+    AuthenticationChildBuilder<ParentBuilder> loadFromResource(String name);
 
     /**
      * Sets the password protection which is used for verifying the integrity
@@ -76,14 +75,14 @@ public interface AuthenticationBuilder<ParentBuilder extends GenBuilder<?>> exte
      *
      * @return {@code this}
      */
-    AuthenticationBuilder<ParentBuilder> storeProtection(PasswordProtection storeProtection);
+    AuthenticationChildBuilder<ParentBuilder> storeProtection(PasswordProtection storeProtection);
 
     /**
      * Sets the type of the keystore (optional).
      * If this method is not called, then the type is inherited from the license management context.
      *
-     * @see LicenseManagementContextBuilder#keystoreType(String)
      * @return {@code this}
+     * @see LicenseManagementContextBuilder#keystoreType(String)
      */
-    AuthenticationBuilder<ParentBuilder> storeType(String storeType);
+    AuthenticationChildBuilder<ParentBuilder> storeType(String storeType);
 }

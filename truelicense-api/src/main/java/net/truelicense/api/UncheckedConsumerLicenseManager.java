@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Source;
@@ -24,10 +23,10 @@ import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
  * Once configured, you can {@linkplain #install install} the license key to the transient memory store and
  * {@linkplain #load load} its encoded license bean.
  *
- * @see ConsumerLicenseManager#unchecked()
  * @author Christian Schlichtherle
+ * @see ConsumerLicenseManager#unchecked()
  */
-public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSchema {
+public interface UncheckedConsumerLicenseManager extends LicenseManagerFragment {
 
     /**
      * Adapts this consumer license manager so that it generally throws a (checked) {@link LicenseManagementException}
@@ -39,7 +38,9 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
     ConsumerLicenseManager checked();
 
     @Override
-    default LicenseManagementSchema schema() { return checked().schema(); }
+    default LicenseManagementSchema schema() {
+        return checked().schema();
+    }
 
     /**
      * Verifies the digital signature of the license key in the given source and copies it to the configured store.
@@ -83,7 +84,7 @@ public interface UncheckedConsumerLicenseManager extends HasLicenseManagementSch
      * {@linkplain LicenseManagementAuthorization#clearVerify authorization check}.
      *
      * @throws UncheckedLicenseManagementException with a {@link LicenseValidationException} as its cause if validating
-     *         the license bean fails, e.g. if the license has expired.
+     *                                             the license bean fails, e.g. if the license has expired.
      */
     default void verify() throws UncheckedLicenseManagementException {
         callUnchecked(() -> {

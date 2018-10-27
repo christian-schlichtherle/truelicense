@@ -2,22 +2,21 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.auth.Authentication;
-import net.truelicense.api.auth.AuthenticationBuilder;
+import net.truelicense.api.auth.AuthenticationChildBuilder;
 import net.truelicense.api.builder.GenChildBuilder;
-import net.truelicense.api.crypto.EncryptionBuilder;
+import net.truelicense.api.crypto.EncryptionChildBuilder;
 
 /**
- * A generic builder for license managers.
+ * A fragment of a builder for license managers.
  *
  * @param <This> the specialized type for fluent programming.
  * @author Christian Schlichtherle
  */
-public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>> {
+public interface LicenseManagerBuilderFragment<This extends LicenseManagerBuilderFragment<This>> {
 
     /**
      * Returns an injection for a keystore based authentication.
@@ -26,7 +25,7 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
      *
      * @see #authentication(Authentication)
      */
-    AuthenticationBuilder<? extends This> authentication();
+    AuthenticationChildBuilder<? extends This> authentication();
 
     /**
      * Sets the authentication.
@@ -42,7 +41,7 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
      *
      * @see #encryption(Filter)
      */
-    EncryptionBuilder<? extends This> encryption();
+    EncryptionChildBuilder<? extends This> encryption();
 
     /**
      * Sets the encryption.

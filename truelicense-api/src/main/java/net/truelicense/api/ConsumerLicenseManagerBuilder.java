@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Store;
@@ -19,9 +18,9 @@ import java.nio.file.Path;
  * @author Christian Schlichtherle
  */
 public interface ConsumerLicenseManagerBuilder
-extends GenBuilder<ConsumerLicenseManager>,
-        GenChildBuilder<ConsumerLicenseManagerBuilder>,
-        LicenseManagerBuilder<ConsumerLicenseManagerBuilder> {
+        extends LicenseManagerBuilderFragment<ConsumerLicenseManagerBuilder>,
+        GenBuilder<ConsumerLicenseManager>,
+        GenChildBuilder<ConsumerLicenseManagerBuilder> {
 
     /**
      * Sets the free trial period (FTP) in days (the 24 hour equivalent).

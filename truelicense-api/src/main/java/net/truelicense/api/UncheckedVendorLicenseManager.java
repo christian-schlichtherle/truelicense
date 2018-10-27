@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Sink;
@@ -15,10 +14,10 @@ import static net.truelicense.api.UncheckedLicenseManager.callUnchecked;
  * An unchecked vendor license manager generally throws an {@link UncheckedLicenseManagementException} with a
  * (checked) {@link LicenseManagementException} as its cause if an operation fails for some reason.
  *
- * @see VendorLicenseManager#unchecked()
  * @author Christian Schlichtherle
+ * @see VendorLicenseManager#unchecked()
  */
-public interface UncheckedVendorLicenseManager extends HasLicenseManagementSchema {
+public interface UncheckedVendorLicenseManager extends LicenseManagerFragment {
 
     /**
      * Adapts this vendor license manager so that it generally throws a (checked) {@link LicenseManagementException}
@@ -30,7 +29,9 @@ public interface UncheckedVendorLicenseManager extends HasLicenseManagementSchem
     VendorLicenseManager checked();
 
     @Override
-    default LicenseManagementSchema schema() { return checked().schema(); }
+    default LicenseManagementSchema schema() {
+        return checked().schema();
+    }
 
     /**
      * Returns a license key generator for the given license bean.

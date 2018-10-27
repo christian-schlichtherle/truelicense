@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Source;
@@ -21,10 +20,10 @@ import global.namespace.fun.io.api.Source;
  * Once configured, you can {@linkplain #install install} the license key to the transient memory store and
  * {@linkplain #load load} its encoded license bean.
  *
- * @see UncheckedConsumerLicenseManager#checked()
  * @author Christian Schlichtherle
+ * @see UncheckedConsumerLicenseManager#checked()
  */
-public interface ConsumerLicenseManager extends HasLicenseManagementSchema {
+public interface ConsumerLicenseManager extends LicenseManagerFragment {
 
     /**
      * Adapts this consumer license manager so that it generally throws an {@link UncheckedLicenseManagementException}
@@ -33,7 +32,9 @@ public interface ConsumerLicenseManager extends HasLicenseManagementSchema {
      * @return the adapted unchecked consumer license manager.
      * @since TrueLicense 3.1.0
      */
-    default UncheckedConsumerLicenseManager unchecked() { return () -> this; }
+    default UncheckedConsumerLicenseManager unchecked() {
+        return () -> this;
+    }
 
     /**
      * Verifies the digital signature of the license key in the given source and copies it to the configured store.

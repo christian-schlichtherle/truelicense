@@ -6,12 +6,12 @@
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Filter;
-import net.truelicense.api.auth.AuthenticationBuilder;
+import net.truelicense.api.auth.AuthenticationChildBuilder;
 import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
 import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.crypto.EncryptionBuilder;
+import net.truelicense.api.crypto.EncryptionChildBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.passwd.PasswordPolicy;
 
@@ -82,7 +82,7 @@ extends GenBuilder<LicenseManagementContext> {
      * Sets the default name of the password based encryption algorithm (optional).
      * You can override this default value when configuring the password based encryption.
      *
-     * @see EncryptionBuilder#algorithm(String)
+     * @see EncryptionChildBuilder#algorithm(String)
      * @return {@code this}
      */
     LicenseManagementContextBuilder encryptionAlgorithm(String encryptionAlgorithm);
@@ -137,7 +137,7 @@ extends GenBuilder<LicenseManagementContext> {
      * Sets the default type of the keystore (optional).
      * You can override this default value when configuring the keystore based authentication.
      *
-     * @see AuthenticationBuilder#storeType(String)
+     * @see AuthenticationChildBuilder#storeType(String)
      * @return {@code this}
      */
     LicenseManagementContextBuilder keystoreType(String keystoreType);

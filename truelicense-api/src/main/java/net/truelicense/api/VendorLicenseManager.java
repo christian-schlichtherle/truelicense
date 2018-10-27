@@ -2,7 +2,6 @@
  * Copyright (C) 2005-2017 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package net.truelicense.api;
 
 /**
@@ -10,10 +9,10 @@ package net.truelicense.api;
  * <p>
  * A (checked) vendor license manager generally throws a {@link LicenseManagementException} if an operation fails.
  *
- * @see UncheckedVendorLicenseManager#checked()
  * @author Christian Schlichtherle
+ * @see UncheckedVendorLicenseManager#checked()
  */
-public interface VendorLicenseManager extends HasLicenseManagementSchema {
+public interface VendorLicenseManager extends LicenseManagerFragment {
 
     /**
      * Adapts this vendor license manager so that it generally throws an {@link UncheckedLicenseManagementException}

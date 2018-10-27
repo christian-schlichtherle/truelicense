@@ -9,7 +9,7 @@ import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
 import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.codec.Codec;
-import net.truelicense.api.crypto.EncryptionBuilder;
+import net.truelicense.api.crypto.EncryptionChildBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
 import net.truelicense.api.passwd.Password;
@@ -190,7 +190,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return (This) this;
         }
 
-        public final TrueEncryptionBuilder encryption() { return new TrueEncryptionBuilder(); }
+        public final TrueEncryptionChildBuilder encryption() { return new TrueEncryptionChildBuilder(); }
 
         public final This encryption(final Filter encryption) {
             this.encryption = Optional.ofNullable(encryption);
@@ -202,7 +202,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return (This) this;
         }
 
-        public final TrueAuthenticationBuilder authentication() { return new TrueAuthenticationBuilder(); }
+        public final TrueAuthenticationChildBuilder authentication() { return new TrueAuthenticationChildBuilder(); }
 
         public final This parent(final ConsumerLicenseManager parent) {
             this.parent = Optional.ofNullable(parent);
@@ -225,7 +225,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return storeIn(userPreferences(classInPackage, subject()));
         }
 
-        final class TrueAuthenticationBuilder implements GenBuilder<Authentication>, AuthenticationBuilder<This> {
+        final class TrueAuthenticationChildBuilder implements GenBuilder<Authentication>, AuthenticationChildBuilder<This> {
 
             Optional<String> algorithm = Optional.empty();
             Optional<String> alias = Optional.empty();
@@ -238,13 +238,13 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             public This up() { return authentication(build()); }
 
             @Override
-            public TrueAuthenticationBuilder algorithm(final String algorithm) {
+            public TrueAuthenticationChildBuilder algorithm(final String algorithm) {
                 this.algorithm = Optional.ofNullable(algorithm);
                 return this;
             }
 
             @Override
-            public TrueAuthenticationBuilder alias(final String alias) {
+            public TrueAuthenticationChildBuilder alias(final String alias) {
                 this.alias = Optional.ofNullable(alias);
                 return this;
             }
@@ -255,34 +255,34 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             @Override
-            public TrueAuthenticationBuilder keyProtection(final PasswordProtection keyProtection) {
+            public TrueAuthenticationChildBuilder keyProtection(final PasswordProtection keyProtection) {
                 this.keyProtection = Optional.ofNullable(keyProtection);
                 return this;
             }
 
             @Override
-            public TrueAuthenticationBuilder loadFrom(final Source source) {
+            public TrueAuthenticationChildBuilder loadFrom(final Source source) {
                 this.source = Optional.ofNullable(source);
                 return this;
             }
 
             @Override
-            public TrueAuthenticationBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
+            public TrueAuthenticationChildBuilder loadFromResource(String name) { return loadFrom(resource(name)); }
 
             @Override
-            public TrueAuthenticationBuilder storeProtection(final PasswordProtection storeProtection) {
+            public TrueAuthenticationChildBuilder storeProtection(final PasswordProtection storeProtection) {
                 this.storeProtection = Optional.ofNullable(storeProtection);
                 return this;
             }
 
             @Override
-            public TrueAuthenticationBuilder storeType(final String storeType) {
+            public TrueAuthenticationChildBuilder storeType(final String storeType) {
                 this.storeType = Optional.ofNullable(storeType);
                 return this;
             }
         }
 
-        final class TrueEncryptionBuilder implements GenBuilder<Filter>, EncryptionBuilder<This> {
+        final class TrueEncryptionChildBuilder implements GenBuilder<Filter>, EncryptionChildBuilder<This> {
 
             Optional<String> algorithm = Optional.empty();
             Optional<PasswordProtection> protection = Optional.empty();
@@ -291,7 +291,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             public This up() { return encryption(build()); }
 
             @Override
-            public TrueEncryptionBuilder algorithm(final String algorithm) {
+            public TrueEncryptionChildBuilder algorithm(final String algorithm) {
                 this.algorithm = Optional.ofNullable(algorithm);
                 return this;
             }
@@ -302,7 +302,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             @Override
-            public TrueEncryptionBuilder protection(final PasswordProtection protection) {
+            public TrueEncryptionChildBuilder protection(final PasswordProtection protection) {
                 this.protection = Optional.ofNullable(protection);
                 return this;
             }
@@ -318,7 +318,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         final PasswordProtection storeProtection;
         final Optional<String> storeType;
 
-        TrueAuthenticationParameters(final TrueLicenseManagerBuilder<?>.TrueAuthenticationBuilder b) {
+        TrueAuthenticationParameters(final TrueLicenseManagerBuilder<?>.TrueAuthenticationChildBuilder b) {
             this.algorithm = b.algorithm;
             this.alias = b.alias.get();
             this.keyProtection = b.keyProtection;
@@ -355,7 +355,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         final Optional<String> algorithm;
         final PasswordProtection protection;
 
-        TrueEncryptionParameters(final TrueLicenseManagerBuilder<?>.TrueEncryptionBuilder b) {
+        TrueEncryptionParameters(final TrueLicenseManagerBuilder<?>.TrueEncryptionChildBuilder b) {
             this.algorithm = b.algorithm;
             this.protection = b.protection.get();
         }
@@ -584,7 +584,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
 
         class TrueLicenseManager
-                extends TrueHasLicenseManagementSchema
+                extends TrueLicenseManagerFragment
                 implements ConsumerLicenseManager, VendorLicenseManager {
 
             @Override
@@ -718,7 +718,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             Source decryptedAndDecompressedSource(Source source) { return source.map(compressionThenEncryption()); }
 
             final class TrueUncheckedLicenseManager
-                    extends TrueHasLicenseManagementSchema
+                    extends TrueLicenseManagerFragment
                     implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                 @Override
@@ -726,7 +726,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        abstract class TrueHasLicenseManagementSchema implements HasLicenseManagementSchema {
+        abstract class TrueLicenseManagerFragment implements LicenseManagerFragment {
 
             @Override
             public LicenseManagementSchema schema() { return TrueLicenseManagementSchema.this; }
