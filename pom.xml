@@ -99,7 +99,7 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <fun-io.version>1.7.2</fun-io.version>
+        <fun-io.version>2.0.0</fun-io.version>
         <jackson.version>2.9.7</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
     </properties>

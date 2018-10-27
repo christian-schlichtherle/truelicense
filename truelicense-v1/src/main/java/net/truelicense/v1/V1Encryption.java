@@ -46,13 +46,13 @@ final class V1Encryption extends EncryptionMixin implements Encryption {
     }
 
     @Override
-    public Socket<OutputStream> apply(Socket<OutputStream> output) {
-        return cipher.apply(output);
+    public Socket<OutputStream> output(Socket<OutputStream> output) {
+        return cipher.output(output);
     }
 
     @Override
-    public Socket<InputStream> unapply(Socket<InputStream> input) {
-        return cipher.unapply(input);
+    public Socket<InputStream> input(Socket<InputStream> input) {
+        return cipher.input(input);
     }
 
     private Cipher cipher(boolean forEncryption) throws Exception {
