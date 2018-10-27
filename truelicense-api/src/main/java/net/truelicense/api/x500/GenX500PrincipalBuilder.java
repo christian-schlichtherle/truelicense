@@ -24,7 +24,7 @@ import static net.truelicense.api.x500.X500AttributeTypeKeyword.*;
  * Example:
  * <pre>
  * {@code
- * class MyBuilder extends GenericX500PrincipalBuilder<MyBuilder> {
+ * class MyBuilder extends GenX500PrincipalBuilder<MyBuilder> {
  *     MyBuilder addFOO(String value) {
  *         addKeyword("FOO", "1.2.3.4.5.6.7.8.9");
  *         return addAttribute("FOO", value);
@@ -49,7 +49,7 @@ import static net.truelicense.api.x500.X500AttributeTypeKeyword.*;
  * @author Christian Schlichtherle
  * @since TrueLicense 2.3
  */
-public abstract class GenericX500PrincipalBuilder<This extends GenericX500PrincipalBuilder<This>>
+public abstract class GenX500PrincipalBuilder<This extends GenX500PrincipalBuilder<This>>
 implements Builder<X500Principal> {
 
     private final Map<String, String>
