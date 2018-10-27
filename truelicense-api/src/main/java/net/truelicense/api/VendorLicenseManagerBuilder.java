@@ -5,7 +5,7 @@
 
 package net.truelicense.api;
 
-import net.truelicense.api.misc.Builder;
+import net.truelicense.api.builder.GenBuilder;
 
 /**
  * A builder for {@linkplain VendorLicenseManager vendor license managers}.
@@ -15,6 +15,6 @@ import net.truelicense.api.misc.Builder;
  * @author Christian Schlichtherle
  */
 public interface VendorLicenseManagerBuilder
-extends Builder<VendorLicenseManager>,
+extends GenBuilder<VendorLicenseManager>,
         LicenseManagerBuilder<VendorLicenseManagerBuilder> {
 }

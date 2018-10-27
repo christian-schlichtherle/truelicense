@@ -6,8 +6,8 @@
 package net.truelicense.api;
 
 import global.namespace.fun.io.api.Store;
-import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.ChildBuilder;
+import net.truelicense.api.builder.GenBuilder;
+import net.truelicense.api.builder.GenChildBuilder;
 
 import java.nio.file.Path;
 
@@ -19,8 +19,8 @@ import java.nio.file.Path;
  * @author Christian Schlichtherle
  */
 public interface ConsumerLicenseManagerBuilder
-extends Builder<ConsumerLicenseManager>,
-        ChildBuilder<ConsumerLicenseManagerBuilder>,
+extends GenBuilder<ConsumerLicenseManager>,
+        GenChildBuilder<ConsumerLicenseManagerBuilder>,
         LicenseManagerBuilder<ConsumerLicenseManagerBuilder> {
 
     /**

@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package net.truelicense.api.misc;
+package net.truelicense.api.builder;
 
 /**
  * Builds a child component in a hierarchical component structure and injects it into some parent component builder.
@@ -11,7 +11,7 @@ package net.truelicense.api.misc;
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface ChildBuilder<ParentBuilder extends Builder<?>> {
+public interface GenChildBuilder<ParentBuilder extends GenBuilder<?>> {
 
     /** Builds the child component, injects it into the parent component builder and returns the latter. */
     ParentBuilder up();

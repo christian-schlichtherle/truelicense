@@ -8,8 +8,8 @@ package net.truelicense.api;
 import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.auth.Authentication;
 import net.truelicense.api.auth.AuthenticationBuilder;
+import net.truelicense.api.builder.GenChildBuilder;
 import net.truelicense.api.crypto.EncryptionBuilder;
-import net.truelicense.api.misc.ChildBuilder;
 
 /**
  * A generic builder for license managers.
@@ -21,7 +21,7 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
 
     /**
      * Returns an injection for a keystore based authentication.
-     * Call its {@link ChildBuilder#up} method to build and inject the
+     * Call its {@link GenChildBuilder#up} method to build and inject the
      * configured authentication into this builder and return it.
      *
      * @see #authentication(Authentication)
@@ -37,7 +37,7 @@ public interface LicenseManagerBuilder<This extends LicenseManagerBuilder<This>>
 
     /**
      * Returns an injection for a password based encryption.
-     * Call its {@link ChildBuilder#up} method to build and inject the
+     * Call its {@link GenChildBuilder#up} method to build and inject the
      * configured encryption into this builder and return it.
      *
      * @see #encryption(Filter)

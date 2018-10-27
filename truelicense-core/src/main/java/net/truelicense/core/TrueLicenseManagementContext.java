@@ -7,11 +7,11 @@ package net.truelicense.core;
 import global.namespace.fun.io.api.*;
 import net.truelicense.api.*;
 import net.truelicense.api.auth.*;
+import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
 import net.truelicense.api.crypto.EncryptionParameters;
-import net.truelicense.api.misc.Builder;
 import net.truelicense.api.passwd.Password;
 import net.truelicense.api.passwd.PasswordPolicy;
 import net.truelicense.api.passwd.PasswordProtection;
@@ -177,7 +177,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
     }
 
-    abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This> & Builder<?>> {
+    abstract class TrueLicenseManagerBuilder<This extends TrueLicenseManagerBuilder<This> & GenBuilder<?>> {
 
         Optional<Authentication> authentication = Optional.empty();
         Optional<Filter> encryption = Optional.empty();
@@ -225,7 +225,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return storeIn(userPreferences(classInPackage, subject()));
         }
 
-        final class TrueAuthenticationBuilder implements Builder<Authentication>, AuthenticationBuilder<This> {
+        final class TrueAuthenticationBuilder implements GenBuilder<Authentication>, AuthenticationBuilder<This> {
 
             Optional<String> algorithm = Optional.empty();
             Optional<String> alias = Optional.empty();
@@ -282,7 +282,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        final class TrueEncryptionBuilder implements Builder<Filter>, EncryptionBuilder<This> {
+        final class TrueEncryptionBuilder implements GenBuilder<Filter>, EncryptionBuilder<This> {
 
             Optional<String> algorithm = Optional.empty();
             Optional<PasswordProtection> protection = Optional.empty();

@@ -6,8 +6,8 @@
 package net.truelicense.api.crypto;
 
 import net.truelicense.api.LicenseManagementContextBuilder;
-import net.truelicense.api.misc.Builder;
-import net.truelicense.api.misc.ChildBuilder;
+import net.truelicense.api.builder.GenBuilder;
+import net.truelicense.api.builder.GenChildBuilder;
 import net.truelicense.api.passwd.PasswordProtection;
 
 /**
@@ -16,7 +16,7 @@ import net.truelicense.api.passwd.PasswordProtection;
  * @param <ParentBuilder> the type of the parent component builder.
  * @author Christian Schlichtherle
  */
-public interface EncryptionBuilder<ParentBuilder extends Builder<?>> extends ChildBuilder<ParentBuilder> {
+public interface EncryptionBuilder<ParentBuilder extends GenBuilder<?>> extends GenChildBuilder<ParentBuilder> {
 
     /**
      * Sets the name of the password based encryption algorithm (optional).

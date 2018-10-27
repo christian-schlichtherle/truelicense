@@ -5,7 +5,7 @@
 
 package net.truelicense.api.x500;
 
-import net.truelicense.api.misc.Builder;
+import net.truelicense.api.builder.GenBuilder;
 
 import javax.security.auth.x500.X500Principal;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ import static net.truelicense.api.x500.X500AttributeTypeKeyword.*;
  * @since TrueLicense 2.3
  */
 public abstract class GenX500PrincipalBuilder<This extends GenX500PrincipalBuilder<This>>
-implements Builder<X500Principal> {
+implements GenBuilder<X500Principal> {
 
     private final Map<String, String>
             attributes = new LinkedHashMap<>(),

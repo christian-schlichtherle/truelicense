@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms.
  */
 
-package net.truelicense.api.misc;
+package net.truelicense.api.builder;
 
 /**
  * A builder for some product.
@@ -12,7 +12,7 @@ package net.truelicense.api.misc;
  * @param <Product> the type of the product.
  * @author Christian Schlichtherle
  */
-public interface Builder<Product> {
+public interface GenBuilder<Product> {
 
     /** Builds and returns a new product. */
     Product build();

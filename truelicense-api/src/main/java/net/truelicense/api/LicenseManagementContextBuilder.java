@@ -9,10 +9,10 @@ import global.namespace.fun.io.api.Filter;
 import net.truelicense.api.auth.AuthenticationBuilder;
 import net.truelicense.api.auth.AuthenticationFactory;
 import net.truelicense.api.auth.RepositoryContext;
+import net.truelicense.api.builder.GenBuilder;
 import net.truelicense.api.codec.Codec;
 import net.truelicense.api.crypto.EncryptionBuilder;
 import net.truelicense.api.crypto.EncryptionFactory;
-import net.truelicense.api.misc.Builder;
 import net.truelicense.api.passwd.PasswordPolicy;
 
 import java.time.Clock;
@@ -26,7 +26,7 @@ import java.time.Clock;
  * @author Christian Schlichtherle
  */
 public interface LicenseManagementContextBuilder
-extends Builder<LicenseManagementContext> {
+extends GenBuilder<LicenseManagementContext> {
 
     /**
      * Sets the authentication factory (optional).
