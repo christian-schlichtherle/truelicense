@@ -107,7 +107,6 @@
     <modules>
         <module>truelicense-api</module>
         <module>truelicense-core</module>
-        <module>truelicense-it</module>
         <module>truelicense-jax-rs</module>
         <module>truelicense-jsf</module>
         <module>truelicense-maven-archetype</module>
@@ -115,6 +114,7 @@
         <module>truelicense-obfuscate</module>
         <module>truelicense-spi</module>
         <module>truelicense-swing</module>
+        <module>truelicense-tests</module>
         <module>truelicense-ui</module>
         <module>truelicense-v1</module>
         <module>truelicense-v2-core</module>
