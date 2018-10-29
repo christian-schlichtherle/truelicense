@@ -28,7 +28,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.truelicense</groupId>
+            <groupId>global.namespace.truelicense</groupId>
             <artifactId>${dollar}{trueLicenseArtifactId}</artifactId>
         </dependency>
 #if($licenseKeyFormat == "V2/XML")

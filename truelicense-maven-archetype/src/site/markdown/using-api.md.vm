@@ -108,14 +108,14 @@ For example, if the project defines the property `${dollar}{editions}` to be
 For the following examples, it's necessary to add the following imports:
 
     import ${dollar}{package}.keygen.*;
-    import net.truelicense.api.*;
+    import global.namespace.truelicense.api.*;
 
 $h4 Generating a License Key
 
 You can generate a license key using:
 
     VendorLicenseManager manager = LicenseManager.${dollar}{edition};
-    LicenseVendorContext context = manager.context();
+    LicenseManagementContext context = manager.context();
     License bean = context.license();
     Sink sink = context.pathStore(java.nio.file.Paths.get("${dollar}{license-key-path}"));
     manager.generate(bean, sink);
@@ -123,23 +123,23 @@ You can generate a license key using:
 ... where
 `${dollar}{edition}` references an edition of your software product,
 `${dollar}{license-key-path}` references the path of the license key file,
-`manager` is an instance of the class [`net.truelicense.api.VendorLicenseManager`],
-`context` is an instance of the class [`net.truelicense.api.LicenseVendorContext`],
-`bean` is an instance of the class [`net.truelicense.api.License`] and
-`sink` is an instance of the class [`net.truelicense.api.io.Sink`] and
+`manager` is an instance of the class [`VendorLicenseManager`],
+`context` is an instance of the class [`LicenseManagementContext`],
+`bean` is an instance of the class [`License`] and
+`sink` is an instance of the class [`Sink`] and
 
 For a fully elaborated example, please have a look at the `Main` class.
 
 $h4 Working with Runtime Exceptions
 
-The `VendorLicenseManager` interface may generally throw a [`net.truelicense.api.LicenseManagementException`], which
+The `VendorLicenseManager` interface may generally throw a [`LicenseManagementException`], which
 is a `GeneralSecurityException`, which is a (checked) `Exception`.
 Working with checked exceptions may be cumbersome in contexts where a method is constrained to only throw unchecked
 exceptions, e.g. when implementing `Runnable.run()`.
 For these uses cases there exists an adapter method named
-[`net.truelicense.api.VendorLicenseManager.unchecked()`](../apidocs/net/truelicense/api/VendorLicenseManager.html#unchecked%28%29):
+[`VendorLicenseManager.unchecked()`](../apidocs/global/namespace/truelicense/api/VendorLicenseManager.html#unchecked%28%29):
 This method adapts a vendor license manager so that it may generally throw an
-[`net.truelicense.api.UncheckedLicenseManagementException`], which is an (unchecked) `RuntimeException` and wraps the
+[`UncheckedLicenseManagementException`], which is an (unchecked) `RuntimeException` and wraps the
 original `LicenseManagementException`.
 Here's the general usage pattern:
 
@@ -244,16 +244,16 @@ Consumer license managers are arranged in a
 ordered from feature subset to feature superset (which is the reverse order
 of the items in the enumeration class `LicenseManager`).
 When
-[installing](../apidocs/net/truelicense/core/ConsumerLicenseManager#install),
-[loading](../apidocs/net/truelicense/core/ConsumerLicenseManager#load),
-[verifying](../apidocs/net/truelicense/core/ConsumerLicenseManager#verify) or
-[uninstalling](../apidocs/net/truelicense/core/ConsumerLicenseManager#uninstall)
+[installing](../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager#install),
+[loading](../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager#load),
+[verifying](../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager#verify) or
+[uninstalling](../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager#uninstall)
 a license key, each operation is tried using the parent manager first.
 If the operation succeeds using the parent manager then the processing stops,
 otherwise the operation is retried using the child manager.
 This repeats recursively until the operation either succeeds using some manager
 or no more managers are available, in which case a
-[`net.truelicense.api.LicenseManagementException`]
+[`LicenseManagementException`]
 is thrown.
 
 This design allows you to use the API for installing, loading, verifying and
@@ -265,7 +265,7 @@ which returns the first manager in the configured chain-of-responsibility.
 For the following examples, it's necessary to add the following imports:
 
     import ${dollar}{package}.keymgr.*;
-    import net.truelicense.api.*;
+    import global.namespace.truelicense.api.*;
 
 $h4 Installing a License Key
 
@@ -277,9 +277,9 @@ You can install a license key using:
     manager.install(source);
 
 ... where `${dollar}{license-key-path}` references the path of the license key file,
-`manager` is an instance of the class [`net.truelicense.api.ConsumerLicenseManager`],
-`context` is an instance of the class [`net.truelicense.api.LicenseManagementContext`] and
-`source` is an instance of the class [`net.truelicense.api.io.Source`]
+`manager` is an instance of the class [`ConsumerLicenseManager`],
+`context` is an instance of the class [`LicenseManagementContext`] and
+`source` is an instance of the class [`Source`]
 
 According to the chain-of-responsibility pattern, `LicenseManager.install(Source)`
 recursively tries each consumer license manager until the given license key
@@ -288,7 +288,7 @@ It's not necessary to know for which edition the license key has been generated.
 
 If the given file does not hold a license key for the lock of any license
 consumer manager, then a
-[`net.truelicense.api.LicenseManagementException`] is thrown instead.
+[`LicenseManagementException`] is thrown instead.
 
 $h4 Loading the License Key
 
@@ -297,7 +297,7 @@ You can load the installed license key using:
     License bean = LicenseManager.get().load();
 
 ... where `bean` is an instance of the class
-[`net.truelicense.api.License`].
+[`License`].
 
 According to the chain-of-responsibility pattern, `LicenseManager.load()`
 recursively tries each consumer license manager until an installed license key
@@ -308,7 +308,7 @@ Note that this method does not validate the encoded license bean, so for
 example, it's term may have already expired.
 
 If no license key is installed, then a
-[`net.truelicense.api.LicenseManagementException`] is thrown instead.
+[`LicenseManagementException`] is thrown instead.
 
 $h4 Verifying the License Key
 
@@ -321,10 +321,10 @@ recursively tries each consumer license manager until an installed license key
 is found which passes validation, too.
 
 If no license key is installed, then a
-[`net.truelicense.api.LicenseManagementException`] is thrown instead.
+[`LicenseManagementException`] is thrown instead.
 
 If a license key is installed, but the encoded license bean is invalid, then a
-[`net.truelicense.api.LicenseValidationException`] is thrown instead.
+[`LicenseValidationException`] is thrown instead.
 
 You need to call this method in advance whenever you want to access a feature
 of your software product.
@@ -391,18 +391,18 @@ generated.
 
 If no license key is installed or only an auto-generated FTP license
 key is installed, then a
-[`net.truelicense.api.LicenseManagementException`] is thrown instead.
+[`LicenseManagementException`] is thrown instead.
 
 $h4 Working with Runtime Exceptions
 
-The `ConsumerLicenseManager` interface may generally throw a [`net.truelicense.api.LicenseManagementException`], which
+The `ConsumerLicenseManager` interface may generally throw a [`LicenseManagementException`], which
 is a `GeneralSecurityException`, which is a (checked) `Exception`.
 Working with checked exceptions may be cumbersome in contexts where a method is constrained to only throw unchecked
 exceptions, e.g. when implementing `Runnable.run()`.
 For these uses cases there exists an adapter method named
-[`net.truelicense.api.ConsumerLicenseManager.unchecked()`](../apidocs/net/truelicense/api/ConsumerLicenseManager.html#unchecked%28%29):
+[`ConsumerLicenseManager.unchecked()`](../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager.html#unchecked%28%29):
 This method adapts a consumer license manager so that it may generally throw an
-[`net.truelicense.api.UncheckedLicenseManagementException`], which is an (unchecked) `RuntimeException` and wraps the
+[`UncheckedLicenseManagementException`], which is an (unchecked) `RuntimeException` and wraps the
 original `LicenseManagementException`.
 Here's the general usage pattern:
 
@@ -415,18 +415,16 @@ You can get back the original (checked) consumer license manager by calling:
     UncheckedConsumerLicenseManager uncheckedManager = ...;
     ConsumerLicenseManager checkedManager = uncheckedManager.checked();
 
-[`net.truelicense.api.ConsumerLicenseManager`]: ../apidocs/net/truelicense/api/ConsumerLicenseManager.html
-[`net.truelicense.api.License`]: ../apidocs/net/truelicense/api/License.html
-[`net.truelicense.api.LicenseManagementContext`]: ../apidocs/net/truelicense/api/LicenseManagementContext.html
-[`net.truelicense.api.LicenseManagementException`]: ../apidocs/net/truelicense/api/LicenseManagementException.html
-[`net.truelicense.api.LicenseValidationException`]: ../apidocs/net/truelicense/api/LicenseValidationException.html
-[`net.truelicense.api.UncheckedLicenseManagementException`]: ../apidocs/net/truelicense/api/UncheckedLicenseManagementException.html
-[`net.truelicense.api.VendorLicenseManager`]: ../apidocs/net/truelicense/api/VendorLicenseManager.html
-[`net.truelicense.api.io.Sink`]: ../apidocs/net/truelicense/api/Sink.html
-[`net.truelicense.api.io.Source`]: ../apidocs/net/truelicense/api/Source.html
+[`ConsumerLicenseManager`]: ../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager.html
+[`License`]: ../apidocs/global/namespace/truelicense/api/License.html
+[`LicenseManagementContext`]: ../apidocs/global/namespace/truelicense/api/LicenseManagementContext.html
+[`LicenseManagementException`]: ../apidocs/global/namespace/truelicense/api/LicenseManagementException.html
+[`LicenseValidationException`]: ../apidocs/global/namespace/truelicense/api/LicenseValidationException.html
+[`UncheckedLicenseManagementException`]: ../apidocs/global/namespace/truelicense/api/UncheckedLicenseManagementException.html
+[`VendorLicenseManager`]: ../apidocs/global/namespace/truelicense/api/VendorLicenseManager.html
 
-[consumer license manager]: ../apidocs/net/truelicense/core/ConsumerLicenseManager.html
-[vendor license manager]: ../apidocs/net/truelicense/core/VendorLicenseManager.html
+[consumer license manager]: ../apidocs/global/namespace/truelicense/core/ConsumerLicenseManager.html
+[vendor license manager]: ../apidocs/global/namespace/truelicense/core/VendorLicenseManager.html
 
 ---
 

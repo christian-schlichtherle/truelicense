@@ -2,20 +2,23 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keymgr.service;
 
 import ${package}.keymgr.LicenseManager;
+
+import global.namespace.truelicense.api.ConsumerLicenseManager;
+import global.namespace.truelicense.jax.rs.*;
+
 import java.io.IOException;
-import static java.lang.System.*;
 import java.net.URI;
-import net.truelicense.api.ConsumerLicenseManager;
-import net.truelicense.jax.rs.*;
+
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import static java.lang.System.*;
 
 /** @author Christian Schlichtherle */
 public class Main {

@@ -25,16 +25,16 @@ Using the $project.name you can...
 
 $h3 Usage
 
-The service is implemented by the class
-[`LicenseConsumerService`](../apidocs/net/truelicense/ws/rs/LicenseConsumerService.html)
+The service is provided by the class
+[`ConsumerLicenseManagementService`](../apidocs/global/namespace/truelicense/jax/rs/ConsumerLicenseManagementService.html)
 and accompanied by the exception mapper class
-[`LicenseConsumerServiceExceptionMapper`](../apidocs/net/truelicense/ws/rs/LicenseConsumerServiceExceptionMapper.html).
+[`ConsumerLicenseManagementServiceExceptionMapper`](../apidocs/global/namespace/truelicense/jax/rs/ConsumerLicenseManagementServiceExceptionMapper.html).
 With a typical container, you should just let it scan the package
-[`net.truelicense.jax.rs`](../apidocs/net/truelicense/jax/rs/package-summary.html)
+[`global.namespace.truelicense.jax.rs`](../apidocs/global/namespace/truelicense/jax/rs/package-summary.html)
 so that it can find these classes.
 
-The `LicenseConsumerService` needs a
-[`LicenseConsumerManager`](../apidocs/net/truelicense/core/LicenseConsumerManager.html)
+The `ConsumerLicenseManagementService` needs a
+[`ConsumerLicenseManager`](../apidocs/global/namespace/truelicense/api/ConsumerLicenseManager.html)
 as its dependency.
 If no dependency injection framework is available, you can satisfy this
 dependency using:
@@ -42,12 +42,12 @@ dependency using:
     package [...];
 
     import javax.ws.rs.ext.*;
-    import net.truelicense.api.ConsumerLicenseManager;
+    import global.namespace.truelicense.api.ConsumerLicenseManager;
 
     @Provider
-    public class LicenseConsumerManagerResolver
-    implements ContextResolver<LicenseConsumerManager> {
-        @Override public LicenseConsumerManager getContext(Class<?> ignored) {
+    public class ConsumerLicenseManagerResolver
+    implements ContextResolver<ConsumerLicenseManager> {
+        @Override public ConsumerLicenseManager getContext(Class<?> ignored) {
             return LicensingSchema.manager();
         }
     }
@@ -67,7 +67,7 @@ class in the KeyMgr module like this:
 
     import javax.enterprise.context.ApplicationScoped;
     import javax.enterprise.inject.Produces;
-    import net.truelicense.api.ConsumerLicenseManager;
+    import global.namespace.truelicense.api.ConsumerLicenseManager;
     [...]
 
     public class LicensingSchema {
@@ -76,7 +76,7 @@ class in the KeyMgr module like this:
 
         /** Returns the first consumer license manager in the configured chain-of-responsibility. [...] */
         @Produces @ApplicationScoped
-        public static LicenseConsumerManager manager() { [...] }
+        public static ConsumerLicenseManager manager() { [...] }
     }
 
 The `@Produces` annotation tells the container that it should call the

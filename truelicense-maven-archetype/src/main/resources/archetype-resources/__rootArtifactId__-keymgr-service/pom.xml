@@ -33,7 +33,7 @@
         </dependency>
 
         <dependency>
-            <groupId>net.truelicense</groupId>
+            <groupId>global.namespace.truelicense</groupId>
             <artifactId>truelicense-jax-rs</artifactId>
         </dependency>
         <dependency>

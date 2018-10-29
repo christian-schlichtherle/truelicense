@@ -3,13 +3,13 @@
  * All rights reserved. Use is subject to license terms.
  */
 #if($licenseKeyFormat == "V2/JSON")
-#set($facadePackage = "net.truelicense.v2.json")
+#set($facadePackage = "global.namespace.truelicense.v2.json")
 #set($facadeClass = "V2Json")
 #elseif($licenseKeyFormat == "V2/XML")
-#set($facadePackage = "net.truelicense.v2.xml")
+#set($facadePackage = "global.namespace.truelicense.v2.xml")
 #set($facadeClass = "V2Xml")
 #elseif($licenseKeyFormat == "V1")
-#set($facadePackage = "net.truelicense.v1")
+#set($facadePackage = "global.namespace.truelicense.v1")
 #set($facadeClass = "V1")
 #end
 #set($editions = $editions.split($delimiter))
@@ -17,18 +17,18 @@
 #set($hash = '#')
 #set($dollar = '$')
 #set($english = $field.get("java.util.Locale.ENGLISH"))
-#macro(protection $string)$java.obfuscatedString($string).replaceAll("new net.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
+#macro(protection $string)$java.obfuscatedString($string).replaceAll("new global.namespace.truelicense.obfuscate.ObfuscatedString(.*)", "protection$1")#end
 /* Generated from Velocity template at $date - DO NOT EDIT! */
 package ${package}.keygen;
 
-import javax.security.auth.x500.X500Principal;
-
-import net.truelicense.api.*;
-import net.truelicense.api.passwd.PasswordProtection;
-import net.truelicense.core.passwd.ObfuscatedPasswordProtection;
-import net.truelicense.obfuscate.*;
+import global.namespace.truelicense.api.*;
+import global.namespace.truelicense.api.passwd.PasswordProtection;
+import global.namespace.truelicense.core.passwd.ObfuscatedPasswordProtection;
+import global.namespace.truelicense.obfuscate.*;
 
 import $facadePackage.$facadeClass;
+
+import javax.security.auth.x500.X500Principal;
 
 /**
  * The enumeration of the vendor license managers for $subject license keys.

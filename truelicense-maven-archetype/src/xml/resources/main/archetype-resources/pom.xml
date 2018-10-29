@@ -237,7 +237,7 @@
             </dependency>
 
             <dependency>
-                <groupId>net.truelicense</groupId>
+                <groupId>global.namespace.truelicense</groupId>
                 <artifactId>truelicense</artifactId>
                 <version>${dollar}{trueLicenseVersion}</version>
                 <type>pom</type>
@@ -430,7 +430,7 @@
 #else
                             <!--option>
 #end
-                                -keepclassmembers class net.truelicense.v2.core.auth.V2RepositoryModel {
+                                -keepclassmembers class V2RepositoryModel {
                                     public *** get*();
                                     public void set*(***);
                                 }
@@ -442,12 +442,12 @@
 
                             <option>
                                 -adaptresourcefilenames
-                                -keepclassmembers class * extends net.truelicense.api.License {
+                                -keepclassmembers class * extends global.namespace.truelicense.api.License {
                                     public *** get*();
                                     public void set*(***);
                                 }
-                                -keep,allowobfuscation class net.truelicense.api.codec.X500PrincipalXmlAdapter
-                                -keepclassmembers class net.truelicense.jax.rs.dto.*DTO {
+                                -keep,allowobfuscation class global.namespace.truelicense.api.codec.X500PrincipalXmlAdapter
+                                -keepclassmembers class global.namespace.truelicense.jax.rs.dto.*DTO {
                                     *;
                                 }
                                 -keepclassmembers enum * {
@@ -499,7 +499,7 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>net.truelicense</groupId>
+                    <groupId>global.namespace.truelicense</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
                     <version>${dollar}{trueLicenseVersion}</version>
                     <executions>
@@ -572,7 +572,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>net.truelicense</groupId>
+                        <groupId>global.namespace.truelicense</groupId>
                         <artifactId>truelicense-maven-plugin</artifactId>
                         <executions>
                             <execution>
@@ -596,7 +596,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>net.truelicense</groupId>
+                        <groupId>global.namespace.truelicense</groupId>
                         <artifactId>truelicense-maven-plugin</artifactId>
                         <executions>
                             <execution>
@@ -634,7 +634,7 @@
             <dependencyManagement>
                 <dependencies>
                     <dependency>
-                        <groupId>net.truelicense</groupId>
+                        <groupId>global.namespace.truelicense</groupId>
                         <artifactId>truelicense-jax-rs</artifactId>
                         <version>${dollar}{trueLicenseVersion}</version>
                         <exclusions>

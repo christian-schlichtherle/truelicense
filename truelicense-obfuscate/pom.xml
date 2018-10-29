@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>net.truelicense</groupId>
+        <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
         <version>4.0.0-SNAPSHOT</version>
     </parent>
@@ -20,6 +20,10 @@
         obfuscating constant string values in Java source and class files.
     </description>
 
+    <properties>
+        <truelicense.obfuscate.scope>annotated</truelicense.obfuscate.scope>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -29,9 +33,9 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- Cannot use the build version for bootstrapping! -->
                 <groupId>net.truelicense</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <!-- Cannot use the build version for bootstrapping! -->
                 <version>3.2.0</version>
                 <executions>
                     <execution>

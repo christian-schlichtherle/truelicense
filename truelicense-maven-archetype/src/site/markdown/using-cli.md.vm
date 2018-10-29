@@ -70,7 +70,7 @@ You can generate a license key with default properties using:
 
     ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose true
-    net.truelicense.api.License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
+    License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
 
 This command creates and initializes a new license bean, encodes it into a
 license key and writes the result into the file `product.lic`.
@@ -90,7 +90,7 @@ like this:
 
     ${dollar} java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose true -edition standard
-    net.truelicense.api.License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
+    License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
 
 If only one edition is supported, then this option is not required.
 For brevity, only one edition is assumed in the remainder of this page
@@ -108,10 +108,10 @@ stream in JSON format and generate a V2/JSON license key from it like this:
     ${dollar} echo '{ "holder": "CN=Christian Schlichtherle", "term": 365 }' | \
         java -jar *-keygen/target/*-keygen-*-standalone.jar generate product.lic \
         -verbose true -input -
-    net.truelicense.api.License@e195716b[subject="Product 1", holder="CN=Christian Schlichtherle", issuer="CN=Company Inc.", issued=Thu Mar 28 15:11:12 CET 2013, notBefore=Thu Mar 28 15:11:12 CET 2013, notAfter=Fri Mar 28 15:11:12 CET 2014, consumerType="User", consumerAmount=1, info=null]
+    License@e195716b[subject="Product 1", holder="CN=Christian Schlichtherle", issuer="CN=Company Inc.", issued=Thu Mar 28 15:11:12 CET 2013, notBefore=Thu Mar 28 15:11:12 CET 2013, notAfter=Fri Mar 28 15:11:12 CET 2014, consumerType="User", consumerAmount=1, info=null]
 
 Please refer to the Javadoc for the class
-[`net.truelicense.api.License`](../apidocs/net/truelicense/api/License.html)
+[`License`](../apidocs/global/namespace/truelicense/api/License.html)
 for a list of all predefined properties.
 
 $h5 Property Output
@@ -214,40 +214,40 @@ $h4 Loading the License Key
 You can load the installed license key using:
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-guarded.jar load
-    net.truelicense.api.License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
+    License@a7c825cc[subject="Product 1", holder="CN=Anonymous User", issuer="CN=Company Inc.", issued=Thu Mar 28 15:08:51 CET 2013, notBefore=null, notAfter=null, consumerType="User", consumerAmount=1, info=null]
 
 A brief representation of the encoded license bean is written to the standard
 output stream.
 
 If no license key is installed, then a
-[`net.truelicense.api.LicenseManagementException`](../apidocs/net/truelicense/api/LicenseManagementException.html)
+[`LicenseManagementException`](../apidocs/global/namespace/truelicense/api/LicenseManagementException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar load
-    net.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
-        at net.truelicense.core.TrueLicenseManager.view(BasicLicenseManager.java:61)
+    LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
+        at global.namespace.truelicense.core.TrueLicenseManager.view(BasicLicenseManager.java:61)
         at com.company.product.keymgr.Main${dollar}5.run(Main.java:48)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
         at com.company.product.keymgr.Main.main(Main.java:90)
     Caused by: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at net.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
-        at net.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
-        at net.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
-        at net.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
-        at net.truelicense.core.crypto.BasicEncryption.wrap(BasicPbeEncryption.java:53)
-        at net.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
-        at net.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
-        at net.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
+        at global.namespace.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
+        at global.namespace.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
+        at global.namespace.truelicense.core.crypto.BasicEncryption.wrap(BasicPbeEncryption.java:53)
+        at global.namespace.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
+        at global.namespace.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
         at JsonCodec.decode(JsonCodec.java:76)
-        at net.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
-        at net.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
-        at net.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
-        at net.truelicense.core.TrueLicenseManager.decodeLicense(BasicLicenseManager.java:169)
-        at net.truelicense.core.TrueLicenseManager${dollar}3.call(BasicLicenseManager.java:64)
-        at net.truelicense.core.TrueLicenseManager${dollar}3.call(BasicLicenseManager.java:61)
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
+        at global.namespace.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
+        at global.namespace.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
+        at global.namespace.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
+        at global.namespace.truelicense.core.TrueLicenseManager.decodeLicense(BasicLicenseManager.java:169)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}3.call(BasicLicenseManager.java:64)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}3.call(BasicLicenseManager.java:61)
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
         ... 5 more
 
 $h4 Verifying the License Key
@@ -259,49 +259,49 @@ You can verify the installed license key using:
 Note that no output is produced.
 
 If no license key is installed, then a
-[`net.truelicense.api.LicenseManagementException`](../apidocs/net/truelicense/api/LicenseManagementException.html)
+[`LicenseManagementException`](../apidocs/global/namespace/truelicense/api/LicenseManagementException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar verify
-    net.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
-        at net.truelicense.core.TrueLicenseManager.verify(BasicLicenseManager.java:70)
+    LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
+        at global.namespace.truelicense.core.TrueLicenseManager.verify(BasicLicenseManager.java:70)
         at com.company.product.keymgr.Main${dollar}6.run(Main.java:54)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
         at com.company.product.keymgr.Main.main(Main.java:90)
     Caused by: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at net.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
-        at net.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
-        at net.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
-        at net.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
-        at net.truelicense.core.crypto.BasicEncryption.wrap(BasicPbeEncryption.java:53)
-        at net.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
-        at net.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
-        at net.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
+        at global.namespace.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
+        at global.namespace.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
+        at global.namespace.truelicense.core.crypto.BasicEncryption.wrap(BasicPbeEncryption.java:53)
+        at global.namespace.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
+        at global.namespace.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
         at JsonCodec.decode(JsonCodec.java:76)
-        at net.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
-        at net.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
-        at net.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
-        at net.truelicense.core.TrueLicenseManager.decodeLicense(BasicLicenseManager.java:169)
-        at net.truelicense.core.CachingLicenseConsumerManager.validate(CachingLicenseConsumerManager.java:76)
-        at net.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
-        at net.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
+        at global.namespace.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
+        at global.namespace.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
+        at global.namespace.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
+        at global.namespace.truelicense.core.TrueLicenseManager.decodeLicense(BasicLicenseManager.java:169)
+        at global.namespace.truelicense.core.CachingLicenseConsumerManager.validate(CachingLicenseConsumerManager.java:76)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
         ... 5 more
 
 If a license key is installed, but the encoded license bean is invalid, then a
-[`net.truelicense.api.LicenseValidationException`](../apidocs/net/truelicense/api/LicenseValidationException.html)
+[`LicenseValidationException`](../apidocs/global/namespace/truelicense/api/LicenseValidationException.html)
 is thrown instead (using the standalone JAR for a readable stack trace):
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar verify
-    net.truelicense.api.LicenseValidationException: License validity period has expired at Wednesday, February 11, 2015 4:20:20 PM CET.
-        at net.truelicense.core.TrueLicenseValidation.validate(BasicLicenseValidation.java:82)
-        at net.truelicense.core.CachingLicenseConsumerManager.validate(CachingLicenseConsumerManager.java:79)
-        at net.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
-        at net.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
-        at net.truelicense.core.TrueLicenseManager.verify(BasicLicenseManager.java:70)
+    LicenseValidationException: License validity period has expired at Wednesday, February 11, 2015 4:20:20 PM CET.
+        at global.namespace.truelicense.core.TrueLicenseValidation.validate(BasicLicenseValidation.java:82)
+        at global.namespace.truelicense.core.CachingLicenseConsumerManager.validate(CachingLicenseConsumerManager.java:79)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:73)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}4.call(BasicLicenseManager.java:70)
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
+        at global.namespace.truelicense.core.TrueLicenseManager.verify(BasicLicenseManager.java:70)
         at com.company.product.keymgr.Main${dollar}6.run(Main.java:54)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
@@ -317,34 +317,34 @@ Note that no output is produced.
 
 If no license key is installed or only an auto-generated 
 <abbr title="Free Trial Period">FTP</abbr> license key is installed, then a
-[`net.truelicense.api.LicenseManagementException`](../apidocs/net/truelicense/api/LicenseManagementException.html)
+[`LicenseManagementException`](../apidocs/global/namespace/truelicense/api/LicenseManagementException.html)
 is thrown instead:
 
     ${dollar} java -jar *-keymgr/target/*-keymgr-*-standalone.jar uninstall
-    net.truelicense.api.LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
-        at net.truelicense.core.TrueLicenseManager.uninstall(BasicLicenseManager.java:80)
-        at net.truelicense.core.CachingLicenseConsumerManager.uninstall(CachingLicenseConsumerManager.java:66)
+    LicenseManagementException: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:103)
+        at global.namespace.truelicense.core.TrueLicenseManager.uninstall(BasicLicenseManager.java:80)
+        at global.namespace.truelicense.core.CachingLicenseConsumerManager.uninstall(CachingLicenseConsumerManager.java:66)
         at com.company.product.keymgr.Main${dollar}7.run(Main.java:60)
         at com.company.product.keymgr.Main.process(Main.java:115)
         at com.company.product.keymgr.Main.processAndHandleExceptions(Main.java:97)
         at com.company.product.keymgr.Main.main(Main.java:90)
     Caused by: java.io.FileNotFoundException: Cannot locate the key "Product 1" in the user preferences node for the absolute path "/com/company/product/keymgr".
-        at net.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
-        at net.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
-        at net.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
-        at net.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
-        at net.truelicense.core.crypto.BasicEncryption.wrap(BasicPbeEncryption.java:53)
-        at net.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
-        at net.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
-        at net.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
+        at global.namespace.truelicense.spi.io.PreferencesStore.checkedData(PreferencesStore.java:48)
+        at global.namespace.truelicense.spi.io.PreferencesStore.input(PreferencesStore.java:64)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:61)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2${dollar}1.call(V2Encryption.java:57)
+        at global.namespace.truelicense.core.crypto.BasicEncryption.wrap(BasicPbeEncryption.java:53)
+        at global.namespace.truelicense.v2.base.V2Encryption.access${dollar}300(V2Encryption.java:24)
+        at global.namespace.truelicense.v2.base.V2Encryption${dollar}2.input(V2Encryption.java:57)
+        at global.namespace.truelicense.v2.base.V2Compression${dollar}2.input(V2Compression.java:47)
         at JsonCodec.decode(JsonCodec.java:76)
-        at net.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
-        at net.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
-        at net.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
-        at net.truelicense.core.TrueLicenseManager${dollar}5.call(BasicLicenseManager.java:87)
-        at net.truelicense.core.TrueLicenseManager${dollar}5.call(BasicLicenseManager.java:80)
-        at net.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
+        at global.namespace.truelicense.core.TrueLicenseManager.decodeRepository(BasicLicenseManager.java:177)
+        at global.namespace.truelicense.core.TrueLicenseManager.authenticate(BasicLicenseManager.java:173)
+        at global.namespace.truelicense.core.CachingLicenseConsumerManager.authenticate(CachingLicenseConsumerManager.java:87)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}5.call(BasicLicenseManager.java:87)
+        at global.namespace.truelicense.core.TrueLicenseManager${dollar}5.call(BasicLicenseManager.java:80)
+        at global.namespace.truelicense.core.TrueLicenseManager.wrap(BasicLicenseManager.java:100)
         ... 6 more
 
 ---

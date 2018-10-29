@@ -3,4 +3,4 @@
 # All rights reserved. Use is subject to license terms.
 #
 
-net.truelicense.obfuscate.processor.ObfuscateProcessor
+global.namespace.truelicense.obfuscate.processor.ObfuscateProcessor

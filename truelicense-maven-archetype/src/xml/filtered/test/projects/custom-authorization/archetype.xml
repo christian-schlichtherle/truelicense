@@ -10,9 +10,9 @@
         xmlns:p="${project.url}/xml/archetype-properties">
     <p:documentation>
         This example adds
-        <code>keyGenAuthorization=new net.truelicense.api.LicenseManagementAuthorization()</code>
+        <code>keyGenAuthorization=new global.namespace.truelicense.api.LicenseManagementAuthorization()</code>
         and
-        <code>keyMgrAuthorization=new net.truelicense.api.LicenseManagementAuthorization()</code>
+        <code>keyMgrAuthorization=new global.namespace.truelicense.api.LicenseManagementAuthorization()</code>
         to the Basic Configuration example in order to implement a custom
         license authorization.
     </p:documentation>
@@ -20,8 +20,8 @@
         <p:artifactId>custom-authorization</p:artifactId>
         <p:company>Company Inc.</p:company>
         <p:groupId>com.company.product</p:groupId>
-        <p:keyGenAuthorization>new net.truelicense.api.LicenseManagementAuthorization()</p:keyGenAuthorization>
-        <p:keyMgrAuthorization>new net.truelicense.api.LicenseManagementAuthorization()</p:keyMgrAuthorization>
+        <p:keyGenAuthorization>new global.namespace.truelicense.api.LicenseManagementAuthorization()</p:keyGenAuthorization>
+        <p:keyMgrAuthorization>new global.namespace.truelicense.api.LicenseManagementAuthorization()</p:keyMgrAuthorization>
         <p:password>test1234</p:password>
         <p:subject>Product 1</p:subject>
         <p:version>1.0-SNAPSHOT</p:version>
