@@ -105,21 +105,21 @@
     </properties>
 
     <modules>
-        <module>truelicense-api</module>
-        <module>truelicense-core</module>
-        <module>truelicense-jax-rs</module>
-        <module>truelicense-jsf</module>
-        <module>truelicense-maven-archetype</module>
-        <module>truelicense-maven-plugin</module>
-        <module>truelicense-obfuscate</module>
-        <module>truelicense-spi</module>
-        <module>truelicense-swing</module>
-        <module>truelicense-tests</module>
-        <module>truelicense-ui</module>
-        <module>truelicense-v1</module>
-        <module>truelicense-v2-core</module>
-        <module>truelicense-v2-json</module>
-        <module>truelicense-v2-xml</module>
+        <module>api</module>
+        <module>core</module>
+        <module>jax-rs</module>
+        <module>jsf</module>
+        <module>maven-archetype</module>
+        <module>maven-plugin</module>
+        <module>obfuscate</module>
+        <module>spi</module>
+        <module>swing</module>
+        <module>tests</module>
+        <module>ui</module>
+        <module>v1</module>
+        <module>v2-core</module>
+        <module>v2-json</module>
+        <module>v2-xml</module>
     </modules>
 
     <dependencyManagement>
