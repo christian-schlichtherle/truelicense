@@ -21,6 +21,7 @@
     </description>
 
     <properties>
+        <!-- TODO: Compare with previous releases and eventually rKemove this: -->
         <truelicense.obfuscate.scope>annotated</truelicense.obfuscate.scope>
     </properties>
 
