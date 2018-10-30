@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
 final class TrueLicenseManagementContextBuilder implements LicenseManagementContextBuilder {
 
     AuthenticationFactory authenticationFactory = Notary::new;
-    LicenseManagementAuthorization authorization = new LicenseManagementAuthorization();
+    LicenseManagementAuthorization authorization = LicenseManagementAuthorization.ALL;
     long cachePeriodMillis = 30 * 60 * 1000;
     Clock clock = Clock.systemDefaultZone();
     Optional<Codec> codec = Optional.empty();
