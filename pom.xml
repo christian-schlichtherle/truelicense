@@ -80,7 +80,7 @@
 
         <!-- maven-javadoc-plugin -->
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <quiet>true</quiet>
+        <nodeprecated>false</nodeprecated>
 
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
