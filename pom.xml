@@ -39,6 +39,10 @@
             <name>TrueLicense Commercial License</name>
         </license>
     </licenses>
+    <organization>
+        <name>Schlichtherle IT Services</name>
+        <url>https://schlichtherle.de</url>
+    </organization>
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/christian-schlichtherle/truelicense/issues</url>
