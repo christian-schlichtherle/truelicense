@@ -41,9 +41,6 @@
         <apiPackage>${project.groupId}.${api}</apiPackage>
         <apiPackagePath>${packagePath}/${api}</apiPackagePath>
         <main-xml-directory>${xml-directory}/main</main-xml-directory>
-        <misc>util</misc>
-        <miscApiPackage>${apiPackage}.${misc}</miscApiPackage>
-        <miscApiPackagePath>${apiPackagePath}/${misc}</miscApiPackagePath>
         <packagePath>global/namespace/truelicense</packagePath>
         <site-xml-directory>${xml-directory}/site</site-xml-directory>
         <test-projects-directory>${test-xml-directory}/projects</test-projects-directory>
