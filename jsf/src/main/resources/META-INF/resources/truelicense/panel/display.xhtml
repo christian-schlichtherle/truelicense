@@ -1,0 +1,38 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:html="http://java.sun.com/jsf/html">
+    <composite:interface componentType="displayBean" expert="true"
+                         shortDescription="Displays the installed license key.">
+        <composite:attribute name="manager" type="global.namespace.truelicense.api.ConsumerLicenseManager" required="true"
+                             shortDescription="The consumer license manager."/>
+    </composite:interface>
+
+    <composite:implementation>
+        <html:panelGrid class="display" title="${cc.title}"
+                        columns="2" transient="true">
+            <html:outputLabel for="subject" value="${cc.subjectLabel}"/>
+            <html:outputText id="subject" value="${cc.subjectValue}"/>
+            <html:outputLabel for="holder" value="${cc.holderLabel}"/>
+            <html:outputText id="holder" class="x500principal" value="${cc.holderValue}"/>
+            <html:outputLabel for="issuer" value="${cc.issuerLabel}"/>
+            <html:outputText id="issuer" class="x500principal" value="${cc.issuerValue}"/>
+            <html:outputLabel for="issued" value="${cc.issuedLabel}"/>
+            <html:outputText id="issued" class="datetime" value="${cc.issuedValue}"/>
+            <html:outputLabel for="notBefore" value="${cc.notBeforeLabel}"/>
+            <html:outputText id="notBefore" class="datetime" value="${cc.notBeforeValue}"/>
+            <html:outputLabel for="notAfter" value="${cc.notAfterLabel}"/>
+            <html:outputText id="notAfter" class="datetime" value="${cc.notAfterValue}"/>
+            <html:outputLabel for="consumer" value="${cc.consumerLabel}"/>
+            <html:outputText id="consumer" value="${cc.consumerValue}"/>
+            <html:outputLabel for="info" value="${cc.infoLabel}"/>
+            <html:outputText id="info" value="${cc.infoValue}"/>
+        </html:panelGrid>
+    </composite:implementation>
+</html>

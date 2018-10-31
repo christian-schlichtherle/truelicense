@@ -2,15 +2,14 @@ cache:
   directories:
   - $HOME/.m2/repository
 
-git:
-  depth: 3
-
 jdk:
 - openjdk8
-- oraclejdk8
+- openjdk9
+- openjdk10
+- openjdk11
 
-install: mvn -V -DskipTests=true -Dgpg.skip=true -Psonatype-oss-release install
+install: ./mvnw --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
 
 language: java
 
-script: mvn verify
+script: ./mvnw --batch-mode verify

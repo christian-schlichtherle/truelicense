@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>global.namespace.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
+        <version>4.0.0-M1</version>
+    </parent>
+
+    <artifactId>truelicense-api</artifactId>
+
+    <name>TrueLicense API</name>
+    <description>
+        The TrueLicense API module provides an Application Programming
+        Interface for license management on the Java Virtual Machine.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>global.namespace.fun-io</groupId>
+            <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

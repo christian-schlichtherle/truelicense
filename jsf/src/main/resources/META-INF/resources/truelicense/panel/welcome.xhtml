@@ -1,0 +1,41 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:core="http://java.sun.com/jsf/core"
+      xmlns:html="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <composite:interface componentType="welcomeBean" expert="true"
+                         shortDescription="Welcomes the user.">
+        <composite:attribute name="manager" type="global.namespace.truelicense.api.ConsumerLicenseManager" required="true"
+                             shortDescription="The consumer license manager."/>
+        <composite:attribute name="uninstallable" type="java.lang.Boolean" default="false"
+                             shortDescription="Whether or not the license key shall be uninstallable. Defaults to false."/>
+    </composite:interface>
+
+    <composite:implementation>
+        <html:panelGrid class="welcome" title="${cc.title}"
+                        columns="1" transient="true">
+            <html:outputText value="${cc.prompt}"/>
+            <html:selectOneRadio id="select" required="true"
+                                 layout="pageDirection"
+                                 value="#{cc.nextState}">
+                <core:selectItem itemLabel="${cc.installLabel}"
+                                 itemValue="${cc.installValue}"/>
+                <core:selectItem itemLabel="${cc.displayLabel}"
+                                 itemValue="${cc.displayValue}"
+                                 itemDisabled="${cc.displayDisabled}"/>
+                <c:if test="${cc.attrs.uninstallable}">
+                    <core:selectItem itemLabel="${cc.uninstallLabel}"
+                                     itemValue="${cc.uninstallValue}"
+                                     itemDisabled="${cc.uninstallDisabled}"/>
+                </c:if>
+            </html:selectOneRadio>
+        </html:panelGrid>
+    </composite:implementation>
+</html>

@@ -1,0 +1,68 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005-2017 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>global.namespace.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
+        <version>4.0.0-M1</version>
+    </parent>
+
+    <artifactId>truelicense-obfuscate</artifactId>
+
+    <name>TrueLicense @Obfuscate</name>
+    <description>
+        The TrueLicense @Obfuscate module provides core functionality for
+        obfuscating constant string values in Java source and class files.
+    </description>
+
+    <properties>
+        <!-- TODO: Compare with previous releases and eventually rKemove this: -->
+        <truelicense.obfuscate.scope>annotated</truelicense.obfuscate.scope>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- Cannot use the build version for bootstrapping! -->
+                <groupId>net.truelicense</groupId>
+                <artifactId>truelicense-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-main-sources</id>
+                        <goals>
+                            <goal>generate-main-sources</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-test-sources</id>
+                        <goals>
+                            <goal>generate-test-sources</goal>
+                        </goals>
+                        <configuration>
+                            <templateSets>
+                                <set>
+                                    <directory>src/test/scala</directory>
+                                    <includes>
+                                        <include>**/*.vtl</include>
+                                    </includes>
+                                </set>
+                            </templateSets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
