@@ -38,7 +38,6 @@
             <topBarEnabled>true</topBarEnabled>
         </fluidoSkin>
     </custom>
-    <googleAnalyticsAccountId>${googleAnalyticsAccountId}</googleAnalyticsAccountId>
     <publishDate position="bottom"/>
     <skin>
         <groupId>org.apache.maven.skins</groupId>
