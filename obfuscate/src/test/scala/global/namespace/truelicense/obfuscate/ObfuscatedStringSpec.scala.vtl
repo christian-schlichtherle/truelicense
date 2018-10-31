@@ -2,7 +2,7 @@
  * Copyright (C) 2005-2015 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-#macro(obfuscate $string)$scala.obfuscatedString($string).replace("net.truelicense.obfuscate.", "").replaceAll("\)\) /\*.*\*/", ")).toString")#end
+#macro(obfuscate $string)$scala.obfuscatedString($string).replace("global.namespace.truelicense.obfuscate.", "").replaceAll("\)\) /\*.*\*/", ")).toString")#end
 package global.namespace.truelicense.obfuscate
 
 import java.util.regex.Pattern
