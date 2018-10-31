@@ -97,7 +97,6 @@
         <module>core</module>
         <module>jax-rs</module>
         <module>jsf</module>
-        <module>maven-archetype</module>
         <module>maven-plugin</module>
         <module>obfuscate</module>
         <module>spi</module>
