@@ -64,9 +64,6 @@
     </distributionManagement>
 
     <properties>
-        <!-- clirr-maven-plugin -->
-        <comparisonVersion>3.0.0</comparisonVersion>
-
         <javase.major>8</javase.major>
 
         <!-- maven-compiler-plugin -->
@@ -389,7 +386,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
                 <reportSets>
                     <reportSet />
                     <reportSet>
@@ -403,7 +399,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.0.0</version>
                 <reportSets>
                     <reportSet>
                         <reports>
