@@ -73,8 +73,6 @@
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
         <maven.compiler.source>1.${javase.major}</maven.compiler.source>
 
-        <maven.version>3.5.4</maven.version>
-
         <!-- maven-javadoc-plugin -->
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <nodeprecated>false</nodeprecated>
@@ -87,6 +85,7 @@
         <fun-io.version>2.0.0</fun-io.version>
         <jackson.version>2.9.7</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
+        <maven.version>3.5.4</maven.version>
     </properties>
 
     <modules>
