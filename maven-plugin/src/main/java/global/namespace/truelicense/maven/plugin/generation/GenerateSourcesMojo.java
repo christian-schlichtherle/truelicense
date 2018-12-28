@@ -13,19 +13,21 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.tools.ToolManager;
+import org.apache.velocity.tools.config.ConfigurationUtils;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 /**
  * Processes template files in a given directory using
  * <a href="http://velocity.apache.org">Apache Velocity</a>.
  *
- * @since TrueLicense 2.4
  * @author Christian Schlichtherle
+ * @since TrueLicense 2.4
  */
 public abstract class GenerateSourcesMojo extends MojoAdapter {
 
@@ -59,6 +61,10 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
     private final ToolManager manager = new ToolManager();
     private volatile VelocityEngine engine;
 
+    GenerateSourcesMojo() {
+        manager.configure(ConfigurationUtils.getDefaultTools());
+    }
+
     protected void doExecute() throws MojoFailureException {
         try {
             for (FileSet fileSet : fileSets()) {
@@ -72,7 +78,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
     private List<FileSet> fileSets() {
         List<FileSet> templateSets = templateSets();
         if (null == templateSets) {
-            templateSets = new LinkedList<FileSet>();
+            templateSets = new LinkedList<>();
             final FileSet templateSet = new FileSet();
             templateSet.setDirectory(stripPrefix() + "java");
             templateSet.addInclude("**/*" + stripSuffix());
@@ -81,7 +87,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
         return templateSets;
     }
 
-    VelocityEngine engine() {
+    private VelocityEngine engine() {
         final VelocityEngine e = engine;
         return null != e ? e : (engine = engine0());
     }
@@ -93,9 +99,11 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
         return e;
     }
 
-    File baseDirectory() { return project.getBasedir(); }
+    private File baseDirectory() {
+        return project.getBasedir();
+    }
 
-    static String list2csv(final List<String> strings) {
+    private static String list2csv(final List<String> strings) {
         String separator = "";
         final StringBuilder b = new StringBuilder();
         for (final String item : strings) {
@@ -105,7 +113,7 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
         return b.toString();
     }
 
-    static void mkdirs(File directory) throws IOException {
+    private static void mkdirs(File directory) throws IOException {
         if (!directory.isDirectory() && !directory.mkdirs()) {
             throw new IOException(directory + ": Failed to create directories.");
         }
@@ -119,7 +127,9 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
 
     protected abstract String stripPrefix();
 
-    protected String stripSuffix() { return stripSuffix; }
+    private String stripSuffix() {
+        return stripSuffix;
+    }
 
     final class TemplateSet {
 
@@ -131,7 +141,6 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
             this.templates = templates;
         }
 
-        @SuppressWarnings("unchecked")
         void processDirectory() throws Exception {
             final File templateDirectory = resolveWithBaseDirectory(templateDirectoryPath());
             final List<String> paths = FileUtils.getFileNames(templateDirectory,
@@ -173,14 +182,8 @@ public abstract class GenerateSourcesMojo extends MojoAdapter {
             c.put("project", project);
             c.put("scala", scalaTool);
             c.put("version", versiontool);
-            for (final Properties p : new Properties[] {
-                    project.getProperties(),
-                    properties,
-            }) {
-                for (String key : p.stringPropertyNames()) {
-                    c.put(key, p.getProperty(key));
-                }
-            }
+            Stream.of(project.getProperties(), properties)
+                    .forEach(p -> p.stringPropertyNames().forEach(key -> c.put(key, p.getProperty(key))));
             if (getLog().isDebugEnabled()) {
                 debugContext(c);
             }
