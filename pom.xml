@@ -14,7 +14,7 @@
 
     <groupId>global.namespace.truelicense</groupId>
     <artifactId>truelicense</artifactId>
-    <version>4.0.0-M2</version>
+    <version>4.0.0-M3</version>
     <packaging>pom</packaging>
 
     <name>TrueLicense</name>
@@ -53,15 +53,6 @@
         <url>https://github.com/christian-schlichtherle/truelicense</url>
         <tag>HEAD</tag>
     </scm>
-
-    <distributionManagement>
-        <site>
-            <id>truelicense-website</id>
-            <name>TrueLicense Website</name>
-            <!-- DON'T use ${project.groupId}, ${project.artifactId} here - this would change in sub-modules! -->
-            <url>file://${user.home}/sites/christian-schlichtherle.github.io/truelicense</url>
-        </site>
-    </distributionManagement>
 
     <properties>
         <javase.major>8</javase.major>
@@ -190,11 +181,6 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.3</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>3.2.2</version>
             </dependency>
             <dependency>
                 <groupId>commons-digester</groupId>
@@ -387,49 +373,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <reportSets>
-                    <reportSet />
-                    <reportSet>
-                        <id>aggregate</id>
-                        <inherited>false</inherited>
-                        <reports>
-                            <report>aggregate</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>ci-management</report>
-                            <report>dependencies</report>
-                            <report>dependency-convergence</report>
-                            <report>dependency-info</report>
-                            <report>dependency-management</report>
-                            <report>distribution-management</report>
-                            <report>index</report>
-                            <report>issue-management</report>
-                            <report>licenses</report>
-                            <report>mailing-lists</report>
-                            <report>modules</report>
-                            <report>plugin-management</report>
-                            <report>plugins</report>
-                            <report>scm</report>
-                            <report>summary</report>
-                            <report>team</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 
     <profiles>
         <profile>

@@ -9,10 +9,10 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0-M2</version>
+        <version>4.0.0-M3</version>
     </parent>
 
-    <artifactId>truelicense-test</artifactId>
+    <artifactId>truelicense-tests</artifactId>
 
     <name>TrueLicense Tests</name>
     <description>
