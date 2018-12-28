@@ -9,7 +9,7 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0-M1</version>
+        <version>4.0.0-M2</version>
     </parent>
 
     <artifactId>truelicense-obfuscate</artifactId>
@@ -19,11 +19,6 @@
         The TrueLicense @Obfuscate module provides core functionality for
         obfuscating constant string values in Java source and class files.
     </description>
-
-    <properties>
-        <!-- TODO: Compare with previous releases and eventually rKemove this: -->
-        <truelicense.obfuscate.scope>annotated</truelicense.obfuscate.scope>
-    </properties>
 
     <build>
         <plugins>
@@ -35,9 +30,9 @@
             </plugin>
             <plugin>
                 <!-- Cannot use the build version for bootstrapping! -->
-                <groupId>net.truelicense</groupId>
+                <groupId>global.namespace.truelicense</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>4.0.0-M1</version>
                 <executions>
                     <execution>
                         <id>generate-main-sources</id>

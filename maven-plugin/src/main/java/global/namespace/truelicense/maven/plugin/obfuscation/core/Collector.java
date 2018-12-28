@@ -16,7 +16,9 @@ import static global.namespace.truelicense.obfuscate.ObfuscatedString.literal;
  */
 final class Collector extends Visitor {
 
-    Collector(Processor ctx) { super(ctx, null); }
+    Collector(Processor ctx) {
+        super(ctx, null);
+    }
 
     @Override
     public FieldVisitor visitField(int access, String name, String desc, String nullableSignature, Object nullableValue) {

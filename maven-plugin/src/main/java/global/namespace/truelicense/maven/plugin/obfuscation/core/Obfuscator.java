@@ -179,8 +179,7 @@ final class Obfuscator extends Visitor {
         ConstantStringReference csr(String csv);
     }
 
-    private final class O9n2ndFieldNode
-            extends O9nFieldNode implements ConstantStringReferenceFactory {
+    private final class O9n2ndFieldNode extends O9nFieldNode implements ConstantStringReferenceFactory {
 
         O9n2ndFieldNode(
                 int access,
@@ -222,13 +221,12 @@ final class Obfuscator extends Visitor {
         }
     }
 
-    private class O9n2ndMethodVisitor
-            extends MethodVisitor implements ConstantStringReferenceFactory {
+    private class O9n2ndMethodVisitor extends MethodVisitor implements ConstantStringReferenceFactory {
 
         final String localMethodName;
 
         O9n2ndMethodVisitor(final String name, MethodVisitor mv) {
-            super(ASM5, mv);
+            super(ASM7, mv);
             this.localMethodName = name;
         }
 

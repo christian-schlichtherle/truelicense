@@ -4,8 +4,6 @@ cache:
 
 jdk:
 - openjdk8
-- openjdk9
-- openjdk10
 - openjdk11
 
 install: ./mvnw --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
