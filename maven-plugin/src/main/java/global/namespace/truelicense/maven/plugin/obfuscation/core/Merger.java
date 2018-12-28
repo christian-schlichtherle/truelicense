@@ -28,7 +28,8 @@ final class Merger extends Visitor {
         this.prefix = prefix;
     }
 
-    @Override public MethodVisitor visitMethod(
+    @Override
+    public MethodVisitor visitMethod(
             final int access,
             final String name,
             final String desc,
@@ -60,7 +61,8 @@ final class Merger extends Visitor {
         return mv;
     }
 
-    @Override public void visitEnd() {
+    @Override
+    public void visitEnd() {
         final O9nInitMethodVisitor imv = this.imv;
         if (null != imv) imv.visitInitEnd();
         cv.visitEnd();
@@ -68,26 +70,35 @@ final class Merger extends Visitor {
 
     private static class O9nInitMethodVisitor extends MethodVisitor {
 
-        O9nInitMethodVisitor(MethodVisitor mv) { super(ASM5, mv); }
+        O9nInitMethodVisitor(MethodVisitor mv) {
+            super(ASM7, mv);
+        }
 
-        @Override public final void visitMaxs(int maxStack, int maxLocals) { }
+        @Override
+        public final void visitMaxs(int maxStack, int maxLocals) {
+        }
 
-        @Override public final void visitEnd() { }
+        @Override
+        public final void visitEnd() {
+        }
 
         final void visitInitEnd() {
             mv.visitInsn(RETURN);
             mv.visitMaxs(0, 0); // let compute
             mv.visitEnd();
         }
-    } // O9nInitMethodVisitor
+    }
 
     private static class O9nInterfaceInitMethodVisitor
-    extends O9nInitMethodVisitor {
+            extends O9nInitMethodVisitor {
 
-        O9nInterfaceInitMethodVisitor(MethodVisitor mv) { super(mv); }
+        O9nInterfaceInitMethodVisitor(MethodVisitor mv) {
+            super(mv);
+        }
 
-        @Override public void visitInsn(int opcode) {
+        @Override
+        public void visitInsn(int opcode) {
             if (RETURN != opcode) mv.visitInsn(opcode);
         }
-    } // O9nInterfaceInitMethodVisitor
+    }
 }
