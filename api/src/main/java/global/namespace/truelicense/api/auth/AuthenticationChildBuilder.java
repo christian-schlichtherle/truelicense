@@ -73,7 +73,7 @@ public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>>
 
     /**
      * Sets the type of the keystore (optional).
-     * If this method is not called, then the type is inherited from some context.
+     * If this method is not called, then the type is inherited from the builder's context.
      *
      * @return {@code this}
      */

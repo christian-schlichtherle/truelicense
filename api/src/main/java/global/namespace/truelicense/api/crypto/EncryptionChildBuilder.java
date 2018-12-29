@@ -18,7 +18,7 @@ public interface EncryptionChildBuilder<ParentBuilder extends GenBuilder<?>> ext
 
     /**
      * Sets the name of the password based encryption algorithm (optional).
-     * If this method is not called, then the name is inherited from some context.
+     * If this method is not called, then the name is inherited from the builder's context.
      *
      * @return {@code this}
      */
