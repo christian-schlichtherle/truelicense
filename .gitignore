@@ -1,24 +1,4 @@
-#
-# Copyright (C) 2005 - 2019 Schlichtherle IT Services.
-# All rights reserved. Use is subject to license terms.
-#
-# Eclipse artifacts:
-.metadata
-.project
-.classpath
-.settings/
-.cache
-
-# IntelliJ artifacts:
-/.idea/
 *.iml
-
-# Maven artifacts:
+/.idea/
 dependency-reduced-pom.xml
 target/
-
-# Mercurial artifacts:
-/.hg/
-
-# NetBeans artifacts (none):
-nbactions.xml
