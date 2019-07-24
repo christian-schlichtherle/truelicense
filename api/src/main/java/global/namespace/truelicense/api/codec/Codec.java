@@ -1,15 +1,10 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.codec;
 
-/**
- * Provides encoders and decoders for generic object graphs.
- *
- * @author Christian Schlichtherle
- */
+/** Provides encoders and decoders for generic object graphs. */
 public interface Codec extends global.namespace.fun.io.api.Codec {
 
     /**

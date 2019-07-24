@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api;
 
 import global.namespace.fun.io.api.Filter;
@@ -24,8 +23,6 @@ import static org.mockito.Mockito.mock;
 /**
  * A demo which uses as many TrueLicense API calls as possible.
  * This is not a working demo - do not use this code in production!
- *
- * @author Christian Schlichtherle
  */
 interface ApiDemo {
 

@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.builder;
 
 /**
@@ -10,7 +9,6 @@ package global.namespace.truelicense.api.builder;
  * Builders are generally <em>not</em> thread-safe.
  *
  * @param <Product> the type of the product.
- * @author Christian Schlichtherle
  */
 public interface GenBuilder<Product> {
 

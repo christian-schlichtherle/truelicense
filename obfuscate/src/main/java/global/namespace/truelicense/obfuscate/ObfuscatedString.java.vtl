@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 #macro(obfuscate $string)$java.obfuscatedString($string).replace("global.namespace.truelicense.obfuscate.", "").replaceAll(" /\*.*\*/", ".toString()")#end
@@ -70,7 +70,6 @@ import java.util.concurrent.Callable;
  * <a href="http://en.wikipedia.org/wiki/Snake_oil">snake oil</a>.
  *
  * @see    Obfuscate
- * @author Christian Schlichtherle
  */
 // All constant string expressions in this class which are longer than two
 // characters need to get obfuscated as either an ObfuscatedString or, where
@@ -142,10 +141,7 @@ public final class ObfuscatedString {
      * @return The transformed string.
      */
     public static String literal(String s) {
-        return '"' +
-                s   .replace("\\", #obfuscate('\\'))
-                    .replace("\"", #obfuscate('\"')) +
-                '"';
+        return '"' + s.replace("\\", #obfuscate('\\')).replace("\"", #obfuscate('\"')) + '"';
 
     }
 
@@ -206,8 +202,7 @@ public final class ObfuscatedString {
     private static void appendHexLiteral(final StringBuilder sb, final long l) {
         // Obfuscation of the following character literals is futile because
         // they are too short to get found with a string search anyway.
-        sb      .append('\u0030').append('\u0078')
-                .append(Long.toHexString(l)).append('\u006C'); // => "0x" + ... + "l"
+        sb.append('\u0030').append('\u0078').append(Long.toHexString(l)).append('\u004C'); // => "0x" + ... + "L"
     }
 
     /**

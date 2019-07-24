@@ -1,17 +1,17 @@
 /*
- * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 #macro(obfuscate $string)$scala.obfuscatedString($string).replace("global.namespace.truelicense.obfuscate.", "").replaceAll("\)\) /\*.*\*/", ")).toString")#end
 package global.namespace.truelicense.obfuscate
 
 import java.util.regex.Pattern
-import org.scalatest._
-import org.scalatest.Matchers._
-import org.scalatest.prop.PropertyChecks._
-import ObfuscatedStringSpec._
 
-/** @author Christian Schlichtherle */
+import global.namespace.truelicense.obfuscate.ObfuscatedStringSpec._
+import org.scalatest.Matchers._
+import org.scalatest._
+import org.scalatest.prop.TableDrivenPropertyChecks._
+
 class ObfuscatedStringSpec extends WordSpec {
 
   "An ObfuscatedString" should {
@@ -41,7 +41,7 @@ class ObfuscatedStringSpec extends WordSpec {
         for (i <- 0 until el.length) {
           val ds = es(i)//.toLowerCase
           ds should startWith ("0x")
-          ds should endWith ("l")
+          ds should endWith ("L")
           val l = ds substring (2, ds.length - 1)
           el(i) = parseLong(l)
         }
@@ -54,16 +54,15 @@ class ObfuscatedStringSpec extends WordSpec {
   }
 }
 
-/** @author Christian Schlichtherle */
 private object ObfuscatedStringSpec {
 
   def escape(s: String) =
     s.replace("\\", "\\\\").replace("\"", "\\\"").replace("*/", "*\\/")
 
   /**
-   * `java.lang.Long.parseLong` doesn't work if the highest bit is set in the
-   * string to parse. Hence a simplified version is provided here.
-   */
+    * `java.lang.Long.parseLong` doesn't work if the highest bit is set in the
+    * string to parse. Hence a simplified version is provided here.
+    */
   def parseLong(s: String) = {
     val l = s.length
     if (16 < l) throw new NumberFormatException(s)

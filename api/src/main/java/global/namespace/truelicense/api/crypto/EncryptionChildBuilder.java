@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.api.crypto;
@@ -12,7 +12,6 @@ import global.namespace.truelicense.api.passwd.PasswordProtection;
  * A child builder for an encryption which injects a password based encryption into some parent builder.
  *
  * @param <ParentBuilder> the type of the parent builder.
- * @author Christian Schlichtherle
  */
 public interface EncryptionChildBuilder<ParentBuilder extends GenBuilder<?>> extends GenChildBuilder<ParentBuilder> {
 

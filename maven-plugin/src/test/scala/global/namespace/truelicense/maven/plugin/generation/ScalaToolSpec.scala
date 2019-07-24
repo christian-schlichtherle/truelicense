@@ -1,17 +1,13 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.generation
 
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.prop.PropertyChecks._
+import org.scalatest.prop.TableDrivenPropertyChecks._
 
-/**
- * @author Christian Schlichtherle
- */
 class ScalaToolSpec extends WordSpec {
 
   "A ScalaTool " should {

@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api;
 
 import java.security.GeneralSecurityException;
@@ -14,8 +13,6 @@ import java.security.GeneralSecurityException;
  * {@linkplain ConsumerLicenseManager#load loading},
  * {@linkplain ConsumerLicenseManager#verify verifying} or
  * {@linkplain ConsumerLicenseManager#uninstall uninstalling} a license key.
- *
- * @author Christian Schlichtherle
  */
 public class LicenseManagementException extends GeneralSecurityException {
 

@@ -1,17 +1,16 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.tests.core
 
 import java.util.concurrent.Callable
 
 import global.namespace.fun.io.bios.BIOS.memory
 
-/** @author Christian Schlichtherle */
 trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext =>
-  def call() {
+
+  def call(): Unit = {
     val store = memory
     vendorManager generateKeyFrom license saveTo store
     for (i <- 1 to 5) {
@@ -20,10 +19,10 @@ trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext =>
       val num = 1000 * 1000
       val start = System.nanoTime
       for (j <- 1 to num) {
-        manager verify ()
+        manager.verify()
       }
       val time = System.nanoTime - start
-      printf("Iteration %d verified the installed license key %,d times per second.\n", i, num * 1000l * 1000l * 1000l / time)
+      printf("Iteration %d verified the installed license key %,d times per second.\n", i, num * 1000L * 1000L * 1000L / time)
     }
   }
 }

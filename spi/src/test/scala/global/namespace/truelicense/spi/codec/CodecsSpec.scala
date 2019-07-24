@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.spi.codec
 
 import java.io.{InputStream, OutputStream}
@@ -13,9 +12,8 @@ import global.namespace.fun.io.api.Socket
 import global.namespace.truelicense.api.codec.Codec
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.prop.PropertyChecks._
+import org.scalatest.prop.TableDrivenPropertyChecks._
 
-/** @author Christian Schlichtherle */
 class CodecsSpec extends WordSpec {
 
   "The contentTransferCharset function" should {
@@ -30,7 +28,7 @@ class CodecsSpec extends WordSpec {
         ("application/json", "8bit", "utf-8"),
         ("application/xml; charset=utf-8", "8bit", "utf-8")
       )
-      forAll (table) { (contentType, contentTransferEncoding, contentTransferCharset) =>
+      forAll(table) { (contentType, contentTransferEncoding, contentTransferCharset) =>
         val codec = new DummyCodec(contentType, contentTransferEncoding)
         Codecs charset codec shouldBe Optional.of(Charset forName contentTransferCharset)
       }
@@ -42,7 +40,7 @@ class CodecsSpec extends WordSpec {
         ("foo", "binary"),
         ("foo; charset=utf-8", "binary")
       )
-      forAll (table) { (contentType, contentTransferEncoding) =>
+      forAll(table) { (contentType, contentTransferEncoding) =>
         val codec = new DummyCodec(contentType, contentTransferEncoding)
         Codecs charset codec shouldBe Optional.empty
       }
@@ -53,17 +51,19 @@ class CodecsSpec extends WordSpec {
         ("contentType", "contentTransferEncoding"),
         ("foo; charset=bar", "8bit")
       )
-      forAll (table) { (contentType, contentTransferEncoding) =>
+      forAll(table) { (contentType, contentTransferEncoding) =>
         val codec = new DummyCodec(contentType, contentTransferEncoding)
-        intercept[IllegalArgumentException] { Codecs charset codec }
+        intercept[IllegalArgumentException] {
+          Codecs charset codec
+        }
       }
     }
   }
 }
 
-/** @author Christian Schlichtherle */
 private class DummyCodec(val contentType: String, val contentTransferEncoding: String) extends Codec {
 
   def encoder(output: Socket[OutputStream]) = throw new UnsupportedOperationException
+
   def decoder(input: Socket[InputStream]) = throw new UnsupportedOperationException
 }

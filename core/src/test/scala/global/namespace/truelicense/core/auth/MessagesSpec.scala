@@ -1,17 +1,13 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.core.auth
 
 import global.namespace.truelicense.core.MessagesTestSupport._
 import org.scalatest.WordSpec
-import org.scalatest.prop.PropertyChecks._
+import org.scalatest.prop.TableDrivenPropertyChecks._
 
-/**
- * @author Christian Schlichtherle
- */
 class MessagesSpec extends WordSpec {
 
   "Messages" should {
@@ -24,7 +20,7 @@ class MessagesSpec extends WordSpec {
         (NO_SUCH_ENTRY),
         ("agpl3")
       )
-      forAll (table) { key => testSerialization(Messages message key) }
+      forAll(table) { key => testSerialization(Messages message key) }
     }
   }
 }

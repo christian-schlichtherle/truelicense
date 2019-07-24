@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.api;
@@ -46,7 +46,6 @@ import static java.util.Calendar.getInstance;
  * any subclass, but subclassing is essential to adapt this class to different codecs.
  *
  * @see    LicenseFactory
- * @author Christian Schlichtherle
  */
 // #TRUELICENSE-50: The XML root element name MUST be explicitly defined!
 // Otherwise, it would get derived from the class name, but this would break if the class name gets obfuscated, e.g.
