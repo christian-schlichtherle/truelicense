@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.tests.jax.rs
@@ -19,7 +19,6 @@ import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
 import org.scalatest.Matchers._
 
-/** @author Christian Schlichtherle */
 abstract class ConsumerLicenseManagementServiceJerseyITSuite
   extends JerseyTest with ConsumerLicenseManagementServiceITMixin {
   this: TestContext =>
@@ -34,7 +33,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITSuite
   }
 
   @Test
-  def testLifeCycle() {
+  def testLifeCycle(): Unit = {
     assertSubject()
     assertFailView()
     assertFailVerify()
@@ -50,7 +49,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITSuite
     assertUninstallFailure()
   }
 
-  private def assertSubject() {
+  private def assertSubject(): Unit = {
     val subject = managementContext.subject
     subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
     subjectAs(APPLICATION_JSON_TYPE) shouldBe s"""{"subject":"$subject"}"""
@@ -59,18 +58,18 @@ abstract class ConsumerLicenseManagementServiceJerseyITSuite
 
   private def subjectAs(mediaType: MediaType) = target("license/subject") request mediaType get classOf[String]
 
-  private def assertInstall() {
+  private def assertInstall(): Unit = {
     target("license").request.post(
       Entity.entity(cachedLicenseKey, APPLICATION_OCTET_STREAM_TYPE),
       classOf[LicenseDTO]
     ).license shouldBe cachedLicenseBean
   }
 
-  private def assertFailView() {
+  private def assertFailView(): Unit = {
     assertFail(assertView())
   }
 
-  private def assertView() {
+  private def assertView(): Unit = {
     viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
     viewAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
     viewAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
@@ -80,17 +79,17 @@ abstract class ConsumerLicenseManagementServiceJerseyITSuite
     target("license") request mediaType get responseType
   }
 
-  private def assertFailVerify() {
+  private def assertFailVerify(): Unit = {
     assertFail(assertVerify())
   }
 
-  private def assertFail(what: => Any) {
+  private def assertFail(what: => Any): Unit = {
     val response = intercept[WebApplicationException](what).getResponse
     response.getStatusInfo shouldBe NOT_FOUND
     response.getMediaType shouldBe APPLICATION_JSON_TYPE
   }
 
-  private def assertVerify() {
+  private def assertVerify(): Unit = {
     verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
     verifyAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
     verifyAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
@@ -100,13 +99,13 @@ abstract class ConsumerLicenseManagementServiceJerseyITSuite
     target("license") queryParam("verify", "true") request mediaType get responseType
   }
 
-  private def assertUninstallSuccess() {
+  private def assertUninstallSuccess(): Unit = {
     uninstallStatus() shouldBe 204
   }
 
-  private def assertUninstallFailure() {
+  private def assertUninstallFailure(): Unit = {
     uninstallStatus() shouldBe 404
   }
 
-  private def uninstallStatus() = target("license").request.delete().getStatus
+  private def uninstallStatus(): Int = target("license").request.delete().getStatus
 }

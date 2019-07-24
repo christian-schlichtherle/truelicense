@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.auth;
 
 import global.namespace.fun.io.api.Decoder;
@@ -18,8 +17,6 @@ import java.security.Signature;
  * {@linkplain Authentication#verify verify} an arbitrary artifact.
  * A repository controller is created by a
  * {@linkplain RepositoryContext repository context}.
- *
- * @author Christian Schlichtherle
  */
 public interface RepositoryController {
 

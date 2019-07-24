@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.tests.swing
@@ -23,7 +23,6 @@ import org.scalactic.source.Position
 import org.scalatest.Matchers._
 import org.scalatest._
 
-/** @author Christian Schlichtherle */
 abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAfter { this: TestContext =>
 
   private val laf = UIManager.getLookAndFeel
@@ -42,7 +41,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
     EventQueue invokeLater (() => {
       UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
       wizard = newLicenseManagementWizard(manager)
-      wizard showModalDialog()
+      wizard.showModalDialog()
     })
     dialog = new JDialogOperator()
     cancelButton = waitButton(dialog, wizard_cancel)
@@ -54,7 +53,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
   }
 
   after {
-    cancelButton doClick ()
+    cancelButton.doClick()
     dialog.isVisible shouldBe false
     wizard.getReturnCode shouldBe LicenseManagementWizard.CANCEL_RETURN_CODE
     UIManager setLookAndFeel laf
@@ -91,10 +90,10 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
         }
 
         "have a visible, non-empty prompt on its welcome panel" ifNotHeadless {
-          dialog.getQueueTool waitEmpty ()
+          dialog.getQueueTool.waitEmpty()
           val prompt = waitTextComponent(welcomePanel, welcome_prompt)
           prompt.isVisible shouldBe true
-          prompt.getText should not be 'empty
+          prompt.getText.isEmpty shouldBe false
         }
 
         "have both the install and display buttons enabled" ifNotHeadless {
@@ -109,8 +108,8 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
           installSelector.isVisible shouldBe true
           installSelector.isEnabled shouldBe true
           installSelector.isSelected shouldBe false
-          installSelector doClick ()
-          nextButton doClick ()
+          installSelector.doClick()
+          nextButton.doClick()
           welcomePanel.isVisible shouldBe false
           installPanel.isVisible shouldBe true
           waitButton(installPanel, install_install).isEnabled shouldBe false
@@ -121,7 +120,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
           displaySelector.isVisible shouldBe true
           displaySelector.isEnabled shouldBe true
           displaySelector.isSelected shouldBe true
-          nextButton doClick ()
+          nextButton.doClick()
           welcomePanel.isVisible shouldBe false
           displayPanel.isVisible shouldBe true
 
@@ -146,13 +145,13 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
           uninstallSelector.isVisible shouldBe true
           uninstallSelector.isEnabled shouldBe true
           uninstallSelector.isSelected shouldBe false
-          uninstallSelector doClick ()
-          nextButton doClick ()
+          uninstallSelector.doClick()
+          nextButton.doClick()
           welcomePanel.isVisible shouldBe false
           uninstallPanel.isVisible shouldBe true
-          waitButton(uninstallPanel, uninstall_uninstall) doClick ()
+          waitButton(uninstallPanel, uninstall_uninstall).doClick()
           Thread sleep 100
-          intercept[LicenseManagementException] { manager load () }
+          intercept[LicenseManagementException] { manager.load() }
         }
       }
     }
@@ -197,7 +196,6 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
   private def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 }
 
-/** @author Christian Schlichtherle */
 object LicenseManagementWizardITSuite {
 
   private def newLicenseManagementWizard(manager: ConsumerLicenseManager) = {

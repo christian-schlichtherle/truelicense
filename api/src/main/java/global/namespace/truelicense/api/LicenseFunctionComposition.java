@@ -1,15 +1,12 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api;
 
 /**
  * A strategy for composing two {@link LicenseInitialization}s or
  * {@link LicenseValidation}s.
- *
- * @author Christian Schlichtherle
  */
 public enum LicenseFunctionComposition {
 

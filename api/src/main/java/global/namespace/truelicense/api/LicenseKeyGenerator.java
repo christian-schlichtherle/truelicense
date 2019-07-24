@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api;
 
 import global.namespace.fun.io.api.Sink;
@@ -14,8 +13,6 @@ import global.namespace.fun.io.api.Sink;
  * <p>
  * When the license key gets generated, a protective copy of the configured license bean is made which is subsequently
  * {@linkplain LicenseInitialization#initialize initialized} and {@linkplain LicenseValidation#validate validated}.
- *
- * @author Christian Schlichtherle
  */
 public interface LicenseKeyGenerator {
 

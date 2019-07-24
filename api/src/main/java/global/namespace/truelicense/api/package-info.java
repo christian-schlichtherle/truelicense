@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 /**
  * Provides life cycle management for license keys.
  * License keys are small binary objects which can be stored in a file, a preferences node, the heap or any custom
@@ -59,7 +58,5 @@
  * process <em>all</em> byte code which is comprised in your deployment unit with a tool for byte code obfuscation.
  * TrueLicense does not provide general byte code obfuscation because there exist good quality third party tools, e.g.
  * ProGuard.
- *
- * @author Christian Schlichtherle
  */
 package global.namespace.truelicense.api;

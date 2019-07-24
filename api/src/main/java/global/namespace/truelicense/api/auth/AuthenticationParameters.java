@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.auth;
 
 import global.namespace.fun.io.api.Source;
@@ -20,8 +19,6 @@ import java.util.Optional;
  * A returned object is considered to be consistent if it compares
  * {@linkplain Object#equals(Object) equal} or at least behaves identical to
  * any previously returned object.
- *
- * @author Christian Schlichtherle
  */
 public interface AuthenticationParameters {
 

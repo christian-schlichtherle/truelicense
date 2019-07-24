@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.api;
@@ -14,7 +14,6 @@ import global.namespace.truelicense.api.crypto.EncryptionChildBuilder;
  * A mix-in for a builder for license managers.
  *
  * @param <This> the specialized type for fluent programming.
- * @author Christian Schlichtherle
  */
 public interface LicenseManagerBuilderMixin<This extends LicenseManagerBuilderMixin<This>> {
 

@@ -1,13 +1,18 @@
 cache:
   directories:
-  - $HOME/.m2/repository
+    - $HOME/.m2
 
-jdk:
-- openjdk8
-- openjdk11
+dist: xenial
 
-install: ./mvnw --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
+env:
+  - COMPILE_IMAGE_TAG=8-jdk-slim TEST_IMAGE_TAG=12-jdk-alpine
 
-language: java
+install: ./docker-mvnw $COMPILE_IMAGE_TAG --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
 
-script: ./mvnw --batch-mode verify
+language: minimal
+
+# Run the build in Docker to shield it from changes in the Travis environment:
+services:
+  - docker
+
+script: ./docker-mvnw $TEST_IMAGE_TAG --batch-mode verify

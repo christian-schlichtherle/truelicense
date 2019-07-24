@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.tests.core
@@ -18,7 +18,6 @@ import global.namespace.truelicense.obfuscate.ObfuscatedString
 import javax.security.auth.x500.X500Principal
 import org.slf4j.LoggerFactory
 
-/** @author Christian Schlichtherle */
 trait TestContext {
 
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
@@ -76,12 +75,11 @@ trait TestContext {
   def managementContextBuilder: LicenseManagementContextBuilder
 
   final def test1234: PasswordProtection =
-    new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cl, 0x3453ccaa499e6bael))) /* => "test1234" */
+    new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cL, 0x3453ccaa499e6baeL))) /* => "test1234" */
 
   def vendorManager: VendorLicenseManager
 }
 
-/** @author Christian Schlichtherle */
 object TestContext {
 
   private val logger = LoggerFactory getLogger classOf[TestContext]

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.api.auth;
@@ -15,7 +15,6 @@ import global.namespace.truelicense.api.passwd.PasswordProtection;
  * A child builder for an authentication which injects a keystore based authentication into some parent builder.
  *
  * @param <ParentBuilder> the type of the parent builder.
- * @author Christian Schlichtherle
  */
 public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>> extends GenChildBuilder<ParentBuilder> {
 
@@ -73,7 +72,7 @@ public interface AuthenticationChildBuilder<ParentBuilder extends GenBuilder<?>>
 
     /**
      * Sets the type of the keystore (optional).
-     * If this method is not called, then the type is inherited from some context.
+     * If this method is not called, then the type is inherited from the builder's context.
      *
      * @return {@code this}
      */

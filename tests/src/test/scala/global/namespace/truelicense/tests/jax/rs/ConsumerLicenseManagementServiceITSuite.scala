@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.tests.jax.rs
@@ -9,7 +9,6 @@ import global.namespace.truelicense.jax.rs.ConsumerLicenseManagementServiceExcep
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
-/** @author Christian Schlichtherle */
 abstract class ConsumerLicenseManagementServiceITSuite
   extends WordSpec with ConsumerLicenseManagementServiceITMixin {
   this: TestContext =>
@@ -70,7 +69,7 @@ abstract class ConsumerLicenseManagementServiceITSuite
 
       "uninstalling the license key again" should {
         "uninstall the license key" in {
-          managementService uninstall()
+          managementService.uninstall()
         }
 
         "fail to load the license key as XML" in {

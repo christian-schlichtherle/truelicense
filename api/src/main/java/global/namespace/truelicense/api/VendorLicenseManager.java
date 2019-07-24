@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.api;
@@ -9,7 +9,6 @@ package global.namespace.truelicense.api;
  * <p>
  * A (checked) vendor license manager generally throws a {@link LicenseManagementException} if an operation fails.
  *
- * @author Christian Schlichtherle
  * @see UncheckedVendorLicenseManager#checked()
  */
 public interface VendorLicenseManager extends LicenseManagerMixin {

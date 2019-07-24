@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+declare -r image_tag="$1"
+shift
+[[ -z "$image_tag" ]] && { echo "Usage: $0 IMAGE_TAG [...]"; exit 1; }
+set -x
+exec docker run \
+    --interactive \
+    --rm \
+    --tty \
+    --volume $HOME/.m2:/root/.m2 \
+    --volume "$PWD:/workdir" \
+    --workdir /workdir \
+    "openjdk:$image_tag" \
+    ./mvnw $@

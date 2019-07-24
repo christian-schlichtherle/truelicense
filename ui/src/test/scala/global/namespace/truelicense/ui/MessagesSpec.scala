@@ -1,18 +1,14 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.ui
 
 import LicenseWizardMessage._
 import MessagesTestSupport._
 import org.scalatest.WordSpec
-import org.scalatest.prop.PropertyChecks._
+import org.scalatest.prop.TableDrivenPropertyChecks._
 
-/**
-  * @author Christian Schlichtherle
-  */
 class MessagesSpec extends WordSpec {
 
   "Messages" should {
@@ -52,7 +48,7 @@ class MessagesSpec extends WordSpec {
         uninstall_failure,
         failure_title
       )
-      forAll (table) { key => testSerialization(key format ()) }
+      forAll(table) { key => testSerialization(key format()) }
     }
   }
 }

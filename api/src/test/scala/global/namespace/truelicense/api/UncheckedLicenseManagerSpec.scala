@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api
 
 import global.namespace.fun.io.api.Store
@@ -10,14 +9,14 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
-import org.scalatest.mockito.MockitoSugar.mock
+import org.scalatestplus.mockito.MockitoSugar.mock
 
 class UncheckedLicenseManagerSpec extends WordSpec {
 
   "The unchecked vendor license manager returned by UncheckedLicenseManager.from(VendorLicenseManager)" should {
     val checkedManager = mock[VendorLicenseManager]
 
-    when (checkedManager.unchecked) thenCallRealMethod ()
+    when(checkedManager.unchecked).thenCallRealMethod
 
     val uncheckedManager = checkedManager.unchecked
 
@@ -34,12 +33,16 @@ class UncheckedLicenseManagerSpec extends WordSpec {
 
         "calling license()" in {
           when(checkedGenerator.license) thenThrow checkedException
-          interceptUncheckedException { uncheckedGenerator.license }
+          interceptUncheckedException {
+            uncheckedGenerator.license
+          }
         }
 
         "calling saveTo(Sink)" in {
           when(checkedGenerator saveTo any[Store]) thenThrow checkedException
-          interceptUncheckedException { uncheckedGenerator saveTo mock[Store] }
+          interceptUncheckedException {
+            uncheckedGenerator saveTo mock[Store]
+          }
         }
       }
     }
@@ -48,7 +51,7 @@ class UncheckedLicenseManagerSpec extends WordSpec {
   "The unchecked consumer license manager returned by UncheckedLicenseManager.from(ConsumerLicenseManager)" should {
     val checkedManager = mock[ConsumerLicenseManager]
 
-    when (checkedManager.unchecked) thenCallRealMethod ()
+    when(checkedManager.unchecked).thenCallRealMethod
 
     val uncheckedManager = checkedManager.unchecked
 
@@ -59,22 +62,30 @@ class UncheckedLicenseManagerSpec extends WordSpec {
     "throw only unchecked exceptions" when {
       "installing a license key" in {
         when(checkedManager install any[Store]) thenThrow checkedException
-        interceptUncheckedException { uncheckedManager install mock[Store] }
+        interceptUncheckedException {
+          uncheckedManager install mock[Store]
+        }
       }
 
       "loading a license key" in {
-        when(checkedManager load ()) thenThrow checkedException
-        interceptUncheckedException { uncheckedManager load () }
+        when(checkedManager.load()) thenThrow checkedException
+        interceptUncheckedException {
+          uncheckedManager.load()
+        }
       }
 
       "verifying a license key" in {
-        when(checkedManager verify ()) thenThrow checkedException
-        interceptUncheckedException { uncheckedManager verify () }
+        when(checkedManager.verify()) thenThrow checkedException
+        interceptUncheckedException {
+          uncheckedManager.verify()
+        }
       }
 
       "uninstalling a license key" in {
-        when(checkedManager uninstall ()) thenThrow checkedException
-        interceptUncheckedException { uncheckedManager uninstall () }
+        when(checkedManager.uninstall()) thenThrow checkedException
+        interceptUncheckedException {
+          uncheckedManager.uninstall()
+        }
       }
     }
   }

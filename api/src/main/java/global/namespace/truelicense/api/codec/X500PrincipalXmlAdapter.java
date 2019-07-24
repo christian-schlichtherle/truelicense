@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.codec;
 
 import javax.security.auth.x500.X500Principal;
@@ -12,8 +11,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * An immutable XML adapter for {@link X500Principal}s for use with JAXB.
  * <p>
  * This type of XML adapter is used for V2/XML format license keys.
- *
- * @author Christian Schlichtherle
  */
 public final class X500PrincipalXmlAdapter
 extends XmlAdapter<String, X500Principal> {

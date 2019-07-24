@@ -1,15 +1,13 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.passwd;
 
 /**
  * A container for an erasable password.
  *
  * @see PasswordProtection
- * @author Christian Schlichtherle
  */
 public interface Password extends AutoCloseable {
 

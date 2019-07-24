@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api.x500;
 
 import global.namespace.truelicense.api.builder.GenBuilder;
@@ -45,7 +44,6 @@ import static java.util.Objects.requireNonNull;
  * {@code This}.
  *
  * @param <This> the type of this generic X.500 principal builder.
- * @author Christian Schlichtherle
  * @since TrueLicense 2.3
  */
 public abstract class GenX500PrincipalBuilder<This extends GenX500PrincipalBuilder<This>>

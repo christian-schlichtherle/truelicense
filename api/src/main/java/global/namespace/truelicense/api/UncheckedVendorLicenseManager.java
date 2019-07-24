@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2017 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
 package global.namespace.truelicense.api;
@@ -12,7 +12,6 @@ import global.namespace.fun.io.api.Sink;
  * An unchecked vendor license manager generally throws an {@link UncheckedLicenseManagementException} with a
  * (checked) {@link LicenseManagementException} as its cause if an operation fails for some reason.
  *
- * @author Christian Schlichtherle
  * @see VendorLicenseManager#unchecked()
  */
 public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
