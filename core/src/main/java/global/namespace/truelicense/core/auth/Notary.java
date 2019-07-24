@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2005-2015 Schlichtherle IT Services.
+ * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-#macro(obfuscate $string)$java.obfuscatedString($string).replaceAll(" /\*.*\*/", ".toString()")#end
 package global.namespace.truelicense.core.auth;
 
 import global.namespace.fun.io.api.Decoder;
@@ -16,22 +15,18 @@ import global.namespace.truelicense.api.passwd.PasswordProtection;
 import global.namespace.truelicense.api.passwd.PasswordUsage;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
-import java.io.InputStream;
-import java.security.*;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * Signs or verifies a generic artifact using the private or public keys in a
- * keystore entry.
+ * Signs or verifies a generic artifact using a private or public key in a keystore entry.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 public final class Notary implements Authentication {
 
@@ -47,11 +42,11 @@ public final class Notary implements Authentication {
     @Obfuscate
     static final String NO_SUCH_ENTRY = "noSuchEntry";
 
-    private static volatile boolean logged;
-
     private final AuthenticationParameters parameters;
 
-    public Notary(final AuthenticationParameters parameters) { this.parameters = Objects.requireNonNull(parameters); }
+    public Notary(final AuthenticationParameters parameters) {
+        this.parameters = Objects.requireNonNull(parameters);
+    }
 
     @Override
     public Decoder sign(RepositoryController controller, Object artifact) throws Exception {
@@ -63,7 +58,9 @@ public final class Notary implements Authentication {
         return new Cache().verify(controller);
     }
 
-    AuthenticationParameters parameters() { return parameters; }
+    private AuthenticationParameters parameters() {
+        return parameters;
+    }
 
     private final class Cache {
 
@@ -111,23 +108,7 @@ public final class Notary implements Authentication {
         }
 
         PublicKey publicKey() throws Exception {
-            final Certificate c = certificate();
-            final PublicKey p = c.getPublicKey();
-            if (!logged && isCertificateEntry()) {
-                try (InputStream in = Notary.class.getResourceAsStream(p.getAlgorithm())) {
-                    c.verify(CertificateFactory .getInstance(#obfuscate("X.509"))
-                                                .generateCertificate(in)
-                                                .getPublicKey());
-                } catch (SignatureException ex) {
-                    logged = true;
-                    Logger  .getAnonymousLogger(Messages.class.getName())
-                            .log(   new Level(  #obfuscate("NOTICE"),
-                                                Integer.MAX_VALUE,
-                                                Messages.class.getName()) { },
-                                    #obfuscate("agpl3"));
-                }
-            }
-            return p;
+            return certificate().getPublicKey();
         }
 
         Certificate certificate() throws Exception {
@@ -147,7 +128,7 @@ public final class Notary implements Authentication {
                     final KeyStore.PasswordProtection protection =
                             new KeyStore.PasswordProtection(password.characters());
                     try {
-                        return keyStoreEntry(Optional.ofNullable(protection));
+                        return keyStoreEntry(Optional.of(protection));
                     } finally {
                         protection.destroy();
                     }
@@ -191,18 +172,32 @@ public final class Notary implements Authentication {
             }
         }
 
-        Message message(String key) { return Messages.message(key, alias()); }
+        Message message(String key) {
+            return Messages.message(key, alias());
+        }
 
-        String alias() { return parameters().alias(); }
+        String alias() {
+            return parameters().alias();
+        }
 
-        PasswordProtection keyProtection() { return parameters().keyProtection(); }
+        PasswordProtection keyProtection() {
+            return parameters().keyProtection();
+        }
 
-        Optional<String> configuredAlgorithm() { return parameters().algorithm(); }
+        Optional<String> configuredAlgorithm() {
+            return parameters().algorithm();
+        }
 
-        Optional<Source> source() { return parameters().source(); }
+        Optional<Source> source() {
+            return parameters().source();
+        }
 
-        PasswordProtection storeProtection() { return parameters().storeProtection(); }
+        PasswordProtection storeProtection() {
+            return parameters().storeProtection();
+        }
 
-        String storeType() { return parameters().storeType(); }
+        String storeType() {
+            return parameters().storeType();
+        }
     }
 }
