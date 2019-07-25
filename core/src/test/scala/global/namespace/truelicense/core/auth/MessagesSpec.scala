@@ -18,7 +18,6 @@ class MessagesSpec extends WordSpec {
         (NO_PRIVATE_KEY),
         (NO_CERTIFICATE),
         (NO_SUCH_ENTRY),
-        ("agpl3")
       )
       forAll(table) { key => testSerialization(Messages message key) }
     }
