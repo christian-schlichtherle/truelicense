@@ -352,20 +352,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <groupId>com.amashchenko.maven.plugin</groupId>
-                <artifactId>gitflow-maven-plugin</artifactId>
-                <version>1.12.0</version>
-                <configuration>
-                    <gitFlowConfig>
-                        <versionTagPrefix>truelicense-</versionTagPrefix>
-                    </gitFlowConfig>
-                    <skipTestProject>true</skipTestProject>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
     <profiles>
