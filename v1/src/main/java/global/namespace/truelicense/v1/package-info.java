@@ -3,6 +3,6 @@
  * All rights reserved. Use is subject to license terms.
  */
 /**
- * Provides static method factories for use with V1 format license keys.
+ * Provides static method factories for the V1 license key format.
  */
 package global.namespace.truelicense.v1;

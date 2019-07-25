@@ -15,10 +15,7 @@
     <artifactId>truelicense-v1</artifactId>
 
     <name>TrueLicense V1</name>
-    <description>
-        The TrueLicense V1 module extends the TrueLicense Core module in
-        order to add support for the V1 license key format.
-    </description>
+    <description>Provides the V1 license key format.</description>
 
     <dependencies>
         <dependency>
