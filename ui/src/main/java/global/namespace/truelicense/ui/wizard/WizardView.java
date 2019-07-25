@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.ui.wizard;
 
 /**
@@ -13,8 +12,6 @@ package global.namespace.truelicense.ui.wizard;
  * </ul>
  *
  * @param  <S> the type of the wizard's states.
- * @author Christian Schlichtherle
- * @since  TrueLicense 2.3
  */
 public interface WizardView<S> {
 

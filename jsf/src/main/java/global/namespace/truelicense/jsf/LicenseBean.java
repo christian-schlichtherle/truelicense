@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.jsf;
 
 import global.namespace.truelicense.api.ConsumerLicenseManager;
@@ -24,9 +23,6 @@ import java.util.Locale;
 
 /**
  * A base class for backing beans for license consumer management.
- *
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 public abstract class LicenseBean
 extends UINamingContainer

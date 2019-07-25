@@ -10,8 +10,6 @@ import global.namespace.truelicense.api.LicenseManagementContextBuilder;
  * This facade provides a static factory method for a license management context builder with default property values.
  * This class should not be used by applications because the created license management context builders are only
  * partially configured.
- *
- * @author Christian Schlichtherle
  */
 public final class Core {
 

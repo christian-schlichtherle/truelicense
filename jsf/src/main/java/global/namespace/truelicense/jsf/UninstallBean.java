@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.jsf;
 
 import javax.faces.component.FacesComponent;
@@ -12,9 +11,6 @@ import global.namespace.truelicense.ui.LicenseWizardState;
 
 /**
  * The backing bean for uninstalling the installed license key.
- *
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 @FacesComponent
 public final class UninstallBean extends LicenseBean {

@@ -21,8 +21,6 @@ import static global.namespace.fun.io.jackson.Jackson.json;
  * {@link ObjectMapper}.
  * This type of codec is used for V2/JSON format license keys.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 final class JsonCodec implements Codec {
 

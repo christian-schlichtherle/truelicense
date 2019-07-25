@@ -25,9 +25,6 @@ import java.util.stream.Stream;
 /**
  * Processes template files in a given directory using
  * <a href="http://velocity.apache.org">Apache Velocity</a>.
- *
- * @author Christian Schlichtherle
- * @since TrueLicense 2.4
  */
 public abstract class GenerateSourcesMojo extends MojoAdapter {
 

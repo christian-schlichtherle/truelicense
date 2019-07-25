@@ -11,8 +11,6 @@ import static java.lang.System.currentTimeMillis;
 /**
  * A simple time sensitive cache with just one association.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 final class Cache<K, V> {

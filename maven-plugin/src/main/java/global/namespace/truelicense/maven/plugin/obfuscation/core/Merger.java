@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation.core;
 
 import org.objectweb.asm.ClassVisitor;
@@ -14,8 +13,6 @@ import static org.objectweb.asm.Opcodes.*;
  * Merges {@code <clinit>} methods.
  * This class visitor requires the flag
  * {@link org.objectweb.asm.ClassWriter#COMPUTE_MAXS} to be set.
- *
- * @author Christian Schlichtherle
  */
 final class Merger extends Visitor {
 

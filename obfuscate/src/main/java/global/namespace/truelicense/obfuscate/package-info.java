@@ -5,7 +5,5 @@
 /**
  * Provides an annotation and runtime support for the obfuscation of constant
  * string values in Java byte code.
- *
- * @author Christian Schlichtherle
  */
 package global.namespace.truelicense.obfuscate;

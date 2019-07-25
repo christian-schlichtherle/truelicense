@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing.util;
 
 import global.namespace.truelicense.ui.misc.MnemonicText;
@@ -14,8 +13,6 @@ import javax.swing.JRadioButton;
 /**
  * The {@link #setText(String)} method scans the string for the first
  * occurrence of the character {@code &} to set the button's mnemonic.
- *
- * @author Christian Schlichtherle
  */
 public class EnhancedRadioButton extends JRadioButton {
 

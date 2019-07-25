@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api;
 
 import global.namespace.fun.io.api.Sink;
@@ -13,7 +12,6 @@ import global.namespace.fun.io.api.Sink;
  * {@link LicenseManagementException}.
  *
  * @see UncheckedVendorLicenseManager#generateKeyFrom(License)
- * @author Christian Schlichtherle
  */
 public interface UncheckedLicenseKeyGenerator extends LicenseKeyGenerator {
 

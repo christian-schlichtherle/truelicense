@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.spi.i18n;
 
 import java.text.MessageFormat;
@@ -15,8 +14,6 @@ import static java.util.Objects.requireNonNull;
  * Wraps a {@link ResourceBundle} in order to format strings with
  * {@link MessageFormat#format(String, Object[])}.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 public final class FormattedResourceBundle {
 

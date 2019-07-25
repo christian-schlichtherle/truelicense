@@ -9,16 +9,13 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0-M4</version>
+        <version>4.0.0-M5</version>
     </parent>
 
     <artifactId>truelicense-v2-core</artifactId>
 
     <name>TrueLicense V2 Core</name>
-    <description>
-        The TrueLicense V2 Core module provides common functionality for the
-        V2/JSON and V2/XML license key formats.
-    </description>
+    <description>Provides support for the V2/* license key formats.</description>
 
     <dependencies>
         <dependency>

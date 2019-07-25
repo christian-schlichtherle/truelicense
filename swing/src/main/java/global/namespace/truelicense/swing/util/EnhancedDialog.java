@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing.util;
 
 import javax.swing.*;
@@ -16,8 +15,6 @@ import java.io.Serializable;
 /**
  * A dialog which performs the default closing operation when the escape key
  * gets pressed.
- *
- * @author Christian Schlichtherle
  */
 public class EnhancedDialog extends JDialog {
 

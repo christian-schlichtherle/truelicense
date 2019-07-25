@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation;
 
 import global.namespace.truelicense.obfuscate.ObfuscatedString;
@@ -17,8 +16,6 @@ import java.io.File;
  * constant string values in scope.
  *
  * @see ObfuscatedString
- * @since TrueLicense 2.4
- * @author Christian Schlichtherle
  */
 @Mojo(name = "obfuscate-main-classes", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class ObfuscateMainClassesMojo extends ObfuscateClassesMojo {

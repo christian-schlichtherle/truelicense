@@ -16,8 +16,9 @@ import javax.xml.bind.JAXBException;
  * This facade provides a static factory method for license management context builders for Version 2-with-XML (V2/XML)
  * format license keys.
  *
- * @author Christian Schlichtherle
+ * @deprecated Since TrueLicense 4, this format is deprecated and should not be used for new applications.
  */
+@Deprecated
 public final class V2Xml {
 
     /**

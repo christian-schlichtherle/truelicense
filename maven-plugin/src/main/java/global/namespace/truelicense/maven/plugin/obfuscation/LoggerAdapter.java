@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation;
 
 import org.apache.maven.plugin.logging.Log;
@@ -11,9 +10,6 @@ import org.slf4j.helpers.MarkerIgnoringBase;
 import static org.slf4j.helpers.MessageFormatter.arrayFormat;
 import static org.slf4j.helpers.MessageFormatter.format;
 
-/**
- * @author Christian Schlichtherle
- */
 final class LoggerAdapter extends MarkerIgnoringBase {
 
     private final Log log;

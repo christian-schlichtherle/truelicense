@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation.core;
 
 import org.objectweb.asm.FieldVisitor;
@@ -11,9 +10,6 @@ import java.util.Set;
 
 import static global.namespace.truelicense.obfuscate.ObfuscatedString.literal;
 
-/**
- * @author Christian Schlichtherle
- */
 final class Collector extends Visitor {
 
     Collector(Processor ctx) {

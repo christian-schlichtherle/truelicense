@@ -33,9 +33,6 @@ import static global.namespace.truelicense.core.Messages.message;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
 
-/**
- * @author Christian Schlichtherle
- */
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked"})
 final class TrueLicenseManagementContext implements LicenseManagementContext, AuthenticationFactory, EncryptionFactory {
 
@@ -901,7 +898,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public Password password(final PasswordUsage usage) throws Exception {
-            if (usage.equals(PasswordUsage.WRITE)) { // checks null
+            if (usage.equals(PasswordUsage.ENCRYPTION)) { // checks null
                 passwordPolicy().check(protection);
             }
             return protection.password(usage);

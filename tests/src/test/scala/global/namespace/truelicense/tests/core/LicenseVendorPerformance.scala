@@ -8,7 +8,8 @@ import java.util.concurrent.Callable
 
 import global.namespace.fun.io.bios.BIOS.memory
 
-trait LicenseVendorPerformance extends Callable[Unit] { this: TestContext =>
+trait LicenseVendorPerformance extends Callable[Unit] {
+  this: TestContext =>
 
   def call(): Unit = {
     for (i <- 1 to 5) {

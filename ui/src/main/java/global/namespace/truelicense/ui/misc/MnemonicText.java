@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.ui.misc;
 
 import java.io.Serializable;
@@ -13,9 +12,6 @@ import java.io.Serializable;
  *
  * retrieve extended information
  * which can be used to configure the mnemonic for a {@code JComponent}.
- *
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 public final class MnemonicText implements Serializable {
 

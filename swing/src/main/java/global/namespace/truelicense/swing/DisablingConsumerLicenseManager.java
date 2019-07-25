@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.fun.io.api.Source;
@@ -17,8 +16,6 @@ import global.namespace.truelicense.api.ConsumerLicenseManager;
  * If the operation succeeds, the component remains disabled.
  * Otherwise, the component state gets recovered.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 final class DisablingConsumerLicenseManager extends UpdatingConsumerLicenseManager {
 

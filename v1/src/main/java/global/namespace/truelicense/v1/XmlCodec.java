@@ -22,8 +22,6 @@ import static global.namespace.fun.io.bios.BIOS.xml;
  * {@link XMLEncoder}/{@link XMLDecoder}.
  * This type of codec is used for V1 format license keys.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 class XmlCodec implements Codec {
 

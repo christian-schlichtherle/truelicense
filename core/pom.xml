@@ -9,7 +9,7 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0-M4</version>
+        <version>4.0.0-M5</version>
     </parent>
 
     <artifactId>truelicense-core</artifactId>
@@ -31,21 +31,4 @@
             <artifactId>fun-io-bios</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>generate-main-sources</id>
-                        <goals>
-                            <goal>generate-main-sources</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -9,14 +9,12 @@ import global.namespace.truelicense.api.passwd.*;
 /**
  * A password policy which ensures that the password is at least eight
  * characters long and consists of both letters and digits.
- *
- * @author Christian Schlichtherle
  */
 public final class MinimumPasswordPolicy implements PasswordPolicy {
 
     @Override
     public void check(final PasswordProtection protection) throws Exception {
-        try (Password password = protection.password(PasswordUsage.WRITE)) {
+        try (Password password = protection.password(PasswordUsage.ENCRYPTION)) {
             final char[] characters = password.characters();
             final int l = characters.length;
             if (l < 8) {

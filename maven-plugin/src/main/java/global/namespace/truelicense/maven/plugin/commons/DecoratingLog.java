@@ -2,16 +2,12 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.commons;
 
 import org.apache.maven.plugin.logging.Log;
 
 import java.util.Objects;
 
-/**
- * @author Christian Schlichtherle
- */
 class DecoratingLog implements Log {
 
     /** The nullable log. */

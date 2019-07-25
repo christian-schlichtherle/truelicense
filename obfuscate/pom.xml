@@ -9,7 +9,7 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0-M4</version>
+        <version>4.0.0-M5</version>
     </parent>
 
     <artifactId>truelicense-obfuscate</artifactId>
@@ -29,10 +29,10 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!-- Cannot use the build version for bootstrapping! -->
                 <groupId>global.namespace.truelicense</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <version>4.0.0-M3</version>
+                <!-- Cannot use ${project.version} for bootstrapping! -->
+                <version>4.0.0-M4</version>
                 <executions>
                     <execution>
                         <id>generate-main-sources</id>

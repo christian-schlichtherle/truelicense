@@ -17,8 +17,6 @@ import java.util.Objects;
 /**
  * A mix-in for a password based encryption.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 public abstract class EncryptionMixin {
 

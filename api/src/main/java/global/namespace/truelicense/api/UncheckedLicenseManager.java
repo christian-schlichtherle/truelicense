@@ -9,7 +9,6 @@ import java.util.concurrent.Callable;
 /**
  * Provides utilities for unchecked license managers.
  *
- * @author Christian Schlichtherle
  * @see UncheckedConsumerLicenseManager
  * @see UncheckedVendorLicenseManager
  */

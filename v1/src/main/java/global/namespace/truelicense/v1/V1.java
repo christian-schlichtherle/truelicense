@@ -4,11 +4,8 @@
  */
 package global.namespace.truelicense.v1;
 
-import de.schlichtherle.license.LicenseContent;
-import global.namespace.truelicense.api.LicenseFactory;
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
-import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 import global.namespace.truelicense.v1.auth.V1RepositoryContext;
 
@@ -20,9 +17,7 @@ import static global.namespace.fun.io.bios.BIOS.gzip;
  * This class is provided to enable applications to generate, install, verify and uninstall license keys in the format
  * for TrueLicense 1.X applications.
  *
- * @deprecated Since TrueLicense 2.0, this format is deprecated and should not be used for new applications.
- *
- * @author Christian Schlichtherle
+ * @deprecated Since TrueLicense 2, this format is deprecated and should not be used for new applications.
  */
 @Deprecated
 public final class V1 {
@@ -35,24 +30,17 @@ public final class V1 {
 
     /** Returns a new license management context builder for managing Version 1 (V1) format license keys. */
     public static LicenseManagementContextBuilder builder() {
-        final LicenseFactory licenseFactory = new LicenseFactory() {
-
-            @Override
-            public License license() { return new LicenseContent(); }
-
-            @Override
-            public Class<? extends License> licenseClass() { return LicenseContent.class; }
-        };
         return Core
                 .builder()
                 .codec(new X500PrincipalXmlCodec())
                 .compression(gzip())
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
-                .licenseFactory(licenseFactory)
+                .licenseFactory(new V1LicenseFactory())
                 .repositoryContext(new V1RepositoryContext())
                 .keystoreType(KEYSTORE_TYPE);
     }
 
     private V1() { }
+
 }

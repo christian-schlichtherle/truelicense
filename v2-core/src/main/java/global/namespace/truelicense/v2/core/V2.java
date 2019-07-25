@@ -4,11 +4,9 @@
  */
 package global.namespace.truelicense.v2.core;
 
-import global.namespace.truelicense.api.LicenseFactory;
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.v2.core.auth.V2RepositoryContext;
-import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
 import java.util.zip.Deflater;
@@ -21,8 +19,9 @@ import static global.namespace.fun.io.bios.BIOS.deflate;
  * This class should not be used by applications because the created license management context builders are only
  * partially configured.
  *
- * @author Christian Schlichtherle
+ * @deprecated Since TrueLicense 4, this format is deprecated and should not be used for new applications.
  */
+@Deprecated
 public final class V2 {
 
     @Obfuscate
@@ -37,23 +36,16 @@ public final class V2 {
      * partially configured.
      */
     public static LicenseManagementContextBuilder builder() {
-        final LicenseFactory licenseFactory = new LicenseFactory() {
-
-            @Override
-            public License license() { return new License(); }
-
-            @Override
-            public Class<? extends License> licenseClass() { return License.class; }
-        };
         return Core
                 .builder()
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V2Encryption::new)
-                .licenseFactory(licenseFactory)
+                .licenseFactory(new V2LicenseFactory())
                 .repositoryContext(new V2RepositoryContext())
                 .keystoreType(KEYSTORE_TYPE);
     }
 
     private V2() { }
+
 }

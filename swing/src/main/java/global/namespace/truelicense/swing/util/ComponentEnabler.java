@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing.util;
 
 import java.awt.*;
@@ -11,9 +10,6 @@ import java.io.Serializable;
 /**
  * A proxy for enabling or disabling a {@link Component}.
  * This class is immutable.
- *
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 public abstract class ComponentEnabler implements Enabler, Serializable {
 

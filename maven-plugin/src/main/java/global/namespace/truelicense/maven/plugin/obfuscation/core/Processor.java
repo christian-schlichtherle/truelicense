@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation.core;
 
 import org.objectweb.asm.ClassVisitor;
@@ -20,8 +19,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * Runs the obfuscation based on the configuration parameters provided to its
  * constructor(s).
- *
- * @author Christian Schlichtherle
  */
 public final class Processor {
 

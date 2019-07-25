@@ -30,7 +30,6 @@ public interface VendorLicenseManager extends LicenseManagerMixin {
      * instead of a (checked) {@link LicenseManagementException} if an operation fails.
      *
      * @return the adapted unchecked vendor license manager.
-     * @since TrueLicense 3.1.0
      */
     default UncheckedVendorLicenseManager unchecked() {
         return () -> this;

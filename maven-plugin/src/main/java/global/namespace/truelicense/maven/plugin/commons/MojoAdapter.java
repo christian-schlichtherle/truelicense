@@ -15,7 +15,6 @@ import org.apache.maven.plugin.logging.Log;
  * This class is thread-safe.
  *
  * @see #execute()
- * @author Christian Schlichtherle
  */
 public abstract class MojoAdapter extends AbstractMojo {
 

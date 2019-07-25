@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.truelicense.swing.util.EnhancedRadioButton;
@@ -12,9 +11,6 @@ import global.namespace.truelicense.ui.LicenseWizardState;
 import javax.swing.*;
 import java.util.concurrent.ExecutionException;
 
-/**
- * @author Christian Schlichtherle
- */
 final class WelcomePanel extends LicensePanel {
 
     private static final long serialVersionUID = 1L;

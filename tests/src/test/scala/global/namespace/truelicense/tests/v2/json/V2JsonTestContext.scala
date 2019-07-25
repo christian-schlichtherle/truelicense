@@ -8,8 +8,8 @@ import global.namespace.truelicense.api.LicenseManagementContextBuilder
 import global.namespace.truelicense.tests.v2.core.V2TestContext
 import global.namespace.truelicense.v2.json.V2Json
 
-/** @author Christian Schlichtherle */
 trait V2JsonTestContext extends V2TestContext {
 
+  //noinspection ScalaDeprecation
   final override def managementContextBuilder: LicenseManagementContextBuilder = V2Json.builder
 }

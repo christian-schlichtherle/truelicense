@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation.core;
 
 import org.objectweb.asm.ClassReader;
@@ -12,9 +11,6 @@ import java.io.IOException;
 
 import static org.objectweb.asm.ClassReader.*;
 
-/**
- * @author Christian Schlichtherle
- */
 final class FirstPass extends Pass {
 
     private static final int

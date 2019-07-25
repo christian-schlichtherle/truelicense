@@ -8,7 +8,8 @@ import java.util.concurrent.Callable
 
 import global.namespace.fun.io.bios.BIOS.memory
 
-trait LicenseConsumerPerformance extends Callable[Unit] { this: TestContext =>
+trait LicenseConsumerPerformance extends Callable[Unit] {
+  this: TestContext =>
 
   def call(): Unit = {
     val store = memory

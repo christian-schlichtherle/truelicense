@@ -38,8 +38,6 @@ import static javax.tools.Diagnostic.Kind.*;
  * the constant string value again.
  * You could copy-paste this note into the source code for manual substitution
  * if you don't want to (or cannot) use an automated build tool for this task.
- *
- * @author Christian Schlichtherle
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("global.namespace.truelicense.obfuscate.Obfuscate")

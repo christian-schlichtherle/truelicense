@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.jax.rs;
 
 import global.namespace.truelicense.api.LicenseManagementException;
@@ -14,9 +13,6 @@ import java.security.GeneralSecurityException;
  * Wraps a {@link LicenseManagementException} in order to decorate it with
  * additional meta data for generating an HTTP response.
  * This class is immutable.
- *
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 public final class ConsumerLicenseManagementServiceException
 extends GeneralSecurityException {

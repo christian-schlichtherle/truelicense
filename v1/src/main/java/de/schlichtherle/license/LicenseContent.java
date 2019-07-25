@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package de.schlichtherle.license;
 
 import global.namespace.truelicense.api.License;
@@ -12,8 +11,6 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * Provides compatibility with V1 format license keys.
- *
- * @author Christian Schlichtherle
  */
 // The following is required to support TrueLicense JAX-RS:
 // #TRUELICENSE-50: The XML root element name MUST be explicitly defined!

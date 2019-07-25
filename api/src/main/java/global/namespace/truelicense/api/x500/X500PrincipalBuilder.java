@@ -8,7 +8,5 @@ import javax.security.auth.x500.X500Principal;
 
 /**
  * A builder for an {@link X500Principal}.
- *
- * @since TrueLicense 2.3
  */
 public final class X500PrincipalBuilder extends GenX500PrincipalBuilder<X500PrincipalBuilder> { }

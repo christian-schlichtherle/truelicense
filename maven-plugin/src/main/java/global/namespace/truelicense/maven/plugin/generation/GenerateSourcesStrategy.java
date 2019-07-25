@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.generation;
 
 /**
@@ -10,7 +9,6 @@ package global.namespace.truelicense.maven.plugin.generation;
  * template files with the Velocity context gets added to the maven project.
  *
  * @see GenerateSourcesMojo#generateSourcesStrategy()
- * @author Christian Schlichtherle
  */
 public enum GenerateSourcesStrategy {
 
