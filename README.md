@@ -13,4 +13,4 @@ internationalization, privacy protection and more.
 For documentation, please refer to the documentation at http://truelicense.net/.
 
 Previous releases were covered by the GNU Affero General Public License, Version 3.
-Since version 4.0.0-M5, TrueLicense is covered by the Apache License, Version 2.0.
+Since version 4, TrueLicense is covered by the Apache License, Version 2.0.
