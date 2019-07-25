@@ -308,6 +308,7 @@ public final class ObfuscatedString {
     public String toStringIntern() { return toString().intern(); }
 
     @Override
+    @Deprecated
     protected void finalize() throws Throwable {
         Arrays.fill(obfuscated, 0L);
         super.finalize();
