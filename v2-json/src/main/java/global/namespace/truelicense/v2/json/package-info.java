@@ -3,6 +3,6 @@
  * All rights reserved. Use is subject to license terms.
  */
 /**
- * Provides factories for the V2/JSON license key format.
+ * Provides static method factories for use with V2/JSON format license keys.
  */
 package global.namespace.truelicense.v2.json;
