@@ -10,7 +10,6 @@ import global.namespace.truelicense.tests.core.TestContext
 import global.namespace.truelicense.tests.v1.V1TestContext._
 import global.namespace.truelicense.v1.V1
 
-/** @author Christian Schlichtherle */
 trait V1TestContext extends TestContext {
 
   //noinspection ScalaDeprecation
@@ -63,6 +62,7 @@ trait V1TestContext extends TestContext {
 
   final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
     val cm = managementContext.consumer
+      .ftpDays(1)
       .authentication
         .alias("mykey")
         .loadFromResource(prefix + "ftp.jks")
@@ -70,7 +70,6 @@ trait V1TestContext extends TestContext {
         .up
       .parent(parent)
       .storeIn(store)
-      .ftpDays(1)
       .build
     require(cm.context eq managementContext)
     cm
@@ -92,7 +91,6 @@ trait V1TestContext extends TestContext {
   }
 }
 
-/** @author Christian Schlichtherle */
 object V1TestContext {
 
   private def prefix = classOf[V1TestContext].getPackage.getName.replace('.', '/') + '/'

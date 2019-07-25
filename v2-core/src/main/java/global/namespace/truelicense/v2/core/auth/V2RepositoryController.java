@@ -46,9 +46,9 @@ final class V2RepositoryController implements RepositoryController {
         final String encodedSignature = getEncoder().encodeToString(signatureData);
         final String signatureAlgorithm = engine.getAlgorithm();
 
-        model.setArtifact(encodedArtifact);
-        model.setSignature(encodedSignature);
-        model.setAlgorithm(signatureAlgorithm);
+        model.artifact = encodedArtifact;
+        model.signature = encodedSignature;
+        model.algorithm = signatureAlgorithm;
 
         return codec.decoder(store);
     }
@@ -61,12 +61,12 @@ final class V2RepositoryController implements RepositoryController {
 
     @Override
     public final Decoder verify(final Signature engine) throws Exception {
-        if (!engine.getAlgorithm().equalsIgnoreCase(model.getAlgorithm())) {
+        if (!engine.getAlgorithm().equalsIgnoreCase(model.algorithm)) {
             throw new IllegalArgumentException();
         }
-        final byte[] artifactData = data(codec, model.getArtifact());
+        final byte[] artifactData = data(codec, model.artifact);
         engine.update(artifactData);
-        if (!engine.verify(getDecoder().decode(model.getSignature()))) {
+        if (!engine.verify(getDecoder().decode(model.signature))) {
             throw new RepositoryIntegrityException();
         }
         final Store store = memory();

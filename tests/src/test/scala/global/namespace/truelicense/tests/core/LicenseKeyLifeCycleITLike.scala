@@ -8,12 +8,12 @@ import java.util.Date
 
 import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
-import global.namespace.truelicense.tests.core.LicenseKeyLifeCycleITSuite.logger
+import global.namespace.truelicense.tests.core.LicenseKeyLifeCycleITLike.logger
 import org.scalatest.Matchers._
 import org.scalatest._
 import org.slf4j.LoggerFactory
 
-abstract class LicenseKeyLifeCycleITSuite extends WordSpec {
+trait LicenseKeyLifeCycleITLike extends WordSpecLike {
   this: TestContext =>
 
   "The license key life cycle" should {
@@ -158,7 +158,7 @@ abstract class LicenseKeyLifeCycleITSuite extends WordSpec {
   }
 }
 
-object LicenseKeyLifeCycleITSuite {
+object LicenseKeyLifeCycleITLike {
 
-  private val logger = LoggerFactory getLogger classOf[LicenseKeyLifeCycleITSuite]
+  private val logger = LoggerFactory getLogger classOf[LicenseKeyLifeCycleITLike]
 }

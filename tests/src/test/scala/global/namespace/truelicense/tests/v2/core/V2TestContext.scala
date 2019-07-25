@@ -9,7 +9,6 @@ import global.namespace.truelicense.api.{ConsumerLicenseManager, VendorLicenseMa
 import global.namespace.truelicense.tests.core.TestContext
 import global.namespace.truelicense.tests.v2.core.V2TestContext.prefix
 
-/** @author Christian Schlichtherle */
 trait V2TestContext extends TestContext {
 
   final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
@@ -88,7 +87,6 @@ trait V2TestContext extends TestContext {
   }
 }
 
-/** @author Christian Schlichtherle */
 object V2TestContext {
 
   private def prefix = classOf[V2TestContext].getPackage.getName.replace('.', '/') + '/'

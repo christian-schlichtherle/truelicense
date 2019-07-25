@@ -4,13 +4,12 @@
  */
 package global.namespace.truelicense.tests.jax.rs
 
-import global.namespace.truelicense.tests.core.TestContext
 import global.namespace.truelicense.jax.rs.ConsumerLicenseManagementServiceException
+import global.namespace.truelicense.tests.core.TestContext
 import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.WordSpecLike
 
-abstract class ConsumerLicenseManagementServiceITSuite
-  extends WordSpec with ConsumerLicenseManagementServiceITMixin {
+trait ConsumerLicenseManagementServiceITLike extends WordSpecLike with ConsumerLicenseManagementServiceITMixin {
   this: TestContext =>
 
   "A consumer license management service" when {

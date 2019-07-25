@@ -9,9 +9,9 @@ import java.util.Date
 
 import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
-import global.namespace.truelicense.tests.core.TestContext
-import global.namespace.truelicense.tests.swing.LicenseManagementWizardITSuite._
 import global.namespace.truelicense.swing.LicenseManagementWizard
+import global.namespace.truelicense.tests.core.TestContext
+import global.namespace.truelicense.tests.swing.LicenseManagementWizardITLike._
 import global.namespace.truelicense.ui.LicenseWizardMessage
 import global.namespace.truelicense.ui.LicenseWizardMessage._
 import global.namespace.truelicense.ui.wizard.WizardMessage._
@@ -23,7 +23,8 @@ import org.scalactic.source.Position
 import org.scalatest.Matchers._
 import org.scalatest._
 
-abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAfter { this: TestContext =>
+trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
+  this: TestContext =>
 
   private val laf = UIManager.getLookAndFeel
   private var outputLicense: License = _
@@ -67,7 +68,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
         }
 
         "have a title which includes the licensing management subject" ifNotHeadless {
-          dialog.getTitle should include (managementContext.subject)
+          dialog.getTitle should include(managementContext.subject)
         }
 
         "have its back button disabled" ifNotHeadless {
@@ -151,7 +152,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
           uninstallPanel.isVisible shouldBe true
           waitButton(uninstallPanel, uninstall_uninstall).doClick()
           Thread sleep 100
-          intercept[LicenseManagementException] { manager.load() }
+          intercept[LicenseManagementException](manager.load())
         }
       }
     }
@@ -176,8 +177,11 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
   }
 
   private def welcomePanel = waitPanel("WelcomePanel")
+
   private def installPanel = waitPanel("InstallPanel")
+
   private def displayPanel = waitPanel("DisplayPanel")
+
   private def uninstallPanel = waitPanel("UninstallPanel")
 
   private def waitPanel(name: String) =
@@ -196,7 +200,7 @@ abstract class LicenseManagementWizardITSuite extends WordSpec with BeforeAndAft
   private def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
 }
 
-object LicenseManagementWizardITSuite {
+object LicenseManagementWizardITLike {
 
   private def newLicenseManagementWizard(manager: ConsumerLicenseManager) = {
     val wizard = new LicenseManagementWizard(manager)

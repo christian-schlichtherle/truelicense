@@ -9,8 +9,7 @@ import global.namespace.truelicense.api.auth.RepositoryContext
 import org.scalatest.Matchers._
 import org.scalatest._
 
-/** @author Christian Schlichtherle */
-abstract class RepositoryITSuite[Model <: AnyRef] extends WordSpec with ParallelTestExecution {
+trait RepositoryITLike[Model <: AnyRef] extends WordSpecLike {
   this: TestContext =>
 
   val context: RepositoryContext[Model]

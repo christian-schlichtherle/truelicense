@@ -5,9 +5,9 @@
 package global.namespace.truelicense.tests.jax.rs
 
 import global.namespace.truelicense.api.ConsumerLicenseManager
-import global.namespace.truelicense.tests.core.TestContext
 import global.namespace.truelicense.jax.rs.dto.LicenseDTO
 import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
+import global.namespace.truelicense.tests.core.TestContext
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.client.Entity
 import javax.ws.rs.core.MediaType._
@@ -19,8 +19,9 @@ import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
 import org.scalatest.Matchers._
 
-abstract class ConsumerLicenseManagementServiceJerseyITSuite
-  extends JerseyTest with ConsumerLicenseManagementServiceITMixin {
+abstract class ConsumerLicenseManagementServiceJerseyITLike
+  extends JerseyTest
+    with ConsumerLicenseManagementServiceITMixin {
   this: TestContext =>
 
   override protected def configure: Application = {

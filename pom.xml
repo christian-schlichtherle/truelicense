@@ -81,6 +81,7 @@
         <module>v2-core</module>
         <module>v2-json</module>
         <module>v2-xml</module>
+        <module>v4</module>
     </modules>
 
     <dependencyManagement>
@@ -148,6 +149,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-v2-xml</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-v4</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

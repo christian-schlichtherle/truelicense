@@ -13,8 +13,8 @@ import global.namespace.truelicense.api._
 import global.namespace.truelicense.api.codec.Codec
 import global.namespace.truelicense.api.passwd.PasswordProtection
 import global.namespace.truelicense.core.passwd.ObfuscatedPasswordProtection
-import global.namespace.truelicense.tests.core.TestContext._
 import global.namespace.truelicense.obfuscate.ObfuscatedString
+import global.namespace.truelicense.tests.core.TestContext._
 import javax.security.auth.x500.X500Principal
 import org.slf4j.LoggerFactory
 
@@ -39,10 +39,10 @@ trait TestContext {
     getTime
   }
 
-  def extraData: AnyRef = { // must be AnyRef to enable overriding and returning a bean instead.
-    // The XmlEncoder used with V1 format license keys supports only standard
-    // Java collections by default, so I cannot use collection.JavaConverters
-    // here because it would create a custom implementation.
+  // The return type must be AnyRef to enable overriding and returning any bean instead:
+  def extraData: AnyRef = {
+    // The XmlEncoder used with the V1 license key format supports only standard Java collections by default, so we
+    // cannot use scala.jdk.CollectionConverters here because it would create a custom implementation:
     val map = new java.util.HashMap[String, String]
     map.put("message", "This is some private extra data!")
     map
@@ -68,7 +68,7 @@ trait TestContext {
   final lazy val managementContext: LicenseManagementContext = {
     managementContextBuilder
       .subject("subject")
-      .validation(logger debug("Validating license bean: {}", _))
+      .validation(logger.debug("Validating license bean: {}", _))
       .build
   }
 

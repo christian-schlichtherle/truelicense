@@ -2,12 +2,12 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.tests.v2.json
 
-import global.namespace.truelicense.tests.v2.core.V2RepositoryITSuite
+import global.namespace.truelicense.tests.v2.core.V2RepositoryITLike
+import org.scalatest.WordSpec
 
-/** @author Christian Schlichtherle */
 class V2JsonRepositoryIT
-extends V2RepositoryITSuite
-with V2JsonTestContext
+  extends WordSpec
+    with V2RepositoryITLike
+    with V2JsonTestContext

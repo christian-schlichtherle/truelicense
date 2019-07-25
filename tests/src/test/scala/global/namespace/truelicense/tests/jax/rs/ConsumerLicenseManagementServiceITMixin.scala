@@ -6,8 +6,8 @@ package global.namespace.truelicense.tests.jax.rs
 
 import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api.License
-import global.namespace.truelicense.tests.core.TestContext
 import global.namespace.truelicense.jax.rs.ConsumerLicenseManagementService
+import global.namespace.truelicense.tests.core.TestContext
 
 import scala.language.existentials
 

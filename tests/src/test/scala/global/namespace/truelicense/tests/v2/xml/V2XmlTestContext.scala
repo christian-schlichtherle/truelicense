@@ -11,9 +11,9 @@ import global.namespace.truelicense.v2.core.auth.V2RepositoryModel
 import global.namespace.truelicense.v2.xml.V2Xml
 import javax.xml.bind._
 
-/** @author Christian Schlichtherle */
 trait V2XmlTestContext extends V2TestContext {
 
+  //noinspection ScalaDeprecation
   final override def managementContextBuilder: LicenseManagementContextBuilder = {
     V2Xml builder JAXBContext.newInstance(classOf[License], classOf[ExtraData], classOf[V2RepositoryModel])
   }
