@@ -28,8 +28,6 @@ public class LicenseManagementException extends GeneralSecurityException {
      * <p>
      * The implementation in the class {@code LicenseManagementException}
      * returns {@code true}.
-     *
-     * @since TrueLicense 2.3 (renamed from isConsideredConfidential() in TrueLicense 3.0)
      */
     public boolean isConfidential() { return true; }
 }

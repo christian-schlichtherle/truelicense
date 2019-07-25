@@ -33,9 +33,6 @@ import static global.namespace.truelicense.core.Messages.message;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
 
-/**
- * @author Christian Schlichtherle
- */
 @SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked"})
 final class TrueLicenseManagementContext implements LicenseManagementContext, AuthenticationFactory, EncryptionFactory {
 

@@ -24,8 +24,6 @@ import static javax.crypto.Cipher.*;
 /**
  * The password based encryption for V1 format license keys.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 final class V1Encryption extends EncryptionMixin implements Encryption {
 

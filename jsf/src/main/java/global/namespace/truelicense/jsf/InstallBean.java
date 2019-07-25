@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.jsf;
 
 import global.namespace.fun.io.api.Source;
@@ -17,9 +16,6 @@ import static global.namespace.truelicense.ui.LicenseWizardMessage.*;
 
 /**
  * The backing bean for installing a license key.
- *
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 @FacesComponent
 public final class InstallBean extends LicenseBean {

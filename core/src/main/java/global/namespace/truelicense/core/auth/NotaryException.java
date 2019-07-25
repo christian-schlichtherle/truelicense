@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.core.auth;
 
 import global.namespace.truelicense.api.i18n.Message;
@@ -15,8 +14,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * Indicates that a notary could not access the private or public key in a
  * keystore due to insufficient or incorrect configuration parameters.
- *
- * @author Christian Schlichtherle
  */
 public class NotaryException extends GeneralSecurityException {
 

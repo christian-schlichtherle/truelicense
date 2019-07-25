@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation;
 
 import global.namespace.truelicense.maven.plugin.obfuscation.core.Processor;
@@ -20,8 +19,6 @@ import java.util.Formatter;
  * files (byte code).
  *
  * @see ObfuscatedString
- * @since TrueLicense 2.4
- * @author Christian Schlichtherle
  */
 public abstract class ObfuscateClassesMojo extends MojoAdapter {
 

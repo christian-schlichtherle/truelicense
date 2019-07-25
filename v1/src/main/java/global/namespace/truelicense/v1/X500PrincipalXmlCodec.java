@@ -15,8 +15,6 @@ import java.io.OutputStream;
  * {@link XMLEncoder} for use with {@link X500Principal}s in the object graph.
  * This type of codec is used for V1 format license keys.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 final class X500PrincipalXmlCodec extends XmlCodec {
 

@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.truelicense.api.LicenseManagementException;
@@ -18,8 +17,6 @@ import static javax.swing.SwingUtilities.isEventDispatchThread;
 
 /**
  * An abstract {@code JPanel} for license consumer management.
- *
- * @author Christian Schlichtherle
  */
 abstract class LicenseWorkerPanel extends LicensePanel {
 

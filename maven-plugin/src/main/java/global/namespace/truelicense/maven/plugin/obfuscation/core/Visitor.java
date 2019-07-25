@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation.core;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -19,8 +18,6 @@ import static org.objectweb.asm.Opcodes.ASM7;
 
 /**
  * Obfuscates constant string values in byte code.
- *
- * @author Christian Schlichtherle
  */
 abstract class Visitor extends ClassVisitor {
 

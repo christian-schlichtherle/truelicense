@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.truelicense.api.ConsumerLicenseManager;
@@ -15,8 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * A decorating consumer license manager which hosts an {@link Enabler}.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 abstract class UpdatingConsumerLicenseManager
 extends DecoratingConsumerLicenseManager

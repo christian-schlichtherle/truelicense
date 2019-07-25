@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.jax.rs;
 
 import global.namespace.truelicense.jax.rs.dto.ErrorDTO;
@@ -25,9 +24,6 @@ import static javax.ws.rs.core.MediaType.*;
 /**
  * Maps a consumer license management service exception to an HTTP response.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
- * @since TrueLicense 2.3
  */
 @Provider
 @Produces({APPLICATION_JSON, APPLICATION_XML, TEXT_XML, TEXT_PLAIN})

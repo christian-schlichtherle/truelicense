@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.v2.core.auth;
 
 import global.namespace.fun.io.api.Decoder;
@@ -21,8 +20,6 @@ import static global.namespace.truelicense.spi.codec.Codecs.charset;
 
 /**
  * A repository controller for use with V2 format license keys.
- *
- * @author Christian Schlichtherle
  */
 final class V2RepositoryController implements RepositoryController {
 

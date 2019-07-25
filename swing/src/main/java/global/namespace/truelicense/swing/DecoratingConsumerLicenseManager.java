@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.fun.io.api.Source;
@@ -14,8 +13,6 @@ import global.namespace.truelicense.api.LicenseManagementSchema;
 /**
  * A decorator for a consumer license manager.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 abstract class DecoratingConsumerLicenseManager implements ConsumerLicenseManager {
 

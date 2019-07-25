@@ -23,8 +23,6 @@ import static global.namespace.fun.io.jaxb.JAXB.xml;
  * {@link Marshaller}/{@link Unmarshaller} derived from a {@link JAXBContext}.
  * This type of codec is used for V1/XML format license keys.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
  */
 final class XMLCodec implements Codec {
 

@@ -20,9 +20,6 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * @author Christian Schlichtherle
- */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 final class TrueLicenseManagementContextBuilder implements LicenseManagementContextBuilder {
 

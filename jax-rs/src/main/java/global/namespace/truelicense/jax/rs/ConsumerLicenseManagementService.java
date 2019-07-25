@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.jax.rs;
 
 import global.namespace.fun.io.api.Store;
@@ -28,9 +27,6 @@ import static javax.ws.rs.core.Response.Status.*;
 /**
  * A RESTful web service for license management in consumer applications.
  * This class is immutable.
- *
- * @author Christian Schlichtherle
- * @since TrueLicense 2.3
  */
 @Path(ConsumerLicenseManagementService.LICENSE)
 public final class ConsumerLicenseManagementService {

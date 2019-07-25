@@ -75,7 +75,6 @@ public interface ConsumerLicenseManager extends LicenseManagerMixin {
      * instead of a (checked) {@link LicenseManagementException} if an operation fails.
      *
      * @return the adapted unchecked consumer license manager.
-     * @since TrueLicense 3.1.0
      */
     default UncheckedConsumerLicenseManager unchecked() {
         return () -> this;

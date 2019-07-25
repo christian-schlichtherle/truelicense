@@ -104,7 +104,6 @@ public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager 
      * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
      *
      * @return the adapted (checked) consumer license manager.
-     * @since TrueLicense 3.1.0
      */
     ConsumerLicenseManager checked();
 }

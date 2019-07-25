@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api
 
 import java.util.Locale
@@ -11,9 +10,6 @@ import global.namespace.truelicense.api.i18n.Message
 import org.scalatest.Matchers._
 import org.scalatest.WordSpec
 
-/**
- * @author Christian Schlichtherle
- */
 class LicenseValidationExceptionSpec extends WordSpec {
 
   "A LicenseValidationException" when {

@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.core.misc;
 
 import java.util.Locale;
@@ -10,8 +9,6 @@ import java.util.Locale;
 /**
  * Provides static functions for nullable strings.
  * This class is trivially immutable.
- *
- * @author Christian Schlichtherle
  */
 public class Strings {
 

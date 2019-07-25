@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.core.passwd;
 
 import global.namespace.truelicense.api.passwd.Password;
@@ -15,8 +14,6 @@ import java.util.Objects;
 
 /**
  * A password protection which uses an obfuscated string.
- *
- * @author Christian Schlichtherle
  */
 public final class ObfuscatedPasswordProtection implements PasswordProtection {
 

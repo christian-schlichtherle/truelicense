@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.truelicense.api.ConsumerLicenseManager;
@@ -15,9 +14,6 @@ import global.namespace.truelicense.ui.LicenseWizardState;
 
 import javax.swing.*;
 
-/**
- * @author Christian Schlichtherle
- */
 final class UninstallPanel extends LicenseWorkerPanel {
 
     private static final long serialVersionUID = 1L;

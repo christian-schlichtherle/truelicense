@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.truelicense.api.ConsumerLicenseManager;
@@ -17,8 +16,6 @@ import java.util.Objects;
 
 /**
  * Defines common properties of license panels.
- *
- * @author Christian Schlichtherle
  */
 abstract class LicensePanel
 extends JPanel

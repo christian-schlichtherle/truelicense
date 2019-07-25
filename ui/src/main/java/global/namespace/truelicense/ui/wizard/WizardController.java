@@ -2,14 +2,10 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.ui.wizard;
 
 /**
  * A controller for a generic wizard user interface.
- *
- * @author Christian Schlichtherle
- * @since  TrueLicense 2.3
  */
 public interface WizardController {
 

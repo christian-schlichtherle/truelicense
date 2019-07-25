@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.api;
 
 import global.namespace.truelicense.api.i18n.Message;
@@ -14,8 +13,6 @@ import static java.util.Objects.requireNonNull;
 /**
  * Indicates that a
  * {@linkplain LicenseValidation#validate(License) license validation} failed.
- *
- * @author Christian Schlichtherle
  */
 public class LicenseValidationException extends LicenseManagementException {
 

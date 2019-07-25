@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.v1.auth;
 
 import de.schlichtherle.xml.GenericCertificate;
@@ -23,8 +22,6 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A repository controller for use with V1 format license keys.
- *
- * @author Christian Schlichtherle
  */
 final class V1RepositoryController implements RepositoryController {
 

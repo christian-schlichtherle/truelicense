@@ -18,9 +18,6 @@ import static global.namespace.truelicense.obfuscate.ObfuscatedString.array;
 import static global.namespace.truelicense.obfuscate.ObfuscatedString.literal;
 import static org.objectweb.asm.Opcodes.*;
 
-/**
- * @author Christian Schlichtherle
- */
 final class Obfuscator extends Visitor {
 
     private static final String

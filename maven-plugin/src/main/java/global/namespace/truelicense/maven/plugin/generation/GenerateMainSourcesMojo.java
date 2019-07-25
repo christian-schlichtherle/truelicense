@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.generation;
 
 import org.apache.maven.model.FileSet;
@@ -17,9 +16,6 @@ import java.util.List;
  * Generates main source files by merging a set of
  * <a href="http://velocity.apache.org">Apache Velocity</a> template files with
  * all properties in the Maven POM.
- *
- * @since TrueLicense 2.4
- * @author Christian Schlichtherle
  */
 @Mojo(name = "generate-main-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public final class GenerateMainSourcesMojo extends GenerateSourcesMojo {

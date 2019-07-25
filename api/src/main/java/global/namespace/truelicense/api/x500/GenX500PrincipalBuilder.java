@@ -44,7 +44,6 @@ import static java.util.Objects.requireNonNull;
  * {@code This}.
  *
  * @param <This> the type of this generic X.500 principal builder.
- * @since TrueLicense 2.3
  */
 public abstract class GenX500PrincipalBuilder<This extends GenX500PrincipalBuilder<This>>
 implements GenBuilder<X500Principal> {

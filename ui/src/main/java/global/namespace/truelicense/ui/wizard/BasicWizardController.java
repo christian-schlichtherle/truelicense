@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.ui.wizard;
 
 /**
@@ -11,8 +10,6 @@ package global.namespace.truelicense.ui.wizard;
  *
  * @param  <S> the type of the wizard's states.
  * @param  <V> the type of the wizard's views.
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 public abstract class BasicWizardController<S, V extends WizardView<S>>
 implements WizardController {

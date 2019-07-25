@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.spi.codec;
 
 import global.namespace.truelicense.api.codec.Codec;
@@ -16,8 +15,6 @@ import java.util.regex.Pattern;
 
 /**
  * Provides common {@link Codec} functions.
- *
- * @author Christian Schlichtherle
  */
 public class Codecs {
 
@@ -65,7 +62,6 @@ public class Codecs {
      * @return The optional content transfer charset which is used by the given codec.
      *         Maybe empty if the codec doesn't produce text.
      * @throws IllegalArgumentException if the codec specifies and invalid charset name or an unknown charset.
-     * @since TrueLicense 3.1.0
      */
     public static Optional<Charset> charset(final Codec codec) {
         final String encoding = codec.contentTransferEncoding();

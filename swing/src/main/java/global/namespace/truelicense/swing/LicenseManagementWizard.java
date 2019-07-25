@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.swing;
 
 import global.namespace.truelicense.swing.util.ComponentEnabler;
@@ -19,8 +18,6 @@ import java.awt.*;
 /**
  * An internationalized wizard dialog for license management in consumer
  * applications.
- *
- * @author Christian Schlichtherle
  */
 public final class LicenseManagementWizard {
 

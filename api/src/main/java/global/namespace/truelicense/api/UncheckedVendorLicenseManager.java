@@ -58,7 +58,6 @@ public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
      * instead of an {@link UncheckedLicenseManagementException} if an operation fails.
      *
      * @return the adapted (checked) vendor license manager.
-     * @since TrueLicense 3.1.0
      */
     VendorLicenseManager checked();
 }

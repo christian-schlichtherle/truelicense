@@ -2,7 +2,6 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.ui.wizard;
 
 import java.util.EnumMap;
@@ -14,8 +13,6 @@ import java.util.Objects;
  *
  * @param  <S> the type of the wizard's states.
  * @param  <V> the type of the wizard's views.
- * @since  TrueLicense 2.3
- * @author Christian Schlichtherle
  */
 public class BasicWizardModel<S, V> implements WizardModel<S, V> {
 

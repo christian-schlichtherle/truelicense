@@ -2,15 +2,11 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-
 package global.namespace.truelicense.maven.plugin.obfuscation.core;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
-/**
- * @author Christian Schlichtherle
- */
 final class SubjectLogger implements Logger {
 
     private final Logger logger;

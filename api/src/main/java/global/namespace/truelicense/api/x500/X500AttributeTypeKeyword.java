@@ -11,7 +11,6 @@ package global.namespace.truelicense.api.x500;
  *
  * @see <a href="http://www.ietf.org/rfc/rfc2253.txt">RFC 2253</a>
  * @see <a href="http://www.ietf.org/rfc/rfc2459.txt">RFC 2459</a>
- * @since TrueLicense 2.3
  */
 public enum X500AttributeTypeKeyword {
     C, CN, DC, DNQ, DNQUALIFIER, EMAILADDRESS, GENERATION, GIVENNAME, INITIALS,
