@@ -36,7 +36,7 @@ final class V2Encryption extends EncryptionMixin implements Encryption {
     @Override
     public Socket<OutputStream> output(final Socket<OutputStream> output) {
         return output.map(out -> {
-            final Cipher cipher = cipher(PasswordUsage.WRITE, null);
+            final Cipher cipher = cipher(PasswordUsage.ENCRYPTION, null);
             final AlgorithmParameters param = cipher.getParameters();
             final byte[] encoded = param.getEncoded();
             assert encoded.length <= Short.MAX_VALUE;
@@ -52,13 +52,13 @@ final class V2Encryption extends EncryptionMixin implements Encryption {
             final DataInputStream din = new DataInputStream(in);
             final byte[] encoded = new byte[din.readShort() & 0xffff];
             din.readFully(encoded);
-            return new CipherInputStream(in, cipher(PasswordUsage.READ, param(encoded)));
+            return new CipherInputStream(in, cipher(PasswordUsage.DECRYPTION, param(encoded)));
         });
     }
 
     private Cipher cipher(final PasswordUsage usage, final AlgorithmParameters param) throws Exception {
         final Cipher cipher = getInstance(algorithm());
-        cipher.init(PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), param);
+        cipher.init(PasswordUsage.ENCRYPTION.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), param);
         return cipher;
     }
 

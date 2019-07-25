@@ -8,12 +8,12 @@ package global.namespace.truelicense.api.passwd;
 public enum PasswordUsage {
 
     /** The password will be used to decrypt or verify some content. */
-    READ,
+    DECRYPTION,
 
     /**
      * The password will be used to encrypt or sign some content.
      * This may trigger some additional checks, e.g. compliance to a
      * {@link PasswordPolicy}.
      */
-    WRITE
+    ENCRYPTION
 }

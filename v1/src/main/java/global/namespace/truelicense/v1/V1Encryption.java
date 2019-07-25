@@ -56,7 +56,7 @@ final class V1Encryption extends EncryptionMixin implements Encryption {
     }
 
     private Cipher cipher(boolean forEncryption) throws Exception {
-        return cipher(forEncryption ? PasswordUsage.WRITE : PasswordUsage.READ);
+        return cipher(forEncryption ? PasswordUsage.ENCRYPTION : PasswordUsage.DECRYPTION);
     }
 
     private Cipher cipher(final PasswordUsage usage) throws Exception {
@@ -68,7 +68,7 @@ final class V1Encryption extends EncryptionMixin implements Encryption {
                 },
                 2005);
         final Cipher cipher = getInstance(algorithm());
-        cipher.init(PasswordUsage.WRITE.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), spec);
+        cipher.init(PasswordUsage.ENCRYPTION.equals(usage) ? ENCRYPT_MODE : DECRYPT_MODE, secretKey(usage), spec);
         return cipher;
     }
 }

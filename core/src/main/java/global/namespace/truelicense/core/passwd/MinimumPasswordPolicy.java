@@ -16,7 +16,7 @@ public final class MinimumPasswordPolicy implements PasswordPolicy {
 
     @Override
     public void check(final PasswordProtection protection) throws Exception {
-        try (Password password = protection.password(PasswordUsage.WRITE)) {
+        try (Password password = protection.password(PasswordUsage.ENCRYPTION)) {
             final char[] characters = password.characters();
             final int l = characters.length;
             if (l < 8) {
