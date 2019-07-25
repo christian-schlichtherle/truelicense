@@ -5,12 +5,6 @@
 
 package de.schlichtherle.xml;
 
-import global.namespace.truelicense.core.misc.Strings;
-
-import java.util.Objects;
-
-import static java.util.Locale.ENGLISH;
-
 /**
  * A repository model for use with V1 format license keys.
  * All properties are set to {@code null} by default.
