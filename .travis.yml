@@ -5,9 +5,10 @@ cache:
 dist: xenial
 
 env:
-  - COMPILE_IMAGE_TAG=8-jdk-slim TEST_IMAGE_TAG=12-jdk-alpine
+  - BUILD_IMAGE_TAG=8-jdk-slim TEST_IMAGE_TAG=8-jdk-slim
+  - BUILD_IMAGE_TAG=12-jdk-alpine TEST_IMAGE_TAG=12-jdk-alpine
 
-install: ./docker-mvnw $COMPILE_IMAGE_TAG --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
+install: ./docker-mvnw $BUILD_IMAGE_TAG --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
 
 language: minimal
 
