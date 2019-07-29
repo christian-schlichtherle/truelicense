@@ -60,7 +60,7 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <fun-io.version>2.1.0</fun-io.version>
+        <fun-io.version>2.2.0</fun-io.version>
         <jackson.version>2.9.9</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>${maven.enforcer.requireMavenVersion}</maven.version>

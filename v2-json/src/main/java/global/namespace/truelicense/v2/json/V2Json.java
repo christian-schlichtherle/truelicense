@@ -41,7 +41,7 @@ public final class V2Json {
      * using the given object mapper factory.
      */
     public static LicenseManagementContextBuilder builder(Supplier<ObjectMapper> factory) {
-        return V2.builder().codec(new JsonCodec(configure(factory.get())));
+        return V2.builder().codec(new JsonCodec(() -> configure(factory.get())));
     }
 
     private static ObjectMapper configure(final ObjectMapper mapper) {
