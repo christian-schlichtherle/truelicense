@@ -18,6 +18,7 @@ import global.namespace.truelicense.v2.core.V2;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 /**
  * This facade provides a static factory method for license management context builders for Version 2-with-JSON
@@ -31,18 +32,19 @@ public final class V2Json {
     /**
      * Returns a new license management context builder for managing Version 2-with-JSON (V2/JSON) format license keys.
      */
-    public static LicenseManagementContextBuilder builder() { return builder(objectMapper()); }
+    public static LicenseManagementContextBuilder builder() {
+        return builder(ObjectMapper::new);
+    }
 
     /**
      * Returns a new license management context builder for managing Version 2-with-JSON (V2/JSON) format license keys
-     * using the given object mapper.
+     * using the given object mapper factory.
      */
-    public static LicenseManagementContextBuilder builder(ObjectMapper mapper) {
-        return V2.builder().codec(new JsonCodec(mapper));
+    public static LicenseManagementContextBuilder builder(Supplier<ObjectMapper> factory) {
+        return V2.builder().codec(new JsonCodec(() -> configure(factory.get())));
     }
 
-    private static ObjectMapper objectMapper() {
-        final ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper configure(final ObjectMapper mapper) {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         final SimpleModule module = new SimpleModule();
         module.addSerializer(new StdSerializer<X500Principal>(X500Principal.class) {
@@ -63,5 +65,6 @@ public final class V2Json {
         return mapper;
     }
 
-    private V2Json() { }
+    private V2Json() {
+    }
 }

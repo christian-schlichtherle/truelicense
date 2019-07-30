@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import global.namespace.truelicense.api.LicenseFactory;
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
@@ -21,6 +20,7 @@ import global.namespace.truelicense.v4.auth.V4RepositoryContext;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
+import java.util.function.Supplier;
 import java.util.zip.Deflater;
 
 import static global.namespace.fun.io.bios.BIOS.deflate;
@@ -42,16 +42,18 @@ public final class V4 {
     /**
      * Returns a new license management context builder for managing V4 format license keys.
      */
-    public static LicenseManagementContextBuilder builder() { return builder(objectMapper()); }
+    public static LicenseManagementContextBuilder builder() {
+        return builder(ObjectMapper::new);
+    }
 
     /**
      * Returns a new license management context builder for managing V4 format license keys using the given object
-     * mapper.
+     * mapper factory.
      */
-    public static LicenseManagementContextBuilder builder(final ObjectMapper mapper) {
+    public static LicenseManagementContextBuilder builder(Supplier<ObjectMapper> factory) {
         return Core
                 .builder()
-                .codec(new JsonCodec(mapper))
+                .codec(new JsonCodec(configure(factory.get())))
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V4Encryption::new)
@@ -60,8 +62,7 @@ public final class V4 {
                 .keystoreType(KEYSTORE_TYPE);
     }
 
-    private static ObjectMapper objectMapper() {
-        final ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper configure(final ObjectMapper mapper) {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         final SimpleModule module = new SimpleModule();
         module.addSerializer(new StdSerializer<X500Principal>(X500Principal.class) {
@@ -84,5 +85,4 @@ public final class V4 {
 
     private V4() {
     }
-
 }
