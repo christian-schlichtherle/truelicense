@@ -53,7 +53,7 @@ public final class V4 {
     public static LicenseManagementContextBuilder builder(Supplier<ObjectMapper> factory) {
         return Core
                 .builder()
-                .codec(new JsonCodec(configure(factory.get())))
+                .codec(new JsonCodec(() -> configure(factory.get())))
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V4Encryption::new)

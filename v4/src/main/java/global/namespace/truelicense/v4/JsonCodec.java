@@ -13,6 +13,7 @@ import global.namespace.truelicense.obfuscate.Obfuscate;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Supplier;
 
 import static global.namespace.fun.io.jackson.Jackson.json;
 
@@ -35,9 +36,9 @@ final class JsonCodec implements Codec {
     /**
      * Constructs a new JSON codec.
      *
-     * @param mapper the object mapper.
+     * @param factory the object mapper factory.
      */
-    JsonCodec(final ObjectMapper mapper) { this.codec = json(mapper); }
+    JsonCodec(final Supplier<ObjectMapper> factory) { this.codec = json(factory); }
 
     /**
      * {@inheritDoc}
