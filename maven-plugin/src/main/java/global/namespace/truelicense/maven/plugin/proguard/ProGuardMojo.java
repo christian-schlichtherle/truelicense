@@ -4,10 +4,10 @@
  */
 package global.namespace.truelicense.maven.plugin.proguard;
 
+import global.namespace.truelicense.build.tasks.commons.Task;
+import global.namespace.truelicense.build.tasks.proguard.ProGuardTask;
+import global.namespace.truelicense.maven.plugin.commons.BasicMojo;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -15,19 +15,22 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
-import static java.lang.String.join;
-import static java.lang.System.getProperty;
-import static java.util.Collections.addAll;
+import static global.namespace.neuron.di.java.Incubator.wire;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toSet;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.PACKAGE;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 
+/**
+ * A goal for the general obfuscation of byte code of Java class files using ProGuard.
+ */
+@SuppressWarnings("unused")
 @Mojo(name = "proguard", defaultPhase = PACKAGE, requiresDependencyResolution = COMPILE_PLUS_RUNTIME)
-public class ProGuardMojo extends AbstractMojo {
+public final class ProGuardMojo extends BasicMojo {
 
     /**
      * The dependencies of the project, not this plugin.
@@ -40,6 +43,24 @@ public class ProGuardMojo extends AbstractMojo {
      */
     @Parameter(property = "project.build.directory", required = true, readonly = true)
     private File buildDirectory;
+
+    /**
+     * This dependency provider method is used to wire {@link ProGuardTask}.
+     *
+     * @see #task()
+     */
+    Path buildDirectory() {
+        return buildDirectory.toPath();
+    }
+
+    /**
+     * This dependency provider method is used to wire {@link ProGuardTask}.
+     *
+     * @see #task()
+     */
+    Set<Path> dependencies() {
+        return artifacts.stream().map(a -> a.getFile().toPath()).collect(toSet());
+    }
 
     /**
      * ProGuard filters for dependency jars.
@@ -74,10 +95,30 @@ public class ProGuardMojo extends AbstractMojo {
     private List<String> libraryjars;
 
     /**
+     * This dependency provider method is used to wire {@link ProGuardTask}.
+     *
+     * @see #task()
+     */
+    List<String> libraryjars() {
+        final List<String> l = libraryjars;
+        return null != l ? l : (libraryjars = emptyList());
+    }
+
+    /**
      * ProGuard options.
      */
     @Parameter
-    private String[] options;
+    private List<String> options;
+
+    /**
+     * This dependency provider method is used to wire {@link ProGuardTask}.
+     *
+     * @see #task()
+     */
+    List<String> options() {
+        final List<String> o = options;
+        return null != o ? o : (options = emptyList());
+    }
 
     /**
      * The output jars or directories.
@@ -98,119 +139,35 @@ public class ProGuardMojo extends AbstractMojo {
     private List<Artifact> pluginArtifacts;
 
     /**
+     * This dependency provider method is used to wire {@link ProGuardTask}.
+     *
+     * @see #task()
+     */
+    Path proGuardJar() {
+        return pluginArtifacts
+                .stream()
+                .filter(a -> "proguard-base".equals(a.getArtifactId()))
+                .findFirst()
+                .map(a -> a.getFile().toPath())
+                .orElseThrow(() -> new IllegalStateException("The ProGuard JAR is missing on the plugin class path."));
+    }
+
+    /**
      * The Maven project.
      */
     @Parameter(property = "project", required = true, readonly = true)
     private MavenProject project;
 
-    /**
-     * Disable the plugin execution?
-     */
-    @Parameter(property = "proguard.skip", defaultValue = "false")
-    private boolean skip;
-
     @Component
     private MavenProjectHelper helper;
 
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        if (skip) {
-            getLog().info("ProGuard execution is skipped.");
-        } else {
-            try {
-                executeProGuard();
-                attachOutjars();
-            } catch (MojoFailureException | RuntimeException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new MojoFailureException(e.toString(), e);
-            }
-        }
+    protected final Task task() {
+        return wire(ProGuardTask.class).using(this);
     }
 
-    private void executeProGuard() throws MojoFailureException, IOException, InterruptedException {
-        final List<String> c = new LinkedList<>();
-        c.add(getProperty("java.home") + "/bin/java");
-        c.add("-jar");
-        c.add(proGuardFile().getAbsolutePath());
-        c.addAll(commandLineArgs());
-        getLog().info("Executing ProGuard: " + join(" ", c));
-        final Process p = new ProcessBuilder(c).directory(buildDirectory).inheritIO().start();
-        p.waitFor();
-        if (0 != p.exitValue()) {
-            throw new MojoFailureException("ProGuard execution failed.");
-        }
-    }
-
-    private File proGuardFile() throws MojoFailureException {
-        return pluginArtifacts
-                .stream()
-                .filter(a -> "proguard-base".equals(a.getArtifactId()))
-                .findFirst()
-                .map(Artifact::getFile)
-                .orElseThrow(() -> new MojoFailureException("ProGuard not found."));
-    }
-
-    private List<String> commandLineArgs() throws MojoFailureException {
-        return new Object() {
-            final List<String> args = new LinkedList<>();
-
-            {
-                addInJars();
-                addDependencyJars();
-                addLibraryJars();
-                addOutJars();
-                addOptions();
-            }
-
-            void addInJars() throws MojoFailureException {
-                injars.forEach(injar -> {
-                    args.add("-injars");
-                    args.add(injar);
-                });
-            }
-
-            void addDependencyJars() {
-                if (includeDependency) {
-                    final String option = includeDependencyInjar ? "-injars" : "-libraryjars";
-                    final String filter = null == dependencyFilter ? "" : "(" + dependencyFilter + ")";
-                    artifacts.forEach(artifact -> {
-                        final String path = artifact.getFile().getAbsolutePath();
-                        args.add(option);
-                        args.add(path + filter);
-                    });
-                }
-            }
-
-            void addLibraryJars() {
-                if (null != libraryjars && libraryjars.size() > 0) {
-                    libraryjars.forEach(libraryjar -> {
-                        args.add("-libraryjars");
-                        args.add(libraryjar);
-                    });
-                } else {
-                    final File rtJar = new File(getProperty("java.home"), "lib/rt.jar");
-                    args.add("-libraryjars");
-                    args.add("<java.home>/" + (rtJar.isFile() ? "lib" : "jmods(!**.jar;!module-info.class)"));
-                }
-            }
-
-            void addOutJars() throws MojoFailureException {
-                outjars.forEach(outjar -> {
-                    args.add("-outjars");
-                    args.add(outjar);
-                });
-            }
-
-            void addOptions() {
-                if (null != options) {
-                    addAll(args, options);
-                }
-            }
-        }.args;
-    }
-
-    private void attachOutjars() {
+    @Override
+    protected void postExecute() {
         outjars.forEach(outjar -> {
             final int i = outjar.lastIndexOf('(');
             final String path = -1 == i ? outjar : outjar.substring(0, i).trim();

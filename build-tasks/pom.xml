@@ -1,0 +1,55 @@
+<?xml version='1.0'?>
+<!--
+  ~ Copyright (C) 2005 - 2019 Schlichtherle IT Services.
+  ~ All rights reserved. Use is subject to license terms.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>global.namespace.truelicense</groupId>
+        <artifactId>truelicense</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>truelicense-build-tasks</artifactId>
+
+    <name>TrueLicense Build Tasks</name>
+    <description>
+        The TrueLicense Build Tools can generate source files from Apache Velocity template files, obfuscate constant
+        string values in class files and obfuscate byte code using ProGuard.
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>truelicense-obfuscate</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>global.namespace.neuron-di</groupId>
+            <artifactId>neuron-di</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>global.namespace.neuron-di</groupId>
+            <artifactId>neuron-di-scala_${scala.compat.version}</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.proguard</groupId>
+            <artifactId>proguard-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity.tools</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -64,10 +64,12 @@
         <jackson.version>2.9.9</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>${maven.enforcer.requireMavenVersion}</maven.version>
+        <neuron-di.version>6.4.0</neuron-di.version>
     </properties>
 
     <modules>
         <module>api</module>
+        <module>build-tasks</module>
         <module>core</module>
         <module>jax-rs</module>
         <module>jsf</module>
@@ -89,6 +91,11 @@
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>truelicense-build-tasks</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -202,6 +209,41 @@
                 <version>2.9.9.2</version>
             </dependency>
             <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-api</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-bios</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-jackson</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-jaxb</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.fun-io</groupId>
+                <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
+                <version>${fun-io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.neuron-di</groupId>
+                <artifactId>neuron-di</artifactId>
+                <version>${neuron-di.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>global.namespace.neuron-di</groupId>
+                <artifactId>neuron-di-scala_${scala.compat.version}</artifactId>
+                <version>${neuron-di.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>javax</groupId>
                 <artifactId>javaee-web-api</artifactId>
                 <version>8.0.1</version>
@@ -270,31 +312,6 @@
                 <groupId>org.ow2.asm</groupId>
                 <artifactId>asm-tree</artifactId>
                 <version>7.1</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.fun-io</groupId>
-                <artifactId>fun-io-api</artifactId>
-                <version>${fun-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.fun-io</groupId>
-                <artifactId>fun-io-bios</artifactId>
-                <version>${fun-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.fun-io</groupId>
-                <artifactId>fun-io-jackson</artifactId>
-                <version>${fun-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.fun-io</groupId>
-                <artifactId>fun-io-jaxb</artifactId>
-                <version>${fun-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.fun-io</groupId>
-                <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
-                <version>${fun-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
