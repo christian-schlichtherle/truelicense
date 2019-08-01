@@ -10,16 +10,28 @@ public class ExtraData {
 
     private String message;
 
-    public String getMessage() { return message; }
+    public String getMessage() {
+        return message;
+    }
 
-    public void setMessage(final String message) { this.message = message; }
+    public void setMessage(final String message) {
+        this.message = message;
+    }
 
     @Override
-    public boolean equals(final Object other) {
-        if (!(other instanceof ExtraData)) return false;
-        final ExtraData that = (ExtraData) other;
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ExtraData)) {
+            return false;
+        }
+        final ExtraData that = (ExtraData) obj;
         return Objects.equals(this.message, that.message);
     }
 
-    @Override public int hashCode() { return Objects.hashCode(message); }
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(message);
+    }
 }

@@ -5,8 +5,7 @@
 package global.namespace.truelicense.tests.jax.rs
 
 import global.namespace.truelicense.api.ConsumerLicenseManager
-import global.namespace.truelicense.jax.rs.dto.LicenseDTO
-import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
+import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper, ObjectMapperResolver}
 import global.namespace.truelicense.tests.core.TestContext
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.client.Entity
@@ -27,7 +26,8 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   override protected def configure: Application = {
     new ResourceConfig(
       classOf[ConsumerLicenseManagementService],
-      classOf[ConsumerLicenseManagementServiceExceptionMapper]
+      classOf[ConsumerLicenseManagementServiceExceptionMapper],
+      classOf[ObjectMapperResolver]
     ).registerInstances(new AbstractBinder {
       def configure(): Unit = bind(consumerManager()).to(classOf[ConsumerLicenseManager])
     })
@@ -61,7 +61,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   private def assertInstall(): Unit = {
     target("license").request.post(
       Entity.entity(cachedLicenseKey, APPLICATION_OCTET_STREAM_TYPE),
-      classOf[LicenseDTO]
+      licenseDtoClass
     ).license shouldBe cachedLicenseBean
   }
 
@@ -70,7 +70,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   }
 
   private def assertView(): Unit = {
-    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
+    viewAs(APPLICATION_JSON_TYPE, licenseDtoClass).license shouldBe cachedLicenseBean
   }
 
   private final def viewAs[T](mediaType: MediaType, responseType: Class[T]): T = {
@@ -88,7 +88,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   }
 
   private def assertVerify(): Unit = {
-    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
+    verifyAs(APPLICATION_JSON_TYPE, licenseDtoClass).license shouldBe cachedLicenseBean
   }
 
   private final def verifyAs[T](mediaType: MediaType, responseType: Class[T]): T = {

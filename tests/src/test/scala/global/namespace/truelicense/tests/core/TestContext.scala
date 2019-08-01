@@ -13,6 +13,7 @@ import global.namespace.truelicense.api._
 import global.namespace.truelicense.api.codec.Codec
 import global.namespace.truelicense.api.passwd.PasswordProtection
 import global.namespace.truelicense.core.passwd.ObfuscatedPasswordProtection
+import global.namespace.truelicense.jax.rs.dto.LicenseDTO
 import global.namespace.truelicense.obfuscate.ObfuscatedString
 import global.namespace.truelicense.tests.core.TestContext._
 import javax.security.auth.x500.X500Principal
@@ -64,6 +65,8 @@ trait TestContext {
     setExtra(extraData)
     license
   }
+
+  def licenseDtoClass: Class[_ <: LicenseDTO[_]]
 
   final lazy val managementContext: LicenseManagementContext = {
     managementContextBuilder

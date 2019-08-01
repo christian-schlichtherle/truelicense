@@ -12,4 +12,6 @@ trait V2JsonTestContext extends V2TestContext {
 
   //noinspection ScalaDeprecation
   final override def managementContextBuilder: LicenseManagementContextBuilder = V2Json.builder
+
+  lazy val licenseDtoClass: Class[V2JsonLicenseDTO] = classOf[V2JsonLicenseDTO]
 }

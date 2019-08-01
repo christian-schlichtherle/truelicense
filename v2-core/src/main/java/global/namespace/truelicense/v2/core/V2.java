@@ -41,11 +41,10 @@ public final class V2 {
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V2Encryption::new)
-                .licenseFactory(new V2LicenseFactory())
                 .repositoryFactory(new V2RepositoryFactory())
                 .keystoreType(KEYSTORE_TYPE);
     }
 
-    private V2() { }
-
+    private V2() {
+    }
 }

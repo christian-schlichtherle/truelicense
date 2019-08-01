@@ -6,3 +6,4 @@
  * Provides static method factories for the V2/XML license key format.
  */
 package global.namespace.truelicense.v2.xml;
+

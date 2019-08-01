@@ -50,6 +50,7 @@ public final class V4 {
      * Returns a new license management context builder for managing V4 format license keys using the given object
      * mapper factory.
      */
+    @SuppressWarnings("WeakerAccess")
     public static LicenseManagementContextBuilder builder(Supplier<ObjectMapper> factory) {
         return Core
                 .builder()
@@ -62,6 +63,11 @@ public final class V4 {
                 .keystoreType(KEYSTORE_TYPE);
     }
 
+    /**
+     * Configures the given object mapper for use with V4 format license keys.
+     *
+     * @return the given {@code mapper}.
+     */
     private static ObjectMapper configure(final ObjectMapper mapper) {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         final SimpleModule module = new SimpleModule();
