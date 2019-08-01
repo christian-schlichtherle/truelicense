@@ -16,10 +16,10 @@ trait ConsumerLicenseManagementServiceITMixin {
 
   lazy val managementService: ConsumerLicenseManagementService = new ConsumerLicenseManagementService(consumerManager())
 
-  protected lazy val (cachedLicenseClass, cachedLicenseBean, cachedLicenseKey): (Class[_ <: License], License, Array[Byte]) = {
+  protected lazy val (cachedLicenseBean, cachedLicenseKey): (License, Array[Byte]) = {
     val store = memory
     val license = this.license
     val generator = vendorManager generateKeyFrom license saveTo store
-    (license.getClass, generator.license, store.content)
+    (generator.license, store.content)
   }
 }

@@ -54,7 +54,6 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
     val subject = managementContext.subject
     subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
     subjectAs(APPLICATION_JSON_TYPE) shouldBe s"""{"subject":"$subject"}"""
-    subjectAs(APPLICATION_XML_TYPE) shouldBe s"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subject>$subject</subject>"""
   }
 
   private def subjectAs(mediaType: MediaType) = target("license/subject") request mediaType get classOf[String]
@@ -72,8 +71,6 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
 
   private def assertView(): Unit = {
     viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
-    viewAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-    viewAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
   }
 
   private final def viewAs[T](mediaType: MediaType, responseType: Class[T]): T = {
@@ -92,8 +89,6 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
 
   private def assertVerify(): Unit = {
     verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
-    verifyAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-    verifyAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
   }
 
   private final def verifyAs[T](mediaType: MediaType, responseType: Class[T]): T = {
