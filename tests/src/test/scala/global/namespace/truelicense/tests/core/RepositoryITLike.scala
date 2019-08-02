@@ -9,8 +9,10 @@ import global.namespace.truelicense.api.auth.RepositoryFactory
 import org.scalatest.Matchers._
 import org.scalatest._
 
-trait RepositoryITLike[Model <: AnyRef] extends WordSpecLike {
+trait RepositoryITLike extends WordSpecLike {
   this: TestContext =>
+
+  type Model >: Null <: AnyRef
 
   val factory: RepositoryFactory[Model]
 

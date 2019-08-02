@@ -7,7 +7,7 @@ package de.schlichtherle.license;
 import global.namespace.truelicense.core.AbstractLicense;
 
 /**
- * Provides compatibility with V1 format license keys.
+ * A license for use with V1 format license keys.
  */
 public class LicenseContent extends AbstractLicense {
 }

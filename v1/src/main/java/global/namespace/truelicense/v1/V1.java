@@ -5,9 +5,9 @@
 package global.namespace.truelicense.v1;
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
-import global.namespace.truelicense.v1.auth.V1RepositoryFactory;
 
 import static global.namespace.fun.io.bios.BIOS.gzip;
 
@@ -28,19 +28,39 @@ public final class V1 {
     @Obfuscate
     private static final String KEYSTORE_TYPE = "JKS";
 
-    /** Returns a new license management context builder for managing Version 1 (V1) format license keys. */
+    private static final V1Context context = new V1Context();
+
+    /**
+     * Returns a new license management context builder for managing Version 1 (V1) format license keys using the given
+     * context.
+     */
     public static LicenseManagementContextBuilder builder() {
+        return builder(context);
+    }
+
+    /**
+     * Returns a new license management context builder for managing Version 1 (V1) format license keys.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static LicenseManagementContextBuilder builder(V1Context context) {
         return Core
                 .builder()
-                .codec(new X500PrincipalXmlCodec())
+                .codec(context.codec())
                 .compression(gzip())
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
                 .licenseFactory(new V1LicenseFactory())
-                .repositoryFactory(new V1RepositoryFactory())
+                .repositoryFactory(repositoryFactory())
                 .keystoreType(KEYSTORE_TYPE);
     }
 
-    private V1() { }
+    /**
+     * For testing only: Returns the repository factory for use with V1 format license keys.
+     */
+    public static RepositoryFactory<?> repositoryFactory() {
+        return new V1RepositoryFactory();
+    }
 
+    private V1() {
+    }
 }

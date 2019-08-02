@@ -10,21 +10,15 @@ import global.namespace.fun.io.api.Socket;
 import global.namespace.truelicense.api.codec.Codec;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import static global.namespace.fun.io.jaxb.JAXB.xml;
 
 /**
- * A codec which encodes/decodes objects to/from XML with a
- * {@link Marshaller}/{@link Unmarshaller} derived from a {@link JAXBContext}.
- * This type of codec is used for V1/XML format license keys.
- * This class is immutable.
+ * A codec for use with V2/XML format license keys.
  */
-final class XMLCodec implements Codec {
+final class V2XmlCodec implements Codec {
 
     @Obfuscate
     private static final String APPLICATION_XML_WITH_UTF_8 = "application/xml; charset=utf-8";
@@ -32,36 +26,43 @@ final class XMLCodec implements Codec {
     @Obfuscate
     private static final String EIGHT_BIT = "8bit";
 
-    /** The JAXB context provided to the constructor. */
     private final global.namespace.fun.io.api.Codec codec;
 
-    XMLCodec(final JAXBContext context) { this.codec = xml(context); }
+    V2XmlCodec(V2XmlContext context) {
+        this.codec = xml(context.jaxbContext(), context::configure, context::configure);
+    }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link XMLCodec}
-     * returns {@code "application/xml; charset=utf-8"}.
+     * The implementation in the class {@link V2XmlCodec} returns {@code "application/xml; charset=utf-8"}.
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
     @Override
-    public String contentType() { return APPLICATION_XML_WITH_UTF_8; }
+    public String contentType() {
+        return APPLICATION_XML_WITH_UTF_8;
+    }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link XMLCodec}
-     * returns {@code "8bit"}.
+     * The implementation in the class {@link V2XmlCodec} returns {@code "8bit"}.
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
      */
     @Override
-    public String contentTransferEncoding() { return EIGHT_BIT; }
+    public String contentTransferEncoding() {
+        return EIGHT_BIT;
+    }
 
     @Override
-    public Encoder encoder(Socket<OutputStream> output) { return codec.encoder(output); }
+    public Encoder encoder(Socket<OutputStream> output) {
+        return codec.encoder(output);
+    }
 
     @Override
-    public Decoder decoder(Socket<InputStream> input) { return codec.decoder(input); }
+    public Decoder decoder(Socket<InputStream> input) {
+        return codec.decoder(input);
+    }
 }

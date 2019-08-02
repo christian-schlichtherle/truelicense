@@ -8,11 +8,9 @@ import javax.security.auth.x500.X500Principal;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * An immutable XML adapter for {@link X500Principal}s for use with JAXB.
- * <p>
- * This type of XML adapter is used for V2/XML format license keys.
+ * An XML adapter for use with {@link X500Principal}s in V2/XML format license keys.
  */
-final class X500PrincipalXmlAdapter extends XmlAdapter<String, X500Principal> {
+final class V2XmlX500PrincipalXmlAdapter extends XmlAdapter<String, X500Principal> {
 
     @Override
     public X500Principal unmarshal(String name) {

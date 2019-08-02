@@ -8,7 +8,7 @@ import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.api.LicenseFactory;
 
 /**
- * A license factory for V2/JSON format license keys.
+ * A license factory for use with V2/JSON format license keys.
  */
 final class V2JsonLicenseFactory implements LicenseFactory {
 

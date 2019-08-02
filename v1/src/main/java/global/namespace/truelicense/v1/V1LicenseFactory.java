@@ -9,7 +9,7 @@ import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.api.LicenseFactory;
 
 /**
- * A license factory for V1 format license keys.
+ * A license factory for use with V1 format license keys.
  */
 final class V1LicenseFactory implements LicenseFactory {
 

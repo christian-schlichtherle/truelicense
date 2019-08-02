@@ -14,8 +14,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
- * Provides compatibility with V2/XML format license keys.
+ * A license for use with V2/XML format license keys.
  */
+
 // As of Java 8, JAXB doesn't properly handle super classes, e.g. the @XmlJavaTypeAdapter annotation would be ignored
 // here, so we need to copy/paste the code from `global.namespace.truelicense.core.AbstractLicense` rather than inherit
 // from it.
@@ -29,7 +30,6 @@ import java.util.Date;
 // This annotation enables objects of this class to participate in larger object graphs which the application wants to
 // encode/decode to/from XML.
 @XmlType(name = "license")
-
 public class V2XmlLicense extends LicenseStub {
 
     private int consumerAmount = 1;
@@ -77,7 +77,7 @@ public class V2XmlLicense extends LicenseStub {
 
     @Override
     @XmlElement(required = true)
-    @XmlJavaTypeAdapter(X500PrincipalXmlAdapter.class)
+    @XmlJavaTypeAdapter(V2XmlX500PrincipalXmlAdapter.class)
     public X500Principal getHolder() {
         return holder;
     }
@@ -110,7 +110,7 @@ public class V2XmlLicense extends LicenseStub {
 
     @Override
     @XmlElement(required = true)
-    @XmlJavaTypeAdapter(X500PrincipalXmlAdapter.class)
+    @XmlJavaTypeAdapter(V2XmlX500PrincipalXmlAdapter.class)
     public X500Principal getIssuer() {
         return issuer;
     }

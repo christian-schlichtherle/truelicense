@@ -22,8 +22,7 @@ import java.security.AlgorithmParameters;
 import static javax.crypto.Cipher.*;
 
 /**
- * The password based encryption for V4 format license keys.
- * This class is immutable.
+ * An encryption for use with V4 format license keys.
  */
 final class V4Encryption extends EncryptionMixin implements Encryption {
 

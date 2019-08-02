@@ -12,7 +12,6 @@ import global.namespace.truelicense.v1.V1
 
 trait V1TestContext extends TestContext {
 
-  //noinspection ScalaDeprecation
   final override def managementContextBuilder: LicenseManagementContextBuilder = V1.builder
 
   final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {

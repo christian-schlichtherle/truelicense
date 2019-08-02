@@ -5,10 +5,10 @@
 package global.namespace.truelicense.v2.core;
 
 import global.namespace.fun.io.api.Socket;
-import global.namespace.truelicense.core.crypto.EncryptionMixin;
 import global.namespace.truelicense.api.crypto.Encryption;
 import global.namespace.truelicense.api.crypto.EncryptionParameters;
 import global.namespace.truelicense.api.passwd.PasswordUsage;
+import global.namespace.truelicense.core.crypto.EncryptionMixin;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -22,8 +22,7 @@ import java.security.AlgorithmParameters;
 import static javax.crypto.Cipher.*;
 
 /**
- * The password based encryption for V2 format license keys.
- * This class is immutable.
+ * An encryption for use with V2 format license keys.
  */
 final class V2Encryption extends EncryptionMixin implements Encryption {
 
