@@ -4,13 +4,14 @@
  */
 package global.namespace.truelicense.v4.auth;
 
-import global.namespace.truelicense.api.auth.RepositoryContext;
+import global.namespace.truelicense.api.auth.RepositoryController;
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.codec.Codec;
 
 /**
  * A repository context for use with V2 format license keys.
  */
-public final class V4RepositoryContext implements RepositoryContext<V4RepositoryModel> {
+public final class V4RepositoryFactory implements RepositoryFactory<V4RepositoryModel> {
 
     @Override
     public V4RepositoryModel model() {
@@ -18,7 +19,7 @@ public final class V4RepositoryContext implements RepositoryContext<V4Repository
     }
 
     @Override
-    public WithCodec<V4RepositoryModel> with(Codec codec) {
-        return model -> new V4RepositoryController(codec, model);
+    public RepositoryController controller(Codec codec, V4RepositoryModel model) {
+        return new V4RepositoryController(codec, model);
     }
 }

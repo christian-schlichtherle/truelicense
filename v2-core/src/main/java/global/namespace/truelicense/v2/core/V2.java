@@ -6,8 +6,8 @@ package global.namespace.truelicense.v2.core;
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
-import global.namespace.truelicense.v2.core.auth.V2RepositoryContext;
 import global.namespace.truelicense.obfuscate.Obfuscate;
+import global.namespace.truelicense.v2.core.auth.V2RepositoryFactory;
 
 import java.util.zip.Deflater;
 
@@ -42,7 +42,7 @@ public final class V2 {
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V2Encryption::new)
                 .licenseFactory(new V2LicenseFactory())
-                .repositoryContext(new V2RepositoryContext())
+                .repositoryFactory(new V2RepositoryFactory())
                 .keystoreType(KEYSTORE_TYPE);
     }
 

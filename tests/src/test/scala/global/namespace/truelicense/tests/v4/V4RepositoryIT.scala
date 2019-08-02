@@ -4,9 +4,9 @@
  */
 package global.namespace.truelicense.tests.v4
 
-import global.namespace.truelicense.api.auth.RepositoryContext
+import global.namespace.truelicense.api.auth.RepositoryFactory
 import global.namespace.truelicense.tests.core.RepositoryITLike
-import global.namespace.truelicense.v4.auth.{V4RepositoryContext, V4RepositoryModel}
+import global.namespace.truelicense.v4.auth.{V4RepositoryFactory, V4RepositoryModel}
 import org.scalatest.WordSpec
 
 class V4RepositoryIT
@@ -14,5 +14,5 @@ class V4RepositoryIT
     with RepositoryITLike[V4RepositoryModel]
     with V4TestContext {
 
-  val context: RepositoryContext[V4RepositoryModel] = new V4RepositoryContext
+  val factory: RepositoryFactory[V4RepositoryModel] = new V4RepositoryFactory
 }

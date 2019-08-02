@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
-import global.namespace.truelicense.v4.auth.V4RepositoryContext;
+import global.namespace.truelicense.v4.auth.V4RepositoryFactory;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
@@ -58,7 +58,7 @@ public final class V4 {
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V4Encryption::new)
                 .licenseFactory(new V4LicenseFactory())
-                .repositoryContext(new V4RepositoryContext())
+                .repositoryFactory(new V4RepositoryFactory())
                 .keystoreType(KEYSTORE_TYPE);
     }
 

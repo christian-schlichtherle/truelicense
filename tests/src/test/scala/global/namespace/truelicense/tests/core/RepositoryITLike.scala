@@ -5,19 +5,19 @@
 package global.namespace.truelicense.tests.core
 
 import global.namespace.truelicense.api.License
-import global.namespace.truelicense.api.auth.RepositoryContext
+import global.namespace.truelicense.api.auth.RepositoryFactory
 import org.scalatest.Matchers._
 import org.scalatest._
 
 trait RepositoryITLike[Model <: AnyRef] extends WordSpecLike {
   this: TestContext =>
 
-  val context: RepositoryContext[Model]
+  val factory: RepositoryFactory[Model]
 
   "A repository" should {
     "sign and verify an object" in {
       val authentication = vendorManager.schema.authentication
-      val controller = context `with` codec controller context.model
+      val controller = factory.controller(codec, factory.model)
       val artifact = license
       val clazz = license.getClass
       (authentication.sign(controller, artifact) decode clazz: License) shouldBe artifact

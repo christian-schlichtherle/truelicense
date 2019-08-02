@@ -12,17 +12,13 @@ import global.namespace.truelicense.api.codec.Codec;
  *
  * @param <Model> the generic repository model.
  */
-public interface RepositoryContext<Model> {
+public interface RepositoryFactory<Model> {
 
     /** Returns a new repository model. */
     Model model();
 
-    /** Configures the repository context to use the given codec. */
-    WithCodec<Model> with(Codec codec);
-
-    interface WithCodec<Model> {
-
-        /** Returns a repository controller for the given repository model using the configured codec. */
-        RepositoryController controller(Model model);
-    }
+    /**
+     * Returns a new repository controller using the given codec and repository model.
+     */
+    RepositoryController controller(Codec codec, Model model);
 }

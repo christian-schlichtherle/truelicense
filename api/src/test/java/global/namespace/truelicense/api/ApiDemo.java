@@ -9,7 +9,7 @@ import global.namespace.fun.io.api.Source;
 import global.namespace.fun.io.api.Store;
 import global.namespace.truelicense.api.auth.Authentication;
 import global.namespace.truelicense.api.auth.AuthenticationFactory;
-import global.namespace.truelicense.api.auth.RepositoryContext;
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.codec.Codec;
 import global.namespace.truelicense.api.crypto.EncryptionFactory;
 import global.namespace.truelicense.api.passwd.PasswordPolicy;
@@ -49,7 +49,7 @@ interface ApiDemo {
                 .initializationComposition(LicenseFunctionComposition.decorate)
                 .licenseFactory(mock(LicenseFactory.class))
                 .passwordPolicy(mock(PasswordPolicy.class))
-                .repositoryContext(mock(RepositoryContext.class))
+                .repositoryFactory(mock(RepositoryFactory.class))
                 .subject("MyProduct 1")
                 .keystoreType("JCEKS")
                 .validation(mock(LicenseValidation.class))

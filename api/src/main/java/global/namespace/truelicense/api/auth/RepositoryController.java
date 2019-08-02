@@ -16,7 +16,7 @@ import java.security.Signature;
  * {@linkplain Authentication#sign sign} and
  * {@linkplain Authentication#verify verify} an arbitrary artifact.
  * A repository controller is created by a
- * {@linkplain RepositoryContext repository context}.
+ * {@linkplain RepositoryFactory repository factory}.
  */
 public interface RepositoryController {
 

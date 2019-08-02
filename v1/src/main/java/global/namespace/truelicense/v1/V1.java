@@ -7,7 +7,7 @@ package global.namespace.truelicense.v1;
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
-import global.namespace.truelicense.v1.auth.V1RepositoryContext;
+import global.namespace.truelicense.v1.auth.V1RepositoryFactory;
 
 import static global.namespace.fun.io.bios.BIOS.gzip;
 
@@ -37,7 +37,7 @@ public final class V1 {
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
                 .licenseFactory(new V1LicenseFactory())
-                .repositoryContext(new V1RepositoryContext())
+                .repositoryFactory(new V1RepositoryFactory())
                 .keystoreType(KEYSTORE_TYPE);
     }
 

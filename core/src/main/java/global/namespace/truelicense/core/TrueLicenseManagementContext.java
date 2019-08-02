@@ -33,7 +33,7 @@ import static global.namespace.truelicense.core.Messages.message;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
 
-@SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked"})
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unchecked", "OptionalGetWithoutIsPresent"})
 final class TrueLicenseManagementContext implements LicenseManagementContext, AuthenticationFactory, EncryptionFactory {
 
     private final AuthenticationFactory authenticationFactory;
@@ -48,7 +48,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
     private final Optional<LicenseInitialization> initialization;
     private final LicenseFunctionComposition initializationComposition;
     private final PasswordPolicy passwordPolicy;
-    private final RepositoryContext<?> repositoryContext;
+    private final RepositoryFactory<?> repositoryFactory;
     private final String keystoreType;
     private final String subject;
     private final Optional<LicenseValidation> validation;
@@ -67,7 +67,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         this.initialization = b.initialization;
         this.initializationComposition = b.initializationComposition;
         this.passwordPolicy = b.passwordPolicy;
-        this.repositoryContext = b.repositoryContext.get();
+        this.repositoryFactory = b.repositoryFactory.get();
         this.keystoreType = Strings.requireNonEmpty(b.keystoreType);
         this.subject = Strings.requireNonEmpty(b.subject);
         this.validation = b.validation;
@@ -145,8 +145,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         return passwordPolicy;
     }
 
-    private <Model> RepositoryContext<Model> repositoryContext() {
-        return (RepositoryContext<Model>) repositoryContext;
+    private <Model> RepositoryFactory<Model> repositoryFactory() {
+        return (RepositoryFactory<Model>) repositoryFactory;
     }
 
     private String keystoreType() {
@@ -660,7 +660,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
                 class TrueLicenseKeyGenerator implements LicenseKeyGenerator {
 
-                    private final Object model = repositoryContext().model();
+                    private final Object model = repositoryFactory().model();
                     private Decoder decoder;
 
                     @Override
@@ -690,7 +690,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
                     synchronized private void init() throws Exception {
                         if (null == decoder) {
                             decoder = authentication()
-                                    .sign(repositoryContext().with(codec()).controller(model), validatedBean());
+                                    .sign(repositoryFactory().controller(codec(), model), validatedBean());
                         }
                     }
 
@@ -775,13 +775,13 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             RepositoryController repositoryController(Source source) throws Exception {
-                return repositoryContext().with(codec()).controller(repositoryModel(source));
+                return repositoryFactory().controller(codec(), repositoryModel(source));
             }
 
             Object repositoryModel(Source source) throws Exception {
                 return codec()
                         .decoder(decryptedAndDecompressedSource(source))
-                        .decode(repositoryContext().model().getClass());
+                        .decode(repositoryFactory().model().getClass());
             }
 
             Source decryptedAndDecompressedSource(Source source) {
