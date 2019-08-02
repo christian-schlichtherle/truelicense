@@ -31,8 +31,8 @@
             <plugin>
                 <groupId>global.namespace.truelicense</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
-                <!-- Cannot use ${project.version} for bootstrapping! -->
-                <version>4.0.0-RC1</version>
+                <!-- Cannot use ${project.version} while bootstrapping! -->
+                <version>4.0.0-RC3</version>
                 <executions>
                     <execution>
                         <id>generate-main-sources</id>
