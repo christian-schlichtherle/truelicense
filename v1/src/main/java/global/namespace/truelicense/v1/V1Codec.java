@@ -28,8 +28,8 @@ final class V1Codec implements Codec {
 
     private final global.namespace.fun.io.api.Codec codec;
 
-    V1Codec(V1Context context) {
-        codec = xml(context.encoderFactory(), context.decoderFactory());
+    V1Codec(V1CodecFactory factory) {
+        codec = xml(factory::xmlEncoder, factory::xmlDecoder);
     }
 
     /**

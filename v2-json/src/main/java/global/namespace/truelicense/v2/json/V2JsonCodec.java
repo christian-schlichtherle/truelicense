@@ -28,8 +28,8 @@ final class V2JsonCodec implements Codec {
 
     private final global.namespace.fun.io.api.Codec codec;
 
-    V2JsonCodec(V2JsonContext context) {
-        this.codec = json(context::objectMapper);
+    V2JsonCodec(V2JsonCodecFactory factory) {
+        this.codec = json(factory::objectMapper);
     }
 
     /**

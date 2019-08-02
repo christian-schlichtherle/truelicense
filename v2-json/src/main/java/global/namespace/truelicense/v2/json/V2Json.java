@@ -17,24 +17,13 @@ import global.namespace.truelicense.v2.core.V2;
 @Deprecated
 public final class V2Json {
 
-    private static final V2JsonContext context = new V2JsonContext();
-
     /**
      * Returns a new license management context builder for managing Version 2-with-JSON (V2/JSON) format license keys.
      */
     public static LicenseManagementContextBuilder builder() {
-        return builder(context);
-    }
-
-    /**
-     * Returns a new license management context builder for managing Version 2-with-JSON (V2/JSON) format license keys
-     * using the given context.
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static LicenseManagementContextBuilder builder(V2JsonContext context) {
         return V2
                 .builder()
-                .codec(context.codec())
+                .codecFactory(new V2JsonCodecFactory())
                 .licenseFactory(new V2JsonLicenseFactory())
                 .repositoryFactory(repositoryFactory());
     }

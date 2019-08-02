@@ -28,8 +28,8 @@ final class V4Codec implements Codec {
 
     private final global.namespace.fun.io.api.Codec codec;
 
-    V4Codec(V4Context context) {
-        this.codec = json(context::objectMapper);
+    V4Codec(V4CodecFactory factory) {
+        this.codec = json(factory::objectMapper);
     }
 
     /**

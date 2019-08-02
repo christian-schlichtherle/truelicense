@@ -28,8 +28,8 @@ final class V2XmlCodec implements Codec {
 
     private final global.namespace.fun.io.api.Codec codec;
 
-    V2XmlCodec(V2XmlContext context) {
-        this.codec = xml(context.jaxbContext(), context::configure, context::configure);
+    V2XmlCodec(V2XmlCodecFactory factory) {
+        this.codec = xml(factory.jaxbContext(), factory::configure, factory::configure);
     }
 
     /**

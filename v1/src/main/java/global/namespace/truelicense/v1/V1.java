@@ -28,24 +28,13 @@ public final class V1 {
     @Obfuscate
     private static final String KEYSTORE_TYPE = "JKS";
 
-    private static final V1Context context = new V1Context();
-
-    /**
-     * Returns a new license management context builder for managing Version 1 (V1) format license keys using the given
-     * context.
-     */
-    public static LicenseManagementContextBuilder builder() {
-        return builder(context);
-    }
-
     /**
      * Returns a new license management context builder for managing Version 1 (V1) format license keys.
      */
-    @SuppressWarnings("WeakerAccess")
-    public static LicenseManagementContextBuilder builder(V1Context context) {
+    public static LicenseManagementContextBuilder builder() {
         return Core
                 .builder()
-                .codec(context.codec())
+                .codecFactory(new V1CodecFactory())
                 .compression(gzip())
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)

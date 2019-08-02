@@ -17,24 +17,14 @@ import global.namespace.truelicense.v2.core.V2;
 @Deprecated
 public final class V2Xml {
 
-    private static final V2XmlContext context = new V2XmlContext();
-
     /**
      * Returns a new license management context builder for managing Version 2-with-XML (V2/XML) format license keys.
      */
     @SuppressWarnings("unused")
     public static LicenseManagementContextBuilder builder() {
-        return builder(context);
-    }
-
-    /**
-     * Returns a new license management context builder for managing Version 2-with-XML (V2/XML) format license keys
-     * using the given context.
-     */
-    public static LicenseManagementContextBuilder builder(V2XmlContext context) {
         return V2
                 .builder()
-                .codec(context.codec())
+                .codecFactory(new V2XmlCodecFactory())
                 .licenseFactory(new V2XmlLicenseFactory())
                 .repositoryFactory(repositoryFactory());
     }

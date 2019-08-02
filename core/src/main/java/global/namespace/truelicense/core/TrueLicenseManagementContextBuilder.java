@@ -8,7 +8,7 @@ import global.namespace.fun.io.api.Filter;
 import global.namespace.truelicense.api.*;
 import global.namespace.truelicense.api.auth.AuthenticationFactory;
 import global.namespace.truelicense.api.auth.RepositoryFactory;
-import global.namespace.truelicense.api.codec.Codec;
+import global.namespace.truelicense.api.codec.CodecFactory;
 import global.namespace.truelicense.api.crypto.EncryptionFactory;
 import global.namespace.truelicense.api.passwd.PasswordPolicy;
 import global.namespace.truelicense.core.auth.Notary;
@@ -27,7 +27,7 @@ final class TrueLicenseManagementContextBuilder implements LicenseManagementCont
     LicenseManagementAuthorization authorization = LicenseManagementAuthorization.ALL;
     long cachePeriodMillis = 30 * 60 * 1000;
     Clock clock = Clock.systemDefaultZone();
-    Optional<Codec> codec = Optional.empty();
+    Optional<CodecFactory> codecFactory = Optional.empty();
     Optional<Filter> compression = Optional.empty();
     String encryptionAlgorithm = "";
     Optional<EncryptionFactory> encryptionFactory = Optional.empty();
@@ -69,8 +69,8 @@ final class TrueLicenseManagementContextBuilder implements LicenseManagementCont
     }
 
     @Override
-    public LicenseManagementContextBuilder codec(final Codec codec) {
-        this.codec = Optional.of(codec);
+    public LicenseManagementContextBuilder codecFactory(final CodecFactory codecFactory) {
+        this.codecFactory = Optional.of(codecFactory);
         return this;
     }
 

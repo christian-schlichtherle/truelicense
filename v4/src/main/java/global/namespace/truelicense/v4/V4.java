@@ -27,23 +27,13 @@ public final class V4 {
     @Obfuscate
     private static final String KEYSTORE_TYPE = "PKCS12";
 
-    private static final V4Context context = new V4Context();
-
     /**
      * Returns a new license management context builder for managing V4 format license keys.
      */
     public static LicenseManagementContextBuilder builder() {
-        return builder(context);
-    }
-
-    /**
-     * Returns a new license management context builder for managing V4 format license keys using the given context.
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static LicenseManagementContextBuilder builder(V4Context context) {
         return Core
                 .builder()
-                .codec(context.codec())
+                .codecFactory(new V4CodecFactory())
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V4Encryption::new)
