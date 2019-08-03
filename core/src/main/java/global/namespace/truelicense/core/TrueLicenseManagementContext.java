@@ -145,8 +145,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         return passwordPolicy;
     }
 
-    private <Model> RepositoryFactory<Model> repositoryFactory() {
-        return (RepositoryFactory<Model>) repositoryFactory;
+    private RepositoryFactory repositoryFactory() {
+        return repositoryFactory;
     }
 
     private String keystoreType() {
@@ -782,7 +782,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             Object repositoryModel(Source source) throws Exception {
                 return codec()
                         .decoder(decryptedAndDecompressedSource(source))
-                        .decode(repositoryFactory().model().getClass());
+                        .decode(repositoryFactory().modelClass());
             }
 
             Source decryptedAndDecompressedSource(Source source) {

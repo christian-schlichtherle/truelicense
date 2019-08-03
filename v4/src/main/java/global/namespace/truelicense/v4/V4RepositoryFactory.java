@@ -19,6 +19,11 @@ final class V4RepositoryFactory implements RepositoryFactory<V4RepositoryModel> 
     }
 
     @Override
+    public Class<?> modelClass() {
+        return V4RepositoryModel.class;
+    }
+
+    @Override
     public RepositoryController controller(Codec codec, V4RepositoryModel model) {
         return new V4RepositoryController(codec, model);
     }

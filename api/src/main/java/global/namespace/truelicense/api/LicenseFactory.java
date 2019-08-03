@@ -5,7 +5,7 @@
 package global.namespace.truelicense.api;
 
 /**
- * Creates a new license.
+ * A factory for licenses.
  */
 public interface LicenseFactory {
 
@@ -17,7 +17,5 @@ public interface LicenseFactory {
     /**
      * Returns the base class of all licenses created by this factory.
      */
-    default Class<? extends License> licenseClass() {
-        return license().getClass();
-    }
+    Class<? extends License> licenseClass();
 }

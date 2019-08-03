@@ -65,7 +65,7 @@ trait TestContext extends LicenseFactory {
     l
   }
 
-  final override lazy val licenseClass: Class[_ <: License] = managementContext.licenseClass
+  final lazy val licenseClass: Class[_ <: License] = managementContext.licenseClass
 
   final lazy val managementContext: LicenseManagementContext = {
     managementContextBuilder

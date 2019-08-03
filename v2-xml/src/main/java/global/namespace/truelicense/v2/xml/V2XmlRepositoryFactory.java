@@ -19,6 +19,11 @@ final class V2XmlRepositoryFactory implements RepositoryFactory<V2XmlRepositoryM
     }
 
     @Override
+    public Class<?> modelClass() {
+        return V2XmlRepositoryModel.class;
+    }
+
+    @Override
     public RepositoryController controller(Codec codec, V2XmlRepositoryModel model) {
         return new V2XmlRepositoryController(codec, model);
     }

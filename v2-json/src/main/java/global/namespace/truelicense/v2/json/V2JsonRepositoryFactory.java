@@ -19,6 +19,11 @@ final class V2JsonRepositoryFactory implements RepositoryFactory<V2JsonRepositor
     }
 
     @Override
+    public Class<?> modelClass() {
+        return V2JsonRepositoryModel.class;
+    }
+
+    @Override
     public RepositoryController controller(Codec codec, V2JsonRepositoryModel model) {
         return new V2JsonRepositoryController(codec, model);
     }

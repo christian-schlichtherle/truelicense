@@ -20,6 +20,11 @@ final class V1RepositoryFactory implements RepositoryFactory<GenericCertificate>
     }
 
     @Override
+    public Class<?> modelClass() {
+        return GenericCertificate.class;
+    }
+
+    @Override
     public RepositoryController controller(Codec codec, GenericCertificate model) {
         return new V1RepositoryController(codec, model);
     }
