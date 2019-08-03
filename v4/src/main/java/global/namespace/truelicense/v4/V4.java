@@ -37,9 +37,9 @@ public final class V4 {
                 .compression(deflate(Deflater.BEST_COMPRESSION))
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V4Encryption::new)
+                .keystoreType(KEYSTORE_TYPE)
                 .licenseFactory(new V4LicenseFactory())
-                .repositoryFactory(repositoryFactory())
-                .keystoreType(KEYSTORE_TYPE);
+                .repositoryFactory(repositoryFactory());
     }
 
     /**

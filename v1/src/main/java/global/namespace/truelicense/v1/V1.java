@@ -38,9 +38,9 @@ public final class V1 {
                 .compression(gzip())
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
+                .keystoreType(KEYSTORE_TYPE)
                 .licenseFactory(new V1LicenseFactory())
-                .repositoryFactory(repositoryFactory())
-                .keystoreType(KEYSTORE_TYPE);
+                .repositoryFactory(repositoryFactory());
     }
 
     /**
