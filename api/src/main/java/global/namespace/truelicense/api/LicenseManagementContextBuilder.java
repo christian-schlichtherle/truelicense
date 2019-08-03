@@ -7,9 +7,9 @@ package global.namespace.truelicense.api;
 import global.namespace.fun.io.api.Filter;
 import global.namespace.truelicense.api.auth.AuthenticationChildBuilder;
 import global.namespace.truelicense.api.auth.AuthenticationFactory;
-import global.namespace.truelicense.api.auth.RepositoryContext;
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.builder.GenBuilder;
-import global.namespace.truelicense.api.codec.Codec;
+import global.namespace.truelicense.api.codec.CodecFactory;
 import global.namespace.truelicense.api.crypto.EncryptionChildBuilder;
 import global.namespace.truelicense.api.crypto.EncryptionFactory;
 import global.namespace.truelicense.api.passwd.PasswordPolicy;
@@ -66,7 +66,7 @@ extends GenBuilder<LicenseManagementContext> {
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder codec(Codec codec);
+    LicenseManagementContextBuilder codecFactory(CodecFactory codecFactory);
 
     /**
      * Sets the compression transformation (optional).
@@ -124,11 +124,11 @@ extends GenBuilder<LicenseManagementContext> {
     LicenseManagementContextBuilder passwordPolicy(PasswordPolicy policy);
 
     /**
-     * Sets the repository context (optional).
+     * Sets the repository factory (optional).
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder repositoryContext(RepositoryContext<?> repositoryContext);
+    LicenseManagementContextBuilder repositoryFactory(RepositoryFactory<?> repositoryFactory);
 
     /**
      * Sets the default type of the keystore (optional).

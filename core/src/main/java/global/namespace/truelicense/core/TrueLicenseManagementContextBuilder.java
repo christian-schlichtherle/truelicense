@@ -7,8 +7,8 @@ package global.namespace.truelicense.core;
 import global.namespace.fun.io.api.Filter;
 import global.namespace.truelicense.api.*;
 import global.namespace.truelicense.api.auth.AuthenticationFactory;
-import global.namespace.truelicense.api.auth.RepositoryContext;
-import global.namespace.truelicense.api.codec.Codec;
+import global.namespace.truelicense.api.auth.RepositoryFactory;
+import global.namespace.truelicense.api.codec.CodecFactory;
 import global.namespace.truelicense.api.crypto.EncryptionFactory;
 import global.namespace.truelicense.api.passwd.PasswordPolicy;
 import global.namespace.truelicense.core.auth.Notary;
@@ -27,7 +27,7 @@ final class TrueLicenseManagementContextBuilder implements LicenseManagementCont
     LicenseManagementAuthorization authorization = LicenseManagementAuthorization.ALL;
     long cachePeriodMillis = 30 * 60 * 1000;
     Clock clock = Clock.systemDefaultZone();
-    Optional<Codec> codec = Optional.empty();
+    Optional<CodecFactory> codecFactory = Optional.empty();
     Optional<Filter> compression = Optional.empty();
     String encryptionAlgorithm = "";
     Optional<EncryptionFactory> encryptionFactory = Optional.empty();
@@ -35,7 +35,7 @@ final class TrueLicenseManagementContextBuilder implements LicenseManagementCont
     Optional<LicenseInitialization> initialization = Optional.empty();
     LicenseFunctionComposition initializationComposition = LicenseFunctionComposition.decorate;
     PasswordPolicy passwordPolicy = new MinimumPasswordPolicy();
-    Optional<RepositoryContext<?>> repositoryContext = Optional.empty();
+    Optional<RepositoryFactory<?>> repositoryFactory = Optional.empty();
     String subject = "";
     String keystoreType = "";
     Optional<LicenseValidation> validation = Optional.empty();
@@ -69,8 +69,8 @@ final class TrueLicenseManagementContextBuilder implements LicenseManagementCont
     }
 
     @Override
-    public LicenseManagementContextBuilder codec(final Codec codec) {
-        this.codec = Optional.of(codec);
+    public LicenseManagementContextBuilder codecFactory(final CodecFactory codecFactory) {
+        this.codecFactory = Optional.of(codecFactory);
         return this;
     }
 
@@ -117,8 +117,8 @@ final class TrueLicenseManagementContextBuilder implements LicenseManagementCont
     }
 
     @Override
-    public LicenseManagementContextBuilder repositoryContext(final RepositoryContext<?> repositoryContext) {
-        this.repositoryContext = Optional.of(repositoryContext);
+    public LicenseManagementContextBuilder repositoryFactory(final RepositoryFactory<?> repositoryFactory) {
+        this.repositoryFactory = Optional.of(repositoryFactory);
         return this;
     }
 

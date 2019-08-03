@@ -6,7 +6,7 @@ package global.namespace.truelicense.tests.jax.rs
 
 import global.namespace.truelicense.api.ConsumerLicenseManager
 import global.namespace.truelicense.jax.rs.dto.LicenseDTO
-import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper}
+import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper, ObjectMapperResolver}
 import global.namespace.truelicense.tests.core.TestContext
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.client.Entity
@@ -14,23 +14,40 @@ import javax.ws.rs.core.MediaType._
 import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
 import org.glassfish.hk2.utilities.binding.AbstractBinder
+import org.glassfish.jersey.client.ClientConfig
+import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
 import org.scalatest.Matchers._
 
-abstract class ConsumerLicenseManagementServiceJerseyITLike
-  extends JerseyTest
-    with ConsumerLicenseManagementServiceITMixin {
+abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
   this: TestContext =>
+
+  private lazy val objectMapperResolver = new ObjectMapperResolver(managementContext.licenseFactory.licenseClass)
+
+  private lazy val state = new State
+
+  import state._
 
   override protected def configure: Application = {
     new ResourceConfig(
       classOf[ConsumerLicenseManagementService],
-      classOf[ConsumerLicenseManagementServiceExceptionMapper]
-    ).registerInstances(new AbstractBinder {
-      def configure(): Unit = bind(consumerManager()).to(classOf[ConsumerLicenseManager])
-    })
+      classOf[ConsumerLicenseManagementServiceExceptionMapper],
+      classOf[JacksonFeature]
+    ).registerInstances(
+      objectMapperResolver,
+      new AbstractBinder {
+
+        def configure(): Unit = bind(state.consumerManager).to(classOf[ConsumerLicenseManager])
+      }
+    )
+  }
+
+  override protected def configureClient(config: ClientConfig): Unit = {
+    config
+      .register(classOf[JacksonFeature])
+      .register(objectMapperResolver)
   }
 
   @Test
@@ -54,16 +71,15 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
     val subject = managementContext.subject
     subjectAs(TEXT_PLAIN_TYPE) shouldBe subject
     subjectAs(APPLICATION_JSON_TYPE) shouldBe s"""{"subject":"$subject"}"""
-    subjectAs(APPLICATION_XML_TYPE) shouldBe s"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?><subject>$subject</subject>"""
   }
 
   private def subjectAs(mediaType: MediaType) = target("license/subject") request mediaType get classOf[String]
 
   private def assertInstall(): Unit = {
     target("license").request.post(
-      Entity.entity(cachedLicenseKey, APPLICATION_OCTET_STREAM_TYPE),
+      Entity.entity(licenseKey, APPLICATION_OCTET_STREAM_TYPE),
       classOf[LicenseDTO]
-    ).license shouldBe cachedLicenseBean
+    ).license shouldBe licenseBean
   }
 
   private def assertFailView(): Unit = {
@@ -71,9 +87,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   }
 
   private def assertView(): Unit = {
-    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
-    viewAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-    viewAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
+    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe licenseBean
   }
 
   private final def viewAs[T](mediaType: MediaType, responseType: Class[T]): T = {
@@ -91,9 +105,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   }
 
   private def assertVerify(): Unit = {
-    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
-    verifyAs(APPLICATION_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
-    verifyAs(TEXT_XML_TYPE, cachedLicenseClass) shouldBe cachedLicenseBean
+    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe licenseBean
   }
 
   private final def verifyAs[T](mediaType: MediaType, responseType: Class[T]): T = {

@@ -71,7 +71,13 @@ public abstract class ProGuardTask extends AbstractTask {
                 } else {
                     final Path rtJar = Paths.get(getProperty("java.home"), "lib/rt.jar");
                     args.add("-libraryjars");
-                    args.add("<java.home>/" + (isRegularFile(rtJar) ? "lib" : "jmods(!**.jar;!module-info.class)"));
+                    if (isRegularFile(rtJar)) {
+                        args.add("<java.home>/lib");
+                        args.add("-libraryjars");
+                        args.add("<java.home>/lib/ext");
+                    } else {
+                        args.add("<java.home>/jmods(!**.jar;!module-info.class)");
+                    }
                 }
             }
 

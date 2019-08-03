@@ -4,12 +4,17 @@
  */
 package global.namespace.truelicense.api;
 
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.codec.Codec;
 
-/** A context for license management. */
-public interface LicenseManagementContext extends LicenseFactory {
+/**
+ * A context for license management.
+ */
+public interface LicenseManagementContext {
 
-    /** Returns the codec. */
+    /**
+     * Returns the codec.
+     */
     Codec codec();
 
     /**
@@ -18,7 +23,19 @@ public interface LicenseManagementContext extends LicenseFactory {
      */
     ConsumerLicenseManagerBuilder consumer();
 
-    /** Returns the license management subject. */
+    /**
+     * Returns the license factory.
+     */
+    LicenseFactory licenseFactory();
+
+    /**
+     * Return the repository factory.
+     */
+    RepositoryFactory<?> repositoryFactory();
+
+    /**
+     * Returns the license management subject.
+     */
     String subject();
 
     /**

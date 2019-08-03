@@ -4,8 +4,12 @@
  */
 package global.namespace.truelicense.tests.core
 
-trait NoExtraDataMixin {
+trait ExtraBeanTestContext {
   this: TestContext =>
 
-  final override def extraData: AnyRef = null
+  override protected def extra: AnyRef = {
+    val d = new ExtraBean
+    d.setMessage("This is some private extra data!")
+    d
+  }
 }

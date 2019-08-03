@@ -7,7 +7,6 @@ package global.namespace.truelicense.v1;
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
-import global.namespace.truelicense.v1.auth.V1RepositoryContext;
 
 import static global.namespace.fun.io.bios.BIOS.gzip;
 
@@ -28,19 +27,21 @@ public final class V1 {
     @Obfuscate
     private static final String KEYSTORE_TYPE = "JKS";
 
-    /** Returns a new license management context builder for managing Version 1 (V1) format license keys. */
+    /**
+     * Returns a new license management context builder for managing Version 1 (V1) format license keys.
+     */
     public static LicenseManagementContextBuilder builder() {
         return Core
                 .builder()
-                .codec(new X500PrincipalXmlCodec())
+                .codecFactory(new V1CodecFactory())
                 .compression(gzip())
                 .encryptionAlgorithm(ENCRYPTION_ALGORITHM)
                 .encryptionFactory(V1Encryption::new)
+                .keystoreType(KEYSTORE_TYPE)
                 .licenseFactory(new V1LicenseFactory())
-                .repositoryContext(new V1RepositoryContext())
-                .keystoreType(KEYSTORE_TYPE);
+                .repositoryFactory(new V1RepositoryFactory());
     }
 
-    private V1() { }
-
+    private V1() {
+    }
 }

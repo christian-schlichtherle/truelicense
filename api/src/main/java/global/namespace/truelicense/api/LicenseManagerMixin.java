@@ -10,14 +10,14 @@ package global.namespace.truelicense.api;
 public interface LicenseManagerMixin {
 
     /**
-     * Returns the license management schema.
+     * Returns the license manager parameters.
      */
-    LicenseManagementSchema schema();
+    LicenseManagerParameters parameters();
 
     /**
-     * Returns the license management context from the schema.
+     * Returns the license management context from the license manager parameters.
      */
     default LicenseManagementContext context() {
-        return schema().context();
+        return parameters().context();
     }
 }

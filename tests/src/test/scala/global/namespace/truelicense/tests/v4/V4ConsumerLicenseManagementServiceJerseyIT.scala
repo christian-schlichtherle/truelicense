@@ -4,10 +4,8 @@
  */
 package global.namespace.truelicense.tests.v4
 
-import global.namespace.truelicense.tests.core.NoExtraDataMixin
 import global.namespace.truelicense.tests.jax.rs.ConsumerLicenseManagementServiceJerseyITLike
 
 class V4ConsumerLicenseManagementServiceJerseyIT
   extends ConsumerLicenseManagementServiceJerseyITLike
     with V4TestContext
-    with NoExtraDataMixin

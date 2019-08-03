@@ -4,10 +4,7 @@
  */
 package global.namespace.truelicense.tests.v2.json
 
-import global.namespace.truelicense.tests.v2.core.V2RepositoryITLike
+import global.namespace.truelicense.tests.core.RepositoryITLike
 import org.scalatest.WordSpec
 
-class V2JsonRepositoryIT
-  extends WordSpec
-    with V2RepositoryITLike
-    with V2JsonTestContext
+class V2JsonRepositoryIT extends WordSpec with RepositoryITLike with V2JsonTestContext

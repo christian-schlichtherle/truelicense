@@ -4,10 +4,8 @@
  */
 package global.namespace.truelicense.tests.v2.json
 
-import global.namespace.truelicense.tests.core.NoExtraDataMixin
 import global.namespace.truelicense.tests.jax.rs.ConsumerLicenseManagementServiceJerseyITLike
 
 class V2JsonConsumerLicenseManagementServiceJerseyIT
   extends ConsumerLicenseManagementServiceJerseyITLike
     with V2JsonTestContext
-    with NoExtraDataMixin

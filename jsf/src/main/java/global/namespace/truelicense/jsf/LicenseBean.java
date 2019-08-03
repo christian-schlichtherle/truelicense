@@ -5,8 +5,8 @@
 package global.namespace.truelicense.jsf;
 
 import global.namespace.truelicense.api.ConsumerLicenseManager;
-import global.namespace.truelicense.api.LicenseManagementContext;
 import global.namespace.truelicense.api.LicenseManagementException;
+import global.namespace.truelicense.api.LicenseManagerParameters;
 import global.namespace.truelicense.spi.i18n.Formattable;
 import global.namespace.truelicense.ui.LicenseWizardState;
 import global.namespace.truelicense.ui.misc.MnemonicText;
@@ -50,9 +50,13 @@ implements WizardView<LicenseWizardState> {
         return new MnemonicText(key.format(args).toString(locale())).getText();
     }
 
-    final String subject() { return context().subject(); }
+    final String subject() {
+        return parameters().subject();
+    }
 
-    final LicenseManagementContext context() { return manager().context(); }
+    final LicenseManagerParameters parameters() {
+        return manager().parameters();
+    }
 
     private Locale locale() { return viewRoot().getLocale(); }
 

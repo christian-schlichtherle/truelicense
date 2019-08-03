@@ -4,6 +4,7 @@
  */
 package global.namespace.truelicense.tests.core
 
+import java.util.Calendar.{DATE, getInstance}
 import java.util.Date
 
 import global.namespace.fun.io.bios.BIOS.memory
@@ -17,121 +18,116 @@ trait LicenseKeyLifeCycleITLike extends WordSpecLike {
   this: TestContext =>
 
   "The license key life cycle" should {
-    "work for regular license keys" in {
-      val vs = memory
-
-      val generated = {
-        val vm = vendorManager
-        val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
-        assertLicense(generated)
-        generated
-      }
-
-      logger debug("Generated license key with {} bytes size.", vs.size().getAsLong)
-
-      val cs = memory
-      val cm = consumerManager(cs)
-      cs.exists shouldBe false
-      assertUninstalled(cm)
-      cm install vs
-      cm install vs // reinstall
-      cm.verify()
-      val viewed = cm.load()
-      viewed shouldBe generated
-      viewed should not be theSameInstanceAs(generated)
-      cm.uninstall()
-      assertUninstalled(cm)
-    }
-
-    "work for FTP license keys" in {
-      val cs = memory
-      val cm = consumerManager(cs)
-      cs.exists shouldBe false
-      val fcs = memory
-      val fcm = ftpConsumerManager(cm, fcs)
-      fcs.exists shouldBe false
-      fcm.verify() // generate
-      val generated = fcm.load()
-      cs.exists shouldBe false
-      fcs.exists shouldBe true
-      assertLicense(generated,
-        generated.getIssued,
-        datePlusDays(generated.getIssued, 1))
-      fcm.verify()
-      val viewed = fcm.load()
-      viewed shouldBe generated
-      viewed should not be theSameInstanceAs(generated)
-      val viewed2 = fcm.load()
-      viewed2 shouldBe generated
-      viewed2 should not be theSameInstanceAs(generated)
-      cs.exists shouldBe false
-    }
-
-    "work for chained license keys" in {
-      val vs = memory
-
-      val cs = memory
-      val cm = consumerManager(cs)
-
-      val ccs = memory
-      val ccm = chainedConsumerManager(cm, ccs)
-
-      cs.exists shouldBe false
-      ccs.exists shouldBe false
-
-      intercept[LicenseManagementException] {
-        cm.load()
-      }
-      intercept[LicenseManagementException] {
-        ccm.load()
-      };
+    "cover regular license keys" in new State {
       {
+        val tempStore = memory
+
         val generated = {
-          val vm = vendorManager
-          val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
-          assertLicense(generated)
+          val generated = (vendorManager generateKeyFrom licenseBean saveTo tempStore).license
+          assertLicenseBean(generated)
           generated
         }
 
-        ccm install vs // delegates to cm!
-        cs.exists shouldBe true
-        ccs.exists shouldBe false
-        ccm.verify()
-        val viewed = ccm.load()
+        logger debug("Generated license key with {} bytes size.", tempStore.size().getAsLong)
+
+        consumerStore.exists shouldBe false
+        assertUninstalled(consumerManager)
+        consumerManager install tempStore
+        consumerManager install tempStore // reinstall
+        consumerManager.verify()
+
+        val viewed = consumerManager.load()
         viewed shouldBe generated
         viewed should not be theSameInstanceAs(generated)
-        ccm.uninstall() // delegates to cm!
-        assertUninstalled(ccm)
+        consumerManager.uninstall()
+        assertUninstalled(consumerManager)
       }
+    }
 
-      cs.exists shouldBe false
-      ccs.exists shouldBe false;
+    "cover FTP license keys" in new State {
       {
-        val generated = {
-          val vm = chainedVendorManager
-          val generated = (vm generateKeyFrom managementContext.license saveTo vs).license
-          assertLicense(generated)
-          generated
+        consumerStore.exists shouldBe false
+        ftpStore.exists shouldBe false
+        ftpManager.verify() // generate
+
+        val generated = ftpManager.load()
+        consumerStore.exists shouldBe false
+        ftpStore.exists shouldBe true
+        assertFtpLicenseBean(generated)
+        ftpManager.verify()
+
+        val viewed = ftpManager.load()
+        viewed shouldBe generated
+        viewed should not be theSameInstanceAs(generated)
+        intercept[LicenseManagementException](ftpManager.uninstall())
+        ftpStore.exists shouldBe true
+
+        val viewed2 = ftpManager.load()
+        viewed2 shouldBe generated
+        viewed2 should not be theSameInstanceAs(generated)
+        consumerStore.exists shouldBe false
+      }
+    }
+
+    "cover chained license keys" in new State {
+      {
+        val tempStore = memory
+
+        consumerStore.exists shouldBe false
+        chainedConsumerStore.exists shouldBe false
+
+        intercept[LicenseManagementException](consumerManager.load())
+        intercept[LicenseManagementException](chainedConsumerManager.load())
+
+        {
+          val generated = {
+            val generated = (vendorManager generateKeyFrom licenseBean saveTo tempStore).license
+            assertLicenseBean(generated)
+            generated
+          }
+
+          chainedConsumerManager install tempStore // delegates to cm!
+          consumerStore.exists shouldBe true
+          chainedConsumerStore.exists shouldBe false
+          chainedConsumerManager.verify()
+
+          val viewed = chainedConsumerManager.load()
+          viewed shouldBe generated
+          viewed should not be theSameInstanceAs(generated)
+          chainedConsumerManager.uninstall() // delegates to cm!
+          assertUninstalled(chainedConsumerManager)
         }
 
-        ccm install vs // installs in ccm!
-        assertUninstalled(cm)
-        cs.exists shouldBe false
-        ccs.exists shouldBe true
-        ccm.verify()
-        val viewed = ccm.load()
-        viewed shouldBe generated
-        viewed should not be theSameInstanceAs(generated)
-        ccm.uninstall() // uninstalls from ccm!
-        assertUninstalled(ccm)
-      }
+        consumerStore.exists shouldBe false
+        chainedConsumerStore.exists shouldBe false
 
-      cs.exists shouldBe false
-      ccs.exists shouldBe false
+        {
+          val generated = {
+            val generated = (chainedVendorManager generateKeyFrom licenseBean saveTo tempStore).license
+            assertLicenseBean(generated)
+            generated
+          }
+
+          chainedConsumerManager install tempStore // saves to ccs!
+          assertUninstalled(consumerManager)
+          consumerStore.exists shouldBe false
+          chainedConsumerStore.exists shouldBe true
+          chainedConsumerManager.verify()
+
+          val viewed = chainedConsumerManager.load()
+          viewed shouldBe generated
+          viewed should not be theSameInstanceAs(generated)
+          chainedConsumerManager.uninstall() // deletes from ccs!
+          assertUninstalled(chainedConsumerManager)
+        }
+
+        consumerStore.exists shouldBe false
+        chainedConsumerStore.exists shouldBe false
+      }
     }
   }
 
-  private def assertLicense(license: License, notBefore: Date = null, notAfter: Date = null): Unit = {
+  private def assertFtpLicenseBean(license: License): Unit = {
     import license._
     getConsumerAmount shouldBe 1
     getConsumerType shouldBe "User"
@@ -140,21 +136,24 @@ trait LicenseKeyLifeCycleITLike extends WordSpecLike {
     getInfo shouldBe null
     getIssued should not be null
     getIssuer should not be null
-    getNotAfter shouldBe notAfter
-    getNotBefore shouldBe notBefore
+    getNotAfter shouldBe datePlusDays(getIssued, 1)
+    getNotBefore shouldBe getIssued
     getSubject shouldBe managementContext.subject
   }
 
+  private def datePlusDays(date: Date, days: Int): Date = {
+    val cal = getInstance
+    import cal._
+    setTime(date)
+    assert(isLenient)
+    add(DATE, days)
+    getTime
+  }
+
   private def assertUninstalled(cm: ConsumerLicenseManager): Unit = {
-    intercept[LicenseManagementException] {
-      cm.load()
-    }
-    intercept[LicenseManagementException] {
-      cm.verify()
-    }
-    intercept[LicenseManagementException] {
-      cm.uninstall()
-    }
+    intercept[LicenseManagementException](cm.load())
+    intercept[LicenseManagementException](cm.verify())
+    intercept[LicenseManagementException](cm.uninstall())
   }
 }
 

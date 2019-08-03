@@ -7,7 +7,6 @@ package de.schlichtherle.xml;
 
 /**
  * A repository model for use with V1 format license keys.
- * All properties are set to {@code null} by default.
  */
 public final class GenericCertificate {
 

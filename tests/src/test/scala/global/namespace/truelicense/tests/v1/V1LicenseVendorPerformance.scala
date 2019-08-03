@@ -8,5 +8,5 @@ import global.namespace.truelicense.tests.core.LicenseVendorPerformance
 
 object V1LicenseVendorPerformance extends LicenseVendorPerformance with V1TestContext {
 
-  def main(args: Array[String]): Unit = call()
+  def main(args: Array[String]): Unit = run()
 }

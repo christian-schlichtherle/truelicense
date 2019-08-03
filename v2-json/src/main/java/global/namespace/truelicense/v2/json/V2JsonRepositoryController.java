@@ -2,7 +2,7 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-package global.namespace.truelicense.v2.core.auth;
+package global.namespace.truelicense.v2.json;
 
 import global.namespace.fun.io.api.Decoder;
 import global.namespace.fun.io.api.Store;
@@ -13,20 +13,20 @@ import global.namespace.truelicense.api.codec.Codec;
 import java.security.Signature;
 
 import static global.namespace.fun.io.bios.BIOS.memory;
+import static global.namespace.truelicense.spi.codec.Codecs.charset;
 import static java.util.Base64.getDecoder;
 import static java.util.Base64.getEncoder;
 import static java.util.Objects.requireNonNull;
-import static global.namespace.truelicense.spi.codec.Codecs.charset;
 
 /**
- * A repository controller for use with V2 format license keys.
+ * A repository controller for use with V2/JSON format license keys.
  */
-final class V2RepositoryController implements RepositoryController {
+final class V2JsonRepositoryController implements RepositoryController {
 
     private final Codec codec;
-    private final V2RepositoryModel model;
+    private final V2JsonRepositoryModel model;
 
-    V2RepositoryController(final Codec codec, final V2RepositoryModel model) {
+    V2JsonRepositoryController(final Codec codec, final V2JsonRepositoryModel model) {
         this.codec = requireNonNull(codec);
         this.model = requireNonNull(model);
     }

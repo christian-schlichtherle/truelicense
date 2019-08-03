@@ -2,36 +2,31 @@
  * Copyright (C) 2005 - 2019 Schlichtherle IT Services.
  * All rights reserved. Use is subject to license terms.
  */
-package global.namespace.truelicense.v1.auth;
+package global.namespace.truelicense.v4;
 
-import de.schlichtherle.xml.GenericCertificate;
 import global.namespace.fun.io.api.Decoder;
 import global.namespace.fun.io.api.Store;
 import global.namespace.truelicense.api.auth.RepositoryController;
 import global.namespace.truelicense.api.auth.RepositoryIntegrityException;
 import global.namespace.truelicense.api.codec.Codec;
-import global.namespace.truelicense.obfuscate.Obfuscate;
-import global.namespace.truelicense.spi.codec.Codecs;
 
 import java.security.Signature;
 
 import static global.namespace.fun.io.bios.BIOS.memory;
+import static global.namespace.truelicense.spi.codec.Codecs.charset;
 import static java.util.Base64.getDecoder;
 import static java.util.Base64.getEncoder;
 import static java.util.Objects.requireNonNull;
 
 /**
- * A repository controller for use with V1 format license keys.
+ * A repository controller for use with V4 format license keys.
  */
-final class V1RepositoryController implements RepositoryController {
-
-    @Obfuscate
-    private static final String SIGNATURE_ENCODING = "US-ASCII/Base64";
+final class V4RepositoryController implements RepositoryController {
 
     private final Codec codec;
-    private final GenericCertificate model;
+    private final V4RepositoryModel model;
 
-    V1RepositoryController(final Codec codec, final GenericCertificate model) {
+    V4RepositoryController(final Codec codec, final V4RepositoryModel model) {
         this.codec = requireNonNull(codec);
         this.model = requireNonNull(model);
     }
@@ -48,28 +43,27 @@ final class V1RepositoryController implements RepositoryController {
         final String encodedSignature = getEncoder().encodeToString(signatureData);
         final String signatureAlgorithm = engine.getAlgorithm();
 
-        model.setEncoded(encodedArtifact);
-        model.setSignature(encodedSignature);
-        model.setSignatureAlgorithm(signatureAlgorithm);
-        model.setSignatureEncoding(SIGNATURE_ENCODING);
+        model.artifact = encodedArtifact;
+        model.signature = encodedSignature;
+        model.algorithm = signatureAlgorithm;
 
         return codec.decoder(store);
     }
 
     private static String body(Codec codec, byte[] artifact) {
-        return Codecs.charset(codec)
+        return charset(codec)
                 .map(charset -> new String(artifact, charset))
                 .orElseGet(() -> getEncoder().encodeToString(artifact));
     }
 
     @Override
     public final Decoder verify(final Signature engine) throws Exception {
-        if (!engine.getAlgorithm().equalsIgnoreCase(model.getSignatureAlgorithm())) {
+        if (!engine.getAlgorithm().equalsIgnoreCase(model.algorithm)) {
             throw new IllegalArgumentException();
         }
-        final byte[] artifactData = data(codec, model.getEncoded());
+        final byte[] artifactData = data(codec, model.artifact);
         engine.update(artifactData);
-        if (!engine.verify(getDecoder().decode(model.getSignature()))) {
+        if (!engine.verify(getDecoder().decode(model.signature))) {
             throw new RepositoryIntegrityException();
         }
         final Store store = memory();
@@ -78,8 +72,6 @@ final class V1RepositoryController implements RepositoryController {
     }
 
     private static byte[] data(Codec codec, String body) {
-        return Codecs.charset(codec)
-                .map(body::getBytes)
-                .orElseGet(() -> getDecoder().decode(body));
+        return charset(codec).map(body::getBytes).orElseGet(() -> getDecoder().decode(body));
     }
 }

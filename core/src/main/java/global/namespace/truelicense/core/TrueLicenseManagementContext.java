@@ -33,7 +33,7 @@ import static global.namespace.truelicense.core.Messages.message;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.getInstance;
 
-@SuppressWarnings({"ConstantConditions", "OptionalUsedAsFieldOrParameterType", "unchecked"})
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unchecked", "OptionalGetWithoutIsPresent"})
 final class TrueLicenseManagementContext implements LicenseManagementContext, AuthenticationFactory, EncryptionFactory {
 
     private final AuthenticationFactory authenticationFactory;
@@ -48,7 +48,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
     private final Optional<LicenseInitialization> initialization;
     private final LicenseFunctionComposition initializationComposition;
     private final PasswordPolicy passwordPolicy;
-    private final RepositoryContext<?> repositoryContext;
+    private final RepositoryFactory<?> repositoryFactory;
     private final String keystoreType;
     private final String subject;
     private final Optional<LicenseValidation> validation;
@@ -59,7 +59,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         this.authorization = b.authorization;
         this.cachePeriodMillis = b.cachePeriodMillis;
         this.clock = b.clock;
-        this.codec = b.codec.get();
+        this.codec = b.codecFactory.get().codec();
         this.compression = b.compression.get();
         this.encryptionAlgorithm = Strings.requireNonEmpty(b.encryptionAlgorithm);
         this.encryptionFactory = b.encryptionFactory.get();
@@ -67,7 +67,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         this.initialization = b.initialization;
         this.initializationComposition = b.initializationComposition;
         this.passwordPolicy = b.passwordPolicy;
-        this.repositoryContext = b.repositoryContext.get();
+        this.repositoryFactory = b.repositoryFactory.get();
         this.keystoreType = Strings.requireNonEmpty(b.keystoreType);
         this.subject = Strings.requireNonEmpty(b.subject);
         this.validation = b.validation;
@@ -128,13 +128,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
     }
 
     @Override
-    public License license() {
-        return licenseFactory.license();
-    }
-
-    @Override
-    public Class<? extends License> licenseClass() {
-        return licenseFactory.licenseClass();
+    public LicenseFactory licenseFactory() {
+        return licenseFactory;
     }
 
     private Date now() {
@@ -145,8 +140,9 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         return passwordPolicy;
     }
 
-    private <Model> RepositoryContext<Model> repositoryContext() {
-        return (RepositoryContext<Model>) repositoryContext;
+    @Override
+    public RepositoryFactory<?> repositoryFactory() {
+        return repositoryFactory;
     }
 
     private String keystoreType() {
@@ -174,10 +170,10 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public ConsumerLicenseManager build() {
-            final TrueLicenseManagementSchema schema = new TrueLicenseManagementSchema(this);
+            final TrueLicenseManagerParameters parameters = new TrueLicenseManagerParameters(this);
             return parent.isPresent()
-                    ? schema.new ChainedLicenseManager()
-                    : schema.new CachingLicenseManager();
+                    ? parameters.new ChainedLicenseManager()
+                    : parameters.new CachingLicenseManager();
         }
 
         @Override
@@ -205,7 +201,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public VendorLicenseManager build() {
-            return new TrueLicenseManagementSchema(this).new TrueLicenseManager();
+            return new TrueLicenseManagerParameters(this).new TrueLicenseManager();
         }
     }
 
@@ -217,6 +213,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         Optional<ConsumerLicenseManager> parent = Optional.empty();
         Optional<Store> store = Optional.empty();
 
+        @SuppressWarnings("WeakerAccess")
         public final This authentication(final Authentication authentication) {
             this.authentication = Optional.ofNullable(authentication);
             return (This) this;
@@ -425,7 +422,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
     }
 
-    final class TrueLicenseManagementSchema implements LicenseManagementSchema {
+    final class TrueLicenseManagerParameters implements LicenseManagerParameters {
 
         final Authentication authentication;
         final Optional<Filter> encryption;
@@ -433,7 +430,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         final Optional<ConsumerLicenseManager> parent;
         final Optional<Store> store;
 
-        TrueLicenseManagementSchema(final TrueLicenseManagerBuilder<?> b) {
+        TrueLicenseManagerParameters(final TrueLicenseManagerBuilder<?> b) {
             this.authentication = b.authentication.get();
             this.encryption = b.encryption;
             this.ftpDays = b.ftpDays;
@@ -444,6 +441,11 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         @Override
         public Authentication authentication() {
             return authentication;
+        }
+
+        @Override
+        public Codec codec() {
+            return codec;
         }
 
         Filter compressionThenEncryption() {
@@ -457,7 +459,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public Filter encryption() {
-            return encryption.orElseGet(() -> parent().schema().encryption());
+            return encryption.orElseGet(() -> parent().parameters().encryption());
         }
 
         LicenseInitialization initialization() {
@@ -476,12 +478,35 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
+        License license() {
+            return licenseFactory.license();
+        }
+
+        Class<? extends License> licenseClass() {
+            return licenseFactory.licenseClass();
+        }
+
+        @Override
+        public LicenseFactory licenseFactory() {
+            return licenseFactory;
+        }
+
         ConsumerLicenseManager parent() {
             return parent.get();
         }
 
+        @Override
+        public RepositoryFactory repositoryFactory() {
+            return repositoryFactory;
+        }
+
         Store store() {
             return store.get();
+        }
+
+        @Override
+        public String subject() {
+            return subject;
         }
 
         final class ChainedLicenseManager extends CachingLicenseManager {
@@ -652,7 +677,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
 
         class TrueLicenseManager
-                extends TrueLicenseManagerMixin
+                extends TrueLicenseManagerBase
                 implements ConsumerLicenseManager, VendorLicenseManager {
 
             @Override
@@ -660,7 +685,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
                 class TrueLicenseKeyGenerator implements LicenseKeyGenerator {
 
-                    private final Object model = repositoryContext().model();
+                    private final Object model = repositoryFactory().model();
                     private Decoder decoder;
 
                     @Override
@@ -690,7 +715,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
                     synchronized private void init() throws Exception {
                         if (null == decoder) {
                             decoder = authentication()
-                                    .sign(repositoryContext().with(codec()).controller(model), validatedBean());
+                                    .sign(repositoryFactory().controller(codec(), model), validatedBean());
                         }
                     }
 
@@ -775,13 +800,13 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             RepositoryController repositoryController(Source source) throws Exception {
-                return repositoryContext().with(codec()).controller(repositoryModel(source));
+                return repositoryFactory().controller(codec(), repositoryModel(source));
             }
 
             Object repositoryModel(Source source) throws Exception {
                 return codec()
                         .decoder(decryptedAndDecompressedSource(source))
-                        .decode(repositoryContext().model().getClass());
+                        .decode(repositoryFactory().modelClass());
             }
 
             Source decryptedAndDecompressedSource(Source source) {
@@ -794,7 +819,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             final class TrueUncheckedLicenseManager
-                    extends TrueLicenseManagerMixin
+                    extends TrueLicenseManagerBase
                     implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                 @Override
@@ -809,11 +834,11 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        abstract class TrueLicenseManagerMixin implements LicenseManagerMixin {
+        abstract class TrueLicenseManagerBase implements LicenseManagerMixin {
 
             @Override
-            public LicenseManagementSchema schema() {
-                return TrueLicenseManagementSchema.this;
+            public LicenseManagerParameters parameters() {
+                return TrueLicenseManagerParameters.this;
             }
 
             @Override
@@ -836,6 +861,9 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public void initialize(final License bean) {
+            if (0 == bean.getConsumerAmount()) {
+                bean.setConsumerAmount(1);
+            }
             if (null == bean.getConsumerType()) {
                 bean.setConsumerType(DEFAULT_CONSUMER_TYPE);
             }

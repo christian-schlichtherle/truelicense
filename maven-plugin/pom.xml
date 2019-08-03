@@ -16,7 +16,7 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0-RC3</version>
+        <version>4.0.0</version>
     </parent>
 
     <artifactId>truelicense-maven-plugin</artifactId>

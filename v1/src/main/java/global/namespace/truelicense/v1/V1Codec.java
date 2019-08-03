@@ -10,20 +10,15 @@ import global.namespace.fun.io.api.Socket;
 import global.namespace.truelicense.api.codec.Codec;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import static global.namespace.fun.io.bios.BIOS.xml;
 
 /**
- * A codec which encodes/decodes objects to/from XML with an
- * {@link XMLEncoder}/{@link XMLDecoder}.
- * This type of codec is used for V1 format license keys.
- * This class is immutable.
+ * A codec for use with V1 format license keys.
  */
-class XmlCodec implements Codec {
+final class V1Codec implements Codec {
 
     @Obfuscate
     private static final String APPLICATION_XML_WITH_UTF_8 = "application/xml; charset=utf-8";
@@ -31,12 +26,16 @@ class XmlCodec implements Codec {
     @Obfuscate
     private static final String EIGHT_BIT = "8bit";
 
-    private final global.namespace.fun.io.api.Codec codec = xml(this::encoder, this::decoder);
+    private final global.namespace.fun.io.api.Codec codec;
+
+    V1Codec(V1CodecFactory factory) {
+        codec = xml(factory::xmlEncoder, factory::xmlDecoder);
+    }
 
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link XmlCodec}
+     * The implementation in the class {@link V1Codec}
      * returns {@code "application/xml; charset=utf-8"}.
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
@@ -47,7 +46,7 @@ class XmlCodec implements Codec {
     /**
      * {@inheritDoc}
      * <p>
-     * The implementation in the class {@link XmlCodec}
+     * The implementation in the class {@link V1Codec}
      * returns {@code "8bit"}.
      *
      * @see <a href="http://tools.ietf.org/html/rfc3023">RFC 3023</a>
@@ -58,10 +57,6 @@ class XmlCodec implements Codec {
     @Override
     public Encoder encoder(Socket<OutputStream> output) { return codec.encoder(output); }
 
-    XMLEncoder encoder(OutputStream out) { return new XMLEncoder(out); }
-
     @Override
     public Decoder decoder(Socket<InputStream> input) { return codec.decoder(input); }
-
-    XMLDecoder decoder(InputStream in) { return new XMLDecoder(in); }
 }
