@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.api.codec.Codec;
 import global.namespace.truelicense.api.codec.CodecFactory;
 
@@ -42,6 +43,7 @@ public class V2JsonCodecFactory implements CodecFactory {
     protected ObjectMapper configure(final ObjectMapper mapper) {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         final SimpleModule module = new SimpleModule();
+        module.addAbstractTypeMapping(License.class, V2JsonLicense.class);
         module.addSerializer(new StdSerializer<X500Principal>(X500Principal.class) {
 
             @Override
