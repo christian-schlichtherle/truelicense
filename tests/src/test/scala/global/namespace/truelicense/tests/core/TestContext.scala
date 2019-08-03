@@ -4,68 +4,164 @@
  */
 package global.namespace.truelicense.tests.core
 
-import java.util.Calendar._
 import java.util.Date
 
 import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api._
-import global.namespace.truelicense.api.codec.Codec
 import global.namespace.truelicense.api.passwd.PasswordProtection
 import global.namespace.truelicense.core.passwd.ObfuscatedPasswordProtection
 import global.namespace.truelicense.obfuscate.ObfuscatedString
 import global.namespace.truelicense.tests.core.TestContext._
 import javax.security.auth.x500.X500Principal
+import org.scalatest.Matchers._
 import org.slf4j.LoggerFactory
 
-trait TestContext extends LicenseFactory {
+trait TestContext {
+  self =>
 
-  def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
+  def managementContextBuilder: LicenseManagementContextBuilder
 
-  def chainedVendorManager: VendorLicenseManager
+  protected def extra: AnyRef
 
-  final def codec: Codec = managementContext.codec
-
-  final def consumerManager(): ConsumerLicenseManager = consumerManager(memory)
-
-  def consumerManager(store: Store): ConsumerLicenseManager
-
-  final def datePlusDays(date: Date, days: Int): Date = {
-    val cal = getInstance
-    import cal._
-    setTime(date)
-    assert(isLenient)
-    add(DATE, days)
-    getTime
+  final def consumerManager(store: Store): ConsumerLicenseManager = {
+    val cm = managementContext.consumer
+      .encryption
+      .protection(test1234)
+      .up
+      .authentication
+      .alias("mykey")
+      .loadFromResource(consumerKeystoreName)
+      .storeProtection(test1234)
+      .up
+      .storeIn(store)
+      .build
+    require(cm.context eq managementContext)
+    cm
   }
 
-  // The return type must be AnyRef to enable overriding and returning any bean instead:
-  def extraData: AnyRef = {
-    // The XmlEncoder used with the V1 license key format supports only standard Java collections by default, so we
-    // cannot use scala.jdk.CollectionConverters here because it would create a custom implementation:
-    val map = new java.util.HashMap[String, String]
-    map.put("message", "This is some private extra data!")
-    map
+  protected def consumerKeystoreName: String
+
+  final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
+    val cm = managementContext.consumer
+      .authentication
+      .alias("mykey")
+      .loadFromResource(chainedConsumerKeystoreName)
+      .storeProtection(test1234)
+      .up
+      .parent(parent)
+      .storeIn(store)
+      .build
+    require(cm.context eq managementContext)
+    cm
   }
 
-  def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
+  protected def chainedConsumerKeystoreName: String
 
-  final def license: License = {
-    val now = new Date
-    val me = new X500Principal("CN=Christian Schlichtherle")
-    val l = managementContext.license
+  final def ftpManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
+    val cm = managementContext.consumer
+      .ftpDays(1)
+      .authentication
+      .alias("mykey")
+      .loadFromResource(ftpConsumerKeystoreName)
+      .storeProtection(test1234)
+      .up
+      .parent(parent)
+      .storeIn(store)
+      .build
+    require(cm.context eq managementContext)
+    cm
+  }
+
+  protected def ftpConsumerKeystoreName: String
+
+  final lazy val vendorManager: VendorLicenseManager = {
+    val vm = managementContext.vendor
+      .encryption
+      .protection(test1234)
+      .up
+      .authentication
+      .alias("mykey")
+      .loadFromResource(vendorKeystoreName)
+      .storeProtection(test1234)
+      .up
+      .build
+    require(vm.context eq managementContext)
+    vm
+  }
+
+  protected def vendorKeystoreName: String
+
+  final lazy val chainedVendorManager: VendorLicenseManager = {
+    val vm = managementContext.vendor
+      .encryption
+      .protection(test1234)
+      .up
+      .authentication
+      .alias("mykey")
+      .loadFromResource(chainedVendorKeystoreName)
+      .storeProtection(test1234)
+      .up
+      .build
+    require(vm.context eq managementContext)
+    vm
+  }
+
+  protected def chainedVendorKeystoreName: String
+
+  class State {
+
+    final lazy val consumerManager: ConsumerLicenseManager = self.consumerManager(consumerStore)
+
+    final lazy val consumerStore: Store = memory
+
+    final lazy val chainedConsumerManager: ConsumerLicenseManager = {
+      self.chainedConsumerManager(consumerManager, chainedConsumerStore)
+    }
+
+    final lazy val chainedConsumerStore: Store = memory
+
+    final val ftpManager: ConsumerLicenseManager = self.ftpManager(consumerManager, ftpStore)
+
+    final lazy val ftpStore = memory
+
+    private lazy val vendorStore = {
+      val s = memory
+      vendorManager generateKeyFrom licenseBean saveTo s
+      s
+    }
+
+    final def licenseKey: Array[Byte] = vendorStore.content
+  }
+
+  final def assertLicenseBean(license: License): Unit = {
+    import license._
+    getConsumerAmount shouldBe 1
+    getConsumerType shouldBe "User"
+    getExtra shouldBe extra
+    getHolder shouldBe me
+    getInfo shouldBe info
+    getIssued shouldBe timestamp
+    getIssuer shouldBe me
+    getNotAfter shouldBe null
+    getNotBefore shouldBe timestamp
+    getSubject shouldBe managementContext.subject
+  }
+
+  final def licenseBean: License = {
+    val l = managementContext.licenseFactory.license
     import l._
-    setSubject("subject")
+    setConsumerAmount(1)
+    setConsumerType("User")
+    setSubject(managementContext.subject)
     setHolder(me)
     setIssuer(me)
-    setIssued(now)
-    setNotBefore(now)
-    setInfo("info")
-    setExtra(extraData)
+    setIssued(timestamp)
+    setNotBefore(timestamp)
+    setInfo(info)
+    setExtra(extra)
     l
   }
-
-  final lazy val licenseClass: Class[_ <: License] = managementContext.licenseClass
 
   final lazy val managementContext: LicenseManagementContext = {
     managementContextBuilder
@@ -73,16 +169,18 @@ trait TestContext extends LicenseFactory {
       .validation(logger.debug("Validating license bean: {}", _))
       .build
   }
-
-  def managementContextBuilder: LicenseManagementContextBuilder
-
-  final def test1234: PasswordProtection =
-    new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cL, 0x3453ccaa499e6baeL))) /* => "test1234" */
-
-  def vendorManager: VendorLicenseManager
 }
 
-object TestContext {
+private object TestContext {
+
+  private val info = "Hello, world!"
 
   private val logger = LoggerFactory getLogger classOf[TestContext]
+
+  private val me = new X500Principal("CN=Christian Schlichtherle")
+
+  private val test1234: PasswordProtection =
+    new ObfuscatedPasswordProtection(new ObfuscatedString(Array[Long](0x545a955d0e30826cL, 0x3453ccaa499e6baeL))) /* => "test1234" */
+
+  private val timestamp = new Date
 }

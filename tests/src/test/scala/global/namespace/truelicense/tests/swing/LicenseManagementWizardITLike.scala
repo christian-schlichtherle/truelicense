@@ -7,7 +7,6 @@ package global.namespace.truelicense.tests.swing
 import java.awt.{Component, EventQueue, GraphicsEnvironment}
 import java.util.Date
 
-import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import global.namespace.truelicense.swing.LicenseManagementWizard
 import global.namespace.truelicense.tests.core.TestContext
@@ -27,7 +26,7 @@ trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
   this: TestContext =>
 
   private val laf = UIManager.getLookAndFeel
-  private var outputLicense: License = _
+  private var installed: License = _
   private var manager: ConsumerLicenseManager = _
   private var wizard: LicenseManagementWizard = _
   private var dialog: JDialogOperator = _
@@ -36,21 +35,22 @@ trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
   JemmyProperties.setCurrentOutput(TestOut.getNullOutput) // shut up!
 
   before {
-    val store = memory
-    outputLicense = (vendorManager generateKeyFrom inputLicense saveTo store).license
-    manager = consumerManager(store)
-    EventQueue invokeLater (() => {
-      UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
-      wizard = newLicenseManagementWizard(manager)
-      wizard.showModalDialog()
-    })
-    dialog = new JDialogOperator()
-    cancelButton = waitButton(dialog, wizard_cancel)
-    backButton = waitButton(dialog, wizard_back)
-    nextButton = waitButton(dialog, wizard_next)
-    // Defer test execution to allow asynchronous license certificate
-    // verification to complete.
-    Thread sleep 100
+    new State {
+      installed = (vendorManager generateKeyFrom licenseBean saveTo consumerStore).license
+      manager = consumerManager
+      EventQueue invokeLater (() => {
+        UIManager setLookAndFeel UIManager.getSystemLookAndFeelClassName
+        wizard = newLicenseManagementWizard(manager)
+        wizard.showModalDialog()
+      })
+      dialog = new JDialogOperator()
+      cancelButton = waitButton(dialog, wizard_cancel)
+      backButton = waitButton(dialog, wizard_back)
+      nextButton = waitButton(dialog, wizard_next)
+      // Defer test execution to allow asynchronous license certificate
+      // verification to complete.
+      Thread sleep 100
+    }
   }
 
   after {
@@ -131,14 +131,14 @@ trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
           def format(date: Date) =
             display_dateTimeFormat(managementContext.subject, date)
 
-          waitText(display_holder) shouldBe toString(outputLicense.getHolder)
-          waitText(display_subject) shouldBe toString(outputLicense.getSubject)
-          waitText(display_consumer) shouldBe (toString(outputLicense.getConsumerType) + " / " + outputLicense.getConsumerAmount)
-          waitText(display_notBefore) shouldBe format(outputLicense.getNotBefore)
-          waitText(display_notAfter) shouldBe format(outputLicense.getNotAfter)
-          waitText(display_issuer) shouldBe toString(outputLicense.getIssuer)
-          waitText(display_issued) shouldBe format(outputLicense.getIssued)
-          waitText(display_info) shouldBe toString(outputLicense.getInfo)
+          waitText(display_holder) shouldBe toString(installed.getHolder)
+          waitText(display_subject) shouldBe toString(installed.getSubject)
+          waitText(display_consumer) shouldBe (toString(installed.getConsumerType) + " / " + installed.getConsumerAmount)
+          waitText(display_notBefore) shouldBe format(installed.getNotBefore)
+          waitText(display_notAfter) shouldBe format(installed.getNotAfter)
+          waitText(display_issuer) shouldBe toString(installed.getIssuer)
+          waitText(display_issued) shouldBe format(installed.getIssued)
+          waitText(display_info) shouldBe toString(installed.getInfo)
         }
 
         "switch to the uninstall panel when requested" ifNotHeadless {
@@ -156,13 +156,6 @@ trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
         }
       }
     }
-  }
-
-  private def inputLicense = {
-    // Don't subclass - wouldn't work with XML serialization
-    val l = managementContext.license
-    l.setInfo("Hello world!")
-    l
   }
 
   private implicit class WithText(text: String) {
@@ -197,7 +190,13 @@ trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
       def getDescription = "Chooses a JPanel by its name."
     })
 
-  private def toString(obj: AnyRef) = if (null ne obj) obj.toString else ""
+  private def toString(obj: AnyRef) = {
+    if (null ne obj) {
+      obj.toString
+    } else {
+      ""
+    }
+  }
 }
 
 object LicenseManagementWizardITLike {

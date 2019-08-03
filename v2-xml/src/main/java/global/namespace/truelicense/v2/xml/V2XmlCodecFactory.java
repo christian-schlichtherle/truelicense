@@ -24,9 +24,16 @@ public class V2XmlCodecFactory implements CodecFactory {
     /**
      * Returns a new JAXB context.
      */
-    protected JAXBContext jaxbContext() {
+    public JAXBContext jaxbContext() {
+        return jaxbContext(classesToBeBound());
+    }
+
+    /**
+     * Returns a new JAXB context which binds the given classes.
+     */
+    protected final JAXBContext jaxbContext(final Class... classesToBeBound) {
         try {
-            return JAXBContext.newInstance(classesToBeBound());
+            return JAXBContext.newInstance(classesToBeBound);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -35,7 +42,7 @@ public class V2XmlCodecFactory implements CodecFactory {
     /**
      * Returns the classes to be bound by the {@link #jaxbContext()}.
      */
-    protected Class<?>[] classesToBeBound() {
+    protected final Class<?>[] classesToBeBound() {
         return new Class[]{V2XmlLicense.class, V2XmlRepositoryModel.class};
     }
 

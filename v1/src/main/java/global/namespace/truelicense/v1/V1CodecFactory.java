@@ -30,14 +30,14 @@ public class V1CodecFactory implements CodecFactory {
     /**
      * Returns a new XML encoder.
      */
-    protected XMLEncoder xmlEncoder(OutputStream out) {
+    public XMLEncoder xmlEncoder(OutputStream out) {
         return configure(new XMLEncoder(out));
     }
 
     /**
      * Configures and returns the given XML encoder.
      */
-    protected XMLEncoder configure(XMLEncoder encoder) {
+    protected final XMLEncoder configure(XMLEncoder encoder) {
         encoder.setPersistenceDelegate(X500Principal.class, delegate);
         return encoder;
     }
@@ -45,14 +45,14 @@ public class V1CodecFactory implements CodecFactory {
     /**
      * Returns a new XML decoder.
      */
-    protected XMLDecoder xmlDecoder(InputStream in) {
+    public XMLDecoder xmlDecoder(InputStream in) {
         return configure(new XMLDecoder(in));
     }
 
     /**
      * Configures and returns the given XML decoder.
      */
-    protected XMLDecoder configure(XMLDecoder decoder) {
+    protected final XMLDecoder configure(XMLDecoder decoder) {
         return decoder;
     }
 }

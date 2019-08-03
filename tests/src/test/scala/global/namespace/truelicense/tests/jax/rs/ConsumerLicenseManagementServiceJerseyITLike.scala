@@ -21,12 +21,14 @@ import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
 import org.scalatest.Matchers._
 
-abstract class ConsumerLicenseManagementServiceJerseyITLike
-  extends JerseyTest
-    with ConsumerLicenseManagementServiceITMixin {
+abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
   this: TestContext =>
 
-  private lazy val objectMapperResolver = new ObjectMapperResolver(licenseClass)
+  private lazy val objectMapperResolver = new ObjectMapperResolver(managementContext.licenseFactory.licenseClass)
+
+  private lazy val state = new State
+
+  import state._
 
   override protected def configure: Application = {
     new ResourceConfig(
@@ -36,7 +38,8 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
     ).registerInstances(
       objectMapperResolver,
       new AbstractBinder {
-        def configure(): Unit = bind(consumerManager()).to(classOf[ConsumerLicenseManager])
+
+        def configure(): Unit = bind(state.consumerManager).to(classOf[ConsumerLicenseManager])
       }
     )
   }
@@ -74,9 +77,9 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
 
   private def assertInstall(): Unit = {
     target("license").request.post(
-      Entity.entity(cachedLicenseKey, APPLICATION_OCTET_STREAM_TYPE),
+      Entity.entity(licenseKey, APPLICATION_OCTET_STREAM_TYPE),
       classOf[LicenseDTO]
-    ).license shouldBe cachedLicenseBean
+    ).license shouldBe licenseBean
   }
 
   private def assertFailView(): Unit = {
@@ -84,7 +87,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   }
 
   private def assertView(): Unit = {
-    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
+    viewAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe licenseBean
   }
 
   private final def viewAs[T](mediaType: MediaType, responseType: Class[T]): T = {
@@ -102,7 +105,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike
   }
 
   private def assertVerify(): Unit = {
-    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe cachedLicenseBean
+    verifyAs(APPLICATION_JSON_TYPE, classOf[LicenseDTO]).license shouldBe licenseBean
   }
 
   private final def verifyAs[T](mediaType: MediaType, responseType: Class[T]): T = {

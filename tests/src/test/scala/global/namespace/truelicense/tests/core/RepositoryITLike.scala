@@ -14,14 +14,14 @@ trait RepositoryITLike extends WordSpecLike {
 
   type Model >: Null <: AnyRef
 
-  private lazy val factory: RepositoryFactory[Model] = managementContext.repositoryFactory().asInstanceOf[RepositoryFactory[Model]]
+  private lazy val factory = managementContext.repositoryFactory.asInstanceOf[RepositoryFactory[Model]]
 
   "A repository" should {
     "sign and verify an object" in {
-      val authentication = vendorManager.schema.authentication
-      val controller = factory.controller(codec, factory.model)
-      val artifact = license
-      val clazz = license.getClass
+      val authentication = vendorManager.parameters.authentication
+      val controller = factory.controller(managementContext.codec, factory.model)
+      val artifact = licenseBean
+      val clazz = artifact.getClass
       (authentication.sign(controller, artifact) decode clazz: License) shouldBe artifact
       (authentication verify controller decode clazz: License) shouldBe artifact
     }

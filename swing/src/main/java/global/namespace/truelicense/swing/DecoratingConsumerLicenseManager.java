@@ -8,7 +8,7 @@ import global.namespace.fun.io.api.Source;
 import global.namespace.truelicense.api.ConsumerLicenseManager;
 import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.api.LicenseManagementException;
-import global.namespace.truelicense.api.LicenseManagementSchema;
+import global.namespace.truelicense.api.LicenseManagerParameters;
 
 /**
  * A decorator for a consumer license manager.
@@ -25,7 +25,9 @@ abstract class DecoratingConsumerLicenseManager implements ConsumerLicenseManage
     }
 
     @Override
-    public LicenseManagementSchema schema() { return manager.schema(); }
+    public LicenseManagerParameters parameters() {
+        return manager.parameters();
+    }
 
     @Override
     public void install(Source source) throws LicenseManagementException { manager.install(source); }

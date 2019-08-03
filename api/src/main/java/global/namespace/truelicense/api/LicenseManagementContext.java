@@ -10,7 +10,7 @@ import global.namespace.truelicense.api.codec.Codec;
 /**
  * A context for license management.
  */
-public interface LicenseManagementContext extends LicenseFactory {
+public interface LicenseManagementContext {
 
     /**
      * Returns the codec.
@@ -22,6 +22,11 @@ public interface LicenseManagementContext extends LicenseFactory {
      * Call its {@link ConsumerLicenseManagerBuilder#build} method to build the configured consumer license manager.
      */
     ConsumerLicenseManagerBuilder consumer();
+
+    /**
+     * Returns the license factory.
+     */
+    LicenseFactory licenseFactory();
 
     /**
      * Return the repository factory.

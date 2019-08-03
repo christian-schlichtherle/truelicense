@@ -6,7 +6,7 @@ package global.namespace.truelicense.tests.core;
 
 import java.util.Objects;
 
-public class ExtraData {
+public class ExtraBean {
 
     private String message;
 
@@ -23,15 +23,22 @@ public class ExtraData {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof ExtraData)) {
+        if (!(obj instanceof ExtraBean)) {
             return false;
         }
-        final ExtraData that = (ExtraData) obj;
+        final ExtraBean that = (ExtraBean) obj;
         return Objects.equals(this.message, that.message);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(message);
+    }
+
+    @Override
+    public String toString() {
+        return "ExtraBean{" +
+                "message='" + message + '\'' +
+                '}';
     }
 }

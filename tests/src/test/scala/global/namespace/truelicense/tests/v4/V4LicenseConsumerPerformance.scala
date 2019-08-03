@@ -8,5 +8,5 @@ import global.namespace.truelicense.tests.core.LicenseConsumerPerformance
 
 object V4LicenseConsumerPerformance extends LicenseConsumerPerformance with V4TestContext {
 
-  def main(args: Array[String]): Unit = call()
+  def main(args: Array[String]): Unit = run()
 }

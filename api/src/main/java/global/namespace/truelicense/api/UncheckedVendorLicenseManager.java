@@ -17,8 +17,8 @@ import global.namespace.fun.io.api.Sink;
 public interface UncheckedVendorLicenseManager extends VendorLicenseManager {
 
     @Override
-    default LicenseManagementSchema schema() {
-        return checked().schema();
+    default LicenseManagerParameters parameters() {
+        return checked().parameters();
     }
 
     /**

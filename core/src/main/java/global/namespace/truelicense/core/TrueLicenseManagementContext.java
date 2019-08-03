@@ -128,13 +128,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
     }
 
     @Override
-    public License license() {
-        return licenseFactory.license();
-    }
-
-    @Override
-    public Class<? extends License> licenseClass() {
-        return licenseFactory.licenseClass();
+    public LicenseFactory licenseFactory() {
+        return licenseFactory;
     }
 
     private Date now() {
@@ -175,10 +170,10 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public ConsumerLicenseManager build() {
-            final TrueLicenseManagementSchema schema = new TrueLicenseManagementSchema(this);
+            final TrueLicenseManagerParameters parameters = new TrueLicenseManagerParameters(this);
             return parent.isPresent()
-                    ? schema.new ChainedLicenseManager()
-                    : schema.new CachingLicenseManager();
+                    ? parameters.new ChainedLicenseManager()
+                    : parameters.new CachingLicenseManager();
         }
 
         @Override
@@ -206,7 +201,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public VendorLicenseManager build() {
-            return new TrueLicenseManagementSchema(this).new TrueLicenseManager();
+            return new TrueLicenseManagerParameters(this).new TrueLicenseManager();
         }
     }
 
@@ -427,7 +422,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
     }
 
-    final class TrueLicenseManagementSchema implements LicenseManagementSchema {
+    final class TrueLicenseManagerParameters implements LicenseManagerParameters {
 
         final Authentication authentication;
         final Optional<Filter> encryption;
@@ -435,7 +430,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         final Optional<ConsumerLicenseManager> parent;
         final Optional<Store> store;
 
-        TrueLicenseManagementSchema(final TrueLicenseManagerBuilder<?> b) {
+        TrueLicenseManagerParameters(final TrueLicenseManagerBuilder<?> b) {
             this.authentication = b.authentication.get();
             this.encryption = b.encryption;
             this.ftpDays = b.ftpDays;
@@ -464,7 +459,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public Filter encryption() {
-            return encryption.orElseGet(() -> parent().schema().encryption());
+            return encryption.orElseGet(() -> parent().parameters().encryption());
         }
 
         LicenseInitialization initialization() {
@@ -483,14 +478,17 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        @Override
-        public License license() {
+        License license() {
             return licenseFactory.license();
         }
 
-        @Override
-        public Class<? extends License> licenseClass() {
+        Class<? extends License> licenseClass() {
             return licenseFactory.licenseClass();
+        }
+
+        @Override
+        public LicenseFactory licenseFactory() {
+            return licenseFactory;
         }
 
         ConsumerLicenseManager parent() {
@@ -839,8 +837,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         abstract class TrueLicenseManagerBase implements LicenseManagerMixin {
 
             @Override
-            public LicenseManagementSchema schema() {
-                return TrueLicenseManagementSchema.this;
+            public LicenseManagerParameters parameters() {
+                return TrueLicenseManagerParameters.this;
             }
 
             @Override
@@ -863,6 +861,9 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
 
         @Override
         public void initialize(final License bean) {
+            if (0 == bean.getConsumerAmount()) {
+                bean.setConsumerAmount(1);
+            }
             if (null == bean.getConsumerType()) {
                 bean.setConsumerType(DEFAULT_CONSUMER_TYPE);
             }

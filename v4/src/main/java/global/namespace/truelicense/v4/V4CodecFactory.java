@@ -33,14 +33,14 @@ public class V4CodecFactory implements CodecFactory {
     /**
      * Returns a new object mapper.
      */
-    protected ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper() {
         return configure(new ObjectMapper());
     }
 
     /**
      * Configures and returns the given object mapper.
      */
-    protected ObjectMapper configure(final ObjectMapper mapper) {
+    protected final ObjectMapper configure(final ObjectMapper mapper) {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         final SimpleModule module = new SimpleModule();
         module.addAbstractTypeMapping(License.class, V4License.class);

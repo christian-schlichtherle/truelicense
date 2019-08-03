@@ -70,7 +70,7 @@ public final class DisplayBean extends LicenseBean {
         try {
             return manager().load();
         } catch (LicenseManagementException e) {
-            return context().license();
+            return parameters().licenseFactory().license();
         }
     }
 }

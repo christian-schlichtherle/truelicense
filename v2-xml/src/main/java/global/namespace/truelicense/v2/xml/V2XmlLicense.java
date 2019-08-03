@@ -7,7 +7,6 @@ package global.namespace.truelicense.v2.xml;
 import global.namespace.truelicense.core.LicenseStub;
 
 import javax.security.auth.x500.X500Principal;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -44,7 +43,6 @@ public class V2XmlLicense extends LicenseStub {
     private String subject;
 
     @Override
-    @XmlElement(defaultValue = "1")
     public int getConsumerAmount() {
         return consumerAmount;
     }
@@ -55,7 +53,6 @@ public class V2XmlLicense extends LicenseStub {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getConsumerType() {
         return consumerType;
     }
@@ -76,7 +73,6 @@ public class V2XmlLicense extends LicenseStub {
     }
 
     @Override
-    @XmlElement(required = true)
     @XmlJavaTypeAdapter(V2XmlX500PrincipalXmlAdapter.class)
     public X500Principal getHolder() {
         return holder;
@@ -98,7 +94,6 @@ public class V2XmlLicense extends LicenseStub {
     }
 
     @Override
-    @XmlElement(required = true)
     public Date getIssued() {
         return clone(issued);
     }
@@ -109,7 +104,6 @@ public class V2XmlLicense extends LicenseStub {
     }
 
     @Override
-    @XmlElement(required = true)
     @XmlJavaTypeAdapter(V2XmlX500PrincipalXmlAdapter.class)
     public X500Principal getIssuer() {
         return issuer;
@@ -141,7 +135,6 @@ public class V2XmlLicense extends LicenseStub {
     }
 
     @Override
-    @XmlElement(required = true)
     public String getSubject() {
         return subject;
     }

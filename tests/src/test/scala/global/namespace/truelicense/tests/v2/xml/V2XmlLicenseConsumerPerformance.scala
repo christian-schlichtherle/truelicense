@@ -8,5 +8,5 @@ import global.namespace.truelicense.tests.core.LicenseConsumerPerformance
 
 object V2XmlLicenseConsumerPerformance extends LicenseConsumerPerformance with V2XmlTestContext {
 
-  def main(args: Array[String]): Unit = call()
+  def main(args: Array[String]): Unit = run()
 }

@@ -8,5 +8,5 @@ import global.namespace.truelicense.tests.core.LicenseConsumerPerformance
 
 object V2JsonLicenseConsumerPerformance extends LicenseConsumerPerformance with V2JsonTestContext {
 
-  def main(args: Array[String]): Unit = call()
+  def main(args: Array[String]): Unit = run()
 }

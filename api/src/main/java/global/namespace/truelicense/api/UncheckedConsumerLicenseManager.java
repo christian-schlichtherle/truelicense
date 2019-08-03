@@ -26,8 +26,8 @@ import global.namespace.fun.io.api.Source;
 public interface UncheckedConsumerLicenseManager extends ConsumerLicenseManager {
 
     @Override
-    default LicenseManagementSchema schema() {
-        return checked().schema();
+    default LicenseManagerParameters parameters() {
+        return checked().parameters();
     }
 
     /**

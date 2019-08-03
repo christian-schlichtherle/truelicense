@@ -10,10 +10,10 @@ import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.codec.Codec;
 
 /**
- * A schema for license management.
- * A schema is built from a {@linkplain #context() license management context}.
+ * A configuration for license management.
+ * A configuration is built from a {@linkplain #context() license management context}.
  */
-public interface LicenseManagementSchema extends LicenseFactory {
+public interface LicenseManagerParameters {
 
     /**
      * Returns the authentication.
@@ -28,7 +28,7 @@ public interface LicenseManagementSchema extends LicenseFactory {
     }
 
     /**
-     * Returns the license management context from which this schema has been built.
+     * Returns the license management context from which these parameters have been built.
      */
     LicenseManagementContext context();
 
@@ -36,6 +36,13 @@ public interface LicenseManagementSchema extends LicenseFactory {
      * Returns the password based encryption transformation.
      */
     Filter encryption();
+
+    /**
+     * Returns the license factory.
+     */
+    default LicenseFactory licenseFactory() {
+        return context().licenseFactory();
+    }
 
     /**
      * Return the repository factory.

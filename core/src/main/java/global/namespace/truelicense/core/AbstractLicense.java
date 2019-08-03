@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public abstract class AbstractLicense extends LicenseStub {
 
-    private int consumerAmount = 1;
+    private int consumerAmount;
     private String consumerType;
     private Object extra;
     private X500Principal holder;

@@ -5,10 +5,11 @@
 package global.namespace.truelicense.tests.v2.json
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder
+import global.namespace.truelicense.tests.core.ExtraMapTestContext
 import global.namespace.truelicense.tests.v2.core.V2TestContext
 import global.namespace.truelicense.v2.json.V2Json
 
-trait V2JsonTestContext extends V2TestContext {
+trait V2JsonTestContext extends V2TestContext with ExtraMapTestContext {
 
-  final override def managementContextBuilder: LicenseManagementContextBuilder = V2Json.builder
+  final def managementContextBuilder: LicenseManagementContextBuilder = V2Json.builder
 }

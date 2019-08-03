@@ -4,90 +4,24 @@
  */
 package global.namespace.truelicense.tests.v1
 
-import global.namespace.fun.io.api.Store
-import global.namespace.truelicense.api.{ConsumerLicenseManager, LicenseManagementContextBuilder, VendorLicenseManager}
-import global.namespace.truelicense.tests.core.TestContext
+import global.namespace.truelicense.api.LicenseManagementContextBuilder
+import global.namespace.truelicense.tests.core.{ExtraBeanTestContext, TestContext}
 import global.namespace.truelicense.tests.v1.V1TestContext._
 import global.namespace.truelicense.v1.V1
 
-trait V1TestContext extends TestContext {
+trait V1TestContext extends TestContext with ExtraBeanTestContext {
 
-  final override def managementContextBuilder: LicenseManagementContextBuilder = V1.builder
+  final def managementContextBuilder: LicenseManagementContextBuilder = V1.builder
 
-  final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
-    val cm = managementContext.consumer
-      .authentication
-        .alias("mykey")
-        .loadFromResource(prefix + "chained-public.jks")
-        .storeProtection(test1234)
-        .up
-      .parent(parent)
-      .storeIn(store)
-      .build
-    require(cm.context eq managementContext)
-    cm
-  }
+  protected def chainedConsumerKeystoreName: String = prefix + "chained-public.jks"
 
-  final def chainedVendorManager: VendorLicenseManager = {
-    val vm = managementContext.vendor
-      .encryption
-        .protection(test1234)
-        .up
-      .authentication
-        .alias("mykey")
-        .loadFromResource(prefix + "chained-private.jks")
-        .storeProtection(test1234)
-        .up
-      .build
-    require(vm.context eq managementContext)
-    vm
-  }
+  protected def chainedVendorKeystoreName: String = prefix + "chained-private.jks"
 
-  final def consumerManager(store: Store): ConsumerLicenseManager = {
-    val cm = managementContext.consumer
-      .encryption
-        .protection(test1234)
-        .up
-      .authentication
-        .alias("mykey")
-        .loadFromResource(prefix + "public.jks")
-        .storeProtection(test1234)
-        .up
-      .storeIn(store)
-      .build
-    require(cm.context eq managementContext)
-    cm
-  }
+  protected def consumerKeystoreName: String = prefix + "public.jks"
 
-  final def ftpConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
-    val cm = managementContext.consumer
-      .ftpDays(1)
-      .authentication
-        .alias("mykey")
-        .loadFromResource(prefix + "ftp.jks")
-        .storeProtection(test1234)
-        .up
-      .parent(parent)
-      .storeIn(store)
-      .build
-    require(cm.context eq managementContext)
-    cm
-  }
+  protected def ftpConsumerKeystoreName: String = prefix + "ftp.jks"
 
-  final def vendorManager: VendorLicenseManager = {
-    val vm = managementContext.vendor
-      .encryption
-        .protection(test1234)
-        .up
-      .authentication
-        .alias("mykey")
-        .loadFromResource(prefix + "private.jks")
-        .storeProtection(test1234)
-        .up
-      .build
-    require(vm.context eq managementContext)
-    vm
-  }
+  protected def vendorKeystoreName: String = prefix + "private.jks"
 }
 
 object V1TestContext {
