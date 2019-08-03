@@ -447,6 +447,11 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return authentication;
         }
 
+        @Override
+        public Codec codec() {
+            return codec;
+        }
+
         Filter compressionThenEncryption() {
             return compression().andThen(encryption());
         }
@@ -477,12 +482,27 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
+        @Override
+        public License license() {
+            return licenseFactory.license();
+        }
+
+        @Override
+        public Class<? extends License> licenseClass() {
+            return licenseFactory.licenseClass();
+        }
+
         ConsumerLicenseManager parent() {
             return parent.get();
         }
 
         Store store() {
             return store.get();
+        }
+
+        @Override
+        public String subject() {
+            return subject;
         }
 
         final class ChainedLicenseManager extends CachingLicenseManager {

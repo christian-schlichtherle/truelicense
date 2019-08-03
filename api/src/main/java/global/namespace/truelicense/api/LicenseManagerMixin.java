@@ -15,7 +15,7 @@ public interface LicenseManagerMixin {
     LicenseManagementSchema schema();
 
     /**
-     * Returns the license management context from the schema.
+     * Returns the license management context from the license management schema.
      */
     default LicenseManagementContext context() {
         return schema().context();
