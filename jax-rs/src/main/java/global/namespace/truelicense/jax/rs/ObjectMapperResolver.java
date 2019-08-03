@@ -13,20 +13,20 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import global.namespace.truelicense.api.License;
 
 import javax.security.auth.x500.X500Principal;
 import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
-@Provider
-public class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
+public final class ObjectMapperResolver implements ContextResolver<ObjectMapper> {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    static {
+    public ObjectMapperResolver(final Class<? extends License> licenseClass) {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         final SimpleModule module = new SimpleModule();
+        module.addAbstractTypeMapping(License.class, licenseClass);
         module.addSerializer(new StdSerializer<X500Principal>(X500Principal.class) {
 
             @Override
