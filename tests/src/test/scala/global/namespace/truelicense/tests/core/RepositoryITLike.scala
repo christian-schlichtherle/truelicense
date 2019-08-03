@@ -14,7 +14,7 @@ trait RepositoryITLike extends WordSpecLike {
 
   type Model >: Null <: AnyRef
 
-  val factory: RepositoryFactory[Model]
+  private lazy val factory: RepositoryFactory[Model] = managementContext.repositoryFactory().asInstanceOf[RepositoryFactory[Model]]
 
   "A repository" should {
     "sign and verify an object" in {

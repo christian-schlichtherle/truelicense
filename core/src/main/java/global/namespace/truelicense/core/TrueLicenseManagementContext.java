@@ -145,7 +145,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         return passwordPolicy;
     }
 
-    private RepositoryFactory repositoryFactory() {
+    @Override
+    public RepositoryFactory<?> repositoryFactory() {
         return repositoryFactory;
     }
 
@@ -496,6 +497,11 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return parent.get();
         }
 
+        @Override
+        public RepositoryFactory repositoryFactory() {
+            return repositoryFactory;
+        }
+
         Store store() {
             return store.get();
         }
@@ -673,7 +679,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         }
 
         class TrueLicenseManager
-                extends TrueLicenseManagerMixin
+                extends TrueLicenseManagerBase
                 implements ConsumerLicenseManager, VendorLicenseManager {
 
             @Override
@@ -815,7 +821,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             final class TrueUncheckedLicenseManager
-                    extends TrueLicenseManagerMixin
+                    extends TrueLicenseManagerBase
                     implements UncheckedVendorLicenseManager, UncheckedConsumerLicenseManager {
 
                 @Override
@@ -830,7 +836,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
         }
 
-        abstract class TrueLicenseManagerMixin implements LicenseManagerMixin {
+        abstract class TrueLicenseManagerBase implements LicenseManagerMixin {
 
             @Override
             public LicenseManagementSchema schema() {

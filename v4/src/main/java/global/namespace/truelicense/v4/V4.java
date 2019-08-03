@@ -5,7 +5,6 @@
 package global.namespace.truelicense.v4;
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
-import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
@@ -39,14 +38,7 @@ public final class V4 {
                 .encryptionFactory(V4Encryption::new)
                 .keystoreType(KEYSTORE_TYPE)
                 .licenseFactory(new V4LicenseFactory())
-                .repositoryFactory(repositoryFactory());
-    }
-
-    /**
-     * For testing only: Returns the repository factory for use with V4 format license keys.
-     */
-    public static RepositoryFactory<?> repositoryFactory() {
-        return new V4RepositoryFactory();
+                .repositoryFactory(new V4RepositoryFactory());
     }
 
     private V4() {

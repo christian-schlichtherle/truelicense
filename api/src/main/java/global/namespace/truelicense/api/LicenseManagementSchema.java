@@ -6,6 +6,7 @@ package global.namespace.truelicense.api;
 
 import global.namespace.fun.io.api.Filter;
 import global.namespace.truelicense.api.auth.Authentication;
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.codec.Codec;
 
 /**
@@ -36,14 +37,11 @@ public interface LicenseManagementSchema extends LicenseFactory {
      */
     Filter encryption();
 
-    @Override
-    default License license() {
-        return context().license();
-    }
-
-    @Override
-    default Class<? extends License> licenseClass() {
-        return context().licenseClass();
+    /**
+     * Return the repository factory.
+     */
+    default RepositoryFactory<?> repositoryFactory() {
+        return context().repositoryFactory();
     }
 
     /**

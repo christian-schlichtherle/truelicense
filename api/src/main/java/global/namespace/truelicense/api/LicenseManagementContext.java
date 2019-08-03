@@ -4,6 +4,7 @@
  */
 package global.namespace.truelicense.api;
 
+import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.codec.Codec;
 
 /**
@@ -21,6 +22,11 @@ public interface LicenseManagementContext extends LicenseFactory {
      * Call its {@link ConsumerLicenseManagerBuilder#build} method to build the configured consumer license manager.
      */
     ConsumerLicenseManagerBuilder consumer();
+
+    /**
+     * Return the repository factory.
+     */
+    RepositoryFactory<?> repositoryFactory();
 
     /**
      * Returns the license management subject.

@@ -5,7 +5,6 @@
 package global.namespace.truelicense.v1;
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
-import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.core.Core;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
@@ -40,14 +39,7 @@ public final class V1 {
                 .encryptionFactory(V1Encryption::new)
                 .keystoreType(KEYSTORE_TYPE)
                 .licenseFactory(new V1LicenseFactory())
-                .repositoryFactory(repositoryFactory());
-    }
-
-    /**
-     * For testing only: Returns the repository factory for use with V1 format license keys.
-     */
-    public static RepositoryFactory<?> repositoryFactory() {
-        return new V1RepositoryFactory();
+                .repositoryFactory(new V1RepositoryFactory());
     }
 
     private V1() {

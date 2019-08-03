@@ -5,7 +5,6 @@
 package global.namespace.truelicense.v2.json;
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
-import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.v2.core.V2;
 
 /**
@@ -25,14 +24,7 @@ public final class V2Json {
                 .builder()
                 .codecFactory(new V2JsonCodecFactory())
                 .licenseFactory(new V2JsonLicenseFactory())
-                .repositoryFactory(repositoryFactory());
-    }
-
-    /**
-     * For testing only: Returns the repository factory for use with V2/JSON format license keys.
-     */
-    public static RepositoryFactory<?> repositoryFactory() {
-        return new V2JsonRepositoryFactory();
+                .repositoryFactory(new V2JsonRepositoryFactory());
     }
 
     private V2Json() {

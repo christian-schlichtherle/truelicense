@@ -5,7 +5,6 @@
 package global.namespace.truelicense.v2.xml;
 
 import global.namespace.truelicense.api.LicenseManagementContextBuilder;
-import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.v2.core.V2;
 
 /**
@@ -26,14 +25,7 @@ public final class V2Xml {
                 .builder()
                 .codecFactory(new V2XmlCodecFactory())
                 .licenseFactory(new V2XmlLicenseFactory())
-                .repositoryFactory(repositoryFactory());
-    }
-
-    /**
-     * For testing only: Returns the repository factory for use with V2/XML format license keys.
-     */
-    public static RepositoryFactory<?> repositoryFactory() {
-        return new V2XmlRepositoryFactory();
+                .repositoryFactory(new V2XmlRepositoryFactory());
     }
 
     private V2Xml() {
