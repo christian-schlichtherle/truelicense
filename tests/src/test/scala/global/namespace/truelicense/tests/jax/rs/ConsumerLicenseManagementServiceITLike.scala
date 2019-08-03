@@ -23,18 +23,6 @@ trait ConsumerLicenseManagementServiceITLike extends WordSpecLike with ConsumerL
           managementService.subjectAsJson.subject shouldBe managementContext.subject
         }
 
-        "return its subject encoded as XML" in {
-          managementService.subjectAsXml.getValue shouldBe managementContext.subject
-        }
-
-        "fail to load the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml false)
-        }
-
-        "fail to load and verify the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml true)
-        }
-
         "fail to load the license key as JSON" in {
           intercept[ConsumerLicenseManagementServiceException](managementService loadAsJson false)
         }
@@ -49,14 +37,6 @@ trait ConsumerLicenseManagementServiceITLike extends WordSpecLike with ConsumerL
           (managementService install cachedLicenseKey).getStatus shouldBe 303
         }
 
-        "load the license key as XML" in {
-          managementService loadAsXml false shouldBe cachedLicenseBean
-        }
-
-        "load and verify the license key as XML" in {
-          managementService loadAsXml true shouldBe cachedLicenseBean
-        }
-
         "load the license key as JSON" in {
           (managementService loadAsJson false).license shouldBe cachedLicenseBean
         }
@@ -69,14 +49,6 @@ trait ConsumerLicenseManagementServiceITLike extends WordSpecLike with ConsumerL
       "uninstalling the license key again" should {
         "uninstall the license key" in {
           managementService.uninstall()
-        }
-
-        "fail to load the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml false)
-        }
-
-        "fail to load and verify the license key as XML" in {
-          intercept[ConsumerLicenseManagementServiceException](managementService loadAsXml true)
         }
 
         "fail to load the license key as JSON" in {

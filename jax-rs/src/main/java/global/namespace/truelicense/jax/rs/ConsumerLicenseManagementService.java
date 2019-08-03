@@ -5,18 +5,16 @@
 package global.namespace.truelicense.jax.rs;
 
 import global.namespace.fun.io.api.Store;
-import global.namespace.truelicense.jax.rs.dto.LicenseDTO;
-import global.namespace.truelicense.jax.rs.dto.SubjectDTO;
 import global.namespace.truelicense.api.ConsumerLicenseManager;
 import global.namespace.truelicense.api.License;
 import global.namespace.truelicense.api.LicenseManagementException;
+import global.namespace.truelicense.jax.rs.dto.LicenseDTO;
+import global.namespace.truelicense.jax.rs.dto.SubjectDTO;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 import java.net.URI;
 import java.util.Objects;
 
@@ -43,8 +41,6 @@ public final class ConsumerLicenseManagementService {
     @Obfuscate
     private static final String VERIFY = "verify";
 
-    private static final QName subject = new QName(SUBJECT);
-
     private static final URI licenseURI = URI.create(LICENSE);
 
     private final ConsumerLicenseManager manager;
@@ -64,14 +60,9 @@ public final class ConsumerLicenseManagementService {
     @Path(SUBJECT)
     @Produces(APPLICATION_JSON)
     public SubjectDTO subjectAsJson() {
-        return new SubjectDTO(subject());
-    }
-
-    @GET
-    @Path(SUBJECT)
-    @Produces({APPLICATION_XML, TEXT_XML})
-    public JAXBElement<String> subjectAsXml() {
-        return new JAXBElement<>(subject, String.class, subject());
+        final SubjectDTO s = new SubjectDTO();
+        s.subject = subject();
+        return s;
     }
 
     @POST
@@ -89,15 +80,14 @@ public final class ConsumerLicenseManagementService {
 
     @GET
     @Produces(APPLICATION_JSON)
-    public LicenseDTO loadAsJson(@QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
+    public LicenseDTO loadAsJson(final @QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
             throws ConsumerLicenseManagementServiceException {
-        return new LicenseDTO(loadAsXml(verify));
+        final LicenseDTO l = new LicenseDTO();
+        l.license = load(verify);
+        return l;
     }
 
-    @GET
-    @Produces({APPLICATION_XML, TEXT_XML})
-    public License loadAsXml(final @QueryParam(VERIFY) @DefaultValue(FALSE) boolean verify)
-            throws ConsumerLicenseManagementServiceException {
+    private License load(boolean verify) throws ConsumerLicenseManagementServiceException {
         final License license;
         try {
             license = manager.load();

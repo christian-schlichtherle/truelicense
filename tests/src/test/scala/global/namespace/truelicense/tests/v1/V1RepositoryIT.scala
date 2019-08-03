@@ -4,13 +4,12 @@
  */
 package global.namespace.truelicense.tests.v1
 
-import de.schlichtherle.xml.GenericCertificate
 import global.namespace.truelicense.api.auth.RepositoryFactory
 import global.namespace.truelicense.tests.core.RepositoryITLike
-import global.namespace.truelicense.v1.auth.V1RepositoryFactory
+import global.namespace.truelicense.v1.V1
 import org.scalatest.WordSpec
 
-class V1RepositoryIT extends WordSpec with RepositoryITLike[GenericCertificate] with V1TestContext {
+class V1RepositoryIT extends WordSpec with RepositoryITLike with V1TestContext {
 
-  val factory: RepositoryFactory[GenericCertificate] = new V1RepositoryFactory
+  val factory: RepositoryFactory[Model] = V1.repositoryFactory.asInstanceOf[RepositoryFactory[Model]]
 }

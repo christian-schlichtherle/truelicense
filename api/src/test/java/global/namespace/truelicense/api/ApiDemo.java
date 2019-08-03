@@ -10,7 +10,7 @@ import global.namespace.fun.io.api.Store;
 import global.namespace.truelicense.api.auth.Authentication;
 import global.namespace.truelicense.api.auth.AuthenticationFactory;
 import global.namespace.truelicense.api.auth.RepositoryFactory;
-import global.namespace.truelicense.api.codec.Codec;
+import global.namespace.truelicense.api.codec.CodecFactory;
 import global.namespace.truelicense.api.crypto.EncryptionFactory;
 import global.namespace.truelicense.api.passwd.PasswordPolicy;
 import global.namespace.truelicense.api.passwd.PasswordProtection;
@@ -40,7 +40,7 @@ interface ApiDemo {
                 .authenticationFactory(mock(AuthenticationFactory.class))
                 .authorization(mock(LicenseManagementAuthorization.class))
                 .cachePeriodMillis(1000L)
-                .codec(mock(Codec.class))
+                .codecFactory(mock(CodecFactory.class))
                 .clock(mock(Clock.class))
                 .compression(mock(Filter.class))
                 .encryptionAlgorithm("PBEWithSHA1AndDESede")

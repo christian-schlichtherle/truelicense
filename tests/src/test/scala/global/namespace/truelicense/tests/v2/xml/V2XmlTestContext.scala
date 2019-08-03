@@ -4,18 +4,18 @@
  */
 package global.namespace.truelicense.tests.v2.xml
 
-import global.namespace.truelicense.api.{License, LicenseManagementContextBuilder}
+import global.namespace.truelicense.api.LicenseManagementContextBuilder
 import global.namespace.truelicense.tests.core.ExtraData
 import global.namespace.truelicense.tests.v2.core.V2TestContext
-import global.namespace.truelicense.v2.core.auth.V2RepositoryModel
-import global.namespace.truelicense.v2.xml.V2Xml
-import javax.xml.bind._
+import global.namespace.truelicense.v2.xml.{V2Xml, V2XmlCodecFactory}
 
 trait V2XmlTestContext extends V2TestContext {
 
-  //noinspection ScalaDeprecation
   final override def managementContextBuilder: LicenseManagementContextBuilder = {
-    V2Xml builder JAXBContext.newInstance(classOf[License], classOf[ExtraData], classOf[V2RepositoryModel])
+    V2Xml.builder.codecFactory(new V2XmlCodecFactory {
+
+      override protected def classesToBeBound(): Array[Class[_]] = super.classesToBeBound() :+ classOf[ExtraData]
+    })
   }
 
   override def extraData: AnyRef = {

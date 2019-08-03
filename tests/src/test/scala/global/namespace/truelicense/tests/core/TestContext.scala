@@ -18,7 +18,7 @@ import global.namespace.truelicense.tests.core.TestContext._
 import javax.security.auth.x500.X500Principal
 import org.slf4j.LoggerFactory
 
-trait TestContext {
+trait TestContext extends LicenseFactory {
 
   def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager
 
@@ -53,8 +53,8 @@ trait TestContext {
   final def license: License = {
     val now = new Date
     val me = new X500Principal("CN=Christian Schlichtherle")
-    val license = managementContext.license
-    import license._
+    val l = managementContext.license
+    import l._
     setSubject("subject")
     setHolder(me)
     setIssuer(me)
@@ -62,8 +62,10 @@ trait TestContext {
     setNotBefore(now)
     setInfo("info")
     setExtra(extraData)
-    license
+    l
   }
+
+  final override lazy val licenseClass: Class[_ <: License] = managementContext.licenseClass
 
   final lazy val managementContext: LicenseManagementContext = {
     managementContextBuilder

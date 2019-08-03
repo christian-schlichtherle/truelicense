@@ -9,7 +9,7 @@ import global.namespace.truelicense.api.auth.AuthenticationChildBuilder;
 import global.namespace.truelicense.api.auth.AuthenticationFactory;
 import global.namespace.truelicense.api.auth.RepositoryFactory;
 import global.namespace.truelicense.api.builder.GenBuilder;
-import global.namespace.truelicense.api.codec.Codec;
+import global.namespace.truelicense.api.codec.CodecFactory;
 import global.namespace.truelicense.api.crypto.EncryptionChildBuilder;
 import global.namespace.truelicense.api.crypto.EncryptionFactory;
 import global.namespace.truelicense.api.passwd.PasswordPolicy;
@@ -66,7 +66,7 @@ extends GenBuilder<LicenseManagementContext> {
      *
      * @return {@code this}
      */
-    LicenseManagementContextBuilder codec(Codec codec);
+    LicenseManagementContextBuilder codecFactory(CodecFactory codecFactory);
 
     /**
      * Sets the compression transformation (optional).

@@ -30,11 +30,5 @@
             <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <optional>true</optional>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 </project>

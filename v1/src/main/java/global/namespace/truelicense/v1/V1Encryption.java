@@ -7,10 +7,10 @@ package global.namespace.truelicense.v1;
 import global.namespace.fun.io.api.Filter;
 import global.namespace.fun.io.api.Socket;
 import global.namespace.fun.io.bios.BIOS;
-import global.namespace.truelicense.core.crypto.EncryptionMixin;
 import global.namespace.truelicense.api.crypto.Encryption;
 import global.namespace.truelicense.api.crypto.EncryptionParameters;
 import global.namespace.truelicense.api.passwd.PasswordUsage;
+import global.namespace.truelicense.core.crypto.EncryptionMixin;
 import global.namespace.truelicense.obfuscate.Obfuscate;
 
 import javax.crypto.Cipher;
@@ -22,8 +22,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import static javax.crypto.Cipher.*;
 
 /**
- * The password based encryption for V1 format license keys.
- * This class is immutable.
+ * An encryption for use with V1 format license keys.
  */
 final class V1Encryption extends EncryptionMixin implements Encryption {
 

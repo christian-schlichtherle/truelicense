@@ -59,7 +59,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         this.authorization = b.authorization;
         this.cachePeriodMillis = b.cachePeriodMillis;
         this.clock = b.clock;
-        this.codec = b.codec.get();
+        this.codec = b.codecFactory.get().codec();
         this.compression = b.compression.get();
         this.encryptionAlgorithm = Strings.requireNonEmpty(b.encryptionAlgorithm);
         this.encryptionFactory = b.encryptionFactory.get();
@@ -217,6 +217,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
         Optional<ConsumerLicenseManager> parent = Optional.empty();
         Optional<Store> store = Optional.empty();
 
+        @SuppressWarnings("WeakerAccess")
         public final This authentication(final Authentication authentication) {
             this.authentication = Optional.ofNullable(authentication);
             return (This) this;
