@@ -88,8 +88,6 @@ trait V1TestContext extends TestContext {
     require(vm.context eq managementContext)
     vm
   }
-
-  lazy val licenseDtoClass: Class[V1LicenseDTO] = classOf[V1LicenseDTO]
 }
 
 object V1TestContext {

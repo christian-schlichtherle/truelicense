@@ -11,6 +11,4 @@ import global.namespace.truelicense.v2.json.V2Json
 trait V2JsonTestContext extends V2TestContext {
 
   final override def managementContextBuilder: LicenseManagementContextBuilder = V2Json.builder
-
-  lazy val licenseDtoClass: Class[V2JsonLicenseDTO] = classOf[V2JsonLicenseDTO]
 }

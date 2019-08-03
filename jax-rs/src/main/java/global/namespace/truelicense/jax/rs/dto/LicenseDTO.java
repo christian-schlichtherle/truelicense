@@ -6,7 +6,7 @@ package global.namespace.truelicense.jax.rs.dto;
 
 import global.namespace.truelicense.api.License;
 
-public class LicenseDTO<L extends License> {
+public class LicenseDTO {
 
-    public L license;
+    public License license;
 }

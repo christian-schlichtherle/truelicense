@@ -23,6 +23,4 @@ trait V2XmlTestContext extends V2TestContext {
     bean.setMessage("This is some private extra data!")
     bean
   }
-
-  lazy val licenseDtoClass: Class[V2XmlLicenseDTO] = classOf[V2XmlLicenseDTO]
 }
