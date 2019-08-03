@@ -19,7 +19,7 @@ final class V2XmlRepositoryFactory implements RepositoryFactory<V2XmlRepositoryM
     }
 
     @Override
-    public Class<?> modelClass() {
+    public Class<V2XmlRepositoryModel> modelClass() {
         return V2XmlRepositoryModel.class;
     }
 

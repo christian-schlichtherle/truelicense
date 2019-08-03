@@ -20,7 +20,7 @@ final class V1RepositoryFactory implements RepositoryFactory<GenericCertificate>
     }
 
     @Override
-    public Class<?> modelClass() {
+    public Class<GenericCertificate> modelClass() {
         return GenericCertificate.class;
     }
 

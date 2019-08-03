@@ -19,7 +19,7 @@ final class V4RepositoryFactory implements RepositoryFactory<V4RepositoryModel> 
     }
 
     @Override
-    public Class<?> modelClass() {
+    public Class<V4RepositoryModel> modelClass() {
         return V4RepositoryModel.class;
     }
 

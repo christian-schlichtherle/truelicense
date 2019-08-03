@@ -19,7 +19,7 @@ public interface RepositoryFactory<Model> {
     /**
      * Returns the base class of all models created by this factory.
      */
-    Class<?> modelClass();
+    Class<Model> modelClass();
 
     /**
      * Returns a new repository controller using the given codec and repository model.
