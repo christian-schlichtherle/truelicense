@@ -10,7 +10,7 @@ Due to its functional and modular design TrueLicense scales from simple to compl
 TrueLicense features various interfaces for managing free trial periods, subscriptions, multiple editions,
 internationalization, privacy protection and more.
 
-For documentation, please refer to the documentation at http://truelicense.net/.
-
 Before version 4, TrueLicense was covered by the GNU Affero General Public License, Version 3.
 Since version 4, it is covered by the Apache License, Version 2.0.
+
+The old documentation at http://truelicense.net/ is now obsolete and will be updated next.
