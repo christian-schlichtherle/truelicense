@@ -27,7 +27,6 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
   private lazy val objectMapperResolver = new ObjectMapperResolver(managementContext.licenseFactory.licenseClass)
 
   private lazy val state = new State
-
   import state._
 
   override protected def configure: Application = {
