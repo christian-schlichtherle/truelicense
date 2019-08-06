@@ -14,3 +14,31 @@ Before version 4, TrueLicense was covered by the GNU Affero General Public Licen
 Since version 4, it is covered by the Apache License, Version 2.0.
 
 The old documentation at http://truelicense.net/ is now obsolete and will be updated next.
+In the mean time, please still use it as your reference.
+For a quick start, here's how you can generate a sample project using the [TrueLicense Maven Archetype](https://github.com/christian-schlichtherle/truelicense-maven-archetype) with the new V4 license key format:
+
+```bash
+$ mvn org.apache.maven.plugins:maven-archetype-plugin:3.1.0:generate \
+    -DarchetypeGroupId=global.namespace.truelicense-maven-archetype \
+    -DarchetypeArtifactId=truelicense-maven-archetype \
+    -DarchetypeVersion=4.0.0 \
+    -DartifactId=basic \
+    -Dcompany='Company Inc.' \
+    -DgroupId=com.company.product \
+    -Dpassword=test1234 \
+    -Dsubject='Product 1' \
+    -Dversion=1.0-SNAPSHOT
+$ cd basic
+$ chmod +x mvnw
+$ ./mvnw clean verify
+```
+
+Next, you can generate and install a license key like this:
+
+```bash
+$ java -jar keygen/target/*-keygen-*-standalone.jar generate license.lic -output -
+{"consumerAmount":1,"consumerType":"User","holder":"CN=Unknown","issued":1565085418292,"issuer":"CN=Company Inc.","subject":"Product 1"}
+$ java -jar keymgr/target/*-keymgr-*-guarded.jar wizard
+```
+
+Follow the instructions of the licensing wizard to install, view and uninstall the license key previously saved to the `license.lic` file.
