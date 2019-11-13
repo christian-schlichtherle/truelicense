@@ -206,7 +206,7 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <!-- TODO: Security update: Substitute this with ${jackson.version} on the next update. -->
-                <version>2.9.9.2</version>
+                <version>2.9.10.1</version>
             </dependency>
             <dependency>
                 <groupId>global.namespace.fun-io</groupId>
