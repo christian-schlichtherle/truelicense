@@ -13,7 +13,7 @@ internationalization, privacy protection and more.
 Before version 4, TrueLicense was covered by the GNU Affero General Public License, Version 3.
 Since version 4, it is covered by the Apache License, Version 2.0.
 
-The old documentation at https://truelicense.net/ is now obsolete and will be updated next.
+The old documentation at https://truelicense.net/ is now obsolete and will be updated eventually.
 In the mean time, please still use it as your reference.
 For a quick start, here's how you can generate a sample project using the [TrueLicense Maven Archetype](https://github.com/christian-schlichtherle/truelicense-maven-archetype) with the new V4 license key format:
 
