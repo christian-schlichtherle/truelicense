@@ -85,14 +85,14 @@ public abstract class GenerateSourcesTask extends AbstractTask {
     public abstract List<PathSet> templateSets();
 
     @Caching
-    ToolManager toolManager() {
+    protected ToolManager toolManager() {
         final ToolManager m = new ToolManager();
         m.configure(ConfigurationUtils.getDefaultTools());
         return m;
     }
 
     @Caching
-    VelocityEngine velocityEngine() {
+    protected VelocityEngine velocityEngine() {
         final VelocityEngine e = new VelocityEngine();
         e.setProperty(FILE_RESOURCE_LOADER_PATH, projectDirectory().toString());
         e.init();
