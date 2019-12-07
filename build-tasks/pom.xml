@@ -31,11 +31,6 @@
             <artifactId>neuron-di</artifactId>
         </dependency>
         <dependency>
-            <groupId>global.namespace.neuron-di</groupId>
-            <artifactId>neuron-di-scala_${scala.compat.version}</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
         </dependency>

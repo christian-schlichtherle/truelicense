@@ -63,7 +63,6 @@
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>3.6.3</maven.version>
         <mockito.version>3.2.0</mockito.version>
-        <neuron-di.version>6.4.4</neuron-di.version>
         <scala.version>2.13.1</scala.version>
         <scalacheck.version>1.14.2</scalacheck.version>
         <slf4j.version>1.7.29</slf4j.version>
@@ -237,12 +236,7 @@
             <dependency>
                 <groupId>global.namespace.neuron-di</groupId>
                 <artifactId>neuron-di</artifactId>
-                <version>${neuron-di.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.neuron-di</groupId>
-                <artifactId>neuron-di-scala_${scala.compat.version}</artifactId>
-                <version>${neuron-di.version}</version>
+                <version>6.4.4</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.annotation</groupId>
