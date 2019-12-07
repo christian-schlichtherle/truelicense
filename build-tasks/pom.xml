@@ -9,7 +9,7 @@
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
     </parent>
 
     <artifactId>truelicense-build-tasks</artifactId>
@@ -29,15 +29,6 @@
         <dependency>
             <groupId>global.namespace.neuron-di</groupId>
             <artifactId>neuron-di</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>global.namespace.neuron-di</groupId>
-            <artifactId>neuron-di-scala_${scala.compat.version}</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.proguard</groupId>
-            <artifactId>proguard-base</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>

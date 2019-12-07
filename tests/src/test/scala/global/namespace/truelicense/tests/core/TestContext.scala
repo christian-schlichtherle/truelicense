@@ -18,120 +18,95 @@ import org.scalatest.Matchers._
 import org.slf4j.LoggerFactory
 
 trait TestContext {
-  self =>
 
   def managementContextBuilder: LicenseManagementContextBuilder
 
   protected def extra: AnyRef
 
-  final def consumerManager(store: Store): ConsumerLicenseManager = {
-    val cm = managementContext.consumer
-      .encryption
-      .protection(test1234)
-      .up
-      .authentication
-      .alias("mykey")
-      .loadFromResource(consumerKeystoreName)
-      .storeProtection(test1234)
-      .up
-      .storeIn(store)
-      .build
-    require(cm.context eq managementContext)
-    cm
-  }
+  protected def prefix: String
 
-  protected def consumerKeystoreName: String
-
-  final def chainedConsumerManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
-    val cm = managementContext.consumer
-      .authentication
-      .alias("mykey")
-      .loadFromResource(chainedConsumerKeystoreName)
-      .storeProtection(test1234)
-      .up
-      .parent(parent)
-      .storeIn(store)
-      .build
-    require(cm.context eq managementContext)
-    cm
-  }
-
-  protected def chainedConsumerKeystoreName: String
-
-  final def ftpManager(parent: ConsumerLicenseManager, store: Store): ConsumerLicenseManager = {
-    val cm = managementContext.consumer
-      .ftpDays(1)
-      .authentication
-      .alias("mykey")
-      .loadFromResource(ftpConsumerKeystoreName)
-      .storeProtection(test1234)
-      .up
-      .parent(parent)
-      .storeIn(store)
-      .build
-    require(cm.context eq managementContext)
-    cm
-  }
-
-  protected def ftpConsumerKeystoreName: String
+  protected def postfix: String
 
   final lazy val vendorManager: VendorLicenseManager = {
-    val vm = managementContext.vendor
+    managementContext.vendor
       .encryption
       .protection(test1234)
       .up
       .authentication
       .alias("mykey")
-      .loadFromResource(vendorKeystoreName)
+      .loadFromResource(prefix + "private" + postfix)
       .storeProtection(test1234)
       .up
       .build
-    require(vm.context eq managementContext)
-    vm
-  }
-
-  protected def vendorKeystoreName: String
+    }.ensuring(vm => vm.context eq managementContext)
 
   final lazy val chainedVendorManager: VendorLicenseManager = {
-    val vm = managementContext.vendor
+    managementContext.vendor
       .encryption
       .protection(test1234)
       .up
       .authentication
       .alias("mykey")
-      .loadFromResource(chainedVendorKeystoreName)
+      .loadFromResource(prefix + "chained-private" + postfix)
       .storeProtection(test1234)
       .up
       .build
-    require(vm.context eq managementContext)
-    vm
-  }
-
-  protected def chainedVendorKeystoreName: String
+    }.ensuring(vm => vm.context eq managementContext)
 
   class State {
 
-    final lazy val consumerManager: ConsumerLicenseManager = self.consumerManager(consumerStore)
-
     final lazy val consumerStore: Store = memory
 
-    final lazy val chainedConsumerManager: ConsumerLicenseManager = {
-      self.chainedConsumerManager(consumerManager, chainedConsumerStore)
-    }
+    final lazy val consumerManager: ConsumerLicenseManager = {
+      managementContext.consumer
+        .encryption
+        .protection(test1234)
+        .up
+        .authentication
+        .alias("mykey")
+        .loadFromResource(prefix + "public" + postfix)
+        .storeProtection(test1234)
+        .up
+        .storeIn(consumerStore)
+        .build
+      }.ensuring(cm => cm.context eq managementContext)
 
     final lazy val chainedConsumerStore: Store = memory
 
-    final val ftpManager: ConsumerLicenseManager = self.ftpManager(consumerManager, ftpStore)
+    final lazy val chainedConsumerManager: ConsumerLicenseManager = {
+      managementContext.consumer
+        .authentication
+        .alias("mykey")
+        .loadFromResource(prefix + "chained-public" + postfix)
+        .storeProtection(test1234)
+        .up
+        .parent(consumerManager)
+        .storeIn(chainedConsumerStore)
+        .build
+      }.ensuring(cm => cm.context eq managementContext)
 
-    final lazy val ftpStore = memory
+    final lazy val ftpStore: Store = memory
 
-    private lazy val vendorStore = {
+    final val ftpManager: ConsumerLicenseManager = {
+      managementContext.consumer
+        .ftpDays(1)
+        .authentication
+        .alias("mykey")
+        .loadFromResource(prefix + "ftp" + postfix)
+        .storeProtection(test1234)
+        .up
+        .parent(consumerManager)
+        .storeIn(ftpStore)
+        .build
+      }.ensuring(cm => cm.context eq managementContext)
+
+    private lazy val licenseStore = {
       val s = memory
       vendorManager generateKeyFrom licenseBean saveTo s
       s
     }
 
-    final def licenseKey: Array[Byte] = vendorStore.content
+    final def licenseKey: Array[Byte] = licenseStore.content
   }
 
   final def assertLicenseBean(license: License): Unit = {

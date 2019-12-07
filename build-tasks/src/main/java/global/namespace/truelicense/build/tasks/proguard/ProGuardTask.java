@@ -4,7 +4,6 @@
  */
 package global.namespace.truelicense.build.tasks.proguard;
 
-import global.namespace.neuron.di.java.Neuron;
 import global.namespace.truelicense.build.tasks.commons.AbstractTask;
 
 import java.nio.file.Path;
@@ -13,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static global.namespace.neuron.di.java.CachingStrategy.NOT_THREAD_SAFE;
 import static java.lang.String.join;
 import static java.lang.System.getProperty;
 import static java.nio.file.Files.isRegularFile;
@@ -22,7 +20,6 @@ import static java.nio.file.Files.isRegularFile;
  * Obfuscates the byte code of Java class files using ProGuard..
  */
 @SuppressWarnings("WeakerAccess")
-@Neuron(cachingStrategy = NOT_THREAD_SAFE)
 public abstract class ProGuardTask extends AbstractTask {
 
     /**

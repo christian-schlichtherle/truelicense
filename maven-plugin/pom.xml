@@ -10,13 +10,13 @@
              Plugin.
              See https://jira.codehaus.org/browse/MNG-5787 and https://java.net/jira/browse/TRUELICENSE-87 .
              -->
-        <maven>3.3.9</maven>
+        <maven>${maven.enforcer.requireMavenVersion}</maven>
     </prerequisites>
 
     <parent>
         <groupId>global.namespace.truelicense</groupId>
         <artifactId>truelicense</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
     </parent>
 
     <artifactId>truelicense-maven-plugin</artifactId>
