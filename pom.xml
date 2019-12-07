@@ -3,7 +3,8 @@
   ~ Copyright (C) 2005 - 2019 Schlichtherle IT Services.
   ~ All rights reserved. Use is subject to license terms.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -181,7 +182,11 @@
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
-                <version>1.9.4</version>
+                <!--
+                  ~ Version 1.9.4 breaks `DisplayTool.capitalize` in velocity-tools-generic 3.0 used by the TrueLicense
+                  ~ Build Tool and (transitively) the TrueLicense Maven Plugin!
+                  -->
+                <version>1.9.3</version>
             </dependency>
             <dependency>
                 <groupId>commons-digester</groupId>
