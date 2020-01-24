@@ -6,7 +6,7 @@
 # TrueLicense 
 
 TrueLicense is an open source engine for license management on the Java Virtual Machine.
-Due to its functional and modular design TrueLicense scales from simple to complex licensing schemas.
+Due to its functional and modular design, it scales from simple to complex licensing schemas.
 TrueLicense features various interfaces for managing free trial periods, subscriptions, multiple editions,
 internationalization, privacy protection and more.
 
