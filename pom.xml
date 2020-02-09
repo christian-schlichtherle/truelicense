@@ -179,6 +179,12 @@
                 <artifactId>cglib</artifactId>
                 <version>3.3.0</version>
             </dependency>
+            <!-- For use by the TrueLicense Maven Archetype with the V2/XML license key format: -->
+            <dependency>
+                <groupId>com.sun.activation</groupId>
+                <artifactId>javax.activation</artifactId>
+                <version>1.2.0</version>
+            </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
