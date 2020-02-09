@@ -448,8 +448,8 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return codec;
         }
 
-        Filter compressionThenEncryption() {
-            return compression().andThen(encryption());
+        Filter compressionAndEncryption() {
+            return Filters.compressionAndEncryption(compression(), encryption());
         }
 
         @Override
@@ -495,6 +495,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             return parent.get();
         }
 
+        @SuppressWarnings("rawtypes")
         @Override
         public RepositoryFactory repositoryFactory() {
             return repositoryFactory;
@@ -696,7 +697,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
                     @Override
                     public LicenseKeyGenerator saveTo(final Sink sink) throws LicenseManagementException {
                         callChecked(() -> {
-                            codec().encoder(sink.map(compressionThenEncryption())).encode(model());
+                            codec().encoder(sink.map(compressionAndEncryption())).encode(model());
                             return null;
                         });
                         return this;
@@ -810,7 +811,7 @@ final class TrueLicenseManagementContext implements LicenseManagementContext, Au
             }
 
             Source decryptedAndDecompressedSource(Source source) {
-                return source.map(compressionThenEncryption());
+                return source.map(compressionAndEncryption());
             }
 
             @Override
