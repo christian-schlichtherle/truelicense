@@ -18,19 +18,20 @@ In the mean time, please still use it as your reference.
 For a quick start, here's how you can generate a sample project using the [TrueLicense Maven Archetype](https://github.com/christian-schlichtherle/truelicense-maven-archetype) with the new V4 license key format:
 
 ```bash
-$ mvn org.apache.maven.plugins:maven-archetype-plugin:3.1.0:generate \
+mvn org.apache.maven.plugins:maven-archetype-plugin:generate \
+    -B \
     -DarchetypeGroupId=global.namespace.truelicense-maven-archetype \
     -DarchetypeArtifactId=truelicense-maven-archetype \
-    -DarchetypeVersion=4.0.2 \
+    -DarchetypeVersion=4.0.3 \
     -DartifactId=basic \
     -Dcompany='Company Inc.' \
     -DgroupId=com.company.product \
     -Dpassword=test1234 \
     -Dsubject='StarGazer 2020' \
     -Dversion=1.0-SNAPSHOT
-$ cd basic
-$ chmod +x mvnw
-$ ./mvnw clean verify
+cd basic
+chmod +x mvnw
+./mvnw clean verify
 ```
 
 Next, you can generate and install a license key like this:
