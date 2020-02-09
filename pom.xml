@@ -10,7 +10,7 @@
     <parent>
         <groupId>global.namespace.parent-pom</groupId>
         <artifactId>parent-pom</artifactId>
-        <version>9</version>
+        <version>10</version>
     </parent>
 
     <groupId>global.namespace.truelicense</groupId>
@@ -58,15 +58,11 @@
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
 
         <!-- dependencies -->
-        <asm.version>7.2</asm.version>
+        <asm.version>7.3.1</asm.version>
         <fun-io.version>2.3.0</fun-io.version>
-        <jackson.version>2.10.1</jackson.version>
+        <jackson.version>2.10.2</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>3.6.3</maven.version>
-        <mockito.version>3.2.0</mockito.version>
-        <scala.version>2.13.1</scala.version>
-        <scalacheck.version>1.14.2</scalacheck.version>
-        <slf4j.version>1.7.29</slf4j.version>
     </properties>
 
     <modules>
@@ -169,7 +165,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey</groupId>
                 <artifactId>jersey-bom</artifactId>
-                <version>2.29.1</version>
+                <version>2.30</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -297,7 +293,7 @@
             <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
-                <version>2.1</version>
+                <version>2.2</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.velocity.tools</groupId>
