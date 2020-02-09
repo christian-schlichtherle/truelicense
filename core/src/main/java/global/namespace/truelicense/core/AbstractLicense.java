@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public abstract class AbstractLicense extends LicenseStub {
 
-    private int consumerAmount;
+    private int consumerAmount = 1; // default value is required for compatibility with V1 license keys.
     private String consumerType;
     private Object extra;
     private X500Principal holder;

@@ -6,7 +6,7 @@
 # TrueLicense 
 
 TrueLicense is an open source engine for license management on the Java Virtual Machine.
-Due to its functional and modular design TrueLicense scales from simple to complex licensing schemas.
+Due to its functional and modular design, it scales from simple to complex licensing schemas.
 TrueLicense features various interfaces for managing free trial periods, subscriptions, multiple editions,
 internationalization, privacy protection and more.
 
@@ -18,27 +18,29 @@ In the mean time, please still use it as your reference.
 For a quick start, here's how you can generate a sample project using the [TrueLicense Maven Archetype](https://github.com/christian-schlichtherle/truelicense-maven-archetype) with the new V4 license key format:
 
 ```bash
-$ mvn org.apache.maven.plugins:maven-archetype-plugin:3.1.0:generate \
+mvn org.apache.maven.plugins:maven-archetype-plugin:generate \
+    -B \
     -DarchetypeGroupId=global.namespace.truelicense-maven-archetype \
     -DarchetypeArtifactId=truelicense-maven-archetype \
-    -DarchetypeVersion=4.0.0 \
+    -DarchetypeVersion=4.0.3 \
     -DartifactId=basic \
     -Dcompany='Company Inc.' \
     -DgroupId=com.company.product \
     -Dpassword=test1234 \
-    -Dsubject='Product 1' \
+    -Dsubject='StarGazer 2020' \
     -Dversion=1.0-SNAPSHOT
-$ cd basic
-$ chmod +x mvnw
-$ ./mvnw clean verify
+cd basic
+chmod +x mvnw
+./mvnw clean verify
 ```
 
 Next, you can generate and install a license key like this:
 
 ```bash
 $ java -jar keygen/target/*-keygen-*-standalone.jar generate license.lic -output -
-{"consumerAmount":1,"consumerType":"User","holder":"CN=Unknown","issued":1565085418292,"issuer":"CN=Company Inc.","subject":"Product 1"}
+{"consumerAmount":1,"consumerType":"User","holder":"CN=Unknown","issued":1565085418292,"issuer":"CN=Company Inc.","subject":"StarGazer 2020"}
 $ java -jar keymgr/target/*-keymgr-*-guarded.jar wizard
 ```
 
-Follow the instructions of the licensing wizard to install, view and uninstall the license key previously saved to the `license.lic` file.
+Follow the instructions of the licensing wizard to install, view and uninstall the license key previously saved to the
+`license.lic` file.

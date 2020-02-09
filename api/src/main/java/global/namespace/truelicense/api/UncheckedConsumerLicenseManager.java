@@ -12,7 +12,7 @@ import global.namespace.fun.io.api.Source;
  * An unchecked consumer license manager generally throws an {@link UncheckedLicenseManagementException} with a
  * (checked) {@link LicenseManagementException} as its cause if an operation fails.
  *
- * <h3>How to Preview License Keys</h3>
+ * <h2>How to Preview License Keys</h2>
  * <p>
  * This interface intentionally lacks a method to preview the license bean which is encoded in a license key.
  * You can work around this constraint by using a {@linkplain LicenseManagementContext license management context} to
