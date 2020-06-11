@@ -7,6 +7,4 @@
 
 ## User Documentation
 
-**New:** https://truelicense.namespace.global
-
-**Old (reference only):** https://truelicense.net
+https://truelicense.namespace.global
