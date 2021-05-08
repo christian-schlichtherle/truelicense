@@ -13,6 +13,7 @@ jobs:
           java-version: '8'
       - name: Compile with Maven
         run: mvn --show-version --batch-mode -DskipTests=true -Dgpg.skip=true --activate-profiles sonatype-oss-release install
+# With 15+ the scalatest-maven-plugin reports an error loading a test class: https://github.com/christian-schlichtherle/truelicense/runs/2533794318?check_suite_focus=true
       - name: Set up JDK 14
         uses: actions/setup-java@v2
         with:
