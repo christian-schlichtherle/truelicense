@@ -4,9 +4,6 @@
  */
 package global.namespace.truelicense.tests.swing
 
-import java.awt.{Component, EventQueue, GraphicsEnvironment}
-import java.util.Date
-
 import global.namespace.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import global.namespace.truelicense.swing.LicenseManagementWizard
 import global.namespace.truelicense.tests.core.TestContext
@@ -14,15 +11,19 @@ import global.namespace.truelicense.tests.swing.LicenseManagementWizardITLike._
 import global.namespace.truelicense.ui.LicenseWizardMessage
 import global.namespace.truelicense.ui.LicenseWizardMessage._
 import global.namespace.truelicense.ui.wizard.WizardMessage._
-import javax.swing._
 import org.netbeans.jemmy._
 import org.netbeans.jemmy.operators._
 import org.netbeans.jemmy.util._
 import org.scalactic.source.Position
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.BeforeAndAfter
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpecLike
 
-trait LicenseManagementWizardITLike extends WordSpecLike with BeforeAndAfter {
+import java.awt.{Component, EventQueue, GraphicsEnvironment}
+import java.util.Date
+import javax.swing._
+
+trait LicenseManagementWizardITLike extends AnyWordSpecLike with BeforeAndAfter {
   this: TestContext =>
 
   private val laf = UIManager.getLookAndFeel

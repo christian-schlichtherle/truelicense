@@ -8,18 +8,19 @@ import global.namespace.truelicense.api.ConsumerLicenseManager
 import global.namespace.truelicense.jax.rs.dto.LicenseDTO
 import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceExceptionMapper, ObjectMapperResolver}
 import global.namespace.truelicense.tests.core.TestContext
-import javax.ws.rs.WebApplicationException
-import javax.ws.rs.client.Entity
-import javax.ws.rs.core.MediaType._
-import javax.ws.rs.core.Response.Status._
-import javax.ws.rs.core.{Application, MediaType}
 import org.glassfish.hk2.utilities.binding.AbstractBinder
 import org.glassfish.jersey.client.ClientConfig
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
 import org.junit.Test
-import org.scalatest.Matchers._
+import org.scalatest.matchers.should.Matchers._
+
+import javax.ws.rs.WebApplicationException
+import javax.ws.rs.client.Entity
+import javax.ws.rs.core.MediaType._
+import javax.ws.rs.core.Response.Status._
+import javax.ws.rs.core.{Application, MediaType}
 
 abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
   this: TestContext =>
@@ -27,6 +28,7 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
   private lazy val objectMapperResolver = new ObjectMapperResolver(managementContext.licenseFactory.licenseClass)
 
   private lazy val state = new State
+
   import state._
 
   override protected def configure: Application = {

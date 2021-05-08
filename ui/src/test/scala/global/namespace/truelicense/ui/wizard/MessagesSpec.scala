@@ -5,11 +5,11 @@
 package global.namespace.truelicense.ui.wizard
 
 import global.namespace.truelicense.ui.MessagesTestSupport._
-import WizardMessage._
-import org.scalatest.WordSpec
+import global.namespace.truelicense.ui.wizard.WizardMessage._
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
 
-class MessagesSpec extends WordSpec {
+class MessagesSpec extends AnyWordSpec {
 
   "Messages" should {
     "be binary serializable" in {

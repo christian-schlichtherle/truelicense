@@ -6,10 +6,10 @@ package global.namespace.truelicense.tests.jax.rs
 
 import global.namespace.truelicense.jax.rs.{ConsumerLicenseManagementService, ConsumerLicenseManagementServiceException}
 import global.namespace.truelicense.tests.core.TestContext
-import org.scalatest.Matchers._
-import org.scalatest.WordSpecLike
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpecLike
 
-trait ConsumerLicenseManagementServiceITLike extends WordSpecLike {
+trait ConsumerLicenseManagementServiceITLike extends AnyWordSpecLike {
   this: TestContext =>
 
   new State {

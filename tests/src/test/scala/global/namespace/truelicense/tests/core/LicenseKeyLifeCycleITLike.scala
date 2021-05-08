@@ -4,17 +4,17 @@
  */
 package global.namespace.truelicense.tests.core
 
-import java.util.Calendar.{DATE, getInstance}
-import java.util.Date
-
 import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api.{ConsumerLicenseManager, License, LicenseManagementException}
 import global.namespace.truelicense.tests.core.LicenseKeyLifeCycleITLike.logger
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.slf4j.LoggerFactory
 
-trait LicenseKeyLifeCycleITLike extends WordSpecLike {
+import java.util.Calendar.{DATE, getInstance}
+import java.util.Date
+
+trait LicenseKeyLifeCycleITLike extends AnyWordSpecLike {
   this: TestContext =>
 
   "The license key life cycle" should {

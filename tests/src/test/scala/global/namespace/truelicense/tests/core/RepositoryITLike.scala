@@ -6,10 +6,10 @@ package global.namespace.truelicense.tests.core
 
 import global.namespace.truelicense.api.License
 import global.namespace.truelicense.api.auth.RepositoryFactory
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpecLike
 
-trait RepositoryITLike extends WordSpecLike {
+trait RepositoryITLike extends AnyWordSpecLike {
   this: TestContext =>
 
   type Model >: Null <: AnyRef

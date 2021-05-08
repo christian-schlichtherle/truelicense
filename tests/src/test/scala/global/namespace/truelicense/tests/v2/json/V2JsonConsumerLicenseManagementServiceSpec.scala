@@ -5,9 +5,9 @@
 package global.namespace.truelicense.tests.v2.json
 
 import global.namespace.truelicense.tests.jax.rs.ConsumerLicenseManagementServiceITLike
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
 
 class V2JsonConsumerLicenseManagementServiceSpec
-  extends WordSpec
+  extends AnyWordSpec
     with ConsumerLicenseManagementServiceITLike
     with V2JsonTestContext

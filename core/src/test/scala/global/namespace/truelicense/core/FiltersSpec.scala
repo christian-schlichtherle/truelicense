@@ -1,19 +1,19 @@
 package global.namespace.truelicense.core
 
-import java.security.SecureRandom
-
 import global.namespace.fun.io.api.Filter
 import global.namespace.fun.io.bios.BIOS._
 import global.namespace.truelicense.core.Filters.compressionAndEncryption
 import global.namespace.truelicense.core.FiltersSpec._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
+
+import java.security.SecureRandom
 import javax.crypto.Cipher.{DECRYPT_MODE, ENCRYPT_MODE}
 import javax.crypto.spec.{PBEKeySpec, PBEParameterSpec}
 import javax.crypto.{Cipher, SecretKeyFactory}
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
-import org.scalatest.prop.TableDrivenPropertyChecks._
 
-class FiltersSpec extends WordSpec {
+class FiltersSpec extends AnyWordSpec {
 
   "compressAndEncrypt()" should {
     "round trip compress and encrypt some data" in {

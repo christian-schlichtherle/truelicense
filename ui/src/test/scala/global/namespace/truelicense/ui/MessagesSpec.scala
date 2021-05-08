@@ -4,12 +4,12 @@
  */
 package global.namespace.truelicense.ui
 
-import LicenseWizardMessage._
-import MessagesTestSupport._
-import org.scalatest.WordSpec
+import global.namespace.truelicense.ui.LicenseWizardMessage._
+import global.namespace.truelicense.ui.MessagesTestSupport._
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
 
-class MessagesSpec extends WordSpec {
+class MessagesSpec extends AnyWordSpec {
 
   "Messages" should {
     "be binary serializable" in {

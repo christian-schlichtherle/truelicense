@@ -5,9 +5,9 @@
 package global.namespace.truelicense.tests.v1
 
 import global.namespace.truelicense.tests.jax.rs.ConsumerLicenseManagementServiceITLike
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
 
 class V1ConsumerLicenseManagementServiceSpec
-  extends WordSpec
+  extends AnyWordSpec
     with ConsumerLicenseManagementServiceITLike
     with V1TestContext

@@ -5,9 +5,9 @@
 package global.namespace.truelicense.tests.v2.xml
 
 import global.namespace.truelicense.tests.swing.LicenseManagementWizardITLike
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
 
 class V2XmlLicenseManagementWizardIT
-  extends WordSpec
+  extends AnyWordSpec
     with LicenseManagementWizardITLike
     with V2XmlTestContext

@@ -7,11 +7,11 @@ package global.namespace.truelicense.api
 import global.namespace.fun.io.api.Store
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 
-class UncheckedLicenseManagerSpec extends WordSpec {
+class UncheckedLicenseManagerSpec extends AnyWordSpec {
 
   "The unchecked vendor license manager returned by UncheckedLicenseManager.from(VendorLicenseManager)" should {
     val checkedManager = mock[VendorLicenseManager]

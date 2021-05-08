@@ -4,8 +4,6 @@
  */
 package global.namespace.truelicense.tests.core
 
-import java.util.Date
-
 import global.namespace.fun.io.api.Store
 import global.namespace.fun.io.bios.BIOS.memory
 import global.namespace.truelicense.api._
@@ -13,9 +11,11 @@ import global.namespace.truelicense.api.passwd.PasswordProtection
 import global.namespace.truelicense.core.passwd.ObfuscatedPasswordProtection
 import global.namespace.truelicense.obfuscate.ObfuscatedString
 import global.namespace.truelicense.tests.core.TestContext._
-import javax.security.auth.x500.X500Principal
-import org.scalatest.Matchers._
+import org.scalatest.matchers.should.Matchers._
 import org.slf4j.LoggerFactory
+
+import java.util.Date
+import javax.security.auth.x500.X500Principal
 
 trait TestContext {
 

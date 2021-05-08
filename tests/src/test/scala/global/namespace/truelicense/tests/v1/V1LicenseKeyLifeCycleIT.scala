@@ -5,6 +5,6 @@
 package global.namespace.truelicense.tests.v1
 
 import global.namespace.truelicense.tests.core.LicenseKeyLifeCycleITLike
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
 
-class V1LicenseKeyLifeCycleIT extends WordSpec with LicenseKeyLifeCycleITLike with V1TestContext
+class V1LicenseKeyLifeCycleIT extends AnyWordSpec with LicenseKeyLifeCycleITLike with V1TestContext

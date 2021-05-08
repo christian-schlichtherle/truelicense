@@ -8,11 +8,11 @@ package global.namespace.truelicense.obfuscate
 import java.util.regex.Pattern
 
 import global.namespace.truelicense.obfuscate.ObfuscatedStringSpec._
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
-class ObfuscatedStringSpec extends WordSpec {
+class ObfuscatedStringSpec extends AnyWordSpec {
 
   "An ObfuscatedString" should {
     "reproduce the original string literal" in {

@@ -5,10 +5,10 @@
 package global.namespace.truelicense.core.auth
 
 import global.namespace.truelicense.core.MessagesTestSupport._
-import org.scalatest.WordSpec
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
 
-class MessagesSpec extends WordSpec {
+class MessagesSpec extends AnyWordSpec {
 
   "Messages" should {
     "be binary serializable" in {

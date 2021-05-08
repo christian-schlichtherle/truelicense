@@ -4,17 +4,17 @@
  */
 package global.namespace.truelicense.spi.codec
 
+import global.namespace.fun.io.api.Socket
+import global.namespace.truelicense.api.codec.Codec
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
+
 import java.io.{InputStream, OutputStream}
 import java.nio.charset.Charset
 import java.util.Optional
 
-import global.namespace.fun.io.api.Socket
-import global.namespace.truelicense.api.codec.Codec
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
-import org.scalatest.prop.TableDrivenPropertyChecks._
-
-class CodecsSpec extends WordSpec {
+class CodecsSpec extends AnyWordSpec {
 
   "The contentTransferCharset function" should {
     "figure the correct charset" in {

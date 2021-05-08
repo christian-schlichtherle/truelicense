@@ -5,6 +5,6 @@
 package global.namespace.truelicense.tests.v1
 
 import global.namespace.truelicense.tests.core.RepositoryITLike
-import org.scalatest.WordSpec
+import org.scalatest.wordspec.AnyWordSpec
 
-class V1RepositoryIT extends WordSpec with RepositoryITLike with V1TestContext
+class V1RepositoryIT extends AnyWordSpec with RepositoryITLike with V1TestContext

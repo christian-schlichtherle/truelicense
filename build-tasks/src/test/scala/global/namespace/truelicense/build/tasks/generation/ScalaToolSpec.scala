@@ -4,11 +4,11 @@
  */
 package global.namespace.truelicense.build.tasks.generation
 
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
 
-class ScalaToolSpec extends WordSpec {
+class ScalaToolSpec extends AnyWordSpec {
 
   "A ScalaTool " should {
     "generate an obfuscated string " which {

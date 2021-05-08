@@ -4,11 +4,11 @@
  */
 package global.namespace.truelicense.core
 
-import java.util.Locale
-
 import global.namespace.fun.io.bios.BIOS
 import global.namespace.truelicense.api.i18n.Message
-import org.scalatest.Matchers._
+import org.scalatest.matchers.should.Matchers._
+
+import java.util.Locale
 
 trait MessagesTestSupport {
 

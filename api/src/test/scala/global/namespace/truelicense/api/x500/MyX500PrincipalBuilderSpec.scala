@@ -4,11 +4,12 @@
  */
 package global.namespace.truelicense.api.x500
 
-import javax.security.auth.x500.X500Principal
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class MyX500PrincipalBuilderSpec extends WordSpec {
+import javax.security.auth.x500.X500Principal
+
+class MyX500PrincipalBuilderSpec extends AnyWordSpec {
 
   private val expected = {
     import scala.jdk.CollectionConverters._

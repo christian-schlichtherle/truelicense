@@ -4,11 +4,11 @@
  */
 package global.namespace.truelicense.maven.plugin.generation
 
-import org.scalatest.Matchers._
-import org.scalatest.WordSpec
+import org.scalatest.matchers.should.Matchers._
 import org.scalatest.prop.TableDrivenPropertyChecks._
+import org.scalatest.wordspec.AnyWordSpec
 
-class VersionToolSpec extends WordSpec {
+class VersionToolSpec extends AnyWordSpec {
 
   "A VersionTool should correctly parse the given version string" in {
     val table = Table(
