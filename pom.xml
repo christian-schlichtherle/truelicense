@@ -60,7 +60,7 @@
         <!-- dependencies -->
         <asm.version>8.0</asm.version>
         <fun-io.version>2.3.0</fun-io.version>
-        <jackson.version>2.10.3</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>3.6.3</maven.version>
         <mockito.version>3.3.3</mockito.version>
