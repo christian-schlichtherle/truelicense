@@ -330,7 +330,8 @@
                 <plugin>
                     <groupId>${project.groupId}</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
-                    <version>${project.version}</version>
+                    <!-- Cannot use ${project.version} while bootstrapping! -->
+                    <version>4.0.3</version>
                 </plugin>
 
                 <plugin>
