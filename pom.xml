@@ -189,7 +189,7 @@
                   ~ Version 1.9.4 breaks `DisplayTool.capitalize` in velocity-tools-generic 3.0 used by the TrueLicense
                   ~ Build Tool and (transitively) the TrueLicense Maven Plugin!
                   -->
-                <version>1.9.3</version>
+                <version>1.9.4</version>
             </dependency>
             <dependency>
                 <groupId>commons-digester</groupId>
