@@ -18,7 +18,7 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           path-to-signatures: '.cla/v1/signatures.json'
-          path-to-document: 'https://github.com/christian-schlichtherle/truelicense/blob/master/CLA.md'
+          path-to-document: 'https://github.com/christian-schlichtherle/truelicense/blob/develop/CLA.md'
           branch: 'develop'
           allowlist: bot*
 
