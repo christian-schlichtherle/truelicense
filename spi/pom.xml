@@ -20,6 +20,10 @@
         Interface for license management on the Java Virtual Machine.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.spi</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

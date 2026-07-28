@@ -17,6 +17,10 @@
     <name>TrueLicense V4</name>
     <description>Provides the V4 license key format.</description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.v4</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

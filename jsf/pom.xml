@@ -21,6 +21,7 @@
     </description>
 
     <properties>
+        <automatic.module.name>global.namespace.truelicense.jsf</automatic.module.name>
         <org-netbeans-modules-projectapi.jsf_2e_language>Facelets</org-netbeans-modules-projectapi.jsf_2e_language>
     </properties>
 

@@ -17,6 +17,10 @@
     <name>TrueLicense V2/JSON</name>
     <description>Provides the V2/JSON license key format.</description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.v2.json</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

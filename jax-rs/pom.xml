@@ -20,6 +20,10 @@
         for consuming license keys.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.jax.rs</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

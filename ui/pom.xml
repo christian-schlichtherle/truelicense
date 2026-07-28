@@ -21,6 +21,10 @@
         wizard dialogs in particular.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.ui</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

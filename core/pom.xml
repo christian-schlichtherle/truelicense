@@ -20,6 +20,10 @@
         license management.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.core</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

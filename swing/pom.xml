@@ -20,6 +20,10 @@
         consuming license keys.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.swing</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
