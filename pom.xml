@@ -66,6 +66,7 @@
         <jackson.version>2.12.3</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>3.8.1</maven.version>
+        <plexus-utils.version>3.5.1</plexus-utils.version>
     </properties>
 
     <modules>
@@ -299,6 +300,11 @@
                 <version>2.3</version>
             </dependency>
             <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>${plexus-utils.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.velocity.tools</groupId>
                 <artifactId>velocity-tools-generic</artifactId>
                 <version>3.1</version>
@@ -334,6 +340,17 @@
                     <artifactId>truelicense-maven-plugin</artifactId>
                     <!-- Cannot use ${project.version} while bootstrapping! -->
                     <version>4.0.3</version>
+                    <dependencies>
+                        <!--
+                          ~ Maven 3.9+ no longer exports org.codehaus.plexus.util.* from the core realm to plugins,
+                          ~ so the bootstrap plugin needs plexus-utils on its own class realm.
+                          -->
+                        <dependency>
+                            <groupId>org.codehaus.plexus</groupId>
+                            <artifactId>plexus-utils</artifactId>
+                            <version>${plexus-utils.version}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
 
                 <plugin>
