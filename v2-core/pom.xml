@@ -17,6 +17,10 @@
     <name>TrueLicense V2 Core</name>
     <description>Provides support for the V2/* license key formats.</description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.v2.core</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

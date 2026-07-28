@@ -17,6 +17,10 @@
     <name>TrueLicense V2/XML</name>
     <description>Provides the V2/XML license key format.</description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.v2.xml</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

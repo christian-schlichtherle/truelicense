@@ -20,6 +20,10 @@
         obfuscating constant string values in Java source and class files.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.obfuscate</automatic.module.name>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

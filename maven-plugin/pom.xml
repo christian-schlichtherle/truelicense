@@ -29,6 +29,10 @@
         files.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.maven.plugin</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

@@ -43,6 +43,9 @@
     </scm>
 
     <properties>
+        <!-- maven-jar-plugin: JPMS automatic module name; overridden per module -->
+        <automatic.module.name>global.namespace.truelicense</automatic.module.name>
+
         <!-- maven-compiler-plugin -->
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.optimize>true</maven.compiler.optimize>
@@ -343,6 +346,13 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Automatic-Module-Name>${automatic.module.name}</Automatic-Module-Name>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>default-jar</id>

@@ -20,6 +20,10 @@
         string values in class files and obfuscate byte code using ProGuard.
     </description>
 
+    <properties>
+        <automatic.module.name>global.namespace.truelicense.build.tasks</automatic.module.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
