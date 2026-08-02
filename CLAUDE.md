@@ -416,23 +416,24 @@ Notes worth having before you debug any of this again:
 ### ASM version ceiling (affects applications, not this build)
 
 `ObfuscateClassesTask` is an ASM bytecode rewriter, so it can only read class files up to the version its ASM
-supports, and only use features up to its **API level**, which is hardcoded to `ASM7`. Measured directly with
-`ClassReader`:
+supports, and only use features up to its **API level**, which is `ASM9`. Measured directly with `ClassReader`:
 
 | ASM | shipped in | reads up to | rejects |
 | --- | --- | --- | --- |
-| 7.3.1 | `truelicense-maven-plugin` 4.0.3 (current release) | Java 15 | Java 16+ |
+| 7.3.1 | `truelicense-maven-plugin` 4.0.3 | Java 15 | Java 16+ |
 | 9.1 | — | Java 17 | Java 18+ |
 | 9.8 | — | Java 25 | Java 26+ |
-| 9.10.1 | pinned by `asm.version` on `develop` | Java 27 | Java 28+ |
+| 9.10.1 | pinned by `asm.version`, shipped in 4.1.1 | Java 27 | Java 28+ |
 
 Rejection is `IllegalArgumentException: Unsupported class file major version N`. This does **not** affect
 TrueLicense's own build — it targets Java 8 bytecode (major 52) regardless of the JDK used. It affects
 *applications* that run the plugin over their own classes: an app targeting Java 17 cannot use plugin 4.0.3.
 
-Bumping `asm.version` alone is not enough. The `ASM7` API level in `ObfuscateClassesTask`, `O9nInitMethodVisitor`
-and friends must be raised too — on ASM 9.1 with `api = ASM7`, reading a Java 17 **record** already throws
-`UnsupportedOperationException: Records requires ASM8`, so any app using records fails even on a new ASM.
+Bumping `asm.version` alone is not enough: the API level in `ObfuscateClassesTask` and `O9nInitMethodVisitor` has
+to keep pace with the class file features being read. At `ASM7` a **record** throws
+`UnsupportedOperationException: Records requires ASM8` no matter how new the ASM, which locked out every project
+targeting Java 16 or later. `ObfuscateClassesTaskSpec` guards this by rewriting a synthesised record class — built
+with ASM rather than compiled, so it runs on JDK 8 too.
 
 ### Why it is wired this way (two independent historical causes)
 

@@ -292,7 +292,7 @@ public abstract class ObfuscateClassesTask extends AbstractTask {
             String bcn;
 
             O9nClassVisitor(final ClassVisitor nullableClassVisitor) {
-                super(ASM7, nullableClassVisitor);
+                super(ASM9, nullableClassVisitor);
             }
 
             final Logger classLogger() {
@@ -341,7 +341,7 @@ public abstract class ObfuscateClassesTask extends AbstractTask {
                         final String desc,
                         final String nullableSignature,
                         final Object nullableValue) {
-                    super(ASM7, access, name, desc, nullableSignature, nullableValue);
+                    super(ASM9, access, name, desc, nullableSignature, nullableValue);
                     if (nullableValue instanceof String) {
                         final String svalue = (String) nullableValue;
                         this.stringValue = svalue;
@@ -548,7 +548,7 @@ public abstract class ObfuscateClassesTask extends AbstractTask {
                 final String localMethodName;
 
                 O9n2ndMethodVisitor(final String name, MethodVisitor mv) {
-                    super(ASM7, mv);
+                    super(ASM9, mv);
                     this.localMethodName = name;
                 }
 

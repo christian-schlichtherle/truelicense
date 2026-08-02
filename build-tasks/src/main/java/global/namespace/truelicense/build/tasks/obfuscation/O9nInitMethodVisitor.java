@@ -6,13 +6,13 @@ package global.namespace.truelicense.build.tasks.obfuscation;
 
 import org.objectweb.asm.MethodVisitor;
 
-import static org.objectweb.asm.Opcodes.ASM7;
+import static org.objectweb.asm.Opcodes.ASM9;
 import static org.objectweb.asm.Opcodes.RETURN;
 
 class O9nInitMethodVisitor extends MethodVisitor {
 
     O9nInitMethodVisitor(MethodVisitor mv) {
-        super(ASM7, mv);
+        super(ASM9, mv);
     }
 
     @Override
