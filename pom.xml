@@ -7,11 +7,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>global.namespace.parent-pom</groupId>
-        <artifactId>parent-pom</artifactId>
-        <version>16</version>
-    </parent>
+    <!--
+      ~ This POM has no parent by design.
+      ~
+      ~ It used to inherit from global.namespace.parent-pom:16, which was last released in 2023 and is shared with
+      ~ eight other projects, so it could not be changed without re-verifying all of them and could not be released
+      ~ without blocking a TrueLicense release on a parent POM release. Every fix needed to build on a modern JDK or
+      ~ Maven was therefore already written here as an override; what remained inherited was a mix of load-bearing
+      ~ wiring that could not be improved (the scala-test-sources profile, the Scala/test dependencyManagement), a
+      ~ release path that no longer works (Sonatype OSSRH), and one active hazard (the java-test-sources profile).
+      ~
+      ~ Inlining it made all of that editable in one place. The merge was verified to be behaviour-preserving by
+      ~ diffing `help:effective-pom` for every module, with and without the sonatype-oss-release profile, before and
+      ~ after - see CLAUDE.md. Anything below that looks redundant (plugin pins for plugins this build never runs,
+      ~ for instance) was carried over verbatim to keep that diff clean and is safe to prune deliberately, on its
+      ~ own, with the same check.
+      -->
 
     <groupId>global.namespace.truelicense</groupId>
     <artifactId>truelicense</artifactId>
@@ -31,6 +42,27 @@
         <name>Schlichtherle IT Services</name>
         <url>https://schlichtherle.de</url>
     </organization>
+    <!-- Inherited from the parent POM until it was inlined. Maven Central rejects a deployment without either. -->
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Christian Schlichtherle</name>
+            <email>christian AT schlichtherle DOT de</email>
+            <timezone>1</timezone>
+            <roles>
+                <role>owner</role>
+            </roles>
+            <properties>
+                <picUrl>http://www.gravatar.com/avatar/e2f69ddc944f8891566fc4b18518e4e6.png</picUrl>
+            </properties>
+        </developer>
+    </developers>
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/christian-schlichtherle/truelicense/issues</url>
@@ -41,6 +73,26 @@
         <url>https://github.com/christian-schlichtherle/truelicense</url>
         <tag>HEAD</tag>
     </scm>
+
+    <!--
+      ~ Inherited from the parent POM until it was inlined, and carried over verbatim so that the inlining itself
+      ~ changed no behaviour. Both endpoints below belong to Sonatype OSSRH, which has been retired in favour of the
+      ~ Central Publisher Portal; nexus-staging-maven-plugin cannot talk to the Portal at all. Migrating this block
+      ~ and the sonatype-oss-release profile to central-publishing-maven-plugin is the next step and is deliberately
+      ~ NOT part of the inlining commit.
+      -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>${sonatypeOssSnapshotsRepository}</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <!-- maven-jar-plugin: JPMS automatic module name; overridden per module -->
@@ -53,16 +105,41 @@
           ~ version known to be good.
           -->
         <maven.enforcer.requireMavenVersion>[3.9.16,)</maven.enforcer.requireMavenVersion>
+        <maven.enforcer.requireJavaVersion>${maven.compiler.target}</maven.enforcer.requireJavaVersion> <!-- forward reference -->
 
-        <!-- maven-compiler-plugin -->
+        <!--
+          ~ maven-compiler-plugin
+          ~
+          ~ source/target on purpose, with no `release` flag: javac 8 is then the only thing that proves no post-8
+          ~ API crept in, which is what the CI compile job is for. See CLAUDE.md.
+          -->
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.optimize>true</maven.compiler.optimize>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
 
         <!-- maven-javadoc-plugin -->
+        <additionalparam />
+        <header>&lt;b&gt;${project.name} ${project.version}&lt;/b&gt;</header>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
         <nodeprecated>false</nodeprecated>
+        <notimestamp>true</notimestamp>
+        <quiet>true</quiet>
+        <splitindex>true</splitindex>
+
+        <!-- maven-release-plugin -->
+        <autoVersionSubmodules>true</autoVersionSubmodules>
+        <releaseProfiles>sonatype-oss-release</releaseProfiles>
+        <tagNameFormat>v@{project.version}</tagNameFormat>
+        <useReleaseProfile>false</useReleaseProfile>
+
+        <sonatypeOssSnapshotsRepository>https://oss.sonatype.org/content/repositories/snapshots/</sonatypeOssSnapshotsRepository>
+        <sonatypeProfileName>global.namespace</sonatypeProfileName>
 
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
@@ -80,28 +157,40 @@
         <!--
           ~ dependencies
           ~
-          ~ byte-buddy, neuron-di and scala are pinned here purely to keep the build working on JDKs newer than 11;
-          ~ each one blocks it outright, and each masked the next. They would belong to the parent POM, but are kept
-          ~ here so that a TrueLicense release never has to wait on a parent POM release. See CLAUDE.md.
+          ~ byte-buddy, neuron-di and scala are pinned purely to keep the build working on JDKs newer than 11; each
+          ~ one blocks it outright, and each masked the next. See CLAUDE.md.
           -->
         <asm.version>9.10.1</asm.version>
-        <!-- Overrides the 1.10.20 that the parent POM's Mockito 3.9.0 resolves: it cannot read JDK 21+ class files. -->
+        <!-- Overrides the 1.10.20 that Mockito 3.9.0 resolves: it cannot read JDK 21+ class files. -->
         <byte-buddy.version>1.18.11</byte-buddy.version>
         <fun-io.version>2.4.1</fun-io.version>
+        <hamcrest.version>2.2</hamcrest.version>
         <jackson.version>2.22.1</jackson.version>
         <!-- Terminal release of the javax.xml.bind:jaxb-api GA - everything newer is the jakarta.* namespace. -->
         <jaxb-api.version>2.3.1</jaxb-api.version>
         <!-- Last of the JAXB 2.3 line, i.e. the newest runtime that still implements the javax.xml.bind packages. -->
         <jaxb-runtime.version>2.3.9</jaxb-runtime.version>
+        <junit.version>4.13.2</junit.version>
+        <logback-classic.version>1.2.3</logback-classic.version>
+        <lombok.version>1.18.20</lombok.version>
         <!-- Kept in lockstep with maven.enforcer.requireMavenVersion above. -->
         <maven.version>3.9.16</maven.version>
         <!-- maven-plugin-plugin and maven-plugin-annotations must stay on the same version. -->
         <maven-plugin-tools.version>3.15.2</maven-plugin-tools.version>
+        <!--
+          ~ Mockito 5 would remove the need for the byte-buddy pin above, but requires Java 11 and would drop JDK 8
+          ~ from the test matrix. Re-run the matrix when bumping either.
+          -->
+        <mockito.version>3.9.0</mockito.version>
         <!-- Also overrides the bootstrap plugin's own 6.4.4 - see the plugin declaration below. -->
         <neuron-di.version>6.7.1</neuron-di.version>
         <plexus-utils.version>4.0.3</plexus-utils.version>
-        <!-- Overrides the parent POM's 2.13.5, whose Zinc compiler bridge fails to build on JDK 21+. -->
+        <scala.compat.version>2.13</scala.compat.version>
+        <!-- 2.13.5's Zinc compiler bridge fails to build on JDK 21+. -->
         <scala.version>2.13.18</scala.version>
+        <scalacheck.version>1.15.4</scalacheck.version>
+        <scalatest.version>3.2.8</scalatest.version>
+        <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
     <modules>
@@ -122,6 +211,21 @@
         <module>v2-xml</module>
         <module>v4</module>
     </modules>
+
+    <!-- Inherited from the parent POM until it was inlined. See the note on <distributionManagement> above. -->
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>${sonatypeOssSnapshotsRepository}</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -375,12 +479,139 @@
                 <artifactId>asm</artifactId>
                 <version>${asm.version}</version>
             </dependency>
+
+            <!--
+              ~ Inherited from the parent POM until it was inlined. These back the test stack that the
+              ~ scala-test-sources profile below pulls in; the versions are the parent POM's, except where a property
+              ~ above overrides one (scala.version, and byte-buddy via Mockito).
+              -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback-classic.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-library</artifactId>
+                <version>${hamcrest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-reflect</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalacheck</groupId>
+                <artifactId>scalacheck_${scala.compat.version}</artifactId>
+                <version>${scalacheck.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest_${scala.compat.version}</artifactId>
+                <version>${scalatest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalatestplus</groupId>
+                <artifactId>mockito-3-4_${scala.compat.version}</artifactId>
+                <version>${scalatest.version}.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scalatestplus</groupId>
+                <artifactId>scalacheck-1-15_${scala.compat.version}</artifactId>
+                <version>${scalatest.version}.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <!-- Inherited from the parent POM until it was inlined. Without these, src/*/filtered stops being a thing. -->
+        <resources>
+            <resource>
+                <directory>src/main/filtered</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/filtered</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
+        <!--
+          ~ Plugin versions.
+          ~
+          ~ Most of this list came from the parent POM, whose values date from 2021; the entries this build actually
+          ~ runs were already overridden here before the inlining, and each override was checked to declare java>=1.8
+          ~ and maven>=3.6.3 in its plugin descriptor, which the JDK 8 CI compile job and the enforced Maven 3.9.16
+          ~ both satisfy. The parent's remaining pins are for plugins no goal in this build executes; they are kept so
+          ~ that inlining changed nothing, not because they are known-good.
+          ~
+          ~ The declaration order below is the order the inherited and overriding lists used to merge into, preserved
+          ~ so that the effective POM is unchanged. It is not otherwise meaningful.
+          ~
+          ~ Deliberately NOT bumped: truelicense-maven-plugin, which must stay on the last released version while
+          ~ bootstrapping (see the declaration below).
+          -->
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-archetype-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-changes-plugin</artifactId>
+                    <version>2.12.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
                 <plugin>
                     <groupId>${project.groupId}</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
@@ -424,20 +655,22 @@
                         </dependency>
                     </dependencies>
                 </plugin>
-
-                <!--
-                  ~ Plugin versions. The parent POM's values date from 2021 and several no longer work on a modern
-                  ~ JDK or Maven, so they are overridden here for the same reason as the dependency versions above:
-                  ~ so that a TrueLicense release never has to wait on a parent POM release. Every version below was
-                  ~ checked to declare java>=1.8 and maven>=3.6.3 in its plugin descriptor, which the JDK 8 CI
-                  ~ compile job and the enforced Maven 3.9.16 both satisfy.
-                  ~
-                  ~ Deliberately NOT bumped: truelicense-maven-plugin, which must stay on the last released version
-                  ~ while bootstrapping (see the declaration above).
-                  -->
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.15.0</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-Xlint:unchecked</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
@@ -448,63 +681,20 @@
                     <version>3.6.3</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>3.2.8</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>3.1.4</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.12.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.5.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.4.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.scalatest</groupId>
-                    <artifactId>scalatest-maven-plugin</artifactId>
-                    <version>2.2.0</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.21.0</version>
-                </plugin>
-                <!--
-                  ~ These two are the release path, and NOTHING in an ordinary build or in CI executes their goals -
-                  ~ `release:perform` is invoked by hand, and nexus-staging only binds to `deploy`, which neither
-                  ~ `install` nor `verify` reaches. So unlike every other version here, these two are NOT covered by
-                  ~ the JDK 8-25 matrix; the first real exercise is the next release. maven-release-plugin in
-                  ~ particular is a major-version jump from the parent POM's 2.5.3.
-                  -->
-                <plugin>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>3.3.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.7.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-antrun-plugin</artifactId>
+                    <artifactId>maven-help-plugin</artifactId>
                     <version>3.2.0</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.15.0</version>
-                    <configuration>
-                        <compilerArgs>
-                            <arg>-Xlint:unchecked</arg>
-                        </compilerArgs>
-                    </configuration>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.1.4</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
@@ -524,6 +714,69 @@
                             </configuration>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.12.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+                <!--
+                  ~ The release path. NOTHING in an ordinary build or in CI executes maven-release-plugin's or
+                  ~ nexus-staging-maven-plugin's goals - `release:perform` is invoked by hand, and nexus-staging only
+                  ~ binds to `deploy`, which neither `install` nor `verify` reaches. So unlike every other version
+                  ~ here, these two are NOT covered by the JDK 8-25 matrix; the first real exercise is the next
+                  ~ release. nexus-staging additionally targets an endpoint that no longer exists - see the note on
+                  ~ <distributionManagement> above.
+                  -->
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.11.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.9.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.4.0</version>
+                </plugin>
+                <!--
+                  ~ Inert and therefore unpinned: the scala-test-sources profile sets default-test to phase `none` in
+                  ~ every module that has tests, and the modules with no test sources run this as a no-op. It has no
+                  ~ test to run anywhere. If a module ever needs Surefire for real, pin it first - 2.22.2 is the
+                  ~ version that produced the silent zero-test run described in CLAUDE.md.
+                  -->
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.siom79.japicmp</groupId>
+                    <artifactId>japicmp-maven-plugin</artifactId>
+                    <version>0.15.3</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-plugin-plugin</artifactId>
@@ -549,29 +802,91 @@
                         </args>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jdepend-maven-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.21.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>1.18.20.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest-maven-plugin</artifactId>
+                    <version>2.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.7.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
-            <!--
-              ~ Preflight: fail at `validate` if any module grows a `src/test/java` directory.
-              ~
-              ~ This is not a style rule. The parent POM's `java-test-sources` profile activates on the mere
-              ~ existence of that directory and binds maven-failsafe-plugin at `integration-test`. Nothing in this
-              ~ project uses Failsafe any more - every test is a ScalaTest suite run in the `test` phase - and the
-              ~ version this build would get is the parent POM's 2.22.2, whose junit-platform-launcher is too old
-              ~ for the JUnit Platform engine that jersey-test-framework puts on the test classpath. That
-              ~ combination does not fail: it reports "Tests run: 0" and leaves the build green, which is exactly
-              ~ how the four *ConsumerLicenseManagementServiceJerseyIT suites were once silently lost.
-              ~
-              ~ Test sources in every language belong under `src/test/scala`, which scala-maven-plugin's
-              ~ `add-source` registers as a test compile source root, so maven-compiler-plugin picks up the .java
-              ~ files there and scalac picks up the .scala ones. This execution merges with the parent POM's
-              ~ `enforce-maven-and-java`; both run.
-              -->
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <executions>
+                    <!-- Inherited from the parent POM until it was inlined. -->
+                    <execution>
+                        <id>enforce-maven-and-java</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${maven.enforcer.requireMavenVersion}</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${maven.enforcer.requireJavaVersion}</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <!--
+                      ~ Preflight: fail at `validate` if any module grows a `src/test/java` directory.
+                      ~
+                      ~ This is not a style rule. The `java-test-sources` profile below activates on the mere
+                      ~ existence of that directory and binds maven-failsafe-plugin at `integration-test`. Nothing in
+                      ~ this project uses Failsafe any more - every test is a ScalaTest suite run in the `test` phase
+                      ~ - and the version this build would get is 2.22.2, whose junit-platform-launcher is too old
+                      ~ for the JUnit Platform engine that jersey-test-framework puts on the test classpath. That
+                      ~ combination does not fail: it reports "Tests run: 0" and leaves the build green, which is
+                      ~ exactly how the four *ConsumerLicenseManagementServiceJerseyIT suites were once silently lost.
+                      ~
+                      ~ Test sources in every language belong under `src/test/scala`, which scala-maven-plugin's
+                      ~ `add-source` registers as a test compile source root, so maven-compiler-plugin picks up the
+                      ~ .java files there and scalac picks up the .scala ones.
+                      ~
+                      ~ Now that java-test-sources is declared in this POM rather than inherited, deleting it is an
+                      ~ option and would make this guard unnecessary. Both are kept for now because removing the
+                      ~ profile is a behaviour change and the inlining deliberately is not.
+                      -->
                     <execution>
                         <id>enforce-no-java-test-sources</id>
                         <goals>
@@ -583,7 +898,7 @@
                                     <files>
                                         <file>${project.basedir}/src/test/java</file>
                                     </files>
-                                    <message>Put test sources under src/test/scala instead - in any language. A src/test/java directory activates the parent POM's java-test-sources profile, which binds maven-failsafe-plugin 2.22.2; that combination reports "Tests run: 0" and leaves the build green instead of failing. See the comment on this execution in the root POM.</message>
+                                    <message>Put test sources under src/test/scala instead - in any language. A src/test/java directory activates the java-test-sources profile, which binds maven-failsafe-plugin 2.22.2; that combination reports "Tests run: 0" and leaves the build green instead of failing. See the comment on this execution in the root POM.</message>
                                 </requireFilesDontExist>
                             </rules>
                         </configuration>
@@ -593,30 +908,51 @@
         </plugins>
     </build>
 
+    <!--
+      ~ Profile order is load-bearing, and not in the way it looks.
+      ~
+      ~ Maven injects each active profile's <build><plugins> into the model in declaration order, so this list decides
+      ~ the order of the resulting plugin list. That only matters where two plugins bind to the SAME phase, which none
+      ~ of these do - but it also shows up in `help:effective-pom`, and the order below is the one that reproduces
+      ~ what the parent-plus-child merge used to produce (parent's profiles first, child's last). Keeping it makes the
+      ~ inlining diffable; there is no other reason for it.
+      -->
     <profiles>
+        <!-- Inherited from the parent POM until it was inlined. See enforce-no-java-test-sources above. -->
         <profile>
-            <id>enable-obfuscate-main-classes</id>
+            <id>java-test-sources</id>
             <activation>
                 <file>
-                    <exists>src/main</exists>
+                    <exists>src/test/java</exists>
                 </file>
             </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-library</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
             <build>
-                <!--
-                  ~ Declared in <plugins>, NOT <pluginManagement>: pluginManagement binds nothing on its own, and
-                  ~ Maven 3.6.x silently fails to merge a profile-injected pluginManagement execution into a module's
-                  ~ bare <plugin> declaration. That is what shipped 4.0.1 and 4.0.3 without any obfuscation.
-                  ~ Declaring it here obfuscates every module with src/main, so modules must NOT repeat it.
-                  -->
                 <plugins>
                     <plugin>
-                        <groupId>${project.groupId}</groupId>
-                        <artifactId>truelicense-maven-plugin</artifactId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>obfuscate-main-classes</id>
+                                <id>integration-test</id>
                                 <goals>
-                                    <goal>obfuscate-main-classes</goal>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -626,24 +962,176 @@
         </profile>
 
         <!--
-          ~ Release-only gate. Obfuscation failing is otherwise invisible: the goal simply does not run and the build
-          ~ stays green. This is deliberately NOT part of an ordinary `mvn install` - it is what must hold for an
-          ~ artifact that gets published. It runs on `release:perform` (parent-pom sets releaseProfiles to this id)
-          ~ and in the CI compile job, which activates this profile explicitly.
+          ~ Inherited from the parent POM until it was inlined, and the reason `./mvnw test` and `./mvnw verify` run
+          ~ exactly the same set: every test is a ScalaTest suite bound to the `test` phase, and Surefire's
+          ~ default-test is switched off here. Activation is by directory, evaluated per module.
+          -->
+        <profile>
+            <id>scala-test-sources</id>
+            <activation>
+                <file>
+                    <exists>src/test/scala</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.scalacheck</groupId>
+                    <artifactId>scalacheck_${scala.compat.version}</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.scalatest</groupId>
+                    <artifactId>scalatest_${scala.compat.version}</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.scalatestplus</groupId>
+                    <artifactId>mockito-3-4_${scala.compat.version}</artifactId>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.scalatestplus</groupId>
+                    <artifactId>scalacheck-1-15_${scala.compat.version}</artifactId>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-test</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.alchim31.maven</groupId>
+                        <artifactId>scala-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>scala-add-source</id>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>scala-test-compile</id>
+                                <goals>
+                                    <goal>testCompile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.scalatest</groupId>
+                        <artifactId>scalatest-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>test</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Inherited from the parent POM until it was inlined. Nothing in this project uses Lombok; kept inert. -->
+        <profile>
+            <id>delombok-main-sources</id>
+            <activation>
+                <file>
+                    <exists>src/main/lombok</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>delombok</id>
+                                <goals>
+                                    <goal>delombok</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+          ~ What must hold for an artifact that gets published, as opposed to an ordinary `mvn install`. Activated by
+          ~ `release:perform` (releaseProfiles above names this id) and explicitly by the CI compile job.
           ~
-          ~ The signal is a method name synthesized by ObfuscateClassesTask - "_clinit@..." from the <clinit> merger,
-          ~ or "_string#N" from an obfuscated ldc. Both contain characters that are illegal in Java identifiers, so
-          ~ javac cannot produce them and there are no false passes.
-          ~
-          ~ Merely referencing ObfuscatedString is NOT sufficient evidence: obfuscate, build-tasks, core and
-          ~ maven-plugin all reference that class from their own source, so such a check stays green even when they
-          ~ are not obfuscated at all. It is only a fallback for modules that legitimately synthesize no method name
-          ~ (see truelicense.obfuscate.verify.relaxed).
+          ~ The first four plugins came from the parent POM; the antrun check is this project's own.
           -->
         <profile>
             <id>sonatype-oss-release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <nexusUrl>https://oss.sonatype.org</nexusUrl>
+                            <serverId>sonatype-nexus-staging</serverId>
+                        </configuration>
+                    </plugin>
                     <!--
                       ~ Obfuscation failing is otherwise invisible: the goal simply does not run and the build stays
                       ~ green. The primary signal is a method name synthesized by ObfuscateClassesTask - "_clinit@..."
@@ -709,6 +1197,37 @@
                                         </fail>
                                     </target>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>enable-obfuscate-main-classes</id>
+            <activation>
+                <file>
+                    <exists>src/main</exists>
+                </file>
+            </activation>
+            <build>
+                <!--
+                  ~ Declared in <plugins>, NOT <pluginManagement>: pluginManagement binds nothing on its own, and
+                  ~ Maven 3.6.x silently fails to merge a profile-injected pluginManagement execution into a module's
+                  ~ bare <plugin> declaration. That is what shipped 4.0.1 and 4.0.3 without any obfuscation.
+                  ~ Declaring it here obfuscates every module with src/main, so modules must NOT repeat it.
+                  -->
+                <plugins>
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>truelicense-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>obfuscate-main-classes</id>
+                                <goals>
+                                    <goal>obfuscate-main-classes</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

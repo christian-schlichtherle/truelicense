@@ -7,23 +7,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 TrueLicense is a license management engine for the JVM (Apache 2.0). User documentation lives at
 https://truelicense.namespace.global — this repo contains only the engine, not the docs site.
 
-Multi-module Maven build, group `global.namespace.truelicense`, inheriting from `global.namespace.parent-pom:16`.
-Main sources are Java 8; tests are Scala 2.13 / ScalaTest 3.2.
+Multi-module Maven build, group `global.namespace.truelicense`, **with no parent POM**. Main sources are Java 8;
+tests are Scala 2.13 / ScalaTest 3.2.
 
-**The parent POM is deliberately left alone.** It was last touched in 2023, and 8 other projects inherit it
-(`truevfs`, `bali-di-java`, `truelicense-maven-archetype`, …), so changing it means re-verifying all of them and
-makes a TrueLicense release wait on a parent POM release. Every fix needed to build on modern JDKs is therefore kept
-in *this* root POM instead, even where the parent would be the tidier home — see *The JDK ceiling*. Keeping
-TrueLicense releasable on its own is worth the duplication.
+**The root POM used to inherit from `global.namespace.parent-pom:16`, and no longer does.** That parent was last
+released in 2023 and is shared with 8 other projects (`truevfs`, `bali-di-java`, `truelicense-maven-archetype`, …),
+so changing it meant re-verifying all of them and made a TrueLicense release wait on a parent POM release. Every fix
+needed to build on a modern JDK or Maven was therefore already written in *this* POM as an override. What remained
+inherited was worth having in one editable place: the `scala-test-sources` profile (the entire test wiring), the
+Scala/test `dependencyManagement`, `<licenses>` and `<developers>` (both **mandatory** for Maven Central, and
+neither was declared here), a release path that no longer works, and one active hazard — the `java-test-sources`
+profile that `enforce-no-java-test-sources` exists solely to neutralise.
 
-That now extends to **plugin versions**: the root POM's `<pluginManagement>` overrides the parent's values for every
-plugin this build actually runs, because the parent's date from 2021. Each override was checked to declare
-`java>=1.8` and `maven>=3.6.3` in its plugin descriptor, which the JDK 8 compile job and the enforced Maven 3.9.16
-both satisfy. Two are **not** covered by the test matrix, because nothing in `install`/`verify` executes their goals:
-`maven-release-plugin` (invoked by hand as `release:perform`) and `nexus-staging-maven-plugin` (binds to `deploy`).
-The first real exercise of those two is the next release. `maven-surefire-plugin` is the one plugin that executes a
-goal without an override, and deliberately so: it has no test to run in any module — see *Build & test*.
-`truelicense-maven-plugin` is excluded from all of this on purpose — see *Bootstrapping gotcha*.
+Inlining it was verified to be behaviour-preserving by diffing `help:effective-pom` for all 17 projects, with and
+without `-P sonatype-oss-release`, before and after — see *Verifying a POM refactor*. Anything in the POM that looks
+redundant (pins for plugins no goal in this build executes, `delombok-main-sources`, `java-test-sources` itself) was
+carried over verbatim to keep that diff clean. Pruning any of it is a **separate** change and needs the same check.
+
+**Plugin versions** are all pinned in the root `<pluginManagement>`. The entries this build actually runs were
+already overrides of the parent's 2021-era values, and each was checked to declare `java>=1.8` and `maven>=3.6.3` in
+its plugin descriptor, which the JDK 8 compile job and the enforced Maven 3.9.16 both satisfy. The pins inherited
+from the parent for plugins nothing executes are **not** known-good — they are there for diff cleanliness. Two
+overridden plugins are also not covered by the test matrix, because nothing in `install`/`verify` executes their
+goals: `maven-release-plugin` (invoked by hand as `release:perform`) and `nexus-staging-maven-plugin` (binds to
+`deploy`). The first real exercise of those two is the next release, and `nexus-staging` will not survive it — see
+*The release path is broken*. `maven-surefire-plugin` executes a goal without an override, deliberately so: it has
+no test to run in any module — see *Build & test*. `truelicense-maven-plugin` is excluded from all of this on
+purpose — see *Bootstrapping gotcha*.
 
 **Maven 3.9.16 or newer is required** and enforced — the build fails at `validate` on anything older. This is not
 cosmetic: Maven 3.6.x silently breaks constant string obfuscation (see below). **Use `./mvnw`**, which pins exactly
@@ -61,7 +71,7 @@ it cannot be re-obfuscated. That coincidence is what keeps repeated `install` ru
 classes; it is not a guarantee anyone designed. If a future change makes an obfuscated module skip compilation,
 check for double obfuscation before assuming a green build means anything.
 
-Tests are run by **scalatest-maven-plugin**, not Surefire: the `scala-test-sources` profile in the parent POM
+Tests are run by **scalatest-maven-plugin**, not Surefire: the root POM's `scala-test-sources` profile
 auto-activates on `src/test/scala` and disables Surefire's `default-test`. Consequences:
 
 - Run a single suite with `-Dsuites`, *not* `-Dtest`:
@@ -73,17 +83,18 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
   resource class directly) and a `*ConsumerLicenseManagementServiceJerseyIT` (drives it over HTTP through an
   in-memory Jersey container) on purpose.
 - **There is deliberately no `src/test/java` anywhere, and an enforcer rule keeps it that way.** Its mere existence
-  activates the parent POM's `java-test-sources` profile, which binds Failsafe at `integration-test` and drags in
+  activates the root POM's `java-test-sources` profile, which binds Failsafe at `integration-test` and drags in
   JUnit 4, Hamcrest and Mockito. Test sources in *any* language go under `src/test/scala`: scala-maven-plugin's
   `add-source` registers that directory as a test compile source root, so maven-compiler-plugin compiles the
   `.java` files there (`api/…/ApiDemo.java`, `tests/…/ExtraBean.java`) and scalac compiles the `.scala` ones. The
   `enforce-no-java-test-sources` execution in the root POM's `<build><plugins>` fails every module at `validate`
   via `requireFilesDontExist` if the directory reappears — an *empty* one is enough to trip it, which is correct,
-  since profile activation keys on existence and not on contents. It merges with the parent POM's
-  `enforce-maven-and-java` rather than replacing it; both executions run (verified in the effective POM).
+  since profile activation keys on existence and not on contents. It sits alongside `enforce-maven-and-java` in
+  the same plugin; both executions run. Now that `java-test-sources` is declared here rather than inherited,
+  deleting the profile would make this guard unnecessary — but that is a behaviour change, so both stay for now.
 - **Why Failsafe is gone.** The four `*JerseyIT` suites used to be JUnit classes run by Failsafe, and losing them
   was silent: `jersey-test-framework-provider-inmemory` puts JUnit Jupiter on the test classpath, so Failsafe picks
-  its JUnit Platform provider rather than the JUnit 4 one, and the parent POM's Failsafe 2.22.2 ships a
+  its JUnit Platform provider rather than the JUnit 4 one, and Failsafe 2.22.2 ships a
   `junit-platform-launcher` too old for that engine. It reports `Tests run: 0` — not an error, a **green build with
   zero integration tests**. That was patched by pinning Failsafe 3.5.6 and guarding it with a
   `verify-integration-tests-ran` antrun check on `failsafe-summary.xml` (Failsafe's own `failIfNoTests` was
@@ -96,13 +107,13 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
   `jersey-test-framework-provider-inmemory` would produce a `NoClassDefFoundError` at container start.
 - Surefire cannot be removed the same way — `default-test` is part of Maven's default lifecycle — but it is inert
   and therefore unpinned: `scala-test-sources` sets it to phase `none` in every module that has tests, and in the
-  eight modules with no test sources at all it runs the parent POM's 2.22.2 as a no-op. It has no test to run
+  eight modules with no test sources at all it runs 2.22.2 as a no-op. It has no test to run
   anywhere, so its version does not matter. If a module ever needs Surefire for real, pin it in the root POM's
   `<pluginManagement>` first; 2.22.2 is the version that produced the silent zero-test run described below.
 
 ### Toolchain constraints
 
-- Compile with JDK 8 (`maven.compiler.source/target` is 1.8 from the parent POM).
+- Compile with JDK 8 (`maven.compiler.source/target` is 1.8 in the root POM, with no `--release`).
 - `./mvnw verify` passes on **every LTS release from 8 through 25**, measured directly (see *The JDK ceiling* below).
   There is no upper bound to respect any more, and the former "do not run tests on JDK 15+" rule is obsolete.
 - On macOS, select JDK 8 with `JAVA_HOME=$(/usr/libexec/java_home -v 1.8)`. **`-v 8` does not work** — a bare major
@@ -124,6 +135,60 @@ carries three overrides for that reason: `plexus-utils` (Maven 3.9+ stopped expo
 plugins) plus `neuron-di` and ASM (without which nothing newer than JDK 11 builds — see *The JDK ceiling*). Expect
 this list to grow rather than shrink until the plugin is re-released; a frozen bootstrap plugin ages against every new
 JDK.
+
+### Verifying a POM refactor
+
+Maven's model merging is implicit enough that a POM change can alter behaviour with no visible symptom — that is the
+common thread through the 4.0.1 obfuscation regression, the silent zero-test Failsafe run, and the parent POM
+inlining. For any structural POM change, diff the **effective** POM rather than reading the source diff:
+
+```bash
+for m in . api build-tasks core jax-rs jsf maven-plugin obfuscate spi swing tests ui v1 v2-core v2-json v2-xml v4; do
+  n=$(echo "$m" | sed 's|^\.$|ROOT|')
+  for p in plain release; do
+    [ "$p" = release ] && PF="-P sonatype-oss-release" || PF=""
+    ./mvnw -o -q help:effective-pom -pl "$m" $PF -Doutput="$DIR/$n.$p.xml"
+  done
+done
+```
+
+Strip the `Generated by Maven Help Plugin on` line (it carries a timestamp), capture before and after, and diff. Two
+things make the result readable:
+
+- **A pure reordering is not a behaviour change** unless two plugins share a phase. Check with
+  `diff <(sort before) <(sort after)`: if that is empty, only the order moved.
+- **Inherited-but-inactive profiles are invisible.** `help:effective-pom` lists a project's *own* profiles and
+  injects the *active* ones into `<build>`; profiles inherited from an ancestor are not listed at all, which is why
+  module effective POMs have no `<profiles>` section. So a profile moving between POMs shows up as a large
+  `<profiles>` addition on the declaring project and nothing anywhere else. Diff the `<build>` section separately —
+  that is what actually executes.
+
+The inlining commit was signed off on exactly this: all 32 module effective POMs content-identical, one adjacent
+transposition (`truelicense-maven-plugin` ↔ `maven-antrun-plugin`, phases `process-classes` vs `prepare-package`) in
+the release-profile ones, and the root's `<build>` unchanged. Profile declaration order in the root POM is arranged
+to reproduce the old parent-then-child injection order for that reason, and for no other.
+
+Then confirm against artifacts, not the log — `./mvnw -o clean install -P sonatype-oss-release -Dgpg.skip=true
+-Dmaven.javadoc.skip=true`, followed by the `grep -rlaE '_clinit@|_string#'` check under *Build-time verification*.
+
+### The release path is broken
+
+Independently of anything above, the configured release path no longer works. `<distributionManagement>` and the
+`sonatype-oss-release` profile target Sonatype OSSRH (`oss.sonatype.org`) through `nexus-staging-maven-plugin`.
+OSSRH has been retired in favour of the Central Publisher Portal, which `nexus-staging-maven-plugin` cannot talk to;
+the replacement is `central-publishing-maven-plugin`, and snapshots move to
+`https://central.sonatype.com/repository/maven-snapshots/`. This is infrastructure, not tooling — a Gradle or Mill
+build would need the same migration.
+
+Consequences worth knowing before the next release:
+
+- The endpoints in the root POM are carried over from the parent POM verbatim and are **known-dead**, not merely
+  untested. Migrating them was deliberately kept out of the inlining commit.
+- `~/.m2/settings.xml` still has `ossrh` / `sonatype-nexus-snapshots` / `sonatype-nexus-staging` server entries; the
+  Portal uses a different credential.
+- If `maven-release-plugin` is dropped in favour of `versions:set` + tag + `deploy`, note that `release:perform` is
+  the only thing that activates `sonatype-oss-release` outside CI — so the obfuscation verification gate would need
+  re-homing. That gate is the whole reason 4.0.1 and 4.0.3 shipped unobfuscated without anyone noticing.
 
 ## Module architecture
 
@@ -235,7 +300,7 @@ does not run and the build stays green.
 
 **It is release-only.** It lives in a `sonatype-oss-release` profile, not in `enable-obfuscate-main-classes`, so an
 ordinary `./mvnw install` does not pay for it. It still runs where it matters: `release:perform` activates that
-profile (parent-pom sets `releaseProfiles` to it) and the CI compile job passes `--activate-profiles
+profile (the root POM sets `releaseProfiles` to it) and the CI compile job passes `--activate-profiles
 sonatype-oss-release`. To run it by hand:
 
 ```bash
@@ -289,7 +354,7 @@ the ceiling.
 | 4 | Byte Buddy 1.10.20 (via Mockito 3.9.0) — cannot read JDK 21+ class files | 21+ | `byte-buddy.version` → 1.18.11 |
 
 All four live in the root POM: 1 and 2 as overrides on the pinned bootstrap plugin, 3 and 4 as property plus
-`dependencyManagement` overrides of parent-pom 16's values.
+`dependencyManagement` entries. Before the parent POM was inlined, 3 and 4 were overrides of its values.
 
 Notes worth having before you debug any of this again:
 
@@ -306,7 +371,7 @@ Notes worth having before you debug any of this again:
   constructor, so a mock that cannot be created aborts the whole suite rather than failing one test. Any suite using
   `MockitoSugar` fails this way; `api` was the first in reactor order.
 - **Byte Buddy is deliberately overridden away from what Mockito ships.** Upgrading Mockito instead would fix 4, but
-  Mockito 5 requires Java 11 and would drop JDK 8 from the matrix. So Mockito is left at the parent POM's 3.9.0 and
+  Mockito 5 requires Java 11 and would drop JDK 8 from the matrix. So Mockito is left at 3.9.0 and
   Byte Buddy alone is pinned past it. That pin is load-bearing: a later Mockito upgrade will silently get 1.18.11
   rather than its own, so re-run the matrix when bumping either.
 - Obfuscation still works under ASM 9.10.1, verified on JDK 25 by checking the artifacts for the synthesized
