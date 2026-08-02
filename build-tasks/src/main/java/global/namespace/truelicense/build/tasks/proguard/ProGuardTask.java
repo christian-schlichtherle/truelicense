@@ -145,8 +145,10 @@ public abstract class ProGuardTask extends AbstractTask {
      */
     public abstract List<Path> proGuardClassPath();
 
-    @Override
-    public final void execute() throws Exception {
+    /**
+     * The command line which {@link #execute()} runs.
+     */
+    public final List<String> commandLine() {
         final List<String> c = new LinkedList<>();
         c.add(getProperty("java.home") + "/bin/java");
         c.add("-cp");
@@ -156,6 +158,12 @@ public abstract class ProGuardTask extends AbstractTask {
                 .collect(joining(File.pathSeparator)));
         c.add(MAIN_CLASS);
         c.addAll(commandLineArgs());
+        return c;
+    }
+
+    @Override
+    public final void execute() throws Exception {
+        final List<String> c = commandLine();
         logger().info("Executing ProGuard: " + join(" ", c));
         final Process p = new ProcessBuilder(c).directory(buildDirectory().toFile()).inheritIO().start();
         p.waitFor();

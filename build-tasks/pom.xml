@@ -46,5 +46,12 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm-tree</artifactId>
         </dependency>
+
+        <!-- ProGuardTaskSpec runs the real thing; see the note on ProGuardTask.proGuardClassPath(). -->
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

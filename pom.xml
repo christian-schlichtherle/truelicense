@@ -154,6 +154,7 @@
         <!-- Also overrides the bootstrap plugin's own 6.4.4 - see the plugin declaration below. -->
         <neuron-di.version>6.7.1</neuron-di.version>
         <plexus-utils.version>4.0.3</plexus-utils.version>
+        <proguard.version>7.9.1</proguard.version>
         <scala.compat.version>2.13</scala.compat.version>
         <!-- 2.13.5's Zinc compiler bridge fails to build on JDK 21+. -->
         <scala.version>2.13.18</scala.version>
@@ -411,6 +412,11 @@
                 <groupId>org.glassfish.jaxb</groupId>
                 <artifactId>jaxb-runtime</artifactId>
                 <version>${jaxb-runtime.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.guardsquare</groupId>
+                <artifactId>proguard-base</artifactId>
+                <version>${proguard.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.netbeans</groupId>
