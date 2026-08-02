@@ -11,8 +11,11 @@ https://truelicense.namespace.global
 
 ## Building
 
-Use the Maven Wrapper — it pins the required Maven version, so nothing needs installing beyond a JDK 8:
+Use the Maven Wrapper — it pins the required Maven version, so nothing needs installing beyond a JDK:
 
 ```bash
 ./mvnw install
 ```
+
+The build runs on every LTS release from JDK 8 through 25; CI tests all of them. The artifacts always target Java 8
+bytecode regardless of the JDK used.

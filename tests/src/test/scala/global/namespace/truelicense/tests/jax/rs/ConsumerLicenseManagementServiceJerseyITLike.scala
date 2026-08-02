@@ -13,7 +13,7 @@ import org.glassfish.jersey.client.ClientConfig
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.scalatest.matchers.should.Matchers._
 
 import javax.ws.rs.WebApplicationException

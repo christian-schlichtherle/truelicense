@@ -16,6 +16,14 @@ makes a TrueLicense release wait on a parent POM release. Every fix needed to bu
 in *this* root POM instead, even where the parent would be the tidier home — see *The JDK ceiling*. Keeping
 TrueLicense releasable on its own is worth the duplication.
 
+That now extends to **plugin versions**: the root POM's `<pluginManagement>` overrides the parent's values for every
+plugin this build actually runs, because the parent's date from 2021. Each override was checked to declare
+`java>=1.8` and `maven>=3.6.3` in its plugin descriptor, which the JDK 8 compile job and the enforced Maven 3.9.16
+both satisfy. Two are **not** covered by the test matrix, because nothing in `install`/`verify` executes their goals:
+`maven-release-plugin` (invoked by hand as `release:perform`) and `nexus-staging-maven-plugin` (binds to `deploy`).
+The first real exercise of those two is the next release. `truelicense-maven-plugin` is excluded from all of this on
+purpose — see *Bootstrapping gotcha*.
+
 **Maven 3.9.16 or newer is required** and enforced — the build fails at `validate` on anything older. This is not
 cosmetic: Maven 3.6.x silently breaks constant string obfuscation (see below). **Use `./mvnw`**, which pins exactly
 3.9.16, so the requirement never has to be satisfied by hand. It is the script-only wrapper (no jar in the repo);
@@ -39,10 +47,18 @@ other:
 - `test` — a matrix of `./mvnw verify` over JDK 8, 11, 17, 21 and 25, `fail-fast: false`.
 
 Do not collapse these into sequential steps in one job. The old workflow did that, and it was misleading: `verify`
-re-enters the full lifecycle and maven-compiler-plugin 3.8.1 recompiles unconditionally ("Changes detected -
-recompiling the module!" even with nothing changed, because this codebase's nested classes outnumber its sources), so
-the second step silently rebuilt everything the first step had produced. The tests therefore never ran against the
-JDK 8 bytecode they appeared to be validating.
+re-enters the full lifecycle and recompiles everything, so the second step silently rebuilt everything the first step
+had produced. The tests therefore never ran against the JDK 8 bytecode they appeared to be validating.
+
+The reason it recompiles has changed but the conclusion has not. Under maven-compiler-plugin 3.8.1 it was
+unconditional ("Changes detected - recompiling the module!" even with nothing changed, because this codebase's nested
+classes outnumber its sources). 3.15.0 does honour incremental state — but **obfuscation defeats it anyway**:
+`ObfuscateClassesTask` produces different bytes on every run, so each module's jar changes, and every downstream
+module reports "Recompiling the module because of changed dependency". Measured on a no-clean rebuild, the only
+module that reports "Nothing to compile" is `api` — which is also the only module that opts out of obfuscation, so
+it cannot be re-obfuscated. That coincidence is what keeps repeated `install` runs from obfuscating already-obfuscated
+classes; it is not a guarantee anyone designed. If a future change makes an obfuscated module skip compilation,
+check for double obfuscation before assuming a green build means anything.
 
 Tests are run by **scalatest-maven-plugin**, not Surefire: the `scala-test-sources` profile in the parent POM
 auto-activates on `src/test/scala` and disables Surefire's `default-test`. Consequences:
@@ -57,6 +73,19 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
   the four `*ConsumerLicenseManagementServiceJerseyIT` suites, which are JUnit/JerseyTest classes that ScalaTest
   does not pick up. Use `./mvnw verify` (or `install`) to run everything; each format has a ScalaTest `*Spec` and a
   Failsafe `*JerseyIT` counterpart on purpose.
+- **Those four suites run on JUnit 5, and losing them is silent.** `jersey-test-framework-provider-inmemory` puts
+  JUnit Jupiter on the test classpath, so Failsafe picks its JUnit Platform provider rather than the JUnit 4 one.
+  The parent POM's Failsafe 2.22.2 ships a `junit-platform-launcher` too old for that engine and reports
+  `Tests run: 0` — not an error, a **green build with zero integration tests**. The root POM therefore overrides
+  Failsafe to 3.5.6 and the shared `ConsumerLicenseManagementServiceJerseyITLike` trait imports
+  `org.junit.jupiter.api.Test`. `JerseyTest` itself carries both JUnit 4 and JUnit 5 lifecycle annotations, so it
+  works either way; only the provider matters.
+- A `verify-integration-tests-ran` antrun check in `tests/pom.xml` fails the build if Failsafe completes zero tests,
+  because nothing else does. **Failsafe's own `failIfNoTests` does not work here** — measured green on a zero-test
+  run both as plugin configuration and as `-DfailIfNoTests=true`. The check reads `failsafe-summary.xml`, and a
+  sibling execution deletes `target/failsafe-reports` at `pre-integration-test` first: on a zero-test run Failsafe
+  writes *no* summary file rather than one saying zero, so without the delete an incremental build would read the
+  previous run's file and pass.
 
 ### Toolchain constraints
 
@@ -66,7 +95,10 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
 - On macOS, select JDK 8 with `JAVA_HOME=$(/usr/libexec/java_home -v 1.8)`. **`-v 8` does not work** — a bare major
   number means "8 *or newer*", so it returns the newest installed JDK, and the build then silently runs on that.
   Always confirm the `Java version:` line that `--show-version` prints.
-- The Swing wizard ITs drive a real UI via Jemmy and skip themselves when `GraphicsEnvironment` is headless.
+- The Swing wizard ITs drive a real UI via Jemmy and skip themselves when `GraphicsEnvironment` is headless. Because
+  they drive a *real* UI, using the machine while they run can fail them — stealing focus is enough. A local `verify`
+  that fails only in those suites is worth re-running before investigating; CI never runs them at all (see the
+  headless split below).
 
 ### Bootstrapping gotcha
 
@@ -240,7 +272,7 @@ the ceiling.
 | --- | --- | --- | --- |
 | 1 | `neuron-di` 6.4.4 — generated proxies use a `MethodHandle` that fails its exact-type check | 17+ | `neuron-di.version` → 6.7.1, in the plugin's `<dependencies>` |
 | 2 | ASM 7.3.1 — 6.7.1 needs the ASM 9 API | 17+ | `asm`/`asm-tree` → `${asm.version}`, same place |
-| 3 | Scala 2.13.5 — its Zinc compiler bridge fails to build | 21+ | `scala.version` → 2.13.16 |
+| 3 | Scala 2.13.5 — its Zinc compiler bridge fails to build | 21+ | `scala.version` → 2.13.18 |
 | 4 | Byte Buddy 1.10.20 (via Mockito 3.9.0) — cannot read JDK 21+ class files | 21+ | `byte-buddy.version` → 1.18.11 |
 
 All four live in the root POM: 1 and 2 as overrides on the pinned bootstrap plugin, 3 and 4 as property plus
@@ -264,7 +296,7 @@ Notes worth having before you debug any of this again:
   Mockito 5 requires Java 11 and would drop JDK 8 from the matrix. So Mockito is left at the parent POM's 3.9.0 and
   Byte Buddy alone is pinned past it. That pin is load-bearing: a later Mockito upgrade will silently get 1.18.11
   rather than its own, so re-run the matrix when bumping either.
-- Obfuscation still works under ASM 9.1, verified on JDK 25 by checking the artifacts for the synthesized
+- Obfuscation still works under ASM 9.10.1, verified on JDK 25 by checking the artifacts for the synthesized
   `_clinit@` / `_string#` names — not the log, and not `ObfuscatedString`. See *Build-time verification*.
 
 ### ASM version ceiling (affects applications, not this build)
@@ -276,15 +308,16 @@ supports, and only use features up to its **API level**, which is hardcoded to `
 | ASM | shipped in | reads up to | rejects |
 | --- | --- | --- | --- |
 | 7.3.1 | `truelicense-maven-plugin` 4.0.3 (current release) | Java 15 | Java 16+ |
-| 9.1 | pinned by `asm.version` on `develop` | Java 17 | Java 18+ |
-| 9.8 | — | Java 25 | — |
+| 9.1 | — | Java 17 | Java 18+ |
+| 9.8 | — | Java 25 | Java 26+ |
+| 9.10.1 | pinned by `asm.version` on `develop` | Java 27 | Java 28+ |
 
 Rejection is `IllegalArgumentException: Unsupported class file major version N`. This does **not** affect
 TrueLicense's own build — it targets Java 8 bytecode (major 52) regardless of the JDK used. It affects
 *applications* that run the plugin over their own classes: an app targeting Java 17 cannot use plugin 4.0.3.
 
 Bumping `asm.version` alone is not enough. The `ASM7` API level in `ObfuscateClassesTask`, `O9nInitMethodVisitor`
-and friends must be raised too — on ASM 9.1 with `api = ASM7`, reading a Java 17 **record** throws
+and friends must be raised too — on ASM 9.1 with `api = ASM7`, reading a Java 17 **record** already throws
 `UnsupportedOperationException: Records requires ASM8`, so any app using records fails even on a new ASM.
 
 ### Why it is wired this way (two independent historical causes)
