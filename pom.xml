@@ -77,13 +77,25 @@
           -->
         <truelicense.obfuscate.verify.relaxed>false</truelicense.obfuscate.verify.relaxed>
 
-        <!-- dependencies -->
+        <!--
+          ~ dependencies
+          ~
+          ~ byte-buddy, neuron-di and scala are pinned here purely to keep the build working on JDKs newer than 11;
+          ~ each one blocks it outright, and each masked the next. They would belong to the parent POM, but are kept
+          ~ here so that a TrueLicense release never has to wait on a parent POM release. See CLAUDE.md.
+          -->
         <asm.version>9.1</asm.version>
+        <!-- Overrides the 1.10.20 that the parent POM's Mockito 3.9.0 resolves: it cannot read JDK 21+ class files. -->
+        <byte-buddy.version>1.18.11</byte-buddy.version>
         <fun-io.version>2.4.1</fun-io.version>
         <jackson.version>2.12.3</jackson.version>
         <jaxb.version>2.3.1</jaxb.version>
         <maven.version>3.8.1</maven.version>
+        <!-- Also overrides the bootstrap plugin's own 6.4.4 - see the plugin declaration below. -->
+        <neuron-di.version>6.7.1</neuron-di.version>
         <plexus-utils.version>3.5.1</plexus-utils.version>
+        <!-- Overrides the parent POM's 2.13.5, whose Zinc compiler bridge fails to build on JDK 21+. -->
+        <scala.version>2.13.16</scala.version>
     </properties>
 
     <modules>
@@ -264,7 +276,17 @@
             <dependency>
                 <groupId>global.namespace.neuron-di</groupId>
                 <artifactId>neuron-di</artifactId>
-                <version>6.7.1</version>
+                <version>${neuron-di.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${byte-buddy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy-agent</artifactId>
+                <version>${byte-buddy.version}</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.annotation</groupId>
@@ -366,6 +388,32 @@
                             <groupId>org.codehaus.plexus</groupId>
                             <artifactId>plexus-utils</artifactId>
                             <version>${plexus-utils.version}</version>
+                        </dependency>
+                        <!--
+                          ~ The bootstrap plugin ships neuron-di 6.4.4, whose generated proxies use a MethodHandle
+                          ~ that fails its exact-type check on JDK 17+ (WrongMethodTypeException on the first
+                          ~ Logger.info call, i.e. before the goal does any work at all - it even breaks the root
+                          ~ aggregator, where the goal is supposed to no-op). 6.7.1 fixes that, but requires the
+                          ~ ASM 9 API, so ASM has to be raised past the plugin's own 7.3.1 as well. Without these
+                          ~ three overrides the build cannot run on any JDK newer than 11.
+                          ~
+                          ~ This only repairs the plugin realm used to build *this* project. Applications running
+                          ~ the published 4.0.3 plugin on JDK 17+ hit the same crash and need a plugin release.
+                          -->
+                        <dependency>
+                            <groupId>global.namespace.neuron-di</groupId>
+                            <artifactId>neuron-di</artifactId>
+                            <version>${neuron-di.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm</artifactId>
+                            <version>${asm.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.ow2.asm</groupId>
+                            <artifactId>asm-tree</artifactId>
+                            <version>${asm.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>

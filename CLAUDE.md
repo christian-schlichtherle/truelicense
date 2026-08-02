@@ -10,6 +10,12 @@ https://truelicense.namespace.global — this repo contains only the engine, not
 Multi-module Maven build, group `global.namespace.truelicense`, inheriting from `global.namespace.parent-pom:16`.
 Main sources are Java 8; tests are Scala 2.13 / ScalaTest 3.2.
 
+**The parent POM is deliberately left alone.** It was last touched in 2023, and 8 other projects inherit it
+(`truevfs`, `bali-di-java`, `truelicense-maven-archetype`, …), so changing it means re-verifying all of them and
+makes a TrueLicense release wait on a parent POM release. Every fix needed to build on modern JDKs is therefore kept
+in *this* root POM instead, even where the parent would be the tidier home — see *The JDK ceiling*. Keeping
+TrueLicense releasable on its own is worth the duplication.
+
 **Maven 3.9.16 or newer is required** and enforced — the build fails at `validate` on anything older. This is not
 cosmetic: Maven 3.6.x silently breaks constant string obfuscation (see below). **Use `./mvnw`**, which pins exactly
 3.9.16, so the requirement never has to be satisfied by hand. It is the script-only wrapper (no jar in the repo);
@@ -19,10 +25,24 @@ cosmetic: Maven 3.6.x silently breaks constant string obfuscation (see below). *
 
 ```bash
 ./mvnw install                 # full build; do this first — modules depend on each other
-./mvnw verify                  # what CI runs
+./mvnw verify                  # what CI's test matrix runs, once per LTS JDK
 ./mvnw -pl <module> test       # test one module (add -am to also build its dependencies)
 ./mvnw -q -o ...               # -o (offline) is fine once ~/.m2 is populated
 ```
+
+`.github/workflows/test.yml` runs two **independent, parallel** jobs — they share nothing, so neither `needs` the
+other:
+
+- `compile` — JDK 8, `-DskipTests -P sonatype-oss-release`. This is the Java 8 compatibility gate: because
+  `maven.compiler.source/target` is 1.8 with **no `--release`**, javac 8 is the only thing that proves no post-8 API
+  crept in. It also runs the release-only obfuscation check.
+- `test` — a matrix of `./mvnw verify` over JDK 8, 11, 17, 21 and 25, `fail-fast: false`.
+
+Do not collapse these into sequential steps in one job. The old workflow did that, and it was misleading: `verify`
+re-enters the full lifecycle and maven-compiler-plugin 3.8.1 recompiles unconditionally ("Changes detected -
+recompiling the module!" even with nothing changed, because this codebase's nested classes outnumber its sources), so
+the second step silently rebuilt everything the first step had produced. The tests therefore never ran against the
+JDK 8 bytecode they appeared to be validating.
 
 Tests are run by **scalatest-maven-plugin**, not Surefire: the `scala-test-sources` profile in the parent POM
 auto-activates on `src/test/scala` and disables Surefire's `default-test`. Consequences:
@@ -41,8 +61,8 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
 ### Toolchain constraints
 
 - Compile with JDK 8 (`maven.compiler.source/target` is 1.8 from the parent POM).
-- Do **not** run tests on JDK 15+: scalatest-maven-plugin fails to load test classes there. CI compiles on JDK 8
-  and then runs `./mvnw verify` on JDK 14.
+- `./mvnw verify` passes on **every LTS release from 8 through 25**, measured directly (see *The JDK ceiling* below).
+  There is no upper bound to respect any more, and the former "do not run tests on JDK 15+" rule is obsolete.
 - On macOS, select JDK 8 with `JAVA_HOME=$(/usr/libexec/java_home -v 1.8)`. **`-v 8` does not work** — a bare major
   number means "8 *or newer*", so it returns the newest installed JDK, and the build then silently runs on that.
   Always confirm the `Java version:` line that `--show-version` prints.
@@ -52,8 +72,13 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
 
 The root POM pins `truelicense-maven-plugin` to the **last released version (4.0.3)**, not `${project.version}` —
 the project builds itself with its own previously published plugin. Changes to `maven-plugin/` or `build-tasks/`
-therefore do not affect the current build until that version is released. The pinned plugin also carries an
-explicit `plexus-utils` dependency because Maven 3.9+ stopped exporting `org.codehaus.plexus.util.*` to plugins.
+therefore do not affect the current build until that version is released.
+
+Because 4.0.3 is frozen, its own dependencies have to be repaired from the outside, and its `pluginManagement` entry
+carries three overrides for that reason: `plexus-utils` (Maven 3.9+ stopped exporting `org.codehaus.plexus.util.*` to
+plugins) plus `neuron-di` and ASM (without which nothing newer than JDK 11 builds — see *The JDK ceiling*). Expect
+this list to grow rather than shrink until the plugin is re-released; a frozen bootstrap plugin ages against every new
+JDK.
 
 ## Module architecture
 
@@ -195,6 +220,47 @@ out.
 
 Residual caveats: the check proves *something* in the module was obfuscated, not that a particular string was; and
 it assumes the default `methodNameFormat` (`_%s#%d`) — overriding that property breaks the check, loudly.
+
+### The JDK ceiling
+
+`./mvnw verify` now passes on JDK **8, 11, 17, 21 and 25** — each one measured with a full reactor build, tests
+included (100 ScalaTest tests plus the 4 Failsafe Jersey ITs). CI enforces this as a matrix; see
+`.github/workflows/test.yml`.
+
+Getting there needed four fixes. They mattered because each one **masked the next**: the build died at the first
+one, so fixing it only revealed the second, and so on. Do not conclude from a single failure that you have found
+the ceiling.
+
+| # | Cause | Bites at | Fix |
+| --- | --- | --- | --- |
+| 1 | `neuron-di` 6.4.4 — generated proxies use a `MethodHandle` that fails its exact-type check | 17+ | `neuron-di.version` → 6.7.1, in the plugin's `<dependencies>` |
+| 2 | ASM 7.3.1 — 6.7.1 needs the ASM 9 API | 17+ | `asm`/`asm-tree` → `${asm.version}`, same place |
+| 3 | Scala 2.13.5 — its Zinc compiler bridge fails to build | 21+ | `scala.version` → 2.13.16 |
+| 4 | Byte Buddy 1.10.20 (via Mockito 3.9.0) — cannot read JDK 21+ class files | 21+ | `byte-buddy.version` → 1.18.11 |
+
+All four live in the root POM: 1 and 2 as overrides on the pinned bootstrap plugin, 3 and 4 as property plus
+`dependencyManagement` overrides of parent-pom 16's values.
+
+Notes worth having before you debug any of this again:
+
+- **1 and 2 come from the pinned bootstrap plugin, not from this source tree** (see *Bootstrapping gotcha*). 1 throws
+  `WrongMethodTypeException` on the very first `Logger.info` call, i.e. before `obfuscate-main-classes` does any work
+  — so it even breaks the *root aggregator*, where the goal is supposed to no-op. 2 then surfaces as
+  `IllegalArgumentException: Unsupported api 589824` (`589824` = `9 << 16`, i.e. the `ASM9` constant). Both overrides
+  only repair the plugin realm that builds *this* project; applications running the published 4.0.3 plugin on
+  JDK 17+ hit 1 unchanged and need a plugin release.
+- **4 is the one that looks like a scalatest-maven-plugin bug and is not.** ScalaTest reports it as
+  `RuntimeException: Unable to load a Suite class that was discovered in the runpath:
+  …UncheckedLicenseManagerSpec`, swallowing the real cause. The actual failure is Byte Buddy refusing the JDK's class
+  files while Mockito builds a mock during suite construction — `AnyWordSpec` runs its `should` block bodies in the
+  constructor, so a mock that cannot be created aborts the whole suite rather than failing one test. Any suite using
+  `MockitoSugar` fails this way; `api` was the first in reactor order.
+- **Byte Buddy is deliberately overridden away from what Mockito ships.** Upgrading Mockito instead would fix 4, but
+  Mockito 5 requires Java 11 and would drop JDK 8 from the matrix. So Mockito is left at the parent POM's 3.9.0 and
+  Byte Buddy alone is pinned past it. That pin is load-bearing: a later Mockito upgrade will silently get 1.18.11
+  rather than its own, so re-run the matrix when bumping either.
+- Obfuscation still works under ASM 9.1, verified on JDK 25 by checking the artifacts for the synthesized
+  `_clinit@` / `_string#` names — not the log, and not `ObfuscatedString`. See *Build-time verification*.
 
 ### ASM version ceiling (affects applications, not this build)
 
