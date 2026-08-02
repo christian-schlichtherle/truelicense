@@ -131,5 +131,38 @@ class ProGuardTaskSpec extends AnyWordSpec {
         Files.walk(dir).sorted(util.Comparator.reverseOrder[Path]).forEach(p => Files.delete(p))
       }
     }
+
+    // Without -dontwarn, ProGuard fails the run on any unresolved reference, so this only passes if it was actually
+    // given the platform classes. The test above cannot catch that: -dontwarn silently forgives a missing JDK.
+    // Temurin 25 ships no jmods, and passing java.home in its place left ProGuard unable to resolve java.lang.Object.
+    "resolve the platform classes on this JDK, whatever its layout" in {
+      val dir = Files.createTempDirectory("proguard-task-spec")
+      try {
+        val in = dir.resolve("in").resolve(fixtureResource)
+        Files.createDirectories(in.getParent)
+        val source = getClass.getClassLoader.getResourceAsStream(fixtureResource)
+        try Files.copy(source, in)
+        finally source.close()
+
+        task(dir, proGuardClassPath, List(
+          "-dontoptimize", "-dontnote",
+          "-keep", "public class " + classOf[ProGuardFixture].getName +
+            " { public static void main(java.lang.String[]); }"
+        )).execute()
+
+        Files.isRegularFile(dir.resolve("out.jar")) shouldBe true
+      } finally {
+        Files.walk(dir).sorted(util.Comparator.reverseOrder[Path]).forEach(p => Files.delete(p))
+      }
+    }
+
+    "not touch the file system while building the command line" in {
+      val dir = Files.createTempDirectory("proguard-task-spec")
+      try {
+        task(dir, util.Arrays.asList(Paths.get("/tmp/a.jar")), Nil).commandLine()
+        // Staging the platform classes is worth ~60 MB and belongs to execute(), not to inspecting the command line.
+        Files.list(dir).count shouldBe 0
+      } finally Files.delete(dir)
+    }
   }
 }

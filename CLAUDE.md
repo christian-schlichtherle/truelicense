@@ -165,6 +165,42 @@ Build-time-only modules: `obfuscate` (the `@Obfuscate` annotation + annotation p
 ProGuard as an external process — it has no ProGuard compile dependency), `maven-plugin` (Mojos that wrap those
 tasks). `tests` is integration tests only and is never installed or deployed.
 
+#### How `ProGuardTask` finds the platform classes
+
+Nothing in this reactor runs the `proguard` goal — the modules here use `obfuscate-main-classes` — so the only
+end-to-end coverage of it is `ProGuardTaskSpec` and, downstream, `truelicense-maven-archetype`'s integration tests.
+Keep that in mind before trusting a green build here.
+
+ProGuard needs the JDK's own classes as `-libraryjars`, and how to hand them over depends on the JDK's layout.
+`ProGuardTask.platformLayout()` picks one of three:
+
+| Layout | Detected by | `-libraryjars` |
+| --- | --- | --- |
+| `LEGACY` | `lib/rt.jar` exists | `<java.home>/lib` and `<java.home>/lib/ext` |
+| `JMODS` | a `jmods` directory exists | `<java.home>/jmods(!**.jar;!module-info.class)` |
+| `RUNTIME_IMAGE` | neither | a jar staged into the build directory |
+
+**`RUNTIME_IMAGE` is not hypothetical: Temurin 25 ships no `jmods`.** On such a JDK nothing under `java.home` is a
+class path entry ProGuard can read — `lib/modules` is a jimage, and proguard-core reads jars, directories and
+`.jmod` files only, with no jimage or `jrt` reader. Passing `java.home` itself, which is what this used to do, is
+worse than failing: ProGuard accepts the argument, finds no class in it, and reports every reference into the JDK as
+unresolved, down to `can't find superclass or interface java.lang.Object`. The run then dies on warnings, far from
+the cause.
+
+So `stagePlatformClasses()` copies the platform's class files out of the `jrt` file system — readable because the
+task runs on the very JDK whose classes ProGuard needs — into one jar in the build directory. Measured on Temurin
+25: 17,624 classes, ~68 MB, ~300 ms, stored uncompressed because the jar is read once and thrown away. Entries drop
+their module segment so the jar is an ordinary class path root; keeping it would make ProGuard reject each class for
+sitting at a path that does not match its name.
+
+Two things to preserve when touching this:
+
+- **Staging happens in `execute()`, not while building the command line.** `commandLine()` is inspected by tests and
+  logged on every run; 68 MB of I/O does not belong there. A test asserts the build directory stays empty.
+- **`ProGuardTaskSpec` runs ProGuard once *without* `-dontwarn`.** That is the only thing that proves the platform
+  classes were actually found — the older test passes `-dontwarn`, which forgives a missing JDK entirely and stayed
+  green throughout this bug.
+
 These modules use no DI framework. A Mojo wires its task by returning an anonymous subclass that overrides the
 task's abstract getters — so the compiler, not reflection, enforces that every one is bound. `CountingLogger`'s
 counters are instance fields for the same reason: its error count gates task failure, so it has to accumulate.
