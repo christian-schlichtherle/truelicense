@@ -44,3 +44,5 @@ on:
     branches: [ '**' ]
   push:
     branches: [ '**' ]
+  # A tag push does not match the branch filters above, so the release workflow calls this one as a gate.
+  workflow_call:

@@ -1,0 +1,60 @@
+# Publishes a release to Maven Central when a v* tag is pushed. The tag is the only input: it sets the version, and
+# nothing is committed back to the repository.
+#
+# Requires four repository secrets:
+#   MAVEN_GPG_PRIVATE_KEY   armored secret key, `gpg --export-secret-keys --armor <fingerprint>`
+#   MAVEN_GPG_PASSPHRASE    passphrase for that key
+#   CENTRAL_TOKEN_USERNAME  user token from central.sonatype.com, not the account password
+#   CENTRAL_TOKEN_PASSWORD
+concurrency:
+  cancel-in-progress: false
+  group: release
+jobs:
+  # The full JDK 8-25 matrix, as a gate. Tag pushes do not trigger test.yml on their own.
+  test:
+    uses: ./.github/workflows/test.yml
+  # Runs on JDK 8 so the published bytecode comes from the same compiler the compatibility gate uses.
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          cache: maven
+          distribution: temurin
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          java-version: '8'
+          server-id: central
+          server-password: CENTRAL_TOKEN_PASSWORD
+          server-username: CENTRAL_TOKEN_USERNAME
+      # Central rejects a redeploy of an existing version, so a malformed tag would otherwise burn the version number.
+      - name: Derive the version from the tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          case "$VERSION" in
+            *-SNAPSHOT) echo "::error::$GITHUB_REF_NAME is a snapshot version"; exit 1 ;;
+            [0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "::error::$GITHUB_REF_NAME is not vMAJOR.MINOR.PATCH"; exit 1 ;;
+          esac
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Set the version
+        run: ./mvnw --batch-mode versions:set -DnewVersion=${{ env.VERSION }} -DgenerateBackupPoms=false
+      # deploy runs the full lifecycle: tests, the obfuscation gate, javadoc, signing, then the upload to the Portal.
+      - name: Publish to Maven Central
+        env:
+          CENTRAL_TOKEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+          CENTRAL_TOKEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: ./mvnw --show-version --batch-mode --activate-profiles sonatype-oss-release deploy
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes --verify-tag
+name: release
+on:
+  push:
+    tags: [ 'v*' ]
