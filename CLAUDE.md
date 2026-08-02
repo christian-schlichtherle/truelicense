@@ -123,15 +123,11 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
 
 ### Bootstrapping gotcha
 
-The root POM pins `truelicense-maven-plugin` to the **last released version (4.0.3)**, not `${project.version}` —
-the project builds itself with its own previously published plugin. Changes to `maven-plugin/` or `build-tasks/`
-therefore do not affect the current build until that version is released.
-
-Because 4.0.3 is frozen, its own dependencies have to be repaired from the outside, and its `pluginManagement` entry
-carries three overrides for that reason: `plexus-utils` (Maven 3.9+ stopped exporting `org.codehaus.plexus.util.*` to
-plugins) plus `neuron-di` and ASM (without which nothing newer than JDK 11 builds — see *The JDK ceiling*). Expect
-this list to grow rather than shrink until the plugin is re-released; a frozen bootstrap plugin ages against every new
-JDK.
+The root POM pins `truelicense-maven-plugin` to the **last released version**, not `${project.version}` — the
+project builds itself with its own previously published plugin. Changes to `maven-plugin/` or `build-tasks/`
+therefore do not affect the current build until that version is released. Bump the pin after every release, and run
+the JDK 8 / 17 / 25 builds before trusting it: a pin that lags far behind ages against every new JDK, and repairing
+a frozen plugin from the outside means piling `<dependencies>` overrides onto this entry.
 
 ### Verifying a POM refactor
 

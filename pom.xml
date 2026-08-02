@@ -513,39 +513,7 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>truelicense-maven-plugin</artifactId>
                     <!-- Cannot use ${project.version} while bootstrapping! -->
-                    <version>4.0.3</version>
-                    <dependencies>
-                        <!--
-                          ~ Maven 3.9+ no longer exports org.codehaus.plexus.util.* to plugins, so the bootstrap
-                          ~ plugin needs plexus-utils on its own class realm.
-                          -->
-                        <dependency>
-                            <groupId>org.codehaus.plexus</groupId>
-                            <artifactId>plexus-utils</artifactId>
-                            <version>${plexus-utils.version}</version>
-                        </dependency>
-                        <!--
-                          ~ The bootstrap plugin's own neuron-di 6.4.4 throws WrongMethodTypeException on JDK 17+,
-                          ~ and the 6.7.1 that fixes it needs the ASM 9 API. Without all three overrides the build
-                          ~ runs on no JDK newer than 11. This repairs only the plugin realm that builds this
-                          ~ project; applications using the published plugin need a plugin release.
-                          -->
-                        <dependency>
-                            <groupId>global.namespace.neuron-di</groupId>
-                            <artifactId>neuron-di</artifactId>
-                            <version>${neuron-di.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.ow2.asm</groupId>
-                            <artifactId>asm</artifactId>
-                            <version>${asm.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.ow2.asm</groupId>
-                            <artifactId>asm-tree</artifactId>
-                            <version>${asm.version}</version>
-                        </dependency>
-                    </dependencies>
+                    <version>4.1.0-rc1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
