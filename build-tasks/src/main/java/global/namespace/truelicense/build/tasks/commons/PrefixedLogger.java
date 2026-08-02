@@ -4,57 +4,60 @@
  */
 package global.namespace.truelicense.build.tasks.commons;
 
-import global.namespace.neuron.di.java.Neuron;
+/**
+ * A logger which prepends a prefix to every message.
+ * The prefixed message is computed lazily, only if the severity level is enabled.
+ */
+public final class PrefixedLogger extends DecoratingLogger {
 
-@Neuron
-public interface PrefixedLogger extends DecoratingLogger {
+    private final String prefix;
 
-    /**
-     * Returns the message prefix.
-     */
-    String prefix();
+    public PrefixedLogger(final Logger logger, final String prefix) {
+        super(logger);
+        this.prefix = prefix;
+    }
 
-    default String prefixedMessage(CharSequence message) {
-        return prefix() + message;
+    private String prefixedMessage(CharSequence message) {
+        return prefix + message;
     }
 
     @Override
-    default void debug(CharSequence message) {
+    public void debug(CharSequence message) {
         logger().debug(() -> prefixedMessage(message));
     }
 
     @Override
-    default void debug(CharSequence message, Throwable error) {
+    public void debug(CharSequence message, Throwable error) {
         logger().debug(() -> prefixedMessage(message), error);
     }
 
     @Override
-    default void info(CharSequence message) {
+    public void info(CharSequence message) {
         logger().info(() -> prefixedMessage(message));
     }
 
     @Override
-    default void info(CharSequence message, Throwable error) {
+    public void info(CharSequence message, Throwable error) {
         logger().info(() -> prefixedMessage(message), error);
     }
 
     @Override
-    default void warn(CharSequence message) {
+    public void warn(CharSequence message) {
         logger().warn(() -> prefixedMessage(message));
     }
 
     @Override
-    default void warn(CharSequence message, Throwable error) {
+    public void warn(CharSequence message, Throwable error) {
         logger().warn(() -> prefixedMessage(message), error);
     }
 
     @Override
-    default void error(CharSequence message) {
+    public void error(CharSequence message) {
         logger().error(() -> prefixedMessage(message));
     }
 
     @Override
-    default void error(CharSequence message, Throwable error) {
+    public void error(CharSequence message, Throwable error) {
         logger().error(() -> prefixedMessage(message), error);
     }
 }

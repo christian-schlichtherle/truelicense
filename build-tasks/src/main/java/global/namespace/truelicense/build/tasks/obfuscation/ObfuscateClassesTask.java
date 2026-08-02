@@ -22,7 +22,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static global.namespace.neuron.di.java.Incubator.wire;
 import static global.namespace.truelicense.obfuscate.ObfuscatedString.array;
 import static global.namespace.truelicense.obfuscate.ObfuscatedString.literal;
 import static java.lang.String.format;
@@ -146,7 +145,7 @@ public abstract class ObfuscateClassesTask extends AbstractTask {
 
     private class Execution {
 
-        final CountingLogger countingLogger = wire(CountingLogger.class).using(ObfuscateClassesTask.this);
+        final CountingLogger countingLogger = new CountingLogger(logger());
 
         /**
          * Returns the set of constant strings to obfuscate.
@@ -177,10 +176,7 @@ public abstract class ObfuscateClassesTask extends AbstractTask {
         }
 
         Logger subjectLogger(String subject) {
-            return wire(PrefixedLogger.class)
-                    .bind(PrefixedLogger::logger).to(countingLogger)
-                    .bind(PrefixedLogger::prefix).to(subject + ": ")
-                    .using(this);
+            return new PrefixedLogger(countingLogger, subject + ": ");
         }
 
         abstract class Pass {

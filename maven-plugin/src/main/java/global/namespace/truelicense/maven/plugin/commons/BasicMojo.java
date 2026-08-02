@@ -12,8 +12,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 
-import static global.namespace.neuron.di.java.Incubator.wire;
-
 /**
  * An abstract base class for implementing a Maven plugin which checks exceptions and error log entries.
  * This class is not thread-safe.
@@ -31,11 +29,10 @@ public abstract class BasicMojo extends AbstractMojo {
     /**
      * Returns the adapted logger which can be used to wire {@link AbstractTask}.
      */
-    // This class is instantiated by Maven, so it cannot be a @Neuron and hence I cannot use @Caching here.
-    // Also, tasks and mojos are generally not thread-safe, so this method doesn't need to, too.
-    Logger logger() {
+    // Tasks and mojos are not thread-safe, so neither needs this cache to be.
+    protected final Logger logger() {
         final Logger logger = this.logger;
-        return null != logger ? logger : (this.logger = wire(MojoLogger.class).using(this));
+        return null != logger ? logger : (this.logger = new MojoLogger(getLog()));
     }
 
     @Override

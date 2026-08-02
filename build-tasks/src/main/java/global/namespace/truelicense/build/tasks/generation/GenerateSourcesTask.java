@@ -4,7 +4,6 @@
  */
 package global.namespace.truelicense.build.tasks.generation;
 
-import global.namespace.neuron.di.java.Caching;
 import global.namespace.truelicense.build.tasks.commons.AbstractTask;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -19,7 +18,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 
-import static global.namespace.neuron.di.java.CachingStrategy.DISABLED;
 import static java.lang.String.join;
 import static java.nio.file.Files.createDirectories;
 import static java.nio.file.Files.newOutputStream;
@@ -35,12 +33,15 @@ public abstract class GenerateSourcesTask extends AbstractTask {
     private static final JavaTool javaTool = new JavaTool();
     private static final ScalaTool scalaTool = new ScalaTool();
 
-    @Caching(DISABLED)
+    /**
+     * Returns a new context for each call: template merges must not observe state from a previous file.
+     */
     public Context context() {
         final Context c = toolManager().createContext();
         c.put("java", javaTool);
         c.put("scala", scalaTool);
-        properties().stringPropertyNames().forEach(key -> c.put(key, properties().getProperty(key)));
+        final Properties p = properties();
+        p.stringPropertyNames().forEach(key -> c.put(key, p.getProperty(key)));
         return c;
     }
 
@@ -84,19 +85,29 @@ public abstract class GenerateSourcesTask extends AbstractTask {
      */
     public abstract List<PathSet> templateSets();
 
-    @Caching
+    private ToolManager toolManager;
+
     public ToolManager toolManager() {
-        final ToolManager m = new ToolManager();
-        m.configure(ConfigurationUtils.getDefaultTools());
-        return m;
+        final ToolManager m = toolManager;
+        if (null != m) {
+            return m;
+        }
+        final ToolManager n = new ToolManager();
+        n.configure(ConfigurationUtils.getDefaultTools());
+        return toolManager = n;
     }
 
-    @Caching
+    private VelocityEngine velocityEngine;
+
     public VelocityEngine velocityEngine() {
-        final VelocityEngine e = new VelocityEngine();
-        e.setProperty(FILE_RESOURCE_LOADER_PATH, projectDirectory().toString());
-        e.init();
-        return e;
+        final VelocityEngine e = velocityEngine;
+        if (null != e) {
+            return e;
+        }
+        final VelocityEngine n = new VelocityEngine();
+        n.setProperty(FILE_RESOURCE_LOADER_PATH, projectDirectory().toString());
+        n.init();
+        return velocityEngine = n;
     }
 
     @Override

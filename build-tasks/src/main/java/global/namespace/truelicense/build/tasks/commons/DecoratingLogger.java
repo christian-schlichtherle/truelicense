@@ -4,98 +4,101 @@
  */
 package global.namespace.truelicense.build.tasks.commons;
 
-import global.namespace.neuron.di.java.Caching;
-import global.namespace.neuron.di.java.Neuron;
+/**
+ * A logger which delegates to an underlying logger.
+ */
+public abstract class DecoratingLogger implements Logger {
 
-@Neuron
-public interface DecoratingLogger extends Logger {
+    private final Logger logger;
+
+    protected DecoratingLogger(final Logger logger) {
+        this.logger = logger;
+    }
 
     /**
      * Returns the underlying logger.
      */
-    Logger logger();
-
-    @Override
-    @Caching
-    default boolean isDebugEnabled() {
-        return logger().isDebugEnabled();
+    public final Logger logger() {
+        return logger;
     }
 
     @Override
-    default void debug(Throwable error) {
-        logger().debug(error);
+    public boolean isDebugEnabled() {
+        return logger.isDebugEnabled();
     }
 
     @Override
-    default void debug(CharSequence message) {
-        logger().debug(message);
+    public void debug(Throwable error) {
+        logger.debug(error);
     }
 
     @Override
-    default void debug(CharSequence message, Throwable error) {
-        logger().debug(message, error);
+    public void debug(CharSequence message) {
+        logger.debug(message);
     }
 
     @Override
-    @Caching
-    default boolean isInfoEnabled() {
-        return logger().isInfoEnabled();
+    public void debug(CharSequence message, Throwable error) {
+        logger.debug(message, error);
     }
 
     @Override
-    default void info(Throwable error) {
-        logger().info(error);
+    public boolean isInfoEnabled() {
+        return logger.isInfoEnabled();
     }
 
     @Override
-    default void info(CharSequence message) {
-        logger().info(message);
+    public void info(Throwable error) {
+        logger.info(error);
     }
 
     @Override
-    default void info(CharSequence message, Throwable error) {
-        logger().info(message, error);
+    public void info(CharSequence message) {
+        logger.info(message);
     }
 
     @Override
-    @Caching
-    default boolean isWarnEnabled() {
-        return logger().isWarnEnabled();
+    public void info(CharSequence message, Throwable error) {
+        logger.info(message, error);
     }
 
     @Override
-    default void warn(Throwable error) {
-        logger().warn(error);
+    public boolean isWarnEnabled() {
+        return logger.isWarnEnabled();
     }
 
     @Override
-    default void warn(CharSequence message) {
-        logger().warn(message);
+    public void warn(Throwable error) {
+        logger.warn(error);
     }
 
     @Override
-    default void warn(CharSequence message, Throwable error) {
-        logger().warn(message, error);
+    public void warn(CharSequence message) {
+        logger.warn(message);
     }
 
     @Override
-    @Caching
-    default boolean isErrorEnabled() {
-        return logger().isErrorEnabled();
+    public void warn(CharSequence message, Throwable error) {
+        logger.warn(message, error);
     }
 
     @Override
-    default void error(Throwable error) {
-        logger().error(error);
+    public boolean isErrorEnabled() {
+        return logger.isErrorEnabled();
     }
 
     @Override
-    default void error(CharSequence message) {
-        logger().error(message);
+    public void error(Throwable error) {
+        logger.error(error);
     }
 
     @Override
-    default void error(CharSequence message, Throwable error) {
-        logger().error(message, error);
+    public void error(CharSequence message) {
+        logger.error(message);
+    }
+
+    @Override
+    public void error(CharSequence message, Throwable error) {
+        logger.error(message, error);
     }
 }

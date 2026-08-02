@@ -4,105 +4,97 @@
  */
 package global.namespace.truelicense.maven.plugin.commons;
 
-import global.namespace.neuron.di.java.Caching;
-import global.namespace.neuron.di.java.Neuron;
 import global.namespace.truelicense.build.tasks.commons.Logger;
 import org.apache.maven.plugin.logging.Log;
-
-import static global.namespace.neuron.di.java.CachingStrategy.THREAD_SAFE;
 
 /**
  * Adapts an underlying {@link Log} to the {@link Logger} interface.
  */
-@Neuron(cachingStrategy = THREAD_SAFE)
-abstract class MojoLogger implements Logger {
+final class MojoLogger implements Logger {
 
-    /**
-     * Returns the Maven logger which can be wired using {@link org.apache.maven.plugin.AbstractMojo}.
-     */
-    abstract Log getLog();
+    private final Log log;
 
-    @Override
-    public void debug(Throwable error) {
-        getLog().debug(error);
+    MojoLogger(final Log log) {
+        this.log = log;
     }
 
     @Override
-    @Caching
     public boolean isDebugEnabled() {
-        return getLog().isDebugEnabled();
+        return log.isDebugEnabled();
+    }
+
+    @Override
+    public void debug(Throwable error) {
+        log.debug(error);
     }
 
     @Override
     public void debug(CharSequence message) {
-        getLog().debug(message);
+        log.debug(message);
     }
 
     @Override
     public void debug(CharSequence message, Throwable error) {
-        getLog().debug(message, error);
+        log.debug(message, error);
     }
 
     @Override
-    @Caching
     public boolean isInfoEnabled() {
-        return getLog().isInfoEnabled();
+        return log.isInfoEnabled();
     }
 
     @Override
     public void info(Throwable error) {
-        getLog().info(error);
+        log.info(error);
     }
 
     @Override
     public void info(CharSequence message) {
-        getLog().info(message);
+        log.info(message);
     }
 
     @Override
     public void info(CharSequence message, Throwable throwable) {
-        getLog().info(message, throwable);
+        log.info(message, throwable);
     }
 
     @Override
-    @Caching
     public boolean isWarnEnabled() {
-        return getLog().isWarnEnabled();
+        return log.isWarnEnabled();
     }
 
     @Override
     public void warn(Throwable error) {
-        getLog().warn(error);
+        log.warn(error);
     }
 
     @Override
     public void warn(CharSequence message) {
-        getLog().warn(message);
+        log.warn(message);
     }
 
     @Override
     public void warn(CharSequence message, Throwable error) {
-        getLog().warn(message, error);
+        log.warn(message, error);
     }
 
     @Override
-    @Caching
     public boolean isErrorEnabled() {
-        return getLog().isErrorEnabled();
+        return log.isErrorEnabled();
     }
 
     @Override
     public void error(Throwable error) {
-        getLog().error(error);
+        log.error(error);
     }
 
     @Override
     public void error(CharSequence message) {
-        getLog().error(message);
+        log.error(message);
     }
 
     @Override
     public void error(CharSequence message, Throwable error) {
-        getLog().error(message, error);
+        log.error(message, error);
     }
 }

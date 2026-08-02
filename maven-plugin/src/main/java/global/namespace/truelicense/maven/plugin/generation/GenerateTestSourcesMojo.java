@@ -29,21 +29,17 @@ public final class GenerateTestSourcesMojo extends GenerateSourcesMojo {
     private File outputDirectory;
 
     /**
-     * This dependency provider method is used to wire
-     * {@link global.namespace.truelicense.build.tasks.generation.GenerateSourcesTask}.
-     *
-     * @see #task()
+     * Returns the directory path where the generated source files will be stored.
      */
+    @Override
     Path outputDirectory() {
         return outputDirectory.toPath();
     }
 
     /**
-     * This dependency provider method is used to wire
-     * {@link global.namespace.truelicense.build.tasks.generation.GenerateSourcesTask}.
-     *
-     * @see #task()
+     * Returns the strategy which generates test sources.
      */
+    @Override
     GenerateSourcesStrategy strategy() {
         return testSources;
     }
@@ -56,10 +52,8 @@ public final class GenerateTestSourcesMojo extends GenerateSourcesMojo {
     private String stripPrefix;
 
     /**
-     * This dependency provider method is used to wire
-     * {@link global.namespace.truelicense.build.tasks.generation.GenerateSourcesTask}.
-     *
-     * @see #task()
+     * Returns the prefix to strip from the directory path of each file set before appending it to the output
+     * directory path.
      */
     @Override
     String stripPrefix() {

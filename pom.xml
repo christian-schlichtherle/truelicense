@@ -129,7 +129,7 @@
         <!--
           ~ dependencies
           ~
-          ~ byte-buddy, neuron-di and scala are pinned purely to keep the build working on JDKs newer than 11; each
+          ~ byte-buddy and scala are pinned purely to keep the build working on JDKs newer than 11; each
           ~ one blocks it outright, and each masked the next. See CLAUDE.md.
           -->
         <asm.version>9.10.1</asm.version>
@@ -151,8 +151,6 @@
           ~ from the test matrix. Re-run the matrix when bumping either.
           -->
         <mockito.version>3.9.0</mockito.version>
-        <!-- Also overrides the bootstrap plugin's own 6.4.4 - see the plugin declaration below. -->
-        <neuron-di.version>6.7.1</neuron-di.version>
         <plexus-utils.version>4.0.3</plexus-utils.version>
         <proguard.version>7.9.1</proguard.version>
         <scala.compat.version>2.13</scala.compat.version>
@@ -181,7 +179,7 @@
         <module>v4</module>
     </modules>
 
-    <!-- For consuming other projects' snapshots (fun-io, neuron-di, …), not for publishing ours. -->
+    <!-- For consuming other projects' snapshots (fun-io, …), not for publishing ours. -->
     <repositories>
         <repository>
             <id>central-snapshots</id>
@@ -337,11 +335,6 @@
                 <groupId>global.namespace.fun-io</groupId>
                 <artifactId>fun-io-scala-api_${scala.compat.version}</artifactId>
                 <version>${fun-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>global.namespace.neuron-di</groupId>
-                <artifactId>neuron-di</artifactId>
-                <version>${neuron-di.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.bytebuddy</groupId>

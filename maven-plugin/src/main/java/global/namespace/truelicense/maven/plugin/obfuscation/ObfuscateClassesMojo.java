@@ -4,6 +4,7 @@
  */
 package global.namespace.truelicense.maven.plugin.obfuscation;
 
+import global.namespace.truelicense.build.tasks.commons.Logger;
 import global.namespace.truelicense.build.tasks.commons.Task;
 import global.namespace.truelicense.build.tasks.obfuscation.ObfuscateClassesTask;
 import global.namespace.truelicense.build.tasks.obfuscation.Scope;
@@ -11,9 +12,8 @@ import global.namespace.truelicense.maven.plugin.commons.BasicMojo;
 import global.namespace.truelicense.obfuscate.ObfuscatedString;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.nio.file.Path;
 import java.util.Formatter;
-
-import static global.namespace.neuron.di.java.Incubator.wire;
 
 /**
  * A basic MOJO for the obfuscation of constant string values in Java class
@@ -59,8 +59,44 @@ public abstract class ObfuscateClassesMojo extends BasicMojo {
     @Parameter(property = "truelicense.obfuscate.scope", defaultValue = "annotated")
     private Scope scope;
 
+    /**
+     * Returns the directory to scan for class files to process.
+     */
+    abstract Path outputDirectory();
+
     @Override
     protected final Task task() {
-        return wire(ObfuscateClassesTask.class).using(this);
+        return new ObfuscateClassesTask() {
+
+            @Override
+            public Logger logger() {
+                return ObfuscateClassesMojo.this.logger();
+            }
+
+            @Override
+            public boolean intern() {
+                return intern;
+            }
+
+            @Override
+            public int maxBytes() {
+                return maxBytes;
+            }
+
+            @Override
+            public String methodNameFormat() {
+                return methodNameFormat;
+            }
+
+            @Override
+            public Path outputDirectory() {
+                return ObfuscateClassesMojo.this.outputDirectory();
+            }
+
+            @Override
+            public Scope scope() {
+                return scope;
+            }
+        };
     }
 }

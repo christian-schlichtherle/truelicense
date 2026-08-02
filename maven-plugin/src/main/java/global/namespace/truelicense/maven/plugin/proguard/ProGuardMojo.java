@@ -4,6 +4,7 @@
  */
 package global.namespace.truelicense.maven.plugin.proguard;
 
+import global.namespace.truelicense.build.tasks.commons.Logger;
 import global.namespace.truelicense.build.tasks.commons.Task;
 import global.namespace.truelicense.build.tasks.proguard.ProGuardTask;
 import global.namespace.truelicense.maven.plugin.commons.BasicMojo;
@@ -19,7 +20,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
-import static global.namespace.neuron.di.java.Incubator.wire;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
@@ -47,18 +47,14 @@ public final class ProGuardMojo extends BasicMojo {
     private File buildDirectory;
 
     /**
-     * This dependency provider method is used to wire {@link ProGuardTask}.
-     *
-     * @see #task()
+     * Returns the project build directory, which is where ProGuard runs.
      */
     Path buildDirectory() {
         return buildDirectory.toPath();
     }
 
     /**
-     * This dependency provider method is used to wire {@link ProGuardTask}.
-     *
-     * @see #task()
+     * Returns the paths of the project's dependencies.
      */
     Set<Path> dependencies() {
         return artifacts.stream().map(a -> a.getFile().toPath()).collect(toSet());
@@ -100,9 +96,7 @@ public final class ProGuardMojo extends BasicMojo {
     private List<String> injars;
 
     /**
-     * This dependency provider method is used to wire {@link ProGuardTask}.
-     *
-     * @see #task()
+     * Returns the input jars or directories, defaulting to the project artifact.
      */
     List<String> injars() {
         final List<String> i = injars;
@@ -121,9 +115,7 @@ public final class ProGuardMojo extends BasicMojo {
     private List<String> libraryjars;
 
     /**
-     * This dependency provider method is used to wire {@link ProGuardTask}.
-     *
-     * @see #task()
+     * Returns the additional library jars or directories, defaulting to none.
      */
     List<String> libraryjars() {
         final List<String> l = libraryjars;
@@ -144,9 +136,7 @@ public final class ProGuardMojo extends BasicMojo {
     private List<String> options;
 
     /**
-     * This dependency provider method is used to wire {@link ProGuardTask}.
-     *
-     * @see #task()
+     * Returns the ProGuard options, defaulting to none.
      */
     List<String> options() {
         final List<String> o = options;
@@ -172,13 +162,11 @@ public final class ProGuardMojo extends BasicMojo {
     private List<Artifact> pluginArtifacts;
 
     /**
-     * This dependency provider method is used to wire {@link ProGuardTask}.
+     * Returns the class path to run ProGuard from.
      * <p>
      * Passes this plugin's entire class path, not just the ProGuard JAR: {@code com.guardsquare:proguard-base}
      * declares its dependencies rather than shading them, so ProGuard needs them alongside it. Declare
      * {@code proguard-base} in this plugin's {@code <dependencies>} and Maven resolves the rest.
-     *
-     * @see #task()
      */
     List<Path> proGuardClassPath() {
         if (pluginArtifacts.stream().noneMatch(a -> "proguard-base".equals(a.getArtifactId()))) {
@@ -198,7 +186,68 @@ public final class ProGuardMojo extends BasicMojo {
 
     @Override
     protected final Task task() {
-        return wire(ProGuardTask.class).using(this);
+        return new ProGuardTask() {
+
+            @Override
+            public Logger logger() {
+                return ProGuardMojo.this.logger();
+            }
+
+            @Override
+            public Path buildDirectory() {
+                return ProGuardMojo.this.buildDirectory();
+            }
+
+            @Override
+            public Set<Path> dependencies() {
+                return ProGuardMojo.this.dependencies();
+            }
+
+            @Override
+            public String dependencyFilter() {
+                return dependencyFilter;
+            }
+
+            @Override
+            public boolean includeDependency() {
+                return includeDependency;
+            }
+
+            @Override
+            public boolean includeDependencyInjar() {
+                return includeDependencyInjar;
+            }
+
+            @Override
+            public List<String> injars() {
+                return ProGuardMojo.this.injars();
+            }
+
+            @Override
+            public List<String> libraryjars() {
+                return ProGuardMojo.this.libraryjars();
+            }
+
+            @Override
+            public String maxHeapSize() {
+                return maxHeapSize;
+            }
+
+            @Override
+            public List<String> options() {
+                return ProGuardMojo.this.options();
+            }
+
+            @Override
+            public List<String> outjars() {
+                return outjars;
+            }
+
+            @Override
+            public List<Path> proGuardClassPath() {
+                return ProGuardMojo.this.proGuardClassPath();
+            }
+        };
     }
 
     @Override

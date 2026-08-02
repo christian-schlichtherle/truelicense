@@ -26,11 +26,9 @@ public final class ObfuscateTestClassesMojo extends ObfuscateClassesMojo {
     private File outputDirectory;
 
     /**
-     * This dependency provider method is used to wire
-     * {@link global.namespace.truelicense.build.tasks.obfuscation.ObfuscateClassesTask}.
-     *
-     * @see #task()
+     * Returns the directory with the test class files to process.
      */
+    @Override
     Path outputDirectory() {
         return outputDirectory.toPath();
     }

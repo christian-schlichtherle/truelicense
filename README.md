@@ -25,13 +25,13 @@ bytecode regardless of the JDK used.
 Tag and push:
 
 ```bash
-git tag v4.1.0
-git push origin v4.1.0
+git tag v4.2.0
+git push origin v4.2.0
 ```
 
-`.github/workflows/release.yml` takes it from there: the tag sets the version, and the build runs the tests, signs
-the artifacts and publishes them to Maven Central. Nothing is committed back, so the version in `pom.xml` stays a
-snapshot.
+`.github/workflows/release.yml` takes it from there: the tag sets the version, the full JDK 8-25 test matrix runs as
+a gate, and the build then signs the artifacts, publishes them to Maven Central and creates the GitHub release from
+the tag. Nothing is committed back, so the version in `pom.xml` stays a snapshot.
 
 The workflow needs four repository secrets — `MAVEN_GPG_PRIVATE_KEY`, `MAVEN_GPG_PASSPHRASE`,
 `CENTRAL_TOKEN_USERNAME` and `CENTRAL_TOKEN_PASSWORD`; the token pair comes from

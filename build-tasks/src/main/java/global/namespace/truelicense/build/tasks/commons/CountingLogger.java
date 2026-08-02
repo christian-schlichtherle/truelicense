@@ -4,103 +4,108 @@
  */
 package global.namespace.truelicense.build.tasks.commons;
 
-import global.namespace.neuron.di.java.Caching;
-import global.namespace.neuron.di.java.Neuron;
-
 import java.util.concurrent.atomic.AtomicLong;
 
-@Neuron
-public interface CountingLogger extends DecoratingLogger {
+/**
+ * A logger which counts the calls per severity level.
+ * The error count decides whether a task fails after its run, so counts must persist for the life of this logger.
+ */
+public final class CountingLogger extends DecoratingLogger {
 
-    @Caching
-    default AtomicLong debugCounter() {
-        return new AtomicLong();
+    private final AtomicLong debugCounter = new AtomicLong();
+    private final AtomicLong infoCounter = new AtomicLong();
+    private final AtomicLong warnCounter = new AtomicLong();
+    private final AtomicLong errorCounter = new AtomicLong();
+
+    public CountingLogger(Logger logger) {
+        super(logger);
+    }
+
+    public AtomicLong debugCounter() {
+        return debugCounter;
     }
 
     @Override
-    default void debug(final Throwable error) {
-        debugCounter().incrementAndGet();
-        logger().debug(error);
+    public void debug(Throwable error) {
+        debugCounter.incrementAndGet();
+        super.debug(error);
     }
 
     @Override
-    default void debug(final CharSequence message) {
-        debugCounter().incrementAndGet();
-        logger().debug(message);
+    public void debug(CharSequence message) {
+        debugCounter.incrementAndGet();
+        super.debug(message);
     }
 
     @Override
-    default void debug(final CharSequence message, final Throwable error) {
-        debugCounter().incrementAndGet();
-        logger().debug(message, error);
+    public void debug(CharSequence message, Throwable error) {
+        debugCounter.incrementAndGet();
+        super.debug(message, error);
     }
 
-    @Caching
-    default AtomicLong infoCounter() {
-        return new AtomicLong();
-    }
-
-    @Override
-    default void info(final Throwable error) {
-        infoCounter().incrementAndGet();
-        logger().info(error);
+    public AtomicLong infoCounter() {
+        return infoCounter;
     }
 
     @Override
-    default void info(final CharSequence message) {
-        infoCounter().incrementAndGet();
-        logger().info(message);
+    public void info(Throwable error) {
+        infoCounter.incrementAndGet();
+        super.info(error);
     }
 
     @Override
-    default void info(final CharSequence message, final Throwable error) {
-        infoCounter().incrementAndGet();
-        logger().info(message, error);
-    }
-
-    @Caching
-    default AtomicLong warnCounter() {
-        return new AtomicLong();
+    public void info(CharSequence message) {
+        infoCounter.incrementAndGet();
+        super.info(message);
     }
 
     @Override
-    default void warn(final Throwable error) {
-        warnCounter().incrementAndGet();
-        logger().warn(error);
+    public void info(CharSequence message, Throwable error) {
+        infoCounter.incrementAndGet();
+        super.info(message, error);
+    }
+
+    public AtomicLong warnCounter() {
+        return warnCounter;
     }
 
     @Override
-    default void warn(final CharSequence message) {
-        warnCounter().incrementAndGet();
-        logger().warn(message);
+    public void warn(Throwable error) {
+        warnCounter.incrementAndGet();
+        super.warn(error);
     }
 
     @Override
-    default void warn(final CharSequence message, final Throwable error) {
-        warnCounter().incrementAndGet();
-        logger().warn(message, error);
-    }
-
-    @Caching
-    default AtomicLong errorCounter() {
-        return new AtomicLong();
+    public void warn(CharSequence message) {
+        warnCounter.incrementAndGet();
+        super.warn(message);
     }
 
     @Override
-    default void error(final Throwable error) {
-        errorCounter().incrementAndGet();
-        logger().error(error);
+    public void warn(CharSequence message, Throwable error) {
+        warnCounter.incrementAndGet();
+        super.warn(message, error);
+    }
+
+    public AtomicLong errorCounter() {
+        return errorCounter;
     }
 
     @Override
-    default void error(final CharSequence message) {
-        errorCounter().incrementAndGet();
-        logger().error(message);
+    public void error(Throwable error) {
+        errorCounter.incrementAndGet();
+        super.error(error);
     }
 
     @Override
-    default void error(final CharSequence message, final Throwable error) {
-        errorCounter().incrementAndGet();
-        logger().error(message, error);
+    public void error(CharSequence message) {
+        errorCounter.incrementAndGet();
+        super.error(message);
+    }
+
+    @Override
+    public void error(CharSequence message, Throwable error) {
+        errorCounter.incrementAndGet();
+        super.error(message, error);
     }
 }

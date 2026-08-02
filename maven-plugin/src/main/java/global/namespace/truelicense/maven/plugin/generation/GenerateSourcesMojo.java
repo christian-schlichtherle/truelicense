@@ -4,21 +4,21 @@
  */
 package global.namespace.truelicense.maven.plugin.generation;
 
+import global.namespace.truelicense.build.tasks.commons.Logger;
 import global.namespace.truelicense.build.tasks.commons.Task;
+import global.namespace.truelicense.build.tasks.generation.GenerateSourcesStrategy;
 import global.namespace.truelicense.build.tasks.generation.PathSet;
 import global.namespace.truelicense.maven.plugin.commons.BasicMojo;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import java.lang.reflect.Method;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import static global.namespace.neuron.di.java.Incubator.wire;
-import static java.lang.Character.toUpperCase;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -45,10 +45,8 @@ public abstract class GenerateSourcesMojo extends BasicMojo {
     private Properties properties;
 
     /**
-     * This dependency provider method is used to wire
-     * {@link global.namespace.truelicense.build.tasks.generation.GenerateSourcesTask}.
-     *
-     * @see #task()
+     * Returns the properties to put into the Velocity context, with the configured properties overriding the
+     * project's.
      */
     Properties properties() {
         final Properties pp = new Properties(project.getProperties());
@@ -58,6 +56,16 @@ public abstract class GenerateSourcesMojo extends BasicMojo {
         }
         return pp;
     }
+
+    /**
+     * Returns the directory path where the generated source files will be stored.
+     */
+    abstract Path outputDirectory();
+
+    /**
+     * Returns the strategy which decides if main or test sources are to be generated.
+     */
+    abstract GenerateSourcesStrategy strategy();
 
     abstract String stripPrefix();
 
@@ -69,7 +77,53 @@ public abstract class GenerateSourcesMojo extends BasicMojo {
 
     @Override
     protected final Task task() {
-        return wire(GenerateSourcesMavenTask.class).using(this);
+        return new GenerateSourcesMavenTask() {
+
+            @Override
+            public Logger logger() {
+                return GenerateSourcesMojo.this.logger();
+            }
+
+            @Override
+            public String encoding() {
+                return encoding;
+            }
+
+            @Override
+            public GenerateSourcesStrategy strategy() {
+                return GenerateSourcesMojo.this.strategy();
+            }
+
+            @Override
+            public Path outputDirectory() {
+                return GenerateSourcesMojo.this.outputDirectory();
+            }
+
+            @Override
+            MavenProject project() {
+                return project;
+            }
+
+            @Override
+            public Properties properties() {
+                return GenerateSourcesMojo.this.properties();
+            }
+
+            @Override
+            public String stripPrefix() {
+                return GenerateSourcesMojo.this.stripPrefix();
+            }
+
+            @Override
+            public String stripSuffix() {
+                return stripSuffix;
+            }
+
+            @Override
+            public List<PathSet> templateSets() {
+                return GenerateSourcesMojo.this.templateSets();
+            }
+        };
     }
 
     /**
@@ -81,10 +135,8 @@ public abstract class GenerateSourcesMojo extends BasicMojo {
     private List<FileSet> templateSets;
 
     /**
-     * This dependency provider method is used to wire
-     * {@link global.namespace.truelicense.build.tasks.generation.GenerateSourcesTask}.
-     *
-     * @see #task()
+     * Returns the template file sets to process, defaulting to all files in the directory {@code ${stripPrefix}java}
+     * with the suffix {@code ${stripSuffix}}.
      */
     List<PathSet> templateSets() {
         List<FileSet> ss = templateSets;
@@ -96,15 +148,7 @@ public abstract class GenerateSourcesMojo extends BasicMojo {
         }
         return ss
                 .stream()
-                .map(fs -> wire(PathSet.class)
-                        .bind(PathSet::directory).to(Paths.get(fs.getDirectory()))
-                        .using(fs, GenerateSourcesMojo::getterName))
+                .map(fs -> new PathSet(Paths.get(fs.getDirectory()), fs.getIncludes(), fs.getExcludes()))
                 .collect(toList());
-    }
-
-    private static String getterName(final Method m) {
-        final String n = m.getName();
-        // Naive, but sufficient for this case:
-        return "get" + toUpperCase(n.charAt(0)) + n.substring(1);
     }
 }
