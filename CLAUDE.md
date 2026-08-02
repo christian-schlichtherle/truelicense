@@ -407,6 +407,15 @@ with ASM rather than compiled, so it runs on JDK 8 too.
 
 ### Why it is wired this way (two independent historical causes)
 
+**Both causes are confined to the jars this project publishes, and never touched application code.** Everything
+below is about *this* build's wiring. `truelicense-maven-plugin` obfuscated its users' classes exactly as they
+configured it in every 4.0.x release, so the only consequence is that constants inside the published TrueLicense
+jars were left in the clear. Say so up front whenever this is described in user-facing text, and never advise users
+to re-check their own obfuscation because of it — the scope reads much wider than it is, because the rest of this
+section is written from the perspective of this build. (The 4.0.3 defect that *does* hit applications is a different
+one: the plugin cannot run at all on JDK 17+, and its ASM 7.3.1 cannot read Java 16+ class files. See
+*The JDK ceiling* and *ASM version ceiling*.)
+
 **Cause 1 — modules that never opted in.** Under the old opt-in design a module was obfuscated only if its POM
 declared the plugin. `core`, `jax-rs`, `jsf`, `build-tasks` and `maven-plugin` never did, so they were never
 obfuscated in *any* release. (Shipped `truelicense-core` does contain two classes referencing `ObfuscatedString` —
