@@ -34,6 +34,8 @@ public interface ConsumerLicenseManager extends LicenseManagerMixin {
      * {@linkplain LicenseManagementAuthorization#clearInstall authorization check}.
      *
      * @param source the source to read the license key from.
+     * @throws LicenseManagementException if the authorization check fails or the license key cannot be read,
+     *         verified or stored.
      */
     void install(Source source) throws LicenseManagementException;
 
@@ -47,6 +49,8 @@ public interface ConsumerLicenseManager extends LicenseManagerMixin {
      * {@linkplain LicenseManagementAuthorization#clearLoad authorization check}.
      *
      * @return An unvalidated duplicate of the license bean which is encoded in the installed license key.
+     * @throws LicenseManagementException if the authorization check fails, no license key is installed, or the
+     *         installed license key cannot be decoded or verified.
      */
     License load() throws LicenseManagementException;
 
@@ -59,6 +63,8 @@ public interface ConsumerLicenseManager extends LicenseManagerMixin {
      * {@linkplain LicenseManagementAuthorization#clearVerify authorization check}.
      *
      * @throws LicenseValidationException if validating the license bean fails, e.g. if the license has expired.
+     * @throws LicenseManagementException if the authorization check fails, no license key is installed, or the
+     *         installed license key cannot be decoded or verified.
      */
     void verify() throws LicenseManagementException;
 
@@ -67,6 +73,9 @@ public interface ConsumerLicenseManager extends LicenseManagerMixin {
      * <p>
      * Calling this operation performs an initial
      * {@linkplain LicenseManagementAuthorization#clearUninstall authorization check}.
+     *
+     * @throws LicenseManagementException if the authorization check fails, no license key is installed, or the
+     *         installed license key cannot be removed from the store.
      */
     void uninstall() throws LicenseManagementException;
 

@@ -16,7 +16,12 @@ import global.namespace.fun.io.api.Sink;
  */
 public interface LicenseKeyGenerator {
 
-    /** Returns a duplicate of the license bean which is encoded in the generated license key. */
+    /**
+     * Returns a duplicate of the license bean which is encoded in the generated license key.
+     *
+     * @throws LicenseManagementException if generating the license key fails, e.g. if initializing or validating the
+     *         license bean fails.
+     */
     License license() throws LicenseManagementException;
 
     /**
@@ -24,6 +29,7 @@ public interface LicenseKeyGenerator {
      *
      * @param sink the sink to write the generated license key to.
      * @return {@code this}
+     * @throws LicenseManagementException if generating the license key fails or it cannot be written to the sink.
      */
     LicenseKeyGenerator saveTo(Sink sink) throws LicenseManagementException;
 }

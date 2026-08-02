@@ -22,6 +22,7 @@ public interface VendorLicenseManager extends LicenseManagerMixin {
      * @param bean the license bean to process.
      *             This bean is not modified by the returned license key generator.
      * @return A license key generator for the given license bean.
+     * @throws LicenseManagementException if the authorization check fails.
      */
     LicenseKeyGenerator generateKeyFrom(License bean) throws LicenseManagementException;
 
