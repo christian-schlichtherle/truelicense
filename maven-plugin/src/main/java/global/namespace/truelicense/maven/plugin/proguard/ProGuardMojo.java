@@ -21,6 +21,7 @@ import java.util.Set;
 
 import static global.namespace.neuron.di.java.Incubator.wire;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.PACKAGE;
@@ -83,10 +84,34 @@ public final class ProGuardMojo extends BasicMojo {
     private boolean includeDependencyInjar;
 
     /**
-     * The input jars or directories.
+     * The build's final name.
      */
-    @Parameter(defaultValue = "${project.build.finalName}.${project.packaging}(!module-info.class,!META-INF/maven/**)")
+    @Parameter(property = "project.build.finalName", required = true, readonly = true)
+    private String finalName;
+
+    /**
+     * The input jars or directories.
+     * <p>
+     * Defaults to the project artifact. The default cannot be a {@code defaultValue}: Maven splits one into list
+     * elements at every comma, which would turn the filter below into a second {@code -injars} argument and make
+     * ProGuard fail to parse its own command line.
+     */
+    @Parameter
     private List<String> injars;
+
+    /**
+     * This dependency provider method is used to wire {@link ProGuardTask}.
+     *
+     * @see #task()
+     */
+    List<String> injars() {
+        final List<String> i = injars;
+        return null != i ? i : (injars = singletonList(defaultInjar(finalName, packaging)));
+    }
+
+    static String defaultInjar(final String finalName, final String packaging) {
+        return finalName + "." + packaging + "(!module-info.class,!META-INF/maven/**)";
+    }
 
     /**
      * Additional library jars or directories, e.g.
