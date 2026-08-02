@@ -27,6 +27,39 @@
         <maven.source.skip>true</maven.source.skip>
     </properties>
 
+    <build>
+        <plugins>
+            <!--
+              ~ Produce an (empty) jar here even though this module is never installed or deployed.
+              ~
+              ~ maven.deploy.skip above does NOT cover the Central Portal. central-publishing-maven-plugin declares
+              ~ <extensions>true</extensions> in the root POM, and its lifecycle participant removes
+              ~ maven-deploy-plugin - the only thing that reads maven.deploy.skip - and injects a `publish` goal into
+              ~ the deploy phase of EVERY module. There is no per-module opt-out: the participant only declines to
+              ~ install itself if some module declares the plugin with its own executions, and that decision is
+              ~ global. skipPublishing is no help either - it is evaluated after staging, so `deploy
+              ~ -DskipPublishing=true` still fails here.
+              ~
+              ~ Without a jar, that injected goal aborts the release at the very last module with "The packaging for
+              ~ this project did not assign a file to the build artifact", because the root POM sets skipIfEmpty and
+              ~ this module has no main classes. An empty jar costs nothing - it is not installed, not deployed, and
+              ~ excludeArtifacts in the root POM keeps it out of the uploaded bundle. All of this was measured
+              ~ against a release-version dry run, not inferred; see CLAUDE.md.
+              -->
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <configuration>
+                            <skipIfEmpty>false</skipIfEmpty>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

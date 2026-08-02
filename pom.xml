@@ -81,23 +81,22 @@
     </scm>
 
     <!--
-      ~ Inherited from the parent POM until it was inlined, and carried over verbatim so that the inlining itself
-      ~ changed no behaviour. Both endpoints below belong to Sonatype OSSRH, which has been retired in favour of the
-      ~ Central Publisher Portal; nexus-staging-maven-plugin cannot talk to the Portal at all. Migrating this block
-      ~ and the sonatype-oss-release profile to central-publishing-maven-plugin is the next step and is deliberately
-      ~ NOT part of the inlining commit.
+      ~ Snapshots only. Releases do NOT go through distributionManagement any more:
+      ~ central-publishing-maven-plugin is declared with <extensions>true</extensions>, and its lifecycle
+      ~ participant removes maven-deploy-plugin's deploy execution and injects its own `publish` goal in its place,
+      ~ which uploads a bundle to the Central Publisher Portal. A <repository> element here would be dead config at
+      ~ best and misleading at worst.
+      ~
+      ~ The previous endpoints were Sonatype OSSRH (oss.sonatype.org), which has been retired in favour of the
+      ~ Portal. nexus-staging-maven-plugin cannot talk to the Portal at all, so this was not a version bump - the
+      ~ plugin, the server id and both URLs all had to change.
       -->
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>${sonatypeOssSnapshotsRepository}</url>
+            <id>central</id>
+            <name>Central Portal Snapshots</name>
+            <url>${centralSnapshotsRepository}</url>
         </snapshotRepository>
-        <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
     </distributionManagement>
 
     <properties>
@@ -143,7 +142,7 @@
         <tagNameFormat>v@{project.version}</tagNameFormat>
         <useReleaseProfile>false</useReleaseProfile>
 
-        <sonatypeOssSnapshotsRepository>https://oss.sonatype.org/content/repositories/snapshots/</sonatypeOssSnapshotsRepository>
+        <centralSnapshotsRepository>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsRepository>
 
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
@@ -212,12 +211,16 @@
         <module>v4</module>
     </modules>
 
-    <!-- Inherited from the parent POM until it was inlined. See the note on <distributionManagement> above. -->
+    <!--
+      ~ For consuming other projects' snapshots (fun-io, neuron-di, …), not for publishing ours. Repointed from
+      ~ OSSRH to the Portal along with everything else; nothing in a normal build resolves from here, because every
+      ~ dependency is a release.
+      -->
     <repositories>
         <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>${sonatypeOssSnapshotsRepository}</url>
+            <id>central-snapshots</id>
+            <name>Central Portal Snapshots</name>
+            <url>${centralSnapshotsRepository}</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -668,11 +671,17 @@
                 </plugin>
                 <!--
                   ~ The release path. NOTHING in an ordinary build or in CI executes maven-release-plugin's or
-                  ~ nexus-staging-maven-plugin's goals - `release:perform` is invoked by hand, and nexus-staging only
+                  ~ central-publishing-maven-plugin's goals - `release:perform` is invoked by hand, and `publish`
                   ~ binds to `deploy`, which neither `install` nor `verify` reaches. So unlike every other version
                   ~ here, these two are NOT covered by the JDK 8-25 matrix; the first real exercise is the next
-                  ~ release. nexus-staging additionally targets an endpoint that no longer exists - see the note on
-                  ~ <distributionManagement> above.
+                  ~ release.
+                  ~
+                  ~ central-publishing-maven-plugin 0.11.0 was checked the same way the other pins were: its jar
+                  ~ contains Java 8 bytecode only (major 52) and its descriptor declares requiredJavaVersion 1.8 and
+                  ~ requiredMavenVersion 3.9.2, both satisfied by the JDK 8 CI compile job and the enforced Maven
+                  ~ 3.9.16. That matters more than usual here, because <extensions>true</extensions> loads it on
+                  ~ EVERY build that activates sonatype-oss-release - including the JDK 8 compile job - not only on
+                  ~ deploy.
                   -->
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
@@ -735,9 +744,9 @@
                     <version>2.2.0</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>1.7.0</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.11.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -931,14 +940,39 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!--
+                      ~ Publishes to the Central Publisher Portal, replacing nexus-staging-maven-plugin and the
+                      ~ retired OSSRH endpoint.
+                      ~
+                      ~ `publishingServerId` names a <server> in settings.xml whose username/password must be a
+                      ~ Central Portal user TOKEN, not Sonatype JIRA credentials - the old `ossrh` /
+                      ~ `sonatype-nexus-staging` entries do not carry over.
+                      ~
+                      ~ autoPublish=true preserves the behaviour of nexus-staging's autoReleaseAfterClose: a valid
+                      ~ deployment goes live without a manual click in the UI. waitUntil=published then blocks until
+                      ~ the Portal confirms it, so a deployment the Portal rejects fails the release instead of
+                      ~ leaving a half-finished one sitting in the UI. Both are deliberate: the default (upload and
+                      ~ return) is exactly the kind of green-but-wrong outcome this build keeps having to defend
+                      ~ against.
+                      ~
+                      ~ excludeArtifacts keeps truelicense-tests out of the bundle. Do not remove it and rely on
+                      ~ that module's maven.deploy.skip: the string "maven.deploy.skip" does not appear anywhere in
+                      ~ the plugin, and its lifecycle participant REMOVES maven-deploy-plugin - the only thing that
+                      ~ reads the property - so the skip is inert here. Verified by staging a dry run and listing
+                      ~ the bundle; see CLAUDE.md.
+                      -->
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
                         <extensions>true</extensions>
                         <configuration>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                            <nexusUrl>https://oss.sonatype.org</nexusUrl>
-                            <serverId>sonatype-nexus-staging</serverId>
+                            <publishingServerId>central</publishingServerId>
+                            <centralSnapshotsUrl>${centralSnapshotsRepository}</centralSnapshotsUrl>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                            <excludeArtifacts>
+                                <excludeArtifact>truelicense-tests</excludeArtifact>
+                            </excludeArtifacts>
                         </configuration>
                     </plugin>
                     <!--

@@ -41,9 +41,9 @@ known-good, only inherited, and are gone — pin a plugin when the build starts 
 plugins run no lifecycle goal and are kept deliberately: `maven-help-plugin`, because `help:effective-pom` is the
 tool that verifies POM refactors and an unpinned version would make that check non-reproducible, and
 `versions-maven-plugin`, run by hand to survey updates. Two more are not covered by the test matrix, because nothing in `install`/`verify` executes their
-goals: `maven-release-plugin` (invoked by hand as `release:perform`) and `nexus-staging-maven-plugin` (binds to
-`deploy`). The first real exercise of those two is the next release, and `nexus-staging` will not survive it — see
-*The release path is broken*. `maven-surefire-plugin` executes a goal without an override, deliberately so: it has
+goals: `maven-release-plugin` (invoked by hand as `release:perform`) and `central-publishing-maven-plugin` (its
+`publish` goal binds to `deploy`). The first real exercise of those two is the next release — dry-run it first, see
+*The release path (Central Portal)*. `maven-surefire-plugin` executes a goal without an override, deliberately so: it has
 no test to run in any module — see *Build & test*. `truelicense-maven-plugin` is excluded from all of this on
 purpose — see *Bootstrapping gotcha*.
 
@@ -199,24 +199,66 @@ evidence rather than from reading:
   declares that artifact directly. On the prune commit the only delta was ScalaCheck and its `test-interface`
   leaving the test classpath, which was the intent.
 
-### The release path is broken
+### The release path (Central Portal)
 
-Independently of anything above, the configured release path no longer works. `<distributionManagement>` and the
-`sonatype-oss-release` profile target Sonatype OSSRH (`oss.sonatype.org`) through `nexus-staging-maven-plugin`.
-OSSRH has been retired in favour of the Central Publisher Portal, which `nexus-staging-maven-plugin` cannot talk to;
-the replacement is `central-publishing-maven-plugin`, and snapshots move to
-`https://central.sonatype.com/repository/maven-snapshots/`. This is infrastructure, not tooling — a Gradle or Mill
-build would need the same migration.
+Sonatype OSSRH (`oss.sonatype.org`) has been retired in favour of the Central Publisher Portal, and
+`nexus-staging-maven-plugin` cannot talk to the Portal at all. The build has been migrated:
+`central-publishing-maven-plugin` 0.11.0 with `<extensions>true</extensions>` replaces it, snapshots go to
+`https://central.sonatype.com/repository/maven-snapshots/`, and `<distributionManagement>` keeps **only** a
+`snapshotRepository` — releases no longer go through it. This was infrastructure, not tooling; a Gradle or Mill
+build would have needed the identical migration.
 
-Consequences worth knowing before the next release:
+**One thing is still missing and will fail the release: `~/.m2/settings.xml` needs a `central` server.** It has
+`ossrh` / `sonatype-nexus-snapshots` / `sonatype-nexus-staging` entries, none of which carry over. The username and
+password must be a Central Portal user **token**, not Sonatype JIRA credentials. Without it the build dies on the
+*first* module with `Unable to get publisher server properties for server id: central: NullPointerException`.
 
-- The endpoints in the root POM are carried over from the parent POM verbatim and are **known-dead**, not merely
-  untested. Migrating them was deliberately kept out of the inlining commit.
-- `~/.m2/settings.xml` still has `ossrh` / `sonatype-nexus-snapshots` / `sonatype-nexus-staging` server entries; the
-  Portal uses a different credential.
-- If `maven-release-plugin` is dropped in favour of `versions:set` + tag + `deploy`, note that `release:perform` is
-  the only thing that activates `sonatype-oss-release` outside CI — so the obfuscation verification gate would need
-  re-homing. That gate is the whole reason 4.0.1 and 4.0.3 shipped unobfuscated without anyone noticing.
+How the plugin behaves, which is not obvious and matters:
+
+- `<extensions>true</extensions>` installs a lifecycle participant that **removes `maven-deploy-plugin`** and
+  injects an `injected-central-publishing` execution of the `publish` goal into the `deploy` phase of *every*
+  module. It also loads on any build that activates `sonatype-oss-release`, including the **JDK 8 CI compile job** —
+  verified to work there, and the plugin jar is Java 8 bytecode only (major 52), declaring `requiredJavaVersion 1.8`
+  and `requiredMavenVersion 3.9.2`.
+- **`maven.deploy.skip` is therefore inert.** The string does not appear anywhere in the plugin, and the only thing
+  that reads it has been removed. `tests` still sets it, which is now merely harmless.
+- **There is no per-module opt-out.** The participant declines to install itself only if some module declares the
+  plugin with its own executions, and that decision is global. `skipPublishing` does not help either — it is
+  evaluated *after* staging, so `deploy -DskipPublishing=true` still fails on a module with no artifact file.
+- Consequently `tests` now builds an **empty jar** (`skipIfEmpty=false`, overriding the root POM) purely so the
+  injected goal has a file to stage. Otherwise the release aborts at the very last module with `The packaging for
+  this project did not assign a file to the build artifact`. `excludeArtifacts` in the root POM then keeps it out of
+  the uploaded bundle — two independent guards, because `truelicense-tests` must never reach Central.
+- `autoPublish=true` reproduces nexus-staging's `autoReleaseAfterClose`. `waitUntil=published` makes the build block
+  until the Portal confirms, so a rejected deployment fails the release instead of sitting half-finished in the UI.
+
+#### Dry-running a release without publishing anything
+
+Do this before any real release; the path has no CI coverage. Point the plugin at an unreachable endpoint and use a
+throwaway settings file, so no credential and no network path to the Portal exists:
+
+```bash
+./mvnw versions:set -DnewVersion=4.1.0-PORTALTEST          # the bundle path only runs for a non-SNAPSHOT version
+./mvnw -s /tmp/dryrun-settings.xml clean deploy -P sonatype-oss-release \
+       -DskipTests -Dgpg.skip=true -DcentralBaseUrl=http://127.0.0.1:1
+unzip -l target/central-publishing/central-bundle.zip     # <-- the actual deliverable
+./mvnw versions:revert
+```
+
+with `/tmp/dryrun-settings.xml` holding a `<server><id>central</id>` whose credentials are deliberately invalid. The
+build is *expected* to fail at the last module with `Deployment failed while publishing` — that is the upload hitting
+the dead endpoint, and it means everything before it worked. Check the bundle, not the log: it must contain
+`.jar`, `-sources.jar`, `-javadoc.jar` and `.pom` for all 15 published modules plus the root POM, and **no**
+`truelicense-tests`. Measured: 15 modules × (jar, sources, javadoc, pom) + root pom.
+
+Two things that dry run does *not* cover, because skipping them is what keeps it safe: GPG signatures (`.asc`), which
+Central requires and which only a real `gpg.skip=false` run produces, and the Portal's own validation of the bundle.
+
+#### Still open
+
+If `maven-release-plugin` is ever dropped in favour of `versions:set` + tag + `deploy`, note that `release:perform`
+is the only thing that activates `sonatype-oss-release` outside CI — so the obfuscation verification gate would need
+re-homing. That gate is the whole reason 4.0.1 and 4.0.3 shipped unobfuscated without anyone noticing.
 
 ## Module architecture
 
