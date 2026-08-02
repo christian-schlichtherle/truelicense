@@ -39,7 +39,6 @@ import static javax.tools.Diagnostic.Kind.*;
  * You could copy-paste this note into the source code for manual substitution
  * if you don't want to (or cannot) use an automated build tool for this task.
  */
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("global.namespace.truelicense.obfuscate.Obfuscate")
 @SupportedOptions({
         "global.namespace.truelicense.obfuscate.verbose",
@@ -48,6 +47,18 @@ import static javax.tools.Diagnostic.Kind.*;
 public class ObfuscateProcessor extends AbstractProcessor {
 
     private boolean verbose;
+
+    /**
+     * Returns the latest source version supported by the compiler which runs this processor.
+     * <p>
+     * This processor only inspects the constant value and the modifiers of annotated fields, so no language feature
+     * can put it out of its depth. Declaring a fixed version instead would make the compiler warn that the processor
+     * lags behind {@code -source} on every newer release, which is noise in an application's build log.
+     */
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latestSupported();
+    }
 
     @Override
     public void init(final ProcessingEnvironment processingEnv) {
