@@ -15,6 +15,7 @@ import java.util.Set;
 
 import static java.lang.String.join;
 import static java.lang.System.getProperty;
+import static java.nio.file.Files.isDirectory;
 import static java.nio.file.Files.isRegularFile;
 import static java.util.stream.Collectors.joining;
 
@@ -70,14 +71,19 @@ public abstract class ProGuardTask extends AbstractTask {
                         args.add(libraryjar);
                     });
                 } else {
-                    final Path rtJar = Paths.get(getProperty("java.home"), "lib/rt.jar");
+                    final Path javaHome = Paths.get(getProperty("java.home"));
                     args.add("-libraryjars");
-                    if (isRegularFile(rtJar)) {
+                    if (isRegularFile(javaHome.resolve("lib/rt.jar"))) {
                         args.add("<java.home>/lib");
                         args.add("-libraryjars");
                         args.add("<java.home>/lib/ext");
-                    } else {
+                    } else if (isDirectory(javaHome.resolve("jmods"))) {
                         args.add("<java.home>/jmods(!**.jar;!module-info.class)");
+                    } else {
+                        // Some JDKs ship no jmods, e.g. Temurin 25. ProGuard then reads the runtime image from
+                        // java.home itself, which it must not do when jmods is present: it would find every class
+                        // twice, once there and once in lib/modules.
+                        args.add("<java.home>");
                     }
                 }
             }
