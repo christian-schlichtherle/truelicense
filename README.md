@@ -8,3 +8,11 @@
 ## User Documentation
 
 https://truelicense.namespace.global
+
+## Building
+
+Use the Maven Wrapper — it pins the required Maven version, so nothing needs installing beyond a JDK 8:
+
+```bash
+./mvnw install
+```

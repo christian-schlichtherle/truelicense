@@ -22,6 +22,14 @@
 
     <properties>
         <automatic.module.name>global.namespace.truelicense.api</automatic.module.name>
+
+        <!--
+          ~ Opt out of the obfuscation wired up in the root POM: this module deliberately does not depend on
+          ~ truelicense-obfuscate, so rewriting its constant strings would make them reference ObfuscatedString and
+          ~ fail with a NoClassDefFoundError at runtime.
+          -->
+        <truelicense.obfuscate.scope>none</truelicense.obfuscate.scope>
+        <truelicense.obfuscate.verify.skip>true</truelicense.obfuscate.verify.skip>
     </properties>
 
     <dependencies>

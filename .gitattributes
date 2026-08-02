@@ -1,0 +1,4 @@
+# The Maven Wrapper scripts must keep the line endings their interpreter expects,
+# regardless of the contributor's core.autocrlf setting.
+mvnw     text eol=lf
+mvnw.cmd text eol=crlf

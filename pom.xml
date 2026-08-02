@@ -46,6 +46,14 @@
         <!-- maven-jar-plugin: JPMS automatic module name; overridden per module -->
         <automatic.module.name>global.namespace.truelicense</automatic.module.name>
 
+        <!--
+          ~ maven-enforcer-plugin: Maven 3.6.x does not merge a profile-injected <pluginManagement> execution into a
+          ~ plugin declaration, which silently disabled constant string obfuscation in the 4.0.1 and 4.0.3 releases.
+          ~ The wiring below no longer relies on that merge, but older Maven versions remain untested, so require a
+          ~ version known to be good.
+          -->
+        <maven.enforcer.requireMavenVersion>[3.9.16,)</maven.enforcer.requireMavenVersion>
+
         <!-- maven-compiler-plugin -->
         <maven.compiler.debug>false</maven.compiler.debug>
         <maven.compiler.optimize>true</maven.compiler.optimize>
@@ -59,6 +67,15 @@
         <!-- truelicense-maven-plugin -->
         <truelicense.obfuscate.intern>false</truelicense.obfuscate.intern>
         <truelicense.obfuscate.scope>all</truelicense.obfuscate.scope>
+        <!-- Set to true in a module that legitimately has no constant strings to obfuscate. -->
+        <truelicense.obfuscate.verify.skip>false</truelicense.obfuscate.verify.skip>
+        <!--
+          ~ Set to true in a module that obfuscates only named constants: the computation method then takes the name
+          ~ of the field it replaces, so no synthesized "_string#N" or "_clinit@..." name appears and the weaker
+          ~ "references ObfuscatedString" check has to stand in. Only safe where the module's own source does not
+          ~ reference ObfuscatedString.
+          -->
+        <truelicense.obfuscate.verify.relaxed>false</truelicense.obfuscate.verify.relaxed>
 
         <!-- dependencies -->
         <asm.version>9.1</asm.version>
@@ -354,6 +371,10 @@
                 </plugin>
 
                 <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
                         <compilerArgs>
@@ -415,22 +436,117 @@
                 </file>
             </activation>
             <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>truelicense-maven-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>obfuscate-main-classes</id>
-                                    <goals>
-                                        <goal>obfuscate-main-classes</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+                <!--
+                  ~ Declared in <plugins>, NOT <pluginManagement>: pluginManagement binds nothing on its own, and
+                  ~ Maven 3.6.x silently fails to merge a profile-injected pluginManagement execution into a module's
+                  ~ bare <plugin> declaration. That is what shipped 4.0.1 and 4.0.3 without any obfuscation.
+                  ~ Declaring it here obfuscates every module with src/main, so modules must NOT repeat it.
+                  -->
+                <plugins>
+                    <plugin>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>truelicense-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>obfuscate-main-classes</id>
+                                <goals>
+                                    <goal>obfuscate-main-classes</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+          ~ Release-only gate. Obfuscation failing is otherwise invisible: the goal simply does not run and the build
+          ~ stays green. This is deliberately NOT part of an ordinary `mvn install` - it is what must hold for an
+          ~ artifact that gets published. It runs on `release:perform` (parent-pom sets releaseProfiles to this id)
+          ~ and in the CI compile job, which activates this profile explicitly.
+          ~
+          ~ The signal is a method name synthesized by ObfuscateClassesTask - "_clinit@..." from the <clinit> merger,
+          ~ or "_string#N" from an obfuscated ldc. Both contain characters that are illegal in Java identifiers, so
+          ~ javac cannot produce them and there are no false passes.
+          ~
+          ~ Merely referencing ObfuscatedString is NOT sufficient evidence: obfuscate, build-tasks, core and
+          ~ maven-plugin all reference that class from their own source, so such a check stays green even when they
+          ~ are not obfuscated at all. It is only a fallback for modules that legitimately synthesize no method name
+          ~ (see truelicense.obfuscate.verify.relaxed).
+          -->
+        <profile>
+            <id>sonatype-oss-release</id>
+            <build>
+                <plugins>
+                    <!--
+                      ~ Obfuscation failing is otherwise invisible: the goal simply does not run and the build stays
+                      ~ green. The primary signal is a method name synthesized by ObfuscateClassesTask - "_clinit@..."
+                      ~ from the <clinit> merger, or "_string#N" from an obfuscated ldc. Both contain characters that
+                      ~ are illegal in Java identifiers, so javac cannot produce them and there are no false passes.
+                      ~
+                      ~ Merely referencing ObfuscatedString is NOT sufficient evidence: obfuscate, build-tasks, core
+                      ~ and maven-plugin all reference that class from their own source, so such a check stays green
+                      ~ even when they are not obfuscated at all. It is only used as a fallback for the modules that
+                      ~ legitimately synthesize no method name (see truelicense.obfuscate.verify.relaxed).
+                      -->
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>verify-obfuscate-main-classes</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <resourcecount property="synthesizedNameCount">
+                                            <fileset dir="${project.build.outputDirectory}" erroronmissingdir="false">
+                                                <include name="**/*.class"/>
+                                                <or>
+                                                    <contains text="_clinit@"/>
+                                                    <contains text="_string#"/>
+                                                </or>
+                                            </fileset>
+                                        </resourcecount>
+                                        <resourcecount property="obfuscatedStringRefCount">
+                                            <fileset dir="${project.build.outputDirectory}" erroronmissingdir="false">
+                                                <include name="**/*.class"/>
+                                                <contains text="truelicense/obfuscate/ObfuscatedString"/>
+                                            </fileset>
+                                        </resourcecount>
+                                        <!-- This profile has no src/main activation, so skip modules with no classes. -->
+                                        <resourcecount property="classFileCount">
+                                            <fileset dir="${project.build.outputDirectory}" erroronmissingdir="false">
+                                                <include name="**/*.class"/>
+                                            </fileset>
+                                        </resourcecount>
+                                        <fail message="Constant string obfuscation produced nothing in ${project.artifactId}: no class in ${project.build.outputDirectory} carries a method name synthesized by ObfuscateClassesTask. The obfuscate-main-classes goal did not run or did not apply. If this module genuinely has no constant strings, set truelicense.obfuscate.verify.skip=true; if it obfuscates only named constants and so synthesizes no method name, set truelicense.obfuscate.verify.relaxed=true.">
+                                            <condition>
+                                                <and>
+                                                    <available file="${project.build.outputDirectory}" type="dir"/>
+                                                    <not>
+                                                        <equals arg1="${classFileCount}" arg2="0"/>
+                                                    </not>
+                                                    <not>
+                                                        <istrue value="${truelicense.obfuscate.verify.skip}"/>
+                                                    </not>
+                                                    <equals arg1="${synthesizedNameCount}" arg2="0"/>
+                                                    <or>
+                                                        <not>
+                                                            <istrue value="${truelicense.obfuscate.verify.relaxed}"/>
+                                                        </not>
+                                                        <equals arg1="${obfuscatedStringRefCount}" arg2="0"/>
+                                                    </or>
+                                                </and>
+                                            </condition>
+                                        </fail>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
     </profiles>

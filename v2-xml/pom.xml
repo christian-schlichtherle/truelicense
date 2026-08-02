@@ -19,6 +19,12 @@
 
     <properties>
         <automatic.module.name>global.namespace.truelicense.v2.xml</automatic.module.name>
+        <!--
+          ~ This module obfuscates only named constants, so ObfuscateClassesTask synthesizes no method name for the
+          ~ verification in the root POM to find. Fall back to the weaker check; safe here because nothing in this
+          ~ module's own source references ObfuscatedString.
+          -->
+        <truelicense.obfuscate.verify.relaxed>true</truelicense.obfuscate.verify.relaxed>
     </properties>
 
     <dependencies>
@@ -37,13 +43,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

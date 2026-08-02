@@ -27,13 +27,4 @@
             <artifactId>truelicense-core</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>truelicense-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>
