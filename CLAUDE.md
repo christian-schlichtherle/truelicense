@@ -224,8 +224,13 @@ it assumes the default `methodNameFormat` (`_%s#%d`) — overriding that propert
 ### The JDK ceiling
 
 `./mvnw verify` now passes on JDK **8, 11, 17, 21 and 25** — each one measured with a full reactor build, tests
-included (100 ScalaTest tests plus the 4 Failsafe Jersey ITs). CI enforces this as a matrix; see
-`.github/workflows/test.yml`.
+included. CI enforces this as a matrix; see `.github/workflows/test.yml`.
+
+Expect the `tests` module to report **56 run, 44 ignored** in CI but 100 run on a developer machine. That is not test
+loss: the four `V*LicenseManagementWizardIT` suites register every test through `ifNotHeadless`
+(`LicenseManagementWizardITLike`), which downgrades `in` to `ignore` when `GraphicsEnvironment.isHeadless`. CI has no
+display, so 56 + 44 = 100 either way. The consequence worth knowing is that **the Swing wizard ITs are covered on no
+JDK in CI** — they only ever run locally. Adding `xvfb` to the matrix job would close that gap.
 
 Getting there needed four fixes. They mattered because each one **masked the next**: the build died at the first
 one, so fixing it only revealed the second, and so on. Do not conclude from a single failure that you have found
