@@ -468,10 +468,6 @@
                     <version>3.4.0</version>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.5.6</version>
-                </plugin>
-                <plugin>
                     <groupId>org.scalatest</groupId>
                     <artifactId>scalatest-maven-plugin</artifactId>
                     <version>2.2.0</version>
@@ -500,20 +496,6 @@
                 <plugin>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>3.2.0</version>
-                </plugin>
-                <!--
-                  ~ Overrides the parent POM's 2.22.2, which cannot run the Jersey integration tests any more.
-                  ~ jersey-test-framework-provider-inmemory puts JUnit Jupiter on the test classpath, so Failsafe
-                  ~ switches from its JUnit 4 provider to the JUnit Platform provider - and 2.22.2 ships
-                  ~ junit-platform-launcher 1.3.2, which is too old for the junit-platform-engine that Jersey drags
-                  ~ in. The result is not an error but "Tests run: 0" and a green build, so the four
-                  ~ *ConsumerLicenseManagementServiceJerseyIT suites silently stop running. Those suites now run
-                  ~ on the JUnit Platform, which 3.x supports; see also the verify-integration-tests-ran check in
-                  ~ tests/pom.xml, which turns a recurrence into a build failure.
-                  -->
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.5.6</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -569,6 +551,46 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <!--
+              ~ Preflight: fail at `validate` if any module grows a `src/test/java` directory.
+              ~
+              ~ This is not a style rule. The parent POM's `java-test-sources` profile activates on the mere
+              ~ existence of that directory and binds maven-failsafe-plugin at `integration-test`. Nothing in this
+              ~ project uses Failsafe any more - every test is a ScalaTest suite run in the `test` phase - and the
+              ~ version this build would get is the parent POM's 2.22.2, whose junit-platform-launcher is too old
+              ~ for the JUnit Platform engine that jersey-test-framework puts on the test classpath. That
+              ~ combination does not fail: it reports "Tests run: 0" and leaves the build green, which is exactly
+              ~ how the four *ConsumerLicenseManagementServiceJerseyIT suites were once silently lost.
+              ~
+              ~ Test sources in every language belong under `src/test/scala`, which scala-maven-plugin's
+              ~ `add-source` registers as a test compile source root, so maven-compiler-plugin picks up the .java
+              ~ files there and scalac picks up the .scala ones. This execution merges with the parent POM's
+              ~ `enforce-maven-and-java`; both run.
+              -->
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-no-java-test-sources</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireFilesDontExist>
+                                    <files>
+                                        <file>${project.basedir}/src/test/java</file>
+                                    </files>
+                                    <message>Put test sources under src/test/scala instead - in any language. A src/test/java directory activates the parent POM's java-test-sources profile, which binds maven-failsafe-plugin 2.22.2; that combination reports "Tests run: 0" and leaves the build green instead of failing. See the comment on this execution in the root POM.</message>
+                                </requireFilesDontExist>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>

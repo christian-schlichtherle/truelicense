@@ -25,76 +25,7 @@
         <maven.install.skip>true</maven.install.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <maven.source.skip>true</maven.source.skip>
-
-        <!-- Declared so that the verify-integration-tests-ran check below can reference it; -DskipTests wins. -->
-        <skipTests>false</skipTests>
     </properties>
-
-    <build>
-        <plugins>
-            <!--
-              ~ The four *ConsumerLicenseManagementServiceJerseyIT suites are the only tests Failsafe runs here -
-              ~ ScalaTest does not pick them up. A classpath change that stops Failsafe from discovering them
-              ~ reports "Tests run: 0" and leaves the build green, which is how they were silently lost when
-              ~ Jersey 2.48 started putting JUnit Jupiter on the test classpath (see the maven-failsafe-plugin
-              ~ comment in the root POM). This is the same class of invisible failure as obfuscation not running,
-              ~ so it gets the same treatment: assert the evidence, not the log.
-              ~
-              ~ Failsafe's own failIfNoTests does NOT cover this - it was measured to leave the build green on a
-              ~ zero-test run, both as plugin configuration and as -DfailIfNoTests=true - so the summary file is
-              ~ checked directly. Bound to post-integration-test rather than verify: failsafe:verify also binds to
-              ~ verify, and which of two plugins in the same phase runs first depends on the effective plugin
-              ~ order. post-integration-test is unambiguously after the summary is written.
-              ~
-              ~ The first execution matters as much as the second: on a zero-test run Failsafe writes no summary
-              ~ file at all rather than one saying zero, so an incremental build would otherwise let the check
-              ~ read the previous run's file and pass. CI always starts clean and would not have caught that.
-              -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>clean-failsafe-reports</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipTests}</skip>
-                            <target>
-                                <delete dir="${project.build.directory}/failsafe-reports"/>
-                            </target>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>verify-integration-tests-ran</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipTests}</skip>
-                            <target>
-                                <property name="summaryFile"
-                                          value="${project.build.directory}/failsafe-reports/failsafe-summary.xml"/>
-                                <fail message="The Failsafe integration tests did not run in ${project.artifactId}: ${summaryFile} is missing or reports zero completed tests. The four *ConsumerLicenseManagementServiceJerseyIT suites are expected here; Failsafe reports this as &quot;Tests run: 0&quot; and would otherwise leave the build green. Most likely a dependency change altered which Failsafe provider gets selected.">
-                                    <condition>
-                                        <or>
-                                            <not>
-                                                <available file="${summaryFile}"/>
-                                            </not>
-                                            <resourcecontains resource="${summaryFile}"
-                                                              substring="&lt;completed&gt;0&lt;/completed&gt;"/>
-                                        </or>
-                                    </condition>
-                                </fail>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
         <dependency>

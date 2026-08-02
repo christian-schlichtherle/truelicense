@@ -13,8 +13,9 @@ import org.glassfish.jersey.client.ClientConfig
 import org.glassfish.jersey.jackson.JacksonFeature
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.test.JerseyTest
-import org.junit.jupiter.api.Test
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpecLike
 
 import javax.ws.rs.WebApplicationException
 import javax.ws.rs.client.Entity
@@ -22,7 +23,16 @@ import javax.ws.rs.core.MediaType._
 import javax.ws.rs.core.Response.Status._
 import javax.ws.rs.core.{Application, MediaType}
 
-abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
+/**
+ * Runs the JAX-RS resource in an in-memory Jersey test container.
+ *
+ * This is a ScalaTest suite like every other suite in this module, so scalatest-maven-plugin runs it in the `test`
+ * phase - `JerseyTest` contributes only the container, not the test framework. Its `setUp` / `tearDown` carry both
+ * JUnit 4 and JUnit 5 lifecycle annotations, neither of which ScalaTest honours, so they are driven explicitly from
+ * `beforeEach` / `afterEach` below.
+ */
+abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest with AnyWordSpecLike
+  with BeforeAndAfterEach {
   this: TestContext =>
 
   private lazy val objectMapperResolver = new ObjectMapperResolver(managementContext.licenseFactory.licenseClass)
@@ -51,21 +61,38 @@ abstract class ConsumerLicenseManagementServiceJerseyITLike extends JerseyTest {
       .register(objectMapperResolver)
   }
 
-  @Test
-  def testLifeCycle(): Unit = {
-    assertSubject()
-    assertFailView()
-    assertFailVerify()
-    assertUninstallFailure()
-    assertInstall()
-    assertSubject()
-    assertView()
-    assertVerify()
-    assertUninstallSuccess()
-    assertSubject()
-    assertFailView()
-    assertFailVerify()
-    assertUninstallFailure()
+  override protected def beforeEach(): Unit = {
+    super.beforeEach()
+    setUp()
+  }
+
+  override protected def afterEach(): Unit = {
+    try {
+      tearDown()
+    } finally {
+      super.afterEach()
+    }
+  }
+
+  "A consumer license management service" when {
+    "accessed as a JAX-RS resource" should {
+      // A single test on purpose: the assertions below are stateful and have to run in this order.
+      "cover the license key life cycle" in {
+        assertSubject()
+        assertFailView()
+        assertFailVerify()
+        assertUninstallFailure()
+        assertInstall()
+        assertSubject()
+        assertView()
+        assertVerify()
+        assertUninstallSuccess()
+        assertSubject()
+        assertFailView()
+        assertFailVerify()
+        assertUninstallFailure()
+      }
+    }
   }
 
   private def assertSubject(): Unit = {

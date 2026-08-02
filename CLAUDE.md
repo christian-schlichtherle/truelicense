@@ -21,8 +21,9 @@ plugin this build actually runs, because the parent's date from 2021. Each overr
 `java>=1.8` and `maven>=3.6.3` in its plugin descriptor, which the JDK 8 compile job and the enforced Maven 3.9.16
 both satisfy. Two are **not** covered by the test matrix, because nothing in `install`/`verify` executes their goals:
 `maven-release-plugin` (invoked by hand as `release:perform`) and `nexus-staging-maven-plugin` (binds to `deploy`).
-The first real exercise of those two is the next release. `truelicense-maven-plugin` is excluded from all of this on
-purpose — see *Bootstrapping gotcha*.
+The first real exercise of those two is the next release. `maven-surefire-plugin` is the one plugin that executes a
+goal without an override, and deliberately so: it has no test to run in any module — see *Build & test*.
+`truelicense-maven-plugin` is excluded from all of this on purpose — see *Bootstrapping gotcha*.
 
 **Maven 3.9.16 or newer is required** and enforced — the build fails at `validate` on anything older. This is not
 cosmetic: Maven 3.6.x silently breaks constant string obfuscation (see below). **Use `./mvnw`**, which pins exactly
@@ -66,26 +67,38 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
 - Run a single suite with `-Dsuites`, *not* `-Dtest`:
   `./mvnw -pl tests test -Dsuites='global.namespace.truelicense.tests.v4.V4LicenseKeyLifeCycleIT'`
 - Append `@ some test name` to `-Dsuites` to run a single test within a suite.
-- Most `*IT` suites are ScalaTest suites executed by scalatest-maven-plugin in the **`test`** phase, so `./mvnw test`
-  runs them.
-- **But `./mvnw test` is not the whole test suite.** The parent POM's `java-test-sources` profile also binds Failsafe
-  at `integration-test` in the modules that have a `src/test/java` directory (`api` and `tests`). In `tests` it runs
-  the four `*ConsumerLicenseManagementServiceJerseyIT` suites, which are JUnit/JerseyTest classes that ScalaTest
-  does not pick up. Use `./mvnw verify` (or `install`) to run everything; each format has a ScalaTest `*Spec` and a
-  Failsafe `*JerseyIT` counterpart on purpose.
-- **Those four suites run on JUnit 5, and losing them is silent.** `jersey-test-framework-provider-inmemory` puts
-  JUnit Jupiter on the test classpath, so Failsafe picks its JUnit Platform provider rather than the JUnit 4 one.
-  The parent POM's Failsafe 2.22.2 ships a `junit-platform-launcher` too old for that engine and reports
-  `Tests run: 0` — not an error, a **green build with zero integration tests**. The root POM therefore overrides
-  Failsafe to 3.5.6 and the shared `ConsumerLicenseManagementServiceJerseyITLike` trait imports
-  `org.junit.jupiter.api.Test`. `JerseyTest` itself carries both JUnit 4 and JUnit 5 lifecycle annotations, so it
-  works either way; only the provider matters.
-- A `verify-integration-tests-ran` antrun check in `tests/pom.xml` fails the build if Failsafe completes zero tests,
-  because nothing else does. **Failsafe's own `failIfNoTests` does not work here** — measured green on a zero-test
-  run both as plugin configuration and as `-DfailIfNoTests=true`. The check reads `failsafe-summary.xml`, and a
-  sibling execution deletes `target/failsafe-reports` at `pre-integration-test` first: on a zero-test run Failsafe
-  writes *no* summary file rather than one saying zero, so without the delete an incremental build would read the
-  previous run's file and pass.
+- **Every** test is a ScalaTest suite run by scalatest-maven-plugin in the **`test`** phase, so `./mvnw test` and
+  `./mvnw verify` run exactly the same set — 104 tests in `tests`, plus the module-level `*Spec` suites. There is no
+  second test runner any more. Each format still has both a `*ConsumerLicenseManagementServiceSpec` (calls the
+  resource class directly) and a `*ConsumerLicenseManagementServiceJerseyIT` (drives it over HTTP through an
+  in-memory Jersey container) on purpose.
+- **There is deliberately no `src/test/java` anywhere, and an enforcer rule keeps it that way.** Its mere existence
+  activates the parent POM's `java-test-sources` profile, which binds Failsafe at `integration-test` and drags in
+  JUnit 4, Hamcrest and Mockito. Test sources in *any* language go under `src/test/scala`: scala-maven-plugin's
+  `add-source` registers that directory as a test compile source root, so maven-compiler-plugin compiles the
+  `.java` files there (`api/…/ApiDemo.java`, `tests/…/ExtraBean.java`) and scalac compiles the `.scala` ones. The
+  `enforce-no-java-test-sources` execution in the root POM's `<build><plugins>` fails every module at `validate`
+  via `requireFilesDontExist` if the directory reappears — an *empty* one is enough to trip it, which is correct,
+  since profile activation keys on existence and not on contents. It merges with the parent POM's
+  `enforce-maven-and-java` rather than replacing it; both executions run (verified in the effective POM).
+- **Why Failsafe is gone.** The four `*JerseyIT` suites used to be JUnit classes run by Failsafe, and losing them
+  was silent: `jersey-test-framework-provider-inmemory` puts JUnit Jupiter on the test classpath, so Failsafe picks
+  its JUnit Platform provider rather than the JUnit 4 one, and the parent POM's Failsafe 2.22.2 ships a
+  `junit-platform-launcher` too old for that engine. It reports `Tests run: 0` — not an error, a **green build with
+  zero integration tests**. That was patched by pinning Failsafe 3.5.6 and guarding it with a
+  `verify-integration-tests-ran` antrun check on `failsafe-summary.xml` (Failsafe's own `failIfNoTests` was
+  measured green on a zero-test run and does *not* cover this). Converting the suites to ScalaTest removed the
+  failure mode instead of policing it, so the pin, the guard and the JUnit dependency are all gone. ScalaTest has
+  no equivalent silent-zero mode: a suite it cannot load aborts the run loudly (see the Byte Buddy note under *The
+  JDK ceiling*).
+- **JUnit Jupiter is still on the test classpath and must stay there** — no test code uses it, but `JerseyTest.setUp`
+  calls `isConcurrent()`, which hard-casts to `org.junit.jupiter.api.TestInstance`. Excluding it from
+  `jersey-test-framework-provider-inmemory` would produce a `NoClassDefFoundError` at container start.
+- Surefire cannot be removed the same way — `default-test` is part of Maven's default lifecycle — but it is inert
+  and therefore unpinned: `scala-test-sources` sets it to phase `none` in every module that has tests, and in the
+  eight modules with no test sources at all it runs the parent POM's 2.22.2 as a no-op. It has no test to run
+  anywhere, so its version does not matter. If a module ever needs Surefire for real, pin it in the root POM's
+  `<pluginManagement>` first; 2.22.2 is the version that produced the silent zero-test run described below.
 
 ### Toolchain constraints
 
@@ -258,10 +271,10 @@ it assumes the default `methodNameFormat` (`_%s#%d`) — overriding that propert
 `./mvnw verify` now passes on JDK **8, 11, 17, 21 and 25** — each one measured with a full reactor build, tests
 included. CI enforces this as a matrix; see `.github/workflows/test.yml`.
 
-Expect the `tests` module to report **56 run, 44 ignored** in CI but 100 run on a developer machine. That is not test
+Expect the `tests` module to report **60 run, 44 ignored** in CI but 104 run on a developer machine. That is not test
 loss: the four `V*LicenseManagementWizardIT` suites register every test through `ifNotHeadless`
 (`LicenseManagementWizardITLike`), which downgrades `in` to `ignore` when `GraphicsEnvironment.isHeadless`. CI has no
-display, so 56 + 44 = 100 either way. The consequence worth knowing is that **the Swing wizard ITs are covered on no
+display, so 60 + 44 = 104 either way. The consequence worth knowing is that **the Swing wizard ITs are covered on no
 JDK in CI** — they only ever run locally. Adding `xvfb` to the matrix job would close that gap.
 
 Getting there needed four fixes. They mattered because each one **masked the next**: the build died at the first
@@ -389,8 +402,15 @@ coverage usually means editing the shared trait, and adding a format means addin
 subclass per trait. `TestContext` builds vendor/consumer managers from keystore fixtures under
 `src/test/resources/.../v1|v2/core|v4/` (all protected by the password `test1234`).
 
-Note `tests/src/test/java` contains a `.scala` file (`ConfiguredTestContext.scala`) — scala-maven-plugin compiles
-Scala across all test source roots, so this is intentional, not misplaced.
+Note `tests/src/test/scala` contains a `.java` file (`ExtraBean.java`) — everything lives under `src/test/scala`
+regardless of language, and both compilers see that source root. See *Build & test* for why `src/test/java` must
+not come back.
+
+`ConsumerLicenseManagementServiceJerseyITLike` is the one suite that is not a plain `AnyWordSpecLike`: it extends
+`JerseyTest` (a class, hence `abstract class` rather than `trait`) and drives that class's `setUp` / `tearDown`
+from ScalaTest's `beforeEach` / `afterEach`, because ScalaTest honours neither the JUnit 4 nor the JUnit 5
+lifecycle annotations `JerseyTest` carries. Its assertions are stateful and order-dependent, so they are one test,
+not thirteen.
 
 ## Contributing
 
