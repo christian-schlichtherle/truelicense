@@ -279,6 +279,13 @@ the class files after compilation by `ObfuscateClassesTask` (ASM). Because `true
 *every* constant string is rewritten, not only the annotated ones — the annotation matters only if the scope is
 narrowed to `annotated`.
 
+**A `public static final String` keeps its literal regardless.** javac writes a `ConstantValue` attribute for any
+compile-time constant so that other compilation units can inline it, and the rewrite does not remove it: `<clinit>`
+is replaced by an `ObfuscatedString` computation, yet `javap -constants` still prints the plaintext. Nothing can fix
+this — a consumer compiling against a public constant inlines the literal into its own bytecode anyway. Declare
+anything that should actually be hidden non-public, where the field is replaced outright and the literal disappears
+from the constant pool. Applies to consuming projects as much as to this one.
+
 **The wiring is central and opt-out. Do not add `truelicense-maven-plugin` to a module POM.** The
 `enable-obfuscate-main-classes` profile in the root POM activates on `src/main` and declares the plugin in
 `<build><plugins>`, so every module with main sources is obfuscated automatically. A module opts *out* with two
