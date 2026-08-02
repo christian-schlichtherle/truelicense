@@ -6,6 +6,7 @@ package global.namespace.truelicense.build.tasks.proguard;
 
 import global.namespace.truelicense.build.tasks.commons.AbstractTask;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -15,12 +16,15 @@ import java.util.Set;
 import static java.lang.String.join;
 import static java.lang.System.getProperty;
 import static java.nio.file.Files.isRegularFile;
+import static java.util.stream.Collectors.joining;
 
 /**
  * Obfuscates the byte code of Java class files using ProGuard..
  */
 @SuppressWarnings("WeakerAccess")
 public abstract class ProGuardTask extends AbstractTask {
+
+    private static final String MAIN_CLASS = "proguard.ProGuard";
 
     /**
      * The project build directory.
@@ -134,16 +138,23 @@ public abstract class ProGuardTask extends AbstractTask {
     public abstract List<String> outjars();
 
     /**
-     * The shaded JAR containing the main class for ProGuard.
+     * The class path to run ProGuard from. Must contain ProGuard and everything it depends on: only
+     * {@code net.sf.proguard:proguard-base} is a shaded, runnable JAR, whereas {@code com.guardsquare:proguard-base}
+     * declares its dependencies instead, so ProGuard is started by class path and main class rather than by
+     * {@code -jar}.
      */
-    public abstract Path proGuardJar();
+    public abstract List<Path> proGuardClassPath();
 
     @Override
     public final void execute() throws Exception {
         final List<String> c = new LinkedList<>();
         c.add(getProperty("java.home") + "/bin/java");
-        c.add("-jar");
-        c.add(proGuardJar().toAbsolutePath().toString());
+        c.add("-cp");
+        c.add(proGuardClassPath()
+                .stream()
+                .map(p -> p.toAbsolutePath().toString())
+                .collect(joining(File.pathSeparator)));
+        c.add(MAIN_CLASS);
         c.addAll(commandLineArgs());
         logger().info("Executing ProGuard: " + join(" ", c));
         final Process p = new ProcessBuilder(c).directory(buildDirectory().toFile()).inheritIO().start();

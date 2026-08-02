@@ -21,6 +21,7 @@ import java.util.Set;
 
 import static global.namespace.neuron.di.java.Incubator.wire;
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.PACKAGE;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
@@ -140,16 +141,18 @@ public final class ProGuardMojo extends BasicMojo {
 
     /**
      * This dependency provider method is used to wire {@link ProGuardTask}.
+     * <p>
+     * Passes this plugin's entire class path, not just the ProGuard JAR: {@code com.guardsquare:proguard-base}
+     * declares its dependencies rather than shading them, so ProGuard needs them alongside it. Declare
+     * {@code proguard-base} in this plugin's {@code <dependencies>} and Maven resolves the rest.
      *
      * @see #task()
      */
-    Path proGuardJar() {
-        return pluginArtifacts
-                .stream()
-                .filter(a -> "proguard-base".equals(a.getArtifactId()))
-                .findFirst()
-                .map(a -> a.getFile().toPath())
-                .orElseThrow(() -> new IllegalStateException("The ProGuard JAR is missing on the plugin class path."));
+    List<Path> proGuardClassPath() {
+        if (pluginArtifacts.stream().noneMatch(a -> "proguard-base".equals(a.getArtifactId()))) {
+            throw new IllegalStateException("The ProGuard JAR is missing on the plugin class path.");
+        }
+        return pluginArtifacts.stream().map(a -> a.getFile().toPath()).collect(toList());
     }
 
     /**
