@@ -43,6 +43,9 @@ auto-activates on `src/test/scala` and disables Surefire's `default-test`. Conse
 - Compile with JDK 8 (`maven.compiler.source/target` is 1.8 from the parent POM).
 - Do **not** run tests on JDK 15+: scalatest-maven-plugin fails to load test classes there. CI compiles on JDK 8
   and then runs `./mvnw verify` on JDK 14.
+- On macOS, select JDK 8 with `JAVA_HOME=$(/usr/libexec/java_home -v 1.8)`. **`-v 8` does not work** — a bare major
+  number means "8 *or newer*", so it returns the newest installed JDK, and the build then silently runs on that.
+  Always confirm the `Java version:` line that `--show-version` prints.
 - The Swing wizard ITs drive a real UI via Jemmy and skip themselves when `GraphicsEnvironment` is headless.
 
 ### Bootstrapping gotcha
@@ -133,6 +136,26 @@ execution rather than merging with it — the effective POM ends up with only th
 the same class of Maven merge behaviour that caused the 4.0.1 regression, and it is silent. `obfuscate` is the only
 module in this position (it needs `generate-main-sources` / `generate-test-sources`), and its POM repeats the
 execution with a comment saying why.
+
+**Such a module must also spell the `<groupId>` exactly as the root POM's `<pluginManagement>` does — the literal
+string, not just the same resolved value.** Maven keys a plugin to its management entry by the **raw,
+un-interpolated** `groupId:artifactId`, so `global.namespace.truelicense` and `${project.groupId}` are *different*
+keys even though both resolve identically. The mismatch is mostly cosmetic — `pluginManagement` injection happens
+after interpolation, so the effective POM still gets the pinned version and the build works — but the raw-model
+validator does not see it and warns on every run:
+
+```
+'build.plugins.plugin.version' for global.namespace.truelicense:truelicense-maven-plugin is missing.
+```
+
+The root POM writes `${project.groupId}` in both `<pluginManagement>` and the `enable-obfuscate-main-classes`
+profile, so a module declaring the plugin must write `${project.groupId}` too. Confirmed by flipping the root POM
+to the literal instead: the warning simply moved to the profile-injected declaration and then fired for *every*
+module. Fixing the key also changes the plugin's **position** in the effective `build/plugins` list — in `obfuscate`
+it moved after `maven-compiler-plugin`, i.e. into the module's own declaration order. Version and executions are
+otherwise byte-identical, and the observed goal order is unaffected (`generate-main-sources` → `compile` →
+`obfuscate-main-classes` → `generate-test-sources` → `testCompile`), because these plugins share no lifecycle phase.
+Worth remembering only if a module ever binds two plugins to the *same* phase, where list order decides.
 
 ### Build-time verification
 

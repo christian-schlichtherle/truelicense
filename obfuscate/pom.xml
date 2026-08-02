@@ -33,7 +33,12 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>global.namespace.truelicense</groupId>
+                <!--
+                  ~ Must be spelled exactly as in the root POM's <pluginManagement>: Maven matches a plugin against
+                  ~ its management entry by the *raw*, un-interpolated groupId, so the literal group id would not
+                  ~ pick up the managed version and the build would warn that the version is missing.
+                  -->
+                <groupId>${project.groupId}</groupId>
                 <artifactId>truelicense-maven-plugin</artifactId>
                 <executions>
                     <!--
