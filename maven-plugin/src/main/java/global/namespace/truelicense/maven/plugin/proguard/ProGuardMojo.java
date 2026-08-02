@@ -131,6 +131,13 @@ public final class ProGuardMojo extends BasicMojo {
     }
 
     /**
+     * The maximum heap size of the ProGuard process, e.g. {@code 2g}. Unset leaves the forked JVM its default, which
+     * is where a large program runs out of memory first.
+     */
+    @Parameter(property = "truelicense.proguard.maxHeapSize")
+    private String maxHeapSize;
+
+    /**
      * ProGuard options.
      */
     @Parameter

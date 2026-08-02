@@ -138,6 +138,12 @@ public abstract class ProGuardTask extends AbstractTask {
     public abstract List<String> outjars();
 
     /**
+     * The maximum heap size of the ProGuard process, e.g. {@code 2g}, or {@code null} to leave the forked JVM its
+     * default. ProGuard holds the whole program in memory, so a large one needs more than the default heap.
+     */
+    public abstract String maxHeapSize();
+
+    /**
      * The class path to run ProGuard from. Must contain ProGuard and everything it depends on: only
      * {@code net.sf.proguard:proguard-base} is a shaded, runnable JAR, whereas {@code com.guardsquare:proguard-base}
      * declares its dependencies instead, so ProGuard is started by class path and main class rather than by
@@ -151,6 +157,10 @@ public abstract class ProGuardTask extends AbstractTask {
     public final List<String> commandLine() {
         final List<String> c = new LinkedList<>();
         c.add(getProperty("java.home") + "/bin/java");
+        final String heap = maxHeapSize();
+        if (null != heap && !heap.isEmpty()) {
+            c.add("-Xmx" + heap);
+        }
         c.add("-cp");
         c.add(proGuardClassPath()
                 .stream()

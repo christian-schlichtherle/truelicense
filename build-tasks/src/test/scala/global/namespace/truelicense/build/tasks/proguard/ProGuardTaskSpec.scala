@@ -47,7 +47,7 @@ class ProGuardTaskSpec extends AnyWordSpec {
     out.toByteArray
   }
 
-  private def task(dir: Path, classPath: util.List[Path], opts: List[String]): ProGuardTask =
+  private def task(dir: Path, classPath: util.List[Path], opts: List[String], heap: String = null): ProGuardTask =
     new ProGuardTask {
       override def logger(): Logger = new Logger {
         override def isDebugEnabled: Boolean = false
@@ -74,6 +74,7 @@ class ProGuardTaskSpec extends AnyWordSpec {
       override def includeDependencyInjar(): Boolean = false
       override def injars(): util.List[String] = util.Arrays.asList("in")
       override def libraryjars(): util.List[String] = new util.LinkedList[String]
+      override def maxHeapSize(): String = heap
       override def options(): util.List[String] = opts.asJava
       override def outjars(): util.List[String] = util.Arrays.asList("out.jar")
       override def proGuardClassPath(): util.List[Path] = classPath
@@ -89,6 +90,15 @@ class ProGuardTaskSpec extends AnyWordSpec {
       c(2) shouldBe s"/tmp/a.jar${File.pathSeparator}/tmp/b.jar"
       c(3) shouldBe "proguard.ProGuard"
       c should contain("-injars")
+    }
+
+    "pass -Xmx only when a maximum heap size is configured" in {
+      val cp = util.Arrays.asList(Paths.get("/tmp/a.jar"))
+      task(Paths.get("/tmp"), cp, Nil).commandLine().asScala.toList should not contain "-Xmx"
+      val c = task(Paths.get("/tmp"), cp, Nil, "2g").commandLine().asScala.toList
+      c(1) shouldBe "-Xmx2g"
+      // JVM arguments must precede the main class.
+      c.indexOf("-Xmx2g") should be < c.indexOf("proguard.ProGuard")
     }
 
     "obfuscate a class with the ProGuard on its class path" in {
