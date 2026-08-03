@@ -145,6 +145,11 @@ Publisher Portal. **`sonatype-oss-release` is what enables javadoc, sources, sig
 4.0.1 and 4.0.3 shipped.** The wiring constraints, the local dry run, and the post-release pin bump are in
 `.claude/skills/release/SKILL.md`.
 
+**`develop` is the only branch, and releases are identified by tags alone.** The tag is the whole input — the release
+workflow commits nothing back, so no branch records what has shipped. There is deliberately no `master`: it existed to
+mark released code under git-flow, which this project no longer uses, and it was left behind at 4.0.3 for years
+before being removed. Cut a release by tagging `develop`; do not recreate a release branch to hold the tag.
+
 ## Module architecture
 
 Runtime layering (each layer depends only on the ones above it):
