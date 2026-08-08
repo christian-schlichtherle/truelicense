@@ -294,7 +294,10 @@ public final class ObfuscatedString {
 
             @Override
             String decode(byte[] encoded, int length) throws Exception {
-                return new String(encoded, 0, length, charset);
+                return charset
+                        .newDecoder()
+                        .decode(ByteBuffer.wrap(encoded, 0, length))
+                        .toString();
             }
         }.call();
     }
